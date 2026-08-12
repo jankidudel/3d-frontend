@@ -1,0 +1,8 @@
+:host { display: block; min-height: 100vh; }
+.site-header, .site-footer { width: min(100% - 2rem, 70rem); margin-inline: auto; }
+.site-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; }
+.brand { color: var(--ink); font-weight: 800; font-size: 1.1rem; text-decoration: none; }
+nav a { color: var(--muted); font-weight: 650; text-decoration: none; }
+nav a:hover, nav a:focus-visible, nav a.active { color: var(--primary); }
+.site-footer { border-top: 1px solid var(--border); color: var(--muted); margin-top: 4rem; padding-block: 1.5rem 2.5rem; }
+@media (max-width: 32rem) { .site-header { align-items: flex-start; flex-direction: column; } }
