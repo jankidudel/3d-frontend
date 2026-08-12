@@ -1,0 +1,41 @@
+<main class="page">
+  <p class="eyebrow">Free mesh preflight</p>
+  <h1>STL Quality Check</h1>
+  <p class="lead">
+    Check an STL file for common mesh problems before 3D printing, including open edges,
+    non-manifold geometry, duplicate triangles and orientation issues.
+  </p>
+
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Choose your file</h2>
+    <p>
+      We use the file name and size to create a quality-check job. STL geometry is not parsed by
+      this page.
+    </p>
+    <app-stl-file-picker (fileSelected)="onFileSelected($event)" />
+    <button
+      class="button submit"
+      type="button"
+      (click)="checkStl()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job…' : 'Check STL' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+
+  @if (job(); as createdJob) {
+    <app-job-status [job]="createdJob" [refreshing]="refreshing()" (refresh)="refreshStatus()" />
+  }
+
+  <section class="content" aria-labelledby="checks-title">
+    <h2 id="checks-title">Catch common STL issues before printing</h2>
+    <p>
+      A mesh quality check can flag topology and orientation problems early, helping you avoid
+      failed slicing or unexpected gaps in a print. Submit your STL metadata above to start a job,
+      then refresh its status when you are ready.
+    </p>
+  </section>
+</main>

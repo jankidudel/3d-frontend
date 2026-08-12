@@ -1,0 +1,38 @@
+.result {
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+h2 {
+  margin: 0.25rem 0 1rem;
+}
+dl {
+  display: grid;
+  gap: 0.65rem;
+}
+dl div {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 1rem;
+}
+dt {
+  font-weight: 750;
+}
+dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.status {
+  display: inline-block;
+  padding: 0.05rem 0.55rem;
+  border-radius: 99px;
+  color: var(--primary);
+  background: var(--soft);
+  font-weight: 750;
+}
+
+@media (max-width: 30rem) {
+  dl div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

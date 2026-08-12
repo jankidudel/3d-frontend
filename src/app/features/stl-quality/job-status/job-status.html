@@ -1,0 +1,32 @@
+<section class="result card" aria-labelledby="job-title" aria-live="polite">
+  <p class="eyebrow">Submission received</p>
+  <h2 id="job-title">Job created</h2>
+  <dl>
+    <div>
+      <dt>File</dt>
+      <dd>{{ job().fileName }}</dd>
+    </div>
+    <div>
+      <dt>Job ID</dt>
+      <dd class="id">{{ job().id }}</dd>
+    </div>
+    <div>
+      <dt>Status</dt>
+      <dd>
+        <span class="status">{{ job().status }}</span>
+      </dd>
+    </div>
+    <div>
+      <dt>Created</dt>
+      <dd>{{ job().createdAt | date: 'medium' }}</dd>
+    </div>
+  </dl>
+  <button
+    class="button button-secondary"
+    type="button"
+    (click)="refresh.emit()"
+    [disabled]="refreshing()"
+  >
+    {{ refreshing() ? 'Refreshing…' : 'Refresh status' }}
+  </button>
+</section>

@@ -6,6 +6,12 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
 
+## Dependency Management
+
+- Always use exact versions in `package.json`; do not use semver ranges such as `^`, `~`, `>`, or `*`.
+- When adding or updating a package, pin the exact resolved version and update `package-lock.json` in the same change.
+- Use `npm install --save-exact <package>` or `npm install --save-dev --save-exact <package>` for new dependencies.
+
 ## Angular Best Practices
 
 - Always use standalone components over NgModules

@@ -2,30 +2,8 @@ import { Component, output, signal } from '@angular/core';
 
 @Component({
   selector: 'app-stl-file-picker',
-  template: `
-    <div class="picker">
-      <label class="choose" for="stl-file">Choose STL file</label>
-      <input id="stl-file" type="file" accept=".stl" (change)="onFileChange($event)" />
-      <p class="hint">Select one non-empty .stl file. Your geometry stays in your browser.</p>
-      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
-      @if (selectedFile(); as file) {
-        <dl class="file-details">
-          <div><dt>File</dt><dd>{{ file.name }}</dd></div>
-          <div><dt>Size</dt><dd>{{ file.size.toLocaleString() }} bytes</dd></div>
-        </dl>
-      }
-    </div>
-  `,
-  styles: [`
-    .picker { padding: clamp(1.25rem, 4vw, 2rem); border: 2px dashed var(--border); border-radius: .8rem; text-align: center; background: var(--soft); }
-    input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-    .choose { display: inline-flex; padding: .7rem 1.1rem; border-radius: .55rem; color: white; background: var(--primary); font-weight: 750; cursor: pointer; }
-    .hint { color: var(--muted); font-size: .9rem; }
-    .error { color: var(--error); font-weight: 700; }
-    .file-details { display: grid; gap: .35rem; margin: 1.25rem auto 0; max-width: 28rem; text-align: left; }
-    .file-details div { display: grid; grid-template-columns: 4rem 1fr; gap: .75rem; }
-    dt { font-weight: 750; } dd { margin: 0; overflow-wrap: anywhere; }
-  `],
+  templateUrl: './stl-file-picker.html',
+  styleUrl: './stl-file-picker.scss',
 })
 export class StlFilePicker {
   readonly fileSelected = output<File | null>();

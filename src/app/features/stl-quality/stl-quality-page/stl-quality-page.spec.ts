@@ -32,7 +32,10 @@ describe('StlQualityPage', () => {
     fixture.componentInstance.checkStl();
     fixture.detectChanges();
 
-    expect(jobsService.createJob).toHaveBeenCalledWith({ fileName: 'rotor.stl', fileSizeBytes: 10 });
+    expect(jobsService.createJob).toHaveBeenCalledWith({
+      fileName: 'rotor.stl',
+      fileSizeBytes: 10,
+    });
     expect(fixture.nativeElement.textContent).toContain('Job created');
     expect(fixture.nativeElement.textContent).toContain('0a36659b');
   });
@@ -44,6 +47,8 @@ describe('StlQualityPage', () => {
     fixture.componentInstance.checkStl();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain('could not create');
+    expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain(
+      'could not create',
+    );
   });
 });

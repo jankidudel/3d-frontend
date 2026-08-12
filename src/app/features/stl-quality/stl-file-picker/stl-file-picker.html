@@ -1,0 +1,20 @@
+<div class="picker">
+  <label class="choose" for="stl-file">Choose STL file</label>
+  <input id="stl-file" type="file" accept=".stl" (change)="onFileChange($event)" />
+  <p class="hint">Select one non-empty .stl file. Your geometry stays in your browser.</p>
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+  @if (selectedFile(); as file) {
+    <dl class="file-details">
+      <div>
+        <dt>File</dt>
+        <dd>{{ file.name }}</dd>
+      </div>
+      <div>
+        <dt>Size</dt>
+        <dd>{{ file.size.toLocaleString() }} bytes</dd>
+      </div>
+    </dl>
+  }
+</div>

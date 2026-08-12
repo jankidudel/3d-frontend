@@ -2,6 +2,8 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.3.
 
+Use a Node.js version supported by Angular 22. With nvm, run `nvm use`; the repository currently pins Node 24.19.0 in `.nvmrc`.
+
 ## Development server
 
 To start a local development server, run:
@@ -43,6 +45,28 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ```bash
 ng test
 ```
+
+## Quality checks
+
+Run Angular and TypeScript linting with:
+
+```bash
+npm run lint
+```
+
+Run the complete local/CI verification suite (linting, tests, and the production SSG build) with:
+
+```bash
+npm run verify
+```
+
+Enable the repository-managed pre-commit hook once after cloning:
+
+```bash
+npm run hooks:install
+```
+
+The pre-commit hook runs linting and unit tests. A pre-push hook runs the production SSG build, avoiding duplicate compilation on every commit while still checking the deployable artifact before code leaves the machine.
 
 ## Running end-to-end tests
 

@@ -1,4 +1,5 @@
-export type JobStatus = 'created' | 'uploading' | 'uploaded' | 'processing' | 'completed' | 'failed';
+export type JobStatus =
+  'created' | 'uploading' | 'uploaded' | 'processing' | 'completed' | 'failed';
 
 export interface Job {
   id: string;
