@@ -11,14 +11,21 @@ describe('StlQualityPage', () => {
     fileSizeBytes: 11,
     status: 'created',
     createdAt: '2026-08-12T21:08:08Z',
+    upload: {
+      url: 'https://uploads.example.com/jobs/0a36659b/input.stl?signature=abc',
+      method: 'PUT',
+      expiresAt: '2026-08-12T21:23:08Z',
+    },
   };
   const jobsService = {
     createJob: vi.fn(() => of(job)),
+    uploadFile: vi.fn(() => of(undefined)),
     getJob: vi.fn(() => of(job)),
   };
 
   beforeEach(() => {
     jobsService.createJob.mockReset().mockReturnValue(of(job));
+    jobsService.uploadFile.mockReset().mockReturnValue(of(undefined));
     jobsService.getJob.mockReset().mockReturnValue(of(job));
     TestBed.configureTestingModule({
       imports: [StlQualityPage],
@@ -28,7 +35,9 @@ describe('StlQualityPage', () => {
 
   it('creates a job and displays the result', () => {
     const fixture = TestBed.createComponent(StlQualityPage);
-    fixture.componentInstance.onFileSelected(new File(['solid mesh'], 'rotor.stl'));
+    fixture.componentInstance.onFileSelected(
+      new File(['solid mesh'], 'rotor.stl'),
+    );
     fixture.componentInstance.checkStl();
     fixture.detectChanges();
 
@@ -36,19 +45,41 @@ describe('StlQualityPage', () => {
       fileName: 'rotor.stl',
       fileSizeBytes: 10,
     });
+    expect(jobsService.uploadFile).toHaveBeenCalledWith(
+      job.upload,
+      expect.any(File),
+    );
     expect(fixture.nativeElement.textContent).toContain('Job created');
     expect(fixture.nativeElement.textContent).toContain('0a36659b');
   });
 
   it('shows an API failure', () => {
-    jobsService.createJob.mockReturnValue(throwError(() => new Error('offline')));
+    jobsService.createJob.mockReturnValue(
+      throwError(() => new Error('offline')),
+    );
     const fixture = TestBed.createComponent(StlQualityPage);
     fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
     fixture.componentInstance.checkStl();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('[role="alert"]')?.textContent).toContain(
-      'could not create',
+    expect(
+      fixture.nativeElement.querySelector('[role="alert"]')?.textContent,
+    ).toContain('could not create the job or upload');
+  });
+
+  it('shows an upload failure after creating the job', () => {
+    jobsService.uploadFile.mockReturnValue(
+      throwError(() => new Error('upload failed')),
     );
+    const fixture = TestBed.createComponent(StlQualityPage);
+    fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
+    fixture.componentInstance.checkStl();
+    fixture.detectChanges();
+
+    expect(jobsService.uploadFile).toHaveBeenCalled();
+    expect(fixture.componentInstance.job()).toEqual(job);
+    expect(
+      fixture.nativeElement.querySelector('[role="alert"]')?.textContent,
+    ).toContain('could not create the job or upload');
   });
 });

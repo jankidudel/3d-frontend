@@ -1,5 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { API_CONFIG } from './api-config';
 import { JobsService } from './jobs.service';
@@ -13,6 +16,11 @@ describe('JobsService', () => {
     fileSizeBytes: 42,
     status: 'created' as const,
     createdAt: '2026-08-12T21:08:08Z',
+    upload: {
+      url: 'https://uploads.example.com/jobs/abc/input.stl?signature=abc',
+      method: 'PUT' as const,
+      expiresAt: '2026-08-12T21:23:08Z',
+    },
   };
 
   beforeEach(() => {
@@ -34,7 +42,10 @@ describe('JobsService', () => {
       .subscribe((value) => expect(value).toEqual(job));
     const request = http.expectOne('/api/jobs');
     expect(request.request.method).toBe('POST');
-    expect(request.request.body).toEqual({ fileName: 'rotor.stl', fileSizeBytes: 42 });
+    expect(request.request.body).toEqual({
+      fileName: 'rotor.stl',
+      fileSizeBytes: 42,
+    });
     request.flush(job);
   });
 
@@ -43,5 +54,19 @@ describe('JobsService', () => {
     const request = http.expectOne('/api/jobs/a%2Fb');
     expect(request.request.method).toBe('GET');
     request.flush(job);
+  });
+
+  it('PUTs the selected file to the presigned upload URL', () => {
+    const file = new File(['solid mesh'], 'rotor.stl');
+
+    service
+      .uploadFile(job.upload, file)
+      .subscribe((value) => expect(value).toBeUndefined());
+
+    const request = http.expectOne(job.upload.url);
+    expect(request.request.method).toBe('PUT');
+    expect(request.request.body).toBe(file);
+    expect(request.request.responseType).toBe('text');
+    request.flush('');
   });
 });

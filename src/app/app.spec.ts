@@ -4,7 +4,10 @@ import { App } from './app';
 
 describe('App', () => {
   beforeEach(() =>
-    TestBed.configureTestingModule({ imports: [App], providers: [provideRouter([])] }),
+    TestBed.configureTestingModule({
+      imports: [App],
+      providers: [provideRouter([])],
+    }),
   );
 
   it('creates the application shell', () => {

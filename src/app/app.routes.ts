@@ -4,7 +4,8 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadComponent: () => import('./features/home/home-page').then((m) => m.HomePage),
+    loadComponent: () =>
+      import('./features/home/home-page').then((m) => m.HomePage),
   },
   {
     path: 'stl-quality-check',

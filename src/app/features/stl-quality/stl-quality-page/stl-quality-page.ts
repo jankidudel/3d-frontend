@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { finalize } from 'rxjs';
+import { finalize, switchMap, tap, throwError } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
 import { Job } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
@@ -47,12 +47,21 @@ export class StlQualityPage {
     this.error.set('');
     this.jobsService
       .createJob({ fileName: file.name, fileSizeBytes: file.size })
-      .pipe(finalize(() => this.submitting.set(false)))
+      .pipe(
+        tap((job) => this.job.set(job)),
+        switchMap((job) =>
+          job.upload
+            ? this.jobsService.uploadFile(job.upload, file)
+            : throwError(
+                () => new Error('The API did not provide upload instructions.'),
+              ),
+        ),
+        finalize(() => this.submitting.set(false)),
+      )
       .subscribe({
-        next: (job) => this.job.set(job),
         error: () =>
           this.error.set(
-            'We could not create the job. Check that the API is available and try again.',
+            'We could not create the job or upload the file. Please try again.',
           ),
       });
   }
@@ -67,7 +76,8 @@ export class StlQualityPage {
       .pipe(finalize(() => this.refreshing.set(false)))
       .subscribe({
         next: (job) => this.job.set(job),
-        error: () => this.error.set('We could not refresh this job. Please try again.'),
+        error: () =>
+          this.error.set('We could not refresh this job. Please try again.'),
       });
   }
 }

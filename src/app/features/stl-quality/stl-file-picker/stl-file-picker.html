@@ -1,6 +1,11 @@
 <div class="picker">
   <label class="choose" for="stl-file">Choose STL file</label>
-  <input id="stl-file" type="file" accept=".stl" (change)="onFileChange($event)" />
+  <input
+    id="stl-file"
+    type="file"
+    accept=".stl"
+    (change)="onFileChange($event)"
+  />
   <p class="hint">Select a non-empty .stl file.</p>
   @if (error()) {
     <p class="error" role="alert">{{ error() }}</p>

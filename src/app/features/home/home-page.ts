@@ -16,7 +16,8 @@ export class HomePage {
     this.title.setTitle('3D Quality Tools – Tools for Better 3D Printing');
     this.meta.updateTag({
       name: 'description',
-      content: 'Simple tools for checking and analysing STL files for 3D printing.',
+      content:
+        'Simple tools for checking and analysing STL files for 3D printing.',
     });
   }
 }
