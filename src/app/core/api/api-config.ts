@@ -6,5 +6,5 @@ export interface ApiConfig {
 
 export const API_CONFIG = new InjectionToken<ApiConfig>('API_CONFIG', {
   providedIn: 'root',
-  factory: () => ({ baseUrl: 'http://localhost:8080' }),
+  factory: () => ({ baseUrl: '/api/v1' }),
 });
