@@ -3,6 +3,8 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 ## TypeScript Best Practices
 
 - Use strict type checking
+- Use explicit `{}` blocks for every `if`, `else`, loop, and other control-flow
+  body, including single-statement bodies. Do not write braceless control flow.
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
 
