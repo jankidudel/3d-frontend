@@ -1,5 +1,7 @@
 import { Component, output, signal } from '@angular/core';
 
+export const MAX_STL_FILE_SIZE_BYTES = 25 * 1024 * 1024;
+
 @Component({
   selector: 'app-stl-file-picker',
   templateUrl: './stl-file-picker.html',
@@ -29,6 +31,11 @@ export class StlFilePicker {
     }
     if (file.size === 0) {
       this.error.set('The selected STL file is empty.');
+      this.fileSelected.emit(null);
+      return;
+    }
+    if (file.size > MAX_STL_FILE_SIZE_BYTES) {
+      this.error.set('The selected STL file must be 25 MiB or smaller.');
       this.fileSelected.emit(null);
       return;
     }

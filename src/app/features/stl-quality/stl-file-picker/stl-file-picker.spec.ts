@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { StlFilePicker } from './stl-file-picker';
+import { MAX_STL_FILE_SIZE_BYTES, StlFilePicker } from './stl-file-picker';
 
 describe('StlFilePicker', () => {
   it('accepts a non-empty STL file', () => {
@@ -14,5 +14,16 @@ describe('StlFilePicker', () => {
     component.selectFile(new File(['mesh'], 'rotor.obj'));
     expect(component.selectedFile()).toBeNull();
     expect(component.error()).toContain('.stl');
+  });
+
+  it('rejects an STL file larger than 25 MiB', () => {
+    const component = TestBed.createComponent(StlFilePicker).componentInstance;
+    const file = new File(['mesh'], 'rotor.stl');
+    Object.defineProperty(file, 'size', { value: MAX_STL_FILE_SIZE_BYTES + 1 });
+
+    component.selectFile(file);
+
+    expect(component.selectedFile()).toBeNull();
+    expect(component.error()).toContain('25 MiB');
   });
 });
