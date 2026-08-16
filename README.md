@@ -38,6 +38,15 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+The deployable static files are written to `dist/3d-frontend/browser`. The sibling
+`3d-infra` project deploys this directory to a private S3 bucket behind CloudFront.
+CloudFront forwards `/api/*` to API Gateway, so the frontend keeps the same-origin
+API base URL `/api/v1` without environment-specific URLs or browser API CORS.
+
+After an upload, the quality-check page polls with bounded backoff until the S3-backed
+API reports `completed` or `failed`. Manual refresh remains available if polling is
+interrupted.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:

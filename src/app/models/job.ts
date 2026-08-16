@@ -1,5 +1,4 @@
-export type JobStatus =
-  'created' | 'uploading' | 'uploaded' | 'processing' | 'completed' | 'failed';
+export type JobStatus = 'created' | 'processing' | 'completed' | 'failed';
 
 export interface JobUpload {
   url: string;
@@ -14,4 +13,6 @@ export interface Job {
   status: JobStatus;
   createdAt: string;
   upload?: JobUpload;
+  report?: unknown;
+  failure?: unknown;
 }

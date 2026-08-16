@@ -1,10 +1,10 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { Job } from '../../../models/job';
 
 @Component({
   selector: 'app-job-status',
-  imports: [DatePipe],
+  imports: [DatePipe, JsonPipe],
   templateUrl: './job-status.html',
   styleUrl: './job-status.scss',
 })

@@ -21,6 +21,18 @@
       <dd>{{ job().createdAt | date: 'medium' }}</dd>
     </div>
   </dl>
+  @if (job().report; as report) {
+    <section aria-labelledby="report-title">
+      <h3 id="report-title">Quality report</h3>
+      <pre>{{ report | json }}</pre>
+    </section>
+  }
+  @if (job().failure; as failure) {
+    <section aria-labelledby="failure-title">
+      <h3 id="failure-title">Processing failed</h3>
+      <pre>{{ failure | json }}</pre>
+    </section>
+  }
   <button
     class="button button-secondary"
     type="button"

@@ -1,6 +1,16 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { finalize, switchMap, tap, throwError } from 'rxjs';
+import {
+  EMPTY,
+  expand,
+  finalize,
+  Subscription,
+  switchMap,
+  takeWhile,
+  tap,
+  throwError,
+  timer,
+} from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
 import { Job } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
@@ -16,6 +26,8 @@ export class StlQualityPage {
   private readonly jobsService = inject(JobsService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
+  private readonly destroyRef = inject(DestroyRef);
+  private polling?: Subscription;
   readonly selectedFile = signal<File | null>(null);
   readonly job = signal<Job | null>(null);
   readonly submitting = signal(false);
@@ -29,9 +41,11 @@ export class StlQualityPage {
       content:
         'Check STL files for common mesh problems including open edges, non-manifold geometry, duplicate triangles and orientation issues.',
     });
+    this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
   }
 
   onFileSelected(file: File | null): void {
+    this.polling?.unsubscribe();
     this.selectedFile.set(file);
     this.error.set('');
     this.job.set(null);
@@ -59,11 +73,42 @@ export class StlQualityPage {
         finalize(() => this.submitting.set(false)),
       )
       .subscribe({
+        next: () => {
+          const createdJob = this.job();
+          if (createdJob) this.startPolling(createdJob.id);
+        },
         error: () =>
           this.error.set(
             'We could not create the job or upload the file. Please try again.',
           ),
       });
+  }
+
+  private startPolling(jobId: string): void {
+    this.polling?.unsubscribe();
+    this.polling = timer(1000)
+      .pipe(
+        switchMap(() => this.jobsService.getJob(jobId)),
+        expand((job, index) =>
+          this.isTerminal(job)
+            ? EMPTY
+            : timer(Math.min(2000 * 2 ** index, 10000)).pipe(
+                switchMap(() => this.jobsService.getJob(jobId)),
+              ),
+        ),
+        takeWhile((job) => !this.isTerminal(job), true),
+      )
+      .subscribe({
+        next: (job) => this.job.set(job),
+        error: () =>
+          this.error.set(
+            'Automatic status updates stopped. Use Refresh status to try again.',
+          ),
+      });
+  }
+
+  private isTerminal(job: Job): boolean {
+    return job.status === 'completed' || job.status === 'failed';
   }
 
   refreshStatus(): void {

@@ -82,4 +82,26 @@ describe('StlQualityPage', () => {
       fixture.nativeElement.querySelector('[role="alert"]')?.textContent,
     ).toContain('could not create the job or upload');
   });
+
+  it('polls until the job completes', async () => {
+    vi.useFakeTimers();
+    const completed: Job = {
+      ...job,
+      status: 'completed',
+      report: { triangleCount: 12 },
+    };
+    jobsService.getJob.mockReturnValue(of(completed));
+    const fixture = TestBed.createComponent(StlQualityPage);
+    fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
+    fixture.componentInstance.checkStl();
+
+    await vi.advanceTimersByTimeAsync(1000);
+    fixture.detectChanges();
+
+    expect(jobsService.getJob).toHaveBeenCalledWith(job.id);
+    expect(fixture.componentInstance.job()?.status).toBe('completed');
+    expect(fixture.nativeElement.textContent).toContain('Quality report');
+    fixture.destroy();
+    vi.useRealTimers();
+  });
 });
