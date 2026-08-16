@@ -15,8 +15,13 @@ export class JobsService {
   }
 
   uploadFile(upload: JobUpload, file: File): Observable<void> {
+    const form = new FormData();
+    for (const [name, value] of Object.entries(upload.fields)) {
+      form.append(name, value);
+    }
+    form.append('file', file);
     return this.http
-      .put(upload.url, file, { responseType: 'text' })
+      .post(upload.url, form, { responseType: 'text' })
       .pipe(map(() => undefined));
   }
 

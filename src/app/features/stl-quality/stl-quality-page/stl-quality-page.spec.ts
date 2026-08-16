@@ -13,7 +13,8 @@ describe('StlQualityPage', () => {
     createdAt: '2026-08-12T21:08:08Z',
     upload: {
       url: 'https://uploads.example.com/jobs/0a36659b/input.stl?signature=abc',
-      method: 'PUT',
+      method: 'POST',
+      fields: { key: 'jobs/0a36659b/input.stl', policy: 'signed-policy' },
       expiresAt: '2026-08-12T21:23:08Z',
     },
   };

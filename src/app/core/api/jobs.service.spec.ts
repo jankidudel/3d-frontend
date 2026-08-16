@@ -18,7 +18,8 @@ describe('JobsService', () => {
     createdAt: '2026-08-12T21:08:08Z',
     upload: {
       url: 'https://uploads.example.com/jobs/abc/input.stl?signature=abc',
-      method: 'PUT' as const,
+      method: 'POST' as const,
+      fields: { key: 'jobs/abc/input.stl', policy: 'signed-policy' },
       expiresAt: '2026-08-12T21:23:08Z',
     },
   };
@@ -56,7 +57,7 @@ describe('JobsService', () => {
     request.flush(job);
   });
 
-  it('PUTs the selected file to the presigned upload URL', () => {
+  it('POSTs the selected file with the presigned form fields', () => {
     const file = new File(['solid mesh'], 'rotor.stl');
 
     service
@@ -64,8 +65,12 @@ describe('JobsService', () => {
       .subscribe((value) => expect(value).toBeUndefined());
 
     const request = http.expectOne(job.upload.url);
-    expect(request.request.method).toBe('PUT');
-    expect(request.request.body).toBe(file);
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toBeInstanceOf(FormData);
+    const body = request.request.body as FormData;
+    expect(body.get('key')).toBe('jobs/abc/input.stl');
+    expect(body.get('policy')).toBe('signed-policy');
+    expect(body.get('file')).toBe(file);
     expect(request.request.responseType).toBe('text');
     request.flush('');
   });

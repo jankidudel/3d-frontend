@@ -2,7 +2,8 @@ export type JobStatus = 'created' | 'processing' | 'completed' | 'failed';
 
 export interface JobUpload {
   url: string;
-  method: 'PUT';
+  method: 'POST';
+  fields: Record<string, string>;
   expiresAt: string;
 }
 
