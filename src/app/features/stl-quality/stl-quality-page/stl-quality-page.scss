@@ -15,6 +15,18 @@ app-stl-file-picker {
 }
 .submit {
   width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 0.15rem solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
 }
 .error {
   color: var(--error);
@@ -30,4 +42,16 @@ app-job-status {
 }
 .content p {
   color: var(--muted);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
 }

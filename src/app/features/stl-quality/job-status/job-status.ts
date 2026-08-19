@@ -1,5 +1,5 @@
 import { DatePipe, JsonPipe } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { Job } from '../../../models/job';
 
 @Component({
@@ -12,4 +12,8 @@ export class JobStatusComponent {
   readonly job = input.required<Job>();
   readonly refreshing = input(false);
   readonly refresh = output<void>();
+  readonly processing = computed(() => {
+    const status = this.job().status;
+    return status === 'created' || status === 'processing';
+  });
 }

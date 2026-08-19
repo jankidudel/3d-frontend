@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { NEVER, of, throwError } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
 import { Job } from '../../../models/job';
 import { StlQualityPage } from './stl-quality-page';
@@ -52,6 +52,21 @@ describe('StlQualityPage', () => {
     );
     expect(fixture.nativeElement.textContent).toContain('Job created');
     expect(fixture.nativeElement.textContent).toContain('0a36659b');
+    expect(fixture.nativeElement.textContent).toContain('Checking STL…');
+  });
+
+  it('shows a spinner immediately while the job is being created', () => {
+    jobsService.createJob.mockReturnValue(NEVER);
+    const fixture = TestBed.createComponent(StlQualityPage);
+    fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
+
+    fixture.componentInstance.checkStl();
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('.submit .spinner'),
+    ).not.toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Creating job…');
   });
 
   it('shows an API failure', () => {
@@ -102,6 +117,7 @@ describe('StlQualityPage', () => {
     expect(jobsService.getJob).toHaveBeenCalledWith(job.id);
     expect(fixture.componentInstance.job()?.status).toBe('completed');
     expect(fixture.nativeElement.textContent).toContain('Quality report');
+    expect(fixture.nativeElement.textContent).not.toContain('Checking STL…');
     fixture.destroy();
     vi.useRealTimers();
   });

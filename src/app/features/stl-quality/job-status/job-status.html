@@ -1,6 +1,14 @@
 <section class="result card" aria-labelledby="job-title" aria-live="polite">
   <p class="eyebrow">Submission received</p>
-  <h2 id="job-title">Job created</h2>
+  <div class="title-row">
+    <h2 id="job-title">Job created</h2>
+    @if (processing()) {
+      <p class="processing" role="status">
+        <span class="spinner" aria-hidden="true"></span>
+        Checking STL…
+      </p>
+    }
+  </div>
   <dl>
     <div>
       <dt>File</dt>

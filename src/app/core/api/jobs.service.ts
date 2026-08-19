@@ -14,6 +14,7 @@ export class JobsService {
     return this.http.post<Job>(`${this.config.baseUrl}/jobs`, request);
   }
 
+  // @todo: review, should this be in a separate service?
   uploadFile(upload: JobUpload, file: File): Observable<void> {
     const form = new FormData();
     for (const [name, value] of Object.entries(upload.fields)) {
