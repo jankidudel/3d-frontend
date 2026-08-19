@@ -14,5 +14,15 @@ export const routes: Routes = [
         (m) => m.StlQualityPage,
       ),
   },
+  {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./features/legal/privacy-page').then((m) => m.PrivacyPage),
+  },
+  {
+    path: 'cookies',
+    loadComponent: () =>
+      import('./features/legal/cookies-page').then((m) => m.CookiesPage),
+  },
   { path: '**', redirectTo: '' },
 ];

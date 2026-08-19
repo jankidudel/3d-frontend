@@ -1,0 +1,24 @@
+@if (consent.bannerVisible()) {
+  <aside
+    class="consent-banner card"
+    aria-labelledby="cookie-consent-title"
+    aria-describedby="cookie-consent-description"
+  >
+    <div>
+      <h2 id="cookie-consent-title">Analytics cookies</h2>
+      <p id="cookie-consent-description">
+        We use optional analytics cookies to understand how the tool is used and
+        improve it.
+      </p>
+      <a routerLink="/cookies">Cookie settings</a>
+    </div>
+    <div class="actions">
+      <button class="choice-button" type="button" (click)="consent.accept()">
+        Accept analytics
+      </button>
+      <button class="choice-button" type="button" (click)="consent.reject()">
+        Reject
+      </button>
+    </div>
+  </aside>
+}

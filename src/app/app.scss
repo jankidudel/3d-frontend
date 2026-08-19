@@ -31,13 +31,32 @@ nav a.active {
   color: var(--primary);
 }
 .site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   border-top: 1px solid var(--border);
   color: var(--muted);
   margin-top: 4rem;
   padding-block: 1.5rem 2.5rem;
 }
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.footer-links button {
+  padding: 0;
+  border: 0;
+  color: var(--primary);
+  background: transparent;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
 @media (max-width: 32rem) {
-  .site-header {
+  .site-header,
+  .site-footer {
     align-items: flex-start;
     flex-direction: column;
   }

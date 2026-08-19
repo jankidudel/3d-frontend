@@ -1,0 +1,54 @@
+.consent-banner {
+  position: fixed;
+  z-index: 10;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: min(calc(100% - 2rem), 60rem);
+  margin-inline: auto;
+  padding: 1rem;
+}
+h2,
+p {
+  margin: 0;
+}
+h2 {
+  font-size: 1.1rem;
+}
+p {
+  margin-block: 0.25rem;
+}
+.actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.65rem;
+}
+.choice-button {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 2px solid var(--primary);
+  border-radius: 0.55rem;
+  color: var(--primary);
+  background: var(--surface);
+  font-weight: 750;
+  cursor: pointer;
+}
+.choice-button:hover {
+  color: white;
+  background: var(--primary);
+}
+
+@media (max-width: 42rem) {
+  .consent-banner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .actions,
+  .choice-button {
+    width: 100%;
+  }
+}

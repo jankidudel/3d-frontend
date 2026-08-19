@@ -1,4 +1,5 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Meta, Title } from '@angular/platform-browser';
 import {
   EMPTY,
@@ -12,6 +13,13 @@ import {
   timer,
 } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
+import {
+  AnalyticsEventName,
+  AnalyticsEventParameters,
+  AnalyticsFailureReason,
+  AnalyticsService,
+  FileSizeBucket,
+} from '../../../core/analytics/analytics.service';
 import { Job } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
 import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
@@ -24,10 +32,13 @@ import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
 })
 export class StlQualityPage {
   private readonly jobsService = inject(JobsService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
+  private analyticsParameters: AnalyticsEventParameters = {};
+  private readonly trackedEvents = new Set<AnalyticsEventName>();
   readonly selectedFile = signal<File | null>(null);
   readonly job = signal<Job | null>(null);
   readonly submitting = signal(false);
@@ -49,6 +60,13 @@ export class StlQualityPage {
     this.selectedFile.set(file);
     this.error.set('');
     this.job.set(null);
+    this.trackedEvents.clear();
+    this.analyticsParameters = file
+      ? {
+          file_type: 'stl',
+          file_size_bucket: this.fileSizeBucket(file.size),
+        }
+      : {};
   }
 
   checkStl(): void {
@@ -59,6 +77,7 @@ export class StlQualityPage {
     }
     this.submitting.set(true);
     this.error.set('');
+    this.trackOnce('upload_started');
     this.jobsService
       .createJob({ fileName: file.name, fileSizeBytes: file.size })
       .pipe(
@@ -66,21 +85,27 @@ export class StlQualityPage {
         switchMap((job) =>
           job.upload
             ? this.jobsService.uploadFile(job.upload, file)
-            : throwError(
-                () => new Error('The API did not provide upload instructions.'),
-              ),
+            : throwError(() => new UploadValidationError()),
         ),
         finalize(() => this.submitting.set(false)),
       )
       .subscribe({
         next: () => {
+          this.trackOnce('upload_completed');
+          this.trackOnce('job_processing_started');
           const createdJob = this.job();
-          if (createdJob) this.startPolling(createdJob.id);
+          if (createdJob) {
+            this.startPolling(createdJob.id);
+          }
         },
-        error: () =>
+        error: (error: unknown) => {
+          this.trackOnce('upload_failed', {
+            reason: this.failureReason(error),
+          });
           this.error.set(
             'We could not create the job or upload the file. Please try again.',
-          ),
+          );
+        },
       });
   }
 
@@ -99,7 +124,7 @@ export class StlQualityPage {
         takeWhile((job) => !this.isTerminal(job), true),
       )
       .subscribe({
-        next: (job) => this.job.set(job),
+        next: (job) => this.updateJob(job),
         error: () =>
           this.error.set(
             'Automatic status updates stopped. Use Refresh status to try again.',
@@ -113,16 +138,70 @@ export class StlQualityPage {
 
   refreshStatus(): void {
     const currentJob = this.job();
-    if (!currentJob) return;
+    if (!currentJob) {
+      return;
+    }
     this.refreshing.set(true);
     this.error.set('');
     this.jobsService
       .getJob(currentJob.id)
       .pipe(finalize(() => this.refreshing.set(false)))
       .subscribe({
-        next: (job) => this.job.set(job),
+        next: (job) => this.updateJob(job),
         error: () =>
           this.error.set('We could not refresh this job. Please try again.'),
       });
   }
+
+  private updateJob(job: Job): void {
+    this.job.set(job);
+    if (job.status === 'completed') {
+      this.trackOnce('job_completed');
+      if (job.report) {
+        this.trackOnce('report_viewed');
+      }
+    } else if (job.status === 'failed') {
+      this.trackOnce('job_failed', { reason: 'unknown' });
+    }
+  }
+
+  private trackOnce(
+    name: AnalyticsEventName,
+    parameters: Pick<AnalyticsEventParameters, 'reason'> = {},
+  ): void {
+    if (this.trackedEvents.has(name)) {
+      return;
+    }
+    this.trackedEvents.add(name);
+    this.analytics.trackEvent(name, {
+      ...this.analyticsParameters,
+      ...parameters,
+    });
+  }
+
+  private failureReason(error: unknown): AnalyticsFailureReason {
+    if (error instanceof UploadValidationError) {
+      return 'validation';
+    }
+    if (error instanceof HttpErrorResponse && error.status === 0) {
+      return 'network';
+    }
+    return 'unknown';
+  }
+
+  private fileSizeBucket(bytes: number): FileSizeBucket {
+    const megabyte = 1024 * 1024;
+    if (bytes < megabyte) {
+      return 'under_1mb';
+    }
+    if (bytes <= 10 * megabyte) {
+      return '1_to_10mb';
+    }
+    if (bytes <= 50 * megabyte) {
+      return '10_to_50mb';
+    }
+    return 'over_50mb';
+  }
 }
+
+class UploadValidationError extends Error {}
