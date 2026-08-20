@@ -50,9 +50,7 @@ describe('StlQualityPage', () => {
       job.upload,
       expect.any(File),
     );
-    expect(fixture.nativeElement.textContent).toContain('Job created');
-    expect(fixture.nativeElement.textContent).toContain('0a36659b');
-    expect(fixture.nativeElement.textContent).toContain('Checking STL…');
+    expect(fixture.nativeElement.textContent).toContain('Analysing your model');
   });
 
   it('shows a spinner immediately while the job is being created', () => {
@@ -116,8 +114,11 @@ describe('StlQualityPage', () => {
 
     expect(jobsService.getJob).toHaveBeenCalledWith(job.id);
     expect(fixture.componentInstance.job()?.status).toBe('completed');
-    expect(fixture.nativeElement.textContent).toContain('Quality report');
-    expect(fixture.nativeElement.textContent).not.toContain('Checking STL…');
+    expect(fixture.nativeElement.textContent).toContain('Problems found');
+    expect(fixture.nativeElement.textContent).toContain('Triangles');
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'Analysing your model',
+    );
     fixture.destroy();
     vi.useRealTimers();
   });

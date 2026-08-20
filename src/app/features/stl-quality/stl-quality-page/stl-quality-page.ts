@@ -127,7 +127,7 @@ export class StlQualityPage {
         next: (job) => this.updateJob(job),
         error: () =>
           this.error.set(
-            'Automatic status updates stopped. Use Refresh status to try again.',
+            'Automatic status updates were interrupted. You can use Check again below, or upload the file again.',
           ),
       });
   }

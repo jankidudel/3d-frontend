@@ -1,52 +1,183 @@
 <section class="result card" aria-labelledby="job-title" aria-live="polite">
-  <p class="eyebrow">Submission received</p>
-  <div class="title-row">
-    <h2 id="job-title">Job created</h2>
-    @if (processing()) {
-      <p class="processing" role="status">
-        <span class="spinner" aria-hidden="true"></span>
-        Checking STL…
-      </p>
-    }
-  </div>
-  <dl>
-    <div>
-      <dt>File</dt>
-      <dd>{{ job().fileName }}</dd>
+  @if (processing()) {
+    <div class="progress-panel" role="status">
+      <span class="spinner" aria-hidden="true"></span>
+      <div>
+        <h2 id="job-title">
+          {{ uploading() ? 'Uploading your model…' : 'Analysing your model…' }}
+        </h2>
+        <p>
+          {{
+            uploading()
+              ? 'Your STL is being securely uploaded.'
+              : 'We’ll show the report here as soon as the automatic check finishes.'
+          }}
+        </p>
+      </div>
     </div>
-    <div>
-      <dt>Job ID</dt>
-      <dd class="id">{{ job().id }}</dd>
+  } @else if (job().status === 'failed') {
+    <div class="status-panel status-panel-error" role="alert">
+      <span class="status-icon" aria-hidden="true">!</span>
+      <div>
+        <h2 id="job-title">We couldn’t analyse this model</h2>
+        <p>
+          The check did not finish successfully. Please choose the file again or
+          try another STL.
+        </p>
+      </div>
     </div>
-    <div>
-      <dt>Status</dt>
-      <dd>
-        <span class="status">{{ job().status }}</span>
-      </dd>
+  } @else if (report(); as qualityReport) {
+    <div
+      class="status-panel"
+      [class.status-panel-success]="isValid()"
+      [class.status-panel-error]="!isValid()"
+    >
+      <span class="status-icon" aria-hidden="true">{{
+        isValid() ? '✓' : '!'
+      }}</span>
+      <div>
+        <p class="eyebrow">Quality report</p>
+        <h2 id="job-title">
+          {{ isValid() ? 'Model passed validation' : 'Problems found' }}
+        </h2>
+        <p>
+          @if (isValid()) {
+            No mesh validation problems were detected. Printer settings and wall
+            thickness are not included in this check.
+          } @else {
+            Review the mesh issues below before slicing or printing this model.
+          }
+        </p>
+      </div>
     </div>
-    <div>
-      <dt>Created</dt>
-      <dd>{{ job().createdAt | date: 'medium' }}</dd>
+
+    <div class="report-heading">
+      <div>
+        <h3>Model metrics</h3>
+        <p>{{ qualityReport['fileName'] || job().fileName }}</p>
+      </div>
+      <button class="button" type="button" (click)="downloadReport()">
+        Download JSON report
+      </button>
     </div>
-  </dl>
-  @if (job().report; as report) {
-    <section aria-labelledby="report-title">
-      <h3 id="report-title">Quality report</h3>
-      <pre>{{ report | json }}</pre>
+
+    <dl class="metrics">
+      <div class="metric metric-wide">
+        <dt>Dimensions</dt>
+        <dd>
+          {{ formatNumber(dimensions()?.['width']) }} ×
+          {{ formatNumber(dimensions()?.['height']) }} ×
+          {{ formatNumber(dimensions()?.['depth']) }}
+        </dd>
+        <span>model units (W × H × D)</span>
+      </div>
+      <div class="metric">
+        <dt>Triangles</dt>
+        <dd>{{ formatInteger(qualityReport['triangleCount']) }}</dd>
+      </div>
+      <div class="metric">
+        <dt>File size</dt>
+        <dd>
+          {{
+            formatFileSize(
+              qualityReport['fileSizeBytes'] ?? job().fileSizeBytes
+            )
+          }}
+        </dd>
+      </div>
+      <div class="metric">
+        <dt>Surface area</dt>
+        <dd>{{ formatNumber(qualityReport['surfaceArea']) }}</dd>
+        <span>square model units</span>
+      </div>
+      <div class="metric">
+        <dt>Volume</dt>
+        <dd>{{ formatNumber(qualityReport['volume']) }}</dd>
+        <span>cubic model units</span>
+      </div>
+    </dl>
+
+    <section class="issues" aria-labelledby="issues-title">
+      <h3 id="issues-title">Validation issues</h3>
+      @if (isValid() && issues().length === 0) {
+        <p class="no-issues">
+          <span aria-hidden="true">✓</span> No mesh validation issues found.
+        </p>
+      } @else if (issues().length > 0) {
+        <ul>
+          @for (issue of issues(); track $index) {
+            <li>
+              <strong>{{ issue.label }}</strong>
+              @if (issue.detail) {
+                <span>{{ issue.detail }}</span>
+              }
+            </li>
+          }
+        </ul>
+      } @else {
+        <p>The model failed validation, but no issue details were supplied.</p>
+      }
     </section>
+
+    <details class="technical">
+      <summary>Technical details</summary>
+      <h3>Bounding box</h3>
+      @if (boundingBox(); as box) {
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Axis</th>
+                <th>Minimum</th>
+                <th>Maximum</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>X</th>
+                <td>{{ formatNumber(box['minX']) }}</td>
+                <td>{{ formatNumber(box['maxX']) }}</td>
+              </tr>
+              <tr>
+                <th>Y</th>
+                <td>{{ formatNumber(box['minY']) }}</td>
+                <td>{{ formatNumber(box['maxY']) }}</td>
+              </tr>
+              <tr>
+                <th>Z</th>
+                <td>{{ formatNumber(box['minZ']) }}</td>
+                <td>{{ formatNumber(box['maxZ']) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p>Bounding-box values were not supplied.</p>
+      }
+      <h3>Full JSON report</h3>
+      <pre><code>{{ job().report | json }}</code></pre>
+    </details>
+  } @else {
+    <div class="status-panel status-panel-error">
+      <span class="status-icon" aria-hidden="true">!</span>
+      <div>
+        <h2 id="job-title">Report unavailable</h2>
+        <p>
+          The analysis finished, but no report was returned. Please try the file
+          again.
+        </p>
+      </div>
+    </div>
   }
-  @if (job().failure; as failure) {
-    <section aria-labelledby="failure-title">
-      <h3 id="failure-title">Processing failed</h3>
-      <pre>{{ failure | json }}</pre>
-    </section>
+
+  @if (processing()) {
+    <button
+      class="refresh"
+      type="button"
+      (click)="refresh.emit()"
+      [disabled]="refreshing() || uploading()"
+    >
+      {{ refreshing() ? 'Checking…' : 'Check again' }}
+    </button>
   }
-  <button
-    class="button button-secondary"
-    type="button"
-    (click)="refresh.emit()"
-    [disabled]="refreshing()"
-  >
-    {{ refreshing() ? 'Refreshing…' : 'Refresh status' }}
-  </button>
 </section>

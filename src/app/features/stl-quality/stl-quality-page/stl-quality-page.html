@@ -30,6 +30,7 @@
   @if (job(); as createdJob) {
     <app-job-status
       [job]="createdJob"
+      [uploading]="submitting()"
       [refreshing]="refreshing()"
       (refresh)="refreshStatus()"
     />
@@ -40,8 +41,8 @@
     <p>
       A mesh quality check can flag topology and orientation problems early,
       helping you avoid failed slicing or unexpected gaps in a print. Submit
-      your STL metadata above to start a job, then refresh its status when you
-      are ready.
+      your STL above to start a job. The report appears automatically when the
+      analysis finishes.
     </p>
   </section>
 </main>
