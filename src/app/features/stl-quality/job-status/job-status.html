@@ -56,10 +56,23 @@
         <h3>Model metrics</h3>
         <p>{{ qualityReport['fileName'] || job().fileName }}</p>
       </div>
-      <button class="button" type="button" (click)="downloadReport()">
-        Download JSON report
-      </button>
+      <div class="report-actions">
+        <button class="button" type="button" (click)="downloadReport()">
+          Download JSON report
+        </button>
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="downloadPdfReport()"
+          [disabled]="generatingPdf()"
+        >
+          {{ generatingPdf() ? 'Generating PDF…' : 'Download PDF report' }}
+        </button>
+      </div>
     </div>
+    @if (pdfError(); as message) {
+      <p class="pdf-error" role="alert">{{ message }}</p>
+    }
 
     <dl class="metrics">
       <div class="metric metric-wide">

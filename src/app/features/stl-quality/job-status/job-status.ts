@@ -1,6 +1,14 @@
 import { DOCUMENT, JsonPipe } from '@angular/common';
-import { Component, computed, inject, input, output } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { Job } from '../../../models/job';
+import { StlQualityPdfService } from './stl-quality-pdf.service';
 
 interface QualityReport {
   [key: string]: unknown;
@@ -27,9 +35,12 @@ const ISSUE_LABELS: Record<string, string> = {
 })
 export class JobStatusComponent {
   private readonly document = inject(DOCUMENT);
+  private readonly pdfService = inject(StlQualityPdfService);
   readonly job = input.required<Job>();
   readonly uploading = input(false);
   readonly refreshing = input(false);
+  readonly generatingPdf = signal(false);
+  readonly pdfError = signal('');
   readonly refresh = output<void>();
   readonly processing = computed(() =>
     ['created', 'processing'].includes(this.job().status),
@@ -88,6 +99,23 @@ export class JobStatusComponent {
     link.download = this.downloadFileName();
     link.click();
     view.setTimeout(() => view.URL.revokeObjectURL(objectUrl), 0);
+  }
+
+  async downloadPdfReport(): Promise<void> {
+    if (!this.report() || this.generatingPdf()) {
+      return;
+    }
+    this.generatingPdf.set(true);
+    this.pdfError.set('');
+    try {
+      await this.pdfService.download(this.job());
+    } catch {
+      this.pdfError.set(
+        'We could not generate the PDF report. Please try again.',
+      );
+    } finally {
+      this.generatingPdf.set(false);
+    }
   }
 
   private downloadFileName(): string {
