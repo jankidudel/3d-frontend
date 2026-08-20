@@ -15,6 +15,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'stl-dimensions-checker',
+    loadComponent: () =>
+      import('./features/stl-dimensions/stl-dimensions-page').then(
+        (m) => m.StlDimensionsPage,
+      ),
+  },
+  {
     path: 'privacy',
     loadComponent: () =>
       import('./features/legal/privacy-page').then((m) => m.PrivacyPage),

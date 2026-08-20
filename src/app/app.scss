@@ -25,6 +25,10 @@ nav a {
   font-weight: 650;
   text-decoration: none;
 }
+.site-header nav {
+  display: flex;
+  gap: 1rem;
+}
 nav a:hover,
 nav a:focus-visible,
 nav a.active {
@@ -59,5 +63,8 @@ nav a.active {
   .site-footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+  .site-header nav {
+    flex-wrap: wrap;
   }
 }

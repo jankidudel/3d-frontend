@@ -1,0 +1,294 @@
+<main class="page dimensions-page">
+  <p class="eyebrow">STL measurement and scaling</p>
+  <h1>Measure, convert and scale STL dimensions</h1>
+  <p class="lead">
+    Find your model’s width, height and depth, interpret its design unit, and
+    calculate a proportional scale for the size you want to print.
+  </p>
+  <p class="unit-explanation">
+    STL geometry is stored as unitless coordinates, so STL files do not reliably
+    contain unit metadata. You choose how those coordinates should be
+    interpreted after measurement.
+  </p>
+
+  <section class="upload card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Measure your STL</h2>
+    <p>Upload an STL to measure its width, height and depth.</p>
+    <app-stl-file-picker (fileSelected)="onFileSelected($event)" />
+    <button
+      class="button submit"
+      type="button"
+      (click)="measureStl()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      @if (submitting()) {
+        <span class="spinner" aria-hidden="true"></span>
+      }
+      {{ submitting() ? 'Creating job…' : 'Measure STL' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+
+  @if (job(); as currentJob) {
+    <section
+      class="results card"
+      aria-labelledby="results-title"
+      aria-live="polite"
+    >
+      @if (processing()) {
+        <div class="progress" role="status">
+          <span class="spinner large" aria-hidden="true"></span>
+          <div>
+            <h2 id="results-title">
+              {{
+                submitting() ? 'Uploading your model…' : 'Measuring your model…'
+              }}
+            </h2>
+            <p>
+              The dimensions will appear automatically when analysis finishes.
+            </p>
+          </div>
+        </div>
+        <button
+          class="text-button"
+          type="button"
+          (click)="refreshStatus()"
+          [disabled]="refreshing() || submitting()"
+        >
+          {{ refreshing() ? 'Checking…' : 'Check again' }}
+        </button>
+      } @else if (currentJob.status === 'failed') {
+        <div class="failure" role="alert">
+          <span class="status-icon" aria-hidden="true">!</span>
+          <div>
+            <h2 id="results-title">We couldn’t measure this model</h2>
+            <p>Please retry with this file or choose another STL above.</p>
+          </div>
+        </div>
+      } @else if (report()) {
+        <div class="result-header">
+          <div>
+            <p class="eyebrow">Measured bounding size</p>
+            <h2 id="results-title">Width × Height × Depth</h2>
+          </div>
+          <p class="file-name">
+            {{ report()?.['fileName'] || currentJob.fileName }}
+          </p>
+        </div>
+
+        <p class="primary-dimensions">
+          {{ formatDimensions(rawDimensions()) }}
+          <span>{{ modelUnit() }}</span>
+        </p>
+        <p class="raw-note">
+          Raw result: {{ formatDimensions(rawDimensions()) }} model units
+        </p>
+        <p class="triangle-count">
+          {{ formatNumber(report()?.['triangleCount'], 0) }} triangles
+        </p>
+
+        <section class="tool-section" aria-labelledby="unit-title">
+          <div class="section-heading">
+            <div>
+              <h3 id="unit-title">Model unit</h3>
+              <p>Interpret one raw model unit as the unit selected here.</p>
+            </div>
+            <label class="field compact">
+              <span>Designed in</span>
+              <select [value]="modelUnit()" (change)="setModelUnit($event)">
+                <option value="mm">Millimetres (mm)</option>
+                <option value="cm">Centimetres (cm)</option>
+                <option value="m">Metres (m)</option>
+                <option value="in">Inches (in)</option>
+              </select>
+            </label>
+          </div>
+          <p class="disclaimer">
+            <strong>Unit check:</strong> STL files do not reliably store unit
+            information. Select the unit used when the model was designed.
+          </p>
+        </section>
+
+        <section class="tool-section" aria-labelledby="conversion-title">
+          <h3 id="conversion-title">Converted dimensions</h3>
+          <p>
+            Original model coordinates interpreted as
+            <strong>{{ modelUnit() }}</strong
+            >.
+          </p>
+          @if (convertedDimensions(); as converted) {
+            <dl class="conversion-grid">
+              <div>
+                <dt>Millimetres</dt>
+                <dd>{{ formatDimensions(converted.mm) }} mm</dd>
+              </div>
+              <div>
+                <dt>Centimetres</dt>
+                <dd>{{ formatDimensions(converted.cm) }} cm</dd>
+              </div>
+              <div>
+                <dt>Inches</dt>
+                <dd>{{ formatDimensions(converted.in) }} in</dd>
+              </div>
+            </dl>
+          }
+        </section>
+
+        <section class="tool-section" aria-labelledby="scale-title">
+          <h3 id="scale-title">Scale to a target size</h3>
+          <p>
+            Choose one target dimension. The other dimensions stay proportional.
+          </p>
+          <div class="calculator-fields">
+            <label class="field">
+              <span>Dimension to target</span>
+              <select [value]="targetAxis()" (change)="setTargetAxis($event)">
+                <option value="width">Width</option>
+                <option value="height">Height</option>
+                <option value="depth">Depth</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Desired final size</span>
+              <input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                [attr.aria-invalid]="desiredSizeInvalid()"
+                aria-describedby="desired-size-error"
+                (input)="setDesiredSize($event)"
+              />
+            </label>
+            <label class="field">
+              <span>Desired size unit</span>
+              <select [value]="desiredUnit()" (change)="setDesiredUnit($event)">
+                <option value="mm">Millimetres (mm)</option>
+                <option value="cm">Centimetres (cm)</option>
+                <option value="m">Metres (m)</option>
+                <option value="in">Inches (in)</option>
+              </select>
+            </label>
+          </div>
+          @if (desiredSizeInvalid()) {
+            <p id="desired-size-error" class="error" role="alert">
+              Enter a finite final size greater than zero. Extremely large
+              values cannot be calculated.
+            </p>
+          } @else {
+            <span id="desired-size-error" class="visually-hidden"
+              >Enter a size greater than zero.</span
+            >
+          }
+
+          @if (scaleResult(); as scale) {
+            <div class="scale-output" role="status">
+              <dl>
+                <div>
+                  <dt>Required scale</dt>
+                  <dd>{{ formatNumber(scale.percentage, 2) }}%</dd>
+                </div>
+                <div>
+                  <dt>Scale factor</dt>
+                  <dd>{{ formatNumber(scale.factor, 4) }}×</dd>
+                </div>
+              </dl>
+              <p>
+                <strong>Resulting W × H × D:</strong><br />
+                {{ formatDimensions(scale.dimensions) }} {{ desiredUnit() }}
+              </p>
+            </div>
+          }
+          <p class="slicer-note">
+            Slicers may apply scaling differently depending on their configured
+            units. Confirm the displayed final dimensions before printing.
+          </p>
+        </section>
+
+        <section
+          class="tool-section quality-summary"
+          aria-labelledby="quality-title"
+        >
+          <div>
+            <h3 id="quality-title">Quality check</h3>
+            <p>
+              <span class="status-icon small" aria-hidden="true">{{
+                validationIsValid() ? '✓' : '!'
+              }}</span>
+              {{
+                validationIsValid()
+                  ? 'No mesh validation issues found.'
+                  : 'Mesh issues were found.'
+              }}
+            </p>
+          </div>
+          <a class="button" routerLink="/stl-quality-check"
+            >View full STL quality report</a
+          >
+        </section>
+
+        <details class="technical">
+          <summary>Technical bounding-box details</summary>
+          @if (boundingBox(); as box) {
+            <div class="table-scroll">
+              <table>
+                <caption>
+                  Raw model-unit bounding-box coordinates
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Axis</th>
+                    <th>Minimum</th>
+                    <th>Maximum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>X</th>
+                    <td>{{ formatNumber(box['minX']) }}</td>
+                    <td>{{ formatNumber(box['maxX']) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Y</th>
+                    <td>{{ formatNumber(box['minY']) }}</td>
+                    <td>{{ formatNumber(box['maxY']) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Z</th>
+                    <td>{{ formatNumber(box['minZ']) }}</td>
+                    <td>{{ formatNumber(box['maxZ']) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p>Bounding-box values were not supplied.</p>
+          }
+        </details>
+      } @else {
+        <div class="failure" role="alert">
+          <span class="status-icon" aria-hidden="true">!</span>
+          <div>
+            <h2 id="results-title">Measurements unavailable</h2>
+            <p>
+              The analysis finished without a report. Please upload the file
+              again.
+            </p>
+          </div>
+        </div>
+      }
+    </section>
+  }
+
+  <section class="content" aria-labelledby="how-title">
+    <h2 id="how-title">How STL sizing works</h2>
+    <p>
+      An STL records vertex coordinates but normally does not say whether a
+      value of 50 means 50 millimetres, centimetres, metres or inches. Select
+      the unit used by the design software, then use the conversions and
+      proportional scale calculator above to prepare the intended print size.
+    </p>
+  </section>
+</main>

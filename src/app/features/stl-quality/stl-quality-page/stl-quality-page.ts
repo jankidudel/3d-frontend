@@ -1,18 +1,13 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Meta, Title } from '@angular/platform-browser';
-import {
-  EMPTY,
-  expand,
-  finalize,
-  Subscription,
-  switchMap,
-  takeWhile,
-  tap,
-  throwError,
-  timer,
-} from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
+import {
+  createAndUploadStlJob,
+  MissingUploadDetailsError,
+  pollStlJob,
+} from '../../../core/api/stl-job-workflow';
 import {
   AnalyticsEventName,
   AnalyticsEventParameters,
@@ -78,17 +73,8 @@ export class StlQualityPage {
     this.submitting.set(true);
     this.error.set('');
     this.trackOnce('upload_started');
-    this.jobsService
-      .createJob({ fileName: file.name, fileSizeBytes: file.size })
-      .pipe(
-        tap((job) => this.job.set(job)),
-        switchMap((job) =>
-          job.upload
-            ? this.jobsService.uploadFile(job.upload, file)
-            : throwError(() => new UploadValidationError()),
-        ),
-        finalize(() => this.submitting.set(false)),
-      )
+    createAndUploadStlJob(this.jobsService, file, (job) => this.job.set(job))
+      .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
         next: () => {
           this.trackOnce('upload_completed');
@@ -111,29 +97,13 @@ export class StlQualityPage {
 
   private startPolling(jobId: string): void {
     this.polling?.unsubscribe();
-    this.polling = timer(1000)
-      .pipe(
-        switchMap(() => this.jobsService.getJob(jobId)),
-        expand((job, index) =>
-          this.isTerminal(job)
-            ? EMPTY
-            : timer(Math.min(2000 * 2 ** index, 10000)).pipe(
-                switchMap(() => this.jobsService.getJob(jobId)),
-              ),
+    this.polling = pollStlJob(this.jobsService, jobId).subscribe({
+      next: (job) => this.updateJob(job),
+      error: () =>
+        this.error.set(
+          'Automatic status updates were interrupted. You can use Check again below, or upload the file again.',
         ),
-        takeWhile((job) => !this.isTerminal(job), true),
-      )
-      .subscribe({
-        next: (job) => this.updateJob(job),
-        error: () =>
-          this.error.set(
-            'Automatic status updates were interrupted. You can use Check again below, or upload the file again.',
-          ),
-      });
-  }
-
-  private isTerminal(job: Job): boolean {
-    return job.status === 'completed' || job.status === 'failed';
+    });
   }
 
   refreshStatus(): void {
@@ -180,7 +150,7 @@ export class StlQualityPage {
   }
 
   private failureReason(error: unknown): AnalyticsFailureReason {
-    if (error instanceof UploadValidationError) {
+    if (error instanceof MissingUploadDetailsError) {
       return 'validation';
     }
     if (error instanceof HttpErrorResponse && error.status === 0) {
@@ -203,5 +173,3 @@ export class StlQualityPage {
     return 'over_50mb';
   }
 }
-
-class UploadValidationError extends Error {}
