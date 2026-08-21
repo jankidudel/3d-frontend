@@ -61,6 +61,24 @@ describe('StlDimensionsPage', () => {
     expect(fixture.nativeElement.querySelector('pre')).toBeNull();
   });
 
+  it('shows the shared safe failed-job experience', () => {
+    const fixture = TestBed.createComponent(StlDimensionsPage);
+    fixture.componentInstance.job.set({
+      ...completedJob,
+      status: 'failed',
+      report: undefined,
+      failure: { error: { code: 'unsupported_format' } },
+    });
+    fixture.detectChanges();
+    const text = fixture.nativeElement.textContent;
+
+    expect(text).toContain('We couldn’t analyse this STL file');
+    expect(text).toContain(
+      'This file is not a supported STL format. Please upload an ASCII or binary STL file.',
+    );
+    expect(text).toContain('Upload another file');
+  });
+
   it('updates conversions when the model unit changes', () => {
     const fixture = render();
     fixture.componentInstance.modelUnit.set('cm');

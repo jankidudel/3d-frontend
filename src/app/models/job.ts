@@ -7,6 +7,14 @@ export interface JobUpload {
   expiresAt: string;
 }
 
+export interface JobFailure {
+  reportVersion?: string;
+  error?: {
+    code?: string;
+    message?: string;
+  };
+}
+
 export interface Job {
   id: string;
   fileName: string;
@@ -15,5 +23,5 @@ export interface Job {
   createdAt: string;
   upload?: JobUpload;
   report?: unknown;
-  failure?: unknown;
+  failure?: JobFailure;
 }

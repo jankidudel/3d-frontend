@@ -63,8 +63,11 @@
         <div class="failure" role="alert">
           <span class="status-icon" aria-hidden="true">!</span>
           <div>
-            <h2 id="results-title">We couldn’t measure this model</h2>
-            <p>Please retry with this file or choose another STL above.</p>
+            <h2 id="results-title">We couldn’t analyse this STL file</h2>
+            <p>{{ jobFailureMessage(currentJob.failure) }}</p>
+            <a class="button button-secondary" href="#upload-title"
+              >Upload another file</a
+            >
           </div>
         </div>
       } @else if (report()) {

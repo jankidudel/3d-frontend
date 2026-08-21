@@ -89,20 +89,47 @@ describe('JobStatusComponent', () => {
     expect(fixture.nativeElement.textContent).not.toContain('undefined');
   });
 
-  it('shows a helpful failed-job state without raw failure details', () => {
+  it('shows the safe processor reason and an obvious retry path', () => {
     const fixture = render({
       ...completedJob,
       status: 'failed',
       report: undefined,
-      failure: { stack: 'private technical detail' },
+      failure: {
+        error: {
+          code: 'processing_failed',
+          message: 'This file is not a valid STL file or is incomplete.',
+        },
+      },
     });
 
     expect(fixture.nativeElement.textContent).toContain(
-      'We couldn’t analyse this model',
+      'We couldn’t analyse this STL file',
     );
-    expect(fixture.nativeElement.textContent).not.toContain(
-      'private technical detail',
+    expect(fixture.nativeElement.textContent).toContain(
+      'This file is not a valid STL file or appears to be incomplete.',
     );
+    expect(fixture.nativeElement.textContent).toContain('Upload another file');
+  });
+
+  it('uses the generic fallback without rendering an internal message', () => {
+    const fixture = render({
+      ...completedJob,
+      status: 'failed',
+      report: undefined,
+      failure: {
+        error: {
+          code: 'internal_lambda_error',
+          message: 'stack trace and s3://private-bucket/jobs/private-key',
+        },
+      },
+    });
+    const text = fixture.nativeElement.textContent;
+
+    expect(text).toContain(
+      'We couldn’t analyse this file. Please check that it is a valid STL file and try again.',
+    );
+    expect(text).not.toContain('stack trace');
+    expect(text).not.toContain('private-bucket');
   });
 
   it('downloads the JSON with a safe filename and revokes the object URL', async () => {

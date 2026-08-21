@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { Job } from '../../../models/job';
+import { jobFailureMessage } from '../../../models/job-failure';
 import { StlQualityPdfService } from './stl-quality-pdf.service';
 
 interface QualityReport {
@@ -44,6 +45,9 @@ export class JobStatusComponent {
   readonly refresh = output<void>();
   readonly processing = computed(() =>
     ['created', 'processing'].includes(this.job().status),
+  );
+  readonly failureMessage = computed(() =>
+    jobFailureMessage(this.job().failure),
   );
   readonly report = computed(() => this.asRecord(this.job().report));
   readonly validation = computed(() =>

@@ -19,11 +19,11 @@
     <div class="status-panel status-panel-error" role="alert">
       <span class="status-icon" aria-hidden="true">!</span>
       <div>
-        <h2 id="job-title">We couldn’t analyse this model</h2>
-        <p>
-          The check did not finish successfully. Please choose the file again or
-          try another STL.
-        </p>
+        <h2 id="job-title">We couldn’t analyse this STL file</h2>
+        <p>{{ failureMessage() }}</p>
+        <a class="button button-secondary" href="#upload-title"
+          >Upload another file</a
+        >
       </div>
     </div>
   } @else if (report(); as qualityReport) {

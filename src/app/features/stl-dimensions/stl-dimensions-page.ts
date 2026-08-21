@@ -8,6 +8,7 @@ import {
   pollStlJob,
 } from '../../core/api/stl-job-workflow';
 import { Job } from '../../models/job';
+import { jobFailureMessage } from '../../models/job-failure';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
 import {
   calculateBuildVolumeFit,
@@ -27,6 +28,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: './stl-dimensions-page.scss',
 })
 export class StlDimensionsPage {
+  readonly jobFailureMessage = jobFailureMessage;
   private readonly jobsService = inject(JobsService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);

@@ -55,6 +55,22 @@ describe('StlVolumePage', () => {
     expect(text).toContain('Volume calculated from the uploaded mesh.');
   });
 
+  it('shows the shared safe failed-job experience', () => {
+    const fixture = render({
+      ...completedJob,
+      status: 'failed',
+      report: undefined,
+      failure: { error: { code: 'processing_timeout' } },
+    });
+    const text = fixture.nativeElement.textContent;
+
+    expect(text).toContain('We couldn’t analyse this STL file');
+    expect(text).toContain(
+      'This file took too long to analyse. Please try a smaller or simpler model.',
+    );
+    expect(text).toContain('Upload another file');
+  });
+
   it('updates volume and mass when the model unit changes', () => {
     const fixture = render();
     fixture.componentInstance.modelUnit.set('cm');
