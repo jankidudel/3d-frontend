@@ -22,6 +22,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'stl-volume-calculator',
+    loadComponent: () =>
+      import('./features/stl-volume/stl-volume-page').then(
+        (m) => m.StlVolumePage,
+      ),
+  },
+  {
     path: 'privacy',
     loadComponent: () =>
       import('./features/legal/privacy-page').then((m) => m.PrivacyPage),

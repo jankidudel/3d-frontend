@@ -1,0 +1,303 @@
+<main class="page volume-page">
+  <p class="eyebrow">STL volume and weight</p>
+  <h1>STL Volume Calculator</h1>
+  <p class="lead">
+    Calculate the volume enclosed by an STL mesh, convert it into practical
+    units, and make a rough material-weight estimate before slicing.
+  </p>
+
+  <section class="upload card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Calculate your STL volume</h2>
+    <p>Upload an STL to calculate its volume and estimate material weight.</p>
+    <app-stl-file-picker (fileSelected)="onFileSelected($event)" />
+    <button
+      class="button submit"
+      type="button"
+      (click)="calculateVolume()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      @if (submitting()) {
+        <span class="spinner" aria-hidden="true"></span>
+      }
+      {{ submitting() ? 'Creating job…' : 'Calculate volume' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+
+  @if (job(); as currentJob) {
+    <section
+      class="results card"
+      aria-labelledby="results-title"
+      aria-live="polite"
+    >
+      @if (processing()) {
+        <div class="progress" role="status">
+          <span class="spinner large" aria-hidden="true"></span>
+          <div>
+            <h2 id="results-title">
+              {{
+                submitting() ? 'Uploading your model…' : 'Calculating volume…'
+              }}
+            </h2>
+            <p>
+              The volume calculation will appear automatically when analysis
+              finishes.
+            </p>
+          </div>
+        </div>
+        <button
+          class="text-button"
+          type="button"
+          (click)="refreshStatus()"
+          [disabled]="refreshing() || submitting()"
+        >
+          {{ refreshing() ? 'Checking…' : 'Check again' }}
+        </button>
+      } @else if (currentJob.status === 'failed') {
+        <div class="failure" role="alert">
+          <span class="status-icon" aria-hidden="true">!</span>
+          <div>
+            <h2 id="results-title">
+              We couldn’t calculate this model’s volume
+            </h2>
+            <p>Please retry with this file or choose another STL above.</p>
+          </div>
+        </div>
+      } @else if (report()) {
+        <div class="result-heading">
+          <div>
+            <p class="eyebrow">Calculated volume</p>
+            <h2 id="results-title">Model volume</h2>
+          </div>
+          <p class="file-name">
+            {{ report()?.['fileName'] || currentJob.fileName }}
+          </p>
+        </div>
+
+        <p class="primary-volume" [class.unreliable]="!validationIsValid()">
+          {{ formatNumber(volumeInCubicCentimetres(), 4) }} <span>cm³</span>
+        </p>
+        <p class="model-context">
+          {{ formatNumber(report()?.['triangleCount'], 0) }} triangles · Model
+          unit: {{ modelUnit() }}
+        </p>
+
+        @if (validationIsValid()) {
+          <p class="reliability">Volume calculated from the uploaded mesh.</p>
+        } @else {
+          <div class="reliability warning" role="alert">
+            <span class="status-icon small" aria-hidden="true">!</span>
+            <p>
+              This model has mesh issues, so its calculated volume may be
+              unreliable. Fix the mesh and run the Quality Check again before
+              relying on this result.
+            </p>
+            <a routerLink="/stl-quality-check">View full STL quality report</a>
+          </div>
+        }
+
+        <section class="tool-section" aria-labelledby="model-unit-title">
+          <div class="section-heading">
+            <div>
+              <h3 id="model-unit-title">Model unit</h3>
+              <p>Interpret one raw model unit as the selected unit.</p>
+            </div>
+            <label class="field compact">
+              <span>Designed in</span>
+              <select [value]="modelUnit()" (change)="setModelUnit($event)">
+                <option value="mm">Millimetres (mm)</option>
+                <option value="cm">Centimetres (cm)</option>
+                <option value="m">Metres (m)</option>
+                <option value="in">Inches (in)</option>
+              </select>
+            </label>
+          </div>
+          <p class="disclaimer">
+            STL files do not reliably contain unit information. Select the unit
+            used when the model was designed.
+          </p>
+        </section>
+
+        <section class="tool-section" aria-labelledby="converted-volume-title">
+          <h3 id="converted-volume-title">Converted volume</h3>
+          @if (convertedVolumes(); as volumes) {
+            <dl class="volume-grid">
+              <div>
+                <dt>Cubic millimetres</dt>
+                <dd>{{ formatNumber(volumes.mm, 4) }} mm³</dd>
+              </div>
+              <div>
+                <dt>Cubic centimetres</dt>
+                <dd>{{ formatNumber(volumes.cm, 4) }} cm³</dd>
+              </div>
+              <div>
+                <dt>Millilitres</dt>
+                <dd>{{ formatNumber(volumes.cm, 4) }} ml</dd>
+              </div>
+              <div>
+                <dt>Cubic inches</dt>
+                <dd>{{ formatNumber(volumes.in, 4) }} in³</dd>
+              </div>
+            </dl>
+          }
+        </section>
+
+        <section class="tool-section" aria-labelledby="weight-title">
+          <h3 id="weight-title">Estimate material weight</h3>
+          <p>This is a rough planning estimate, not an exact print weight.</p>
+          <div class="weight-fields">
+            <label class="field">
+              <span>Material</span>
+              <select [value]="material()" (change)="setMaterial($event)">
+                <option value="pla">PLA (1.24 g/cm³)</option>
+                <option value="petg">PETG (1.27 g/cm³)</option>
+                <option value="abs">ABS (1.04 g/cm³)</option>
+                <option value="tpu">TPU (1.21 g/cm³)</option>
+                <option value="resin">Resin (1.10 g/cm³)</option>
+                <option value="custom">Custom density</option>
+              </select>
+            </label>
+            @if (material() === 'custom') {
+              <label class="field">
+                <span>Custom density (g/cm³)</span>
+                <input
+                  type="number"
+                  min="0"
+                  step="any"
+                  inputmode="decimal"
+                  [attr.aria-invalid]="customDensityInvalid()"
+                  aria-describedby="custom-density-error"
+                  (input)="setCustomDensity($event)"
+                />
+              </label>
+            }
+            <label class="field">
+              <span>Infill percentage</span>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                inputmode="decimal"
+                value="15"
+                [attr.aria-invalid]="infillInvalid()"
+                aria-describedby="infill-error"
+                (input)="setInfillPercentage($event)"
+              />
+            </label>
+          </div>
+          @if (customDensityInvalid()) {
+            <p id="custom-density-error" class="error" role="alert">
+              Enter a finite density greater than zero.
+            </p>
+          } @else {
+            <span id="custom-density-error" class="visually-hidden"
+              >Enter a density greater than zero.</span
+            >
+          }
+          @if (infillInvalid()) {
+            <p id="infill-error" class="error" role="alert">
+              Enter an infill percentage from 0 to 100.
+            </p>
+          } @else {
+            <span id="infill-error" class="visually-hidden"
+              >Enter an infill percentage from 0 to 100.</span
+            >
+          }
+
+          @if (estimate(); as calculatedEstimate) {
+            <dl class="weight-output">
+              <div>
+                <dt>Solid-model mass</dt>
+                <dd>{{ formatMass(calculatedEstimate.solidMassGrams) }}</dd>
+              </div>
+              <div>
+                <dt>Simplified infill-based estimate</dt>
+                <dd>{{ formatMass(calculatedEstimate.infillMassGrams) }}</dd>
+              </div>
+            </dl>
+          }
+          @if (material() === 'resin') {
+            <p class="resin-note">
+              Resin prints are usually hollowed and drained, so this simplified
+              estimate is not reliable for real resin use.
+            </p>
+          }
+          <p class="slicer-note">
+            Actual filament use depends heavily on wall count, top and bottom
+            layers, infill pattern, supports, raft/brim and slicer settings. Use
+            this as a rough planning estimate; your slicer is the final source
+            of truth.
+          </p>
+        </section>
+
+        <details class="technical">
+          <summary>Technical details</summary>
+          <p>
+            Original raw calculated volume:
+            {{ formatNumber(rawVolume(), 4) }} cubic model units.
+          </p>
+          <p>
+            Validation status:
+            {{ validationIsValid() ? 'Valid mesh' : 'Mesh issues found' }}
+          </p>
+          <h3>Bounding box</h3>
+          @if (boundingBox(); as box) {
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Axis</th>
+                    <th>Minimum</th>
+                    <th>Maximum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>X</th>
+                    <td>{{ formatNumber(box['minX']) }}</td>
+                    <td>{{ formatNumber(box['maxX']) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Y</th>
+                    <td>{{ formatNumber(box['minY']) }}</td>
+                    <td>{{ formatNumber(box['maxY']) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Z</th>
+                    <td>{{ formatNumber(box['minZ']) }}</td>
+                    <td>{{ formatNumber(box['maxZ']) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p>Bounding-box values were not supplied.</p>
+          }
+        </details>
+      } @else {
+        <div class="failure" role="alert">
+          <span class="status-icon" aria-hidden="true">!</span>
+          <div>
+            <h2 id="results-title">Volume unavailable</h2>
+            <p>
+              The analysis finished without a report. Please upload the file
+              again.
+            </p>
+          </div>
+        </div>
+      }
+    </section>
+  }
+
+  <section class="content" aria-labelledby="about-title">
+    <h2 id="about-title">What this calculation means</h2>
+    <p>
+      The value is derived from the uploaded mesh geometry. Interpreting the
+      design unit correctly matters because volume changes with the cube of the
+      selected unit.
+    </p>
+  </section>
+</main>
