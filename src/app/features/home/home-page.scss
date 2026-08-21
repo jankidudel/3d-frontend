@@ -1,26 +1,52 @@
-.tool {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+.tools {
   margin-top: 3rem;
-  padding: clamp(1.25rem, 4vw, 2.25rem);
 }
-
-.tool h2 {
+.section-intro {
+  max-width: 46rem;
+}
+.section-intro h2 {
   margin: 0 0 0.25rem;
 }
-.tool p {
+.section-intro p,
+.tool-card p {
   margin: 0;
   color: var(--muted);
 }
-.button {
-  flex: 0 0 auto;
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.tool-card {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  min-height: 100%;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+}
+.tool-icon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 1.25rem;
+  place-items: center;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+.tool-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+}
+.tool-card .button {
+  margin-top: auto;
 }
 
 @media (max-width: 38rem) {
-  .tool {
-    align-items: stretch;
-    flex-direction: column;
+  .tool-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -2,15 +2,42 @@
   <p class="eyebrow">3D printing file tools</p>
   <h1>3D Quality Tools</h1>
   <p class="lead">
-    Simple tools for checking and analysing files for 3D printing.
+    Practical STL tools to help you prepare a model before it reaches your
+    slicer.
   </p>
-  <section class="tool card" aria-labelledby="stl-tool-title">
-    <div>
-      <h2 id="stl-tool-title">STL Quality Check</h2>
+
+  <section class="tools" aria-labelledby="tools-title">
+    <div class="section-intro">
+      <h2 id="tools-title">Choose a tool</h2>
       <p>
-        Check STL files for common mesh and geometry problems before you print.
+        STL files do not reliably store unit information. Our dimensions tool
+        lets you choose the design unit before converting or scaling
+        measurements.
       </p>
     </div>
-    <a class="button" routerLink="/stl-quality-check">Check an STL file</a>
+
+    <div class="tool-grid">
+      <article class="tool-card card">
+        <span class="tool-icon" aria-hidden="true">✓</span>
+        <h3>STL Quality Check</h3>
+        <p>
+          Find common mesh problems before printing, including open edges,
+          non-manifold geometry, duplicate triangles and orientation issues.
+        </p>
+        <a class="button" routerLink="/stl-quality-check">Check an STL file</a>
+      </article>
+
+      <article class="tool-card card">
+        <span class="tool-icon" aria-hidden="true">↔</span>
+        <h3>STL Dimensions Checker</h3>
+        <p>
+          Measure an STL, convert units, calculate proportional scaling and
+          check whether it fits your printer.
+        </p>
+        <a class="button" routerLink="/stl-dimensions-checker"
+          >Measure an STL file</a
+        >
+      </article>
+    </div>
   </section>
 </main>

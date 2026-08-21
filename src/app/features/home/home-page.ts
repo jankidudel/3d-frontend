@@ -13,11 +13,13 @@ export class HomePage {
   private readonly meta = inject(Meta);
 
   constructor() {
-    this.title.setTitle('3D Quality Tools – Tools for Better 3D Printing');
+    this.title.setTitle(
+      '3D Quality Tools - STL Checks, Dimensions and Scaling',
+    );
     this.meta.updateTag({
       name: 'description',
       content:
-        'Simple tools for checking and analysing STL files for 3D printing.',
+        'Free STL tools to check mesh quality, measure dimensions, convert units, calculate scaling and assess printer build-volume fit.',
     });
   }
 }
