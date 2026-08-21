@@ -207,6 +207,202 @@
           </p>
         </section>
 
+        <section class="tool-section" aria-labelledby="printer-fit-title">
+          <h3 id="printer-fit-title">Will it fit my 3D printer?</h3>
+          <p>
+            Enter your printer’s usable build volume to compare it with this
+            model.
+          </p>
+          <div class="build-volume-fields">
+            <label class="field">
+              <span>Printer build width</span>
+              <input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                [attr.aria-invalid]="buildVolumeInvalid()"
+                aria-describedby="build-volume-error"
+                (input)="setBuildDimension('width', $event)"
+              />
+            </label>
+            <label class="field">
+              <span>Printer build height</span>
+              <input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                [attr.aria-invalid]="buildVolumeInvalid()"
+                aria-describedby="build-volume-error"
+                (input)="setBuildDimension('height', $event)"
+              />
+            </label>
+            <label class="field">
+              <span>Printer build depth</span>
+              <input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                [attr.aria-invalid]="buildVolumeInvalid()"
+                aria-describedby="build-volume-error"
+                (input)="setBuildDimension('depth', $event)"
+              />
+            </label>
+            <label class="field">
+              <span>Build-volume unit</span>
+              <select [value]="buildUnit()" (change)="setBuildUnit($event)">
+                <option value="mm">Millimetres (mm)</option>
+                <option value="cm">Centimetres (cm)</option>
+                <option value="m">Metres (m)</option>
+                <option value="in">Inches (in)</option>
+              </select>
+            </label>
+          </div>
+
+          @if (buildVolumeInvalid()) {
+            <p id="build-volume-error" class="error" role="alert">
+              Enter a finite value greater than zero for all three printer build
+              dimensions.
+            </p>
+          } @else {
+            <span id="build-volume-error" class="visually-hidden">
+              All three printer build dimensions must be greater than zero.
+            </span>
+          }
+
+          @if (buildVolumeFit(); as fit) {
+            <div
+              class="fit-result"
+              [class.fit-result-success]="fit.fits"
+              [class.fit-result-warning]="!fit.fits"
+              role="status"
+            >
+              <span class="status-icon" aria-hidden="true">{{
+                fit.fits ? '✓' : '!'
+              }}</span>
+              <div>
+                <h4>
+                  {{
+                    fit.fits
+                      ? 'Fits your printer'
+                      : 'Does not fit at its current scale'
+                  }}
+                </h4>
+                <p>
+                  {{
+                    fit.fits
+                      ? 'The current model is within the entered build volume.'
+                      : 'Scale the model uniformly to no more than ' +
+                        formatNumber(fit.maximumScalePercentage, 2) +
+                        '% to fit these limits.'
+                  }}
+                </p>
+              </div>
+            </div>
+
+            <div class="table-scroll fit-table">
+              <table>
+                <caption>
+                  Current model compared with printer limits in
+                  {{
+                    buildUnit()
+                  }}
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Dimension</th>
+                    <th>Model</th>
+                    <th>Printer limit</th>
+                    <th>Fit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr [class.exceeded]="!fit.dimensions.width.fits">
+                    <th>Width</th>
+                    <td>{{ formatNumber(fit.dimensions.width.model) }}</td>
+                    <td>{{ formatNumber(fit.dimensions.width.limit) }}</td>
+                    <td>
+                      {{
+                        fit.dimensions.width.fits
+                          ? 'Within limit'
+                          : 'Exceeds by ' +
+                            formatNumber(fit.dimensions.width.exceededBy) +
+                            ' ' +
+                            buildUnit()
+                      }}
+                    </td>
+                  </tr>
+                  <tr [class.exceeded]="!fit.dimensions.height.fits">
+                    <th>Height</th>
+                    <td>{{ formatNumber(fit.dimensions.height.model) }}</td>
+                    <td>{{ formatNumber(fit.dimensions.height.limit) }}</td>
+                    <td>
+                      {{
+                        fit.dimensions.height.fits
+                          ? 'Within limit'
+                          : 'Exceeds by ' +
+                            formatNumber(fit.dimensions.height.exceededBy) +
+                            ' ' +
+                            buildUnit()
+                      }}
+                    </td>
+                  </tr>
+                  <tr [class.exceeded]="!fit.dimensions.depth.fits">
+                    <th>Depth</th>
+                    <td>{{ formatNumber(fit.dimensions.depth.model) }}</td>
+                    <td>{{ formatNumber(fit.dimensions.depth.limit) }}</td>
+                    <td>
+                      {{
+                        fit.dimensions.depth.fits
+                          ? 'Within limit'
+                          : 'Exceeds by ' +
+                            formatNumber(fit.dimensions.depth.exceededBy) +
+                            ' ' +
+                            buildUnit()
+                      }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="maximum-scale">
+              <p>
+                <strong>{{
+                  fit.fits
+                    ? 'Maximum theoretical uniform scale'
+                    : 'Recommended maximum uniform scale'
+                }}</strong>
+              </p>
+              <p class="maximum-scale-value">
+                {{ formatNumber(fit.maximumScalePercentage, 2) }}%
+              </p>
+              <p>
+                Resulting W × H × D:
+                <strong
+                  >{{ formatDimensions(fit.scaledDimensions) }}
+                  {{ buildUnit() }}</strong
+                >
+              </p>
+              @if (fit.fits && fit.maximumScalePercentage > 100) {
+                <p class="slicer-note">
+                  Scaling up is informational only and is not needed to make the
+                  current model fit.
+                </p>
+              }
+            </div>
+          }
+
+          <p class="slicer-note">
+            This compares the model’s current axis-aligned dimensions with the
+            printer’s build volume. Rotating the model in your slicer may allow
+            a different fit. Allow extra space for brims, supports and printer
+            clearances.
+          </p>
+        </section>
+
         <section
           class="tool-section quality-summary"
           aria-labelledby="quality-title"

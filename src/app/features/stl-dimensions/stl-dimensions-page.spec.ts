@@ -101,4 +101,71 @@ describe('StlDimensionsPage', () => {
     ).toBe('true');
     expect(fixture.nativeElement.querySelector('.scale-output')).toBeNull();
   });
+
+  it('does not show a printer-volume error before input', () => {
+    const fixture = render();
+
+    expect(fixture.nativeElement.querySelector('.fit-result')).toBeNull();
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'Enter a finite value greater than zero for all three printer',
+    );
+  });
+
+  it('renders exceeded axes and the recommended maximum scale', () => {
+    const fixture = TestBed.createComponent(StlDimensionsPage);
+    fixture.componentInstance.job.set({
+      ...completedJob,
+      report: {
+        ...(completedJob.report as Record<string, unknown>),
+        dimensions: { width: 230, height: 190, depth: 260 },
+      },
+    });
+    fixture.componentInstance.buildWidth.set(220);
+    fixture.componentInstance.buildHeight.set(220);
+    fixture.componentInstance.buildDepth.set(250);
+    fixture.componentInstance.buildVolumeTouched.set(true);
+    fixture.detectChanges();
+
+    const result = fixture.nativeElement.querySelector('.fit-result');
+    const table = fixture.nativeElement.querySelector('.fit-table');
+    expect(result.textContent).toContain('Does not fit at its current scale');
+    expect(result.textContent).toContain('95.65%');
+    expect(table.textContent).toContain('Width');
+    expect(table.textContent).toContain('Depth');
+    expect(table.textContent).toContain('Exceeds by 10 mm');
+    expect(table.querySelectorAll('.exceeded')).toHaveLength(2);
+    expect(fixture.nativeElement.textContent).toContain(
+      '220 × 181.739 × 248.696 mm',
+    );
+  });
+
+  it('recalculates printer fit when the model unit changes', () => {
+    const fixture = render();
+    fixture.componentInstance.buildWidth.set(60);
+    fixture.componentInstance.buildHeight.set(110);
+    fixture.componentInstance.buildDepth.set(30);
+    fixture.componentInstance.buildVolumeTouched.set(true);
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.querySelector('.fit-result').textContent,
+    ).toContain('Fits your printer');
+
+    fixture.componentInstance.modelUnit.set('cm');
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.querySelector('.fit-result').textContent,
+    ).toContain('Does not fit at its current scale');
+  });
+
+  it('shows validation after partial or zero printer input', () => {
+    const fixture = render();
+    fixture.componentInstance.buildWidth.set(0);
+    fixture.componentInstance.buildVolumeTouched.set(true);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain(
+      'Enter a finite value greater than zero for all three printer',
+    );
+    expect(fixture.nativeElement.querySelector('.fit-result')).toBeNull();
+  });
 });

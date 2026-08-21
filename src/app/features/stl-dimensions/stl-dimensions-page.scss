@@ -168,6 +168,53 @@ app-stl-file-picker {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 0.85rem;
 }
+.build-volume-fields {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+.fit-result {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border: 2px solid;
+  border-radius: 0.8rem;
+}
+.fit-result h4,
+.fit-result p {
+  margin: 0;
+}
+.fit-result-success {
+  color: #14532d;
+  background: #f0fdf4;
+  border-color: #86b99a;
+}
+.fit-result-warning {
+  color: #8f1d14;
+  background: #fff5f4;
+  border-color: #e5a8a3;
+}
+.fit-table .exceeded {
+  color: #8f1d14;
+  background: #fff5f4;
+  font-weight: 700;
+}
+.maximum-scale {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #aebee1;
+  border-radius: 0.8rem;
+  background: #f5f7fd;
+}
+.maximum-scale p {
+  margin-block: 0 0.4rem;
+}
+.maximum-scale-value {
+  color: var(--accent);
+  font-size: 2rem;
+  font-weight: 850;
+}
 .scale-output {
   margin-top: 1rem;
   padding: 1.25rem;
@@ -278,6 +325,7 @@ th:first-child {
     max-width: none;
   }
   .calculator-fields,
+  .build-volume-fields,
   .conversion-grid {
     grid-template-columns: 1fr;
   }

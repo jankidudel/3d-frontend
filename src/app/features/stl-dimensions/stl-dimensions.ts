@@ -13,6 +13,21 @@ export interface ScaleResult {
   dimensions: ModelDimensions;
 }
 
+export interface DimensionFit {
+  model: number;
+  limit: number;
+  exceededBy: number;
+  fits: boolean;
+}
+
+export interface BuildVolumeFitResult {
+  fits: boolean;
+  dimensions: Record<DimensionAxis, DimensionFit>;
+  maximumScaleFactor: number;
+  maximumScalePercentage: number;
+  scaledDimensions: ModelDimensions;
+}
+
 export const MODEL_UNITS: readonly ModelUnit[] = ['mm', 'cm', 'm', 'in'];
 
 const MILLIMETRES_PER_UNIT: Record<ModelUnit, number> = {
@@ -74,8 +89,91 @@ export function calculateScale(
   };
 }
 
+export function calculateBuildVolumeFit(
+  modelDimensions: ModelDimensions,
+  modelUnit: ModelUnit,
+  buildVolume: ModelDimensions,
+  buildUnit: ModelUnit,
+): BuildVolumeFitResult | null {
+  if (
+    !positiveDimensions(modelDimensions) ||
+    !positiveDimensions(buildVolume)
+  ) {
+    return null;
+  }
+
+  const modelInBuildUnit = convertDimensions(
+    modelDimensions,
+    modelUnit,
+    buildUnit,
+  );
+  if (!positiveDimensions(modelInBuildUnit)) {
+    return null;
+  }
+
+  const dimensions = {
+    width: compareDimension(modelInBuildUnit.width, buildVolume.width),
+    height: compareDimension(modelInBuildUnit.height, buildVolume.height),
+    depth: compareDimension(modelInBuildUnit.depth, buildVolume.depth),
+  };
+  const maximumScaleFactor = Math.min(
+    buildVolume.width / modelInBuildUnit.width,
+    buildVolume.height / modelInBuildUnit.height,
+    buildVolume.depth / modelInBuildUnit.depth,
+  );
+  const scaledDimensions = {
+    width: modelInBuildUnit.width * maximumScaleFactor,
+    height: modelInBuildUnit.height * maximumScaleFactor,
+    depth: modelInBuildUnit.depth * maximumScaleFactor,
+  };
+
+  if (
+    !Number.isFinite(maximumScaleFactor) ||
+    maximumScaleFactor <= 0 ||
+    !positiveDimensions(scaledDimensions)
+  ) {
+    return null;
+  }
+
+  return {
+    fits:
+      dimensions.width.fits && dimensions.height.fits && dimensions.depth.fits,
+    dimensions,
+    maximumScaleFactor,
+    maximumScalePercentage: maximumScaleFactor * 100,
+    scaledDimensions,
+  };
+}
+
+function convertDimensions(
+  dimensions: ModelDimensions,
+  from: ModelUnit,
+  to: ModelUnit,
+): ModelDimensions {
+  return {
+    width: convertLength(dimensions.width, from, to),
+    height: convertLength(dimensions.height, from, to),
+    depth: convertLength(dimensions.depth, from, to),
+  };
+}
+
+function compareDimension(model: number, limit: number): DimensionFit {
+  return {
+    model,
+    limit,
+    exceededBy: Math.max(model - limit, 0),
+    fits: model <= limit,
+  };
+}
+
 function validDimensions(dimensions: ModelDimensions): boolean {
   return Object.values(dimensions).every(
     (value) => Number.isFinite(value) && value >= 0,
+  );
+}
+
+function positiveDimensions(dimensions: ModelDimensions): boolean {
+  return Object.values(dimensions).every(
+    (value) => Number.isFinite(value) && value > 0,
   );
 }
