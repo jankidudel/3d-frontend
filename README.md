@@ -43,6 +43,12 @@ The deployable static files are written to `dist/3d-frontend/browser`. The sibli
 CloudFront forwards `/api/*` to API Gateway, so the frontend keeps the same-origin
 API base URL `/api/v1` without environment-specific URLs or browser API CORS.
 
+## Verify a deployed frontend release
+
+Each build includes a non-UI release marker containing the frontend commit and
+build timestamp. Open `/version.json` on the deployed site. This marker contains
+no user, job, or analytics data, and is not loaded by the application.
+
 After an upload, the quality-check page polls with bounded backoff until the S3-backed
 API reports `completed` or `failed`. Manual refresh remains available if polling is
 interrupted.
