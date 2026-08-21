@@ -3,6 +3,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 import {
   createAndUploadStlJob,
   pollStlJob,
@@ -30,10 +31,16 @@ type ReportRecord = Record<string, unknown>;
 export class StlDimensionsPage {
   readonly jobFailureMessage = jobFailureMessage;
   private readonly jobsService = inject(JobsService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
+  private uploadStartedTracked = false;
+  private uploadCompletedTracked = false;
+  private outcomeTracked = false;
+  private scaleTracked = false;
+  private printerFitTracked = false;
 
   readonly selectedFile = signal<File | null>(null);
   readonly job = signal<Job | null>(null);
@@ -149,6 +156,11 @@ export class StlDimensionsPage {
     this.error.set('');
     this.desiredSize.set(null);
     this.desiredSizeTouched.set(false);
+    this.uploadStartedTracked = false;
+    this.uploadCompletedTracked = false;
+    this.outcomeTracked = false;
+    this.scaleTracked = false;
+    this.printerFitTracked = false;
   }
 
   measureStl(): void {
@@ -159,10 +171,18 @@ export class StlDimensionsPage {
     }
     this.submitting.set(true);
     this.error.set('');
+    if (!this.uploadStartedTracked) {
+      this.analytics.trackUploadStarted('dimensions_checker', file.size);
+      this.uploadStartedTracked = true;
+    }
     createAndUploadStlJob(this.jobsService, file, (job) => this.job.set(job))
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
         next: () => {
+          if (!this.uploadCompletedTracked) {
+            this.analytics.trackUploadCompleted('dimensions_checker');
+            this.uploadCompletedTracked = true;
+          }
           const createdJob = this.job();
           if (createdJob) {
             this.startPolling(createdJob.id);
@@ -186,7 +206,7 @@ export class StlDimensionsPage {
       .getJob(currentJob.id)
       .pipe(finalize(() => this.refreshing.set(false)))
       .subscribe({
-        next: (job) => this.job.set(job),
+        next: (job) => this.updateJob(job),
         error: () =>
           this.error.set('We could not refresh this job. Please try again.'),
       });
@@ -233,6 +253,21 @@ export class StlDimensionsPage {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
   }
 
+  trackScaleCalculation(): void {
+    if (!this.scaleTracked && this.scaleResult()) {
+      this.analytics.trackScaleCalculated(this.targetAxis());
+      this.scaleTracked = true;
+    }
+  }
+
+  trackPrinterFitCheck(): void {
+    const result = this.buildVolumeFit();
+    if (!this.printerFitTracked && result) {
+      this.analytics.trackPrinterFitChecked(result.fits);
+      this.printerFitTracked = true;
+    }
+  }
+
   formatNumber(value: unknown, maximumFractionDigits = 3): string {
     return typeof value === 'number' && Number.isFinite(value)
       ? new Intl.NumberFormat('en', {
@@ -251,12 +286,26 @@ export class StlDimensionsPage {
   private startPolling(jobId: string): void {
     this.polling?.unsubscribe();
     this.polling = pollStlJob(this.jobsService, jobId).subscribe({
-      next: (job) => this.job.set(job),
+      next: (job) => this.updateJob(job),
       error: () =>
         this.error.set(
           'Automatic status updates were interrupted. Use Check again below, or upload the file again.',
         ),
     });
+  }
+
+  private updateJob(job: Job): void {
+    this.job.set(job);
+    if (this.outcomeTracked) {
+      return;
+    }
+    if (job.status === 'completed') {
+      this.analytics.trackAnalysisCompleted('dimensions_checker', job.report);
+      this.outcomeTracked = true;
+    } else if (job.status === 'failed') {
+      this.analytics.trackAnalysisFailed('dimensions_checker', job.failure);
+      this.outcomeTracked = true;
+    }
   }
 
   private convertDimensions(

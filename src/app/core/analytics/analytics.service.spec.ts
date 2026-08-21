@@ -44,10 +44,7 @@ describe('AnalyticsService', () => {
     const analytics = TestBed.inject(AnalyticsService);
     TestBed.flushEffects();
 
-    analytics.trackEvent('upload_started', {
-      file_type: 'stl',
-      file_size_bucket: 'under_1mb',
-    });
+    analytics.trackUploadStarted('quality_check', 512);
 
     expect(
       document.querySelector('script[src*="googletagmanager.com/gtag/js"]'),
@@ -70,17 +67,114 @@ describe('AnalyticsService', () => {
     expect(script?.src).toContain(measurementId);
 
     script?.dispatchEvent(new Event('load'));
-    analytics.trackEvent('upload_completed', {
-      file_type: 'stl',
-      file_size_bucket: '1_to_10mb',
+    analytics.trackUploadStarted('dimensions_checker', 5 * 1024 * 1024);
+    analytics.trackUploadCompleted('dimensions_checker');
+    analytics.trackAnalysisCompleted('dimensions_checker', {
+      triangleCount: 12500,
+      validation: { isValid: false, issues: new Array(7).fill('open_edge') },
+    });
+    analytics.trackAnalysisFailed('volume_calculator', {
+      error: { code: 'unsupported_format', message: 'do not send me' },
     });
 
     expect(
       (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
     ).toContainEqual([
       'event',
-      'upload_completed',
-      { file_type: 'stl', file_size_bucket: '1_to_10mb' },
+      'stl_upload_started',
+      { tool: 'dimensions_checker', file_size_bucket: '1mb_to_10mb' },
+    ]);
+    expect(
+      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
+    ).toContainEqual([
+      'event',
+      'stl_analysis_completed',
+      {
+        tool: 'dimensions_checker',
+        validation_result: 'invalid',
+        issue_count_bucket: '6_to_20',
+        triangle_count_bucket: '10k_to_100k',
+      },
+    ]);
+    expect(
+      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
+    ).toContainEqual([
+      'event',
+      'stl_analysis_failed',
+      { tool: 'volume_calculator', failure_category: 'unsupported_format' },
+    ]);
+    expect(
+      JSON.stringify(
+        (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
+      ),
+    ).not.toContain('do not send me');
+  });
+
+  it('stops sending events after consent is withdrawn', () => {
+    const document = TestBed.inject(DOCUMENT);
+    const consent = TestBed.inject(CookieConsentService);
+    const analytics = TestBed.inject(AnalyticsService);
+    consent.accept();
+    TestBed.flushEffects();
+    document
+      .querySelector<HTMLScriptElement>(
+        'script[src*="googletagmanager.com/gtag/js"]',
+      )
+      ?.dispatchEvent(new Event('load'));
+    const dataLayer = (document.defaultView as unknown as TestAnalyticsWindow)
+      .dataLayer;
+    const eventCount = dataLayer?.length;
+
+    consent.reject();
+    TestBed.flushEffects();
+    analytics.trackUploadCompleted('quality_check');
+
+    expect(dataLayer).toHaveLength(eventCount ?? 0);
+    expect(
+      (document.defaultView as unknown as Record<string, unknown>)[
+        `ga-disable-${measurementId}`
+      ],
+    ).toBe(true);
+  });
+
+  it('maps calculator events without accepting raw measurements', () => {
+    const document = TestBed.inject(DOCUMENT);
+    const consent = TestBed.inject(CookieConsentService);
+    const analytics = TestBed.inject(AnalyticsService);
+    consent.accept();
+    TestBed.flushEffects();
+    document
+      .querySelector<HTMLScriptElement>(
+        'script[src*="googletagmanager.com/gtag/js"]',
+      )
+      ?.dispatchEvent(new Event('load'));
+
+    analytics.trackReportDownloaded('quality_check', 'pdf');
+    analytics.trackScaleCalculated('height');
+    analytics.trackPrinterFitChecked(false);
+    analytics.trackMaterialEstimateUsed('custom');
+
+    const dataLayer = (document.defaultView as unknown as TestAnalyticsWindow)
+      .dataLayer;
+    expect(dataLayer).toContainEqual([
+      'event',
+      'stl_report_downloaded',
+      { tool: 'quality_check', format: 'pdf' },
+    ]);
+    expect(dataLayer).toContainEqual([
+      'event',
+      'stl_scale_calculated',
+      { tool: 'dimensions_checker', target_dimension: 'height' },
+    ]);
+    expect(dataLayer).toContainEqual([
+      'event',
+      'stl_printer_fit_checked',
+      { tool: 'dimensions_checker', fit_result: 'does_not_fit' },
+    ]);
+    expect(dataLayer).toContainEqual([
+      'event',
+      'stl_material_estimate_used',
+      { tool: 'volume_calculator', material: 'custom' },
     ]);
   });
 });

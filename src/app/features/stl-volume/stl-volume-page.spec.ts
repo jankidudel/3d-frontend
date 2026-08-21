@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { Job } from '../../models/job';
 import { StlVolumePage } from './stl-volume-page';
 
@@ -25,13 +26,22 @@ describe('StlVolumePage', () => {
     uploadFile: vi.fn(),
     getJob: vi.fn(() => of(completedJob)),
   };
+  const analytics = {
+    trackUploadStarted: vi.fn(),
+    trackUploadCompleted: vi.fn(),
+    trackAnalysisCompleted: vi.fn(),
+    trackAnalysisFailed: vi.fn(),
+    trackMaterialEstimateUsed: vi.fn(),
+  };
 
   beforeEach(() => {
+    Object.values(analytics).forEach((method) => method.mockReset());
     TestBed.configureTestingModule({
       imports: [StlVolumePage],
       providers: [
         provideRouter([]),
         { provide: JobsService, useValue: jobsService },
+        { provide: AnalyticsService, useValue: analytics },
       ],
     });
   });
@@ -107,6 +117,11 @@ describe('StlVolumePage', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'Simplified infill-based estimate',
     );
+
+    fixture.componentInstance.trackMaterialEstimate();
+    fixture.componentInstance.trackMaterialEstimate();
+    expect(analytics.trackMaterialEstimateUsed).toHaveBeenCalledOnce();
+    expect(analytics.trackMaterialEstimateUsed).toHaveBeenCalledWith('custom');
   });
 
   it('shows accessible errors for invalid custom density and infill', () => {

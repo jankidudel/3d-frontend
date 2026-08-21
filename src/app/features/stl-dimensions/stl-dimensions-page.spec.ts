@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { Job } from '../../models/job';
 import { StlDimensionsPage } from './stl-dimensions-page';
 
@@ -32,13 +33,23 @@ describe('StlDimensionsPage', () => {
     uploadFile: vi.fn(),
     getJob: vi.fn(() => of(completedJob)),
   };
+  const analytics = {
+    trackUploadStarted: vi.fn(),
+    trackUploadCompleted: vi.fn(),
+    trackAnalysisCompleted: vi.fn(),
+    trackAnalysisFailed: vi.fn(),
+    trackScaleCalculated: vi.fn(),
+    trackPrinterFitChecked: vi.fn(),
+  };
 
   beforeEach(() => {
+    Object.values(analytics).forEach((method) => method.mockReset());
     TestBed.configureTestingModule({
       imports: [StlDimensionsPage],
       providers: [
         provideRouter([]),
         { provide: JobsService, useValue: jobsService },
+        { provide: AnalyticsService, useValue: analytics },
       ],
     });
   });
@@ -102,6 +113,11 @@ describe('StlDimensionsPage', () => {
     expect(output.textContent).toContain('200%');
     expect(output.textContent).toContain('2×');
     expect(output.textContent).toContain('10 × 20 × 5 cm');
+
+    fixture.componentInstance.trackScaleCalculation();
+    fixture.componentInstance.trackScaleCalculation();
+    expect(analytics.trackScaleCalculated).toHaveBeenCalledOnce();
+    expect(analytics.trackScaleCalculated).toHaveBeenCalledWith('height');
   });
 
   it('shows accessible validation for empty or invalid desired sizes', () => {
@@ -155,6 +171,11 @@ describe('StlDimensionsPage', () => {
     expect(fixture.nativeElement.textContent).toContain(
       '220 × 181.739 × 248.696 mm',
     );
+
+    fixture.componentInstance.trackPrinterFitCheck();
+    fixture.componentInstance.trackPrinterFitCheck();
+    expect(analytics.trackPrinterFitChecked).toHaveBeenCalledOnce();
+    expect(analytics.trackPrinterFitChecked).toHaveBeenCalledWith(false);
   });
 
   it('recalculates printer fit when the model unit changes', () => {

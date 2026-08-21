@@ -1,5 +1,12 @@
 import { JobFailure } from './job';
 
+export type JobFailureCategory =
+  | 'invalid_stl'
+  | 'unsupported_format'
+  | 'file_too_large'
+  | 'processing_timeout'
+  | 'unknown';
+
 export const GENERIC_JOB_FAILURE_MESSAGE =
   'We couldn’t analyse this file. Please check that it is a valid STL file and try again.';
 
@@ -42,4 +49,27 @@ export function jobFailureMessage(failure: JobFailure | undefined): string {
   }
 
   return GENERIC_JOB_FAILURE_MESSAGE;
+}
+
+export function jobFailureCategory(
+  failure: JobFailure | undefined,
+): JobFailureCategory {
+  const code = failure?.error?.code;
+  if (code === 'invalid_stl' || code === 'malformed_stl') {
+    return 'invalid_stl';
+  }
+  if (
+    code === 'unsupported_format' ||
+    code === 'file_too_large' ||
+    code === 'processing_timeout'
+  ) {
+    return code;
+  }
+  if (
+    code === 'processing_failed' &&
+    failure?.error?.message === PROCESSOR_INVALID_STL_MESSAGE
+  ) {
+    return 'invalid_stl';
+  }
+  return 'unknown';
 }

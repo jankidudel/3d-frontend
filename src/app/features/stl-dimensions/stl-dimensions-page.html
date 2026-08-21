@@ -163,6 +163,7 @@
                 [attr.aria-invalid]="desiredSizeInvalid()"
                 aria-describedby="desired-size-error"
                 (input)="setDesiredSize($event)"
+                (change)="trackScaleCalculation()"
               />
             </label>
             <label class="field">
@@ -227,6 +228,7 @@
                 [attr.aria-invalid]="buildVolumeInvalid()"
                 aria-describedby="build-volume-error"
                 (input)="setBuildDimension('width', $event)"
+                (change)="trackPrinterFitCheck()"
               />
             </label>
             <label class="field">
@@ -239,6 +241,7 @@
                 [attr.aria-invalid]="buildVolumeInvalid()"
                 aria-describedby="build-volume-error"
                 (input)="setBuildDimension('height', $event)"
+                (change)="trackPrinterFitCheck()"
               />
             </label>
             <label class="field">
@@ -251,6 +254,7 @@
                 [attr.aria-invalid]="buildVolumeInvalid()"
                 aria-describedby="build-volume-error"
                 (input)="setBuildDimension('depth', $event)"
+                (change)="trackPrinterFitCheck()"
               />
             </label>
             <label class="field">

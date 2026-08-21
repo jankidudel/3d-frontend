@@ -3,6 +3,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 import {
   createAndUploadStlJob,
   pollStlJob,
@@ -29,10 +30,15 @@ type ReportRecord = Record<string, unknown>;
 export class StlVolumePage {
   readonly jobFailureMessage = jobFailureMessage;
   private readonly jobsService = inject(JobsService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
+  private uploadStartedTracked = false;
+  private uploadCompletedTracked = false;
+  private outcomeTracked = false;
+  private readonly trackedMaterials = new Set<Material>();
 
   readonly selectedFile = signal<File | null>(null);
   readonly job = signal<Job | null>(null);
@@ -127,6 +133,10 @@ export class StlVolumePage {
     this.selectedFile.set(file);
     this.job.set(null);
     this.error.set('');
+    this.uploadStartedTracked = false;
+    this.uploadCompletedTracked = false;
+    this.outcomeTracked = false;
+    this.trackedMaterials.clear();
   }
 
   calculateVolume(): void {
@@ -137,10 +147,18 @@ export class StlVolumePage {
     }
     this.submitting.set(true);
     this.error.set('');
+    if (!this.uploadStartedTracked) {
+      this.analytics.trackUploadStarted('volume_calculator', file.size);
+      this.uploadStartedTracked = true;
+    }
     createAndUploadStlJob(this.jobsService, file, (job) => this.job.set(job))
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
         next: () => {
+          if (!this.uploadCompletedTracked) {
+            this.analytics.trackUploadCompleted('volume_calculator');
+            this.uploadCompletedTracked = true;
+          }
           const createdJob = this.job();
           if (createdJob) {
             this.startPolling(createdJob.id);
@@ -164,7 +182,7 @@ export class StlVolumePage {
       .getJob(currentJob.id)
       .pipe(finalize(() => this.refreshing.set(false)))
       .subscribe({
-        next: (job) => this.job.set(job),
+        next: (job) => this.updateJob(job),
         error: () =>
           this.error.set('We could not refresh this job. Please try again.'),
       });
@@ -190,6 +208,14 @@ export class StlVolumePage {
     this.infillPercentage.set(value === '' ? Number.NaN : Number(value));
   }
 
+  trackMaterialEstimate(): void {
+    const material = this.material();
+    if (!this.trackedMaterials.has(material) && this.estimate()) {
+      this.analytics.trackMaterialEstimateUsed(material);
+      this.trackedMaterials.add(material);
+    }
+  }
+
   formatNumber(value: unknown, maximumFractionDigits = 3): string {
     return typeof value === 'number' && Number.isFinite(value)
       ? new Intl.NumberFormat('en', {
@@ -208,12 +234,26 @@ export class StlVolumePage {
   private startPolling(jobId: string): void {
     this.polling?.unsubscribe();
     this.polling = pollStlJob(this.jobsService, jobId).subscribe({
-      next: (job) => this.job.set(job),
+      next: (job) => this.updateJob(job),
       error: () =>
         this.error.set(
           'Automatic status updates were interrupted. Use Check again below, or upload the file again.',
         ),
     });
+  }
+
+  private updateJob(job: Job): void {
+    this.job.set(job);
+    if (this.outcomeTracked) {
+      return;
+    }
+    if (job.status === 'completed') {
+      this.analytics.trackAnalysisCompleted('volume_calculator', job.report);
+      this.outcomeTracked = true;
+    } else if (job.status === 'failed') {
+      this.analytics.trackAnalysisFailed('volume_calculator', job.failure);
+      this.outcomeTracked = true;
+    }
   }
 
   private asRecord(value: unknown): ReportRecord | null {

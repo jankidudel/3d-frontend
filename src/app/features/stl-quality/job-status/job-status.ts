@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Job } from '../../../models/job';
 import { jobFailureMessage } from '../../../models/job-failure';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { StlQualityPdfService } from './stl-quality-pdf.service';
 
 interface QualityReport {
@@ -37,6 +38,7 @@ const ISSUE_LABELS: Record<string, string> = {
 export class JobStatusComponent {
   private readonly document = inject(DOCUMENT);
   private readonly pdfService = inject(StlQualityPdfService);
+  private readonly analytics = inject(AnalyticsService);
   readonly job = input.required<Job>();
   readonly uploading = input(false);
   readonly refreshing = input(false);
@@ -102,6 +104,7 @@ export class JobStatusComponent {
     link.href = objectUrl;
     link.download = this.downloadFileName();
     link.click();
+    this.analytics.trackReportDownloaded('quality_check', 'json');
     view.setTimeout(() => view.URL.revokeObjectURL(objectUrl), 0);
   }
 
@@ -113,6 +116,7 @@ export class JobStatusComponent {
     this.pdfError.set('');
     try {
       await this.pdfService.download(this.job());
+      this.analytics.trackReportDownloaded('quality_check', 'pdf');
     } catch {
       this.pdfError.set(
         'We could not generate the PDF report. Please try again.',

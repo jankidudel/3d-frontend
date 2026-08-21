@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { Job } from '../../../models/job';
 import { JobStatusComponent } from './job-status';
 
 describe('JobStatusComponent', () => {
+  const analytics = { trackReportDownloaded: vi.fn() };
   const report = {
     reportVersion: '1.0',
     fileName: 'gear housing.stl',
@@ -29,6 +31,13 @@ describe('JobStatusComponent', () => {
     createdAt: '2026-08-20T12:00:00Z',
     report,
   };
+
+  beforeEach(() => {
+    analytics.trackReportDownloaded.mockReset();
+    TestBed.configureTestingModule({
+      providers: [{ provide: AnalyticsService, useValue: analytics }],
+    });
+  });
 
   function render(job: Job = completedJob) {
     const fixture = TestBed.createComponent(JobStatusComponent);
@@ -154,6 +163,10 @@ describe('JobStatusComponent', () => {
     expect(createObjectUrl).toHaveBeenCalledWith(expect.any(Blob));
     expect(anchor.download).toBe('My-unsafe-model-quality-report.json');
     expect(anchor.href).toBe('blob:quality-report');
+    expect(analytics.trackReportDownloaded).toHaveBeenCalledWith(
+      'quality_check',
+      'json',
+    );
     expect(revokeObjectUrl).not.toHaveBeenCalled();
 
     await vi.runAllTimersAsync();

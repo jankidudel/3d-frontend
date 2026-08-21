@@ -90,3 +90,23 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+# Product analytics events
+
+With analytics-cookie consent, the existing GA4 integration records these
+privacy-limited product events:
+
+- `stl_upload_started`: `tool`, `file_size_bucket`
+- `stl_upload_completed`: `tool`
+- `stl_analysis_completed`: `tool`, `validation_result`,
+  `issue_count_bucket`, `triangle_count_bucket`
+- `stl_analysis_failed`: `tool`, `failure_category`
+- `stl_report_downloaded`: `tool`, `format`
+- `stl_scale_calculated`: `tool`, `target_dimension`
+- `stl_printer_fit_checked`: `tool`, `fit_result`
+- `stl_material_estimate_used`: `tool`, `material`
+
+The frontend sends allow-listed categories and aggregate buckets only. It does
+not send filenames, job IDs, report contents, raw geometry or calculator values,
+storage paths, or server error messages. Events no-op before consent and after
+consent is withdrawn.

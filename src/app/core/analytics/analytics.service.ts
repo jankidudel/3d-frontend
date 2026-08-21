@@ -2,28 +2,30 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { effect, inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { JobFailure } from '../../models/job';
+import { jobFailureCategory } from '../../models/job-failure';
 import { ANALYTICS_CONFIG } from './analytics-config';
 import { CookieConsentService } from './cookie-consent.service';
 
-export type AnalyticsEventName =
-  | 'upload_started'
-  | 'upload_completed'
-  | 'upload_failed'
-  | 'job_processing_started'
-  | 'job_completed'
-  | 'job_failed'
-  | 'report_viewed';
+export type AnalyticsTool =
+  'quality_check' | 'dimensions_checker' | 'volume_calculator';
+export type AnalyticsMaterial =
+  'pla' | 'petg' | 'abs' | 'tpu' | 'resin' | 'custom';
 
-export type FileSizeBucket =
-  'under_1mb' | '1_to_10mb' | '10_to_50mb' | 'over_50mb';
+export const AnalyticsEvent = {
+  UploadStarted: 'stl_upload_started',
+  UploadCompleted: 'stl_upload_completed',
+  AnalysisCompleted: 'stl_analysis_completed',
+  AnalysisFailed: 'stl_analysis_failed',
+  ReportDownloaded: 'stl_report_downloaded',
+  ScaleCalculated: 'stl_scale_calculated',
+  PrinterFitChecked: 'stl_printer_fit_checked',
+  MaterialEstimateUsed: 'stl_material_estimate_used',
+} as const;
 
-export type AnalyticsFailureReason = 'network' | 'validation' | 'unknown';
+type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
 
-export interface AnalyticsEventParameters {
-  file_type?: 'stl';
-  file_size_bucket?: FileSizeBucket;
-  reason?: AnalyticsFailureReason;
-}
+type AnalyticsEventParameters = Record<string, string>;
 
 type GtagArguments = [
   command: string,
@@ -73,14 +75,66 @@ export class AnalyticsService {
     });
   }
 
-  trackEvent(
-    name: AnalyticsEventName,
-    parameters: AnalyticsEventParameters = {},
+  trackUploadStarted(tool: AnalyticsTool, fileSizeBytes: number): void {
+    this.sendEvent(AnalyticsEvent.UploadStarted, {
+      tool,
+      file_size_bucket: this.fileSizeBucket(fileSizeBytes),
+    });
+  }
+
+  trackUploadCompleted(tool: AnalyticsTool): void {
+    this.sendEvent(AnalyticsEvent.UploadCompleted, { tool });
+  }
+
+  trackAnalysisCompleted(tool: AnalyticsTool, report: unknown): void {
+    const reportRecord = this.asRecord(report);
+    const validation = this.asRecord(reportRecord?.['validation']);
+    const issues = validation?.['issues'];
+    const issueCount = Array.isArray(issues) ? issues.length : 0;
+    const triangleCount = reportRecord?.['triangleCount'];
+    this.sendEvent(AnalyticsEvent.AnalysisCompleted, {
+      tool,
+      validation_result: validation?.['isValid'] === true ? 'valid' : 'invalid',
+      issue_count_bucket: this.issueCountBucket(issueCount),
+      triangle_count_bucket: this.triangleCountBucket(
+        typeof triangleCount === 'number' ? triangleCount : 0,
+      ),
+    });
+  }
+
+  trackAnalysisFailed(
+    tool: AnalyticsTool,
+    failure: JobFailure | undefined,
   ): void {
-    if (!this.canTrack()) {
-      return;
-    }
-    this.getWindow().gtag?.('event', name, this.sanitise(parameters));
+    this.sendEvent(AnalyticsEvent.AnalysisFailed, {
+      tool,
+      failure_category: jobFailureCategory(failure),
+    });
+  }
+
+  trackReportDownloaded(tool: AnalyticsTool, format: 'json' | 'pdf'): void {
+    this.sendEvent(AnalyticsEvent.ReportDownloaded, { tool, format });
+  }
+
+  trackScaleCalculated(targetDimension: 'width' | 'height' | 'depth'): void {
+    this.sendEvent(AnalyticsEvent.ScaleCalculated, {
+      tool: 'dimensions_checker',
+      target_dimension: targetDimension,
+    });
+  }
+
+  trackPrinterFitChecked(fits: boolean): void {
+    this.sendEvent(AnalyticsEvent.PrinterFitChecked, {
+      tool: 'dimensions_checker',
+      fit_result: fits ? 'fits' : 'does_not_fit',
+    });
+  }
+
+  trackMaterialEstimateUsed(material: AnalyticsMaterial): void {
+    this.sendEvent(AnalyticsEvent.MaterialEstimateUsed, {
+      tool: 'volume_calculator',
+      material,
+    });
   }
 
   private enable(): void {
@@ -157,29 +211,60 @@ export class AnalyticsService {
     return url.split(/[?#]/, 1)[0] || '/';
   }
 
-  private sanitise(
+  private sendEvent(
+    name: AnalyticsEventName,
     parameters: AnalyticsEventParameters,
-  ): AnalyticsEventParameters {
-    const safeParameters: AnalyticsEventParameters = {};
-    if (parameters.file_type === 'stl') {
-      safeParameters.file_type = parameters.file_type;
+  ): void {
+    if (!this.canTrack()) {
+      return;
     }
-    if (
-      parameters.file_size_bucket === 'under_1mb' ||
-      parameters.file_size_bucket === '1_to_10mb' ||
-      parameters.file_size_bucket === '10_to_50mb' ||
-      parameters.file_size_bucket === 'over_50mb'
-    ) {
-      safeParameters.file_size_bucket = parameters.file_size_bucket;
+    this.getWindow().gtag?.('event', name, parameters);
+  }
+
+  private fileSizeBucket(bytes: number): string {
+    const megabyte = 1024 * 1024;
+    if (bytes < megabyte) {
+      return 'under_1mb';
     }
-    if (
-      parameters.reason === 'network' ||
-      parameters.reason === 'validation' ||
-      parameters.reason === 'unknown'
-    ) {
-      safeParameters.reason = parameters.reason;
+    if (bytes <= 10 * megabyte) {
+      return '1mb_to_10mb';
     }
-    return safeParameters;
+    if (bytes <= 100 * megabyte) {
+      return '10mb_to_100mb';
+    }
+    return 'over_100mb';
+  }
+
+  private issueCountBucket(count: number): string {
+    if (count <= 0) {
+      return '0';
+    }
+    if (count <= 5) {
+      return '1_to_5';
+    }
+    if (count <= 20) {
+      return '6_to_20';
+    }
+    return 'over_20';
+  }
+
+  private triangleCountBucket(count: number): string {
+    if (count < 1000) {
+      return 'under_1k';
+    }
+    if (count < 10000) {
+      return '1k_to_10k';
+    }
+    if (count < 100000) {
+      return '10k_to_100k';
+    }
+    return 'over_100k';
+  }
+
+  private asRecord(value: unknown): Record<string, unknown> | null {
+    return typeof value === 'object' && value !== null && !Array.isArray(value)
+      ? (value as Record<string, unknown>)
+      : null;
   }
 
   private getWindow(): AnalyticsWindow {

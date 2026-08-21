@@ -151,7 +151,10 @@
           <div class="weight-fields">
             <label class="field">
               <span>Material</span>
-              <select [value]="material()" (change)="setMaterial($event)">
+              <select
+                [value]="material()"
+                (change)="setMaterial($event); trackMaterialEstimate()"
+              >
                 <option value="pla">PLA (1.24 g/cm³)</option>
                 <option value="petg">PETG (1.27 g/cm³)</option>
                 <option value="abs">ABS (1.04 g/cm³)</option>
@@ -171,6 +174,7 @@
                   [attr.aria-invalid]="customDensityInvalid()"
                   aria-describedby="custom-density-error"
                   (input)="setCustomDensity($event)"
+                  (change)="trackMaterialEstimate()"
                 />
               </label>
             }
@@ -186,6 +190,7 @@
                 [attr.aria-invalid]="infillInvalid()"
                 aria-describedby="infill-error"
                 (input)="setInfillPercentage($event)"
+                (change)="trackMaterialEstimate()"
               />
             </label>
           </div>
