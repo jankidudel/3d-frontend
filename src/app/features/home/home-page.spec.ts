@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
-  it('presents links to both public STL tools', () => {
+  it('presents links to all public STL tools in the intended order', () => {
     TestBed.configureTestingModule({
       imports: [HomePage],
       providers: [provideRouter([])],
@@ -19,9 +19,13 @@ describe('HomePage', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'STL Dimensions Checker',
     );
+    expect(fixture.nativeElement.textContent).toContain(
+      'STL Volume Calculator',
+    );
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/stl-quality-check',
       '/stl-dimensions-checker',
+      '/stl-volume-calculator',
     ]);
   });
 });
