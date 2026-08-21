@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "node scripts/generate-build-info.mjs && ng build",
+    "build:development": "node scripts/generate-build-info.mjs && ng build --configuration development",
     "watch": "ng build --watch --configuration development",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
