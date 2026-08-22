@@ -33,7 +33,7 @@ type GtagArguments = [
   parameters?: object,
 ];
 type AnalyticsWindow = Window & {
-  dataLayer?: GtagArguments[];
+  dataLayer?: IArguments[];
   gtag?: (...args: GtagArguments) => void;
 };
 
@@ -168,8 +168,10 @@ export class AnalyticsService {
     }
     const browserWindow = this.getWindow();
     browserWindow.dataLayer ??= [];
-    browserWindow.gtag ??= (...args: GtagArguments) => {
-      browserWindow.dataLayer?.push(args);
+    browserWindow.gtag ??= function (): void {
+      // Google gtag.js expects the function's Arguments object, not an array.
+      // eslint-disable-next-line prefer-rest-params
+      browserWindow.dataLayer?.push(arguments);
     };
     browserWindow.gtag('js', new Date());
     browserWindow.gtag('config', this.measurementId, {

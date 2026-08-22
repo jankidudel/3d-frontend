@@ -12,6 +12,14 @@ describe('AnalyticsService', () => {
     gtag?: unknown;
   };
 
+  function queuedCommands(document: Document): unknown[][] {
+    const dataLayer = (document.defaultView as unknown as TestAnalyticsWindow)
+      .dataLayer;
+    return (dataLayer ?? []).map((entry) =>
+      Array.from(entry as ArrayLike<unknown>),
+    );
+  }
+
   beforeEach(() => {
     localStorage.clear();
     TestBed.configureTestingModule({
@@ -65,16 +73,16 @@ describe('AnalyticsService', () => {
       'script[src*="googletagmanager.com/gtag/js"]',
     );
     expect(script?.src).toContain(measurementId);
-    expect(
-      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
-    ).toContainEqual([
+    expect(queuedCommands(document)).toContainEqual([
       'config',
       measurementId,
       expect.objectContaining({ send_page_view: false }),
     ]);
-    expect(
-      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
-    ).toContainEqual(['event', 'page_view', { page_path: '/' }]);
+    expect(queuedCommands(document)).toContainEqual([
+      'event',
+      'page_view',
+      { page_path: '/' },
+    ]);
 
     script?.dispatchEvent(new Event('load'));
     analytics.trackUploadStarted('dimensions_checker', 5 * 1024 * 1024);
@@ -87,16 +95,12 @@ describe('AnalyticsService', () => {
       error: { code: 'unsupported_format', message: 'do not send me' },
     });
 
-    expect(
-      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
-    ).toContainEqual([
+    expect(queuedCommands(document)).toContainEqual([
       'event',
       'stl_upload_started',
       { tool: 'dimensions_checker', file_size_bucket: '1mb_to_10mb' },
     ]);
-    expect(
-      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
-    ).toContainEqual([
+    expect(queuedCommands(document)).toContainEqual([
       'event',
       'stl_analysis_completed',
       {
@@ -106,9 +110,7 @@ describe('AnalyticsService', () => {
         triangle_count_bucket: '10k_to_100k',
       },
     ]);
-    expect(
-      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
-    ).toContainEqual([
+    expect(queuedCommands(document)).toContainEqual([
       'event',
       'stl_analysis_failed',
       { tool: 'volume_calculator', failure_category: 'unsupported_format' },
@@ -164,8 +166,7 @@ describe('AnalyticsService', () => {
     analytics.trackPrinterFitChecked(false);
     analytics.trackMaterialEstimateUsed('custom');
 
-    const dataLayer = (document.defaultView as unknown as TestAnalyticsWindow)
-      .dataLayer;
+    const dataLayer = queuedCommands(document);
     expect(dataLayer).toContainEqual([
       'event',
       'stl_report_downloaded',
