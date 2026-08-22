@@ -1,4 +1,11 @@
-export type JobStatus = 'created' | 'processing' | 'completed' | 'failed';
+export const JobStatus = {
+  Created: 'created',
+  Processing: 'processing',
+  Completed: 'completed',
+  Failed: 'failed',
+} as const;
+
+export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus];
 
 export interface JobUpload {
   url: string;

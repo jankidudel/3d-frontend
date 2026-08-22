@@ -15,6 +15,7 @@
     <h2 id="upload-title">Measure your STL</h2>
     <p>Upload an STL to measure its width, height and depth.</p>
     <app-stl-file-picker
+      #filePicker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
@@ -62,7 +63,7 @@
         >
           {{ refreshing() ? 'Checking…' : 'Check again' }}
         </button>
-      } @else if (currentJob.status === 'failed') {
+      } @else if (currentJob.status === jobStatus.Failed) {
         <div class="failure" role="alert">
           <span class="status-icon" aria-hidden="true">!</span>
           <div>

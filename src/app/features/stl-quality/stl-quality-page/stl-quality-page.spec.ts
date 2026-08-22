@@ -71,7 +71,7 @@ describe('StlQualityPage', () => {
     expect(analytics.trackUploadCompleted).toHaveBeenCalledWith(
       'quality_check',
     );
-    expect(fixture.nativeElement.textContent).toContain('Uploading your model');
+    expect(fixture.nativeElement.textContent).toContain('Analysing your model');
   });
 
   it('shows a spinner immediately while the job is being created', () => {

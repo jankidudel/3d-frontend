@@ -1,14 +1,21 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
 import { uploadErrorMessage } from '../../../core/api/upload-error';
 import {
   createAndUploadStlJob,
+  PollingTimeoutError,
   pollStlJob,
 } from '../../../core/api/stl-job-workflow';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { SeoService } from '../../../core/seo/seo.service';
-import { Job } from '../../../models/job';
+import { Job, JobStatus } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
 import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
 
@@ -28,8 +35,10 @@ export class StlQualityPage {
   private uploadCompletedTracked = false;
   private outcomeTracked = false;
   readonly selectedFile = signal<File | null>(null);
+  private readonly filePicker = viewChild(StlFilePicker);
   readonly job = signal<Job | null>(null);
   readonly submitting = signal(false);
+  readonly pollingTimedOut = signal(false);
   readonly refreshing = signal(false);
   readonly error = signal('');
 
@@ -48,6 +57,7 @@ export class StlQualityPage {
     this.selectedFile.set(file);
     this.error.set('');
     this.job.set(null);
+    this.pollingTimedOut.set(false);
     this.uploadStartedTracked = false;
     this.uploadCompletedTracked = false;
     this.outcomeTracked = false;
@@ -74,6 +84,8 @@ export class StlQualityPage {
       next: () => {
         // Upload has succeeded; do not retain the file while processing.
         this.selectedFile.set(null);
+        this.filePicker()?.clear();
+        this.submitting.set(false);
         if (!this.uploadCompletedTracked) {
           this.analytics.trackUploadCompleted('quality_check');
           this.uploadCompletedTracked = true;
@@ -94,10 +106,7 @@ export class StlQualityPage {
     this.polling?.unsubscribe();
     this.polling = pollStlJob(this.jobsService, jobId).subscribe({
       next: (job) => this.updateJob(job),
-      error: () =>
-        this.error.set(
-          'Automatic status updates were interrupted. You can use Check again below, or upload the file again.',
-        ),
+      error: (error: unknown) => this.handlePollingError(error),
     });
   }
 
@@ -120,15 +129,31 @@ export class StlQualityPage {
 
   private updateJob(job: Job): void {
     this.job.set(job);
+    if (job.status === JobStatus.Completed || job.status === JobStatus.Failed) {
+      this.pollingTimedOut.set(false);
+    }
     if (this.outcomeTracked) {
       return;
     }
-    if (job.status === 'completed') {
+    if (job.status === JobStatus.Completed) {
       this.analytics.trackAnalysisCompleted('quality_check', job.report);
       this.outcomeTracked = true;
-    } else if (job.status === 'failed') {
+    } else if (job.status === JobStatus.Failed) {
       this.analytics.trackAnalysisFailed('quality_check', job.failure);
       this.outcomeTracked = true;
     }
+  }
+
+  private handlePollingError(error: unknown): void {
+    if (error instanceof PollingTimeoutError) {
+      this.pollingTimedOut.set(true);
+      this.error.set(
+        'This check is taking longer than expected. Use Check again below to see whether it has finished.',
+      );
+      return;
+    }
+    this.error.set(
+      'Automatic status updates were interrupted. You can use Check again below, or upload the file again.',
+    );
   }
 }

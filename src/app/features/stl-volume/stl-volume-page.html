@@ -10,6 +10,7 @@
     <h2 id="upload-title">Calculate your STL volume</h2>
     <p>Upload an STL to calculate its volume and estimate material weight.</p>
     <app-stl-file-picker
+      #filePicker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
@@ -58,7 +59,7 @@
         >
           {{ refreshing() ? 'Checking…' : 'Check again' }}
         </button>
-      } @else if (currentJob.status === 'failed') {
+      } @else if (currentJob.status === jobStatus.Failed) {
         <div class="failure" role="alert">
           <span class="status-icon" aria-hidden="true">!</span>
           <div>

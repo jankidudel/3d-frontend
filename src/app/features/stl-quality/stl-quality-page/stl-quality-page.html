@@ -11,6 +11,7 @@
     <h2 id="upload-title">Choose your file</h2>
     <p>Select a .stl file.</p>
     <app-stl-file-picker
+      #filePicker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
@@ -34,6 +35,7 @@
     <app-job-status
       [job]="createdJob"
       [uploading]="submitting()"
+      [pollingTimedOut]="pollingTimedOut()"
       [refreshing]="refreshing()"
       (refresh)="refreshStatus()"
     />

@@ -7,6 +7,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
   body, including single-statement bodies. Do not write braceless control flow.
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
+- Prefer named constants for repeated domain and configuration values; do not hardcode them in production code. For string-literal domains, use the TypeScript value-plus-type pattern: `export const JobStatus = { Created: 'created' } as const; export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus];`.
 
 ## Writing Style
 

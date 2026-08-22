@@ -75,6 +75,10 @@ export class StlFilePicker {
     this.fileSelected.emit(file);
   }
 
+  clear(): void {
+    this.clearNativeInput();
+  }
+
   private clearNativeInput(): void {
     const fileInput = this.fileInput();
     if (fileInput) {

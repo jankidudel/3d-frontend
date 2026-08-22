@@ -7,7 +7,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { Job } from '../../../models/job';
+import { Job, JobStatus } from '../../../models/job';
 import { jobFailureMessage } from '../../../models/job-failure';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { StlQualityPdfService } from './stl-quality-pdf.service';
@@ -26,17 +26,21 @@ interface QualityReport {
   styleUrl: './job-status.scss',
 })
 export class JobStatusComponent {
+  readonly jobStatus = JobStatus;
   private readonly document = inject(DOCUMENT);
   private readonly pdfService = inject(StlQualityPdfService);
   private readonly analytics = inject(AnalyticsService);
   readonly job = input.required<Job>();
   readonly uploading = input(false);
+  readonly pollingTimedOut = input(false);
   readonly refreshing = input(false);
   readonly generatingPdf = signal(false);
   readonly pdfError = signal('');
   readonly refresh = output<void>();
-  readonly processing = computed(() =>
-    ['created', 'processing'].includes(this.job().status),
+  readonly processing = computed(
+    () =>
+      this.job().status === JobStatus.Created ||
+      this.job().status === JobStatus.Processing,
   );
   readonly failureMessage = computed(() =>
     jobFailureMessage(this.job().failure),
