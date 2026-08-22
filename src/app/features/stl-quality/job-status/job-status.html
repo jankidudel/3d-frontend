@@ -132,6 +132,33 @@
       }
     </section>
 
+    @if (issueGuidance().length > 0) {
+      <section class="repair-guidance" aria-labelledby="repair-guidance-title">
+        <h3 id="repair-guidance-title">How to fix these issues</h3>
+        <p class="repair-guidance-note">
+          Mesh repair tools can alter geometry. Inspect the repaired model and
+          run this check again before printing.
+        </p>
+        <div class="repair-guidance-cards">
+          @for (guidance of issueGuidance(); track guidance.code) {
+            <article class="repair-guidance-card">
+              <h4>{{ guidance.title }}</h4>
+              <p><strong>What it means:</strong> {{ guidance.meaning }}</p>
+              <p>
+                <strong>Why it matters:</strong> {{ guidance.whyItMatters }}
+              </p>
+              <h5>What to try</h5>
+              <ul>
+                @for (step of guidance.nextSteps; track step) {
+                  <li>{{ step }}</li>
+                }
+              </ul>
+            </article>
+          }
+        </div>
+      </section>
+    }
+
     <details class="technical">
       <summary>Technical details</summary>
       <h3>Bounding box</h3>

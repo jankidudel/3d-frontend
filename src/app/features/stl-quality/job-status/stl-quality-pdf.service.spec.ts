@@ -51,7 +51,7 @@ describe('StlQualityPdfService', () => {
   it('includes several invalid findings and adds pages for long issue lists', async () => {
     const service = TestBed.inject(StlQualityPdfService);
     const issues = Array.from({ length: 45 }, (_, index) => ({
-      code: index % 2 === 0 ? 'nonManifoldEdges' : 'degenerateTriangles',
+      code: index % 2 === 0 ? 'non_manifold_edge' : 'degenerate_triangle',
       count: index + 1,
       message: `Issue ${index + 1} needs attention before slicing this model.`,
     }));

@@ -1,23 +1,10 @@
 import { Service } from '@angular/core';
 import { Job } from '../../../models/job';
+import { normalizeValidationIssues } from './validation-issues';
 
 interface ReportRecord {
   [key: string]: unknown;
 }
-
-interface DisplayIssue {
-  label: string;
-  detail: string;
-}
-
-const ISSUE_LABELS: Record<string, string> = {
-  openEdges: 'Open edges',
-  nonManifoldEdges: 'Non-manifold edges',
-  degenerateTriangles: 'Degenerate triangles',
-  duplicateTriangles: 'Duplicate triangles',
-  inconsistentOrientation: 'Inconsistent orientation',
-  invalidCoordinates: 'Invalid coordinates',
-};
 
 @Service()
 export class StlQualityPdfService {
@@ -111,7 +98,7 @@ export class StlQualityPdfService {
     const isValid = validation?.['isValid'] === true;
     const dimensions = this.asRecord(report['dimensions']);
     const boundingBox = this.asRecord(report['boundingBox']);
-    const issues = this.normalizeIssues(validation?.['issues']);
+    const issues = normalizeValidationIssues(validation?.['issues']);
     const fileName = this.stringValue(report['fileName']) || job.fileName;
     const fileSize = this.formatFileSize(
       report['fileSizeBytes'] ?? job.fileSizeBytes,
@@ -226,51 +213,6 @@ export class StlQualityPdfService {
     return `${this.formatNumber(size, unit === 0 ? 0 : 1)} ${units[unit]}`;
   }
 
-  private normalizeIssues(value: unknown): DisplayIssue[] {
-    if (!Array.isArray(value)) {
-      return [];
-    }
-    return value.map((issue) => {
-      if (typeof issue === 'string') {
-        return { label: this.issueLabel(issue), detail: '' };
-      }
-      const record = this.asRecord(issue);
-      if (!record) {
-        return { label: 'Validation issue', detail: String(issue) };
-      }
-      const code = this.firstString(record, [
-        'type',
-        'code',
-        'issueType',
-        'name',
-      ]);
-      const message = this.firstString(record, [
-        'message',
-        'description',
-        'detail',
-      ]);
-      const count = record['count'];
-      const countText =
-        typeof count === 'number' && Number.isFinite(count)
-          ? `${this.formatInteger(count)} found`
-          : '';
-      return {
-        label: this.issueLabel(code || 'Validation issue'),
-        detail: [countText, message].filter(Boolean).join(' — '),
-      };
-    });
-  }
-
-  private issueLabel(code: string): string {
-    const trimmedCode = code.trim();
-    return (
-      ISSUE_LABELS[trimmedCode] ??
-      trimmedCode
-        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-        .replace(/^./, (letter) => letter.toUpperCase())
-    );
-  }
-
   private downloadFileName(fileName: string): string {
     const safeStem = fileName
       .replace(/\.stl$/i, '')
@@ -285,16 +227,6 @@ export class StlQualityPdfService {
 
   private stringValue(value: unknown): string {
     return typeof value === 'string' ? value.trim() : '';
-  }
-
-  private firstString(record: ReportRecord, keys: string[]): string {
-    for (const key of keys) {
-      const value = record[key];
-      if (typeof value === 'string' && value.trim()) {
-        return value;
-      }
-    }
-    return '';
   }
 
   private asRecord(value: unknown): ReportRecord | null {

@@ -58,9 +58,56 @@ describe('JobStatusComponent', () => {
     expect(text).toContain('21.8 KB');
     expect(fixture.nativeElement.querySelector('details').open).toBe(false);
     expect(text).not.toContain('ready to print');
+    expect(text).not.toContain('How to fix these issues');
   });
 
-  it('renders camelCase issue codes with counts and messages', () => {
+  it.each([
+    ['open_edge', 'Fix open edges', 'not fully watertight'],
+    [
+      'non_manifold_edge',
+      'Fix non-manifold edges',
+      'mesh geometry is ambiguous',
+    ],
+    [
+      'degenerate_triangle',
+      'Clean degenerate triangles',
+      'zero-area or nearly zero-area faces',
+    ],
+    [
+      'duplicate_triangle',
+      'Remove duplicate triangles',
+      'Duplicate or overlapping faces',
+    ],
+    [
+      'inconsistent_orientation',
+      'Repair face orientation',
+      'Some face normals point in the wrong direction',
+    ],
+    [
+      'invalid_coordinates',
+      'Re-export invalid geometry',
+      'unusable numeric geometry',
+    ],
+  ])('shows guidance for %s', (code, title, meaning) => {
+    const fixture = render({
+      ...completedJob,
+      report: {
+        ...report,
+        validation: { isValid: false, issues: [{ code, count: 1 }] },
+      },
+    });
+    const text = fixture.nativeElement.textContent;
+
+    expect(text).toContain('How to fix these issues');
+    expect(text).toContain(title);
+    expect(text).toContain(meaning);
+    expect(text).toContain('Mesh repair tools can alter geometry.');
+    expect(
+      fixture.nativeElement.querySelectorAll('.repair-guidance-card'),
+    ).toHaveLength(1);
+  });
+
+  it('shows one guidance card for each distinct recognised issue', () => {
     const fixture = render({
       ...completedJob,
       report: {
@@ -68,12 +115,56 @@ describe('JobStatusComponent', () => {
         validation: {
           isValid: false,
           issues: [
-            { code: 'nonManifoldEdges', count: 3 },
+            'open_edge',
+            { code: 'open_edge', count: 2 },
+            'duplicate_triangle',
+          ],
+        },
+      },
+    });
+    const text = fixture.nativeElement.textContent;
+
+    expect(text).toContain('Fix open edges');
+    expect(text).toContain('Remove duplicate triangles');
+    expect(
+      fixture.nativeElement.querySelectorAll('.repair-guidance-card'),
+    ).toHaveLength(2);
+  });
+
+  it('keeps unknown issues in the validation list without inventing guidance', () => {
+    const fixture = render({
+      ...completedJob,
+      report: {
+        ...report,
+        validation: {
+          isValid: false,
+          issues: [{ code: 'selfIntersectingGeometry', count: null }],
+        },
+      },
+    });
+    const text = fixture.nativeElement.textContent;
+
+    expect(text).toContain('Self Intersecting Geometry');
+    expect(text).not.toContain('How to fix these issues');
+    expect(
+      fixture.nativeElement.querySelectorAll('.repair-guidance-card'),
+    ).toHaveLength(0);
+  });
+
+  it('renders processor issue codes with counts and messages', () => {
+    const fixture = render({
+      ...completedJob,
+      report: {
+        ...report,
+        validation: {
+          isValid: false,
+          issues: [
+            { code: 'non_manifold_edge', count: 3 },
             {
-              issueType: 'degenerateTriangles',
+              issueType: 'degenerate_triangle',
               message: 'Zero-area faces were detected.',
             },
-            'invalidCoordinates',
+            'invalid_coordinates',
           ],
         },
       },

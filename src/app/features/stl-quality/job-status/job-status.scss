@@ -149,6 +149,54 @@ p {
   background: #f0fdf4;
   font-weight: 700;
 }
+.repair-guidance {
+  margin-top: 2rem;
+}
+.repair-guidance-note {
+  padding: 0.8rem 1rem;
+  border-left: 0.25rem solid var(--primary);
+  border-radius: 0.6rem;
+  color: var(--muted);
+  background: var(--soft);
+}
+.repair-guidance-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+.repair-guidance-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: #fbfdfb;
+}
+.repair-guidance-card h4,
+.repair-guidance-card h5 {
+  margin: 0;
+}
+.repair-guidance-card h4 {
+  font-size: 1.05rem;
+}
+.repair-guidance-card h5 {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.repair-guidance-card p {
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+.repair-guidance-card strong {
+  color: var(--text);
+}
+.repair-guidance-card ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+  color: var(--muted);
+}
 .technical {
   margin-top: 2rem;
   border-top: 1px solid var(--border);
@@ -218,6 +266,9 @@ pre {
   }
   .metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .repair-guidance-cards {
+    grid-template-columns: 1fr;
   }
   .metric-wide {
     grid-column: 1 / -1;

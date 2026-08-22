@@ -96,7 +96,7 @@ describe('StlVolumePage', () => {
       ...completedJob,
       report: {
         ...(completedJob.report as Record<string, unknown>),
-        validation: { isValid: false, issues: ['openEdges'] },
+        validation: { isValid: false, issues: ['open_edge'] },
       },
     });
     const text = fixture.nativeElement.textContent;

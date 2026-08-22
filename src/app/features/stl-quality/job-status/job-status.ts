@@ -11,24 +11,14 @@ import { Job } from '../../../models/job';
 import { jobFailureMessage } from '../../../models/job-failure';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { StlQualityPdfService } from './stl-quality-pdf.service';
+import {
+  guidanceForIssues,
+  normalizeValidationIssues,
+} from './validation-issues';
 
 interface QualityReport {
   [key: string]: unknown;
 }
-interface DisplayIssue {
-  label: string;
-  detail: string;
-}
-
-const ISSUE_LABELS: Record<string, string> = {
-  openEdges: 'Open edges',
-  nonManifoldEdges: 'Non-manifold edges',
-  degenerateTriangles: 'Degenerate triangles',
-  duplicateTriangles: 'Duplicate triangles',
-  inconsistentOrientation: 'Inconsistent orientation',
-  invalidCoordinates: 'Invalid coordinates',
-};
-
 @Component({
   selector: 'app-job-status',
   imports: [JsonPipe],
@@ -57,8 +47,9 @@ export class JobStatusComponent {
   );
   readonly isValid = computed(() => this.validation()?.['isValid'] === true);
   readonly issues = computed(() =>
-    this.normalizeIssues(this.validation()?.['issues']),
+    normalizeValidationIssues(this.validation()?.['issues']),
   );
+  readonly issueGuidance = computed(() => guidanceForIssues(this.issues()));
   readonly dimensions = computed(() =>
     this.asRecord(this.report()?.['dimensions']),
   );
@@ -141,61 +132,6 @@ export class JobStatusComponent {
       .replace(/^-+|-+$/g, '')
       .slice(0, 100);
     return `${safeStem || 'model'}-quality-report.json`;
-  }
-
-  private normalizeIssues(value: unknown): DisplayIssue[] {
-    if (!Array.isArray(value)) {
-      return [];
-    }
-    return value.map((issue) => {
-      if (typeof issue === 'string') {
-        return { label: this.issueLabel(issue), detail: '' };
-      }
-      const record = this.asRecord(issue);
-      if (!record) {
-        return { label: 'Validation issue', detail: String(issue) };
-      }
-      const code = this.firstString(record, [
-        'type',
-        'code',
-        'issueType',
-        'name',
-      ]);
-      const message = this.firstString(record, [
-        'message',
-        'description',
-        'detail',
-      ]);
-      const count = record['count'];
-      const countText =
-        typeof count === 'number' && Number.isFinite(count)
-          ? `${this.formatInteger(count)} found`
-          : '';
-      return {
-        label: this.issueLabel(code || 'Validation issue'),
-        detail: [countText, message].filter(Boolean).join(' — '),
-      };
-    });
-  }
-
-  private issueLabel(code: string): string {
-    const trimmedCode = code.trim();
-    return (
-      ISSUE_LABELS[trimmedCode] ??
-      trimmedCode
-        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-        .replace(/^./, (letter) => letter.toUpperCase())
-    );
-  }
-
-  private firstString(record: Record<string, unknown>, keys: string[]): string {
-    for (const key of keys) {
-      const value = record[key];
-      if (typeof value === 'string' && value.trim()) {
-        return value;
-      }
-    }
-    return '';
   }
 
   private asRecord(value: unknown): QualityReport | null {
