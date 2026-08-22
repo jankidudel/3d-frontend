@@ -100,6 +100,8 @@ describe('StlQualityPage', () => {
     expect(
       fixture.nativeElement.querySelector('[role="alert"]')?.textContent,
     ).toContain('could not create the job or upload');
+    expect(fixture.componentInstance.submitting()).toBe(false);
+    expect(fixture.nativeElement.querySelector('.submit').disabled).toBe(false);
   });
 
   it('shows the maximum size for a FILE_TOO_LARGE API error', () => {

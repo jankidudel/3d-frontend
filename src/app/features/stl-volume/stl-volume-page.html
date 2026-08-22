@@ -65,8 +65,13 @@
           <div>
             <h2 id="results-title">We couldn’t analyse this STL file</h2>
             <p>{{ jobFailureMessage(currentJob.failure) }}</p>
-            <a class="button button-secondary" href="#upload-title"
-              >Upload another file</a
+            <button
+              class="button button-secondary"
+              type="button"
+              (click)="filePicker.open()"
+            >
+              Upload another file
+            </button>
             >
           </div>
         </div>

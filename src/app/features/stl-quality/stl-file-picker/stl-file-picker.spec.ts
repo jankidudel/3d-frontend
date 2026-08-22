@@ -59,4 +59,17 @@ describe('StlFilePicker', () => {
     expect(fixture.componentInstance.selectedFile()).toBeNull();
     expect(input.value).toBe('');
   });
+
+  it('opens the native file chooser on request', () => {
+    const fixture = TestBed.createComponent(StlFilePicker);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      '#stl-file',
+    ) as HTMLInputElement;
+    const click = vi.spyOn(input, 'click');
+
+    fixture.componentInstance.open();
+
+    expect(click).toHaveBeenCalledOnce();
+  });
 });

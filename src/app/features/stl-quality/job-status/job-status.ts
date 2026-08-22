@@ -37,6 +37,7 @@ export class JobStatusComponent {
   readonly generatingPdf = signal(false);
   readonly pdfError = signal('');
   readonly refresh = output<void>();
+  readonly uploadAnotherFile = output<void>();
   readonly processing = computed(
     () =>
       this.job().status === JobStatus.Created ||

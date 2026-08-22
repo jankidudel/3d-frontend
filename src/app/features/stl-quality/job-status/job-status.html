@@ -38,8 +38,13 @@
       <div>
         <h2 id="job-title">We couldn’t analyse this STL file</h2>
         <p>{{ failureMessage() }}</p>
-        <a class="button button-secondary" href="#upload-title"
-          >Upload another file</a
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="uploadAnotherFile.emit()"
+        >
+          Upload another file
+        </button>
         >
       </div>
     </div>
