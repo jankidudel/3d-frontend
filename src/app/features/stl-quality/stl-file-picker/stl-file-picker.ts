@@ -1,6 +1,10 @@
 import { Component, output, signal } from '@angular/core';
+import {
+  FILE_PICKER_TOO_LARGE_MESSAGE,
+  MAX_STL_FILE_SIZE_BYTES,
+} from '../../../core/api/upload-limits';
 
-export const MAX_STL_FILE_SIZE_BYTES = 25 * 1024 * 1024;
+export { MAX_STL_FILE_SIZE_BYTES } from '../../../core/api/upload-limits';
 
 @Component({
   selector: 'app-stl-file-picker',
@@ -35,7 +39,7 @@ export class StlFilePicker {
       return;
     }
     if (file.size > MAX_STL_FILE_SIZE_BYTES) {
-      this.error.set('The selected STL file must be 25 MiB or smaller.');
+      this.error.set(FILE_PICKER_TOO_LARGE_MESSAGE);
       this.fileSelected.emit(null);
       return;
     }

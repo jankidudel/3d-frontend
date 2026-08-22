@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
+import { uploadErrorMessage } from '../../../core/api/upload-error';
 import {
   createAndUploadStlJob,
   pollStlJob,
@@ -77,11 +78,7 @@ export class StlQualityPage {
             this.startPolling(createdJob.id);
           }
         },
-        error: () => {
-          this.error.set(
-            'We could not create the job or upload the file. Please try again.',
-          );
-        },
+        error: (error: unknown) => this.error.set(uploadErrorMessage(error)),
       });
   }
 

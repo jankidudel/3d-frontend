@@ -2,6 +2,7 @@ import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
 import {
@@ -185,10 +186,7 @@ export class StlDimensionsPage {
             this.startPolling(createdJob.id);
           }
         },
-        error: () =>
-          this.error.set(
-            'We could not create the job or upload the file. Please try again.',
-          ),
+        error: (error: unknown) => this.error.set(uploadErrorMessage(error)),
       });
   }
 

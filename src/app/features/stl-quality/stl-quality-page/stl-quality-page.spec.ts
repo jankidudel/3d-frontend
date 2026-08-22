@@ -3,6 +3,8 @@ import { NEVER, of, throwError } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { Job } from '../../../models/job';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FILE_TOO_LARGE_MESSAGE } from '../../../core/api/upload-limits';
 import { StlQualityPage } from './stl-quality-page';
 
 describe('StlQualityPage', () => {
@@ -98,6 +100,40 @@ describe('StlQualityPage', () => {
     expect(
       fixture.nativeElement.querySelector('[role="alert"]')?.textContent,
     ).toContain('could not create the job or upload');
+  });
+
+  it('shows the maximum size for a FILE_TOO_LARGE API error', () => {
+    jobsService.createJob.mockReturnValue(
+      throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 413,
+            error: { code: 'FILE_TOO_LARGE' },
+          }),
+      ),
+    );
+    const fixture = TestBed.createComponent(StlQualityPage);
+    fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
+    fixture.componentInstance.checkStl();
+    expect(fixture.componentInstance.error()).toBe(FILE_TOO_LARGE_MESSAGE);
+    expect(jobsService.uploadFile).not.toHaveBeenCalled();
+  });
+
+  it('shows a human-readable retry time for RATE_LIMITED', () => {
+    jobsService.createJob.mockReturnValue(
+      throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 429,
+            error: { code: 'RATE_LIMITED', retryAfterSeconds: 120 },
+          }),
+      ),
+    );
+    const fixture = TestBed.createComponent(StlQualityPage);
+    fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
+    fixture.componentInstance.checkStl();
+    expect(fixture.componentInstance.error()).toContain('2 minutes');
+    expect(jobsService.getJob).not.toHaveBeenCalled();
   });
 
   it('shows an upload failure after creating the job', () => {

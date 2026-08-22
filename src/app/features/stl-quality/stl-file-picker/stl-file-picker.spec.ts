@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MAX_STL_FILE_SIZE_BYTES, StlFilePicker } from './stl-file-picker';
+import { FILE_PICKER_TOO_LARGE_MESSAGE } from '../../../core/api/upload-limits';
 
 describe('StlFilePicker', () => {
   it('accepts a non-empty STL file', () => {
@@ -24,6 +25,6 @@ describe('StlFilePicker', () => {
     component.selectFile(file);
 
     expect(component.selectedFile()).toBeNull();
-    expect(component.error()).toContain('25 MiB');
+    expect(component.error()).toBe(FILE_PICKER_TOO_LARGE_MESSAGE);
   });
 });
