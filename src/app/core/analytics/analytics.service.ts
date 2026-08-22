@@ -50,7 +50,6 @@ export class AnalyticsService {
     this.measurementId.length > 0 &&
     !this.measurementId.includes('REPLACE_ME');
   private scriptRequested = false;
-  private scriptLoaded = false;
   private initialised = false;
   private currentPath = this.cleanPath(this.router.url);
 
@@ -145,25 +144,20 @@ export class AnalyticsService {
     if (this.initialised) {
       return;
     }
-    if (this.scriptLoaded) {
-      this.initialise();
-      return;
-    }
     if (this.scriptRequested) {
       return;
     }
 
+    // Queue the configuration before loading gtag.js so the external script can
+    // process every command as soon as it starts.
+    this.initialise();
     this.scriptRequested = true;
     const script = this.document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(this.measurementId)}`;
-    script.addEventListener('load', () => {
-      this.scriptLoaded = true;
-      this.initialise();
-    });
     script.addEventListener('error', () => {
       this.scriptRequested = false;
-      this.scriptLoaded = false;
+      this.initialised = false;
     });
     this.document.head.appendChild(script);
   }

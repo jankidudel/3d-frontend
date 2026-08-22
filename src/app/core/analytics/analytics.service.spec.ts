@@ -65,6 +65,16 @@ describe('AnalyticsService', () => {
       'script[src*="googletagmanager.com/gtag/js"]',
     );
     expect(script?.src).toContain(measurementId);
+    expect(
+      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
+    ).toContainEqual([
+      'config',
+      measurementId,
+      expect.objectContaining({ send_page_view: false }),
+    ]);
+    expect(
+      (document.defaultView as unknown as TestAnalyticsWindow).dataLayer,
+    ).toContainEqual(['event', 'page_view', { page_path: '/' }]);
 
     script?.dispatchEvent(new Event('load'));
     analytics.trackUploadStarted('dimensions_checker', 5 * 1024 * 1024);
