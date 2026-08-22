@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AnalyticsService } from './core/analytics/analytics.service';
@@ -10,6 +11,7 @@ import { CookieConsentService } from './core/analytics/cookie-consent.service';
     RouterLink,
     RouterLinkActive,
     RouterOutlet,
+    NgOptimizedImage,
     CookieConsentBannerComponent,
   ],
   templateUrl: './app.html',
