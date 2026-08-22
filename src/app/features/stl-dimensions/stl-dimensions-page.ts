@@ -1,9 +1,9 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { SeoService } from '../../core/seo/seo.service';
 import {
   createAndUploadStlJob,
   pollStlJob,
@@ -32,8 +32,7 @@ export class StlDimensionsPage {
   readonly jobFailureMessage = jobFailureMessage;
   private readonly jobsService = inject(JobsService);
   private readonly analytics = inject(AnalyticsService);
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
   private uploadStartedTracked = false;
@@ -138,13 +137,11 @@ export class StlDimensionsPage {
   );
 
   constructor() {
-    this.title.setTitle(
-      'STL Dimensions Checker – Measure, Convert and Scale STL Files',
-    );
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        'Measure STL width, height and depth, convert model units, and calculate the exact proportional scale needed for your target print size.',
+    this.seo.apply({
+      title: 'STL Dimensions Checker - Measure, Convert and Scale STL Files',
+      description:
+        'Measure STL width, height and depth, convert model units, calculate proportional scaling, and check whether a model fits a printer build volume.',
+      path: '/stl-dimensions-checker',
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
   }

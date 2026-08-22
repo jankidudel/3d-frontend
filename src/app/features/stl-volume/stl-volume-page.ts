@@ -1,9 +1,9 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { SeoService } from '../../core/seo/seo.service';
 import {
   createAndUploadStlJob,
   pollStlJob,
@@ -31,8 +31,7 @@ export class StlVolumePage {
   readonly jobFailureMessage = jobFailureMessage;
   private readonly jobsService = inject(JobsService);
   private readonly analytics = inject(AnalyticsService);
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
   private uploadStartedTracked = false;
@@ -117,13 +116,11 @@ export class StlVolumePage {
   );
 
   constructor() {
-    this.title.setTitle(
-      'STL Volume Calculator – Calculate STL Volume and Material Weight',
-    );
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        'Calculate an STL model’s volume, convert cubic units, and make a rough material-weight estimate for common 3D printing materials.',
+    this.seo.apply({
+      title: 'STL Volume Calculator - Calculate STL Volume and Material Weight',
+      description:
+        'Calculate an STL model’s volume, convert cubic units, and estimate approximate material weight for common 3D printing materials.',
+      path: '/stl-volume-calculator',
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
   }

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/seo/seo.service';
 
 @Component({
   selector: 'app-privacy-page',
@@ -41,4 +42,15 @@ import { RouterLink } from '@angular/router';
     }
   `,
 })
-export class PrivacyPage {}
+export class PrivacyPage {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.apply({
+      title: 'Privacy - 3D Quality Tools',
+      description:
+        'Learn how 3D Quality Tools handles uploaded STL files and optional analytics cookies.',
+      path: '/privacy',
+    });
+  }
+}

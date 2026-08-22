@@ -1,5 +1,4 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
 import {
@@ -7,6 +6,7 @@ import {
   pollStlJob,
 } from '../../../core/api/stl-job-workflow';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
+import { SeoService } from '../../../core/seo/seo.service';
 import { Job } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
 import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
@@ -20,8 +20,7 @@ import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
 export class StlQualityPage {
   private readonly jobsService = inject(JobsService);
   private readonly analytics = inject(AnalyticsService);
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
   private uploadStartedTracked = false;
@@ -34,11 +33,11 @@ export class StlQualityPage {
   readonly error = signal('');
 
   constructor() {
-    this.title.setTitle('Free STL Quality Checker – Check 3D Printing Files');
-    this.meta.updateTag({
-      name: 'description',
-      content:
-        'Check STL files for common mesh problems including open edges, non-manifold geometry, duplicate triangles and orientation issues.',
+    this.seo.apply({
+      title: 'Free STL Quality Checker - Check 3D Printing Files',
+      description:
+        'Check STL files for mesh and topology problems, including open edges, non-manifold geometry, duplicate triangles and orientation issues.',
+      path: '/stl-quality-check',
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
   }

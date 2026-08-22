@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
+import { SeoService } from '../../core/seo/seo.service';
 
 @Component({
   selector: 'app-home-page',
@@ -9,17 +9,14 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home-page.scss',
 })
 export class HomePage {
-  private readonly title = inject(Title);
-  private readonly meta = inject(Meta);
+  private readonly seo = inject(SeoService);
 
   constructor() {
-    this.title.setTitle(
-      '3D Quality Tools - STL Checks, Dimensions and Scaling',
-    );
-    this.meta.updateTag({
-      name: 'description',
-      content:
+    this.seo.apply({
+      title: '3D Quality Tools - STL Checks, Dimensions and Scaling',
+      description:
         'Free STL tools to check mesh quality, measure dimensions, convert units, calculate scaling and assess printer build-volume fit.',
+      path: '/',
     });
   }
 }

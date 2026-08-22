@@ -8,6 +8,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
 
+## Writing Style
+
+- Use a normal hyphen (`-`). Do not use en-dash or em-dash characters in user-facing copy, code comments, documentation, or responses.
+
 ## Dependency Management
 
 - Always use exact versions in `package.json`; do not use semver ranges such as `^`, `~`, `>`, or `*`.

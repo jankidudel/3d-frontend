@@ -1,10 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const outputDirectory = new URL('../public/', import.meta.url);
-
-function gitCommit() {
-  const suppliedCommit = process.env.FRONTEND_BUILD_VERSION;
+function gitCommit(): string {
+  const suppliedCommit = process.env['FRONTEND_BUILD_VERSION'];
   if (suppliedCommit) {
     return suppliedCommit;
   }
@@ -14,10 +12,11 @@ function gitCommit() {
       encoding: 'utf8',
     }).trim();
   } catch {
-    return process.env.GITHUB_SHA ?? 'unknown';
+    return process.env['GITHUB_SHA'] ?? 'unknown';
   }
 }
 
+const outputDirectory = new URL('../public/', import.meta.url);
 const buildInfo = {
   version: gitCommit().slice(0, 12),
   builtAt: new Date().toISOString(),

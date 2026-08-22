@@ -3,6 +3,8 @@
 # Compiled output
 /dist
 /public/version.json
+/public/robots.txt
+/public/sitemap.xml
 /tmp
 /out-tsc
 /bazel-out

@@ -43,6 +43,29 @@ The deployable static files are written to `dist/3d-frontend/browser`. The sibli
 CloudFront forwards `/api/*` to API Gateway, so the frontend keeps the same-origin
 API base URL `/api/v1` without environment-specific URLs or browser API CORS.
 
+## Search indexing and SEO
+
+All public routes are prerendered and receive their title, description, robots
+directive, and (when configured) canonical URL through the central SEO service.
+Temporary and development deployments are deliberately noindexed and do not emit
+a canonical URL, so a CloudFront distribution URL cannot become a search result.
+
+Before enabling production indexing, update
+`src/environments/site-config.production.json` with the final custom HTTPS origin
+(without a trailing slash) and set `indexingEnabled` to `true`:
+
+```json
+{
+  "siteUrl": "https://your-final-domain.example",
+  "indexingEnabled": true
+}
+```
+
+The production build then creates an absolute canonical for every public route,
+an `index, follow` robots directive, `robots.txt`, and `sitemap.xml`. Leave both
+settings as they are until the custom domain is live. The CloudFront URL must not
+be used as `siteUrl`.
+
 ## Verify a deployed frontend release
 
 Each build includes a non-UI release marker containing the frontend commit and
