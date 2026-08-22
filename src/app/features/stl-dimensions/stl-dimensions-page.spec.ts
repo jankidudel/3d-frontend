@@ -101,6 +101,24 @@ describe('StlDimensionsPage', () => {
     expect(conversionText).toContain('19.685 × 39.37 × 9.843 in');
   });
 
+  it('removes floating-point noise from converted dimensions near whole values', () => {
+    const fixture = TestBed.createComponent(StlDimensionsPage);
+    fixture.componentInstance.job.set({
+      ...completedJob,
+      report: {
+        ...(completedJob.report as Record<string, unknown>),
+        dimensions: { width: 29.99999, height: 4, depth: 13 },
+      },
+    });
+    fixture.componentInstance.modelUnit.set('m');
+    fixture.detectChanges();
+
+    const conversionText =
+      fixture.nativeElement.querySelector('.conversion-grid').textContent;
+    expect(conversionText).toContain('3,000 × 400 × 1,300 cm');
+    expect(conversionText).not.toContain('2,999.999');
+  });
+
   it('calculates a target dimension and proportional output', () => {
     const fixture = render();
     fixture.componentInstance.targetAxis.set('height');

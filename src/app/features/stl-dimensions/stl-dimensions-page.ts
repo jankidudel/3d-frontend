@@ -270,7 +270,7 @@ export class StlDimensionsPage {
       ? new Intl.NumberFormat('en', {
           maximumFractionDigits,
           useGrouping: true,
-        }).format(value)
+        }).format(this.normaliseDisplayPrecision(value))
       : '—';
   }
 
@@ -315,6 +315,14 @@ export class StlDimensionsPage {
       height: convertLength(dimensions.height, from, to),
       depth: convertLength(dimensions.depth, from, to),
     };
+  }
+
+  private normaliseDisplayPrecision(value: number): number {
+    const nearestInteger = Math.round(value);
+    const tolerance = Math.max(1e-9, Math.abs(value) * 1e-6);
+    return Math.abs(value - nearestInteger) <= tolerance
+      ? nearestInteger
+      : value;
   }
 
   private asRecord(value: unknown): ReportRecord | null {
