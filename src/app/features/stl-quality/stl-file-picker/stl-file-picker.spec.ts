@@ -4,10 +4,20 @@ import { FILE_PICKER_TOO_LARGE_MESSAGE } from '../../../core/api/upload-limits';
 
 describe('StlFilePicker', () => {
   it('accepts a non-empty STL file', () => {
-    const component = TestBed.createComponent(StlFilePicker).componentInstance;
-    component.selectFile(new File(['solid mesh'], 'rotor.STL'));
-    expect(component.selectedFile()?.name).toBe('rotor.STL');
-    expect(component.error()).toBe('');
+    const fixture = TestBed.createComponent(StlFilePicker);
+    const file = new File(['solid mesh'], 'rotor.STL');
+    let emittedFile: File | null | undefined;
+    fixture.componentInstance.fileSelected.subscribe((value) => {
+      emittedFile = value;
+    });
+
+    fixture.componentInstance.selectFile(file);
+    fixture.componentRef.setInput('selectedFileFromParent', file);
+    fixture.detectChanges();
+
+    expect(emittedFile).toBe(file);
+    expect(fixture.componentInstance.selectedFile()?.name).toBe('rotor.STL');
+    expect(fixture.componentInstance.error()).toBe('');
   });
 
   it('rejects an invalid extension', () => {
@@ -26,5 +36,27 @@ describe('StlFilePicker', () => {
 
     expect(component.selectedFile()).toBeNull();
     expect(component.error()).toBe(FILE_PICKER_TOO_LARGE_MESSAGE);
+  });
+
+  it('clears the displayed file and native input when the parent clears the selection', () => {
+    const fixture = TestBed.createComponent(StlFilePicker);
+    const file = new File(['solid mesh'], 'rotor.stl');
+    fixture.componentRef.setInput('selectedFileFromParent', file);
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector(
+      '#stl-file',
+    ) as HTMLInputElement;
+    Object.defineProperty(input, 'value', {
+      configurable: true,
+      value: 'C:\\fakepath\\rotor.stl',
+      writable: true,
+    });
+
+    fixture.componentRef.setInput('selectedFileFromParent', null);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.selectedFile()).toBeNull();
+    expect(input.value).toBe('');
   });
 });

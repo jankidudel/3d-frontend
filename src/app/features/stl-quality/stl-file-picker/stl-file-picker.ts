@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   effect,
   ElementRef,
   input,
@@ -24,18 +25,14 @@ export class StlFilePicker {
   // the file, clear the browser input too so the UI cannot show a stale file.
   readonly selectedFileFromParent = input<File | null>(null);
   readonly fileSelected = output<File | null>();
-  readonly selectedFile = signal<File | null>(null);
+  readonly selectedFile = computed(() => this.selectedFileFromParent());
   readonly error = signal('');
   private readonly fileInput =
     viewChild<ElementRef<HTMLInputElement>>('fileInput');
 
   constructor() {
     effect(() => {
-      if (
-        this.selectedFileFromParent() === null &&
-        this.selectedFile() !== null
-      ) {
-        this.selectedFile.set(null);
+      if (this.selectedFileFromParent() === null) {
         const fileInput = this.fileInput();
         if (fileInput) {
           fileInput.nativeElement.value = '';
@@ -50,29 +47,38 @@ export class StlFilePicker {
   }
 
   selectFile(file: File | null): void {
-    this.selectedFile.set(null);
     if (!file) {
       this.error.set('Choose an STL file to continue.');
+      this.clearNativeInput();
       this.fileSelected.emit(null);
       return;
     }
     if (!file.name.toLowerCase().endsWith('.stl')) {
       this.error.set('The selected file must have an .stl extension.');
+      this.clearNativeInput();
       this.fileSelected.emit(null);
       return;
     }
     if (file.size === 0) {
       this.error.set('The selected STL file is empty.');
+      this.clearNativeInput();
       this.fileSelected.emit(null);
       return;
     }
     if (file.size > MAX_STL_FILE_SIZE_BYTES) {
       this.error.set(FILE_PICKER_TOO_LARGE_MESSAGE);
+      this.clearNativeInput();
       this.fileSelected.emit(null);
       return;
     }
     this.error.set('');
-    this.selectedFile.set(file);
     this.fileSelected.emit(file);
+  }
+
+  private clearNativeInput(): void {
+    const fileInput = this.fileInput();
+    if (fileInput) {
+      fileInput.nativeElement.value = '';
+    }
   }
 }
