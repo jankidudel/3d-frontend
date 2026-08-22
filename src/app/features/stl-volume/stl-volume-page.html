@@ -9,7 +9,10 @@
   <section class="upload card" aria-labelledby="upload-title">
     <h2 id="upload-title">Calculate your STL volume</h2>
     <p>Upload an STL to calculate its volume and estimate material weight.</p>
-    <app-stl-file-picker (fileSelected)="onFileSelected($event)" />
+    <app-stl-file-picker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    />
     <button
       class="button submit"
       type="button"

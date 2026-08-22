@@ -1,4 +1,12 @@
-import { Component, output, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  ElementRef,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import {
   FILE_PICKER_TOO_LARGE_MESSAGE,
   MAX_STL_FILE_SIZE_BYTES,
@@ -12,9 +20,29 @@ export { MAX_STL_FILE_SIZE_BYTES } from '../../../core/api/upload-limits';
   styleUrl: './stl-file-picker.scss',
 })
 export class StlFilePicker {
+  // The parent owns the upload selection. When it clears this after S3 accepts
+  // the file, clear the browser input too so the UI cannot show a stale file.
+  readonly selectedFileFromParent = input<File | null>(null);
   readonly fileSelected = output<File | null>();
   readonly selectedFile = signal<File | null>(null);
   readonly error = signal('');
+  private readonly fileInput =
+    viewChild<ElementRef<HTMLInputElement>>('fileInput');
+
+  constructor() {
+    effect(() => {
+      if (
+        this.selectedFileFromParent() === null &&
+        this.selectedFile() !== null
+      ) {
+        this.selectedFile.set(null);
+        const fileInput = this.fileInput();
+        if (fileInput) {
+          fileInput.nativeElement.value = '';
+        }
+      }
+    });
+  }
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
