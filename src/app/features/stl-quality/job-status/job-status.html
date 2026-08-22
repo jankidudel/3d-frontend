@@ -108,6 +108,13 @@
         <dd>{{ formatNumber(qualityReport['volume']) }}</dd>
         <span>cubic model units</span>
       </div>
+      @if (connectedComponentCount(); as componentCount) {
+        <div class="metric">
+          <dt>Connected components</dt>
+          <dd>{{ connectedComponentsLabel(componentCount) }}</dd>
+          <span>mesh shells</span>
+        </div>
+      }
     </dl>
 
     <section class="issues" aria-labelledby="issues-title">
@@ -135,10 +142,12 @@
     @if (issueGuidance().length > 0) {
       <section class="repair-guidance" aria-labelledby="repair-guidance-title">
         <h3 id="repair-guidance-title">How to fix these issues</h3>
-        <p class="repair-guidance-note">
-          Mesh repair tools can alter geometry. Inspect the repaired model and
-          run this check again before printing.
-        </p>
+        @if (!hasOnlyWarnings()) {
+          <p class="repair-guidance-note">
+            Mesh repair tools can alter geometry. Inspect the repaired model and
+            run this check again before printing.
+          </p>
+        }
         <div class="repair-guidance-cards">
           @for (guidance of issueGuidance(); track guidance.code) {
             <article class="repair-guidance-card">

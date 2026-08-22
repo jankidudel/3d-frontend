@@ -50,12 +50,32 @@ export class JobStatusComponent {
     normalizeValidationIssues(this.validation()?.['issues']),
   );
   readonly issueGuidance = computed(() => guidanceForIssues(this.issues()));
+  readonly hasOnlyWarnings = computed(
+    () =>
+      this.issues().length > 0 &&
+      this.issues().every((issue) => issue.severity === 'warning'),
+  );
   readonly dimensions = computed(() =>
     this.asRecord(this.report()?.['dimensions']),
   );
   readonly boundingBox = computed(() =>
     this.asRecord(this.report()?.['boundingBox']),
   );
+  readonly topology = computed(() =>
+    this.asRecord(this.report()?.['topology']),
+  );
+  readonly connectedComponentCount = computed(() => {
+    const count = this.topology()?.['connectedComponentCount'];
+    return typeof count === 'number' && Number.isInteger(count) && count >= 0
+      ? count
+      : null;
+  });
+
+  connectedComponentsLabel(count: number): string {
+    return count === 1
+      ? '1 connected component'
+      : `${count} separate components`;
+  }
 
   formatNumber(value: unknown, maximumFractionDigits = 2): string {
     return typeof value === 'number' && Number.isFinite(value)

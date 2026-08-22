@@ -5,6 +5,7 @@ export const ValidationIssueCode = {
   DuplicateTriangle: 'duplicate_triangle',
   InconsistentOrientation: 'inconsistent_orientation',
   InvalidCoordinates: 'invalid_coordinates',
+  MultipleDisconnectedShells: 'multiple_disconnected_shells',
 } as const;
 
 export type RecognisedIssueCode =
@@ -14,6 +15,7 @@ export interface DisplayIssue {
   readonly code: string;
   readonly label: string;
   readonly detail: string;
+  readonly severity: string;
 }
 
 export interface IssueGuidance {
@@ -31,6 +33,8 @@ const ISSUE_LABELS: Record<RecognisedIssueCode, string> = {
   [ValidationIssueCode.DuplicateTriangle]: 'Duplicate triangles',
   [ValidationIssueCode.InconsistentOrientation]: 'Inconsistent orientation',
   [ValidationIssueCode.InvalidCoordinates]: 'Invalid coordinates',
+  [ValidationIssueCode.MultipleDisconnectedShells]:
+    'Multiple disconnected shells',
 };
 
 const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
@@ -101,6 +105,18 @@ const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
       'Do not rely on the current file; inspect the newly exported model and run this check again.',
     ],
   },
+  [ValidationIssueCode.MultipleDisconnectedShells]: {
+    code: ValidationIssueCode.MultipleDisconnectedShells,
+    title: 'Check separate components',
+    meaning:
+      'The STL contains separate mesh components. This can be intentional, such as separate printable parts or floating details.',
+    whyItMatters:
+      'Unexpected components can be missed, misplaced or printed separately by a slicer.',
+    nextSteps: [
+      'Inspect the model in a slicer or 3D viewer to confirm every part is expected and correctly positioned.',
+      'Keep intentional separate parts; do not delete or repair them automatically.',
+    ],
+  },
 };
 
 export function normalizeValidationIssues(value: unknown): DisplayIssue[] {
@@ -110,15 +126,21 @@ export function normalizeValidationIssues(value: unknown): DisplayIssue[] {
 
   return value.map((issue) => {
     if (typeof issue === 'string') {
-      return displayIssue(issue, '');
+      return displayIssue(issue, '', 'error');
     }
     const record = asRecord(issue);
     if (!record) {
-      return { code: '', label: 'Validation issue', detail: String(issue) };
+      return {
+        code: '',
+        label: 'Validation issue',
+        detail: String(issue),
+        severity: 'error',
+      };
     }
     const code = firstString(record, ['type', 'code', 'issueType', 'name']);
     const message = firstString(record, ['message', 'description', 'detail']);
     const count = record['count'];
+    const severity = firstString(record, ['severity']) || 'error';
     const countText =
       typeof count === 'number' && Number.isFinite(count)
         ? `${new Intl.NumberFormat('en', { maximumFractionDigits: 0 }).format(count)} found`
@@ -126,6 +148,7 @@ export function normalizeValidationIssues(value: unknown): DisplayIssue[] {
     return displayIssue(
       code || 'Validation issue',
       [countText, message].filter(Boolean).join(' - '),
+      severity,
     );
   });
 }
@@ -144,7 +167,11 @@ export function guidanceForIssues(
   });
 }
 
-function displayIssue(code: string, detail: string): DisplayIssue {
+function displayIssue(
+  code: string,
+  detail: string,
+  severity: string,
+): DisplayIssue {
   const trimmedCode = code.trim();
   const recognisedCode = recognisedIssueCode(trimmedCode);
   return {
@@ -155,6 +182,7 @@ function displayIssue(code: string, detail: string): DisplayIssue {
         .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
         .replace(/^./, (letter) => letter.toUpperCase()),
     detail,
+    severity,
   };
 }
 

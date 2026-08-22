@@ -22,6 +22,7 @@ export interface Job {
   status: JobStatus;
   createdAt: string;
   upload?: JobUpload;
-  report?: unknown;
+  report?: StlQualityReport;
   failure?: JobFailure;
 }
+import { StlQualityReport } from './stl-quality-report';

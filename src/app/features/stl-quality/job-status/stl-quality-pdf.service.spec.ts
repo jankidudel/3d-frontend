@@ -73,4 +73,17 @@ describe('StlQualityPdfService', () => {
     );
     expect(result?.pdf.getNumberOfPages()).toBeGreaterThan(1);
   });
+
+  it('includes the component count when topology is supplied', async () => {
+    const service = TestBed.inject(StlQualityPdfService);
+    const result = await service.createReport({
+      ...validJob,
+      report: {
+        ...(validJob.report as object),
+        topology: { connectedComponentCount: 2 },
+      },
+    });
+
+    expect(result?.pdf.output()).toContain('2 separate components');
+  });
 });

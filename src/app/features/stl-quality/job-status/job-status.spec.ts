@@ -61,6 +61,56 @@ describe('JobStatusComponent', () => {
     expect(text).not.toContain('How to fix these issues');
   });
 
+  it('shows a one-component topology metric when supplied', () => {
+    const fixture = render({
+      ...completedJob,
+      report: { ...report, topology: { connectedComponentCount: 1 } },
+    });
+
+    expect(fixture.nativeElement.textContent).toContain(
+      '1 connected component',
+    );
+  });
+
+  it('shows disconnected-shell warning and interpretation guidance without failing validation', () => {
+    const fixture = render({
+      ...completedJob,
+      report: {
+        ...report,
+        topology: { connectedComponentCount: 2 },
+        validation: {
+          isValid: true,
+          issues: [
+            {
+              code: 'multiple_disconnected_shells',
+              count: 2,
+              severity: 'warning',
+              message:
+                'This STL contains 2 separate mesh components. This can be intentional, but check that all parts are expected before printing.',
+            },
+          ],
+        },
+      },
+    });
+    const text = fixture.nativeElement.textContent;
+
+    expect(text).toContain('Model passed validation');
+    expect(text).toContain('2 separate components');
+    expect(text).toContain('Multiple disconnected shells');
+    expect(text).toContain('Check separate components');
+    expect(text).toContain('This can be intentional');
+    expect(text).toContain('slicer or 3D viewer');
+    expect(text).not.toContain('Problems found');
+  });
+
+  it('hides the component metric safely when older reports omit topology', () => {
+    const fixture = render();
+
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'Connected components',
+    );
+  });
+
   it.each([
     ['open_edge', 'Fix open edges', 'not fully watertight'],
     [

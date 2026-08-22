@@ -98,6 +98,7 @@ export class StlQualityPdfService {
     const isValid = validation?.['isValid'] === true;
     const dimensions = this.asRecord(report['dimensions']);
     const boundingBox = this.asRecord(report['boundingBox']);
+    const topology = this.asRecord(report['topology']);
     const issues = normalizeValidationIssues(validation?.['issues']);
     const fileName = this.stringValue(report['fileName']) || job.fileName;
     const fileSize = this.formatFileSize(
@@ -142,6 +143,19 @@ export class StlQualityPdfService {
       `${this.formatNumber(report['surfaceArea'])} square model units`,
     );
     field('Volume', `${this.formatNumber(report['volume'])} cubic model units`);
+    const componentCount = topology?.['connectedComponentCount'];
+    if (
+      typeof componentCount === 'number' &&
+      Number.isInteger(componentCount) &&
+      componentCount >= 0
+    ) {
+      field(
+        'Connected components',
+        componentCount === 1
+          ? '1 connected component'
+          : `${this.formatInteger(componentCount)} separate components`,
+      );
+    }
 
     heading('Validation findings');
     if (isValid && issues.length === 0) {
