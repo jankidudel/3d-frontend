@@ -13,7 +13,7 @@ describe('uploadErrorMessage', () => {
       },
     });
     expect(uploadErrorMessage(error)).toBe(
-      'You have reached the free upload limit. Please try again in 2 minutes.',
+      'Free limit reached: 10 uploads per rolling hour and 30 per rolling 24 hours. Please try again later.',
     );
   });
 

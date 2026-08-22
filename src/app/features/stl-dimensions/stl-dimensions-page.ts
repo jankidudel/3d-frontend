@@ -162,6 +162,9 @@ export class StlDimensionsPage {
   }
 
   measureStl(): void {
+    if (this.submitting()) {
+      return;
+    }
     const file = this.selectedFile();
     if (!file) {
       this.error.set('Choose a valid STL file before measuring it.');
@@ -173,21 +176,25 @@ export class StlDimensionsPage {
       this.analytics.trackUploadStarted('dimensions_checker', file.size);
       this.uploadStartedTracked = true;
     }
-    createAndUploadStlJob(this.jobsService, file, (job) => this.job.set(job))
-      .pipe(finalize(() => this.submitting.set(false)))
-      .subscribe({
-        next: () => {
-          if (!this.uploadCompletedTracked) {
-            this.analytics.trackUploadCompleted('dimensions_checker');
-            this.uploadCompletedTracked = true;
-          }
-          const createdJob = this.job();
-          if (createdJob) {
-            this.startPolling(createdJob.id);
-          }
-        },
-        error: (error: unknown) => this.error.set(uploadErrorMessage(error)),
-      });
+    createAndUploadStlJob(this.jobsService, file, (job) =>
+      this.job.set(job),
+    ).subscribe({
+      next: () => {
+        this.selectedFile.set(null);
+        if (!this.uploadCompletedTracked) {
+          this.analytics.trackUploadCompleted('dimensions_checker');
+          this.uploadCompletedTracked = true;
+        }
+        const createdJob = this.job();
+        if (createdJob) {
+          this.startPolling(createdJob.id);
+        }
+      },
+      error: (error: unknown) => {
+        this.submitting.set(false);
+        this.error.set(uploadErrorMessage(error));
+      },
+    });
   }
 
   refreshStatus(): void {

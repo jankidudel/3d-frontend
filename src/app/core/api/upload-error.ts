@@ -1,6 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiError } from '../../models/api-error';
 import { FILE_TOO_LARGE_MESSAGE } from './upload-limits';
+import {
+  MAX_FREE_UPLOADS_PER_ROLLING_DAY,
+  MAX_FREE_UPLOADS_PER_ROLLING_HOUR,
+  ROLLING_DAY_HOURS,
+} from './upload-limits';
 
 export function uploadErrorMessage(error: unknown): string {
   const apiError =
@@ -9,23 +14,7 @@ export function uploadErrorMessage(error: unknown): string {
     return FILE_TOO_LARGE_MESSAGE;
   }
   if (apiError?.code === 'RATE_LIMITED') {
-    const seconds = apiError.retryAfterSeconds;
-    if (typeof seconds === 'number' && seconds > 0) {
-      return `You have reached the free upload limit. Please try again in ${retryTime(seconds)}.`;
-    }
-    return 'You have reached the free upload limit. Please try again later.';
+    return `Free limit reached: ${MAX_FREE_UPLOADS_PER_ROLLING_HOUR} uploads per rolling hour and ${MAX_FREE_UPLOADS_PER_ROLLING_DAY} per rolling ${ROLLING_DAY_HOURS} hours. Please try again later.`;
   }
   return 'We could not create the job or upload the file. Please try again.';
-}
-
-function retryTime(seconds: number): string {
-  if (seconds >= 3600) {
-    const hours = Math.ceil(seconds / 3600);
-    return `${hours} hour${hours === 1 ? '' : 's'}`;
-  }
-  if (seconds >= 60) {
-    const minutes = Math.ceil(seconds / 60);
-    return `${minutes} minute${minutes === 1 ? '' : 's'}`;
-  }
-  return `${Math.ceil(seconds)} second${Math.ceil(seconds) === 1 ? '' : 's'}`;
 }

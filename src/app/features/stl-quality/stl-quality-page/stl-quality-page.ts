@@ -54,6 +54,9 @@ export class StlQualityPage {
   }
 
   checkStl(): void {
+    if (this.submitting()) {
+      return;
+    }
     const file = this.selectedFile();
     if (!file) {
       this.error.set('Choose a valid STL file before starting the check.');
@@ -65,21 +68,26 @@ export class StlQualityPage {
       this.analytics.trackUploadStarted('quality_check', file.size);
       this.uploadStartedTracked = true;
     }
-    createAndUploadStlJob(this.jobsService, file, (job) => this.job.set(job))
-      .pipe(finalize(() => this.submitting.set(false)))
-      .subscribe({
-        next: () => {
-          if (!this.uploadCompletedTracked) {
-            this.analytics.trackUploadCompleted('quality_check');
-            this.uploadCompletedTracked = true;
-          }
-          const createdJob = this.job();
-          if (createdJob) {
-            this.startPolling(createdJob.id);
-          }
-        },
-        error: (error: unknown) => this.error.set(uploadErrorMessage(error)),
-      });
+    createAndUploadStlJob(this.jobsService, file, (job) =>
+      this.job.set(job),
+    ).subscribe({
+      next: () => {
+        // Upload has succeeded; do not retain the file while processing.
+        this.selectedFile.set(null);
+        if (!this.uploadCompletedTracked) {
+          this.analytics.trackUploadCompleted('quality_check');
+          this.uploadCompletedTracked = true;
+        }
+        const createdJob = this.job();
+        if (createdJob) {
+          this.startPolling(createdJob.id);
+        }
+      },
+      error: (error: unknown) => {
+        this.submitting.set(false);
+        this.error.set(uploadErrorMessage(error));
+      },
+    });
   }
 
   private startPolling(jobId: string): void {

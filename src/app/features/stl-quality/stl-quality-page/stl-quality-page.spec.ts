@@ -71,7 +71,7 @@ describe('StlQualityPage', () => {
     expect(analytics.trackUploadCompleted).toHaveBeenCalledWith(
       'quality_check',
     );
-    expect(fixture.nativeElement.textContent).toContain('Analysing your model');
+    expect(fixture.nativeElement.textContent).toContain('Uploading your model');
   });
 
   it('shows a spinner immediately while the job is being created', () => {
@@ -119,7 +119,7 @@ describe('StlQualityPage', () => {
     expect(jobsService.uploadFile).not.toHaveBeenCalled();
   });
 
-  it('shows a human-readable retry time for RATE_LIMITED', () => {
+  it('shows the shared rolling-limit message for RATE_LIMITED', () => {
     jobsService.createJob.mockReturnValue(
       throwError(
         () =>
@@ -132,7 +132,9 @@ describe('StlQualityPage', () => {
     const fixture = TestBed.createComponent(StlQualityPage);
     fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
     fixture.componentInstance.checkStl();
-    expect(fixture.componentInstance.error()).toContain('2 minutes');
+    expect(fixture.componentInstance.error()).toContain(
+      '10 uploads per rolling hour',
+    );
     expect(jobsService.getJob).not.toHaveBeenCalled();
   });
 
