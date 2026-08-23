@@ -13,6 +13,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 - Use a normal hyphen (`-`). Do not use en-dash or em-dash characters in user-facing copy, code comments, documentation, or responses.
 
+## Formatting
+
+- After completing frontend changes, run `npm run format` to format the affected repository files with Prettier before handing off the work.
+
 ## Dependency Management
 
 - Always use exact versions in `package.json`; do not use semver ranges such as `^`, `~`, `>`, or `*`.
