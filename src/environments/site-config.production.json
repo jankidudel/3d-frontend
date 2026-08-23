@@ -1,4 +1,5 @@
 {
-  "siteUrl": "",
-  "indexingEnabled": false
+  "siteUrl": "https://www.inspectmesh.com",
+  "indexingEnabled": true,
+  "privacyContactEmail": "privacy@inspectmesh.com"
 }

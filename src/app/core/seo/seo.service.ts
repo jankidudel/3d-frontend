@@ -57,7 +57,7 @@ export class SeoService {
     canonical.rel = 'canonical';
     canonical.href = canonicalUrl;
     if (!existing) {
-      this.document.head.append(canonical);
+      this.document.head.appendChild(canonical);
     }
   }
 }
