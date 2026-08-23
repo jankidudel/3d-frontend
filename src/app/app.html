@@ -1,25 +1,63 @@
 <header class="site-header">
-  <a class="brand" [routerLink]="['/']">
+  <a class="brand" [routerLink]="['/']" (click)="closeMenus()">
     <img ngSrc="/logo.webp" width="48" height="48" alt="" priority />
     <span>3D Quality Tools</span>
   </a>
-  <nav aria-label="Main navigation">
-    <a
-      [routerLink]="['/', routePath.VolumeCalculator]"
-      routerLinkActive="active"
-      >STL Volume</a
-    >
-    <a
-      [routerLink]="['/', routePath.DimensionsChecker]"
-      routerLinkActive="active"
-      >STL Dimensions</a
-    >
-    <a [routerLink]="['/', routePath.QualityCheck]" routerLinkActive="active"
-      >STL Quality Check</a
-    >
-    <a [routerLink]="['/', routePath.ManifoldChecker]" routerLinkActive="active"
-      >STL Manifold</a
-    >
+  <button
+    class="mobile-nav-toggle"
+    type="button"
+    [attr.aria-expanded]="mobileNavOpen"
+    aria-controls="main-navigation"
+    (click)="toggleMobileNav()"
+  >
+    Menu
+  </button>
+  <nav
+    id="main-navigation"
+    aria-label="Main navigation"
+    [class.mobile-nav-open]="mobileNavOpen"
+  >
+    <div class="tools-disclosure">
+      <button
+        #toolsTrigger
+        class="tools-trigger"
+        type="button"
+        [attr.aria-expanded]="toolsOpen"
+        aria-controls="tools-menu"
+        (click)="toggleTools()"
+      >
+        Tools <span class="chevron" aria-hidden="true">▾</span>
+      </button>
+      @if (toolsOpen) {
+        <div id="tools-menu" class="tools-menu" aria-label="STL tools">
+          <span class="tools-label">STL tools</span>
+          <a
+            [routerLink]="['/', routePath.QualityCheck]"
+            routerLinkActive="active"
+            (click)="closeMenus()"
+            >STL Quality Check</a
+          >
+          <a
+            [routerLink]="['/', routePath.ManifoldChecker]"
+            routerLinkActive="active"
+            (click)="closeMenus()"
+            >STL Manifold Checker</a
+          >
+          <a
+            [routerLink]="['/', routePath.DimensionsChecker]"
+            routerLinkActive="active"
+            (click)="closeMenus()"
+            >STL Dimensions Checker</a
+          >
+          <a
+            [routerLink]="['/', routePath.VolumeCalculator]"
+            routerLinkActive="active"
+            (click)="closeMenus()"
+            >STL Volume Calculator</a
+          >
+        </div>
+      }
+    </div>
   </nav>
 </header>
 

@@ -35,7 +35,75 @@ nav a {
 }
 .site-header nav {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+}
+.mobile-nav-toggle,
+.tools-trigger {
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+.tools-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem;
+}
+.tools-trigger[aria-expanded='true'],
+.tools-trigger:hover {
+  color: var(--primary);
+}
+.chevron {
+  transition: transform 150ms ease;
+}
+.tools-trigger[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+.tools-disclosure {
+  position: relative;
+}
+.tools-menu {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  display: grid;
+  min-width: 15rem;
+  padding: 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface, #fff);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 12%);
+}
+.tools-menu a {
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.3rem;
+}
+.tools-menu a:hover {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+.tools-label {
+  padding: 0.35rem 0.6rem 0.45rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.brand:focus-visible,
+nav a:focus-visible,
+.mobile-nav-toggle:focus-visible,
+.tools-trigger:focus-visible,
+.footer-links button:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+.mobile-nav-toggle {
+  display: none;
 }
 nav a:hover,
 nav a:focus-visible,
@@ -73,6 +141,29 @@ nav a.active {
     flex-direction: column;
   }
   .site-header nav {
-    flex-wrap: wrap;
+    display: none;
+    width: 100%;
+  }
+  .site-header nav.mobile-nav-open {
+    display: block;
+  }
+  .mobile-nav-toggle {
+    display: block;
+    margin-left: auto;
+    padding: 0.5rem;
+  }
+  .tools-disclosure,
+  .tools-menu {
+    width: 100%;
+  }
+  .tools-trigger {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .tools-menu {
+    position: static;
+    min-width: 0;
+    margin-top: 0.25rem;
+    box-shadow: none;
   }
 }
