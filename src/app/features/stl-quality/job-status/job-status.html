@@ -1,37 +1,13 @@
 <section class="result card" aria-labelledby="job-title" aria-live="polite">
-  @if (pollingTimedOut()) {
-    <div class="status-panel" role="status">
-      <div>
-        <h2 id="job-title">This check is still processing</h2>
-        <p>
-          Automatic status updates have stopped. You can check the status again.
-        </p>
-        <button
-          class="button button-secondary"
-          type="button"
-          (click)="refresh.emit()"
-          [disabled]="refreshing()"
-        >
-          {{ refreshing() ? 'Checking…' : 'Check again' }}
-        </button>
-      </div>
-    </div>
-  } @else if (processing()) {
-    <div class="progress-panel" role="status">
-      <span class="spinner" aria-hidden="true"></span>
-      <div>
-        <h2 id="job-title">
-          {{ uploading() ? 'Uploading your model…' : 'Analysing your model…' }}
-        </h2>
-        <p>
-          {{
-            uploading()
-              ? 'Your STL is being securely uploaded.'
-              : 'We’ll show the report here as soon as the automatic check finishes.'
-          }}
-        </p>
-      </div>
-    </div>
+  @if (pollingTimedOut() || processing()) {
+    <app-stl-job-progress
+      [job]="job()"
+      [uploading]="uploading()"
+      [pollingTimedOut]="pollingTimedOut()"
+      [refreshing]="refreshing()"
+      headingId="job-title"
+      (refresh)="refresh.emit()"
+    />
   } @else if (job().status === jobStatus.Failed) {
     <div class="status-panel status-panel-error" role="alert">
       <span class="status-icon" aria-hidden="true">!</span>
@@ -238,16 +214,5 @@
         </p>
       </div>
     </div>
-  }
-
-  @if (processing()) {
-    <button
-      class="refresh"
-      type="button"
-      (click)="refresh.emit()"
-      [disabled]="refreshing() || uploading()"
-    >
-      {{ refreshing() ? 'Checking…' : 'Check again' }}
-    </button>
   }
 </section>

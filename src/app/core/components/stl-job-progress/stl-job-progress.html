@@ -1,0 +1,42 @@
+@if (pollingTimedOut()) {
+  <div class="status-panel" role="status">
+    <div>
+      <h2 [attr.id]="headingId()">This check is still processing</h2>
+      <p>
+        Automatic status updates have stopped. You can check the status again.
+      </p>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="refresh.emit()"
+        [disabled]="refreshing()"
+      >
+        {{ refreshing() ? 'Checking…' : 'Check again' }}
+      </button>
+    </div>
+  </div>
+} @else if (processing()) {
+  <div class="progress-panel" role="status">
+    <span class="spinner" aria-hidden="true"></span>
+    <div>
+      <h2 [attr.id]="headingId()">
+        {{ uploading() ? 'Uploading your model…' : 'Analysing your model…' }}
+      </h2>
+      <p>
+        {{
+          uploading()
+            ? 'Your STL is being securely uploaded.'
+            : 'We’ll show the result here as soon as the automatic check finishes.'
+        }}
+      </p>
+    </div>
+  </div>
+  <button
+    class="button button-secondary refresh"
+    type="button"
+    (click)="refresh.emit()"
+    [disabled]="refreshing() || uploading()"
+  >
+    {{ refreshing() ? 'Checking…' : 'Check again' }}
+  </button>
+}

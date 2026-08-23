@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
 import {
   createAndUploadStlJob,
   PollingTimeoutError,
@@ -26,7 +27,7 @@ type ReportRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-stl-manifold-page',
-  imports: [StlFilePicker],
+  imports: [StlFilePicker, StlJobProgress],
   templateUrl: './stl-manifold-page.html',
   styleUrl: './stl-manifold-page.scss',
 })
@@ -155,9 +156,7 @@ export class StlManifoldPage {
       return;
     }
     this.analytics.trackFullQualityReportOpened();
-    void this.router.navigate(['/stl-quality-check'], {
-      queryParams: { job: job.id },
-    });
+    void this.router.navigate(['/stl-quality-check'], { state: { job } });
   }
 
   checkAnotherFile(): void {

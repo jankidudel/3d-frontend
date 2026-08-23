@@ -1,0 +1,32 @@
+.status-panel,
+.progress-panel {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.status-panel h2,
+.progress-panel h2 {
+  margin-top: 0;
+}
+.spinner {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border: 0.2rem solid var(--accent);
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+.refresh {
+  margin-top: 1rem;
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

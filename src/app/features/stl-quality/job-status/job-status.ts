@@ -11,6 +11,7 @@ import { Job, JobStatus } from '../../../models/job';
 import { jobFailureMessage } from '../../../models/job-failure';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { StlQualityPdfService } from './stl-quality-pdf.service';
+import { StlJobProgress } from '../../../core/components/stl-job-progress/stl-job-progress';
 import {
   guidanceForIssues,
   normalizeValidationIssues,
@@ -21,7 +22,7 @@ interface QualityReport {
 }
 @Component({
   selector: 'app-job-status',
-  imports: [JsonPipe],
+  imports: [JsonPipe, StlJobProgress],
   templateUrl: './job-status.html',
   styleUrl: './job-status.scss',
 })

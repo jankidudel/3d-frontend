@@ -41,28 +41,15 @@
       aria-labelledby="results-title"
       aria-live="polite"
     >
-      @if (processing()) {
-        <div class="progress" role="status">
-          <span class="spinner large" aria-hidden="true"></span>
-          <div>
-            <h2 id="results-title">
-              {{
-                submitting() ? 'Uploading your model…' : 'Measuring your model…'
-              }}
-            </h2>
-            <p>
-              The dimensions will appear automatically when analysis finishes.
-            </p>
-          </div>
-        </div>
-        <button
-          class="text-button"
-          type="button"
-          (click)="refreshStatus()"
-          [disabled]="refreshing() || submitting()"
-        >
-          {{ refreshing() ? 'Checking…' : 'Check again' }}
-        </button>
+      @if (processing() || pollingTimedOut()) {
+        <app-stl-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="pollingTimedOut()"
+          [refreshing]="refreshing()"
+          headingId="results-title"
+          (refresh)="refreshStatus()"
+        />
       } @else if (currentJob.status === jobStatus.Failed) {
         <div class="failure" role="alert">
           <span class="status-icon" aria-hidden="true">!</span>
