@@ -24,6 +24,7 @@
       type="button"
       (click)="measureStl()"
       [disabled]="!selectedFile() || submitting()"
+      [class.is-loading]="submitting()"
     >
       @if (submitting()) {
         <span class="spinner" aria-hidden="true"></span>

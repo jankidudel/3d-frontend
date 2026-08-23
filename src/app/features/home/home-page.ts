@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
+import { HOME_TOOL_GROUPS } from './home-tools';
 
 @Component({
   selector: 'app-home-page',
@@ -9,6 +10,7 @@ import { SeoService } from '../../core/seo/seo.service';
   styleUrl: './home-page.scss',
 })
 export class HomePage {
+  protected readonly toolGroups = HOME_TOOL_GROUPS;
   private readonly seo = inject(SeoService);
 
   constructor() {

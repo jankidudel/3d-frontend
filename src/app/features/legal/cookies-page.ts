@@ -9,9 +9,9 @@ import { SeoService } from '../../core/seo/seo.service';
       <p class="eyebrow">Your choices</p>
       <h1>Cookies</h1>
       <p>
-        Analytics cookies are optional. If accepted, Google Analytics 4 helps us
-        measure anonymous usage patterns such as page views and whether the STL
-        checking flow succeeds or fails.
+        Analytics cookies are optional. If accepted, Google Analytics helps us
+        measure usage patterns such as page views and whether the STL checking
+        flow succeeds or fails.
       </p>
       <p>
         Google Analytics is not loaded and no analytics events are sent before

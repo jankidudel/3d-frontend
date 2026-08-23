@@ -85,7 +85,24 @@ describe('StlQualityPage', () => {
     expect(
       fixture.nativeElement.querySelector('.submit .spinner'),
     ).not.toBeNull();
+    expect(
+      fixture.nativeElement
+        .querySelector('.submit')
+        .classList.contains('is-loading'),
+    ).toBe(true);
     expect(fixture.nativeElement.textContent).toContain('Creating job…');
+  });
+
+  it('does not show a loading state before a file is selected', () => {
+    const fixture = TestBed.createComponent(StlQualityPage);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.submit .spinner')).toBeNull();
+    expect(
+      fixture.nativeElement
+        .querySelector('.submit')
+        .classList.contains('is-loading'),
+    ).toBe(false);
   });
 
   it('shows an API failure', () => {

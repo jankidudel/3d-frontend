@@ -15,6 +15,19 @@ describe('HomePage', () => {
     ) as HTMLAnchorElement[];
 
     expect(fixture.nativeElement.textContent).toContain('Choose a tool');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Currently supporting STL files.',
+    );
+    expect(fixture.nativeElement.textContent).toContain('STL tools');
+    expect(fixture.nativeElement.querySelector('h1')?.textContent?.trim()).toBe(
+      '3D Quality Tools',
+    );
+    expect(fixture.nativeElement.querySelector('h2')?.textContent?.trim()).toBe(
+      'Choose a tool',
+    );
+    expect(fixture.nativeElement.querySelector('h3')?.textContent?.trim()).toBe(
+      'STL tools',
+    );
     expect(fixture.nativeElement.textContent).toContain('STL Quality Check');
     expect(fixture.nativeElement.textContent).toContain(
       'STL Dimensions Checker',

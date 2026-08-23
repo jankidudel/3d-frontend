@@ -2,66 +2,29 @@
   <p class="eyebrow">3D printing file tools</p>
   <h1>3D Quality Tools</h1>
   <p class="lead">
-    Practical STL tools to help you prepare a model before it reaches your
-    slicer.
+    Free tools to check, measure and prepare 3D printing files.
   </p>
 
   <section class="tools" aria-labelledby="tools-title">
     <div class="section-intro">
       <h2 id="tools-title">Choose a tool</h2>
-      <p>
-        STL files do not reliably store unit information. Our dimensions tool
-        lets you choose the design unit before converting or scaling
-        measurements.
-      </p>
+      <p>Currently supporting STL files.</p>
     </div>
 
-    <div class="tool-grid">
-      <article class="tool-card card">
-        <span class="tool-icon" aria-hidden="true">✓</span>
-        <h3>STL Quality Check</h3>
-        <p>
-          Find common mesh problems before printing, including open edges,
-          non-manifold geometry, duplicate triangles and orientation issues.
-        </p>
-        <a class="button" routerLink="/stl-quality-check">Check an STL file</a>
-      </article>
-
-      <article class="tool-card card">
-        <span class="tool-icon" aria-hidden="true">⌁</span>
-        <h3>STL Manifold Checker</h3>
-        <p>
-          Check whether an STL is closed and manifold, with clear counts for
-          open edges, non-manifold edges and separate shells.
-        </p>
-        <a class="button" routerLink="/stl-manifold-checker"
-          >Check STL topology</a
-        >
-      </article>
-
-      <article class="tool-card card">
-        <span class="tool-icon" aria-hidden="true">↔</span>
-        <h3>STL Dimensions Checker</h3>
-        <p>
-          Measure an STL, convert units, calculate proportional scaling and
-          check whether it fits your printer.
-        </p>
-        <a class="button" routerLink="/stl-dimensions-checker"
-          >Measure an STL file</a
-        >
-      </article>
-
-      <article class="tool-card card">
-        <span class="tool-icon" aria-hidden="true">◈</span>
-        <h3>STL Volume Calculator</h3>
-        <p>
-          Calculate your model’s volume, convert units and estimate approximate
-          material weight.
-        </p>
-        <a class="button" routerLink="/stl-volume-calculator"
-          >Calculate STL volume</a
-        >
-      </article>
-    </div>
+    @for (group of toolGroups; track group.id) {
+      <section class="tool-group" [attr.aria-labelledby]="group.id">
+        <h3 [id]="group.id">{{ group.title }}</h3>
+        <div class="tool-grid">
+          @for (tool of group.tools; track tool.route) {
+            <article class="tool-card card">
+              <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
+              <h4>{{ tool.title }}</h4>
+              <p>{{ tool.description }}</p>
+              <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
+            </article>
+          }
+        </div>
+      </section>
+    }
   </section>
 </main>
