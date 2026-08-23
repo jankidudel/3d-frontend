@@ -24,6 +24,7 @@ describe('HomePage', () => {
     );
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/stl-quality-check',
+      '/stl-manifold-checker',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
     ]);

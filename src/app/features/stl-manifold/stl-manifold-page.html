@@ -1,0 +1,153 @@
+<main class="page manifold-page">
+  <p class="eyebrow">STL topology check</p>
+  <h1>STL Manifold Checker</h1>
+  <p class="lead">
+    Find out whether your STL is manifold and closed before sending it to a
+    slicer.
+  </p>
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Check your STL topology</h2>
+    <p>Upload an STL file up to 25 MiB.</p>
+    <app-stl-file-picker
+      #filePicker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    />
+    <button
+      class="button submit"
+      type="button"
+      (click)="checkManifold()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job…' : 'Check manifold status' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section
+      class="results card"
+      aria-live="polite"
+      aria-labelledby="results-title"
+    >
+      @if (processing()) {
+        <h2 id="results-title">Checking your model…</h2>
+        <p>
+          The topology result will appear automatically when analysis finishes.
+        </p>
+        <button
+          class="text-button"
+          type="button"
+          (click)="refreshStatus()"
+          [disabled]="refreshing()"
+        >
+          {{ refreshing() ? 'Checking…' : 'Check again' }}
+        </button>
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="results-title">We couldn’t analyse this STL file</h2>
+        <p role="alert">{{ jobFailureMessage(currentJob.failure) }}</p>
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="checkAnotherFile()"
+        >
+          Upload another file
+        </button>
+      } @else if (report()) {
+        @if (category() === 'manifold') {
+          <div class="primary positive">
+            <p class="eyebrow">Topology result</p>
+            <h2 id="results-title">Manifold and closed</h2>
+            <p>No open or non-manifold edges were found.</p>
+          </div>
+        }
+        @if (category() === 'open_edges') {
+          <div class="primary warning">
+            <p class="eyebrow">Topology result</p>
+            <h2 id="results-title">Open edges found</h2>
+            <p>This model is not closed because it has unsealed boundaries.</p>
+          </div>
+        }
+        @if (category() === 'non_manifold') {
+          <div class="primary warning">
+            <p class="eyebrow">Topology result</p>
+            <h2 id="results-title">Non-manifold edges found</h2>
+            <p>
+              This model is not manifold because some edges are shared in an
+              unsupported way.
+            </p>
+          </div>
+        }
+        @if (category() === 'both') {
+          <div class="primary warning">
+            <p class="eyebrow">Topology result</p>
+            <h2 id="results-title">Open and non-manifold edges found</h2>
+            <p>This model is not manifold or closed.</p>
+          </div>
+        }
+        <dl class="metrics">
+          <div>
+            <dt>Open edges</dt>
+            <dd>{{ formatNumber(openEdges()) }}</dd>
+          </div>
+          <div>
+            <dt>Non-manifold edges</dt>
+            <dd>{{ formatNumber(nonManifoldEdges()) }}</dd>
+          </div>
+          <div>
+            <dt>Connected shells</dt>
+            <dd>{{ formatNumber(shellCount()) }}</dd>
+          </div>
+          <div>
+            <dt>Triangles</dt>
+            <dd>{{ formatNumber(report()?.['triangleCount']) }}</dd>
+          </div>
+        </dl>
+        @if (openEdges() > 0) {
+          <p>
+            <strong>Open edges:</strong> holes or unsealed boundaries in the
+            mesh.
+          </p>
+        }
+        @if (nonManifoldEdges() > 0) {
+          <p>
+            <strong>Non-manifold edges:</strong> geometry shared in a way that
+            can confuse slicers or repair tools.
+          </p>
+        }
+        @if (shellCount() > 1) {
+          <p>
+            <strong>Multiple disconnected shells:</strong> separate mesh parts
+            were found; this can be intentional.
+          </p>
+        }
+        @if (hasOrientationIssue()) {
+          <p>
+            <strong>Inconsistent orientation:</strong> the surface direction is
+            inconsistent; volume results may be unreliable.
+          </p>
+        }
+        <section class="fix" aria-labelledby="fix-title">
+          <h3 id="fix-title">How to fix it</h3>
+          <p>
+            Use your slicer’s repair function, Blender, Meshmixer, or the model
+            source application. Export the repaired model, then upload it again
+            to confirm the result.
+          </p>
+        </section>
+        <div class="actions">
+          <button class="button" type="button" (click)="viewFullReport()">
+            View full STL quality report</button
+          ><button
+            class="button button-secondary"
+            type="button"
+            (click)="checkAnotherFile()"
+          >
+            Check another file
+          </button>
+        </div>
+      }
+    </section>
+  }
+</main>

@@ -6,6 +6,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { JobsService } from '../../../core/api/jobs.service';
 import { uploadErrorMessage } from '../../../core/api/upload-error';
 import {
@@ -30,6 +31,7 @@ export class StlQualityPage {
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute, { optional: true });
   private polling?: Subscription;
   private uploadStartedTracked = false;
   private uploadCompletedTracked = false;
@@ -50,6 +52,24 @@ export class StlQualityPage {
       path: '/stl-quality-check',
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
+    const jobId = this.route?.snapshot.queryParamMap.get('job');
+    if (jobId) {
+      this.jobsService.getJob(jobId).subscribe({
+        next: (job) => {
+          this.updateJob(job);
+          if (
+            job.status === JobStatus.Created ||
+            job.status === JobStatus.Processing
+          ) {
+            this.startPolling(job.id);
+          }
+        },
+        error: () =>
+          this.error.set(
+            'We could not open that quality report. Upload the STL to run a new check.',
+          ),
+      });
+    }
   }
 
   onFileSelected(file: File | null): void {

@@ -8,7 +8,10 @@ import { ANALYTICS_CONFIG } from './analytics-config';
 import { CookieConsentService } from './cookie-consent.service';
 
 export type AnalyticsTool =
-  'quality_check' | 'dimensions_checker' | 'volume_calculator';
+  | 'quality_check'
+  | 'dimensions_checker'
+  | 'volume_calculator'
+  | 'manifold_checker';
 export type AnalyticsMaterial =
   'pla' | 'petg' | 'abs' | 'tpu' | 'resin' | 'custom';
 
@@ -21,6 +24,8 @@ export const AnalyticsEvent = {
   ScaleCalculated: 'stl_scale_calculated',
   PrinterFitChecked: 'stl_printer_fit_checked',
   MaterialEstimateUsed: 'stl_material_estimate_used',
+  ManifoldResult: 'stl_manifold_result',
+  FullQualityReportOpened: 'stl_full_quality_report_opened',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -133,6 +138,18 @@ export class AnalyticsService {
     this.sendEvent(AnalyticsEvent.MaterialEstimateUsed, {
       tool: 'volume_calculator',
       material,
+    });
+  }
+
+  trackManifoldResult(
+    category: 'manifold' | 'open_edges' | 'non_manifold' | 'both',
+  ): void {
+    this.sendEvent(AnalyticsEvent.ManifoldResult, { category });
+  }
+
+  trackFullQualityReportOpened(): void {
+    this.sendEvent(AnalyticsEvent.FullQualityReportOpened, {
+      tool: 'manifold_checker',
     });
   }
 

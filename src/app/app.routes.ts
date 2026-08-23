@@ -16,6 +16,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ManifoldChecker,
+    loadComponent: () =>
+      import('./features/stl-manifold/stl-manifold-page').then(
+        (m) => m.StlManifoldPage,
+      ),
+  },
+  {
     path: PublicRoutePath.DimensionsChecker,
     loadComponent: () =>
       import('./features/stl-dimensions/stl-dimensions-page').then(

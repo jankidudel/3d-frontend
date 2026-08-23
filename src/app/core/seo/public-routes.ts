@@ -1,12 +1,11 @@
-import routePaths from './public-routes.json';
-
 export const PublicRoutePath = {
-  Home: routePaths.home,
-  QualityCheck: routePaths.qualityCheck,
-  DimensionsChecker: routePaths.dimensionsChecker,
-  VolumeCalculator: routePaths.volumeCalculator,
-  Privacy: routePaths.privacy,
-  Cookies: routePaths.cookies,
+  Home: '',
+  QualityCheck: 'stl-quality-check',
+  ManifoldChecker: 'stl-manifold-checker',
+  DimensionsChecker: 'stl-dimensions-checker',
+  VolumeCalculator: 'stl-volume-calculator',
+  Privacy: 'privacy',
+  Cookies: 'cookies',
 } as const;
 
 export const publicRouteUrls = Object.values(PublicRoutePath).map(

@@ -1,11 +1,13 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
+import { PublicRoutePath } from './core/seo/public-routes';
 
 export const serverRoutes: ServerRoute[] = [
-  { path: '', renderMode: RenderMode.Prerender },
-  { path: 'stl-quality-check', renderMode: RenderMode.Prerender },
-  { path: 'stl-dimensions-checker', renderMode: RenderMode.Prerender },
-  { path: 'stl-volume-calculator', renderMode: RenderMode.Prerender },
-  { path: 'privacy', renderMode: RenderMode.Prerender },
-  { path: 'cookies', renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Home, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.QualityCheck, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.ManifoldChecker, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.DimensionsChecker, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.VolumeCalculator, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Privacy, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Cookies, renderMode: RenderMode.Prerender },
   { path: '**', renderMode: RenderMode.Prerender },
 ];

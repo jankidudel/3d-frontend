@@ -1,13 +1,12 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { PublicRoutePath } from '../src/app/core/seo/public-routes.ts';
 
 type BuildConfiguration = 'development' | 'production';
 interface SiteConfig {
   readonly siteUrl: unknown;
   readonly indexingEnabled: unknown;
 }
-
-type PublicRoutes = Record<string, string>;
 
 const configuration = process.argv[2];
 if (configuration !== 'development' && configuration !== 'production') {
@@ -25,12 +24,6 @@ const configPath = resolve(
   `site-config.${configuration as BuildConfiguration}.json`,
 );
 const config: SiteConfig = JSON.parse(await readFile(configPath, 'utf8'));
-const routePaths: PublicRoutes = JSON.parse(
-  await readFile(
-    resolve(frontendRoot, 'src', 'app', 'core', 'seo', 'public-routes.json'),
-    'utf8',
-  ),
-);
 const siteUrl = validSiteUrl(config.siteUrl);
 const indexingEnabled = config.indexingEnabled === true && siteUrl !== null;
 
@@ -46,7 +39,7 @@ const sitemapPath = resolve(publicDirectory, 'sitemap.xml');
 if (!indexingEnabled) {
   await rm(sitemapPath, { force: true });
 } else {
-  const entries = Object.values(routePaths)
+  const entries = Object.values(PublicRoutePath)
     .map((path) => `  <url><loc>${siteUrl}/${path}</loc></url>`)
     .join('\n');
   await writeFile(

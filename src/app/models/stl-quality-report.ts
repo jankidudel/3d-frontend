@@ -6,6 +6,9 @@ export interface StlQualityReport {
 
 export interface StlTopology {
   readonly connectedComponentCount?: number;
+  readonly openEdgeCount?: number;
+  readonly nonManifoldEdgeCount?: number;
+  readonly hasInconsistentOrientation?: boolean;
 }
 
 export interface StlValidation {

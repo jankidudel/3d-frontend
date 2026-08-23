@@ -1,0 +1,60 @@
+.checker,
+.results {
+  max-width: 46rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+app-stl-file-picker {
+  display: block;
+  margin-block: 1.5rem;
+}
+.submit {
+  width: 100%;
+}
+.error {
+  color: var(--error);
+  font-weight: 700;
+}
+.primary {
+  border-left: 0.35rem solid var(--accent);
+  padding-left: 1rem;
+}
+.primary.warning {
+  border-color: var(--warning);
+}
+.primary h2 {
+  margin-block: 0.25rem;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.metrics div {
+  background: var(--surface);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.metrics dt {
+  color: var(--muted);
+}
+.metrics dd {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.fix {
+  margin-top: 1.5rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+@media (max-width: 36rem) {
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+}

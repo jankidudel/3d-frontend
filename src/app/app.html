@@ -1,17 +1,24 @@
 <header class="site-header">
-  <a class="brand" routerLink="/">
+  <a class="brand" [routerLink]="['/']">
     <img ngSrc="/logo.webp" width="48" height="48" alt="" priority />
     <span>3D Quality Tools</span>
   </a>
   <nav aria-label="Main navigation">
-    <a routerLink="/stl-volume-calculator" routerLinkActive="active"
+    <a
+      [routerLink]="['/', routePath.VolumeCalculator]"
+      routerLinkActive="active"
       >STL Volume</a
     >
-    <a routerLink="/stl-dimensions-checker" routerLinkActive="active"
+    <a
+      [routerLink]="['/', routePath.DimensionsChecker]"
+      routerLinkActive="active"
       >STL Dimensions</a
     >
-    <a routerLink="/stl-quality-check" routerLinkActive="active"
+    <a [routerLink]="['/', routePath.QualityCheck]" routerLinkActive="active"
       >STL Quality Check</a
+    >
+    <a [routerLink]="['/', routePath.ManifoldChecker]" routerLinkActive="active"
+      >STL Manifold</a
     >
   </nav>
 </header>
@@ -21,8 +28,8 @@
 <footer class="site-footer">
   <p>Simple, browser-friendly tools for better 3D prints.</p>
   <nav class="footer-links" aria-label="Legal and cookie settings">
-    <a routerLink="/privacy">Privacy</a>
-    <a routerLink="/cookies">Cookies</a>
+    <a [routerLink]="['/', routePath.Privacy]">Privacy</a>
+    <a [routerLink]="['/', routePath.Cookies]">Cookies</a>
     <button type="button" (click)="consent.changeChoice()">
       Cookie settings
     </button>
