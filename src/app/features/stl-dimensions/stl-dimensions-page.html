@@ -74,6 +74,13 @@
           <p class="file-name">
             {{ report()?.['fileName'] || currentJob.fileName }}
           </p>
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="filePicker.open()"
+          >
+            Check another file
+          </button>
         </div>
 
         <p class="primary-dimensions">

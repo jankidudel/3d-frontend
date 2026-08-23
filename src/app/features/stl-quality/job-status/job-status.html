@@ -54,6 +54,13 @@
         <p>{{ qualityReport['fileName'] || job().fileName }}</p>
       </div>
       <div class="report-actions">
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="uploadAnotherFile.emit()"
+        >
+          Check another file
+        </button>
         <button class="button" type="button" (click)="downloadReport()">
           Download JSON report
         </button>

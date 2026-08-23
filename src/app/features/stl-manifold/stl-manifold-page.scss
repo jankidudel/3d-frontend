@@ -11,6 +11,16 @@ app-stl-file-picker {
 .submit {
   width: 100%;
 }
+.spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  border: 0.15rem solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
 .error {
   color: var(--error);
   font-weight: 700;
@@ -56,5 +66,10 @@ app-stl-file-picker {
 @media (max-width: 36rem) {
   .metrics {
     grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
   }
 }

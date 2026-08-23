@@ -19,6 +19,9 @@
       (click)="checkManifold()"
       [disabled]="!selectedFile() || submitting()"
     >
+      @if (submitting()) {
+        <span class="spinner" aria-hidden="true"></span>
+      }
       {{ submitting() ? 'Creating job…' : 'Check manifold status' }}
     </button>
     @if (error(); as message) {
