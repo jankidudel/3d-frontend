@@ -1,5 +1,6 @@
 export const PublicRoutePath = {
   Home: '',
+  AllTools: 'tools',
   Tools: 'stl-tools',
   QualityCheck: 'stl-quality-checker',
   ManifoldChecker: 'stl-manifold-checker',
@@ -23,6 +24,7 @@ export const PublicRouteUrl = Object.fromEntries(
 
 export const canonicalPublicRoutePaths = [
   PublicRoutePath.Home,
+  PublicRoutePath.AllTools,
   PublicRoutePath.Tools,
   PublicRoutePath.QualityCheck,
   PublicRoutePath.ManifoldChecker,

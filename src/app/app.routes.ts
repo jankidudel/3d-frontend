@@ -3,6 +3,11 @@ import { PublicRoutePath } from './core/seo/public-routes';
 
 export const routes: Routes = [
   {
+    path: PublicRoutePath.AllTools,
+    loadComponent: () =>
+      import('./features/tools/tools-page').then((m) => m.ToolsPage),
+  },
+  {
     path: PublicRoutePath.Tools,
     loadComponent: () =>
       import('./features/stl-tools/stl-tools-page').then((m) => m.StlToolsPage),

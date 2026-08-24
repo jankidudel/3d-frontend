@@ -22,6 +22,7 @@ describe('App', () => {
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/tools',
       '/stl-tools',
       '/stl-quality-checker',
       '/stl-watertight-checker',
@@ -47,7 +48,8 @@ describe('App', () => {
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.textContent?.trim())).toEqual([
-      'All STL tools',
+      'All 3D tools',
+      'STL tools',
       'STL Quality Checker',
       'STL Watertight Checker',
       'STL Manifold Checker',
@@ -56,6 +58,7 @@ describe('App', () => {
       'STL Volume Calculator',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/tools',
       '/stl-tools',
       '/stl-quality-checker',
       '/stl-watertight-checker',

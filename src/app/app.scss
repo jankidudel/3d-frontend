@@ -89,6 +89,15 @@ nav a {
   padding: 0.5rem 0.6rem;
   border-radius: 0.3rem;
 }
+.tools-menu .tools-group-heading {
+  margin-top: 0.35rem;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  padding-top: 0.75rem;
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
 .tools-menu a:hover {
   background: color-mix(in srgb, var(--primary) 8%, transparent);
 }

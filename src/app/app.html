@@ -20,16 +20,22 @@
     <div class="tools-disclosure">
       <a
         class="tools-trigger"
-        [routerLink]="['/', routePath.Tools]"
+        [routerLink]="['/', routePath.AllTools]"
         (click)="closeMenus()"
-        >STL Tools</a
+        >Tools</a
       >
-      <div id="tools-menu" class="tools-menu" aria-label="STL tools">
+      <div id="tools-menu" class="tools-menu" aria-label="Tools">
         <a
-          [routerLink]="['/', routePath.Tools]"
+          [routerLink]="['/', routePath.AllTools]"
           routerLinkActive="active"
           (click)="closeMenus()"
-          >All STL tools</a
+          >All 3D tools</a
+        >
+        <a
+          class="tools-group-heading"
+          [routerLink]="['/', routePath.Tools]"
+          (click)="closeMenus()"
+          >STL tools</a
         >
         <a
           [routerLink]="['/', routePath.QualityCheck]"

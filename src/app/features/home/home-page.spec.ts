@@ -43,6 +43,7 @@ describe('HomePage', () => {
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
       '/stl-tools',
+      '/tools',
     ]);
   });
 });

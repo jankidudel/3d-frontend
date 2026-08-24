@@ -49,11 +49,11 @@
     </div>
 
     <div class="report-heading">
-      <div>
-        <h3>Model metrics</h3>
-        <p>{{ qualityReport['fileName'] || job().fileName }}</p>
-      </div>
-      <div class="report-actions">
+      <div class="report-header-row">
+        <div>
+          <h3>Model metrics</h3>
+          <p>{{ qualityReport['fileName'] || job().fileName }}</p>
+        </div>
         <button
           class="button button-secondary"
           type="button"
@@ -61,6 +61,8 @@
         >
           Check another file
         </button>
+      </div>
+      <div class="report-actions">
         <button class="button" type="button" (click)="downloadReport()">
           Download JSON report
         </button>

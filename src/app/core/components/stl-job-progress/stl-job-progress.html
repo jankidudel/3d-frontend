@@ -17,19 +17,19 @@
   </div>
 } @else if (processing()) {
   <div class="progress-panel" role="status">
-    <span class="spinner" aria-hidden="true"></span>
-    <div>
+    <div class="status-row" aria-live="polite">
       <h2 [attr.id]="headingId()">
         {{ uploading() ? 'Uploading your model…' : 'Analysing your model…' }}
       </h2>
-      <p>
-        {{
-          uploading()
-            ? 'Your STL is being securely uploaded.'
-            : 'We’ll show the result here as soon as the automatic check finishes.'
-        }}
-      </p>
+      <span class="spinner" aria-hidden="true"></span>
     </div>
+    <p>
+      {{
+        uploading()
+          ? 'Your STL is being securely uploaded.'
+          : 'We’ll show the result here as soon as the automatic check finishes.'
+      }}
+    </p>
   </div>
   <button
     class="button button-secondary refresh"
