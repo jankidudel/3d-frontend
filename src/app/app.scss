@@ -78,20 +78,19 @@ nav a {
   background: var(--surface, #fff);
   box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 12%);
 }
+.tools-disclosure:hover .tools-menu,
+.tools-disclosure:focus-within .tools-menu {
+  display: grid;
+}
+.tools-menu {
+  display: none;
+}
 .tools-menu a {
   padding: 0.5rem 0.6rem;
   border-radius: 0.3rem;
 }
 .tools-menu a:hover {
   background: color-mix(in srgb, var(--primary) 8%, transparent);
-}
-.tools-label {
-  padding: 0.35rem 0.6rem 0.45rem;
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 .brand:focus-visible,
 nav a:focus-visible,
@@ -157,11 +156,13 @@ nav a.active {
     width: 100%;
   }
   .tools-trigger {
-    justify-content: space-between;
+    display: block;
     width: 100%;
+    padding: 0.5rem;
   }
   .tools-menu {
     position: static;
+    display: grid;
     min-width: 0;
     margin-top: 0.25rem;
     box-shadow: none;

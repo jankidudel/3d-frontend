@@ -1,6 +1,6 @@
 <main class="page">
   <p class="eyebrow">Free mesh preflight</p>
-  <h1>STL Quality Check</h1>
+  <h1>STL Quality Checker</h1>
   <p class="lead">
     Check an STL file for common mesh problems before 3D printing, including
     open edges, non-manifold geometry, duplicate triangles and orientation
@@ -25,7 +25,7 @@
       @if (submitting()) {
         <span class="spinner" aria-hidden="true"></span>
       }
-      {{ submitting() ? 'Creating job…' : 'Check STL' }}
+      {{ submitting() ? 'Creating job…' : 'Check STL quality' }}
     </button>
     @if (error(); as message) {
       <p class="error" role="alert">{{ message }}</p>
@@ -50,6 +50,36 @@
       helping you avoid failed slicing or unexpected gaps in a print. Submit
       your STL above to start a job. The report appears automatically when the
       analysis finishes.
+    </p>
+  </section>
+  <section class="content">
+    <h2>How it works</h2>
+    <p>
+      Upload an STL and InspectMesh checks its triangles, edges and surface
+      orientation for common mesh problems.
+    </p>
+    <h2>What the results mean</h2>
+    <p>
+      Open edges and non-manifold edges can prevent a clean solid. Duplicate or
+      degenerate triangles add invalid geometry, while orientation issues can
+      affect inside and outside calculations. Ready for slicing means these
+      checks found no listed mesh blockers, not that every printer setting is
+      correct.
+    </p>
+    <h2>FAQ</h2>
+    <h3>What is an open edge?</h3>
+    <p>It is an edge used by only one triangle, often indicating a hole.</p>
+    <h3>What is a degenerate triangle?</h3>
+    <p>
+      It has no usable area because its vertices collapse together or lie on a
+      line.
+    </p>
+    <h3>Should I repair duplicate triangles?</h3>
+    <p>Usually yes, because overlapping faces can confuse downstream tools.</p>
+    <p>
+      <a [href]="routeUrl.ManifoldChecker">STL Manifold Checker</a> ·
+      <a [href]="routeUrl.WatertightChecker">STL Watertight Checker</a> ·
+      <a [href]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
 </main>

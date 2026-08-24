@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { App } from './app';
 
@@ -15,44 +15,21 @@ describe('App', () => {
     expect(TestBed.createComponent(App).componentInstance).toBeTruthy();
   });
 
-  it('opens and closes the tools disclosure with click, outside click, and Escape', () => {
+  it('renders ordinary anchors for the STL tool hub and individual tools', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    const trigger = fixture.nativeElement.querySelector(
-      '.tools-trigger',
-    ) as HTMLButtonElement;
-
-    trigger.click();
-    fixture.detectChanges();
-    expect(trigger.getAttribute('aria-expanded')).toBe('true');
-    expect(
+    const links = Array.from(
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
-    ).toHaveLength(4);
-
-    document.body.click();
-    fixture.detectChanges();
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
-
-    trigger.click();
-    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-    fixture.detectChanges();
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    expect(document.activeElement).toBe(trigger);
-  });
-
-  it('closes the tools disclosure after route navigation', async () => {
-    const fixture = TestBed.createComponent(App);
-    const router = TestBed.inject(Router);
-    fixture.detectChanges();
-    const trigger = fixture.nativeElement.querySelector(
-      '.tools-trigger',
-    ) as HTMLButtonElement;
-
-    trigger.click();
-    await router.navigateByUrl('/stl-quality-check');
-    fixture.detectChanges();
-
-    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    ) as HTMLAnchorElement[];
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/stl-tools',
+      '/stl-quality-checker',
+      '/stl-watertight-checker',
+      '/stl-manifold-checker',
+      '/stl-triangle-counter',
+      '/stl-dimensions-checker',
+      '/stl-volume-calculator',
+    ]);
   });
 
   it('makes the same STL tools available from the mobile navigation disclosure', () => {
@@ -66,24 +43,24 @@ describe('App', () => {
     fixture.detectChanges();
     expect(mobileTrigger.getAttribute('aria-expanded')).toBe('true');
 
-    const toolsTrigger = fixture.nativeElement.querySelector(
-      '.tools-trigger',
-    ) as HTMLButtonElement;
-    toolsTrigger.click();
-    fixture.detectChanges();
-
     const links = Array.from(
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.textContent?.trim())).toEqual([
-      'STL Quality Check',
+      'All STL tools',
+      'STL Quality Checker',
+      'STL Watertight Checker',
       'STL Manifold Checker',
+      'STL Triangle Counter',
       'STL Dimensions Checker',
       'STL Volume Calculator',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
-      '/stl-quality-check',
+      '/stl-tools',
+      '/stl-quality-checker',
+      '/stl-watertight-checker',
       '/stl-manifold-checker',
+      '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
     ]);

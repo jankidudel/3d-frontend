@@ -1,0 +1,112 @@
+<main class="page manifold-page">
+  <p class="eyebrow">Closed-surface check</p>
+  <h1>STL Watertight Checker</h1>
+  <p class="lead">
+    Check whether your STL is a closed surface, with open edges and possible
+    holes surfaced first.
+  </p>
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Check your STL</h2>
+    <p>Upload an STL file up to 25 MiB.</p>
+    <app-stl-file-picker
+      #filePicker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    /><button
+      class="button submit"
+      type="button"
+      (click)="checkManifold()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job…' : 'Check watertightness' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section
+      class="results card"
+      aria-live="polite"
+      aria-labelledby="results-title"
+    >
+      @if (processing() || pollingTimedOut()) {
+        <app-stl-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="pollingTimedOut()"
+          [refreshing]="refreshing()"
+          headingId="results-title"
+          (refresh)="refreshStatus()"
+        />
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="results-title">We couldn’t analyse this STL file</h2>
+        <p role="alert">{{ jobFailureMessage(currentJob.failure) }}</p>
+      } @else if (report()) {
+        <div
+          class="primary"
+          [class.positive]="openEdges() === 0 && nonManifoldEdges() === 0"
+          [class.warning]="openEdges() > 0 || nonManifoldEdges() > 0"
+        >
+          <p class="eyebrow">Watertight result</p>
+          <h2 id="results-title">
+            {{
+              openEdges() === 0 && nonManifoldEdges() === 0
+                ? 'Watertight'
+                : 'Not watertight'
+            }}
+          </h2>
+          <p>
+            {{
+              openEdges() === 0 && nonManifoldEdges() === 0
+                ? 'No open or non-manifold edges were found. A watertight model is a closed surface, not a guarantee of a successful physical print.'
+                : 'Open or non-manifold edges mean the surface is not reliably closed.'
+            }}
+          </p>
+        </div>
+        <dl class="metrics">
+          <div>
+            <dt>Open edges / possible holes</dt>
+            <dd>{{ formatNumber(openEdges()) }}</dd>
+          </div>
+          <div>
+            <dt>Non-manifold edges</dt>
+            <dd>{{ formatNumber(nonManifoldEdges()) }}</dd>
+          </div>
+          <div>
+            <dt>Connected shells</dt>
+            <dd>{{ formatNumber(shellCount()) }}</dd>
+          </div>
+        </dl>
+      }
+    </section>
+  }
+  <section class="content">
+    <h2>How it works</h2>
+    <p>
+      The checker examines how triangles meet. Open edges indicate an unsealed
+      boundary, while non-manifold edges can make a closed volume ambiguous.
+    </p>
+    <h2>What the results mean</h2>
+    <p>
+      Watertight means the mesh forms a closed surface. Separate shells can be
+      intentional, but should be checked in your design.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Can a watertight model still fail to print?</h3>
+    <p>
+      Yes. Wall thickness, supports, material and printer setup are separate
+      concerns.
+    </p>
+    <h3>What should I do with open edges?</h3>
+    <p>
+      Repair the mesh in your modelling or mesh-repair software, then check it
+      again.
+    </p>
+    <p>
+      <a [routerLink]="routeUrl.ManifoldChecker">STL Manifold Checker</a> ·
+      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+      <a [routerLink]="routeUrl.Tools">All STL tools</a>
+    </p>
+  </section>
+</main>

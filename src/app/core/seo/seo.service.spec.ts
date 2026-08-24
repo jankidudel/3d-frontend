@@ -19,12 +19,12 @@ describe('SeoService', () => {
     const document = TestBed.inject(DOCUMENT);
 
     service.apply({
-      title: 'STL Quality Check',
+      title: 'STL Quality Checker',
       description: 'Checks STL topology.',
-      path: '/stl-quality-check',
+      path: '/stl-quality-checker',
     });
 
-    expect(document.title).toBe('STL Quality Check');
+    expect(document.title).toBe('STL Quality Checker');
     expect(
       document.head
         .querySelector('meta[name="description"]')

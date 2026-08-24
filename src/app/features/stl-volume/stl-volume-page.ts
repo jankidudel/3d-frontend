@@ -13,6 +13,7 @@ import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-p
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
+import { PublicRouteUrl } from '../../core/seo/public-routes';
 import {
   createAndUploadStlJob,
   PollingTimeoutError,
@@ -38,6 +39,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: './stl-volume-page.scss',
 })
 export class StlVolumePage {
+  readonly routeUrl = PublicRouteUrl;
   readonly jobFailureMessage = jobFailureMessage;
   readonly jobStatus = JobStatus;
   private readonly jobsService = inject(JobsService);
@@ -136,7 +138,7 @@ export class StlVolumePage {
       title: 'STL Volume Calculator - Calculate STL Volume and Material Weight',
       description:
         'Calculate an STL model’s volume, convert cubic units, and estimate approximate material weight for common 3D printing materials.',
-      path: '/stl-volume-calculator',
+      path: PublicRouteUrl.VolumeCalculator,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
   }

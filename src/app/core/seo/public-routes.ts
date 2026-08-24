@@ -1,13 +1,33 @@
 export const PublicRoutePath = {
   Home: '',
-  QualityCheck: 'stl-quality-check',
+  Tools: 'stl-tools',
+  QualityCheck: 'stl-quality-checker',
   ManifoldChecker: 'stl-manifold-checker',
+  WatertightChecker: 'stl-watertight-checker',
   DimensionsChecker: 'stl-dimensions-checker',
+  TriangleCounter: 'stl-triangle-counter',
   VolumeCalculator: 'stl-volume-calculator',
   Privacy: 'privacy',
   Cookies: 'cookies',
 } as const;
 
-export const publicRouteUrls = Object.values(PublicRoutePath).map(
-  (path) => `/${path}`,
-);
+type PublicRouteUrls = {
+  readonly [
+    Key in keyof typeof PublicRoutePath
+  ]: `/${(typeof PublicRoutePath)[Key]}`;
+};
+
+export const PublicRouteUrl = Object.fromEntries(
+  Object.entries(PublicRoutePath).map(([key, path]) => [key, `/${path}`]),
+) as PublicRouteUrls;
+
+export const canonicalPublicRoutePaths = [
+  PublicRoutePath.Home,
+  PublicRoutePath.Tools,
+  PublicRoutePath.QualityCheck,
+  PublicRoutePath.ManifoldChecker,
+  PublicRoutePath.WatertightChecker,
+  PublicRoutePath.DimensionsChecker,
+  PublicRoutePath.TriangleCounter,
+  PublicRoutePath.VolumeCalculator,
+] as const;

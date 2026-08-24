@@ -1,0 +1,68 @@
+<main class="page">
+  <p class="eyebrow">InspectMesh</p>
+  <h1>Free STL Tools for 3D Printing</h1>
+  <p class="lead">
+    InspectMesh checks STL files before slicing or printing, so you can
+    understand mesh health, size and complexity before committing material and
+    time.
+  </p>
+  <section class="tools" aria-labelledby="tool-list-title">
+    <h2 id="tool-list-title">STL tools</h2>
+    <div class="tool-grid">
+      @for (tool of tools; track tool.route) {
+        <article class="tool-card card">
+          <h3>{{ tool.title }}</h3>
+          <p>{{ tool.description }}</p>
+          <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
+        </article>
+      }
+    </div>
+  </section>
+  <section class="content" aria-labelledby="need-title">
+    <h2 id="need-title">Which tool do I need?</h2>
+    <ul>
+      <li>
+        Is my model printable?
+        <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a>
+      </li>
+      <li>
+        Is it watertight?
+        <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>
+      </li>
+      <li>
+        Does it have non-manifold geometry?
+        <a [routerLink]="routeUrl.ManifoldChecker">STL Manifold Checker</a>
+      </li>
+      <li>
+        What are its dimensions?
+        <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>
+      </li>
+      <li>
+        How many triangles does it contain?
+        <a [routerLink]="routeUrl.TriangleCounter">STL Triangle Counter</a>
+      </li>
+      <li>
+        What is its volume or estimated material weight?
+        <a [routerLink]="routeUrl.VolumeCalculator">STL Volume Calculator</a>
+      </li>
+    </ul>
+  </section>
+  <section class="content" aria-labelledby="faq-title">
+    <h2 id="faq-title">STL tool FAQ</h2>
+    <h3>What is an STL file?</h3>
+    <p>
+      An STL describes a model surface as a set of triangles. It is common in 3D
+      printing, but it does not reliably store design units.
+    </p>
+    <h3>Should I check an STL before slicing?</h3>
+    <p>
+      Yes. Open edges, non-manifold geometry and unexpected scale can lead to
+      confusing slicer results.
+    </p>
+    <h3>Does a clean check guarantee a successful print?</h3>
+    <p>
+      No. Printer calibration, supports, material and slicer settings still
+      affect the physical result.
+    </p>
+  </section>
+</main>

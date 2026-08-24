@@ -1,6 +1,6 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { PublicRoutePath } from '../src/app/core/seo/public-routes.ts';
+import { canonicalPublicRoutePaths } from '../src/app/core/seo/public-routes.ts';
 
 type BuildConfiguration = 'development' | 'production';
 interface SiteConfig {
@@ -39,7 +39,7 @@ const sitemapPath = resolve(publicDirectory, 'sitemap.xml');
 if (!indexingEnabled) {
   await rm(sitemapPath, { force: true });
 } else {
-  const entries = Object.values(PublicRoutePath)
+  const entries = canonicalPublicRoutePaths
     .map((path) => `  <url><loc>${siteUrl}/${path}</loc></url>`)
     .join('\n');
   await writeFile(

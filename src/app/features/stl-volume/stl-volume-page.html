@@ -97,7 +97,9 @@
               unreliable. Fix the mesh and run the Quality Check again before
               relying on this result.
             </p>
-            <a routerLink="/stl-quality-check">View full STL quality report</a>
+            <a [routerLink]="routeUrl.QualityCheck"
+              >View full STL quality report</a
+            >
           </div>
         }
 
@@ -306,6 +308,33 @@
       The value is derived from the uploaded mesh geometry. Interpreting the
       design unit correctly matters because volume changes with the cube of the
       selected unit.
+    </p>
+    <h2>How it works</h2>
+    <p>
+      Volume is calculated from the enclosed mesh surface after you choose the
+      unit used by the model coordinates.
+    </p>
+    <h2>What the results mean</h2>
+    <p>
+      Volume is most reliable for a closed, consistently oriented mesh. Material
+      weight is an estimate using the selected density and simplified infill
+      assumptions.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Why can volume be unreliable?</h3>
+    <p>
+      Holes, open surfaces and inconsistent triangle orientation can prevent a
+      dependable enclosed-volume calculation.
+    </p>
+    <h3>Is material weight exact?</h3>
+    <p>
+      No. Slicer settings, shells, supports and infill pattern change actual
+      use.
+    </p>
+    <p>
+      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
+      <a [routerLink]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
 </main>

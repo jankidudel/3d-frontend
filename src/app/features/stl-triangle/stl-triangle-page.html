@@ -1,0 +1,98 @@
+<main class="page manifold-page">
+  <p class="eyebrow">Mesh complexity</p>
+  <h1>STL Triangle Counter</h1>
+  <p class="lead">
+    Count triangles in an STL file before slicing, sharing or deciding whether
+    mesh simplification is useful.
+  </p>
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Count STL triangles</h2>
+    <p>Upload an STL file up to 25 MiB.</p>
+    <app-stl-file-picker
+      #filePicker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    /><button
+      class="button submit"
+      type="button"
+      (click)="checkManifold()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job…' : 'Count STL triangles' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section
+      class="results card"
+      aria-live="polite"
+      aria-labelledby="results-title"
+    >
+      @if (processing() || pollingTimedOut()) {
+        <app-stl-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="pollingTimedOut()"
+          [refreshing]="refreshing()"
+          headingId="results-title"
+          (refresh)="refreshStatus()"
+        />
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="results-title">We couldn’t analyse this STL file</h2>
+        <p role="alert">{{ jobFailureMessage(currentJob.failure) }}</p>
+      } @else if (report()) {
+        <div class="primary positive">
+          <p class="eyebrow">Triangle count</p>
+          <h2 id="results-title">
+            {{ formatNumber(report()?.['triangleCount']) }} triangles
+          </h2>
+          <p>
+            High triangle counts can increase file size and slicer workload.
+            They are not automatically a defect.
+          </p>
+        </div>
+        <dl class="metrics">
+          <div>
+            <dt>File</dt>
+            <dd>{{ currentJob.fileName }}</dd>
+          </div>
+          <div>
+            <dt>Open edges</dt>
+            <dd>{{ formatNumber(openEdges()) }}</dd>
+          </div>
+          <div>
+            <dt>Connected shells</dt>
+            <dd>{{ formatNumber(shellCount()) }}</dd>
+          </div>
+        </dl>
+      }
+    </section>
+  }
+  <section class="content">
+    <h2>How it works</h2>
+    <p>
+      The tool reads the uploaded STL mesh and reports how many triangular faces
+      it contains.
+    </p>
+    <h2>What the results mean</h2>
+    <p>
+      More triangles can preserve curved detail, but also make files heavier and
+      may slow a slicer. The right count depends on model size and intended
+      detail.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Is a high triangle count bad?</h3>
+    <p>
+      No. It is a trade-off between geometric detail and processing overhead.
+    </p>
+    <h3>Does triangle count measure print quality?</h3>
+    <p>Not on its own. Check geometry and dimensions alongside complexity.</p>
+    <p>
+      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
+      <a [routerLink]="routeUrl.Tools">All STL tools</a>
+    </p>
+  </section>
+</main>

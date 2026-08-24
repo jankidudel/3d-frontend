@@ -18,45 +18,56 @@
     [class.mobile-nav-open]="mobileNavOpen"
   >
     <div class="tools-disclosure">
-      <button
-        #toolsTrigger
+      <a
         class="tools-trigger"
-        type="button"
-        [attr.aria-expanded]="toolsOpen"
-        aria-controls="tools-menu"
-        (click)="toggleTools()"
+        [routerLink]="['/', routePath.Tools]"
+        (click)="closeMenus()"
+        >STL Tools</a
       >
-        Tools <span class="chevron" aria-hidden="true">▾</span>
-      </button>
-      @if (toolsOpen) {
-        <div id="tools-menu" class="tools-menu" aria-label="STL tools">
-          <span class="tools-label">STL tools</span>
-          <a
-            [routerLink]="['/', routePath.QualityCheck]"
-            routerLinkActive="active"
-            (click)="closeMenus()"
-            >STL Quality Check</a
-          >
-          <a
-            [routerLink]="['/', routePath.ManifoldChecker]"
-            routerLinkActive="active"
-            (click)="closeMenus()"
-            >STL Manifold Checker</a
-          >
-          <a
-            [routerLink]="['/', routePath.DimensionsChecker]"
-            routerLinkActive="active"
-            (click)="closeMenus()"
-            >STL Dimensions Checker</a
-          >
-          <a
-            [routerLink]="['/', routePath.VolumeCalculator]"
-            routerLinkActive="active"
-            (click)="closeMenus()"
-            >STL Volume Calculator</a
-          >
-        </div>
-      }
+      <div id="tools-menu" class="tools-menu" aria-label="STL tools">
+        <a
+          [routerLink]="['/', routePath.Tools]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >All STL tools</a
+        >
+        <a
+          [routerLink]="['/', routePath.QualityCheck]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >STL Quality Checker</a
+        >
+        <a
+          [routerLink]="['/', routePath.WatertightChecker]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >STL Watertight Checker</a
+        >
+        <a
+          [routerLink]="['/', routePath.ManifoldChecker]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >STL Manifold Checker</a
+        >
+        <a
+          [routerLink]="['/', routePath.TriangleCounter]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >STL Triangle Counter</a
+        >
+        <a
+          [routerLink]="['/', routePath.DimensionsChecker]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >STL Dimensions Checker</a
+        >
+        <a
+          [routerLink]="['/', routePath.VolumeCalculator]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >STL Volume Calculator</a
+        >
+      </div>
     </div>
   </nav>
 </header>

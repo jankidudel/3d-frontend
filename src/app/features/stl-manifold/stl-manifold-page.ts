@@ -6,7 +6,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
@@ -18,6 +18,7 @@ import {
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
+import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Job, JobStatus } from '../../models/job';
 import { jobFailureMessage } from '../../models/job-failure';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
@@ -27,11 +28,12 @@ type ReportRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-stl-manifold-page',
-  imports: [StlFilePicker, StlJobProgress],
+  imports: [RouterLink, StlFilePicker, StlJobProgress],
   templateUrl: './stl-manifold-page.html',
   styleUrl: './stl-manifold-page.scss',
 })
 export class StlManifoldPage {
+  readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
   readonly jobFailureMessage = jobFailureMessage;
   private readonly jobsService = inject(JobsService);
@@ -88,7 +90,7 @@ export class StlManifoldPage {
       title: 'STL Manifold Checker - Check if Your STL Is Watertight',
       description:
         'Check an STL file for open edges, non-manifold geometry and disconnected shells. Find out whether your 3D model is manifold and ready for slicing.',
-      path: '/stl-manifold-checker',
+      path: PublicRouteUrl.ManifoldChecker,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
   }
@@ -156,7 +158,9 @@ export class StlManifoldPage {
       return;
     }
     this.analytics.trackFullQualityReportOpened();
-    void this.router.navigate(['/stl-quality-check'], { state: { job } });
+    void this.router.navigate([PublicRouteUrl.QualityCheck], {
+      state: { job },
+    });
   }
 
   checkAnotherFile(): void {

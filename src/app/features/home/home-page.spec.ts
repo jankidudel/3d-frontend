@@ -28,7 +28,7 @@ describe('HomePage', () => {
     expect(fixture.nativeElement.querySelector('h3')?.textContent?.trim()).toBe(
       'STL tools',
     );
-    expect(fixture.nativeElement.textContent).toContain('STL Quality Check');
+    expect(fixture.nativeElement.textContent).toContain('STL Quality Checker');
     expect(fixture.nativeElement.textContent).toContain(
       'STL Dimensions Checker',
     );
@@ -36,10 +36,13 @@ describe('HomePage', () => {
       'STL Volume Calculator',
     );
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
-      '/stl-quality-check',
+      '/stl-quality-checker',
+      '/stl-watertight-checker',
       '/stl-manifold-checker',
+      '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/stl-tools',
     ]);
   });
 });

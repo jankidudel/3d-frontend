@@ -3,6 +3,11 @@ import { PublicRoutePath } from './core/seo/public-routes';
 
 export const routes: Routes = [
   {
+    path: PublicRoutePath.Tools,
+    loadComponent: () =>
+      import('./features/stl-tools/stl-tools-page').then((m) => m.StlToolsPage),
+  },
+  {
     path: PublicRoutePath.Home,
     pathMatch: 'full',
     loadComponent: () =>
@@ -20,6 +25,20 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/stl-manifold/stl-manifold-page').then(
         (m) => m.StlManifoldPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.WatertightChecker,
+    loadComponent: () =>
+      import('./features/stl-watertight/stl-watertight-page').then(
+        (m) => m.StlWatertightPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.TriangleCounter,
+    loadComponent: () =>
+      import('./features/stl-triangle/stl-triangle-page').then(
+        (m) => m.StlTrianglePage,
       ),
   },
   {

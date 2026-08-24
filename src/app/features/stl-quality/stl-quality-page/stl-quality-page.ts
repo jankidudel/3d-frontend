@@ -16,6 +16,7 @@ import {
 } from '../../../core/api/stl-job-workflow';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { SeoService } from '../../../core/seo/seo.service';
+import { PublicRouteUrl } from '../../../core/seo/public-routes';
 import { Job, JobStatus } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
 import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
@@ -27,6 +28,7 @@ import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
   styleUrl: './stl-quality-page.scss',
 })
 export class StlQualityPage {
+  readonly routeUrl = PublicRouteUrl;
   private readonly jobsService = inject(JobsService);
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
@@ -46,10 +48,10 @@ export class StlQualityPage {
 
   constructor() {
     this.seo.apply({
-      title: 'Free STL Quality Checker - Check 3D Printing Files',
+      title: 'STL Quality Checker - Check 3D Printing Files',
       description:
         'Check STL files for mesh and topology problems, including open edges, non-manifold geometry, duplicate triangles and orientation issues.',
-      path: '/stl-quality-check',
+      path: PublicRouteUrl.QualityCheck,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
     const handoffJob =

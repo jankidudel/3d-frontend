@@ -13,6 +13,7 @@ import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-p
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
+import { PublicRouteUrl } from '../../core/seo/public-routes';
 import {
   createAndUploadStlJob,
   PollingTimeoutError,
@@ -39,6 +40,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: './stl-dimensions-page.scss',
 })
 export class StlDimensionsPage {
+  readonly routeUrl = PublicRouteUrl;
   readonly jobFailureMessage = jobFailureMessage;
   readonly jobStatus = JobStatus;
   private readonly jobsService = inject(JobsService);
@@ -157,7 +159,7 @@ export class StlDimensionsPage {
       title: 'STL Dimensions Checker - Measure, Convert and Scale STL Files',
       description:
         'Measure STL width, height and depth, convert model units, calculate proportional scaling, and check whether a model fits a printer build volume.',
-      path: '/stl-dimensions-checker',
+      path: PublicRouteUrl.DimensionsChecker,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
   }

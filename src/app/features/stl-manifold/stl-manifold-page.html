@@ -23,7 +23,7 @@
       @if (submitting()) {
         <span class="spinner" aria-hidden="true"></span>
       }
-      {{ submitting() ? 'Creating job…' : 'Check manifold status' }}
+      {{ submitting() ? 'Creating job…' : 'Check manifold geometry' }}
     </button>
     @if (error(); as message) {
       <p class="error" role="alert">{{ message }}</p>
@@ -150,4 +150,33 @@
       }
     </section>
   }
+  <section class="content">
+    <h2>How it works</h2>
+    <p>
+      The checker examines the edges shared by STL triangles and counts open
+      boundaries, non-manifold connections and disconnected shells.
+    </p>
+    <h2>What the results mean</h2>
+    <p>
+      A manifold mesh has a consistent surface around each edge. Open edges and
+      non-manifold edges can confuse slicers; disconnected shells may be
+      intentional but deserve review.
+    </p>
+    <h2>FAQ</h2>
+    <h3>What is a manifold mesh?</h3>
+    <p>
+      It is a mesh whose surface joins consistently without ambiguous edge
+      connections.
+    </p>
+    <h3>Are disconnected shells always wrong?</h3>
+    <p>
+      No. Separate parts can be deliberate, but they may need separate printing
+      decisions.
+    </p>
+    <p>
+      <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a> ·
+      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+      <a [routerLink]="routeUrl.Tools">All STL tools</a>
+    </p>
+  </section>
 </main>

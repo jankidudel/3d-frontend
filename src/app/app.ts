@@ -1,11 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -32,15 +26,11 @@ import { PublicRoutePath } from './core/seo/public-routes';
   styleUrl: './app.scss',
 })
 export class App {
-  @ViewChild('toolsTrigger')
-  private readonly toolsTrigger?: ElementRef<HTMLButtonElement>;
-
   readonly consent = inject(CookieConsentService);
   readonly routePath = PublicRoutePath;
   private readonly analytics = inject(AnalyticsService);
   private readonly router = inject(Router);
   protected mobileNavOpen = false;
-  protected toolsOpen = false;
 
   constructor() {
     this.router.events
@@ -54,38 +44,9 @@ export class App {
 
   protected toggleMobileNav(): void {
     this.mobileNavOpen = !this.mobileNavOpen;
-    if (!this.mobileNavOpen) {
-      this.toolsOpen = false;
-    }
-  }
-
-  protected toggleTools(): void {
-    this.toolsOpen = !this.toolsOpen;
   }
 
   protected closeMenus(): void {
     this.mobileNavOpen = false;
-    this.toolsOpen = false;
-  }
-
-  @HostListener('document:click', ['$event'])
-  protected closeOnOutsideClick(event: MouseEvent): void {
-    const target = event.target;
-    if (
-      target instanceof Node &&
-      !document.querySelector('.site-header')?.contains(target)
-    ) {
-      this.closeMenus();
-    }
-  }
-
-  @HostListener('document:keydown.escape')
-  protected closeOnEscape(): void {
-    if (!this.toolsOpen && !this.mobileNavOpen) {
-      return;
-    }
-
-    this.closeMenus();
-    this.toolsTrigger?.nativeElement.focus();
   }
 }

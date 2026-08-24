@@ -1,6 +1,6 @@
 <main class="page dimensions-page">
   <p class="eyebrow">STL measurement and scaling</p>
-  <h1>Measure, convert and scale STL dimensions</h1>
+  <h1>STL Dimensions Checker</h1>
   <p class="lead">
     Find your model’s width, height and depth, interpret its design unit, and
     calculate a proportional scale for the size you want to print.
@@ -29,7 +29,7 @@
       @if (submitting()) {
         <span class="spinner" aria-hidden="true"></span>
       }
-      {{ submitting() ? 'Creating job…' : 'Measure STL' }}
+      {{ submitting() ? 'Creating job…' : 'Measure STL dimensions' }}
     </button>
     @if (error(); as message) {
       <p class="error" role="alert">{{ message }}</p>
@@ -433,7 +433,7 @@
               }}
             </p>
           </div>
-          <a class="button" routerLink="/stl-quality-check"
+          <a class="button" [routerLink]="routeUrl.QualityCheck"
             >View full STL quality report</a
           >
         </section>
@@ -498,6 +498,30 @@
       value of 50 means 50 millimetres, centimetres, metres or inches. Select
       the unit used by the design software, then use the conversions and
       proportional scale calculator above to prepare the intended print size.
+    </p>
+    <h2>What the results mean</h2>
+    <p>
+      Use the displayed unit conversion to confirm scale before slicing.
+      Proportional scaling keeps the model shape intact, while the build-volume
+      comparison checks the current dimensions against your printer.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Do STL files have units?</h3>
+    <p>
+      No reliable unit metadata is embedded, so use the unit from your modelling
+      software.
+    </p>
+    <h3>Can I convert millimetres to inches?</h3>
+    <p>
+      Yes. The checker converts the same measured coordinates for display
+      without changing your source file.
+    </p>
+    <h3>Will it fit my printer?</h3>
+    <p>Enter its usable build dimensions to compare it before slicing.</p>
+    <p>
+      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+      <a [routerLink]="routeUrl.VolumeCalculator">STL Volume Calculator</a> ·
+      <a [routerLink]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
 </main>
