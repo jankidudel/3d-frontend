@@ -6,6 +6,6 @@ export const environment: SiteConfig & {
   readonly indexingEnabled: boolean;
   readonly siteUrl: string;
 } = {
-  googleAnalyticsMeasurementId: 'G-REPLACE_ME_PROD',
+  googleAnalyticsMeasurementId: 'G-801ECYXPH4',
   ...siteConfig,
 };
