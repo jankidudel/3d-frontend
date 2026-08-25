@@ -32,6 +32,14 @@
     }
   </section>
 
+  <section class="content" aria-labelledby="viewer-title">
+    <h2 id="viewer-title">Want to inspect the model first?</h2>
+    <p>
+      <a [href]="routeUrl.Viewer">Open in STL Viewer</a> to rotate and inspect
+      your STL locally before running a quality check.
+    </p>
+  </section>
+
   @if (job(); as createdJob) {
     <app-job-status
       [job]="createdJob"

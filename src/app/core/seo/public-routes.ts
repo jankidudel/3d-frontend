@@ -8,6 +8,7 @@ export const PublicRoutePath = {
   DimensionsChecker: 'stl-dimensions-checker',
   TriangleCounter: 'stl-triangle-counter',
   VolumeCalculator: 'stl-volume-calculator',
+  Viewer: 'stl-viewer',
   Privacy: 'privacy',
   Cookies: 'cookies',
 } as const;
@@ -32,4 +33,5 @@ export const canonicalPublicRoutePaths = [
   PublicRoutePath.DimensionsChecker,
   PublicRoutePath.TriangleCounter,
   PublicRoutePath.VolumeCalculator,
+  PublicRoutePath.Viewer,
 ] as const;

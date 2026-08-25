@@ -14,6 +14,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.DimensionsChecker, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.TriangleCounter, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.VolumeCalculator, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Viewer, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Privacy, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Cookies, renderMode: RenderMode.Prerender },
   { path: '**', renderMode: RenderMode.Prerender },

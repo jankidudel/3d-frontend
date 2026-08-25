@@ -24,6 +24,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
       '/stl-tools',
+      '/stl-viewer',
       '/stl-quality-checker',
       '/stl-watertight-checker',
       '/stl-manifold-checker',
@@ -50,6 +51,7 @@ describe('App', () => {
     expect(links.map((link) => link.textContent?.trim())).toEqual([
       'All 3D tools',
       'STL tools',
+      'STL Viewer',
       'STL Quality Checker',
       'STL Watertight Checker',
       'STL Manifold Checker',
@@ -60,6 +62,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
       '/stl-tools',
+      '/stl-viewer',
       '/stl-quality-checker',
       '/stl-watertight-checker',
       '/stl-manifold-checker',

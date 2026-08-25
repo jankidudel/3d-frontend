@@ -18,6 +18,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     title: 'STL tools',
     tools: [
       {
+        icon: '◉',
+        title: 'Free STL Viewer',
+        description:
+          'Open an STL locally in your browser, inspect it in 3D and see its dimensions and triangle count.',
+        route: PublicRouteUrl.Viewer,
+        cta: 'Open STL Viewer',
+      },
+      {
         icon: '✓',
         title: 'STL Quality Checker',
         description:

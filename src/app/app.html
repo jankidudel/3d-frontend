@@ -38,6 +38,12 @@
           >STL tools</a
         >
         <a
+          [routerLink]="['/', routePath.Viewer]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >STL Viewer</a
+        >
+        <a
           [routerLink]="['/', routePath.QualityCheck]"
           routerLinkActive="active"
           (click)="closeMenus()"

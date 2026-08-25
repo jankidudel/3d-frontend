@@ -36,6 +36,14 @@
     }
   </section>
 
+  <section class="content" aria-labelledby="viewer-title">
+    <h2 id="viewer-title">See the model while you measure</h2>
+    <p>
+      <a [routerLink]="routeUrl.Viewer">Open in STL Viewer</a> to inspect the
+      shape and its local dimensions in your browser.
+    </p>
+  </section>
+
   @if (job(); as currentJob) {
     <section
       class="results card"

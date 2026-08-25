@@ -61,6 +61,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.Viewer,
+    loadComponent: () =>
+      import('./features/stl-viewer/stl-viewer-page').then(
+        (m) => m.StlViewerPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Privacy,
     loadComponent: () =>
       import('./features/legal/privacy-page').then((m) => m.PrivacyPage),

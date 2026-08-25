@@ -36,6 +36,7 @@ describe('HomePage', () => {
       'STL Volume Calculator',
     );
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/stl-viewer',
       '/stl-quality-checker',
       '/stl-watertight-checker',
       '/stl-manifold-checker',

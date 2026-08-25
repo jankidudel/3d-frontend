@@ -26,6 +26,11 @@ export const AnalyticsEvent = {
   MaterialEstimateUsed: 'stl_material_estimate_used',
   ManifoldResult: 'stl_manifold_result',
   FullQualityReportOpened: 'stl_full_quality_report_opened',
+  StlViewerFileSelected: 'stl_viewer_file_selected',
+  StlViewerModelLoaded: 'stl_viewer_model_loaded',
+  StlViewerLoadFailed: 'stl_viewer_load_failed',
+  StlViewerResetView: 'stl_viewer_reset_view',
+  StlViewerOpenedQualityChecker: 'stl_viewer_opened_quality_checker',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -153,6 +158,35 @@ export class AnalyticsService {
     });
   }
 
+  trackStlViewerFileSelected(fileSizeBytes: number): void {
+    this.sendEvent(AnalyticsEvent.StlViewerFileSelected, {
+      file_size_bucket: this.viewerFileSizeBucket(fileSizeBytes),
+    });
+  }
+
+  trackStlViewerLoaded(fileSizeBytes: number): void {
+    this.sendEvent(AnalyticsEvent.StlViewerModelLoaded, {
+      file_size_bucket: this.viewerFileSizeBucket(fileSizeBytes),
+    });
+  }
+
+  trackStlViewerFailed(
+    failureKind:
+      'too_large' | 'wrong_extension' | 'parse_failed' | 'webgl_unavailable',
+  ): void {
+    this.sendEvent(AnalyticsEvent.StlViewerLoadFailed, {
+      failure_kind: failureKind,
+    });
+  }
+
+  trackStlViewerReset(): void {
+    this.sendEvent(AnalyticsEvent.StlViewerResetView, {});
+  }
+
+  trackStlViewerQualityOpened(): void {
+    this.sendEvent(AnalyticsEvent.StlViewerOpenedQualityChecker, {});
+  }
+
   private enable(): void {
     if (!this.enabled) {
       return;
@@ -246,6 +280,17 @@ export class AnalyticsService {
       return '10mb_to_100mb';
     }
     return 'over_100mb';
+  }
+
+  private viewerFileSizeBucket(bytes: number): string {
+    const megabyte = 1024 * 1024;
+    if (bytes < megabyte) {
+      return 'under_1mb';
+    }
+    if (bytes <= 5 * megabyte) {
+      return '1_to_5mb';
+    }
+    return '5_to_25mb';
   }
 
   private issueCountBucket(count: number): string {

@@ -1,0 +1,131 @@
+<main class="page viewer-page">
+  <p class="eyebrow">Private browser-based STL inspection</p>
+  <h1>Free STL Viewer Online</h1>
+  <p class="lead">
+    Open an STL, rotate it freely, and review its dimensions and triangle count.
+  </p>
+  <section class="card viewer-tool" aria-labelledby="viewer-upload-title">
+    <h2 id="viewer-upload-title">Open an STL file</h2>
+    <div
+      class="drop-zone"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      aria-label="Drag and drop an STL file here, or choose a file"
+    >
+      <p>Drag and drop an STL file here</p>
+      <button class="button" type="button" (click)="openPicker()">
+        Choose STL file
+      </button>
+      <input
+        #picker
+        type="file"
+        accept=".stl"
+        aria-label="Choose STL file"
+        (change)="onPicker($event)"
+      />
+      <p class="hint">.stl only - maximum 25 MB</p>
+      <p class="privacy">
+        Viewed locally in your browser - your file is not uploaded.
+      </p>
+    </div>
+    @if (loading()) {
+      <p role="status">Loading your model locally...</p>
+    }
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (model(); as current) {
+    <section class="viewer-results" aria-labelledby="model-title">
+      <div>
+        <div
+          #viewport
+          class="viewport"
+          role="img"
+          aria-label="3D STL model viewer"
+        ></div>
+        <button class="button button-secondary" type="button" (click)="reset()">
+          Reset view</button
+        ><button
+          class="button button-secondary"
+          type="button"
+          (click)="openPicker()"
+        >
+          Choose another file
+        </button>
+      </div>
+      <aside class="card model-info">
+        <h2 id="model-title">Model details</h2>
+        <dl>
+          <div>
+            <dt>File name</dt>
+            <dd>{{ current.name }}</dd>
+          </div>
+          <div>
+            <dt>File size</dt>
+            <dd>{{ formatBytes(current.size) }}</dd>
+          </div>
+          <div>
+            <dt>Triangle count</dt>
+            <dd>{{ formatValue(current.triangles) }}</dd>
+          </div>
+          <div>
+            <dt>Width</dt>
+            <dd>{{ formatValue(current.width) }} model units</dd>
+          </div>
+          <div>
+            <dt>Height</dt>
+            <dd>{{ formatValue(current.height) }} model units</dd>
+          </div>
+          <div>
+            <dt>Depth</dt>
+            <dd>{{ formatValue(current.depth) }} model units</dd>
+          </div>
+        </dl>
+        <p>
+          STL files do not contain unit information. Most slicers interpret
+          model units as millimetres.
+        </p>
+        <p>
+          Use the
+          <a [routerLink]="routeUrl.DimensionsChecker">Dimensions Checker</a> to
+          check printer fit and scaling.
+        </p>
+      </aside>
+    </section>
+  }
+  <section class="content">
+    <h2>How to use the STL Viewer</h2>
+    <ol>
+      <li>Choose or drop an STL file.</li>
+      <li>
+        Rotate with drag, zoom with the wheel or pinch, and pan with right drag
+        or two fingers.
+      </li>
+      <li>Review the model bounds and complexity.</li>
+    </ol>
+    <h2>What the Viewer shows</h2>
+    <p>
+      The viewer calculates the model's bounding dimensions and triangle count
+      directly from its geometry. STL coordinates have no native unit, so
+      confirm scale in your slicer.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Does my STL file get uploaded?</h3>
+    <p>No. Your file stays on your device while you view it.</p>
+    <h3>Can I view ASCII and binary STL files?</h3>
+    <p>Yes, both common STL encodings are supported.</p>
+    <h3>Why do STL dimensions not specify mm or inches?</h3>
+    <p>STL stores coordinates but not a unit system.</p>
+    <h3>Does viewing an STL check whether it is printable?</h3>
+    <p>No. It is a visual inspection tool, not a mesh validation service.</p>
+    <h3>What should I use to check for holes or non-manifold geometry?</h3>
+    <p>
+      Use the
+      <a [routerLink]="routeUrl.QualityCheck" (click)="openQualityChecker()"
+        >Quality Checker</a
+      >
+      and <a [routerLink]="routeUrl.WatertightChecker">Watertight Checker</a>.
+    </p>
+  </section>
+</main>
