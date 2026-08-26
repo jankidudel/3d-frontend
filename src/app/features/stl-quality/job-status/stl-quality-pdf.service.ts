@@ -9,6 +9,12 @@ interface ReportRecord {
   [key: string]: unknown;
 }
 
+interface PdfFormatDetails {
+  readonly extraMetrics: readonly [string, string][];
+  readonly title: string;
+  readonly unitNote: string;
+}
+
 @Service()
 export class StlQualityPdfService {
   async download(job: Job): Promise<void> {
@@ -144,7 +150,9 @@ export class StlQualityPdfService {
     cursorY += 9;
     pdf.setFontSize(15);
     pdf.setTextColor(22, 101, 52);
-    pdf.text('STL Quality Check Report', margin, cursorY);
+    const format = this.pdfFormat(report);
+    const sourceUnit = this.stringValue(report['sourceUnit']);
+    pdf.text(format.title, margin, cursorY);
     cursorY += 7;
     writeLines(`Generated ${new Date().toLocaleString()}`, {
       color: [82, 96, 87],
@@ -206,13 +214,17 @@ export class StlQualityPdfService {
       ['Triangles', this.formatInteger(report['triangleCount'])],
       [
         'Dimensions',
-        `${this.formatNumber(dimensions?.['width'])} × ${this.formatNumber(dimensions?.['height'])} × ${this.formatNumber(dimensions?.['depth'])} model units`,
+        `${this.formatNumber(dimensions?.['width'])} × ${this.formatNumber(dimensions?.['height'])} × ${this.formatNumber(dimensions?.['depth'])} ${sourceUnit || 'model units'}`,
       ],
       [
         'Surface area',
-        `${this.formatNumber(report['surfaceArea'])} square model units`,
+        `${this.formatNumber(report['surfaceArea'])} square ${sourceUnit || 'model units'}`,
       ],
-      ['Volume', `${this.formatNumber(report['volume'])} cubic model units`],
+      [
+        'Volume',
+        `${this.formatNumber(report['volume'])} cubic ${sourceUnit || 'model units'}`,
+      ],
+      ...format.extraMetrics,
       [
         'Connected components',
         typeof componentCount === 'number' &&
@@ -227,7 +239,7 @@ export class StlQualityPdfService {
 
     heading('Validation findings');
     writeLines(
-      'This report checks mesh validation only. Printer settings, material, wall thickness and STL units are outside the current checks.',
+      `This report checks mesh validation only. Printer settings, material and wall thickness are outside the current checks.${format.unitNote}`,
       { color: [82, 96, 87], fontSize: 9 },
     );
 
@@ -316,7 +328,7 @@ export class StlQualityPdfService {
 
   private downloadFileName(fileName: string): string {
     const safeStem = fileName
-      .replace(/\.stl$/i, '')
+      .replace(/\.(stl|3mf)$/i, '')
       .trim()
       .normalize('NFKD')
       .replace(/[\u0300-\u036f]/g, '')
@@ -324,6 +336,26 @@ export class StlQualityPdfService {
       .replace(/^-+|-+$/g, '')
       .slice(0, 100);
     return `${safeStem || 'model'}-quality-report.pdf`;
+  }
+
+  private pdfFormat(report: ReportRecord): PdfFormatDetails {
+    const format = this.stringValue(report['fileFormat']).toLowerCase();
+    if (format === '3mf') {
+      return {
+        extraMetrics: [
+          ['Declared unit', this.stringValue(report['sourceUnit']) || '—'],
+          ['Model objects', this.formatInteger(report['modelObjectCount'])],
+          ['Build items', this.formatInteger(report['buildItemCount'])],
+        ],
+        title: '3MF Quality Check Report',
+        unitNote: ' The declared 3MF unit is shown above.',
+      };
+    }
+    return {
+      extraMetrics: [],
+      title: 'STL Quality Check Report',
+      unitNote: ' STL files do not declare a unit.',
+    };
   }
 
   private stringValue(value: unknown): string {

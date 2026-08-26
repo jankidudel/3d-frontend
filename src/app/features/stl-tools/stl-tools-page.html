@@ -6,18 +6,7 @@
     understand mesh health, size and complexity before committing material and
     time.
   </p>
-  <section class="tools" aria-labelledby="tool-list-title">
-    <h2 id="tool-list-title">STL tools</h2>
-    <div class="tool-grid">
-      @for (tool of tools; track tool.route) {
-        <article class="tool-card card">
-          <h3>{{ tool.title }}</h3>
-          <p>{{ tool.description }}</p>
-          <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
-        </article>
-      }
-    </div>
-  </section>
+  <app-format-tools-grid heading="STL tools" [tools]="tools" />
   <p><a [routerLink]="routeUrl.AllTools">Browse all 3D file tools</a></p>
   <section class="content" aria-labelledby="need-title">
     <h2 id="need-title">Which tool do I need?</h2>

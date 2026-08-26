@@ -1,0 +1,177 @@
+<main class="page manifold-page">
+  <p class="eyebrow">3MF mesh preflight</p>
+  <h1>3MF Quality Checker</h1>
+  <p class="lead">
+    3MF preserves a declared unit and build structure, but its mesh geometry can
+    still contain print-affecting problems.
+  </p>
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Choose your 3MF file</h2>
+    <p>Upload a 3MF file up to 25 MB.</p>
+    <app-three-mf-file-picker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    /><button
+      class="button submit"
+      type="button"
+      (click)="check()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job…' : 'Check 3MF quality' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section class="results card" aria-live="polite">
+      @if (processing() || pollingTimedOut()) {
+        <app-stl-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="pollingTimedOut()"
+          [refreshing]="refreshing()"
+          headingId="results-title"
+          (refresh)="refresh()"
+        />
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="results-title">Could not analyse this 3MF file</h2>
+        <p role="alert">{{ jobFailureMessage(currentJob.failure) }}</p>
+      } @else if (report(); as value) {
+        <h2 id="results-title">
+          {{
+            validationIsValid(value)
+              ? 'No mesh problems found'
+              : 'Mesh issues found'
+          }}
+        </h2>
+        <div class="report-actions">
+          <button class="button" type="button" (click)="downloadJsonReport()">
+            Download JSON report
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="downloadPdfReport()"
+            [disabled]="generatingPdf()"
+          >
+            {{ generatingPdf() ? 'Generating PDF…' : 'Download PDF report' }}
+          </button>
+        </div>
+        @if (reportDownloadError(); as message) {
+          <p class="error" role="alert">{{ message }}</p>
+        }
+        <dl class="metrics">
+          <div>
+            <dt>Declared unit</dt>
+            <dd>{{ value['sourceUnit'] || 'Not available' }}</dd>
+          </div>
+          <div>
+            <dt>Model objects</dt>
+            <dd>{{ format(value['modelObjectCount']) }}</dd>
+          </div>
+          <div>
+            <dt>Build items</dt>
+            <dd>{{ format(value['buildItemCount']) }}</dd>
+          </div>
+          <div>
+            <dt>Triangles</dt>
+            <dd>{{ format(value['triangleCount']) }}</dd>
+          </div>
+          <div>
+            <dt>Width</dt>
+            <dd>
+              {{ format(dimension(value, 'width')) }}
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+          <div>
+            <dt>Height</dt>
+            <dd>
+              {{ format(dimension(value, 'height')) }}
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+          <div>
+            <dt>Depth</dt>
+            <dd>
+              {{ format(dimension(value, 'depth')) }}
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+          <div>
+            <dt>Surface area</dt>
+            <dd>
+              {{ format(value['surfaceArea']) }} square
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+          <div>
+            <dt>Volume</dt>
+            <dd>
+              {{ format(value['volume']) }} cubic
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+        </dl>
+        <p>
+          Multiple build items are supported and are not necessarily errors.
+        </p>
+        <section class="issues" aria-labelledby="issues-title">
+          <h3 id="issues-title">Validation issues</h3>
+          @if (validationIsValid(value) && issues(value).length === 0) {
+            <p class="no-issues">
+              <span aria-hidden="true">✓</span> No mesh validation issues found.
+            </p>
+          } @else if (issues(value).length > 0) {
+            <ul>
+              @for (issue of issues(value); track $index) {
+                <li>
+                  <strong>{{ issue.label }}</strong>
+                  @if (issue.detail) {
+                    <span>{{ issue.detail }}</span>
+                  }
+                </li>
+              }
+            </ul>
+          } @else {
+            <p>
+              The model failed validation, but no issue details were supplied.
+            </p>
+          }
+        </section>
+      }
+    </section>
+  }
+  <section class="content">
+    <h2>What a 3MF quality check looks for</h2>
+    <p>
+      The checker examines resolved mesh triangles for invalid coordinates,
+      degenerate faces, duplicate faces, open edges, non-manifold edges and
+      inconsistent orientation.
+    </p>
+    <h2>Why 3MF units are more reliable than STL units</h2>
+    <p>
+      3MF can declare its coordinate unit, so reported dimensions retain useful
+      scale information.
+    </p>
+    <h2>How build items and multiple parts affect a 3MF file</h2>
+    <p>
+      A 3MF can place multiple objects in one build. Separate parts are not
+      automatically invalid.
+    </p>
+    <h2>FAQ</h2>
+    <h3>What is a 3MF file?</h3>
+    <p>
+      A 3MF is a package format for 3D printing models and build information.
+    </p>
+    <h3>Is 3MF better than STL for 3D printing?</h3>
+    <p>It can preserve more print-model information, including units.</p>
+    <h3>Does a valid 3MF guarantee a successful print?</h3>
+    <p>No. Printer, slicer, material and support settings still matter.</p>
+    <h3>Are my units stored in a 3MF file?</h3>
+    <p>3MF can declare a model unit, which this checker reports.</p>
+    <h3>Can InspectMesh repair a 3MF file?</h3>
+    <p>No. This checker reports mesh health but does not modify files.</p>
+  </section>
+</main>

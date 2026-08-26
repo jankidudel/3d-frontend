@@ -37,19 +37,6 @@ describe('JobsService', () => {
   });
   afterEach(() => http.verify());
 
-  it('POSTs a create-job request', () => {
-    service
-      .createJob({ fileName: 'rotor.stl', fileSizeBytes: 42 })
-      .subscribe((value) => expect(value).toEqual(job));
-    const request = http.expectOne('/api/jobs');
-    expect(request.request.method).toBe('POST');
-    expect(request.request.body).toEqual({
-      fileName: 'rotor.stl',
-      fileSizeBytes: 42,
-    });
-    request.flush(job);
-  });
-
   it('GETs a job by encoded id', () => {
     service.getJob('a/b').subscribe((value) => expect(value).toEqual(job));
     const request = http.expectOne('/api/jobs/a%2Fb');

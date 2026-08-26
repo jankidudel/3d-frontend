@@ -7,14 +7,21 @@ export interface HomeTool {
 }
 
 export interface HomeToolGroup {
+  readonly exploreLinkText: string;
+  readonly exploreRoute: string;
   readonly id: string;
+  readonly intro: string;
   readonly title: string;
   readonly tools: readonly HomeTool[];
 }
 
 export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
   {
+    exploreLinkText: 'Explore all STL tools',
+    exploreRoute: PublicRouteUrl.Tools,
     id: 'stl-tools',
+    intro:
+      'Check the quality, shape, dimensions and material-volume estimates of STL models before printing.',
     title: 'STL tools',
     tools: [
       {
@@ -72,6 +79,24 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
           'Calculate your model’s volume, convert units and estimate approximate material weight.',
         route: PublicRouteUrl.VolumeCalculator,
         cta: 'Calculate STL volume',
+      },
+    ],
+  },
+  {
+    exploreLinkText: 'Explore 3MF tools',
+    exploreRoute: PublicRouteUrl.ThreeMfTools,
+    id: '3mf-tools',
+    intro:
+      'Check 3MF mesh quality, declared units and build-item geometry before slicing.',
+    title: '3MF tools',
+    tools: [
+      {
+        icon: '◇',
+        title: '3MF Quality Checker',
+        description:
+          'Check 3MF mesh quality, declared units and build-item geometry before slicing.',
+        route: PublicRouteUrl.ThreeMfQualityCheck,
+        cta: 'Check 3MF quality',
       },
     ],
   },

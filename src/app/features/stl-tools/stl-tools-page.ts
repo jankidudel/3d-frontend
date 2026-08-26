@@ -3,10 +3,11 @@ import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { HOME_TOOL_GROUPS } from '../home/home-tools';
+import { FormatToolsGrid } from '../../core/components/format-tools-grid/format-tools-grid';
 
 @Component({
   selector: 'app-stl-tools-page',
-  imports: [RouterLink],
+  imports: [FormatToolsGrid, RouterLink],
   templateUrl: './stl-tools-page.html',
   styleUrl: './stl-tools-page.scss',
 })

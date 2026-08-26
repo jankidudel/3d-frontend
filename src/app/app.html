@@ -79,6 +79,18 @@
           (click)="closeMenus()"
           >STL Volume Calculator</a
         >
+        <a
+          class="tools-group-heading"
+          [routerLink]="['/', routePath.ThreeMfTools]"
+          (click)="closeMenus()"
+          >3MF tools</a
+        >
+        <a
+          [routerLink]="['/', routePath.ThreeMfQualityCheck]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >3MF Quality Checker</a
+        >
       </div>
     </div>
   </nav>

@@ -43,6 +43,7 @@ describe('HomePage', () => {
       '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/3mf-quality-checker',
       '/stl-tools',
       '/tools',
     ]);

@@ -9,6 +9,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { StlJobService } from '../../core/api/stl-job.service';
 import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
 import {
   createAndUploadStlJob,
@@ -37,6 +38,7 @@ export class StlManifoldPage {
   readonly jobStatus = JobStatus;
   readonly jobFailureMessage = jobFailureMessage;
   private readonly jobsService = inject(JobsService);
+  private readonly stlJobs = inject(StlJobService);
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
   private readonly router = inject(Router);
@@ -116,7 +118,7 @@ export class StlManifoldPage {
     this.submitting.set(true);
     this.error.set('');
     this.analytics.trackUploadStarted('manifold_checker', file.size);
-    createAndUploadStlJob(this.jobsService, file, (job) =>
+    createAndUploadStlJob(this.stlJobs, this.jobsService, file, (job) =>
       this.job.set(job),
     ).subscribe({
       next: () => {

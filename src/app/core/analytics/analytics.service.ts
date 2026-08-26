@@ -31,6 +31,10 @@ export const AnalyticsEvent = {
   StlViewerLoadFailed: 'stl_viewer_load_failed',
   StlViewerResetView: 'stl_viewer_reset_view',
   StlViewerOpenedQualityChecker: 'stl_viewer_opened_quality_checker',
+  ThreeMfQualityCheckStarted: '3mf_quality_check_started',
+  ThreeMfQualityReportGenerated: '3mf_quality_report_generated',
+  ThreeMfQualityCheckFailed: '3mf_quality_check_failed',
+  ThreeMfQualityReportDownloaded: '3mf_quality_report_downloaded',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -185,6 +189,28 @@ export class AnalyticsService {
 
   trackStlViewerQualityOpened(): void {
     this.sendEvent(AnalyticsEvent.StlViewerOpenedQualityChecker, {});
+  }
+
+  trackThreeMfQualityStarted(fileSizeBytes: number): void {
+    this.sendEvent(AnalyticsEvent.ThreeMfQualityCheckStarted, {
+      file_size_bucket: this.viewerFileSizeBucket(fileSizeBytes),
+    });
+  }
+
+  trackThreeMfQualityGenerated(): void {
+    this.sendEvent(AnalyticsEvent.ThreeMfQualityReportGenerated, {});
+  }
+
+  trackThreeMfQualityFailed(
+    failureCategory: 'upload_failed' | 'processing_failed',
+  ): void {
+    this.sendEvent(AnalyticsEvent.ThreeMfQualityCheckFailed, {
+      failure_category: failureCategory,
+    });
+  }
+
+  trackThreeMfQualityReportDownloaded(): void {
+    this.sendEvent(AnalyticsEvent.ThreeMfQualityReportDownloaded, {});
   }
 
   private enable(): void {

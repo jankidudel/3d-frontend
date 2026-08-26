@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { NEVER, of, throwError } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
+import { StlJobService } from '../../../core/api/stl-job.service';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { Job } from '../../../models/job';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -22,10 +23,10 @@ describe('StlQualityPage', () => {
     },
   };
   const jobsService = {
-    createJob: vi.fn(() => of(job)),
     uploadFile: vi.fn(() => of(undefined)),
     getJob: vi.fn(() => of(job)),
   };
+  const stlJobs = { create: vi.fn(() => of(job)) };
   const analytics = {
     trackUploadStarted: vi.fn(),
     trackUploadCompleted: vi.fn(),
@@ -35,7 +36,7 @@ describe('StlQualityPage', () => {
   };
 
   beforeEach(() => {
-    jobsService.createJob.mockReset().mockReturnValue(of(job));
+    stlJobs.create.mockReset().mockReturnValue(of(job));
     jobsService.uploadFile.mockReset().mockReturnValue(of(undefined));
     jobsService.getJob.mockReset().mockReturnValue(of(job));
     Object.values(analytics).forEach((method) => method.mockReset());
@@ -43,6 +44,7 @@ describe('StlQualityPage', () => {
       imports: [StlQualityPage],
       providers: [
         { provide: JobsService, useValue: jobsService },
+        { provide: StlJobService, useValue: stlJobs },
         { provide: AnalyticsService, useValue: analytics },
       ],
     });
@@ -56,7 +58,7 @@ describe('StlQualityPage', () => {
     fixture.componentInstance.checkStl();
     fixture.detectChanges();
 
-    expect(jobsService.createJob).toHaveBeenCalledWith({
+    expect(stlJobs.create).toHaveBeenCalledWith({
       fileName: 'rotor.stl',
       fileSizeBytes: 10,
     });
@@ -75,7 +77,7 @@ describe('StlQualityPage', () => {
   });
 
   it('shows a spinner immediately while the job is being created', () => {
-    jobsService.createJob.mockReturnValue(NEVER);
+    stlJobs.create.mockReturnValue(NEVER);
     const fixture = TestBed.createComponent(StlQualityPage);
     fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
 
@@ -106,9 +108,7 @@ describe('StlQualityPage', () => {
   });
 
   it('shows an API failure', () => {
-    jobsService.createJob.mockReturnValue(
-      throwError(() => new Error('offline')),
-    );
+    stlJobs.create.mockReturnValue(throwError(() => new Error('offline')));
     const fixture = TestBed.createComponent(StlQualityPage);
     fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
     fixture.componentInstance.checkStl();
@@ -122,7 +122,7 @@ describe('StlQualityPage', () => {
   });
 
   it('shows the maximum size for a FILE_TOO_LARGE API error', () => {
-    jobsService.createJob.mockReturnValue(
+    stlJobs.create.mockReturnValue(
       throwError(
         () =>
           new HttpErrorResponse({
@@ -139,7 +139,7 @@ describe('StlQualityPage', () => {
   });
 
   it('shows the shared rolling-limit message for RATE_LIMITED', () => {
-    jobsService.createJob.mockReturnValue(
+    stlJobs.create.mockReturnValue(
       throwError(
         () =>
           new HttpErrorResponse({

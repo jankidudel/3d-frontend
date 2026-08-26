@@ -8,6 +8,7 @@ import {
 import { finalize, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { JobsService } from '../../../core/api/jobs.service';
+import { StlJobService } from '../../../core/api/stl-job.service';
 import { uploadErrorMessage } from '../../../core/api/upload-error';
 import {
   createAndUploadStlJob,
@@ -30,6 +31,7 @@ import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
 export class StlQualityPage {
   readonly routeUrl = PublicRouteUrl;
   private readonly jobsService = inject(JobsService);
+  private readonly stlJobs = inject(StlJobService);
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
@@ -93,7 +95,7 @@ export class StlQualityPage {
       this.analytics.trackUploadStarted('quality_check', file.size);
       this.uploadStartedTracked = true;
     }
-    createAndUploadStlJob(this.jobsService, file, (job) =>
+    createAndUploadStlJob(this.stlJobs, this.jobsService, file, (job) =>
       this.job.set(job),
     ).subscribe({
       next: () => {

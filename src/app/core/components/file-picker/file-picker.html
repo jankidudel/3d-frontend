@@ -1,0 +1,28 @@
+<div class="picker">
+  <label class="choose" [for]="configuration().accept">{{
+    configuration().label
+  }}</label>
+  <input
+    #fileInput
+    [id]="configuration().accept"
+    type="file"
+    [accept]="configuration().accept"
+    (change)="onFileChange($event)"
+  />
+  <p class="hint">{{ configuration().selectionHint }}</p>
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+  @if (selectedFile(); as file) {
+    <dl class="file-details">
+      <div>
+        <dt>File</dt>
+        <dd>{{ file.name }}</dd>
+      </div>
+      <div>
+        <dt>Size</dt>
+        <dd>{{ file.size.toLocaleString() }} bytes</dd>
+      </div>
+    </dl>
+  }
+</div>

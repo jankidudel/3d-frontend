@@ -1,0 +1,12 @@
+<section class="tools" aria-labelledby="tool-list-title">
+  <h2 id="tool-list-title">{{ heading() }}</h2>
+  <div class="tool-grid">
+    @for (tool of tools(); track tool.route) {
+      <article class="tool-card card">
+        <h3>{{ tool.title }}</h3>
+        <p>{{ tool.description }}</p>
+        <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
+      </article>
+    }
+  </div>
+</section>

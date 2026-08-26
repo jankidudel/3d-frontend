@@ -1,0 +1,22 @@
+<main class="page">
+  <p class="eyebrow">InspectMesh</p>
+  <h1>Free 3MF Tools for 3D Printing</h1>
+  <p class="lead">
+    3MF preserves useful print-model information, including a declared unit and
+    build structure.
+  </p>
+  <app-format-tools-grid heading="3MF tools" [tools]="tools" />
+  <section class="content">
+    <h2>What is 3MF?</h2>
+    <p>
+      3MF is a 3D-printing format that can store model units and multiple build
+      items, unlike basic STL geometry.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Are STL tools still available?</h3>
+    <p>
+      Yes. <a [routerLink]="routeUrl.Tools">Browse STL tools</a> for
+      STL-specific checks.
+    </p>
+  </section>
+</main>

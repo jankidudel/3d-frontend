@@ -188,4 +188,45 @@ describe('AnalyticsService', () => {
       { tool: 'volume_calculator', material: 'custom' },
     ]);
   });
+
+  it('tracks 3MF events without file-derived details', () => {
+    const document = TestBed.inject(DOCUMENT);
+    const consent = TestBed.inject(CookieConsentService);
+    const analytics = TestBed.inject(AnalyticsService);
+    consent.accept();
+    TestBed.flushEffects();
+    document
+      .querySelector<HTMLScriptElement>(
+        'script[src*="googletagmanager.com/gtag/js"]',
+      )
+      ?.dispatchEvent(new Event('load'));
+
+    analytics.trackThreeMfQualityStarted(2 * 1024 * 1024);
+    analytics.trackThreeMfQualityGenerated();
+    analytics.trackThreeMfQualityFailed('processing_failed');
+    analytics.trackThreeMfQualityReportDownloaded();
+
+    const events = queuedCommands(document);
+    expect(events).toContainEqual([
+      'event',
+      '3mf_quality_check_started',
+      { file_size_bucket: '1_to_5mb' },
+    ]);
+    expect(events).toContainEqual([
+      'event',
+      '3mf_quality_report_generated',
+      {},
+    ]);
+    expect(events).toContainEqual([
+      'event',
+      '3mf_quality_check_failed',
+      { failure_category: 'processing_failed' },
+    ]);
+    expect(events).toContainEqual([
+      'event',
+      '3mf_quality_report_downloaded',
+      {},
+    ]);
+    expect(JSON.stringify(events)).not.toContain('model.3mf');
+  });
 });

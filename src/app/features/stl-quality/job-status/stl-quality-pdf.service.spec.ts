@@ -87,4 +87,27 @@ describe('StlQualityPdfService', () => {
 
     expect(result?.pdf.output()).toContain('2 separate components');
   });
+
+  it('uses 3MF format and declared-unit details when supplied', async () => {
+    const service = TestBed.inject(StlQualityPdfService);
+    const result = await service.createReport({
+      ...validJob,
+      fileName: 'build.3mf',
+      report: {
+        ...(validJob.report as object),
+        fileName: 'build.3mf',
+        fileFormat: '3mf',
+        sourceUnit: 'millimeter',
+        modelObjectCount: 2,
+        buildItemCount: 3,
+      },
+    });
+
+    const contents = result?.pdf.output() ?? '';
+    expect(result?.fileName).toBe('build-quality-report.pdf');
+    expect(contents).toContain('3MF Quality Check Report');
+    expect(contents).toContain('Declared unit');
+    expect(contents).toContain('millimeter');
+    expect(contents).toContain('Build items');
+  });
 });

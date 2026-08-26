@@ -31,6 +31,8 @@ describe('App', () => {
       '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/3mf-tools',
+      '/3mf-quality-checker',
     ]);
   });
 
@@ -58,6 +60,8 @@ describe('App', () => {
       'STL Triangle Counter',
       'STL Dimensions Checker',
       'STL Volume Calculator',
+      '3MF tools',
+      '3MF Quality Checker',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
@@ -69,6 +73,8 @@ describe('App', () => {
       '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/3mf-tools',
+      '/3mf-quality-checker',
     ]);
   });
 });

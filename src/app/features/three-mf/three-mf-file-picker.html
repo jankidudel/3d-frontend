@@ -1,0 +1,5 @@
+<app-file-picker
+  [configuration]="configuration"
+  [selectedFileFromParent]="selectedFileFromParent()"
+  (fileSelected)="fileSelected.emit($event)"
+/>

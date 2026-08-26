@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { StlJobService } from '../../core/api/stl-job.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { Job } from '../../models/job';
 import { StlVolumePage } from './stl-volume-page';
@@ -22,10 +23,10 @@ describe('StlVolumePage', () => {
     },
   };
   const jobsService = {
-    createJob: vi.fn(),
     uploadFile: vi.fn(),
     getJob: vi.fn(() => of(completedJob)),
   };
+  const stlJobs = { create: vi.fn() };
   const analytics = {
     trackUploadStarted: vi.fn(),
     trackUploadCompleted: vi.fn(),
@@ -41,6 +42,7 @@ describe('StlVolumePage', () => {
       providers: [
         provideRouter([]),
         { provide: JobsService, useValue: jobsService },
+        { provide: StlJobService, useValue: stlJobs },
         { provide: AnalyticsService, useValue: analytics },
       ],
     });

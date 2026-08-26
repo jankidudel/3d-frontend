@@ -11,8 +11,7 @@ import { HOME_TOOL_GROUPS } from '../home/home-tools';
   styleUrl: './tools-page.scss',
 })
 export class ToolsPage {
-  readonly tools = HOME_TOOL_GROUPS[0].tools;
-  readonly routeUrl = PublicRouteUrl;
+  readonly toolGroups = HOME_TOOL_GROUPS;
   private readonly seo = inject(SeoService);
 
   constructor() {

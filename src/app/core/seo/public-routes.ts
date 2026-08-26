@@ -9,6 +9,8 @@ export const PublicRoutePath = {
   TriangleCounter: 'stl-triangle-counter',
   VolumeCalculator: 'stl-volume-calculator',
   Viewer: 'stl-viewer',
+  ThreeMfTools: '3mf-tools',
+  ThreeMfQualityCheck: '3mf-quality-checker',
   Privacy: 'privacy',
   Cookies: 'cookies',
 } as const;
@@ -34,4 +36,6 @@ export const canonicalPublicRoutePaths = [
   PublicRoutePath.TriangleCounter,
   PublicRoutePath.VolumeCalculator,
   PublicRoutePath.Viewer,
+  PublicRoutePath.ThreeMfTools,
+  PublicRoutePath.ThreeMfQualityCheck,
 ] as const;

@@ -68,6 +68,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ThreeMfTools,
+    loadComponent: () =>
+      import('./features/three-mf/three-mf-tools-page').then(
+        (m) => m.ThreeMfToolsPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.ThreeMfQualityCheck,
+    loadComponent: () =>
+      import('./features/three-mf/three-mf-quality-page').then(
+        (m) => m.ThreeMfQualityPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Privacy,
     loadComponent: () =>
       import('./features/legal/privacy-page').then((m) => m.PrivacyPage),

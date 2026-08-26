@@ -9,6 +9,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { StlJobService } from '../../core/api/stl-job.service';
 import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
@@ -43,6 +44,7 @@ export class StlVolumePage {
   readonly jobFailureMessage = jobFailureMessage;
   readonly jobStatus = JobStatus;
   private readonly jobsService = inject(JobsService);
+  private readonly stlJobs = inject(StlJobService);
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
@@ -170,7 +172,7 @@ export class StlVolumePage {
       this.analytics.trackUploadStarted('volume_calculator', file.size);
       this.uploadStartedTracked = true;
     }
-    createAndUploadStlJob(this.jobsService, file, (job) =>
+    createAndUploadStlJob(this.stlJobs, this.jobsService, file, (job) =>
       this.job.set(job),
     ).subscribe({
       next: () => {
