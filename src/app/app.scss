@@ -65,6 +65,15 @@ nav a {
 .tools-disclosure {
   position: relative;
 }
+.tools-disclosure::after {
+  /* Keep the disclosure hovered while the pointer crosses the visual menu gap. */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 15rem;
+  height: 0.35rem;
+  content: '';
+}
 .tools-menu {
   position: absolute;
   z-index: 10;
