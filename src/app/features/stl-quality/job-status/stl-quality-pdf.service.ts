@@ -132,6 +132,72 @@ export class StlQualityPdfService {
       }
     };
 
+    const validationSummary = (
+      title: string,
+      description: string,
+      color: [number, number, number],
+      fillColor: [number, number, number],
+      passed: boolean,
+    ): void => {
+      const padding = 5;
+      const iconSize = 12;
+      const iconGap = 5;
+      const contentX = margin + padding + iconSize + iconGap;
+      const contentWidthWithIcon =
+        contentWidth - padding * 2 - iconSize - iconGap;
+      const titleFontSize = 14;
+      const descriptionFontSize = 9;
+      const titleLineHeight = titleFontSize * 0.48;
+      const descriptionLineHeight = descriptionFontSize * 0.48;
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(titleFontSize);
+      const titleLines = pdf.splitTextToSize(title, contentWidthWithIcon);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(descriptionFontSize);
+      const descriptionLines = pdf.splitTextToSize(
+        description,
+        contentWidthWithIcon,
+      );
+      const contentHeight =
+        titleLines.length * titleLineHeight +
+        2 +
+        descriptionLines.length * descriptionLineHeight;
+      const summaryHeight = Math.max(
+        iconSize + padding * 2,
+        contentHeight + padding * 2,
+      );
+
+      ensureSpace(summaryHeight + 5);
+      const summaryY = cursorY;
+      pdf.setFillColor(...fillColor);
+      pdf.roundedRect(margin, summaryY, contentWidth, summaryHeight, 3, 3, 'F');
+      pdf.setDrawColor(...color);
+      pdf.setLineWidth(1);
+      pdf.line(margin, summaryY + 2, margin, summaryY + summaryHeight - 2);
+
+      const iconX = margin + padding;
+      const iconY = summaryY + (summaryHeight - iconSize) / 2;
+      if (passed) {
+        pdf.line(iconX + 2, iconY + 6, iconX + 5, iconY + 9);
+        pdf.line(iconX + 5, iconY + 9, iconX + 10, iconY + 3);
+      } else {
+        pdf.line(iconX + 3, iconY + 3, iconX + 9, iconY + 9);
+        pdf.line(iconX + 9, iconY + 3, iconX + 3, iconY + 9);
+      }
+
+      let textY = summaryY + padding + titleLineHeight;
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(titleFontSize);
+      pdf.setTextColor(...color);
+      pdf.text(titleLines, contentX, textY);
+      textY += titleLines.length * titleLineHeight + 2;
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(descriptionFontSize);
+      pdf.setTextColor(82, 96, 87);
+      pdf.text(descriptionLines, contentX, textY);
+      cursorY = summaryY + summaryHeight + 5;
+    };
+
     const validation = this.asRecord(report['validation']);
     const isValid = validation?.['isValid'] === true;
     const dimensions = this.asRecord(report['dimensions']);
@@ -174,38 +240,21 @@ export class StlQualityPdfService {
       : warningsOnly
         ? 'Warnings found'
         : 'Problems found';
-    ensureSpace(29);
-    pdf.setFillColor(
-      isValid ? 232 : warningsOnly ? 255 : 253,
-      isValid ? 245 : warningsOnly ? 246 : 236,
-      isValid ? 236 : warningsOnly ? 222 : 234,
-    );
-    pdf.roundedRect(margin, cursorY, contentWidth, 25, 3, 3, 'F');
-    pdf.setDrawColor(...statusColor);
-    pdf.setLineWidth(1);
-    pdf.line(margin, cursorY + 2, margin, cursorY + 23);
-    if (passed) {
-      pdf.line(margin + 4, cursorY + 13, margin + 7, cursorY + 16);
-      pdf.line(margin + 7, cursorY + 16, margin + 13, cursorY + 8);
-    } else {
-      pdf.line(margin + 5, cursorY + 8, margin + 11, cursorY + 16);
-      pdf.line(margin + 11, cursorY + 8, margin + 5, cursorY + 16);
-    }
-    writeLines(statusTitle, {
-      color: statusColor,
-      fontSize: 14,
-      style: 'bold',
-      indent: 17,
-    });
-    writeLines(
+    validationSummary(
+      statusTitle,
       passed
         ? 'No mesh validation issues were detected. This does not guarantee printability.'
         : warningsOnly
           ? 'Review the warnings before slicing. They may be intentional.'
           : 'Review the findings and repair guidance before slicing.',
-      { color: [82, 96, 87], fontSize: 9, indent: 17 },
+      statusColor,
+      [
+        isValid ? 232 : warningsOnly ? 255 : 253,
+        isValid ? 245 : warningsOnly ? 246 : 236,
+        isValid ? 236 : warningsOnly ? 222 : 234,
+      ],
+      passed,
     );
-    cursorY += 5;
     heading('File and model metrics');
     const componentCount = topology?.['connectedComponentCount'];
     metricGrid([

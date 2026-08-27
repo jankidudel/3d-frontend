@@ -305,6 +305,13 @@ pre {
     padding: 1rem;
   }
 }
+@media print {
+  .status-panel,
+  .metric {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation: none;
