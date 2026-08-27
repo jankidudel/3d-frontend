@@ -6,6 +6,7 @@ import { HomeTool } from '../../../features/home/home-tools';
   selector: 'app-format-tools-grid',
   imports: [RouterLink],
   templateUrl: './format-tools-grid.html',
+  styleUrl: './format-tools-grid.scss',
 })
 export class FormatToolsGrid {
   readonly heading = input.required<string>();
