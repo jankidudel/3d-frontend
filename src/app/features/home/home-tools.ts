@@ -106,6 +106,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         route: PublicRouteUrl.ThreeMfQualityCheck,
         cta: 'Check 3MF quality',
       },
+      {
+        icon: '↔',
+        title: '3MF Dimensions Checker',
+        description:
+          'Measure final 3MF build dimensions, confirm declared units and check printer fit.',
+        route: PublicRouteUrl.ThreeMfDimensionsChecker,
+        cta: 'Measure a 3MF file',
+      },
     ],
   },
 ];

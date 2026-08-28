@@ -1,0 +1,226 @@
+<main class="page dimensions-page">
+  <p class="eyebrow">3MF measurement and printer fit</p>
+  <h1>3MF Dimensions Checker</h1>
+  <p class="lead">
+    Measure the final dimensions of a 3MF build, keep its declared unit and
+    check whether it fits your 3D printer.
+  </p>
+  <section class="upload card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Measure your 3MF build</h2>
+    <app-three-mf-file-picker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    />
+    <p class="hint">.3mf only - maximum 25 MB</p>
+    <button
+      class="button submit"
+      type="button"
+      (click)="measure()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job…' : 'Measure 3MF dimensions' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section
+      class="results card"
+      aria-live="polite"
+      aria-labelledby="results-title"
+    >
+      @if (processing() || pollingTimedOut()) {
+        <app-stl-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="pollingTimedOut()"
+          [refreshing]="refreshing()"
+          headingId="results-title"
+          (refresh)="refresh()"
+        />
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="results-title">Could not measure this 3MF file</h2>
+        <p role="alert">{{ jobFailureMessage(currentJob.failure) }}</p>
+      } @else if (dimensions(); as measured) {
+        <h2 id="results-title">Build dimensions</h2>
+        <p class="primary-dimensions">
+          {{ formatDimensions(measured) }} <span>{{ effectiveUnit() }}</span>
+        </p>
+        <p>Measurements include build-item placement and transforms.</p>
+        @if (convertedDimensions(); as converted) {
+          <section class="tool-section" aria-labelledby="conversion-title">
+            <h3 id="conversion-title">Unit conversions</h3>
+            <dl class="conversion-grid">
+              <div>
+                <dt>Millimetres</dt>
+                <dd>{{ formatDimensions(converted.mm) }} mm</dd>
+              </div>
+              <div>
+                <dt>Centimetres</dt>
+                <dd>{{ formatDimensions(converted.cm) }} cm</dd>
+              </div>
+              <div>
+                <dt>Inches</dt>
+                <dd>{{ formatDimensions(converted.in) }} in</dd>
+              </div>
+            </dl>
+          </section>
+        }
+        <section class="tool-section" aria-labelledby="structure-title">
+          <h3 id="structure-title">Build structure</h3>
+          <dl class="conversion-grid">
+            <div>
+              <dt>Resolved build items</dt>
+              <dd>{{ formatNumber(report()?.['buildItemCount']) }}</dd>
+            </div>
+            <div>
+              <dt>Distinct model objects</dt>
+              <dd>{{ formatNumber(report()?.['modelObjectCount']) }}</dd>
+            </div>
+          </dl>
+        </section>
+        <section class="tool-section" aria-labelledby="fit-title">
+          <h3 id="fit-title">Printer fit</h3>
+          <p>
+            Enter your printer's usable build volume. This is an axis-aligned
+            size check, not a guarantee of printability.
+          </p>
+          <div class="calculator-fields">
+            <label class="field"
+              ><span>Width</span
+              ><input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                (input)="setBuildDimension('width', $event)"
+            /></label>
+            <label class="field"
+              ><span>Height</span
+              ><input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                (input)="setBuildDimension('height', $event)"
+            /></label>
+            <label class="field"
+              ><span>Depth</span
+              ><input
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                (input)="setBuildDimension('depth', $event)"
+            /></label>
+            <label class="field"
+              ><span>Build volume unit</span
+              ><select [value]="buildUnit()" (change)="setBuildUnit($event)">
+                <option value="mm">Millimetres (mm)</option>
+                <option value="cm">Centimetres (cm)</option>
+                <option value="m">Metres (m)</option>
+                <option value="in">Inches (in)</option>
+              </select></label
+            >
+          </div>
+          @if (buildVolumeInvalid()) {
+            <p class="error" role="alert">
+              Enter finite build-volume dimensions greater than zero.
+            </p>
+          }
+          @if (printerFit(); as fit) {
+            <p
+              class="fit-result"
+              [class.positive]="fit.fits"
+              [class.warning]="!fit.fits"
+            >
+              <strong>{{
+                fit.fits
+                  ? 'Fits selected printer volume'
+                  : 'Does not fit selected printer volume'
+              }}</strong
+              ><br />Printer margins, orientation, supports and slicer settings
+              can still matter.
+            </p>
+          }
+        </section>
+        <p class="next-actions">
+          <a
+            class="button button-secondary"
+            [routerLink]="routeUrl.ThreeMfViewer"
+            >View 3MF in 3D</a
+          >
+          <a class="button" [routerLink]="routeUrl.ThreeMfQualityCheck"
+            >Check 3MF quality</a
+          >
+        </p>
+      }
+    </section>
+  }
+  <section class="content">
+    <h2>How to measure a 3MF file</h2>
+    <ol>
+      <li>Choose or drop a <code>.3mf</code> file.</li>
+      <li>
+        Inspect the width, height and depth of the resolved build geometry.
+      </li>
+      <li>
+        Confirm the declared 3MF unit and compare converted measurements with
+        your intended size.
+      </li>
+      <li>
+        Enter your printer's usable build volume to check whether the model fits
+        before slicing.
+      </li>
+    </ol>
+    <h2>Why 3MF dimensions are more reliable than STL dimensions</h2>
+    <p>
+      3MF can store a model unit, so a 3MF file carries more scale information
+      than a basic STL file. This checker uses that declared or effective 3MF
+      unit when displaying the final build dimensions. STL does not reliably
+      carry unit metadata; use the
+      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>
+      when working with STL files.
+    </p>
+    <h2>Build items can change the final size</h2>
+    <p>
+      A 3MF package can contain several objects and place them into a build with
+      transforms. This checker measures the resolved build geometry after those
+      placements, rather than measuring only the first object stored in the
+      package. Separate parts are not automatically a problem, but their
+      combined bounds may be larger than any individual object.
+    </p>
+    <h2>Printer fit is a useful first check</h2>
+    <p>
+      The printer-fit result compares the model's axis-aligned dimensions with
+      the build volume you enter. It does not account for printer margins,
+      orientation, supports, brim/raft, nozzle clearance or slicer settings.
+      Always confirm the final placement in your slicer.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Does my 3MF file get uploaded?</h3>
+    <p>
+      Yes. The checker uses the same secure processing flow as other InspectMesh
+      analysis tools to calculate the result. It is not a browser-only viewer.
+      For local viewing without upload, use the
+      <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a>.
+    </p>
+    <h3>Are the dimensions measured before or after build-item transforms?</h3>
+    <p>
+      They are measured from the resolved build geometry, including supported
+      build-item and component transforms.
+    </p>
+    <h3>Does a fitting result guarantee that I can print the file?</h3>
+    <p>
+      No. It is a size comparison only. Your slicer, chosen orientation,
+      supports, printer margins and print settings still matter.
+    </p>
+    <h3>Can I use this tool for STL files?</h3>
+    <p>
+      Use the
+      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>.
+      STL coordinates do not reliably specify their intended unit.
+    </p>
+  </section>
+</main>

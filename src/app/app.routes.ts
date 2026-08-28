@@ -89,6 +89,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ThreeMfDimensionsChecker,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-dimensions-page').then(
+        (m) => m.ThreeMfDimensionsPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Guides,
     loadComponent: () =>
       import('./features/guides/guides-page').then((m) => m.GuidesPage),

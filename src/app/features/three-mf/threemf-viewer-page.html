@@ -103,6 +103,11 @@
           [routerLink]="routeUrl.ThreeMfQualityCheck"
           >Check 3MF quality</a
         >
+        <a
+          class="button button-secondary"
+          [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+          >Measure 3MF dimensions</a
+        >
       </aside>
     </section>
   }
@@ -126,6 +131,12 @@
     <p>
       3MF can store a declared unit and several model objects placed as build
       items. STL stores only basic geometry and does not declare units.
+    </p>
+    <p>
+      Need printer-fit measurements?
+      <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+        >Use the 3MF Dimensions Checker</a
+      >.
     </p>
     <h2>FAQ</h2>
     <h3>Does my 3MF file get uploaded?</h3>

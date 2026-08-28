@@ -1,0 +1,24 @@
+@use '../stl-dimensions/stl-dimensions-page.scss';
+
+.hint {
+  color: var(--muted);
+}
+.next-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.fit-result {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.fit-result.positive {
+  background: var(--soft);
+  color: var(--primary);
+}
+.fit-result.warning {
+  background: #fff5f3;
+  color: var(--error);
+}

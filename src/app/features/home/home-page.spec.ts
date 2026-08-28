@@ -45,6 +45,7 @@ describe('HomePage', () => {
       '/stl-volume-calculator',
       '/3mf-viewer',
       '/3mf-quality-checker',
+      '/3mf-dimensions-checker',
       '/stl-tools',
       '/tools',
     ]);
