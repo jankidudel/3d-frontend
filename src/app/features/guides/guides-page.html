@@ -1,0 +1,37 @@
+<main class="page guides-page">
+  <p class="eyebrow">3D printing file guides</p>
+  <h1>Practical STL guides for better 3D prints</h1>
+  <p class="lead">
+    Learn how to check mesh health, diagnose common STL problems and prepare a
+    model before slicing.
+  </p>
+  <section aria-labelledby="guide-list-title">
+    <h2 id="guide-list-title">Guides</h2>
+    <ul class="guide-list">
+      <li>
+        <a [routerLink]="routeUrl.FixNonManifoldStlGuide"
+          >How to Fix Non-Manifold STL Files for 3D Printing</a
+        >
+        <p>Find open edges and mesh problems, then choose a repair workflow.</p>
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.WatertightStlGuide"
+          >How to Tell If an STL File Is Watertight</a
+        >
+        <p>Check whether a model forms a closed surface before you print it.</p>
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.StlUnitsGuide">Why STL Files Have No Units</a>
+        <p>
+          Understand STL scale problems and correct dimensions before slicing.
+        </p>
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.StlTriangleCountGuide"
+          >STL Triangle Count Explained</a
+        >
+        <p>Balance file size, mesh detail and practical print quality.</p>
+      </li>
+    </ul>
+  </section>
+</main>

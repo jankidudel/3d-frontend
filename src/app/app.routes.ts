@@ -89,6 +89,35 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.Guides,
+    loadComponent: () =>
+      import('./features/guides/guides-page').then((m) => m.GuidesPage),
+  },
+  {
+    path: PublicRoutePath.FixNonManifoldStlGuide,
+    loadComponent: () =>
+      import('./features/guides/guide-page').then((m) => m.GuidePage),
+    data: { guide: 'non-manifold' },
+  },
+  {
+    path: PublicRoutePath.WatertightStlGuide,
+    loadComponent: () =>
+      import('./features/guides/guide-page').then((m) => m.GuidePage),
+    data: { guide: 'watertight' },
+  },
+  {
+    path: PublicRoutePath.StlUnitsGuide,
+    loadComponent: () =>
+      import('./features/guides/guide-page').then((m) => m.GuidePage),
+    data: { guide: 'units' },
+  },
+  {
+    path: PublicRoutePath.StlTriangleCountGuide,
+    loadComponent: () =>
+      import('./features/guides/guide-page').then((m) => m.GuidePage),
+    data: { guide: 'triangles' },
+  },
+  {
     path: PublicRoutePath.Privacy,
     loadComponent: () =>
       import('./features/legal/privacy-page').then((m) => m.PrivacyPage),

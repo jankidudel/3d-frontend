@@ -1,0 +1,31 @@
+.guides-page {
+  max-width: 54rem;
+}
+
+.guides-page section {
+  margin-top: 3rem;
+}
+
+.guide-list {
+  display: grid;
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-list li {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.guide-list a {
+  font-size: 1.1rem;
+  font-weight: 750;
+}
+
+.guide-list p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}

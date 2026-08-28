@@ -12,6 +12,11 @@ export const PublicRoutePath = {
   ThreeMfTools: '3mf-tools',
   ThreeMfViewer: '3mf-viewer',
   ThreeMfQualityCheck: '3mf-quality-checker',
+  Guides: 'guides',
+  FixNonManifoldStlGuide: 'how-to-fix-non-manifold-stl',
+  WatertightStlGuide: 'how-to-tell-if-an-stl-is-watertight',
+  StlUnitsGuide: 'why-stl-files-have-no-units',
+  StlTriangleCountGuide: 'stl-triangle-count-explained',
   Privacy: 'privacy',
   Cookies: 'cookies',
 } as const;
@@ -40,4 +45,9 @@ export const canonicalPublicRoutePaths = [
   PublicRoutePath.ThreeMfTools,
   PublicRoutePath.ThreeMfViewer,
   PublicRoutePath.ThreeMfQualityCheck,
+  PublicRoutePath.Guides,
+  PublicRoutePath.FixNonManifoldStlGuide,
+  PublicRoutePath.WatertightStlGuide,
+  PublicRoutePath.StlUnitsGuide,
+  PublicRoutePath.StlTriangleCountGuide,
 ] as const;

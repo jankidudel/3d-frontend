@@ -21,6 +21,20 @@ export const serverRoutes: ServerRoute[] = [
     path: PublicRoutePath.ThreeMfQualityCheck,
     renderMode: RenderMode.Prerender,
   },
+  { path: PublicRoutePath.Guides, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.FixNonManifoldStlGuide,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.WatertightStlGuide,
+    renderMode: RenderMode.Prerender,
+  },
+  { path: PublicRoutePath.StlUnitsGuide, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.StlTriangleCountGuide,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.Privacy, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Cookies, renderMode: RenderMode.Prerender },
   { path: '**', renderMode: RenderMode.Prerender },

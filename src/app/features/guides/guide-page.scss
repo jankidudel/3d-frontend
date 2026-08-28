@@ -1,0 +1,46 @@
+.guide-page {
+  max-width: 54rem;
+}
+
+.guide-page article > section {
+  margin-top: 2.75rem;
+}
+
+.guide-page h2 {
+  margin-bottom: 1rem;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.guide-page h3 {
+  margin: 1.75rem 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.guide-page p,
+.guide-page li {
+  max-width: 46rem;
+}
+
+.guide-page p:not(.eyebrow) {
+  color: var(--muted);
+}
+
+.guide-page .lead {
+  max-width: 46rem;
+}
+
+.guide-page ul {
+  max-width: 46rem;
+  padding-left: 1.35rem;
+}
+
+.guide-page li + li {
+  margin-top: 0.5rem;
+}
+
+.guide-page code {
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.2rem;
+  background: var(--soft);
+  color: var(--ink);
+}

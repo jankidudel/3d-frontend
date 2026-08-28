@@ -106,7 +106,8 @@
 
 <footer class="site-footer">
   <p>Simple, browser-friendly tools for better 3D prints.</p>
-  <nav class="footer-links" aria-label="Legal and cookie settings">
+  <nav class="footer-links" aria-label="Site and legal links">
+    <a [routerLink]="['/', routePath.Guides]">Guides</a>
     <a [routerLink]="['/', routePath.Privacy]">Privacy</a>
     <a [routerLink]="['/', routePath.Cookies]">Cookies</a>
     <button type="button" (click)="consent.changeChoice()">
