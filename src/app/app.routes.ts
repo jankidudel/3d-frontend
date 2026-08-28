@@ -70,14 +70,21 @@ export const routes: Routes = [
   {
     path: PublicRoutePath.ThreeMfTools,
     loadComponent: () =>
-      import('./features/three-mf/three-mf-tools-page').then(
+      import('./features/three-mf/threemf-tools-page').then(
         (m) => m.ThreeMfToolsPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.ThreeMfViewer,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-viewer-page').then(
+        (m) => m.ThreeMfViewerPage,
       ),
   },
   {
     path: PublicRoutePath.ThreeMfQualityCheck,
     loadComponent: () =>
-      import('./features/three-mf/three-mf-quality-page').then(
+      import('./features/three-mf/threemf-quality-page').then(
         (m) => m.ThreeMfQualityPage,
       ),
   },

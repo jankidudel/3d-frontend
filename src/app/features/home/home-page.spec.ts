@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
-  it('presents links to all public STL tools in the intended order', () => {
+  it('presents links to all public tools in the intended order', () => {
     TestBed.configureTestingModule({
       imports: [HomePage],
       providers: [provideRouter([])],
@@ -16,7 +16,7 @@ describe('HomePage', () => {
 
     expect(fixture.nativeElement.textContent).toContain('Choose a tool');
     expect(fixture.nativeElement.textContent).toContain(
-      'Currently supporting STL files.',
+      'Currently supporting STL and 3MF files.',
     );
     expect(fixture.nativeElement.textContent).toContain('STL tools');
     expect(fixture.nativeElement.querySelector('h1')?.textContent?.trim()).toBe(
@@ -43,6 +43,7 @@ describe('HomePage', () => {
       '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/3mf-viewer',
       '/3mf-quality-checker',
       '/stl-tools',
       '/tools',

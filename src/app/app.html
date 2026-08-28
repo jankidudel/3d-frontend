@@ -86,6 +86,12 @@
           >3MF tools</a
         >
         <a
+          [routerLink]="['/', routePath.ThreeMfViewer]"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+          >3MF Viewer</a
+        >
+        <a
           [routerLink]="['/', routePath.ThreeMfQualityCheck]"
           routerLinkActive="active"
           (click)="closeMenus()"

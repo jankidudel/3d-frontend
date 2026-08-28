@@ -7,6 +7,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { createAndUploadThreeMfJob } from '../../core/api/three-mf-job-workflow';
@@ -19,7 +20,7 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Job, JobStatus } from '../../models/job';
 import { jobFailureMessage } from '../../models/job-failure';
-import { ThreeMfFilePicker } from './three-mf-file-picker';
+import { ThreeMfFilePicker } from './threemf-file-picker';
 import {
   DisplayIssue,
   normalizeValidationIssues,
@@ -29,11 +30,12 @@ import { StlQualityPdfService } from '../stl-quality/job-status/stl-quality-pdf.
 type ReportRecord = Record<string, unknown>;
 @Component({
   selector: 'app-three-mf-quality-page',
-  imports: [ThreeMfFilePicker, StlJobProgress],
-  templateUrl: './three-mf-quality-page.html',
+  imports: [RouterLink, ThreeMfFilePicker, StlJobProgress],
+  templateUrl: './threemf-quality-page.html',
   styleUrl: '../stl-manifold/stl-manifold-page.scss',
 })
 export class ThreeMfQualityPage {
+  readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
   readonly jobFailureMessage = jobFailureMessage;
   readonly selectedFile = signal<File | null>(null);

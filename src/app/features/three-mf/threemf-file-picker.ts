@@ -8,7 +8,7 @@ import {
 @Component({
   selector: 'app-three-mf-file-picker',
   imports: [FilePicker],
-  templateUrl: './three-mf-file-picker.html',
+  templateUrl: './threemf-file-picker.html',
 })
 export class ThreeMfFilePicker {
   readonly selectedFileFromParent = input<File | null>(null);

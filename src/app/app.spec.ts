@@ -32,6 +32,7 @@ describe('App', () => {
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
       '/3mf-tools',
+      '/3mf-viewer',
       '/3mf-quality-checker',
     ]);
   });
@@ -61,6 +62,7 @@ describe('App', () => {
       'STL Dimensions Checker',
       'STL Volume Calculator',
       '3MF tools',
+      '3MF Viewer',
       '3MF Quality Checker',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
@@ -74,6 +76,7 @@ describe('App', () => {
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
       '/3mf-tools',
+      '/3mf-viewer',
       '/3mf-quality-checker',
     ]);
   });

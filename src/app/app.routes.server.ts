@@ -16,6 +16,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.VolumeCalculator, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Viewer, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.ThreeMfTools, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.ThreeMfViewer, renderMode: RenderMode.Prerender },
   {
     path: PublicRoutePath.ThreeMfQualityCheck,
     renderMode: RenderMode.Prerender,

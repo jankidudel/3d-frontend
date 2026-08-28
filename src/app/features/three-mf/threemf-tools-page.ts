@@ -8,7 +8,7 @@ import { HOME_TOOL_GROUPS } from '../home/home-tools';
 @Component({
   selector: 'app-three-mf-tools-page',
   imports: [FormatToolsGrid, RouterLink],
-  templateUrl: './three-mf-tools-page.html',
+  templateUrl: './threemf-tools-page.html',
   styleUrl: '../stl-tools/stl-tools-page.scss',
 })
 export class ThreeMfToolsPage {

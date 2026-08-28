@@ -91,6 +91,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     title: '3MF tools',
     tools: [
       {
+        icon: '◉',
+        title: '3MF Viewer',
+        description:
+          'Open a 3MF model locally, inspect it in 3D and review its declared units, dimensions and triangle count.',
+        route: PublicRouteUrl.ThreeMfViewer,
+        cta: 'Open a 3MF file',
+      },
+      {
         icon: '◇',
         title: '3MF Quality Checker',
         description:

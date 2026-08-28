@@ -1,0 +1,147 @@
+<main class="page viewer-page">
+  <p class="eyebrow">Private browser-based 3MF inspection</p>
+  <h1>Free 3MF Viewer Online</h1>
+  <p class="lead">
+    Open a 3MF file, inspect its loaded build geometry, and review its declared
+    units and dimensions.
+  </p>
+  <section class="card viewer-tool" aria-labelledby="viewer-upload-title">
+    <h2 id="viewer-upload-title">Open a 3MF file</h2>
+    <div
+      class="drop-zone"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      aria-label="Drag and drop a 3MF file here, or choose a file"
+    >
+      <p>Drag and drop a 3MF file here</p>
+      <button class="button" type="button" (click)="openPicker()">
+        Choose 3MF file
+      </button>
+      <input
+        #picker
+        type="file"
+        accept=".3mf"
+        aria-label="Choose 3MF file"
+        (change)="onPicker($event)"
+      />
+      <p class="hint">.3mf only - maximum 25 MB</p>
+      <p class="privacy">
+        Viewed locally in your browser - your file is not uploaded.
+      </p>
+    </div>
+    @if (loading()) {
+      <p role="status">Loading your model locally...</p>
+    }
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (model(); as current) {
+    <section class="viewer-results" aria-labelledby="model-title">
+      <div>
+        <div
+          #viewport
+          class="viewport"
+          role="img"
+          aria-label="3D 3MF build geometry viewer"
+        ></div>
+        <button class="button button-secondary" type="button" (click)="reset()">
+          Reset view
+        </button>
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="openPicker()"
+        >
+          Choose another file
+        </button>
+      </div>
+      <aside class="card model-info">
+        <h2 id="model-title">Displayed build geometry</h2>
+        <dl>
+          <div>
+            <dt>File name</dt>
+            <dd>{{ current.name }}</dd>
+          </div>
+          <div>
+            <dt>File size</dt>
+            <dd>{{ formatBytes(current.size) }}</dd>
+          </div>
+          <div>
+            <dt>Declared 3MF unit</dt>
+            <dd>{{ current.unit }}</dd>
+          </div>
+          @if (current.buildItems !== null) {
+            <div>
+              <dt>Displayed build items</dt>
+              <dd>{{ formatValue(current.buildItems) }}</dd>
+            </div>
+          }
+          <div>
+            <dt>Triangle count</dt>
+            <dd>{{ formatValue(current.triangles) }}</dd>
+          </div>
+          <div>
+            <dt>Width</dt>
+            <dd>{{ formatValue(current.width) }} {{ current.unit }}</dd>
+          </div>
+          <div>
+            <dt>Height</dt>
+            <dd>{{ formatValue(current.height) }} {{ current.unit }}</dd>
+          </div>
+          <div>
+            <dt>Depth</dt>
+            <dd>{{ formatValue(current.depth) }} {{ current.unit }}</dd>
+          </div>
+        </dl>
+        <p>
+          This is a visual inspection tool, not a printability or watertightness
+          check.
+        </p>
+        <a
+          class="button button-secondary"
+          [routerLink]="routeUrl.ThreeMfQualityCheck"
+          >Check 3MF quality</a
+        >
+      </aside>
+    </section>
+  }
+  <section class="content">
+    <h2>How to use the 3MF Viewer</h2>
+    <ol>
+      <li>Choose or drop a 3MF file.</li>
+      <li>
+        Rotate with drag, zoom with the wheel or pinch, and pan with right drag
+        or two fingers.
+      </li>
+      <li>Review the displayed build geometry summary and declared unit.</li>
+    </ol>
+    <h2>What the 3MF Viewer shows</h2>
+    <p>
+      The viewer displays the resolved build geometry, including repeated build
+      items and their transforms. It calculates the displayed bounds and
+      triangle count locally.
+    </p>
+    <h2>Why 3MF differs from STL</h2>
+    <p>
+      3MF can store a declared unit and several model objects placed as build
+      items. STL stores only basic geometry and does not declare units.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Does my 3MF file get uploaded?</h3>
+    <p>No. The file stays in your browser while it is viewed.</p>
+    <h3>Can a 3MF contain multiple parts?</h3>
+    <p>Yes. The viewer displays the loaded build geometry.</p>
+    <h3>Does viewing validate the model?</h3>
+    <p>
+      No.
+      <a [routerLink]="routeUrl.ThreeMfQualityCheck">Check 3MF quality</a> for a
+      mesh-quality review.
+    </p>
+    <h3>Does this work for all 3MF files?</h3>
+    <p>
+      It supports standard 3MF files compatible with the browser loader.
+      Unsupported package extensions may not load.
+    </p>
+  </section>
+</main>
