@@ -1,0 +1,119 @@
+<main class="page manifold-page">
+  <p class="eyebrow">3MF closed-surface check</p>
+  <h1>3MF Watertight Checker</h1>
+  <p class="lead">
+    Check resolved 3MF build geometry for open edges before slicing.
+  </p>
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Check your 3MF</h2>
+    <p>.3mf only - maximum 25 MB</p>
+    <app-three-mf-file-picker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    /><button
+      class="button submit"
+      type="button"
+      (click)="check()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job…' : 'Check 3MF watertightness' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section
+      class="results card"
+      aria-live="polite"
+      aria-labelledby="results-title"
+    >
+      @if (processing() || pollingTimedOut()) {
+        <app-stl-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="pollingTimedOut()"
+          [refreshing]="refreshing()"
+          headingId="results-title"
+          (refresh)="refresh()"
+        />
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="results-title">Could not analyse this 3MF file</h2>
+        <p role="alert">{{ jobFailureMessage(currentJob.failure) }}</p>
+      } @else {
+        <h2 id="results-title">
+          {{ openEdges() === 0 ? 'Watertight' : 'Open edges found' }}
+        </h2>
+        <p>
+          {{
+            openEdges() === 0
+              ? 'No open edges were found in the analysed resolved geometry.'
+              : 'Open edges mean the analysed resolved geometry is not a closed surface.'
+          }}
+        </p>
+        <dl class="metrics">
+          <div>
+            <dt>Open edges</dt>
+            <dd>{{ format(openEdges()) }}</dd>
+          </div>
+          <div>
+            <dt>Resolved build items</dt>
+            <dd>{{ format(report()?.['buildItemCount']) }}</dd>
+          </div>
+          <div>
+            <dt>Separate shells</dt>
+            <dd>{{ format(shellCount()) }}</dd>
+          </div>
+        </dl>
+        <p>
+          Separate closed parts can be intentional. A watertight result is not a
+          general validity or successful-print guarantee.
+        </p>
+        <p>
+          <a class="button" [routerLink]="routeUrl.ThreeMfQualityCheck"
+            >Run full 3MF quality check</a
+          >
+          <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+            >Measure 3MF dimensions</a
+          >
+          · <a [routerLink]="routeUrl.ThreeMfViewer">View 3MF in 3D</a> ·
+          <a [routerLink]="routeUrl.ThreeMfManifoldChecker"
+            >Check 3MF manifold geometry</a
+          >
+        </p>
+      }
+    </section>
+  }
+  <section class="content">
+    <h2>What watertight means for a 3MF mesh</h2>
+    <p>
+      A watertight mesh has no open edges in the resolved build geometry.
+      Build-item and component transforms are included in this check.
+    </p>
+    <h2>Why closed surfaces matter before slicing</h2>
+    <p>
+      A closed surface gives a slicer a clearer inside and outside. Open edges
+      can lead to gaps or unexpected material regions.
+    </p>
+    <h2>Separate parts may be intentional</h2>
+    <p>
+      A build can contain separate closed parts. Their presence does not
+      automatically make the result fail.
+    </p>
+    <h2>Watertightness is not a full quality check</h2>
+    <p>
+      Non-manifold edges, orientation, printer configuration and slicing remain
+      separate concerns.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Does my 3MF file get uploaded?</h3>
+    <p>
+      Yes. It uses the same secure processing flow as other InspectMesh analysis
+      tools.
+    </p>
+    <h3>Can a 3MF contain multiple parts?</h3>
+    <p>Yes. Multiple separate closed parts can be intentional.</p>
+    <h3>Does watertight mean it will print?</h3>
+    <p>No. It checks surface closure, not every printing condition.</p>
+  </section>
+</main>

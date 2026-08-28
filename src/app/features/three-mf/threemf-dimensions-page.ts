@@ -20,9 +20,10 @@ import { Job, JobStatus } from '../../models/job';
 import { jobFailureMessage } from '../../models/job-failure';
 import {
   calculateBuildVolumeFit,
+  calculateRightAngleRotationFits,
   ModelDimensions,
   ModelUnit,
-} from '../stl-dimensions/stl-dimensions';
+} from '../../shared/model-dimensions';
 import { ThreeMfFilePicker } from './threemf-file-picker';
 
 type ReportRecord = Record<string, unknown>;
@@ -57,6 +58,7 @@ export class ThreeMfDimensionsPage {
   protected readonly buildDepth = signal<number | null>(null);
   protected readonly buildUnit = signal<ModelUnit>('mm');
   protected readonly buildVolumeTouched = signal(false);
+  protected readonly checkRotations = signal(false);
   protected readonly report = computed(() => this.asRecord(this.job()?.report));
   protected readonly dimensions = computed<ModelDimensions | null>(() => {
     const values = this.asRecord(this.report()?.['dimensions']);
@@ -106,6 +108,24 @@ export class ThreeMfDimensionsPage {
   protected readonly buildVolumeInvalid = computed(
     () => this.buildVolumeTouched() && this.printerFit() === null,
   );
+  protected readonly rotationFit = computed(() => {
+    if (!this.checkRotations() || this.printerFit()?.fits) {
+      return null;
+    }
+    const dimensions = this.convertedDimensions()?.mm;
+    const volume = this.buildVolume();
+    if (!dimensions || !volume) {
+      return null;
+    }
+    return (
+      calculateRightAngleRotationFits(
+        dimensions,
+        'mm',
+        volume,
+        this.buildUnit(),
+      ).find((candidate) => candidate.fit.fits) ?? null
+    );
+  });
   protected readonly processing = computed(() => {
     const status = this.job()?.status;
     return (
@@ -198,6 +218,18 @@ export class ThreeMfDimensionsPage {
 
   protected setBuildUnit(event: Event): void {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
+  }
+
+  protected setCheckRotations(event: Event): void {
+    this.checkRotations.set((event.target as HTMLInputElement).checked);
+  }
+
+  protected rotationRecommendation(): string {
+    const candidate = this.rotationFit();
+    if (!candidate) {
+      return '';
+    }
+    return `Fits if rotated so the current ${candidate.axisSources.width} becomes the printer's width, the current ${candidate.axisSources.height} becomes its height and the current ${candidate.axisSources.depth} becomes its depth.`;
   }
 
   protected formatNumber(value: unknown): string {

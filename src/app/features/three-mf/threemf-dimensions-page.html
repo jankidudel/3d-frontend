@@ -129,6 +129,16 @@
               Enter finite build-volume dimensions greater than zero.
             </p>
           }
+          <label class="field"
+            ><span
+              ><input
+                type="checkbox"
+                [checked]="checkRotations()"
+                (change)="setCheckRotations($event)"
+              />
+              Check 90° rotations</span
+            ></label
+          >
           @if (printerFit(); as fit) {
             <p
               class="fit-result"
@@ -142,6 +152,24 @@
               }}</strong
               ><br />Printer margins, orientation, supports and slicer settings
               can still matter.
+            </p>
+            @if (rotationFit(); as rotated) {
+              <p class="fit-result positive" role="status">
+                <strong>Fits with a 90° rotation</strong><br />{{
+                  rotationRecommendation()
+                }}<br /><strong>Resulting W × H × D:</strong>
+                {{ formatDimensions(rotated.dimensions) }} {{ buildUnit() }}
+              </p>
+            } @else if (checkRotations() && !fit.fits) {
+              <p>
+                No right-angle orientation fits this volume. Use the maximum
+                uniform scale from the current-fit result.
+              </p>
+            }
+            <p>
+              This optional check considers only right-angle size permutations.
+              Final orientation, supports, margins, brims and placement belong
+              in your slicer.
             </p>
           }
         </section>
@@ -197,6 +225,17 @@
       the build volume you enter. It does not account for printer margins,
       orientation, supports, brim/raft, nozzle clearance or slicer settings.
       Always confirm the final placement in your slicer.
+    </p>
+    <p>
+      For a focused closed-surface check, use the
+      <a [routerLink]="routeUrl.ThreeMfWatertightChecker"
+        >3MF Watertight Checker</a
+      >.
+    </p>
+    <p>
+      For open-edge and non-manifold-edge counts, use the
+      <a [routerLink]="routeUrl.ThreeMfManifoldChecker">3MF Manifold Checker</a
+      >.
     </p>
     <h2>FAQ</h2>
     <h3>Does my 3MF file get uploaded?</h3>

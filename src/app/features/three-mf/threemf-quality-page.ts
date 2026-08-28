@@ -23,6 +23,7 @@ import { jobFailureMessage } from '../../models/job-failure';
 import { ThreeMfFilePicker } from './threemf-file-picker';
 import {
   DisplayIssue,
+  guidanceForIssues,
   normalizeValidationIssues,
 } from '../stl-quality/job-status/validation-issues';
 import { StlQualityPdfService } from '../stl-quality/job-status/stl-quality-pdf.service';
@@ -32,7 +33,10 @@ type ReportRecord = Record<string, unknown>;
   selector: 'app-three-mf-quality-page',
   imports: [RouterLink, ThreeMfFilePicker, StlJobProgress],
   templateUrl: './threemf-quality-page.html',
-  styleUrl: '../stl-manifold/stl-manifold-page.scss',
+  styleUrls: [
+    '../stl-manifold/stl-manifold-page.scss',
+    '../stl-quality/job-status/job-status.scss',
+  ],
 })
 export class ThreeMfQualityPage {
   readonly routeUrl = PublicRouteUrl;
@@ -136,6 +140,10 @@ export class ThreeMfQualityPage {
     return normalizeValidationIssues(
       this.asRecord(report['validation'])?.['issues'],
     );
+  }
+
+  issueGuidance(report: ReportRecord): ReturnType<typeof guidanceForIssues> {
+    return guidanceForIssues(this.issues(report), '3mf');
   }
   downloadJsonReport(): void {
     const report = this.job()?.report;

@@ -25,6 +25,14 @@ export const serverRoutes: ServerRoute[] = [
     path: PublicRoutePath.ThreeMfDimensionsChecker,
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: PublicRoutePath.ThreeMfWatertightChecker,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.ThreeMfManifoldChecker,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.Guides, renderMode: RenderMode.Prerender },
   {
     path: PublicRoutePath.FixNonManifoldStlGuide,

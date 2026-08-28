@@ -293,6 +293,17 @@
             </span>
           }
 
+          <label class="field"
+            ><span
+              ><input
+                type="checkbox"
+                [checked]="checkRotations()"
+                (change)="setCheckRotations($event)"
+              />
+              Check 90° rotations</span
+            ></label
+          >
+
           @if (buildVolumeFit(); as fit) {
             <div
               class="fit-result"
@@ -322,6 +333,24 @@
                 </p>
               </div>
             </div>
+
+            @if (rotationFit(); as rotated) {
+              <div class="fit-result fit-result-success" role="status">
+                <div>
+                  <h4>Fits with a 90° rotation</h4>
+                  <p>{{ rotationRecommendation() }}</p>
+                  <p>
+                    <strong>Resulting W × H × D:</strong>
+                    {{ formatDimensions(rotated.dimensions) }} {{ buildUnit() }}
+                  </p>
+                </div>
+              </div>
+            } @else if (checkRotations() && !fit.fits) {
+              <p class="slicer-note">
+                No right-angle orientation fits this volume. The maximum uniform
+                scale above remains the applicable size limit.
+              </p>
+            }
 
             <div class="table-scroll fit-table">
               <table>
@@ -418,9 +447,10 @@
 
           <p class="slicer-note">
             This compares the model’s current axis-aligned dimensions with the
-            printer’s build volume. Rotating the model in your slicer may allow
-            a different fit. Allow extra space for brims, supports and printer
-            clearances.
+            printer’s build volume. The optional rotation check considers only
+            90-degree orientations, not arbitrary angles, packing, supports,
+            brims, margins or collision paths. Confirm final orientation in your
+            slicer.
           </p>
         </section>
 

@@ -1,9 +1,10 @@
 import {
   calculateBuildVolumeFit,
+  calculateRightAngleRotationFits,
   calculateScale,
   convertLength,
   ModelUnit,
-} from './stl-dimensions';
+} from '../../shared/model-dimensions';
 
 describe('STL dimension calculations', () => {
   it('converts between millimetres, centimetres, metres and inches', () => {
@@ -202,5 +203,24 @@ describe('STL dimension calculations', () => {
     ])('rejects invalid or zero model/build dimensions', (model, build) => {
       expect(calculateBuildVolumeFit(model, 'mm', build, 'mm')).toBeNull();
     });
+  });
+
+  it('evaluates all six right-angle permutations and removes duplicate cube rotations', () => {
+    const permutations = calculateRightAngleRotationFits(
+      { width: 10, height: 20, depth: 30 },
+      'mm',
+      { width: 30, height: 20, depth: 10 },
+      'mm',
+    );
+    expect(permutations).toHaveLength(6);
+    expect(permutations.some((candidate) => candidate.fit.fits)).toBe(true);
+    expect(
+      calculateRightAngleRotationFits(
+        { width: 10, height: 10, depth: 10 },
+        'mm',
+        { width: 10, height: 10, depth: 10 },
+        'mm',
+      ),
+    ).toHaveLength(1);
   });
 });

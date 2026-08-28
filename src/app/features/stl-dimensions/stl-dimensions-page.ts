@@ -25,12 +25,13 @@ import { jobFailureMessage } from '../../models/job-failure';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
 import {
   calculateBuildVolumeFit,
+  calculateRightAngleRotationFits,
   calculateScale,
   convertLength,
   DimensionAxis,
   ModelDimensions,
   ModelUnit,
-} from './stl-dimensions';
+} from '../../shared/model-dimensions';
 
 type ReportRecord = Record<string, unknown>;
 
@@ -73,6 +74,7 @@ export class StlDimensionsPage {
   readonly buildDepth = signal<number | null>(null);
   readonly buildUnit = signal<ModelUnit>('mm');
   readonly buildVolumeTouched = signal(false);
+  readonly checkRotations = signal(false);
 
   readonly processing = computed(() => {
     const status = this.job()?.status;
@@ -148,6 +150,24 @@ export class StlDimensionsPage {
   readonly buildVolumeInvalid = computed(
     () => this.buildVolumeTouched() && this.buildVolumeFit() === null,
   );
+  readonly rotationFit = computed(() => {
+    if (!this.checkRotations() || this.buildVolumeFit()?.fits) {
+      return null;
+    }
+    const dimensions = this.rawDimensions();
+    const volume = this.buildVolume();
+    if (!dimensions || !volume) {
+      return null;
+    }
+    return (
+      calculateRightAngleRotationFits(
+        dimensions,
+        this.modelUnit(),
+        volume,
+        this.buildUnit(),
+      ).find((candidate) => candidate.fit.fits) ?? null
+    );
+  });
   readonly validationIsValid = computed(() => {
     const validation = this.asRecord(this.report()?.['validation']);
     return validation?.['isValid'] === true;
@@ -275,6 +295,18 @@ export class StlDimensionsPage {
 
   setBuildUnit(event: Event): void {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
+  }
+
+  setCheckRotations(event: Event): void {
+    this.checkRotations.set((event.target as HTMLInputElement).checked);
+  }
+
+  rotationRecommendation(): string {
+    const candidate = this.rotationFit();
+    if (!candidate) {
+      return '';
+    }
+    return `Fits if rotated so the current ${candidate.axisSources.width} becomes the printer's width, the current ${candidate.axisSources.height} becomes its height and the current ${candidate.axisSources.depth} becomes its depth.`;
   }
 
   trackScaleCalculation(): void {

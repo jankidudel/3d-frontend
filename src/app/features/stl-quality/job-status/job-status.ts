@@ -12,6 +12,7 @@ import { jobFailureMessage } from '../../../models/job-failure';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
 import { StlQualityPdfService } from './stl-quality-pdf.service';
 import { StlJobProgress } from '../../../core/components/stl-job-progress/stl-job-progress';
+import { StlIssueViewer } from './stl-issue-viewer';
 import {
   guidanceForIssues,
   normalizeValidationIssues,
@@ -22,7 +23,7 @@ interface QualityReport {
 }
 @Component({
   selector: 'app-job-status',
-  imports: [JsonPipe, StlJobProgress],
+  imports: [JsonPipe, StlJobProgress, StlIssueViewer],
   templateUrl: './job-status.html',
   styleUrl: './job-status.scss',
 })
@@ -35,6 +36,7 @@ export class JobStatusComponent {
   readonly uploading = input(false);
   readonly pollingTimedOut = input(false);
   readonly refreshing = input(false);
+  readonly localFile = input<File | null>(null);
   readonly generatingPdf = signal(false);
   readonly pdfError = signal('');
   readonly refresh = output<void>();
@@ -76,6 +78,22 @@ export class JobStatusComponent {
       ? count
       : null;
   });
+  readonly highlightSampleTotal = computed(() => {
+    const highlights = this.asRecord(this.report()?.['issueHighlights']);
+    const samples = this.asRecord(highlights?.['samples']);
+    return samples
+      ? Object.values(samples).reduce<number>(
+          (count, value) => count + (Array.isArray(value) ? value.length : 0),
+          0,
+        )
+      : 0;
+  });
+  readonly highlightVisible = signal(false);
+  readonly issueHighlights = computed(() => this.report()?.['issueHighlights']);
+
+  toggleHighlights(): void {
+    this.highlightVisible.update((visible) => !visible);
+  }
 
   connectedComponentsLabel(count: number): string {
     return count === 1

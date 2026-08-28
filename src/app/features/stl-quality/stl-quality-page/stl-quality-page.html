@@ -46,6 +46,7 @@
       [uploading]="submitting()"
       [pollingTimedOut]="pollingTimedOut()"
       [refreshing]="refreshing()"
+      [localFile]="localResultFile()"
       (refresh)="refreshStatus()"
       (uploadAnotherFile)="filePicker.open()"
     />

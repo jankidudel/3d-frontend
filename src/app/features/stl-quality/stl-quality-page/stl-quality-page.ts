@@ -41,6 +41,8 @@ export class StlQualityPage {
   private uploadCompletedTracked = false;
   private outcomeTracked = false;
   readonly selectedFile = signal<File | null>(null);
+  /** Kept only in this browser tab so local issue highlighting never needs a download URL. */
+  readonly localResultFile = signal<File | null>(null);
   private readonly filePicker = viewChild(StlFilePicker);
   readonly job = signal<Job | null>(null);
   readonly submitting = signal(false);
@@ -72,6 +74,7 @@ export class StlQualityPage {
   onFileSelected(file: File | null): void {
     this.polling?.unsubscribe();
     this.selectedFile.set(file);
+    this.localResultFile.set(null);
     this.error.set('');
     this.job.set(null);
     this.pollingTimedOut.set(false);
@@ -95,6 +98,7 @@ export class StlQualityPage {
       this.analytics.trackUploadStarted('quality_check', file.size);
       this.uploadStartedTracked = true;
     }
+    this.localResultFile.set(file);
     createAndUploadStlJob(this.stlJobs, this.jobsService, file, (job) =>
       this.job.set(job),
     ).subscribe({

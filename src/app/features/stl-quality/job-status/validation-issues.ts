@@ -26,6 +26,14 @@ export interface IssueGuidance {
   readonly nextSteps: readonly string[];
 }
 
+export interface IssueGuidanceCard extends IssueGuidance {
+  readonly found: string;
+  readonly severityLabel: 'Needs attention' | 'Review recommended';
+  readonly learnMore: { readonly href: string; readonly text: string } | null;
+}
+
+export type GuidanceFormat = 'stl' | '3mf';
+
 const ISSUE_LABELS: Record<RecognisedIssueCode, string> = {
   [ValidationIssueCode.OpenEdge]: 'Open edges',
   [ValidationIssueCode.NonManifoldEdge]: 'Non-manifold edges',
@@ -155,7 +163,8 @@ export function normalizeValidationIssues(value: unknown): DisplayIssue[] {
 
 export function guidanceForIssues(
   issues: readonly DisplayIssue[],
-): IssueGuidance[] {
+  format: GuidanceFormat = 'stl',
+): IssueGuidanceCard[] {
   const seen = new Set<RecognisedIssueCode>();
   return issues.flatMap((issue) => {
     const recognisedCode = recognisedIssueCode(issue.code);
@@ -163,7 +172,21 @@ export function guidanceForIssues(
       return [];
     }
     seen.add(recognisedCode);
-    return [ISSUE_GUIDANCE[recognisedCode]];
+    const guidance = ISSUE_GUIDANCE[recognisedCode];
+    return [
+      {
+        ...guidance,
+        found: issue.detail || `${issue.label} found`,
+        severityLabel:
+          recognisedCode === ValidationIssueCode.OpenEdge ||
+          recognisedCode === ValidationIssueCode.NonManifoldEdge ||
+          recognisedCode === ValidationIssueCode.InvalidCoordinates ||
+          recognisedCode === ValidationIssueCode.DegenerateTriangle
+            ? 'Needs attention'
+            : 'Review recommended',
+        learnMore: learnMoreFor(recognisedCode, format),
+      },
+    ];
   });
 }
 
@@ -208,4 +231,25 @@ function asRecord(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
     ? (value as Record<string, unknown>)
     : null;
+}
+
+function learnMoreFor(
+  code: RecognisedIssueCode,
+  format: GuidanceFormat,
+): { readonly href: string; readonly text: string } | null {
+  if (code === ValidationIssueCode.OpenEdge) {
+    return format === 'stl'
+      ? {
+          href: '/how-to-tell-if-an-stl-is-watertight',
+          text: 'Watertight STL guide',
+        }
+      : { href: '/3mf-quality-checker', text: '3MF Quality Checker' };
+  }
+  if (code === ValidationIssueCode.NonManifoldEdge && format === 'stl') {
+    return {
+      href: '/how-to-fix-non-manifold-stl',
+      text: 'Non-manifold STL guide',
+    };
+  }
+  return null;
 }

@@ -96,6 +96,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ThreeMfWatertightChecker,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-watertight-page').then(
+        (m) => m.ThreeMfWatertightPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.ThreeMfManifoldChecker,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-manifold-page').then(
+        (m) => m.ThreeMfManifoldPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Guides,
     loadComponent: () =>
       import('./features/guides/guides-page').then((m) => m.GuidesPage),

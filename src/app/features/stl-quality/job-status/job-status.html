@@ -157,7 +157,9 @@
         <div class="repair-guidance-cards">
           @for (guidance of issueGuidance(); track guidance.code) {
             <article class="repair-guidance-card">
+              <p class="guidance-severity">{{ guidance.severityLabel }}</p>
               <h4>{{ guidance.title }}</h4>
+              <p><strong>What we found:</strong> {{ guidance.found }}</p>
               <p><strong>What it means:</strong> {{ guidance.meaning }}</p>
               <p>
                 <strong>Why it matters:</strong> {{ guidance.whyItMatters }}
@@ -168,9 +170,64 @@
                   <li>{{ step }}</li>
                 }
               </ul>
+              @if (guidance.learnMore; as learnMore) {
+                <p>
+                  <a [href]="learnMore.href"
+                    >Learn more: {{ learnMore.text }}</a
+                  >
+                </p>
+              }
             </article>
           }
         </div>
+      </section>
+    }
+
+    @if (highlightSampleTotal() > 0) {
+      <section class="issue-highlights" aria-labelledby="highlight-title">
+        <h3 id="highlight-title">Issue locations</h3>
+        @if (localFile()) {
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="toggleHighlights()"
+            [attr.aria-expanded]="highlightVisible()"
+          >
+            {{
+              highlightVisible()
+                ? 'Hide highlighted issues'
+                : 'View highlighted issues'
+            }}
+          </button>
+          @if (highlightVisible()) {
+            <p class="highlight-note">
+              Showing up to {{ highlightSampleTotal() }} sampled locations. The
+              report contains the full count. Highlight coordinates are kept in
+              this report only; the original STL remains local to this browser
+              session.
+            </p>
+            <div class="highlight-legend" aria-label="Issue highlight legend">
+              <span class="open-edge">Open edges</span
+              ><span class="non-manifold">Non-manifold edges</span
+              ><span class="triangle">Duplicate and degenerate triangles</span
+              ><span class="orientation">Orientation conflicts</span>
+            </div>
+            <app-stl-issue-viewer
+              [file]="localFile()!"
+              [highlights]="issueHighlights()"
+            />
+            <p>
+              This local view renders bounded sampled geometry and never uses a
+              source-file URL.
+            </p>
+          }
+        } @else {
+          <p class="highlight-note">
+            Sample locations are available in the report, but the original STL
+            is no longer in this browser session. Upload it again to view its
+            local highlights.
+          </p>
+        }
       </section>
     }
 

@@ -35,6 +35,8 @@ describe('App', () => {
       '/3mf-viewer',
       '/3mf-quality-checker',
       '/3mf-dimensions-checker',
+      '/3mf-watertight-checker',
+      '/3mf-manifold-checker',
     ]);
   });
 
@@ -66,6 +68,8 @@ describe('App', () => {
       '3MF Viewer',
       '3MF Quality Checker',
       '3MF Dimensions Checker',
+      '3MF Watertight Checker',
+      '3MF Manifold Checker',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
@@ -81,6 +85,8 @@ describe('App', () => {
       '/3mf-viewer',
       '/3mf-quality-checker',
       '/3mf-dimensions-checker',
+      '/3mf-watertight-checker',
+      '/3mf-manifold-checker',
     ]);
   });
 });

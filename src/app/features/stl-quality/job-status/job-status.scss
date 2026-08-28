@@ -198,6 +198,14 @@ p {
 .repair-guidance-card h4 {
   font-size: 1.05rem;
 }
+.guidance-severity {
+  margin-bottom: 0.35rem !important;
+  color: var(--primary) !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 .repair-guidance-card h5 {
   margin-top: 1rem;
   font-size: 0.9rem;
@@ -220,6 +228,40 @@ p {
   margin-top: 2rem;
   border-top: 1px solid var(--border);
   padding-top: 1rem;
+}
+.issue-highlights {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--soft);
+}
+.highlight-note {
+  color: var(--muted);
+}
+.highlight-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  font-weight: 800;
+}
+.highlight-legend span {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  color: #101828;
+}
+.open-edge {
+  background: #ffdf20;
+}
+.non-manifold {
+  background: #ff9c66;
+}
+.triangle {
+  background: #a7f3d0;
+}
+.orientation {
+  background: #c4b5fd;
 }
 .technical summary {
   color: var(--primary);

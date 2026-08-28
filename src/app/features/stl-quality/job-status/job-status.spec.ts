@@ -72,6 +72,27 @@ describe('JobStatusComponent', () => {
     );
   });
 
+  it('explains why local highlights cannot be viewed after a refreshed result', () => {
+    const fixture = render({
+      ...completedJob,
+      report: {
+        ...report,
+        issueHighlights: {
+          samples: {
+            open_edge: [{ a: { x: 0, y: 0, z: 0 }, b: { x: 1, y: 0, z: 0 } }],
+          },
+        },
+      },
+    });
+
+    expect(fixture.nativeElement.textContent).toContain(
+      'no longer in this browser session',
+    );
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'View highlighted issues',
+    );
+  });
+
   it('shows disconnected-shell warning and interpretation guidance without failing validation', () => {
     const fixture = render({
       ...completedJob,

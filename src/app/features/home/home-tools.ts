@@ -114,6 +114,22 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         route: PublicRouteUrl.ThreeMfDimensionsChecker,
         cta: 'Measure a 3MF file',
       },
+      {
+        icon: '○',
+        title: '3MF Watertight Checker',
+        description:
+          'Check resolved 3MF build geometry for open edges before slicing.',
+        route: PublicRouteUrl.ThreeMfWatertightChecker,
+        cta: 'Check 3MF watertightness',
+      },
+      {
+        icon: '⌁',
+        title: '3MF Manifold Checker',
+        description:
+          'Check resolved 3MF geometry for open edges, non-manifold edges and separate shells.',
+        route: PublicRouteUrl.ThreeMfManifoldChecker,
+        cta: 'Check 3MF topology',
+      },
     ],
   },
 ];
