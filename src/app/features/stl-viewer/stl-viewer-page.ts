@@ -45,6 +45,7 @@ export class StlViewerPage {
   readonly model = signal<ModelInfo | null>(null);
   readonly loading = signal(false);
   readonly webglUnavailable = signal(false);
+  readonly modelColor = signal('#2563a8');
   private readonly seo = inject(SeoService);
   private readonly analytics = inject(AnalyticsService);
   private readonly destroyRef = inject(DestroyRef);
@@ -88,6 +89,36 @@ export class StlViewerPage {
     }
     this.frame(runtime);
     this.analytics.trackStlViewerReset();
+  }
+
+  zoom(scale: number): void {
+    const runtime = this.runtime;
+    if (!runtime) {
+      return;
+    }
+    const offset = runtime.camera.position
+      .clone()
+      .sub(runtime.controls.target)
+      .multiplyScalar(scale);
+    runtime.camera.position.copy(runtime.controls.target).add(offset);
+    runtime.controls.update();
+  }
+
+  onColorChange(event: Event): void {
+    const color = (event.target as HTMLInputElement).value;
+    this.modelColor.set(color);
+    const material = this.runtime?.material;
+    if (material && 'color' in material) {
+      (material as import('three').MeshStandardMaterial).color.set(color);
+    }
+  }
+
+  async toggleFullscreen(container: HTMLElement): Promise<void> {
+    if (document.fullscreenElement === container) {
+      await document.exitFullscreen();
+      return;
+    }
+    await container.requestFullscreen();
   }
 
   openQualityChecker(): void {
@@ -185,7 +216,7 @@ export class StlViewerPage {
       throw new Error('webgl');
     }
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#f7f8fa');
+    scene.background = new THREE.Color('#e6edf5');
     const camera = new THREE.PerspectiveCamera(
       45,
       1,
@@ -193,7 +224,7 @@ export class StlViewerPage {
       Math.max(extent * 1000, 100),
     );
     const material = new THREE.MeshStandardMaterial({
-      color: '#2563a8',
+      color: this.modelColor(),
       roughness: 0.58,
       metalness: 0.05,
     });
@@ -204,6 +235,8 @@ export class StlViewerPage {
     host.replaceChildren(renderer.domElement);
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
+    controls.minDistance = Math.max(extent * 0.05, 0.01);
+    controls.maxDistance = Math.max(extent * 20, 100);
     const runtime: ViewerRuntime = {
       THREE,
       renderer,

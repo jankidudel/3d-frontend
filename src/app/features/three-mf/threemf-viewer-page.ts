@@ -50,6 +50,7 @@ export class ThreeMfViewerPage {
   readonly model = signal<ModelInfo | null>(null);
   readonly loading = signal(false);
   readonly webglUnavailable = signal(false);
+  readonly modelColor = signal('#2563a8');
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
@@ -98,6 +99,46 @@ export class ThreeMfViewerPage {
       return;
     }
     this.frame(runtime);
+  }
+
+  zoom(scale: number): void {
+    const runtime = this.runtime;
+    if (!runtime) {
+      return;
+    }
+    const offset = runtime.camera.position
+      .clone()
+      .sub(runtime.controls.target)
+      .multiplyScalar(scale);
+    runtime.camera.position.copy(runtime.controls.target).add(offset);
+    runtime.controls.update();
+  }
+
+  onColorChange(event: Event): void {
+    const color = (event.target as HTMLInputElement).value;
+    this.modelColor.set(color);
+    this.runtime?.model.traverse((object) => {
+      const mesh = object as import('three').Mesh;
+      if (!mesh.isMesh) {
+        return;
+      }
+      const materials = Array.isArray(mesh.material)
+        ? mesh.material
+        : [mesh.material];
+      for (const material of materials) {
+        if ('color' in material) {
+          (material as import('three').MeshStandardMaterial).color.set(color);
+        }
+      }
+    });
+  }
+
+  async toggleFullscreen(container: HTMLElement): Promise<void> {
+    if (document.fullscreenElement === container) {
+      await document.exitFullscreen();
+      return;
+    }
+    await container.requestFullscreen();
   }
 
   private async load(file: File): Promise<void> {
@@ -236,7 +277,7 @@ export class ThreeMfViewerPage {
       throw new Error('webgl');
     }
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#f7f8fa');
+    scene.background = new THREE.Color('#e6edf5');
     const camera = new THREE.PerspectiveCamera(
       45,
       1,
@@ -250,6 +291,9 @@ export class ThreeMfViewerPage {
     host.replaceChildren(renderer.domElement);
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
+    controls.minDistance = Math.max(extent * 0.05, 0.01);
+    controls.maxDistance = Math.max(extent * 20, 100);
+    this.applyModelColor(model, this.modelColor());
     const runtime: ViewerRuntime = {
       THREE,
       renderer,
@@ -273,6 +317,23 @@ export class ThreeMfViewerPage {
       runtime.frame = requestAnimationFrame(animate);
     };
     runtime.frame = requestAnimationFrame(animate);
+  }
+
+  private applyModelColor(model: import('three').Group, color: string): void {
+    model.traverse((object) => {
+      const mesh = object as import('three').Mesh;
+      if (!mesh.isMesh) {
+        return;
+      }
+      const materials = Array.isArray(mesh.material)
+        ? mesh.material
+        : [mesh.material];
+      for (const material of materials) {
+        if ('color' in material) {
+          (material as import('three').MeshStandardMaterial).color.set(color);
+        }
+      }
+    });
   }
 
   private frame(runtime: ViewerRuntime): void {

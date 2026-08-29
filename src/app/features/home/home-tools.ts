@@ -92,7 +92,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     tools: [
       {
         icon: '◉',
-        title: '3MF Viewer',
+        title: 'Free 3MF Viewer',
         description:
           'Open a 3MF model locally, inspect it in 3D and review its declared units, dimensions and triangle count.',
         route: PublicRouteUrl.ThreeMfViewer,

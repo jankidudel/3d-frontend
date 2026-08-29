@@ -32,17 +32,102 @@
   border: 1px solid #d8e0e8;
   border-radius: 0.75rem;
   margin-bottom: 0.75rem;
+  cursor: grab;
+}
+.viewer-container {
+  position: relative;
+}
+.viewer-container:fullscreen {
+  height: 100%;
+  padding: 1rem;
+  background: #e6edf5;
+}
+.viewer-container:fullscreen .viewport {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+}
+.viewer-container:fullscreen .viewer-action-row {
+  position: absolute;
+  right: 1.75rem;
+  bottom: 1.75rem;
+}
+.viewer-container:fullscreen .viewer-file-actions {
+  display: none;
 }
 .viewport canvas {
   display: block;
   width: 100%;
   height: 100%;
 }
+.viewport:active {
+  cursor: grabbing;
+}
+.viewer-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid #b8c5d1;
+  border-radius: 0.5rem;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 0.15rem 0.6rem rgb(35 56 75 / 20%);
+}
+.viewer-action-row,
+.viewer-file-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.viewer-action-row {
+  justify-content: space-between;
+}
+.viewer-controls {
+  margin-left: auto;
+}
+.viewer-controls button,
+.color-control input {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid #6b7f91;
+  border-radius: 0.35rem;
+  background: #fff;
+  color: #16324a;
+  cursor: pointer;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+.viewer-controls button:hover {
+  background: #e6edf5;
+}
+.viewer-controls button:focus-visible,
+.color-control input:focus-visible {
+  outline: 3px solid #0b70c9;
+  outline-offset: 2px;
+}
+.color-control {
+  position: relative;
+  display: grid;
+}
+.color-control span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 .model-info dl {
   margin: 1rem 0;
 }
 .model-info {
   padding: clamp(1.25rem, 4vw, 2rem);
+}
+.model-info .button {
+  display: flex;
+  width: 100%;
+  margin-top: 0.75rem;
 }
 .model-info dl div {
   border-bottom: 1px solid #e1e6eb;
@@ -62,5 +147,11 @@
   .viewport {
     height: 65vw;
     min-height: 280px;
+  }
+  .viewer-action-row {
+    flex-wrap: wrap;
+  }
+  .viewer-controls {
+    margin-left: 0;
   }
 }
