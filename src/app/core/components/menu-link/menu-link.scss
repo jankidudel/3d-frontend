@@ -27,3 +27,15 @@ a.active {
   border-bottom: 1px solid var(--border);
   font-weight: 800;
 }
+
+/* The tools menu is a two-column grid on desktop. Keep its hub link above
+   both format groups instead of allowing it to occupy only the first column. */
+:host(.all-tools-link) {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 48rem) {
+  :host(.all-tools-link) {
+    grid-column: auto;
+  }
+}
