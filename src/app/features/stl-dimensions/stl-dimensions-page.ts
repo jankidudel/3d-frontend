@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { StlJobService } from '../../core/api/stl-job.service';
-import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
+import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
@@ -37,7 +37,7 @@ type ReportRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-stl-dimensions-page',
-  imports: [RouterLink, StlFilePicker, StlJobProgress],
+  imports: [RouterLink, StlFilePicker, JobProgress],
   templateUrl: './stl-dimensions-page.html',
   styleUrl: './stl-dimensions-page.scss',
 })

@@ -28,11 +28,11 @@ import { PublicRoutePath } from './core/seo/public-routes';
 export class App {
   readonly consent = inject(CookieConsentService);
   readonly routePath = PublicRoutePath;
-  private readonly analytics = inject(AnalyticsService);
   private readonly router = inject(Router);
   protected mobileNavOpen = false;
 
   constructor() {
+    inject(AnalyticsService);
     this.router.events
       .pipe(
         filter(

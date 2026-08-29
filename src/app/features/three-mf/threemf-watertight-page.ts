@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
+import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { ThreeMfQualityPage } from './threemf-quality-page';
@@ -8,9 +8,9 @@ import { ThreeMfFilePicker } from './threemf-file-picker';
 
 @Component({
   selector: 'app-three-mf-watertight-page',
-  imports: [RouterLink, ThreeMfFilePicker, StlJobProgress],
+  imports: [RouterLink, ThreeMfFilePicker, JobProgress],
   templateUrl: './threemf-watertight-page.html',
-  styleUrl: '../stl-manifold/stl-manifold-page.scss',
+  styleUrl: '../shared/model-checker-page.scss',
 })
 export class ThreeMfWatertightPage extends ThreeMfQualityPage {
   private readonly watertightSeo = inject(SeoService);

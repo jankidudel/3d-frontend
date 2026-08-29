@@ -2,11 +2,11 @@ import { Component, computed, input, output } from '@angular/core';
 import { Job, JobStatus } from '../../../models/job';
 
 @Component({
-  selector: 'app-stl-job-progress',
-  templateUrl: './stl-job-progress.html',
-  styleUrl: './stl-job-progress.scss',
+  selector: 'app-job-progress',
+  templateUrl: './job-progress.html',
+  styleUrl: './job-progress.scss',
 })
-export class StlJobProgress {
+export class JobProgress {
   readonly job = input.required<Job>();
   readonly uploading = input(false);
   readonly pollingTimedOut = input(false);

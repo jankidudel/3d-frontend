@@ -1,6 +1,6 @@
 <section class="result card" aria-labelledby="job-title" aria-live="polite">
   @if (pollingTimedOut() || processing()) {
-    <app-stl-job-progress
+    <app-job-progress
       [job]="job()"
       [uploading]="uploading()"
       [pollingTimedOut]="pollingTimedOut()"

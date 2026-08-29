@@ -1,3 +1,5 @@
+import { MeshQualityReport } from './mesh-quality-report';
+
 export const JobStatus = {
   Created: 'created',
   Processing: 'processing',
@@ -29,7 +31,6 @@ export interface Job {
   status: JobStatus;
   createdAt: string;
   upload?: JobUpload;
-  report?: StlQualityReport;
+  report?: MeshQualityReport;
   failure?: JobFailure;
 }
-import { StlQualityReport } from './stl-quality-report';

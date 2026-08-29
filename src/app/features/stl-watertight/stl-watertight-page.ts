@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
+import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { StlManifoldPage } from '../stl-manifold/stl-manifold-page';
@@ -8,9 +8,9 @@ import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
 
 @Component({
   selector: 'app-stl-watertight-page',
-  imports: [RouterLink, StlFilePicker, StlJobProgress],
+  imports: [RouterLink, StlFilePicker, JobProgress],
   templateUrl: './stl-watertight-page.html',
-  styleUrl: '../stl-manifold/stl-manifold-page.scss',
+  styleUrl: '../shared/model-checker-page.scss',
 })
 export class StlWatertightPage extends StlManifoldPage {
   private readonly watertightSeo = inject(SeoService);

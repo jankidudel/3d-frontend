@@ -1,22 +1,22 @@
-export interface StlQualityReport {
+export interface MeshQualityReport {
   readonly [key: string]: unknown;
-  readonly topology?: StlTopology;
-  readonly validation?: StlValidation;
+  readonly topology?: MeshTopology;
+  readonly validation?: MeshValidation;
 }
 
-export interface StlTopology {
+export interface MeshTopology {
   readonly connectedComponentCount?: number;
   readonly openEdgeCount?: number;
   readonly nonManifoldEdgeCount?: number;
   readonly hasInconsistentOrientation?: boolean;
 }
 
-export interface StlValidation {
+export interface MeshValidation {
   readonly isValid?: boolean;
-  readonly issues?: readonly (StlValidationIssue | string)[];
+  readonly issues?: readonly (MeshValidationIssue | string)[];
 }
 
-export interface StlValidationIssue {
+export interface MeshValidationIssue {
   readonly [key: string]: unknown;
   readonly code?: string;
   readonly message?: string;

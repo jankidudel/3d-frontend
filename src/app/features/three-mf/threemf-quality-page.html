@@ -26,7 +26,7 @@
   @if (job(); as currentJob) {
     <section class="results card" aria-live="polite">
       @if (processing() || pollingTimedOut()) {
-        <app-stl-job-progress
+        <app-job-progress
           [job]="currentJob"
           [uploading]="submitting()"
           [pollingTimedOut]="pollingTimedOut()"

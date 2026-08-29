@@ -1,10 +1,8 @@
-import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   DestroyRef,
   ElementRef,
   inject,
-  PLATFORM_ID,
   signal,
   viewChild,
 } from '@angular/core';
@@ -37,7 +35,7 @@ interface ViewerRuntime {
   selector: 'app-stl-viewer-page',
   imports: [RouterLink],
   templateUrl: './stl-viewer-page.html',
-  styleUrl: './stl-viewer-page.scss',
+  styleUrl: '../shared/model-viewer-page.scss',
 })
 export class StlViewerPage {
   readonly routeUrl = PublicRouteUrl;
@@ -47,7 +45,6 @@ export class StlViewerPage {
   readonly model = signal<ModelInfo | null>(null);
   readonly loading = signal(false);
   readonly webglUnavailable = signal(false);
-  private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly seo = inject(SeoService);
   private readonly analytics = inject(AnalyticsService);
   private readonly destroyRef = inject(DestroyRef);

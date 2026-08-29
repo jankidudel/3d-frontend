@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { StlJobService } from '../../core/api/stl-job.service';
-import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
+import { JobProgress } from '../../core/components/job-progress/job-progress';
 import {
   createAndUploadStlJob,
   PollingTimeoutError,
@@ -29,9 +29,9 @@ type ReportRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-stl-manifold-page',
-  imports: [RouterLink, StlFilePicker, StlJobProgress],
+  imports: [RouterLink, StlFilePicker, JobProgress],
   templateUrl: './stl-manifold-page.html',
-  styleUrl: './stl-manifold-page.scss',
+  styleUrl: '../shared/model-checker-page.scss',
 })
 export class StlManifoldPage {
   readonly routeUrl = PublicRouteUrl;

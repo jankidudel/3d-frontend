@@ -14,7 +14,7 @@ import { createAndUploadThreeMfJob } from '../../core/api/three-mf-job-workflow'
 import { pollJob, PollingTimeoutError } from '../../core/api/job-polling';
 import { ThreeMfJobService } from '../../core/api/three-mf-job.service';
 import { uploadErrorMessage } from '../../core/api/upload-error';
-import { StlJobProgress } from '../../core/components/stl-job-progress/stl-job-progress';
+import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -25,16 +25,16 @@ import {
   DisplayIssue,
   guidanceForIssues,
   normalizeValidationIssues,
-} from '../stl-quality/job-status/validation-issues';
-import { StlQualityPdfService } from '../stl-quality/job-status/stl-quality-pdf.service';
+} from '../../shared/mesh-validation-issues';
+import { MeshQualityPdfService } from '../../shared/mesh-quality-pdf.service';
 
 type ReportRecord = Record<string, unknown>;
 @Component({
   selector: 'app-three-mf-quality-page',
-  imports: [RouterLink, ThreeMfFilePicker, StlJobProgress],
+  imports: [RouterLink, ThreeMfFilePicker, JobProgress],
   templateUrl: './threemf-quality-page.html',
   styleUrls: [
-    '../stl-manifold/stl-manifold-page.scss',
+    '../shared/model-checker-page.scss',
     '../stl-quality/job-status/job-status.scss',
   ],
 })
@@ -64,7 +64,7 @@ export class ThreeMfQualityPage {
   private readonly threeMfJobs = inject(ThreeMfJobService);
   private readonly seo = inject(SeoService);
   private readonly analytics = inject(AnalyticsService);
-  private readonly pdfService = inject(StlQualityPdfService);
+  private readonly pdfService = inject(MeshQualityPdfService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
   constructor() {

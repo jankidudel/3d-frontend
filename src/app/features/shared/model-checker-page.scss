@@ -1,15 +1,23 @@
 .checker,
 .results {
-  max-width: 46rem;
+  max-width: 58rem;
   margin-top: 2rem;
   padding: clamp(1.25rem, 4vw, 2rem);
 }
-app-stl-file-picker {
+app-stl-file-picker,
+app-three-mf-file-picker {
   display: block;
   margin-block: 1.5rem;
 }
 .submit {
   width: 100%;
+}
+.next-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
 }
 .spinner {
   display: inline-block;

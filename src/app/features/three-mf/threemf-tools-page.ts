@@ -9,7 +9,7 @@ import { HOME_TOOL_GROUPS } from '../home/home-tools';
   selector: 'app-three-mf-tools-page',
   imports: [FormatToolsGrid, RouterLink],
   templateUrl: './threemf-tools-page.html',
-  styleUrl: '../stl-tools/stl-tools-page.scss',
+  styleUrl: '../shared/model-tools-page.scss',
 })
 export class ThreeMfToolsPage {
   readonly routeUrl = PublicRouteUrl;

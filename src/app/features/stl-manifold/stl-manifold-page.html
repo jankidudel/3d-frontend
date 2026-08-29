@@ -36,7 +36,7 @@
       aria-labelledby="results-title"
     >
       @if (processing() || pollingTimedOut()) {
-        <app-stl-job-progress
+        <app-job-progress
           [job]="currentJob"
           [uploading]="submitting()"
           [pollingTimedOut]="pollingTimedOut()"

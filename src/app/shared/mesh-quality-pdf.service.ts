@@ -1,9 +1,9 @@
 import { Service } from '@angular/core';
-import { Job } from '../../../models/job';
+import { Job } from '../models/job';
 import {
   guidanceForIssues,
   normalizeValidationIssues,
-} from './validation-issues';
+} from './mesh-validation-issues';
 
 interface ReportRecord {
   [key: string]: unknown;
@@ -16,7 +16,7 @@ interface PdfFormatDetails {
 }
 
 @Service()
-export class StlQualityPdfService {
+export class MeshQualityPdfService {
   async download(job: Job): Promise<void> {
     const report = await this.createReport(job);
     report?.pdf.save(report.fileName);

@@ -10,27 +10,27 @@ import {
 import { Job, JobStatus } from '../../../models/job';
 import { jobFailureMessage } from '../../../models/job-failure';
 import { AnalyticsService } from '../../../core/analytics/analytics.service';
-import { StlQualityPdfService } from './stl-quality-pdf.service';
-import { StlJobProgress } from '../../../core/components/stl-job-progress/stl-job-progress';
+import { MeshQualityPdfService } from '../../../shared/mesh-quality-pdf.service';
+import { JobProgress } from '../../../core/components/job-progress/job-progress';
 import { StlIssueViewer } from './stl-issue-viewer';
 import {
   guidanceForIssues,
   normalizeValidationIssues,
-} from './validation-issues';
+} from '../../../shared/mesh-validation-issues';
 
 interface QualityReport {
   [key: string]: unknown;
 }
 @Component({
   selector: 'app-job-status',
-  imports: [JsonPipe, StlJobProgress, StlIssueViewer],
+  imports: [JsonPipe, JobProgress, StlIssueViewer],
   templateUrl: './job-status.html',
   styleUrl: './job-status.scss',
 })
 export class JobStatusComponent {
   readonly jobStatus = JobStatus;
   private readonly document = inject(DOCUMENT);
-  private readonly pdfService = inject(StlQualityPdfService);
+  private readonly pdfService = inject(MeshQualityPdfService);
   private readonly analytics = inject(AnalyticsService);
   readonly job = input.required<Job>();
   readonly uploading = input(false);

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { Job } from '../../../models/job';
-import { StlQualityPdfService } from './stl-quality-pdf.service';
+import { MeshQualityPdfService } from '../../../shared/mesh-quality-pdf.service';
 
-describe('StlQualityPdfService', () => {
+describe('MeshQualityPdfService', () => {
   const validJob: Job = {
     id: 'job-1',
     fileName: 'gear housing.stl',
@@ -29,7 +29,7 @@ describe('StlQualityPdfService', () => {
   };
 
   it('creates a readable valid-report PDF with a safe filename', async () => {
-    const service = TestBed.inject(StlQualityPdfService);
+    const service = TestBed.inject(MeshQualityPdfService);
 
     const result = await service.createReport({
       ...validJob,
@@ -50,7 +50,7 @@ describe('StlQualityPdfService', () => {
   });
 
   it('includes several invalid findings and adds pages for long issue lists', async () => {
-    const service = TestBed.inject(StlQualityPdfService);
+    const service = TestBed.inject(MeshQualityPdfService);
     const issues = Array.from({ length: 45 }, (_, index) => ({
       code: index % 2 === 0 ? 'non_manifold_edge' : 'degenerate_triangle',
       count: index + 1,
@@ -76,7 +76,7 @@ describe('StlQualityPdfService', () => {
   });
 
   it('includes the component count when topology is supplied', async () => {
-    const service = TestBed.inject(StlQualityPdfService);
+    const service = TestBed.inject(MeshQualityPdfService);
     const result = await service.createReport({
       ...validJob,
       report: {
@@ -89,7 +89,7 @@ describe('StlQualityPdfService', () => {
   });
 
   it('uses 3MF format and declared-unit details when supplied', async () => {
-    const service = TestBed.inject(StlQualityPdfService);
+    const service = TestBed.inject(MeshQualityPdfService);
     const result = await service.createReport({
       ...validJob,
       fileName: 'build.3mf',

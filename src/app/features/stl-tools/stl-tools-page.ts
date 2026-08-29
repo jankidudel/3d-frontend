@@ -9,7 +9,7 @@ import { FormatToolsGrid } from '../../core/components/format-tools-grid/format-
   selector: 'app-stl-tools-page',
   imports: [FormatToolsGrid, RouterLink],
   templateUrl: './stl-tools-page.html',
-  styleUrl: './stl-tools-page.scss',
+  styleUrl: '../shared/model-tools-page.scss',
 })
 export class StlToolsPage {
   readonly tools = HOME_TOOL_GROUPS[0].tools;
