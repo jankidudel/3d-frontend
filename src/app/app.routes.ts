@@ -110,6 +110,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ThreeMfTriangleCounter,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-triangle-page').then(
+        (m) => m.ThreeMfTrianglePage,
+      ),
+  },
+  {
+    path: PublicRoutePath.ThreeMfVolumeCalculator,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-volume-page').then(
+        (m) => m.ThreeMfVolumePage,
+      ),
+  },
+  {
     path: PublicRoutePath.Guides,
     loadComponent: () =>
       import('./features/guides/guides-page').then((m) => m.GuidesPage),

@@ -33,6 +33,14 @@ export const serverRoutes: ServerRoute[] = [
     path: PublicRoutePath.ThreeMfManifoldChecker,
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: PublicRoutePath.ThreeMfTriangleCounter,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.ThreeMfVolumeCalculator,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.Guides, renderMode: RenderMode.Prerender },
   {
     path: PublicRoutePath.FixNonManifoldStlGuide,

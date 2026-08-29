@@ -83,7 +83,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     ],
   },
   {
-    exploreLinkText: 'Explore 3MF tools',
+    exploreLinkText: 'Explore all 3MF tools',
     exploreRoute: PublicRouteUrl.ThreeMfTools,
     id: '3mf-tools',
     intro:
@@ -107,14 +107,6 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check 3MF quality',
       },
       {
-        icon: '↔',
-        title: '3MF Dimensions Checker',
-        description:
-          'Measure final 3MF build dimensions, confirm declared units and check printer fit.',
-        route: PublicRouteUrl.ThreeMfDimensionsChecker,
-        cta: 'Measure a 3MF file',
-      },
-      {
         icon: '○',
         title: '3MF Watertight Checker',
         description:
@@ -129,6 +121,30 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
           'Check resolved 3MF geometry for open edges, non-manifold edges and separate shells.',
         route: PublicRouteUrl.ThreeMfManifoldChecker,
         cta: 'Check 3MF topology',
+      },
+      {
+        icon: '△',
+        title: '3MF Triangle Counter',
+        description:
+          'Count triangles in the resolved 3MF print build before slicing.',
+        route: PublicRouteUrl.ThreeMfTriangleCounter,
+        cta: 'Count 3MF triangles',
+      },
+      {
+        icon: '↔',
+        title: '3MF Dimensions Checker',
+        description:
+          'Measure final 3MF build dimensions, confirm declared units and check printer fit.',
+        route: PublicRouteUrl.ThreeMfDimensionsChecker,
+        cta: 'Measure a 3MF file',
+      },
+      {
+        icon: '◒',
+        title: '3MF Volume Calculator',
+        description:
+          'Calculate resolved 3MF build volume and estimate solid-model material weight.',
+        route: PublicRouteUrl.ThreeMfVolumeCalculator,
+        cta: 'Calculate 3MF volume',
       },
     ],
   },

@@ -37,6 +37,8 @@ describe('App', () => {
       '/3mf-dimensions-checker',
       '/3mf-watertight-checker',
       '/3mf-manifold-checker',
+      '/3mf-triangle-counter',
+      '/3mf-volume-calculator',
     ]);
   });
 
@@ -70,6 +72,8 @@ describe('App', () => {
       '3MF Dimensions Checker',
       '3MF Watertight Checker',
       '3MF Manifold Checker',
+      '3MF Triangle Counter',
+      '3MF Volume Calculator',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
@@ -87,6 +91,8 @@ describe('App', () => {
       '/3mf-dimensions-checker',
       '/3mf-watertight-checker',
       '/3mf-manifold-checker',
+      '/3mf-triangle-counter',
+      '/3mf-volume-calculator',
     ]);
   });
 });
