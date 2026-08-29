@@ -145,15 +145,9 @@
       }
     </section>
 
-    @if (issueGuidance().length > 0) {
-      <section class="repair-guidance" aria-labelledby="repair-guidance-title">
-        <h3 id="repair-guidance-title">How to fix these issues</h3>
-        @if (!hasOnlyWarnings()) {
-          <p class="repair-guidance-note">
-            Mesh repair tools can alter geometry. Inspect the repaired model and
-            run this check again before printing.
-          </p>
-        }
+    <section class="repair-guidance" aria-labelledby="repair-guidance-title">
+      <h3 id="repair-guidance-title">What to do next</h3>
+      @if (issueGuidance().length > 0) {
         <div class="repair-guidance-cards">
           @for (guidance of issueGuidance(); track guidance.code) {
             <article class="repair-guidance-card">
@@ -170,7 +164,7 @@
                   <li>{{ step }}</li>
                 }
               </ul>
-              @if (guidance.learnMore; as learnMore) {
+              @for (learnMore of guidance.learnMore; track learnMore.href) {
                 <p>
                   <a [href]="learnMore.href"
                     >Learn more: {{ learnMore.text }}</a
@@ -180,8 +174,18 @@
             </article>
           }
         </div>
-      </section>
-    }
+        <p class="repair-guidance-note">
+          InspectMesh identifies issues; it does not repair files. Save repairs
+          under a new filename and run the checker again.
+        </p>
+      } @else if (issues().length === 0) {
+        <p class="no-issues">
+          No checked mesh issues were found. Print success can still depend on
+          scale, wall thickness, supports, material, printer, and slicer
+          settings.
+        </p>
+      }
+    </section>
 
     @if (highlightSampleTotal() > 0) {
       <section class="issue-highlights" aria-labelledby="highlight-title">

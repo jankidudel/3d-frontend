@@ -207,7 +207,7 @@ describe('StlDimensionsPage', () => {
     fixture.detectChanges();
     expect(
       fixture.nativeElement.querySelector('.fit-result').textContent,
-    ).toContain('Fits your printer');
+    ).toContain('Fits in current orientation');
 
     fixture.componentInstance.modelUnit.set('cm');
     fixture.detectChanges();

@@ -223,4 +223,34 @@ describe('STL dimension calculations', () => {
       ),
     ).toHaveLength(1);
   });
+
+  it('finds a rotated-only fit while retaining the failed current orientation', () => {
+    const candidates = calculateRightAngleRotationFits(
+      { width: 10, height: 20, depth: 30 },
+      'mm',
+      { width: 30, height: 20, depth: 10 },
+      'mm',
+    );
+
+    expect(candidates[0].fit.fits).toBe(false);
+    expect(
+      candidates.find((candidate) => candidate.fit.fits)?.axisSources,
+    ).toEqual({
+      width: 'depth',
+      height: 'height',
+      depth: 'width',
+    });
+  });
+
+  it('reports no fitting right-angle permutation when every orientation overflows', () => {
+    const candidates = calculateRightAngleRotationFits(
+      { width: 10, height: 20, depth: 30 },
+      'mm',
+      { width: 9, height: 19, depth: 29 },
+      'mm',
+    );
+
+    expect(candidates.every((candidate) => !candidate.fit.fits)).toBe(true);
+    expect(candidates[0].fit.maximumScalePercentage).toBeCloseTo(90);
+  });
 });

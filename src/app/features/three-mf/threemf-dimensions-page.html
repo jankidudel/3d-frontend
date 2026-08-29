@@ -129,16 +129,6 @@
               Enter finite build-volume dimensions greater than zero.
             </p>
           }
-          <label class="field"
-            ><span
-              ><input
-                type="checkbox"
-                [checked]="checkRotations()"
-                (change)="setCheckRotations($event)"
-              />
-              Check 90° rotations</span
-            ></label
-          >
           @if (printerFit(); as fit) {
             <p
               class="fit-result"
@@ -147,29 +137,31 @@
             >
               <strong>{{
                 fit.fits
-                  ? 'Fits selected printer volume'
-                  : 'Does not fit selected printer volume'
+                  ? 'Fits in current orientation'
+                  : 'Does not fit at its current scale'
               }}</strong
               ><br />Printer margins, orientation, supports and slicer settings
               can still matter.
             </p>
             @if (rotationFit(); as rotated) {
               <p class="fit-result positive" role="status">
-                <strong>Fits with a 90° rotation</strong><br />{{
+                <strong>Fits after a 90° rotation</strong><br />{{
                   rotationRecommendation()
                 }}<br /><strong>Resulting W × H × D:</strong>
                 {{ formatDimensions(rotated.dimensions) }} {{ buildUnit() }}
               </p>
-            } @else if (checkRotations() && !fit.fits) {
+            } @else if (!fit.fits) {
               <p>
-                No right-angle orientation fits this volume. Use the maximum
-                uniform scale from the current-fit result.
+                No checked 90° orientation fits this volume. Scale the model
+                uniformly to no more than
+                {{ formatNumber(fit.maximumScalePercentage) }}% to fit these
+                limits.
               </p>
             }
             <p>
-              This optional check considers only right-angle size permutations.
-              Final orientation, supports, margins, brims and placement belong
-              in your slicer.
+              This checks model bounds only. Set final orientation and allow for
+              supports, brim/raft, clearances, and printer limits in your
+              slicer.
             </p>
           }
         </section>

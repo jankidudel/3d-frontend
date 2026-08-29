@@ -1,4 +1,5 @@
 import { JobFailure } from './job';
+import { ModelFileFormat } from '../core/formats/model-file-format';
 
 export type JobFailureCategory =
   | 'invalid_stl'
@@ -6,6 +7,8 @@ export type JobFailureCategory =
   | 'file_too_large'
   | 'processing_timeout'
   | 'unknown';
+
+export type AnalysisFileFormat = ModelFileFormat;
 
 export const GENERIC_JOB_FAILURE_MESSAGE =
   'We couldn’t analyse this file. Please check that it is a valid STL file and try again.';
@@ -31,9 +34,20 @@ const PROCESSOR_INVALID_STL_MESSAGE =
   'This file is not a valid STL file or is incomplete.';
 
 export function jobFailureMessage(failure: JobFailure | undefined): string {
+  return jobFailureMessageForFormat(failure, ModelFileFormat.Stl);
+}
+
+export function jobFailureMessageForFormat(
+  failure: JobFailure | undefined,
+  format: AnalysisFileFormat,
+): string {
   const code = failure?.error?.code;
   if (!code) {
-    return GENERIC_JOB_FAILURE_MESSAGE;
+    return genericFailureMessage(format);
+  }
+
+  if (format === ModelFileFormat.ThreeMf) {
+    return genericFailureMessage(format);
   }
 
   const mappedMessage = SAFE_FAILURE_MESSAGES[code];
@@ -48,7 +62,13 @@ export function jobFailureMessage(failure: JobFailure | undefined): string {
     return INVALID_STL_MESSAGE;
   }
 
-  return GENERIC_JOB_FAILURE_MESSAGE;
+  return genericFailureMessage(format);
+}
+
+function genericFailureMessage(format: AnalysisFileFormat): string {
+  return format === ModelFileFormat.Stl
+    ? GENERIC_JOB_FAILURE_MESSAGE
+    : 'We couldn’t analyse this file. Please check that it is a valid 3MF file and try again.';
 }
 
 export function jobFailureCategory(

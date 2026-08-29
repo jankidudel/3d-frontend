@@ -12,14 +12,14 @@ import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { createAndUploadThreeMfJob } from '../../core/api/three-mf-job-workflow';
 import { pollJob, PollingTimeoutError } from '../../core/api/job-polling';
-import { ThreeMfJobService } from '../../core/api/three-mf-job.service';
+import { JobCreationService } from '../../core/api/job-creation.service';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Job, JobStatus } from '../../models/job';
-import { jobFailureMessage } from '../../models/job-failure';
+import { jobFailureMessageForFormat } from '../../models/job-failure';
 import { ThreeMfFilePicker } from './threemf-file-picker';
 import {
   DisplayIssue,
@@ -27,21 +27,20 @@ import {
   normalizeValidationIssues,
 } from '../../shared/mesh-validation-issues';
 import { MeshQualityPdfService } from '../../shared/mesh-quality-pdf.service';
+import { ModelFileFormat } from '../../core/formats/model-file-format';
 
 type ReportRecord = Record<string, unknown>;
 @Component({
   selector: 'app-three-mf-quality-page',
   imports: [RouterLink, ThreeMfFilePicker, JobProgress],
   templateUrl: './threemf-quality-page.html',
-  styleUrls: [
-    '../shared/model-checker-page.scss',
-    '../stl-quality/job-status/job-status.scss',
-  ],
+  styleUrl: '../shared/model-checker-page.scss',
 })
 export class ThreeMfQualityPage {
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
-  readonly jobFailureMessage = jobFailureMessage;
+  readonly jobFailureMessage = (failure: Job['failure']) =>
+    jobFailureMessageForFormat(failure, ModelFileFormat.ThreeMf);
   readonly selectedFile = signal<File | null>(null);
   readonly job = signal<Job | null>(null);
   readonly submitting = signal(false);
@@ -61,7 +60,7 @@ export class ThreeMfQualityPage {
   private readonly picker = viewChild(ThreeMfFilePicker);
   private readonly document = inject(DOCUMENT);
   private readonly jobs = inject(JobsService);
-  private readonly threeMfJobs = inject(ThreeMfJobService);
+  private readonly jobCreation = inject(JobCreationService);
   private readonly seo = inject(SeoService);
   private readonly analytics = inject(AnalyticsService);
   private readonly pdfService = inject(MeshQualityPdfService);
@@ -91,7 +90,7 @@ export class ThreeMfQualityPage {
     }
     this.submitting.set(true);
     this.analytics.trackThreeMfQualityStarted(file.size);
-    createAndUploadThreeMfJob(this.threeMfJobs, this.jobs, file, (job) =>
+    createAndUploadThreeMfJob(this.jobCreation, this.jobs, file, (job) =>
       this.job.set(job),
     ).subscribe({
       next: () => {
@@ -143,7 +142,7 @@ export class ThreeMfQualityPage {
   }
 
   issueGuidance(report: ReportRecord): ReturnType<typeof guidanceForIssues> {
-    return guidanceForIssues(this.issues(report), '3mf');
+    return guidanceForIssues(this.issues(report), ModelFileFormat.ThreeMf);
   }
   downloadJsonReport(): void {
     const report = this.job()?.report;

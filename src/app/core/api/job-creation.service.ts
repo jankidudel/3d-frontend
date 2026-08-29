@@ -6,12 +6,13 @@ import { Job } from '../../models/job';
 import { API_CONFIG } from './api-config';
 import { FormatJobService } from './format-job.service';
 
+/** Creates format-validated jobs through the API's unified endpoint. */
 @Injectable({ providedIn: 'root' })
-export class ThreeMfJobService implements FormatJobService {
+export class JobCreationService implements FormatJobService {
   private readonly http = inject(HttpClient);
   private readonly config = inject(API_CONFIG);
 
   create(request: CreateJobRequest): Observable<Job> {
-    return this.http.post<Job>(`${this.config.baseUrl}/3mf-jobs`, request);
+    return this.http.post<Job>(`${this.config.baseUrl}/jobs`, request);
   }
 }

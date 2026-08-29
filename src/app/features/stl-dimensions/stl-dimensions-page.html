@@ -293,17 +293,6 @@
             </span>
           }
 
-          <label class="field"
-            ><span
-              ><input
-                type="checkbox"
-                [checked]="checkRotations()"
-                (change)="setCheckRotations($event)"
-              />
-              Check 90° rotations</span
-            ></label
-          >
-
           @if (buildVolumeFit(); as fit) {
             <div
               class="fit-result"
@@ -318,7 +307,7 @@
                 <h4>
                   {{
                     fit.fits
-                      ? 'Fits your printer'
+                      ? 'Fits in current orientation'
                       : 'Does not fit at its current scale'
                   }}
                 </h4>
@@ -337,7 +326,7 @@
             @if (rotationFit(); as rotated) {
               <div class="fit-result fit-result-success" role="status">
                 <div>
-                  <h4>Fits with a 90° rotation</h4>
+                  <h4>Fits after a 90° rotation</h4>
                   <p>{{ rotationRecommendation() }}</p>
                   <p>
                     <strong>Resulting W × H × D:</strong>
@@ -345,12 +334,18 @@
                   </p>
                 </div>
               </div>
-            } @else if (checkRotations() && !fit.fits) {
+            } @else if (!fit.fits) {
               <p class="slicer-note">
                 No right-angle orientation fits this volume. The maximum uniform
                 scale above remains the applicable size limit.
               </p>
             }
+
+            <p class="slicer-note">
+              This checks model bounds only. Set final orientation and allow for
+              supports, brim/raft, clearances, and printer limits in your
+              slicer.
+            </p>
 
             <div class="table-scroll fit-table">
               <table>

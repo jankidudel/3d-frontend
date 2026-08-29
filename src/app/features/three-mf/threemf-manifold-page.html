@@ -81,19 +81,18 @@
           Separate closed parts can be intentional. This is not an assembly,
           overlap or clearance check.
         </p>
-        <p>
+        <nav class="next-actions" aria-label="Related 3MF tools">
           <a class="button" [routerLink]="routeUrl.ThreeMfQualityCheck"
             >Run full 3MF quality check</a
           >
           <a [routerLink]="routeUrl.ThreeMfWatertightChecker"
             >Check 3MF watertightness</a
           >
-          ·
           <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
             >Measure 3MF dimensions</a
           >
-          · <a [routerLink]="routeUrl.ThreeMfViewer">View 3MF in 3D</a>
-        </p>
+          <a [routerLink]="routeUrl.ThreeMfViewer">View 3MF in 3D</a>
+        </nav>
       }
     </section>
   }

@@ -74,7 +74,6 @@ export class StlDimensionsPage {
   readonly buildDepth = signal<number | null>(null);
   readonly buildUnit = signal<ModelUnit>('mm');
   readonly buildVolumeTouched = signal(false);
-  readonly checkRotations = signal(false);
 
   readonly processing = computed(() => {
     const status = this.job()?.status;
@@ -151,7 +150,7 @@ export class StlDimensionsPage {
     () => this.buildVolumeTouched() && this.buildVolumeFit() === null,
   );
   readonly rotationFit = computed(() => {
-    if (!this.checkRotations() || this.buildVolumeFit()?.fits) {
+    if (this.buildVolumeFit()?.fits) {
       return null;
     }
     const dimensions = this.rawDimensions();
@@ -295,10 +294,6 @@ export class StlDimensionsPage {
 
   setBuildUnit(event: Event): void {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
-  }
-
-  setCheckRotations(event: Event): void {
-    this.checkRotations.set((event.target as HTMLInputElement).checked);
   }
 
   rotationRecommendation(): string {

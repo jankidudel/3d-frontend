@@ -58,11 +58,6 @@ export class JobStatusComponent {
     normalizeValidationIssues(this.validation()?.['issues']),
   );
   readonly issueGuidance = computed(() => guidanceForIssues(this.issues()));
-  readonly hasOnlyWarnings = computed(
-    () =>
-      this.issues().length > 0 &&
-      this.issues().every((issue) => issue.severity === 'warning'),
-  );
   readonly dimensions = computed(() =>
     this.asRecord(this.report()?.['dimensions']),
   );

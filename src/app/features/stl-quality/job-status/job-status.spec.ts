@@ -58,7 +58,8 @@ describe('JobStatusComponent', () => {
     expect(text).toContain('21.8 KB');
     expect(fixture.nativeElement.querySelector('details').open).toBe(false);
     expect(text).not.toContain('ready to print');
-    expect(text).not.toContain('How to fix these issues');
+    expect(text).toContain('What to do next');
+    expect(text).toContain('No checked mesh issues were found');
   });
 
   it('shows a one-component topology metric when supplied', () => {
@@ -120,7 +121,9 @@ describe('JobStatusComponent', () => {
     expect(text).toContain('Multiple disconnected shells');
     expect(text).toContain('Check separate components');
     expect(text).toContain('This can be intentional');
-    expect(text).toContain('slicer or 3D viewer');
+    expect(text).toContain(
+      'Confirm whether the separate parts are intentional',
+    );
     expect(text).not.toContain('Problems found');
   });
 
@@ -169,10 +172,12 @@ describe('JobStatusComponent', () => {
     });
     const text = fixture.nativeElement.textContent;
 
-    expect(text).toContain('How to fix these issues');
+    expect(text).toContain('What to do next');
     expect(text).toContain(title);
     expect(text).toContain(meaning);
-    expect(text).toContain('Mesh repair tools can alter geometry.');
+    expect(text).toContain(
+      'InspectMesh identifies issues; it does not repair files.',
+    );
     expect(
       fixture.nativeElement.querySelectorAll('.repair-guidance-card'),
     ).toHaveLength(1);
@@ -216,7 +221,7 @@ describe('JobStatusComponent', () => {
     const text = fixture.nativeElement.textContent;
 
     expect(text).toContain('Self Intersecting Geometry');
-    expect(text).not.toContain('How to fix these issues');
+    expect(text).toContain('What to do next');
     expect(
       fixture.nativeElement.querySelectorAll('.repair-guidance-card'),
     ).toHaveLength(0);

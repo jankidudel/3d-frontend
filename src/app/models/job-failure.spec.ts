@@ -1,4 +1,9 @@
-import { GENERIC_JOB_FAILURE_MESSAGE, jobFailureMessage } from './job-failure';
+import {
+  GENERIC_JOB_FAILURE_MESSAGE,
+  jobFailureMessage,
+  jobFailureMessageForFormat,
+} from './job-failure';
+import { ModelFileFormat } from '../core/formats/model-file-format';
 
 describe('jobFailureMessage', () => {
   it.each([
@@ -51,4 +56,16 @@ describe('jobFailureMessage', () => {
       expect(jobFailureMessage(failure)).toBe(GENERIC_JOB_FAILURE_MESSAGE);
     },
   );
+
+  it('uses format-specific safe wording for 3MF failures', () => {
+    expect(jobFailureMessageForFormat(undefined, ModelFileFormat.ThreeMf)).toBe(
+      'We couldn’t analyse this file. Please check that it is a valid 3MF file and try again.',
+    );
+    expect(
+      jobFailureMessageForFormat(
+        { error: { code: 'invalid_stl' } },
+        ModelFileFormat.ThreeMf,
+      ),
+    ).toContain('3MF file');
+  });
 });

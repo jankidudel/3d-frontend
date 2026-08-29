@@ -1,3 +1,5 @@
+import { ModelFileFormat } from '../core/formats/model-file-format';
+
 export const ValidationIssueCode = {
   OpenEdge: 'open_edge',
   NonManifoldEdge: 'non_manifold_edge',
@@ -29,10 +31,18 @@ export interface IssueGuidance {
 export interface IssueGuidanceCard extends IssueGuidance {
   readonly found: string;
   readonly severityLabel: 'Needs attention' | 'Review recommended';
-  readonly learnMore: { readonly href: string; readonly text: string } | null;
+  readonly learnMore: readonly {
+    readonly href: string;
+    readonly text: string;
+  }[];
 }
 
-export type GuidanceFormat = 'stl' | '3mf';
+export type GuidanceFormat = ModelFileFormat;
+
+type GuidanceLink = {
+  readonly href: string;
+  readonly text: string;
+};
 
 const ISSUE_LABELS: Record<RecognisedIssueCode, string> = {
   [ValidationIssueCode.OpenEdge]: 'Open edges',
@@ -51,10 +61,10 @@ const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
     title: 'Fix open edges',
     meaning: 'The mesh has gaps, so it is not fully watertight.',
     whyItMatters:
-      'Gaps can make slicing ambiguous and can lead to unreliable volume calculations or missing surfaces in a print.',
+      'This may affect slicing or printing because the model is not a closed solid.',
     nextSteps: [
-      'Try your slicer’s repair function or a mesh tool such as Blender or Meshmixer.',
-      'Inspect the repaired model for unwanted holes or changed surfaces.',
+      'Repair holes in your source CAD application, Blender, Microsoft 3D Builder, or a slicer repair workflow where available.',
+      'Save a copy under a new filename, then run this checker again.',
     ],
   },
   [ValidationIssueCode.NonManifoldEdge]: {
@@ -63,21 +73,20 @@ const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
     meaning:
       'More than two faces share an edge, or the mesh geometry is ambiguous.',
     whyItMatters:
-      'Ambiguous geometry can confuse slicers and make the model’s inside and outside unclear.',
+      'This may affect slicing or printing because the model inside and outside can be unclear.',
     nextSteps: [
-      'Remove overlapping or internal geometry in a modelling or mesh-repair tool.',
-      'Repair the mesh, then inspect the result before using it.',
+      'Inspect overlapping or internal faces and problematic joins in your source or repair application.',
+      'Repair the mesh, save a copy, then run this checker again.',
     ],
   },
   [ValidationIssueCode.DegenerateTriangle]: {
     code: ValidationIssueCode.DegenerateTriangle,
     title: 'Clean degenerate triangles',
     meaning: 'The mesh contains zero-area or nearly zero-area faces.',
-    whyItMatters:
-      'These faces can cause mesh-processing errors or unreliable slicing and volume calculations.',
+    whyItMatters: 'These faces may affect slicing or printing.',
     nextSteps: [
-      'Use mesh-cleanup tools to remove degenerate faces.',
-      'Clean and re-export the model from its source when possible.',
+      'Remove or clean zero-area faces in the source or repair application.',
+      'Export under a new filename, then run this checker again.',
     ],
   },
   [ValidationIssueCode.DuplicateTriangle]: {
@@ -85,10 +94,10 @@ const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
     title: 'Remove duplicate triangles',
     meaning: 'Duplicate or overlapping faces exist in the mesh.',
     whyItMatters:
-      'Overlapping faces can create ambiguous surfaces for a slicer and distort mesh analysis.',
+      'Duplicate faces may affect slicing or printing by creating ambiguous surfaces.',
     nextSteps: [
-      'Remove duplicate faces with a mesh-cleanup tool.',
-      'If possible, re-export a cleaned model from the source software.',
+      'Remove duplicate faces or clean the mesh in the source or repair application.',
+      'Run this checker again before slicing.',
     ],
   },
   [ValidationIssueCode.InconsistentOrientation]: {
@@ -96,10 +105,10 @@ const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
     title: 'Repair face orientation',
     meaning: 'Some face normals point in the wrong direction.',
     whyItMatters:
-      'Incorrect normals can make inside and outside surfaces unclear to slicers and volume calculations.',
+      'Incorrect normals may affect slicing or printing by making surface direction unclear.',
     nextSteps: [
-      'Recalculate or repair normals in a modelling or mesh-repair tool.',
-      'Inspect the corrected model, especially around the affected surfaces.',
+      'Recalculate normals after cleaning the mesh.',
+      'Inspect the result in the slicer before printing.',
     ],
   },
   [ValidationIssueCode.InvalidCoordinates]: {
@@ -107,10 +116,10 @@ const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
     title: 'Re-export invalid geometry',
     meaning: 'The STL contains unusable numeric geometry.',
     whyItMatters:
-      'Invalid coordinates make geometry analysis unreliable and can prevent a slicer from processing the file.',
+      'Invalid numeric geometry may prevent a slicer from processing the file.',
     nextSteps: [
-      'Re-export the model from the original CAD or modelling software.',
-      'Do not rely on the current file; inspect the newly exported model and run this check again.',
+      'Re-export from the source design application.',
+      'Do not rely on a slicer to correct invalid numeric geometry. Run this checker again on the new export.',
     ],
   },
   [ValidationIssueCode.MultipleDisconnectedShells]: {
@@ -118,11 +127,48 @@ const ISSUE_GUIDANCE: Record<RecognisedIssueCode, IssueGuidance> = {
     title: 'Check separate components',
     meaning:
       'The STL contains separate mesh components. This can be intentional, such as separate printable parts or floating details.',
-    whyItMatters:
-      'Unexpected components can be missed, misplaced or printed separately by a slicer.',
+    whyItMatters: 'Unexpected components may affect slicing or printing.',
     nextSteps: [
-      'Inspect the model in a slicer or 3D viewer to confirm every part is expected and correctly positioned.',
-      'Keep intentional separate parts; do not delete or repair them automatically.',
+      'Confirm whether the separate parts are intentional.',
+      'If not, join or repair them in the source application.',
+    ],
+  },
+};
+
+const FORMAT_GUIDANCE_LINKS: Readonly<
+  Record<
+    GuidanceFormat,
+    Partial<Record<RecognisedIssueCode, readonly GuidanceLink[]>>
+  >
+> = {
+  [ModelFileFormat.Stl]: {
+    [ValidationIssueCode.OpenEdge]: [
+      {
+        href: PublicRouteUrl.WatertightChecker,
+        text: 'STL Watertight Checker',
+      },
+      { href: PublicRouteUrl.WatertightStlGuide, text: 'Watertight STL guide' },
+    ],
+    [ValidationIssueCode.NonManifoldEdge]: [
+      { href: PublicRouteUrl.ManifoldChecker, text: 'STL Manifold Checker' },
+      {
+        href: PublicRouteUrl.FixNonManifoldStlGuide,
+        text: 'Non-manifold STL guide',
+      },
+    ],
+  },
+  [ModelFileFormat.ThreeMf]: {
+    [ValidationIssueCode.OpenEdge]: [
+      {
+        href: PublicRouteUrl.ThreeMfWatertightChecker,
+        text: '3MF Watertight Checker',
+      },
+    ],
+    [ValidationIssueCode.NonManifoldEdge]: [
+      {
+        href: PublicRouteUrl.ThreeMfManifoldChecker,
+        text: '3MF Manifold Checker',
+      },
     ],
   },
 };
@@ -163,7 +209,7 @@ export function normalizeValidationIssues(value: unknown): DisplayIssue[] {
 
 export function guidanceForIssues(
   issues: readonly DisplayIssue[],
-  format: GuidanceFormat = 'stl',
+  format: GuidanceFormat = ModelFileFormat.Stl,
 ): IssueGuidanceCard[] {
   const seen = new Set<RecognisedIssueCode>();
   return issues.flatMap((issue) => {
@@ -184,7 +230,7 @@ export function guidanceForIssues(
           recognisedCode === ValidationIssueCode.DegenerateTriangle
             ? 'Needs attention'
             : 'Review recommended',
-        learnMore: learnMoreFor(recognisedCode, format),
+        learnMore: FORMAT_GUIDANCE_LINKS[format][recognisedCode] ?? [],
       },
     ];
   });
@@ -233,23 +279,4 @@ function asRecord(value: unknown): Record<string, unknown> | null {
     : null;
 }
 
-function learnMoreFor(
-  code: RecognisedIssueCode,
-  format: GuidanceFormat,
-): { readonly href: string; readonly text: string } | null {
-  if (code === ValidationIssueCode.OpenEdge) {
-    return format === 'stl'
-      ? {
-          href: '/how-to-tell-if-an-stl-is-watertight',
-          text: 'Watertight STL guide',
-        }
-      : { href: '/3mf-quality-checker', text: '3MF Quality Checker' };
-  }
-  if (code === ValidationIssueCode.NonManifoldEdge && format === 'stl') {
-    return {
-      href: '/how-to-fix-non-manifold-stl',
-      text: 'Non-manifold STL guide',
-    };
-  }
-  return null;
-}
+import { PublicRouteUrl } from '../core/seo/public-routes';

@@ -4,6 +4,10 @@ import {
   FilePicker,
   FilePickerConfiguration,
 } from '../../core/components/file-picker/file-picker';
+import {
+  MODEL_FILE_FORMAT_DETAILS,
+  ModelFileFormat,
+} from '../../core/formats/model-file-format';
 
 @Component({
   selector: 'app-three-mf-file-picker',
@@ -14,9 +18,9 @@ export class ThreeMfFilePicker {
   readonly selectedFileFromParent = input<File | null>(null);
   readonly fileSelected = output<File | null>();
   readonly configuration: FilePickerConfiguration = {
-    accept: '.3mf',
+    accept: MODEL_FILE_FORMAT_DETAILS[ModelFileFormat.ThreeMf].extension,
     emptyFileMessage: 'The selected 3MF file is empty.',
-    extension: '.3mf',
+    extension: MODEL_FILE_FORMAT_DETAILS[ModelFileFormat.ThreeMf].extension,
     invalidFileMessage: 'The selected file must have a .3mf extension.',
     label: 'Choose 3MF file',
     limitMessage: 'The selected 3MF file must be 25 MiB or smaller.',

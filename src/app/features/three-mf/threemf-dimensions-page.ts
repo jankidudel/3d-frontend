@@ -11,13 +11,13 @@ import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { pollJob, PollingTimeoutError } from '../../core/api/job-polling';
 import { createAndUploadThreeMfJob } from '../../core/api/three-mf-job-workflow';
-import { ThreeMfJobService } from '../../core/api/three-mf-job.service';
+import { JobCreationService } from '../../core/api/job-creation.service';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Job, JobStatus } from '../../models/job';
-import { jobFailureMessage } from '../../models/job-failure';
+import { jobFailureMessageForFormat } from '../../models/job-failure';
 import {
   calculateBuildVolumeFit,
   calculateRightAngleRotationFits,
@@ -25,6 +25,7 @@ import {
   ModelUnit,
 } from '../../shared/model-dimensions';
 import { ThreeMfFilePicker } from './threemf-file-picker';
+import { ModelFileFormat } from '../../core/formats/model-file-format';
 
 type ReportRecord = Record<string, unknown>;
 
@@ -46,7 +47,8 @@ const MILLIMETRES_PER_3MF_UNIT: Readonly<Record<string, number>> = {
 export class ThreeMfDimensionsPage {
   protected readonly routeUrl = PublicRouteUrl;
   protected readonly jobStatus = JobStatus;
-  protected readonly jobFailureMessage = jobFailureMessage;
+  protected readonly jobFailureMessage = (failure: Job['failure']) =>
+    jobFailureMessageForFormat(failure, ModelFileFormat.ThreeMf);
   protected readonly selectedFile = signal<File | null>(null);
   protected readonly job = signal<Job | null>(null);
   protected readonly submitting = signal(false);
@@ -58,7 +60,6 @@ export class ThreeMfDimensionsPage {
   protected readonly buildDepth = signal<number | null>(null);
   protected readonly buildUnit = signal<ModelUnit>('mm');
   protected readonly buildVolumeTouched = signal(false);
-  protected readonly checkRotations = signal(false);
   protected readonly report = computed(() => this.asRecord(this.job()?.report));
   protected readonly dimensions = computed<ModelDimensions | null>(() => {
     const values = this.asRecord(this.report()?.['dimensions']);
@@ -109,7 +110,7 @@ export class ThreeMfDimensionsPage {
     () => this.buildVolumeTouched() && this.printerFit() === null,
   );
   protected readonly rotationFit = computed(() => {
-    if (!this.checkRotations() || this.printerFit()?.fits) {
+    if (this.printerFit()?.fits) {
       return null;
     }
     const dimensions = this.convertedDimensions()?.mm;
@@ -135,7 +136,7 @@ export class ThreeMfDimensionsPage {
   });
   private readonly picker = viewChild(ThreeMfFilePicker);
   private readonly jobs = inject(JobsService);
-  private readonly threeMfJobs = inject(ThreeMfJobService);
+  private readonly jobCreation = inject(JobCreationService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
@@ -165,7 +166,7 @@ export class ThreeMfDimensionsPage {
     }
     this.submitting.set(true);
     this.error.set('');
-    createAndUploadThreeMfJob(this.threeMfJobs, this.jobs, file, (job) =>
+    createAndUploadThreeMfJob(this.jobCreation, this.jobs, file, (job) =>
       this.job.set(job),
     ).subscribe({
       next: () => {
@@ -218,10 +219,6 @@ export class ThreeMfDimensionsPage {
 
   protected setBuildUnit(event: Event): void {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
-  }
-
-  protected setCheckRotations(event: Event): void {
-    this.checkRotations.set((event.target as HTMLInputElement).checked);
   }
 
   protected rotationRecommendation(): string {
