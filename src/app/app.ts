@@ -1,5 +1,11 @@
-import { NgOptimizedImage } from '@angular/common';
-import { Component, ElementRef, inject, viewChild } from '@angular/core';
+import { DOCUMENT, NgOptimizedImage } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -16,6 +22,8 @@ import {
   MenuLinkVariant,
 } from './core/components/menu-link/menu-link';
 import { PublicRoutePath } from './core/seo/public-routes';
+
+const MOBILE_NAVIGATION_MEDIA_QUERY = '(max-width: 48rem)';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +43,7 @@ import { PublicRoutePath } from './core/seo/public-routes';
   styleUrl: './app.scss',
 })
 export class App {
+  private readonly document = inject(DOCUMENT);
   readonly consent = inject(CookieConsentService);
   readonly routePath = PublicRoutePath;
   readonly menuLinkVariant = MenuLinkVariant;
@@ -43,20 +52,26 @@ export class App {
   private readonly router = inject(Router);
   protected mobileNavOpen = false;
   protected toolsMenuOpen = false;
+  protected readonly toolsActive = signal(false);
 
   constructor() {
     inject(AnalyticsService);
+    this.toolsActive.set(this.isToolsRoute(this.router.url));
     this.router.events
       .pipe(
         filter(
           (event): event is NavigationEnd => event instanceof NavigationEnd,
         ),
       )
-      .subscribe(() => this.closeMenus());
+      .subscribe((event) => {
+        this.toolsActive.set(this.isToolsRoute(event.urlAfterRedirects));
+        this.closeMenus();
+      });
   }
 
   protected toggleMobileNav(): void {
     this.mobileNavOpen = !this.mobileNavOpen;
+    this.toolsMenuOpen = false;
   }
 
   protected toggleToolsMenu(): void {
@@ -64,7 +79,10 @@ export class App {
   }
 
   protected openToolsMenu(): void {
-    this.toolsMenuOpen = true;
+    const defaultView = this.document.defaultView;
+    if (!defaultView?.matchMedia(MOBILE_NAVIGATION_MEDIA_QUERY).matches) {
+      this.toolsMenuOpen = true;
+    }
   }
 
   protected onDocumentPointerDown(event: PointerEvent): void {
@@ -80,5 +98,13 @@ export class App {
   protected closeMenus(): void {
     this.mobileNavOpen = false;
     this.toolsMenuOpen = false;
+  }
+
+  private isToolsRoute(url: string): boolean {
+    return (
+      url === `/${PublicRoutePath.AllTools}` ||
+      url.startsWith('/stl-') ||
+      url.startsWith('/3mf-')
+    );
   }
 }
