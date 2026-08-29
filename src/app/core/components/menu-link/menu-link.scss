@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+a {
+  display: block;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.3rem;
+  color: var(--muted);
+  font-weight: 650;
+  text-decoration: none;
+}
+a:hover {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+a:hover,
+a:focus-visible,
+a.active {
+  color: var(--primary);
+}
+:host(.tools-group-heading) a {
+  border-radius: 0;
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+:host(.all-tools-link) a {
+  border-bottom: 1px solid var(--border);
+  font-weight: 800;
+}

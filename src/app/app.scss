@@ -36,6 +36,7 @@ nav a {
 .site-header nav {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 .mobile-nav-toggle,
 .tools-trigger {
@@ -65,50 +66,34 @@ nav a {
 .tools-disclosure {
   position: relative;
 }
-.tools-disclosure::after {
-  /* Keep the disclosure hovered while the pointer crosses the visual menu gap. */
-  position: absolute;
-  top: 100%;
-  right: 0;
-  width: 15rem;
-  height: 0.35rem;
-  content: '';
-}
 .tools-menu {
   position: absolute;
   z-index: 10;
-  top: calc(100% + 0.35rem);
+  top: 100%;
   right: 0;
-  display: grid;
-  min-width: 15rem;
+  display: none;
+  grid-template-columns: repeat(2, minmax(14rem, 1fr));
+  min-width: 34rem;
   padding: 0.45rem;
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   background: var(--surface, #fff);
   box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 12%);
 }
-.tools-disclosure:hover .tools-menu,
-.tools-disclosure:focus-within .tools-menu {
+.tools-menu.tools-menu-open {
   display: grid;
 }
-.tools-menu {
-  display: none;
+.top-nav-link {
+  padding: 0.5rem;
 }
-.tools-menu a {
-  padding: 0.5rem 0.6rem;
-  border-radius: 0.3rem;
+.all-tools-link {
+  grid-column: 1 / -1;
 }
-.tools-menu .tools-group-heading {
-  margin-top: 0.35rem;
-  border-top: 1px solid var(--border);
-  border-radius: 0;
-  padding-top: 0.75rem;
-  color: var(--ink);
-  font-size: 0.85rem;
-  font-weight: 800;
-}
-.tools-menu a:hover {
-  background: color-mix(in srgb, var(--primary) 8%, transparent);
+.tools-menu-group {
+  display: grid;
+  align-content: start;
+  gap: 0.1rem;
+  padding: 0.35rem;
 }
 .brand:focus-visible,
 nav a:focus-visible,
@@ -178,11 +163,19 @@ nav a.active {
     width: 100%;
     padding: 0.5rem;
   }
+  .top-nav-link {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+  }
   .tools-menu {
     position: static;
-    display: grid;
+    grid-template-columns: 1fr;
     min-width: 0;
     margin-top: 0.25rem;
     box-shadow: none;
+  }
+  .all-tools-link {
+    grid-column: auto;
   }
 }
