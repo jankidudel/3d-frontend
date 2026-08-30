@@ -92,4 +92,36 @@ describe('SeoService', () => {
     ).toBe('noindex, nofollow');
     expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();
   });
+
+  it('marks an error page as noindex and removes an existing canonical URL', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: SEO_CONFIG,
+          useValue: {
+            indexingEnabled: true,
+            siteUrl: 'https://tools.example.com',
+          },
+        },
+      ],
+    });
+    const service = TestBed.inject(SeoService);
+    const document = TestBed.inject(DOCUMENT);
+
+    service.apply({ title: 'Home', description: 'Home page.', path: '/' });
+    service.applyNoIndex('Page Not Found', 'The page could not be found.');
+
+    expect(document.title).toBe('Page Not Found');
+    expect(
+      document.head
+        .querySelector('meta[name="description"]')
+        ?.getAttribute('content'),
+    ).toBe('The page could not be found.');
+    expect(
+      document.head
+        .querySelector('meta[name="robots"]')
+        ?.getAttribute('content'),
+    ).toBe('noindex, nofollow');
+    expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();
+  });
 });

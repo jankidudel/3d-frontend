@@ -28,6 +28,13 @@ export class SeoService {
     this.updateCanonical(canonicalUrl);
   }
 
+  applyNoIndex(title: string, description: string): void {
+    this.title.setTitle(title);
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
+    this.updateCanonical(null);
+  }
+
   private canonicalUrl(path: string): string | null {
     if (!this.config.indexingEnabled || !this.config.siteUrl) {
       return null;

@@ -24,6 +24,7 @@ export const PublicRoutePath = {
   StlTriangleCountGuide: 'stl-triangle-count-explained',
   Privacy: 'privacy',
   Cookies: 'cookies',
+  NotFound: '404',
 } as const;
 
 type PublicRouteUrls = {

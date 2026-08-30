@@ -162,5 +162,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/legal/cookies-page').then((m) => m.CookiesPage),
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: PublicRoutePath.NotFound,
+    loadComponent: () =>
+      import('./features/not-found/not-found-page').then((m) => m.NotFoundPage),
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/not-found/not-found-page').then((m) => m.NotFoundPage),
+  },
 ];
