@@ -19,6 +19,7 @@ import { PublicRoutePath } from '../../seo/public-routes';
 
 const MOBILE_NAVIGATION_MEDIA_QUERY = '(max-width: 48rem)';
 const TOOLS_MENU_CLOSE_DELAY_MS = 1_000;
+const TOOLS_MENU_OPEN_GRACE_PERIOD_MS = 1_000;
 
 @Component({
   selector: 'app-site-header',
@@ -43,6 +44,7 @@ export class SiteHeaderComponent {
   protected toolsMenuOpen = false;
   protected readonly toolsActive = signal(false);
   private toolsMenuCloseTimeout?: number;
+  private toolsMenuOpenedAt?: number;
 
   constructor() {
     this.toolsActive.set(this.isToolsRoute(this.router.url));
@@ -61,19 +63,22 @@ export class SiteHeaderComponent {
   protected toggleMobileNav(): void {
     this.cancelToolsMenuClose();
     this.mobileNavOpen = !this.mobileNavOpen;
-    this.toolsMenuOpen = false;
+    this.setToolsMenuOpen(false);
   }
 
   protected toggleToolsMenu(): void {
     this.cancelToolsMenuClose();
-    this.toolsMenuOpen = !this.toolsMenuOpen;
+    if (this.toolsMenuOpen && this.isWithinToolsMenuOpenGracePeriod()) {
+      return;
+    }
+    this.setToolsMenuOpen(!this.toolsMenuOpen);
   }
 
   protected openToolsMenu(): void {
     const defaultView = this.document.defaultView;
     if (!defaultView?.matchMedia(MOBILE_NAVIGATION_MEDIA_QUERY).matches) {
       this.cancelToolsMenuClose();
-      this.toolsMenuOpen = true;
+      this.setToolsMenuOpen(true);
     }
   }
 
@@ -87,7 +92,7 @@ export class SiteHeaderComponent {
     }
     this.cancelToolsMenuClose();
     this.toolsMenuCloseTimeout = defaultView.setTimeout(() => {
-      this.toolsMenuOpen = false;
+      this.setToolsMenuOpen(false);
       this.toolsMenuCloseTimeout = undefined;
       // Timers created from the injected document are not guaranteed to cause
       // a render in zoneless mode, so request one for the delayed close.
@@ -123,7 +128,24 @@ export class SiteHeaderComponent {
   protected closeMenus(): void {
     this.cancelToolsMenuClose();
     this.mobileNavOpen = false;
-    this.toolsMenuOpen = false;
+    this.setToolsMenuOpen(false);
+  }
+
+  private setToolsMenuOpen(open: boolean): void {
+    if (open && !this.toolsMenuOpen) {
+      this.toolsMenuOpenedAt = Date.now();
+    }
+    if (!open) {
+      this.toolsMenuOpenedAt = undefined;
+    }
+    this.toolsMenuOpen = open;
+  }
+
+  private isWithinToolsMenuOpenGracePeriod(): boolean {
+    return (
+      this.toolsMenuOpenedAt !== undefined &&
+      Date.now() - this.toolsMenuOpenedAt < TOOLS_MENU_OPEN_GRACE_PERIOD_MS
+    );
   }
 
   private cancelToolsMenuClose(): void {
