@@ -57,8 +57,4 @@ export const canonicalPublicRoutePaths = [
   PublicRoutePath.ThreeMfTriangleCounter,
   PublicRoutePath.ThreeMfVolumeCalculator,
   PublicRoutePath.Guides,
-  PublicRoutePath.FixNonManifoldStlGuide,
-  PublicRoutePath.WatertightStlGuide,
-  PublicRoutePath.StlUnitsGuide,
-  PublicRoutePath.StlTriangleCountGuide,
 ] as const;

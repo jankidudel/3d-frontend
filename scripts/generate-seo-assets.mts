@@ -1,6 +1,7 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { canonicalPublicRoutePaths } from '../src/app/core/seo/public-routes.ts';
+import { guideRoutePaths } from '../src/app/features/guides/guides.generated.ts';
 
 type BuildConfiguration = 'development' | 'production';
 interface SiteConfig {
@@ -39,8 +40,11 @@ const sitemapPath = resolve(publicDirectory, 'sitemap.xml');
 if (!indexingEnabled) {
   await rm(sitemapPath, { force: true });
 } else {
-  const entries = canonicalPublicRoutePaths
-    .map((path) => `  <url><loc>${siteUrl}/${path}</loc></url>`)
+  const entries = [...canonicalPublicRoutePaths, ...guideRoutePaths]
+    .map(
+      (path) =>
+        `  <url><loc>${siteUrl}${path.startsWith('/') ? path : `/${path}`}</loc></url>`,
+    )
     .join('\n');
   await writeFile(
     sitemapPath,

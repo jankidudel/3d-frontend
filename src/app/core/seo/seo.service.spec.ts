@@ -69,6 +69,48 @@ describe('SeoService', () => {
         .querySelector('link[rel="canonical"]')
         ?.getAttribute('href'),
     ).toBe('https://tools.example.com/stl-volume-calculator');
+    expect(
+      document.head
+        .querySelector("meta[property='og:url']")
+        ?.getAttribute('content'),
+    ).toBe('https://tools.example.com/stl-volume-calculator');
+  });
+
+  it('adds FAQ structured data for an article page', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: SEO_CONFIG,
+          useValue: {
+            indexingEnabled: true,
+            siteUrl: 'https://tools.example.com',
+          },
+        },
+      ],
+    });
+    const service = TestBed.inject(SeoService);
+    const document = TestBed.inject(DOCUMENT);
+
+    service.apply({
+      title: 'Guide',
+      description: 'Guide description.',
+      path: '/guide',
+      openGraphType: 'article',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+      },
+    });
+
+    expect(
+      document.head
+        .querySelector("meta[property='og:type']")
+        ?.getAttribute('content'),
+    ).toBe('article');
+    expect(
+      document.head.querySelector('script[data-seo-structured-data]')
+        ?.textContent,
+    ).toBe('{"@context":"https://schema.org","@type":"FAQPage"}');
   });
 
   it('fails closed when indexing is enabled without a valid HTTPS site URL', () => {

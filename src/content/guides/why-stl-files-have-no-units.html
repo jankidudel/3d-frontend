@@ -1,0 +1,82 @@
+---
+title: Why STL Files Have No Units (and How to Scale Them) | InspectMesh
+description: STL files store shape coordinates but not millimetres or inches. Learn why scale problems happen and how to check and correct STL dimensions before printing.
+slug: why-stl-files-have-no-units
+eyebrow: STL scale guide
+heading: Why STL Files Have No Units
+faq:
+  - question: Can InspectMesh detect the intended STL unit automatically?
+    answer: No. The STL format does not contain that information. The dimensions checker can show possible interpretations, but the intended size must come from the model source or a known measurement.
+  - question: Should I always use millimetres for 3D printing?
+    answer: Millimetres are the most common convention in consumer 3D-printing workflows. What matters most is using the same convention consistently from design to slicing.
+  - question: Does scaling change triangle count?
+    answer: No. Uniform scaling changes the size of the geometry, not the number of triangles. It does change area and volume.
+---
+
+<p class="lead">
+  An STL file stores triangles and coordinate values, but it does
+  <strong>not</strong> store whether those values mean millimetres, centimetres
+  or inches. A coordinate span of <code>100</code> is simply
+  <code>100</code> units. The printer software decides what that unit means.
+</p>
+<p class="lead">
+  This is why the same STL can appear at the expected size in one program and
+  25.4 times too small or too large in another. The model has not changed; the
+  software is interpreting its unitless coordinates differently.
+</p>
+<h2>How to check an STL's size</h2>
+<p>
+  Upload it to the <a href="/stl-dimensions-checker">STL Dimensions Checker</a>.
+  It reports the model's width, height and depth and lets you view the values as
+  millimetres, centimetres or inches. You can also calculate proportional
+  scaling and compare the model with a printer build volume.
+</p>
+<p>
+  If you only need a quick visual look at the geometry and raw bounds, the
+  <a href="/stl-viewer">STL Viewer</a> shows dimensions locally in your browser.
+  Remember that neither tool can know the original author's intended unit from
+  the STL itself.
+</p>
+<h2>Common scaling mistakes</h2>
+<h3>Millimetres interpreted as inches</h3>
+<p>
+  Most consumer 3D-printing workflows use millimetres. If a model created in
+  millimetres is interpreted as inches, it becomes 25.4 times larger than
+  intended.
+</p>
+<h3>Inches interpreted as millimetres</h3>
+<p>
+  The reverse is also common. A part designed as 4 inches wide may appear only 4
+  mm wide when imported into a millimetre-first slicer. Multiply by 25.4 to
+  convert inches to millimetres.
+</p>
+<h3>Centimetres interpreted as millimetres</h3>
+<p>
+  A model made in centimetres can appear ten times too small when a slicer
+  assumes millimetres. Multiply by 10 to convert centimetres to millimetres.
+</p>
+<h2>How to correct the scale</h2>
+<p>
+  First establish the intended real-world size. A known dimension from the
+  original design, product specification or creator is better than guessing from
+  the file name. Then set the correct size in your slicer or modelling program
+  while keeping proportional scaling locked.
+</p>
+<p>
+  For example, if a 50 mm part imports as 2 mm, the scale factor needed is
+  <code>50 ÷ 2 = 25</code>. If an intended 4-inch part imports as 4 mm, the
+  scale factor is <code>25.4</code>.
+</p>
+<p>
+  After scaling, compare the dimensions with your printer's build volume and
+  consider clearances, wall thickness and orientation. Correct outer dimensions
+  do not by themselves guarantee that a part will fit or print correctly.
+</p>
+<h2>Why 3MF handles this better</h2>
+<p>
+  Unlike STL, 3MF can store a declared model unit. If your workflow supports it,
+  3MF can reduce ambiguity between modelling and slicing. InspectMesh's
+  <a href="/3mf-quality-checker">3MF Quality Checker</a> reports the declared
+  unit, and the <a href="/3mf-viewer">3MF Viewer</a> lets you inspect the
+  displayed model locally.
+</p>

@@ -2,7 +2,8 @@
   max-width: 54rem;
 }
 
-.guide-page article > section {
+.guide-page .guide-body > h2,
+.guide-page .guide-faq {
   margin-top: 2.75rem;
 }
 
@@ -16,25 +17,24 @@
   font-size: 1.15rem;
 }
 
-.guide-page p,
-.guide-page li {
+.guide-page .guide-body p,
+.guide-page .guide-body li,
+.guide-page .guide-faq p {
   max-width: 46rem;
 }
 
-.guide-page p:not(.eyebrow) {
+.guide-page .guide-body p,
+.guide-page .guide-faq p {
   color: var(--muted);
 }
 
-.guide-page .lead {
-  max-width: 46rem;
-}
-
-.guide-page ul {
+.guide-page .guide-body ul,
+.guide-page .guide-body ol {
   max-width: 46rem;
   padding-left: 1.35rem;
 }
 
-.guide-page li + li {
+.guide-page .guide-body li + li {
   margin-top: 0.5rem;
 }
 
@@ -43,4 +43,27 @@
   border-radius: 0.2rem;
   background: var(--soft);
   color: var(--ink);
+}
+
+.guide-page .guide-body a {
+  font-weight: 700;
+}
+
+.guide-page .guide-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.guide-page .guide-body th,
+.guide-page .guide-body td {
+  padding: 0.65rem;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.guide-page .guide-body img {
+  max-width: 100%;
+  height: auto;
 }

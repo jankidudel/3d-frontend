@@ -5,6 +5,7 @@
 /public/version.json
 /public/robots.txt
 /public/sitemap.xml
+/src/app/features/guides/guides.generated.ts
 /tmp
 /out-tsc
 /bazel-out

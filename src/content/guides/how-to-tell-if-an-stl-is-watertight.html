@@ -1,0 +1,80 @@
+---
+title: How to Tell If an STL File Is Watertight | InspectMesh
+description: Learn how to check whether an STL model is watertight, why open edges and holes matter for 3D printing, and what to do when a mesh is not closed.
+slug: how-to-tell-if-an-stl-is-watertight
+eyebrow: STL topology guide
+faq:
+  - question: Is a watertight STL always printable?
+    answer: No. Watertightness checks the surface closure. Wall thickness, scale, overhangs, support, material and printer settings can still affect whether a print succeeds.
+  - question: Are separate shells always a problem?
+    answer: No. A file can intentionally contain several separate parts. The important question is whether each intended solid has a clean, closed surface.
+  - question: Is manifold the same as watertight?
+    answer: They are related but not identical. Watertightness focuses on open boundaries. Manifold analysis also considers whether edges and surfaces join in an unambiguous way.
+---
+
+<p class="lead">
+  A watertight STL describes a completely closed surface. Imagine filling the
+  model with water: if the surface has no holes, the water stays inside. For a
+  single solid intended for 3D printing, that closed boundary gives the slicer a
+  clear definition of what is inside the object and what is outside.
+</p>
+<p class="lead">
+  An STL is not watertight when it has <strong>open edges</strong>. An open edge
+  belongs to only one triangle instead of joining to a neighbouring triangle. A
+  model may have one obvious hole, many tiny gaps, or disconnected patches that
+  are hard to spot in a normal 3D preview.
+</p>
+<h2>The quickest way to check</h2>
+<p>
+  Use the free <a href="/stl-watertight-checker">STL Watertight Checker</a>. It
+  analyses the mesh and reports whether it finds open edges, together with the
+  number of separate shells. For a broader report that also checks duplicates,
+  degenerate triangles, non-manifold edges and face orientation, use the
+  <a href="/stl-quality-checker">STL Quality Checker</a>.
+</p>
+<p>
+  A zero open-edge count is a strong indication that a mesh is closed. It is
+  still useful to look at the rest of the report: a closed mesh can have other
+  geometry issues, including non-manifold edges or inconsistent orientation.
+</p>
+<h2>Why watertightness matters for 3D printing</h2>
+<p>
+  A slicer must decide which regions receive material. If a model has holes or
+  an ambiguous surface, it may create missing walls, unexpected infill, gaps in
+  layers or an incomplete print. Some slicers repair simple gaps automatically,
+  but different slicers can make different assumptions. A validated source file
+  is more predictable.
+</p>
+<p>
+  Watertightness is especially important for models that are meant to be one
+  solid piece: figurines, enclosures, functional brackets, containers and
+  scan-derived models. A file containing several intentionally separate
+  printable parts can still be acceptable, but each part should be assessed
+  separately.
+</p>
+<h2>Visual checks are helpful, but not enough</h2>
+<p>
+  Opening the file in the <a href="/stl-viewer">STL Viewer</a> is useful for
+  inspecting its shape and dimensions, but a viewer alone cannot reliably reveal
+  every tiny hole or internal topology issue. A mesh can look closed from the
+  outside while still having open edges deep inside or beneath overlapping
+  faces.
+</p>
+<p>
+  Use visual inspection alongside a topology check. If the checker reports open
+  edges, repair the file in your modelling software or a repair utility, save a
+  new version, then run the check again.
+</p>
+<h2>What to do when an STL is not watertight</h2>
+<p>
+  Start by finding the cause. A small missing face may be simple to fill.
+  Intersecting parts may need a boolean union. A 3D scan can need hole filling
+  and surface reconstruction. The guide
+  <a href="/how-to-fix-non-manifold-stl">How to Fix Non-Manifold STL Files</a>
+  explains common repair approaches and why some defects are not visible at
+  first glance.
+</p>
+<p>
+  Always keep the original file and verify the repaired copy. Automated repair
+  can be useful, but it can also remove or reshape fine details.
+</p>

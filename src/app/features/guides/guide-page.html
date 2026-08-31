@@ -2,39 +2,15 @@
   <article>
     <p class="eyebrow">{{ guide.eyebrow }}</p>
     <h1>{{ guide.heading }}</h1>
-    @for (paragraph of guide.intro; track paragraph) {
-      <p class="lead" [innerHTML]="paragraph"></p>
-    }
-    @for (section of guide.sections; track section.heading) {
-      <section>
-        <h2>{{ section.heading }}</h2>
-        @for (paragraph of section.paragraphs ?? []; track paragraph) {
-          <p [innerHTML]="paragraph"></p>
-        }
-        @if (section.bullets) {
-          <ul>
-            @for (bullet of section.bullets; track bullet) {
-              <li [innerHTML]="bullet"></li>
-            }
-          </ul>
-        }
-        @for (
-          subsection of section.subsections ?? [];
-          track subsection.heading
-        ) {
-          <h3>{{ subsection.heading }}</h3>
-          @for (paragraph of subsection.paragraphs; track paragraph) {
-            <p [innerHTML]="paragraph"></p>
-          }
+    <div class="guide-body" [innerHTML]="guide.html"></div>
+    @if (guide.faqs.length > 0) {
+      <section class="guide-faq">
+        <h2>FAQ</h2>
+        @for (faq of guide.faqs; track faq.question) {
+          <h3>{{ faq.question }}</h3>
+          <p>{{ faq.answer }}</p>
         }
       </section>
     }
-    <section>
-      <h2>FAQ</h2>
-      @for (faq of guide.faqs; track faq.question) {
-        <h3>{{ faq.question }}</h3>
-        <p>{{ faq.answer }}</p>
-      }
-    </section>
   </article>
 </main>

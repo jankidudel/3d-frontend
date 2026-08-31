@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { PublicRoutePath } from './core/seo/public-routes';
+import { guideCanMatch } from './features/guides/guide-route';
 
 export const routes: Routes = [
   {
@@ -129,30 +130,6 @@ export const routes: Routes = [
       import('./features/guides/guides-page').then((m) => m.GuidesPage),
   },
   {
-    path: PublicRoutePath.FixNonManifoldStlGuide,
-    loadComponent: () =>
-      import('./features/guides/guide-page').then((m) => m.GuidePage),
-    data: { guide: 'non-manifold' },
-  },
-  {
-    path: PublicRoutePath.WatertightStlGuide,
-    loadComponent: () =>
-      import('./features/guides/guide-page').then((m) => m.GuidePage),
-    data: { guide: 'watertight' },
-  },
-  {
-    path: PublicRoutePath.StlUnitsGuide,
-    loadComponent: () =>
-      import('./features/guides/guide-page').then((m) => m.GuidePage),
-    data: { guide: 'units' },
-  },
-  {
-    path: PublicRoutePath.StlTriangleCountGuide,
-    loadComponent: () =>
-      import('./features/guides/guide-page').then((m) => m.GuidePage),
-    data: { guide: 'triangles' },
-  },
-  {
     path: PublicRoutePath.Privacy,
     loadComponent: () =>
       import('./features/legal/privacy-page').then((m) => m.PrivacyPage),
@@ -161,6 +138,12 @@ export const routes: Routes = [
     path: PublicRoutePath.Cookies,
     loadComponent: () =>
       import('./features/legal/cookies-page').then((m) => m.CookiesPage),
+  },
+  {
+    path: ':guideSlug',
+    canMatch: [guideCanMatch],
+    loadComponent: () =>
+      import('./features/guides/guide-page').then((m) => m.GuidePage),
   },
   {
     path: PublicRoutePath.NotFound,

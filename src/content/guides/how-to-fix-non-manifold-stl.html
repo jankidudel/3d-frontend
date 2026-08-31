@@ -1,0 +1,101 @@
+---
+title: How to Fix Non-Manifold STL Files for 3D Printing | InspectMesh
+description: Learn what non-manifold STL geometry means, how to find open edges and other mesh problems, and practical ways to repair a model before 3D printing.
+slug: how-to-fix-non-manifold-stl
+eyebrow: STL repair guide
+faq:
+  - question: Can a non-manifold STL still print?
+    answer: Sometimes. Modern slicers may work around small defects, but the result can have missing layers, unexpected internal structure or other problems. Checking before printing is safer.
+  - question: Does non-manifold always mean there is a visible hole?
+    answer: No. Internal faces, overlapping solids and several faces sharing the same edge can be difficult to see in a normal shaded view.
+  - question: Can InspectMesh repair my STL?
+    answer: No. InspectMesh identifies mesh problems so you can choose an appropriate repair workflow and verify the repaired result.
+---
+
+<p class="lead">
+  An STL can look perfectly normal on screen and still fail when a slicer tries
+  to turn it into a physical object. A common reason is
+  <strong>non-manifold geometry</strong>: the mesh does not describe one clean,
+  unambiguous surface with a usable inside and outside.
+</p>
+<p class="lead">
+  For most 3D-printing models, each edge should join exactly two triangles. An
+  edge used by only one triangle is an open edge - a hole in the surface. An
+  edge shared by three or more triangles is non-manifold. Other problems, such
+  as duplicate faces, zero-area triangles and inconsistent face direction, can
+  create similar slicing issues.
+</p>
+<h2>First, check what is actually wrong</h2>
+<p>
+  Do not start repairing blindly. Upload the file to the
+  <a href="/stl-quality-checker">STL Quality Checker</a> to see the counts for
+  open edges, non-manifold edges, duplicate triangles, degenerate triangles and
+  orientation issues. If the main question is whether the model forms a closed
+  surface, use the <a href="/stl-watertight-checker">STL Watertight Checker</a>.
+  The <a href="/stl-manifold-checker">STL Manifold Checker</a> gives a more
+  focused topology report.
+</p>
+<p>
+  The report tells you whether a repair is likely to be simple. A few open edges
+  in an otherwise clean model may be a small missing face. Thousands of
+  non-manifold edges can indicate overlapping parts, a poor export or scan data
+  that needs more substantial clean-up.
+</p>
+<h2>Common causes of non-manifold STL geometry</h2>
+<ul>
+  <li>
+    <strong>Holes or missing faces.</strong> An unsealed opening leaves boundary
+    edges with no matching triangle on the other side.
+  </li>
+  <li>
+    <strong>Overlapping solids.</strong> Two objects may visually intersect
+    without being combined into one solid. A boolean union is usually needed
+    before export.
+  </li>
+  <li>
+    <strong>Internal faces.</strong> Faces trapped inside an object can confuse
+    the definition of the printable volume.
+  </li>
+  <li>
+    <strong>Failed boolean operations.</strong> Nearly touching or coplanar
+    shapes can create tiny fragments, duplicate faces or ambiguous edges.
+  </li>
+  <li>
+    <strong>Bad mesh edits or exports.</strong> Deleting a face, merging
+    vertices incorrectly or exporting a CAD model with unsuitable tessellation
+    can introduce defects.
+  </li>
+</ul>
+<h2>Repair options</h2>
+<h3>Blender</h3>
+<p>
+  Import the STL, enter <strong>Edit Mode</strong>, then use
+  <strong>Select &gt; Select All by Trait &gt; Non-Manifold</strong> to locate
+  suspect geometry. Depending on the issue, fill a simple hole, remove internal
+  faces, merge nearby duplicate vertices carefully, or perform a proper boolean
+  union on overlapping objects. Recalculate normals after the surface is clean,
+  then export a new STL.
+</p>
+<h3>Microsoft 3D Builder</h3>
+<p>
+  For a straightforward consumer-printing model, open the file in 3D Builder.
+  When it offers to repair the model, review the result and save it as a new
+  file. Re-check the saved STL afterwards; automated repair can change small
+  details, so it should not be the only verification step for a precise part.
+</p>
+<h3>Your slicer</h3>
+<p>
+  Some slicers can repair simple problems during import. This can be convenient,
+  but treat it as a temporary fix rather than evidence that the original file is
+  healthy. If the model is valuable or repeatedly printed, save a repaired
+  source file and check it again before relying on it.
+</p>
+<h2>Re-check after repair</h2>
+<p>
+  Export or save the repaired model under a new filename, then run the
+  <a href="/stl-quality-checker">STL Quality Checker</a> again. Ideally,
+  open-edge and non-manifold-edge counts should be zero for a single closed
+  printable solid. Separate shells are not automatically wrong - for example, a
+  print plate can contain several independent parts - but each part should still
+  be a valid surface where appropriate.
+</p>

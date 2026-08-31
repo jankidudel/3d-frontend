@@ -1,5 +1,6 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import { PublicRoutePath } from './core/seo/public-routes';
+import { guideSlugs } from './features/guides/guides.generated';
 
 export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.Home, renderMode: RenderMode.Prerender },
@@ -43,17 +44,10 @@ export const serverRoutes: ServerRoute[] = [
   },
   { path: PublicRoutePath.Guides, renderMode: RenderMode.Prerender },
   {
-    path: PublicRoutePath.FixNonManifoldStlGuide,
+    path: ':guideSlug',
     renderMode: RenderMode.Prerender,
-  },
-  {
-    path: PublicRoutePath.WatertightStlGuide,
-    renderMode: RenderMode.Prerender,
-  },
-  { path: PublicRoutePath.StlUnitsGuide, renderMode: RenderMode.Prerender },
-  {
-    path: PublicRoutePath.StlTriangleCountGuide,
-    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () =>
+      guideSlugs.map((guideSlug) => ({ guideSlug })),
   },
   { path: PublicRoutePath.Privacy, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Cookies, renderMode: RenderMode.Prerender },

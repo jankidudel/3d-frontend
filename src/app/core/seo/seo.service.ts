@@ -7,6 +7,8 @@ export interface PageSeo {
   readonly title: string;
   readonly description: string;
   readonly path: string;
+  readonly openGraphType?: 'article' | 'website';
+  readonly structuredData?: Record<string, unknown>;
 }
 
 @Service()
@@ -26,6 +28,8 @@ export class SeoService {
       content: canonicalUrl ? 'index, follow' : 'noindex, nofollow',
     });
     this.updateCanonical(canonicalUrl);
+    this.updateOpenGraph(page, canonicalUrl);
+    this.updateStructuredData(page.structuredData);
   }
 
   applyNoIndex(title: string, description: string): void {
@@ -33,6 +37,8 @@ export class SeoService {
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     this.updateCanonical(null);
+    this.removeOpenGraph();
+    this.updateStructuredData(undefined);
   }
 
   private canonicalUrl(path: string): string | null {
@@ -65,6 +71,54 @@ export class SeoService {
     canonical.href = canonicalUrl;
     if (!existing) {
       this.document.head.appendChild(canonical);
+    }
+  }
+
+  private updateOpenGraph(page: PageSeo, canonicalUrl: string | null): void {
+    this.meta.updateTag({ property: 'og:title', content: page.title });
+    this.meta.updateTag({
+      property: 'og:description',
+      content: page.description,
+    });
+    this.meta.updateTag({
+      property: 'og:type',
+      content: page.openGraphType ?? 'website',
+    });
+    if (canonicalUrl) {
+      this.meta.updateTag({ property: 'og:url', content: canonicalUrl });
+      return;
+    }
+    this.meta.removeTag("property='og:url'");
+  }
+
+  private removeOpenGraph(): void {
+    for (const property of [
+      'og:title',
+      'og:description',
+      'og:type',
+      'og:url',
+    ]) {
+      this.meta.removeTag(`property='${property}'`);
+    }
+  }
+
+  private updateStructuredData(
+    data: Record<string, unknown> | undefined,
+  ): void {
+    const selector = 'script[data-seo-structured-data]';
+    const existing =
+      this.document.head.querySelector<HTMLScriptElement>(selector);
+    if (!data) {
+      existing?.remove();
+      return;
+    }
+
+    const script = existing ?? this.document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-seo-structured-data', 'true');
+    script.textContent = JSON.stringify(data);
+    if (!existing) {
+      this.document.head.appendChild(script);
     }
   }
 }
