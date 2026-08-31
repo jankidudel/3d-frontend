@@ -1,6 +1,6 @@
 <main class="page guides-page">
   <p class="eyebrow">3D printing file guides</p>
-  <h1>Practical STL guides for better 3D prints</h1>
+  <h1>Practical 3D Printing Guides</h1>
   <p class="lead">
     Learn how to check mesh health, diagnose common STL problems and prepare a
     model before slicing.
@@ -18,7 +18,9 @@
       <ul class="guide-list">
         @for (guide of group.guides; track guide.slug) {
           <li>
-            <a [href]="'/' + guide.slug">{{ guide.heading }}</a>
+            <h3 class="guide-card-title">
+              <a [href]="'/' + guide.slug">{{ guide.heading }}</a>
+            </h3>
             <p>{{ guide.description }}</p>
           </li>
         }

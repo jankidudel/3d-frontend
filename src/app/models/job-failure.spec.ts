@@ -1,5 +1,6 @@
 import {
   GENERIC_JOB_FAILURE_MESSAGE,
+  GENERIC_THREE_MF_JOB_FAILURE_MESSAGE,
   jobFailureMessage,
   jobFailureMessageForFormat,
 } from './job-failure';
@@ -59,7 +60,7 @@ describe('jobFailureMessage', () => {
 
   it('uses format-specific safe wording for 3MF failures', () => {
     expect(jobFailureMessageForFormat(undefined, ModelFileFormat.ThreeMf)).toBe(
-      'We couldn’t analyse this file. Please check that it is a valid 3MF file and try again.',
+      GENERIC_THREE_MF_JOB_FAILURE_MESSAGE,
     );
     expect(
       jobFailureMessageForFormat(

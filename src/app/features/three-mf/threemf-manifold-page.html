@@ -41,7 +41,9 @@
         />
       } @else if (currentJob.status === jobStatus.Failed) {
         <h2 id="results-title">Could not analyse this 3MF file</h2>
-        <p role="alert">{{ jobFailureMessage(currentJob.failure) }}</p>
+        <p class="error" role="alert">
+          {{ jobFailureMessage(currentJob.failure) }}
+        </p>
       } @else {
         <h2 id="results-title">
           {{

@@ -12,6 +12,8 @@ export type AnalysisFileFormat = ModelFileFormat;
 
 export const GENERIC_JOB_FAILURE_MESSAGE =
   'We couldn’t analyse this file. Please check that it is a valid STL file and try again.';
+export const GENERIC_THREE_MF_JOB_FAILURE_MESSAGE =
+  'We couldn’t analyse this file. Please check that it is a valid 3MF file and try again.';
 
 const INVALID_STL_MESSAGE =
   'This file is not a valid STL file or appears to be incomplete.';
@@ -68,7 +70,7 @@ export function jobFailureMessageForFormat(
 function genericFailureMessage(format: AnalysisFileFormat): string {
   return format === ModelFileFormat.Stl
     ? GENERIC_JOB_FAILURE_MESSAGE
-    : 'We couldn’t analyse this file. Please check that it is a valid 3MF file and try again.';
+    : GENERIC_THREE_MF_JOB_FAILURE_MESSAGE;
 }
 
 export function jobFailureCategory(

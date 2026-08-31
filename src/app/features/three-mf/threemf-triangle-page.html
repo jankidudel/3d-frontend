@@ -37,7 +37,7 @@
         />
       } @else if (currentJob.status === jobStatus.Failed) {
         <h2 id="results-title">We couldn’t analyse this 3MF file</h2>
-        <p>{{ jobFailureMessage(currentJob.failure) }}</p>
+        <p class="error">{{ jobFailureMessage(currentJob.failure) }}</p>
       } @else if (report(); as currentReport) {
         <div class="primary positive">
           <p class="eyebrow">Triangles in this print build</p>

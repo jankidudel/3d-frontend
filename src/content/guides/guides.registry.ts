@@ -15,13 +15,13 @@ export interface GuideRegistryEntry {
 
 export const guideGroups = {
   [GuideGroupId.General]: {
-    label: 'General 3D printing guides',
+    label: 'General 3D Printing Guides',
   },
   [GuideGroupId.Stl]: {
-    label: 'STL guides',
+    label: 'STL Guides',
   },
   [GuideGroupId.ThreeMf]: {
-    label: '3MF guides',
+    label: '3MF Guides',
   },
 } as const;
 
