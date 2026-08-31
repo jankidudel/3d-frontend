@@ -45,6 +45,10 @@ label:focus-visible {
   margin-inline: auto;
   padding-block: clamp(2.5rem, 7vw, 6rem);
   padding-block-start: clamp(2.5rem, calc(7vw - 1.5rem), 4.5rem);
+
+  @media (min-width: 48rem) {
+    padding-block-start: clamp(2.5rem, calc(7vw - 3.25rem), 2.75rem);
+  }
 }
 .eyebrow {
   color: var(--primary);

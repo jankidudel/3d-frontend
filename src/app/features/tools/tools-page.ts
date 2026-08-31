@@ -16,7 +16,7 @@ export class ToolsPage {
 
   constructor() {
     this.seo.apply({
-      title: 'Free 3D File Tools for Inspection and Printing | InspectMesh',
+      title: '3D File Tools for Inspection and Printing | InspectMesh',
       description:
         'Free online 3D file tools to inspect mesh quality, check print readiness, measure dimensions, calculate volume and prepare models for 3D printing.',
       path: PublicRouteUrl.AllTools,
