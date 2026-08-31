@@ -1,6 +1,8 @@
 name: deploy-frontend
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       environment:
@@ -17,17 +19,17 @@ permissions:
   id-token: write
 
 concurrency:
-  group: deploy-${{ inputs.environment }}
+  group: deploy-${{ github.event_name == 'push' && 'dev' || inputs.environment }}
   cancel-in-progress: false
 
 jobs:
   deploy:
-    name: Deploy frontend to ${{ inputs.environment }}
+    name: Deploy frontend to ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
     env:
       AWS_REGION: us-east-1
-      STAGE: ${{ inputs.environment }}
+      STAGE: ${{ github.event_name == 'push' && 'dev' || inputs.environment }}
       AWS_DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
       AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
     steps:
@@ -56,7 +58,12 @@ jobs:
       - run: npm ci
       - run: npm run verify
       - name: Build deployment artifact
-        run: npm run ${{ inputs.environment == 'prod' && 'build' || 'build:deployment-development' }}
+        run: |
+          if [ "$STAGE" = "prod" ]; then
+            npm run build
+          else
+            npm run build:deployment-development
+          fi
 
       - name: Configure temporary AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
