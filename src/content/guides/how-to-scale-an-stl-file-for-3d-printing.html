@@ -1,0 +1,140 @@
+---
+title: How to Scale an STL File for 3D Printing | InspectMesh
+description: Learn how to scale an STL proportionally, deal with missing units, fix models that appear huge or tiny, and check whether the result fits your 3D printer.
+slug: how-to-scale-an-stl-file-for-3d-printing
+eyebrow: STL printing guide
+heading: How to Scale an STL File for 3D Printing
+faq:
+  - question: Why is my STL model huge or tiny when I open it?
+    answer: STL files do not store an explicit unit. A model exported using millimetres can therefore be interpreted as inches, centimetres or another unit by different software.
+  - question: How do I scale an STL without changing its proportions?
+    answer: Apply the same scale factor to the X, Y and Z dimensions. For example, scaling each axis to 50% makes every dimension half as large.
+  - question: How do I calculate the scale percentage for a target size?
+    answer: Divide the desired dimension by the current dimension and multiply by 100. A 200 mm model that should become 150 mm needs a scale of 75%.
+  - question: Should I check printer fit before slicing?
+    answer: Yes. Confirm the final width, height and depth against the usable build volume of your printer before starting a print.
+---
+
+<p class="lead">
+  Scaling an STL sounds simple, but STL files do not store units and changing
+  only one axis can distort the model. Measure the file first, calculate the
+  required proportional scale, then check whether the result fits your printer.
+</p>
+<h2>Why STL files can appear huge or tiny</h2>
+<p>
+  An STL stores vertex coordinates, but it does not say whether those
+  coordinates represent millimetres, centimetres, inches or another unit. A
+  model with a width of <code>100</code> could therefore mean 100 mm, 100 cm,
+  100 inches, or simply 100 units as interpreted by the software.
+</p>
+<p>
+  Most consumer 3D-printing workflows use millimetres, but exports from CAD and
+  modelling software do not always arrive with the expected scale. This is why
+  an otherwise correct model can suddenly appear enormous or extremely small in
+  a slicer.
+</p>
+<h2>Measure the STL before scaling</h2>
+<p>
+  Before changing anything, check the model's current dimensions. The
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> shows width,
+  height and depth and lets you work with different unit assumptions. Knowing
+  the current size helps distinguish between a simple scaling requirement, an
+  incorrect unit assumption, and a model exported at the wrong size.
+</p>
+<h2>How proportional scaling works</h2>
+<p>
+  To preserve the shape of the model, scale all three axes by the same factor.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Current scale</th>
+      <th>New width</th>
+      <th>New height</th>
+      <th>New depth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>100%</td>
+      <td>100 mm</td>
+      <td>60 mm</td>
+      <td>40 mm</td>
+    </tr>
+    <tr>
+      <td>50%</td>
+      <td>50 mm</td>
+      <td>30 mm</td>
+      <td>20 mm</td>
+    </tr>
+    <tr>
+      <td>150%</td>
+      <td>150 mm</td>
+      <td>90 mm</td>
+      <td>60 mm</td>
+    </tr>
+    <tr>
+      <td>200%</td>
+      <td>200 mm</td>
+      <td>120 mm</td>
+      <td>80 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>If all axes use the same percentage, the model keeps its proportions.</p>
+<h2>Calculate the required scale percentage</h2>
+<p>
+  <strong>scale percentage = target dimension ÷ current dimension × 100</strong>
+</p>
+<p>
+  A model that is 200 mm wide and should become 150 mm needs
+  <code>150 ÷ 200 × 100 = 75%</code>. Scale the complete model to
+  <strong>75%</strong>. A 40 mm part that needs to become 100 mm needs
+  <strong>250%</strong>. The
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> can calculate
+  proportional scaling without manual arithmetic.
+</p>
+<h2>Fixing an STL that is about 25.4 times too large or small</h2>
+<p>
+  A factor of <strong>25.4</strong> is a strong clue that inches and millimetres
+  have been confused: one inch equals 25.4 millimetres. Check the intended unit
+  before applying an arbitrary scale percentage.
+</p>
+<h2>Avoid accidental non-proportional scaling</h2>
+<p>
+  Some modelling and slicing tools allow X, Y and Z dimensions to be edited
+  independently. That is useful when distortion is intentional, but risky when
+  you simply want a larger or smaller version of the same model. Keep
+  proportional scaling or linked axes enabled unless you specifically want to
+  stretch or compress the geometry.
+</p>
+<h2>Check whether the scaled model fits your printer</h2>
+<p>
+  Compare the final width, depth and height with the usable dimensions of the
+  printer. The
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> includes
+  printer-fit checks for common printer build volumes. Orientation matters: a
+  part that does not fit in one orientation may fit after rotation.
+</p>
+<h2>Scaling does not reduce mesh complexity</h2>
+<p>
+  Changing the physical size of an STL does not automatically change its
+  triangle count. A model scaled to 50% still contains the same triangles unless
+  the mesh itself is simplified. For a very large or slow STL, use the
+  <a href="/stl-triangle-counter">STL Triangle Counter</a>.
+</p>
+<h2>Recommended workflow</h2>
+<ol>
+  <li>Measure its current dimensions.</li>
+  <li>Confirm the intended unit.</li>
+  <li>Calculate the target proportional scale.</li>
+  <li>Scale all axes equally.</li>
+  <li>Check the final printer fit.</li>
+  <li>Open the result in your slicer and verify the dimensions again.</li>
+</ol>
+<h2>Measure and scale your STL</h2>
+<p>
+  Use the free <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
+  inspect model size, convert units, calculate proportional scaling and check
+  printer fit.
+</p>

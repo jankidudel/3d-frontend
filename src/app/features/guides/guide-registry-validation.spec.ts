@@ -10,7 +10,6 @@ const groups: Record<string, GuideGroup> = {
 const files = ['example-guide.html'];
 const entry = {
   slug: 'example-guide',
-  file: 'example-guide.html',
   enabled: true,
   group: 'stl',
   order: 10,
@@ -25,20 +24,14 @@ describe('guide registry validation', () => {
     ['missing registry entries', [], 'must contain at least one entry', files],
     [
       'a stale registry entry',
-      [{ ...entry, file: 'missing-guide.html' }],
+      [{ ...entry, slug: 'missing-guide' }],
       'references missing file "missing-guide.html"',
       files,
     ],
     [
       'duplicate slugs',
-      [entry, { ...entry, file: 'other-guide.html' }],
+      [entry, { ...entry, order: 20 }],
       'contains duplicate slug "example-guide"',
-      [...files, 'other-guide.html'],
-    ],
-    [
-      'duplicate files',
-      [entry, { ...entry, slug: 'other-guide' }],
-      'contains duplicate file "example-guide.html"',
       files,
     ],
     [
@@ -51,6 +44,16 @@ describe('guide registry validation', () => {
     expect(() =>
       validateGuideRegistry(registry, groups, registryFiles),
     ).toThrow(error);
+  });
+
+  it('rejects a registry entry with an unknown file field', () => {
+    expect(() =>
+      validateGuideRegistry(
+        [{ ...entry, file: 'example-guide.html' }],
+        groups,
+        files,
+      ),
+    ).toThrow('has unknown field "file"');
   });
 
   it('rejects an unregistered HTML content file', () => {

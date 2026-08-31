@@ -1,6 +1,5 @@
 export interface GuideRegistryEntry {
   readonly slug: string;
-  readonly file: string;
   readonly enabled: boolean;
   readonly group: string;
   readonly order: number;
@@ -15,15 +14,12 @@ export interface GuideContentReference {
   readonly slug: string;
 }
 
-const supportedRegistryFields = new Set([
-  'slug',
-  'file',
-  'enabled',
-  'group',
-  'order',
-]);
+const supportedRegistryFields = new Set(['slug', 'enabled', 'group', 'order']);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const guideFilePattern = /^[^/\\]+\.html$/;
+
+export function guideContentFileName(slug: string): string {
+  return `${slug}.html`;
+}
 
 export function validateGuideRegistry(
   value: unknown,
@@ -38,7 +34,6 @@ export function validateGuideRegistry(
     registryEntry(entry, index, groups, contentFiles),
   );
   validateUnique(entries, 'slug');
-  validateUnique(entries, 'file');
   validateOrders(entries);
   validateRegisteredFiles(entries, contentFiles);
   return entries;
@@ -52,10 +47,11 @@ export function validateRegistryContentConsistency(
     content.map((guide) => [guide.file, guide.slug]),
   );
   for (const entry of entries) {
-    const contentSlug = contentSlugByFile.get(entry.file);
+    const file = guideContentFileName(entry.slug);
+    const contentSlug = contentSlugByFile.get(file);
     if (contentSlug !== entry.slug) {
       throw registryError(
-        `entry "${entry.slug}" does not match the front-matter slug "${contentSlug}" in "${entry.file}".`,
+        `entry "${entry.slug}" does not match the front-matter slug "${contentSlug}" in "${file}".`,
       );
     }
   }
@@ -83,12 +79,7 @@ function registryEntry(
       `entry "${slug}" has invalid slug "${slug}". Use lowercase letters, numbers, and single hyphens between words.`,
     );
   }
-  const file = requiredString(record, 'file', index);
-  if (!guideFilePattern.test(file) || file.includes('..')) {
-    throw registryError(
-      `entry "${slug}" has invalid file "${file}". Use an HTML filename relative to src/content/guides.`,
-    );
-  }
+  const file = guideContentFileName(slug);
   if (!contentFiles.includes(file)) {
     throw registryError(`entry "${slug}" references missing file "${file}".`);
   }
@@ -104,7 +95,7 @@ function registryEntry(
     throw registryError(`entry "${slug}" must provide numeric "order".`);
   }
 
-  return { slug, file, enabled: record['enabled'], group, order };
+  return { slug, enabled: record['enabled'], group, order };
 }
 
 function requiredString(
@@ -123,7 +114,7 @@ function requiredString(
 
 function validateUnique(
   entries: readonly GuideRegistryEntry[],
-  field: 'slug' | 'file',
+  field: 'slug',
 ): void {
   const values = new Set<string>();
   for (const entry of entries) {
@@ -151,7 +142,9 @@ function validateRegisteredFiles(
   entries: readonly GuideRegistryEntry[],
   contentFiles: readonly string[],
 ): void {
-  const registeredFiles = new Set(entries.map((entry) => entry.file));
+  const registeredFiles = new Set(
+    entries.map((entry) => guideContentFileName(entry.slug)),
+  );
   for (const file of contentFiles) {
     if (!registeredFiles.has(file)) {
       throw registryError(`content file "${file}" has no registry entry.`);

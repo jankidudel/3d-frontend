@@ -1,0 +1,120 @@
+---
+title: 'How to Open a 3MF File: Browser Viewer and Slicer Options | InspectMesh'
+description: Learn how to open a 3MF file in a browser or slicer, what information a 3MF may contain, and what to try when a 3MF file will not open.
+slug: how-to-open-a-3mf-file
+eyebrow: 3MF file guide
+heading: How to Open a 3MF File
+faq:
+  - question: What program opens a 3MF file?
+    answer: Many modern 3D-printing slicers and modelling applications support 3MF. You can also use a compatible browser-based 3MF viewer when you only need to inspect the model.
+  - question: Can I open a 3MF file without installing software?
+    answer: Yes. A browser-based 3MF viewer can inspect supported 3MF geometry without requiring a desktop application.
+  - question: Why will my 3MF file not open?
+    answer: The file may be damaged, incomplete, created with unsupported extensions, or contain application-specific data that the program does not understand.
+  - question: Is a 3MF file the same as an STL?
+    answer: No. Both can contain triangle mesh geometry, but 3MF is a structured package that can also store units, multiple objects and additional metadata.
+---
+
+<p class="lead">
+  A 3MF file can contain more than a simple 3D mesh, so the best way to open it
+  depends on what you want to do. Use a browser viewer to inspect geometry, or a
+  compatible slicer or modelling application to prepare a print project, edit it
+  or access application-specific settings.
+</p>
+<h2>Option 1: Open the 3MF in your browser</h2>
+<p>
+  For a quick inspection, use the <a href="/3mf-viewer">3MF Viewer</a>. A
+  browser viewer is useful when you want to inspect the model visually, confirm
+  that the file contains geometry, check the overall shape, or quickly examine a
+  file received from someone else.
+</p>
+<p>
+  InspectMesh processes supported files through its 3D-file tools without
+  requiring a full slicer workflow. For measurements, use the
+  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+</p>
+<h2>Option 2: Open the 3MF in a slicer</h2>
+<p>
+  If the 3MF is intended for 3D printing, a modern slicer is often the most
+  useful application. Depending on how it was created, the file may include
+  multiple build items, object positions, units, project metadata, or printer
+  and process information stored by that application. Exactly what is preserved
+  depends on both programs.
+</p>
+<h2>Option 3: Open the 3MF in modelling software</h2>
+<p>
+  Some CAD and 3D-modelling applications also support 3MF. This may be
+  preferable when you want to edit geometry, convert the model, inspect
+  individual objects or continue a design workflow rather than immediately slice
+  the model. Check that the software imports the specific type of 3MF content
+  you need.
+</p>
+<h2>Why 3MF files are different from STL files</h2>
+<p>
+  An STL is primarily a triangle mesh format. A 3MF is a structured package and
+  can contain triangle mesh geometry, explicit units, multiple objects, build
+  items, metadata, colours or materials, and application-specific extensions.
+  Two programs can both support 3MF while supporting different subsets of the
+  information inside a file.
+</p>
+<p>
+  See <a href="/guides/3mf-vs-stl">3MF vs STL</a> for a detailed comparison.
+</p>
+<h2>What to do if a 3MF file will not open</h2>
+<h3>1. Try another compatible application</h3>
+<p>
+  The first program may not understand an extension or application-specific
+  information stored in the 3MF. Try a modern slicer or another 3MF-compatible
+  application.
+</p>
+<h3>2. Check whether the file is complete</h3>
+<p>
+  A partially downloaded or damaged file may fail to open. Download the original
+  again or ask the sender to export a fresh copy.
+</p>
+<h3>3. Confirm that it is really a 3MF file</h3>
+<p>
+  File extensions can be renamed accidentally. A file ending in
+  <code>.3mf</code> is not necessarily a valid 3MF package if it was incorrectly
+  renamed or generated.
+</p>
+<h3>4. Try inspecting it with a browser tool</h3>
+<p>
+  If your slicer rejects the file, try the <a href="/3mf-viewer">3MF Viewer</a>.
+  If supported geometry can still be read, that can distinguish a completely
+  invalid file from an application-compatibility problem.
+</p>
+<h3>5. Re-export from the original application</h3>
+<p>
+  If you have access to the source project, export a new 3MF using the latest
+  version of the application. If the recipient only needs geometry, exporting an
+  STL may also be an option.
+</p>
+<h2>Can you convert 3MF to STL?</h2>
+<p>
+  Often, yes. A slicer or modelling application may load 3MF geometry and export
+  it as STL. Conversion can discard explicit units, multiple object
+  relationships, colours or materials, project metadata and slicer-specific
+  settings. Convert only when you are comfortable losing those parts of the
+  project.
+</p>
+<h2>Useful checks after opening a 3MF</h2>
+<ul>
+  <li>
+    Check physical dimensions with the
+    <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+  </li>
+  <li>
+    Check triangle count with the
+    <a href="/3mf-triangle-counter">3MF Triangle Counter</a>.
+  </li>
+  <li>
+    Check estimated volume with the
+    <a href="/3mf-volume-calculator">3MF Volume Calculator</a>.
+  </li>
+</ul>
+<h2>Open your 3MF file</h2>
+<p>
+  Use the free <a href="/3mf-viewer">3MF Viewer</a> to inspect a supported 3MF
+  file directly in your browser.
+</p>

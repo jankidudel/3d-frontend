@@ -1,0 +1,107 @@
+---
+title: How to Check an STL File for Errors Before 3D Printing | InspectMesh
+description: Learn how to check an STL file for common mesh errors, understand open and non-manifold edges, and verify the model again after repairs.
+slug: how-to-check-stl-for-errors
+eyebrow: STL mesh guide
+heading: How to Check an STL File for Errors
+faq:
+  - question: What errors should I check for in an STL file?
+    answer: Common STL problems include open edges, non-manifold edges, duplicate triangles, degenerate triangles, invalid coordinates and inconsistent triangle orientation.
+  - question: Can an STL look correct but still contain errors?
+    answer: Yes. A model can look normal in a 3D viewer while still containing topology problems that may affect slicing or printing.
+  - question: Does checking an STL repair it automatically?
+    answer: No. A checker identifies likely mesh problems. You can repair the file in a suitable modelling, mesh-repair or slicing tool and then check it again.
+  - question: Should I check every STL before printing?
+    answer: It is especially useful for downloaded, converted, edited or generated files, and whenever a slicer reports unexpected geometry.
+---
+
+<p class="lead">
+  An STL file can look perfectly normal in a viewer and still contain mesh
+  problems that cause missing surfaces, strange slicing results or failed
+  repairs.
+</p>
+<p>A useful pre-print workflow is:</p>
+<ol>
+  <li>Inspect the model visually.</li>
+  <li>Run automated mesh checks.</li>
+  <li>Understand any reported problems.</li>
+  <li>Repair the model if necessary.</li>
+  <li>Check the repaired file again before slicing.</li>
+</ol>
+<h2>1. Inspect the STL visually</h2>
+<p>
+  Start by opening the model in a 3D viewer. Look for missing surfaces, visible
+  holes, disconnected pieces, unexpected thin geometry, or a model that appears
+  much larger or smaller than expected.
+</p>
+<p>
+  Visual inspection is useful, but it cannot reveal every topology problem. Use
+  the free <a href="/stl-viewer">STL Viewer</a> to open an STL locally in your
+  browser and inspect its shape, dimensions and triangle count.
+</p>
+<h2>2. Run an STL quality check</h2>
+<p>
+  Next, use the <a href="/stl-quality-checker">STL Quality Checker</a>. It
+  checks for open edges, non-manifold edges, duplicate triangles, degenerate
+  triangles, inconsistent triangle orientation and invalid coordinates. These
+  checks examine the structure of the triangle mesh rather than just how the
+  model looks on screen.
+</p>
+<h2>3. Understand the results</h2>
+<h3>Open edges</h3>
+<p>
+  In a closed surface, an ordinary mesh edge is normally shared by two
+  triangles. If an edge belongs to only one triangle, it is an
+  <strong>open edge</strong>. Open edges commonly indicate a hole, gap or
+  incomplete surface. Use the
+  <a href="/stl-watertight-checker">STL Watertight Checker</a> to focus on
+  whether the model forms a closed surface.
+</p>
+<h3>Non-manifold edges</h3>
+<p>
+  A <strong>non-manifold edge</strong> is typically shared by more than two
+  triangles. This creates geometry that does not describe a simple printable
+  solid and can confuse slicers or repair tools. Inspect these topology problems
+  with the <a href="/stl-manifold-checker">STL Manifold Checker</a>.
+</p>
+<h3>Duplicate and degenerate triangles</h3>
+<p>
+  Duplicate triangles occupy the same position more than once. A degenerate
+  triangle has little or no usable area, for example because two vertices are
+  effectively in the same position. Both can be introduced during exporting,
+  conversion or editing and often indicate an inefficient or damaged mesh.
+</p>
+<h3>Inconsistent orientation</h3>
+<p>
+  Triangles have an orientation that helps software distinguish the inside of a
+  model from the outside. If neighbouring triangles point in inconsistent
+  directions, slicing or volume calculations can become unreliable.
+</p>
+<h2>4. Decide whether the STL needs repair</h2>
+<p>
+  A warning does not automatically mean that a print will fail. Repair is worth
+  considering when the model contains open or non-manifold geometry, many
+  repeated mesh errors, unexpected disconnected shells, missing surfaces or
+  geometry that slices incorrectly. Depending on the problem, repair the STL in
+  a slicer, modelling package or dedicated mesh-repair tool.
+</p>
+<h2>5. Check the repaired file again</h2>
+<p>
+  After repairing and exporting the STL, run the checks again. A repair
+  operation can solve one issue while changing another part of the mesh.
+</p>
+<p><strong>check - repair - export - check again - slice</strong></p>
+<h2>Also verify the model size</h2>
+<p>
+  A topologically valid STL can still be the wrong physical size. STL files do
+  not store an explicit unit, so a model exported in millimetres can sometimes
+  be interpreted as inches or vice versa. Use the
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to inspect
+  dimensions, convert units, calculate proportional scaling and check printer
+  fit.
+</p>
+<h2>Check your STL for errors</h2>
+<p>
+  Use the free <a href="/stl-quality-checker">STL Quality Checker</a> to inspect
+  your model for common mesh problems before printing.
+</p>

@@ -118,7 +118,11 @@ validateRegistryContentConsistency(
   })),
 );
 
-const catalogue = createGuideCatalogue(registry, guideGroups, guideContent);
+const catalogue = createGuideCatalogue(
+  registry,
+  guideGroups,
+  new Map([...guideContent.values()].map((guide) => [guide.slug, guide])),
+);
 if (catalogue.guides.length === 0) {
   throw new Error(
     'Guide registry validation failed: enable at least one guide.',

@@ -8,7 +8,6 @@ export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export interface GuideRegistryEntry {
   readonly slug: string;
-  readonly file: string;
   readonly group: GuideGroupId;
   readonly order: number;
   readonly enabled: boolean;
@@ -28,31 +27,51 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
-    slug: 'how-to-fix-non-manifold-stl',
-    file: 'how-to-fix-non-manifold-stl.html',
+    slug: 'how-to-check-stl-for-errors',
     group: GuideGroupId.Stl,
     order: 10,
     enabled: true,
   },
   {
-    slug: 'how-to-tell-if-an-stl-is-watertight',
-    file: 'how-to-tell-if-an-stl-is-watertight.html',
-    enabled: true,
+    slug: 'how-to-fix-non-manifold-stl',
     group: GuideGroupId.Stl,
     order: 20,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-tell-if-an-stl-is-watertight',
+    enabled: true,
+    group: GuideGroupId.Stl,
+    order: 30,
   },
   {
     slug: 'stl-triangle-count-explained',
-    file: 'stl-triangle-count-explained.html',
     group: GuideGroupId.Stl,
-    order: 30,
+    order: 40,
     enabled: true,
   },
   {
     slug: 'why-stl-files-have-no-units',
-    file: 'why-stl-files-have-no-units.html',
     group: GuideGroupId.Stl,
-    order: 40,
+    order: 50,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-scale-an-stl-file-for-3d-printing',
+    group: GuideGroupId.Stl,
+    order: 60,
+    enabled: true,
+  },
+  {
+    slug: '3mf-vs-stl',
+    group: GuideGroupId.ThreeMf,
+    order: 10,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-open-a-3mf-file',
+    group: GuideGroupId.ThreeMf,
+    order: 20,
     enabled: true,
   },
 ];

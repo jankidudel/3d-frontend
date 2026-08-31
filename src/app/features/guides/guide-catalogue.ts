@@ -43,7 +43,7 @@ export interface GuideCatalogue {
 export function createGuideCatalogue(
   registry: readonly GuideRegistryEntry[],
   groups: Readonly<Record<string, GuideGroup>>,
-  contentByFile: ReadonlyMap<string, GuideContent>,
+  contentBySlug: ReadonlyMap<string, GuideContent>,
 ): GuideCatalogue {
   const groupIds = Object.keys(groups);
   const guides = registry
@@ -53,7 +53,7 @@ export function createGuideCatalogue(
         groupIds.indexOf(first.group) - groupIds.indexOf(second.group) ||
         first.order - second.order,
     )
-    .map((entry) => guideFromEntry(entry, contentByFile));
+    .map((entry) => guideFromEntry(entry, contentBySlug));
 
   return {
     guides,
@@ -77,12 +77,12 @@ export function createGuideCatalogue(
 
 function guideFromEntry(
   entry: GuideRegistryEntry,
-  contentByFile: ReadonlyMap<string, GuideContent>,
+  contentBySlug: ReadonlyMap<string, GuideContent>,
 ): Guide {
-  const content = contentByFile.get(entry.file);
+  const content = contentBySlug.get(entry.slug);
   if (!content) {
     throw new Error(
-      `Guide registry validation failed: entry "${entry.slug}" references missing file "${entry.file}".`,
+      `Guide registry validation failed: entry "${entry.slug}" has no content.`,
     );
   }
   return { ...content, group: entry.group, order: entry.order };

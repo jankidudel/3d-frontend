@@ -24,21 +24,18 @@ describe('guide catalogue', () => {
     const registry: readonly GuideRegistryEntry[] = [
       {
         slug: 'stl-second',
-        file: 'stl-second.html',
         enabled: true,
         group: 'stl',
         order: 20,
       },
       {
         slug: 'disabled-guide',
-        file: 'disabled-guide.html',
         enabled: false,
         group: 'general',
         order: 10,
       },
       {
         slug: 'stl-first',
-        file: 'stl-first.html',
         enabled: true,
         group: 'stl',
         order: 10,
@@ -48,9 +45,9 @@ describe('guide catalogue', () => {
       registry,
       groups,
       new Map([
-        ['stl-second.html', content('stl-second')],
-        ['disabled-guide.html', content('disabled-guide')],
-        ['stl-first.html', content('stl-first')],
+        ['stl-second', content('stl-second')],
+        ['disabled-guide', content('disabled-guide')],
+        ['stl-first', content('stl-first')],
       ]),
     );
 
