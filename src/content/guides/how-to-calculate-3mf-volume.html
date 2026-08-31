@@ -1,0 +1,109 @@
+---
+title: 'How to Calculate 3MF Volume for 3D Printing | InspectMesh'
+description: Learn how to calculate 3MF model volume, understand repeated build items and transforms, and estimate solid-model material weight before 3D printing.
+slug: how-to-calculate-3mf-volume
+eyebrow: 3MF volume guide
+heading: How to Calculate 3MF Volume for 3D Printing
+faq:
+  - question: Does 3MF volume include infill and supports?
+    answer: No. Model volume describes solid geometry. Actual filament use also depends on infill, walls, supports, purge and slicer settings.
+  - question: Why can a 3MF volume be unreliable?
+    answer: Open, non-manifold or inconsistently oriented mesh geometry can make a calculated enclosed volume unreliable.
+  - question: Are repeated objects included in the total?
+    answer: Yes. The resolved build total includes placed copies and supported transforms because they are part of the print build.
+---
+
+<p>
+  Volume is useful for comparing model sizes, estimating solid-model material
+  weight and checking whether repeated parts add up as expected. For 3MF, the
+  important detail is that a file can contain several objects, repeated build
+  items and transforms. The useful total is therefore the volume of the resolved
+  print build, not merely a number from the first stored object.
+</p>
+
+<h2>Use the resolved build volume</h2>
+
+<p>
+  Upload your file to the
+  <a href="/3mf-volume-calculator">3MF Volume Calculator</a>. It calculates the
+  aggregate volume of the resolved build geometry and uses the 3MF file's
+  declared unit for display and conversion.
+</p>
+
+<p>
+  This total includes all resolved build items, including repeated placements
+  and supported transforms. For example, if a small part is placed four times in
+  one build, the total reflects all four placed instances.
+</p>
+
+<h2>Why 3MF volume can differ from an STL workflow</h2>
+
+<p>
+  An STL is normally a single set of unitless triangles. A 3MF can describe a
+  print build with a declared unit, multiple model objects and placement
+  information. That structure is useful, but it means volume must be calculated
+  after the build is resolved.
+</p>
+
+<p>
+  If you compare a 3MF with an exported STL, make sure you are comparing the
+  same intended build. An STL export may contain one object, while the 3MF
+  project may contain several placed copies.
+</p>
+
+<h2>Check whether the mesh can support a reliable volume</h2>
+
+<p>
+  Volume is most meaningful for a closed, consistently oriented surface. A mesh
+  with holes or ambiguous topology may still produce a number, but that number
+  might not represent the amount of enclosed material.
+</p>
+
+<p>
+  If the calculator warns that volume may be unreliable, check the model with
+  the <a href="/3mf-watertight-checker">3MF Watertight Checker</a> and
+  <a href="/3mf-manifold-checker">3MF Manifold Checker</a>. For a broader
+  assessment, use the <a href="/3mf-quality-checker">3MF Quality Checker</a>.
+</p>
+
+<h2>Estimate solid-model material weight</h2>
+
+<p>
+  Once volume is shown in cubic centimetres, a simple solid-model estimate is:
+</p>
+
+<p>
+  <strong>weight in grams = volume in cm³ × material density in g/cm³</strong>
+</p>
+
+<p>
+  For example, a 20 cm³ fully solid model with a density of 1.24 g/cm³ has an
+  estimated solid-model weight of 24.8 g. Use the density supplied by your
+  filament manufacturer when possible.
+</p>
+
+<p>
+  This is not a slicer estimate or a price quote. Infill percentage, wall count,
+  top and bottom layers, supports, purge, brim and failed prints can all change
+  actual material use.
+</p>
+
+<h2>Use volume as part of a pre-print check</h2>
+
+<ol>
+  <li>
+    Calculate volume with the
+    <a href="/3mf-volume-calculator">3MF Volume Calculator</a>.
+  </li>
+  <li>Check warnings about open or non-manifold geometry.</li>
+  <li>
+    Confirm the build size using the
+    <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+  </li>
+  <li>Use your slicer for the final filament and cost estimate.</li>
+</ol>
+
+<p>
+  Volume is a helpful planning metric. The slicer remains the source of truth
+  for the final print configuration.
+</p>

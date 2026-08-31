@@ -1,0 +1,91 @@
+---
+title: 'How to Tell if a 3MF File Is Watertight | InspectMesh'
+description: Learn how to check whether a 3MF file has a closed watertight surface, why open edges matter, and how separate build parts affect the result.
+slug: how-to-tell-if-a-3mf-file-is-watertight
+eyebrow: 3MF mesh guide
+heading: How to Tell if a 3MF File Is Watertight
+faq:
+  - question: What does watertight mean for a 3MF file?
+    answer: It means the resolved mesh surface has no open edges, so it forms a closed surface. It does not verify every other printability condition.
+  - question: Do several separate parts make a 3MF non-watertight?
+    answer: No. Several separate closed parts can be intentional and each can be watertight on its own.
+  - question: Is a watertight 3MF always manifold?
+    answer: Not necessarily. A closed surface can still have non-manifold edges or other topology problems, so check manifold geometry separately when needed.
+---
+
+<p>
+  A watertight 3MF has no open edges in its resolved mesh surface. In practical
+  3D-printing terms, it gives the slicer a clearer closed boundary for
+  determining the inside and outside of a part.
+</p>
+
+<p>
+  3MF files can contain more than one object and can place objects repeatedly in
+  a build. That means watertightness should be checked on the geometry prepared
+  for the print, not only on the first object stored inside the package.
+</p>
+
+<h2>Check the resolved build geometry</h2>
+
+<p>
+  Use the <a href="/3mf-watertight-checker">3MF Watertight Checker</a>. It
+  checks the resolved build geometry for open edges, including supported
+  build-item and component transforms.
+</p>
+
+<p>
+  An open edge is used by only one triangle. It often indicates a hole, a
+  missing face or an incomplete surface. A closed result means no open edges
+  were found in the checked build geometry.
+</p>
+
+<h2>Separate parts can still be correct</h2>
+
+<p>
+  A 3MF build may contain several unrelated objects: for example, a lid and a
+  container, several copies of a small part, or a multi-part assembly arranged
+  on one build plate. Separate closed parts do not automatically make the file
+  fail. What matters is whether each intended surface is closed and whether the
+  parts are arranged as you expect.
+</p>
+
+<p>
+  Open the file in the <a href="/3mf-viewer">3MF Viewer</a> if you need to
+  confirm what the build contains before running checks.
+</p>
+
+<h2>Watertight is not the same as manifold</h2>
+
+<p>
+  A closed surface can still contain non-manifold edges, internal faces or
+  inconsistent orientation. These can make the surface ambiguous even when it
+  has no holes. If you need a broader topology assessment, run the
+  <a href="/3mf-manifold-checker">3MF Manifold Checker</a>.
+</p>
+
+<p>
+  Use the <a href="/3mf-quality-checker">3MF Quality Checker</a> when you want
+  one report covering several common mesh issues, including invalid coordinates,
+  degenerate faces, duplicate faces, open edges, non-manifold edges and
+  orientation concerns.
+</p>
+
+<h2>What to do if the result finds open edges</h2>
+
+<ol>
+  <li>
+    Inspect the source model or the 3MF build to identify the intended part.
+  </li>
+  <li>
+    Repair the geometry in the source application or an appropriate mesh-repair
+    workflow.
+  </li>
+  <li>Save the repaired file under a new name.</li>
+  <li>Run the watertight and quality checks again before slicing.</li>
+</ol>
+
+<p>
+  InspectMesh reports mesh health but does not repair files. Even a watertight
+  result is not a guarantee of a successful print: wall thickness, supports,
+  orientation, printer setup and slicer settings still matter.
+</p>

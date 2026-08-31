@@ -1,0 +1,121 @@
+---
+title: 'How to Check a 3MF File for Errors Before Printing | InspectMesh'
+description: Learn how to check a 3MF file for mesh errors, open edges, non-manifold geometry, units and build-item issues before slicing or 3D printing.
+slug: how-to-check-a-3mf-file-for-errors
+eyebrow: 3MF file guide
+heading: How to Check a 3MF File for Errors Before Printing
+faq:
+  - question: Can a 3MF file contain more than one model?
+    answer: Yes. A 3MF build can contain several placed items. Separate parts are not automatically an error, but they should be intentional.
+  - question: Does a valid 3MF guarantee a successful print?
+    answer: No. Mesh checks cannot confirm wall thickness, supports, material, printer condition or slicer settings.
+  - question: Does InspectMesh repair a 3MF file?
+    answer: No. InspectMesh reports mesh issues so you can repair the source file or use a suitable repair workflow, then check it again.
+---
+
+<p>
+  A 3MF file can preserve more print information than an STL, including a
+  declared unit and a build made from one or more placed objects. That does not
+  make it automatically error-free. Its mesh geometry can still contain holes,
+  duplicate faces, non-manifold edges or inconsistent orientation that may
+  confuse a slicer.
+</p>
+
+<p>
+  The practical approach is to inspect the build, run a quality check,
+  understand any result, repair the original or a copy, and check it again
+  before slicing.
+</p>
+
+<h2>1. Open the build and confirm what is included</h2>
+
+<p>
+  Start with the <a href="/3mf-viewer">3MF Viewer</a>. It lets you inspect
+  supported 3MF geometry locally in your browser and see the resolved build
+  dimensions, declared unit and triangle count.
+</p>
+
+<p>
+  Look for unexpectedly repeated parts, missing objects, an implausible scale or
+  a model that is clearly not in the orientation you expected. A 3MF may
+  deliberately include multiple parts, so their presence alone is not a failure.
+  The question is whether they belong in this print build.
+</p>
+
+<h2>2. Run the full quality check</h2>
+
+<p>
+  Upload the file to the <a href="/3mf-quality-checker">3MF Quality Checker</a>.
+  It examines resolved mesh triangles, including supported build-item and
+  component transforms, for common geometry problems:
+</p>
+
+<ul>
+  <li>invalid coordinates;</li>
+  <li>degenerate or duplicate triangles;</li>
+  <li>open edges that can indicate holes;</li>
+  <li>non-manifold edges;</li>
+  <li>inconsistent face orientation.</li>
+</ul>
+
+<p>
+  Use the full quality check first when you do not yet know what is wrong. It
+  provides a wider picture than testing only one condition.
+</p>
+
+<h2>3. Investigate closure and topology when needed</h2>
+
+<p>
+  If the report finds open edges, use the
+  <a href="/3mf-watertight-checker">3MF Watertight Checker</a> to focus on
+  surface closure. A watertight mesh has no open edges in the resolved build
+  geometry. Open edges can leave the slicer unsure where a solid begins and
+  ends.
+</p>
+
+<p>
+  If non-manifold edges are reported, use the
+  <a href="/3mf-manifold-checker">3MF Manifold Checker</a>. Non-manifold
+  geometry often occurs where faces overlap, internal geometry remains after a
+  boolean operation, or more than two faces share an edge.
+</p>
+
+<h2>4. Check dimensions and printer fit separately</h2>
+
+<p>
+  Geometry health and physical size are different questions. A healthy 3MF can
+  still be too large for a printer. Use the
+  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> to review the
+  resolved build dimensions, declared unit and printer-fit result.
+</p>
+
+<p>
+  3MF unit metadata is helpful, but still compare the displayed size with the
+  size you intended to print. A mismatch can come from the source application, a
+  transform in the build, or an incorrect export workflow.
+</p>
+
+<h2>5. Repair the source and re-check</h2>
+
+<p>
+  InspectMesh identifies issues; it does not modify files. Repair the model in
+  the original design application, a mesh editor or a repair tool that supports
+  your workflow. Save the repaired result under a new filename, then run the
+  quality check again.
+</p>
+
+<p>
+  Finally, open the model in your slicer and confirm the final orientation,
+  supports, clearances and material settings. A clean mesh gives you a more
+  reliable starting point, not a promise that every print setting is correct.
+</p>
+
+<h2>A quick 3MF pre-print checklist</h2>
+
+<ol>
+  <li>Open the build and confirm all intended parts are present.</li>
+  <li>Run the <a href="/3mf-quality-checker">3MF Quality Checker</a>.</li>
+  <li>Investigate open or non-manifold edges if reported.</li>
+  <li>Confirm dimensions and printer fit.</li>
+  <li>Repair a copy if necessary, then re-check before slicing.</li>
+</ol>

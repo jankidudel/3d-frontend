@@ -27,6 +27,12 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-check-if-a-3d-model-fits-your-printer',
+    group: GuideGroupId.General,
+    order: 10,
+    enabled: true,
+  },
+  {
     slug: 'how-to-check-stl-for-errors',
     group: GuideGroupId.Stl,
     order: 10,
@@ -63,6 +69,18 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
   },
   {
+    slug: 'how-to-reduce-stl-file-size',
+    group: GuideGroupId.Stl,
+    order: 70,
+    enabled: true,
+  },
+  {
+    slug: 'why-wont-my-stl-file-slice',
+    group: GuideGroupId.Stl,
+    order: 80,
+    enabled: true,
+  },
+  {
     slug: '3mf-vs-stl',
     group: GuideGroupId.ThreeMf,
     order: 10,
@@ -72,6 +90,24 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     slug: 'how-to-open-a-3mf-file',
     group: GuideGroupId.ThreeMf,
     order: 20,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-check-a-3mf-file-for-errors',
+    group: GuideGroupId.ThreeMf,
+    order: 30,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-tell-if-a-3mf-file-is-watertight',
+    group: GuideGroupId.ThreeMf,
+    order: 40,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-calculate-3mf-volume',
+    group: GuideGroupId.ThreeMf,
+    order: 50,
     enabled: true,
   },
 ];
