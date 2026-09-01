@@ -1,0 +1,101 @@
+---
+title: How to Repair an STL File for 3D Printing | InspectMesh
+description: Learn a practical, ordered workflow for diagnosing, repairing and rechecking an STL file before 3D printing.
+slug: how-to-repair-an-stl-file
+eyebrow: STL repair guide
+heading: How to Repair an STL File for 3D Printing
+faq:
+  - question: Can an STL checker repair a file automatically?
+    answer: A checker diagnoses mesh problems. Repair happens in a suitable modelling, mesh-repair or slicing tool.
+  - question: Should I replace my original STL during repair?
+    answer: Keep the original and save repaired exports with a new name so you can compare results or return to the source.
+  - question: Is a repaired STL always ready to print?
+    answer: Recheck topology and dimensions, then confirm print settings and placement in your slicer.
+---
+
+<p class="lead">
+  Repairing an STL is safest when you treat it as a short investigation, not a
+  one-click promise. A file may look fine while containing mesh structure that
+  produces gaps, strange toolpaths or a slicer warning.
+</p>
+<h2>1. Make a copy and inspect first</h2>
+<p>
+  Keep the downloaded or exported STL unchanged. Work on a copy and give each
+  repaired export a clear name. Open it in the
+  <a href="/stl-viewer">STL Viewer</a> first. Check that all expected parts are
+  present, that the model is not wildly oversized, and that there are no obvious
+  missing faces. The viewer’s issue highlighting can help locate reported open
+  and non-manifold edges; it is diagnostic, not a repair tool.
+</p>
+<h2>2. Identify the actual problem</h2>
+<p>
+  Run the <a href="/stl-quality-checker">STL Quality Checker</a> before
+  selecting a repair command. An <strong>open edge</strong> belongs to only one
+  triangle and can mark a gap in a surface. The
+  <a href="/stl-watertight-checker">Watertight Checker</a> is useful when your
+  goal is a closed printable shell. A <strong>non-manifold edge</strong> is
+  usually shared by more than two triangles, which does not describe a simple
+  solid and can confuse slicers. Use the
+  <a href="/stl-manifold-checker">Manifold Checker</a> and the
+  <a href="/how-to-fix-non-manifold-stl">non-manifold repair guide</a> to
+  understand that case.
+</p>
+<p>
+  Also look for duplicate faces, degenerate triangles and inconsistent
+  orientation. Duplicate faces overlap at the same location. Degenerate
+  triangles have no useful area. Orientation problems can make inside and
+  outside ambiguous. These are different faults, so a tool that closes a hole
+  may not resolve an overlapping shell or a reversed region.
+</p>
+<h2>3. Repair in an appropriate tool</h2>
+<p>
+  Choose a modelling, mesh-repair or slicing application that exposes the
+  operation you need. A repair workflow may remove duplicate faces, merge nearby
+  vertices, fill a selected hole, recalculate normals, separate intersecting
+  shells or rebuild a surface. Read the preview and repair log if one is
+  available. Automatic repair is useful for simple damage, but it can alter thin
+  features, cavities, sharp details or intentionally separate parts. Do not
+  assume an “auto repair” button understands the design intent.
+</p>
+<p>
+  For a small known hole, a targeted surface edit is often easier to review than
+  a broad reconstruction. For a non-manifold intersection, it may be necessary
+  to edit the source model or perform a boolean operation that produces one
+  clean shell. If the STL was exported from CAD, returning to the original CAD
+  model is often more reliable than repeatedly repairing exported triangles.
+</p>
+<h2>4. Export a new file and validate again</h2>
+<p>
+  Save the repaired result as a new STL, then run the same checks again. Compare
+  the open-edge and non-manifold counts with the first report. Reopen the file
+  in the viewer, especially around locations that were highlighted before
+  repair. A repair can solve one fault while introducing a new thin wall,
+  disconnected part or orientation issue.
+</p>
+<p>
+  Finally, verify physical size. STL does not declare units, so a structurally
+  clean file can still be the wrong scale. Use the
+  <a href="/stl-dimensions-checker">Dimensions Checker</a>, then confirm printer
+  fit, placement and supports in the slicer.
+</p>
+<h2>A practical repair sequence</h2>
+<ol>
+  <li>Copy the source STL.</li>
+  <li>Inspect it visually and run topology checks.</li>
+  <li>Match the repair operation to the reported problem.</li>
+  <li>Review the changed geometry before exporting.</li>
+  <li>Check the repaired export again, then slice it.</li>
+</ol>
+<p>
+  <a href="/stl-quality-checker"><strong>Check STL quality</strong></a> before
+  and after every repair pass.
+</p>
+<h2>Know when to stop and ask for the source</h2>
+<p>
+  If a repair preview removes important features, changes a critical mating
+  surface or leaves a large number of faults, stop iterating on the STL. Ask the
+  designer for a corrected export or the original model. Triangle repair is
+  useful for delivery problems, but it cannot reliably reconstruct the design
+  intent behind a damaged mechanical feature. Keeping the original, each repair
+  export and the before-and-after reports makes that conversation much easier.
+</p>

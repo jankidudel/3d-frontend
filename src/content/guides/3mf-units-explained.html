@@ -1,0 +1,109 @@
+---
+title: '3MF Units Explained: Millimetres, Inches and Scale | InspectMesh'
+description: Understand 3MF unit declarations, final dimensions and why checking scale still matters before 3D printing.
+slug: 3mf-units-explained
+eyebrow: 3MF format guide
+heading: '3MF Units Explained: Millimetres, Inches and Scale'
+faq:
+  - question: Does 3MF store units?
+    answer: Yes. A 3MF model can declare its unit, unlike STL coordinates that have no inherent unit.
+  - question: Which units can a 3MF declare?
+    answer: The specification includes millimetres, microns, metres, centimetres and inches, among other supported unit values.
+  - question: Can a unit declaration eliminate scale errors?
+    answer: No. Check final resolved dimensions and printer fit because exports and receiving applications can still create surprises.
+---
+
+<p class="lead">
+  One practical advantage of 3MF over STL is that a 3MF model can declare the
+  units used by its coordinates. That makes scale more explicit, but it is not a
+  substitute for checking the dimensions of the final build.
+</p>
+<h2>The important difference from STL</h2>
+<p>
+  STL stores coordinate values but does not say whether a value of 10 means 10
+  millimetres, 10 inches or another distance. A slicer must make an assumption.
+  3MF has a unit declaration for model coordinates, allowing software to
+  interpret the numbers with more context. This is especially valuable when
+  files move between CAD, repair and slicing applications.
+</p>
+<h2>Common unit declarations</h2>
+<p>
+  The 3MF specification supports unit values including millimetres, microns,
+  metres, centimetres and inches. Millimetres are common in desktop 3D printing,
+  but common is not universal. A micron is one thousandth of a millimetre;
+  metres and centimetres can make sense for large designs; inches are common in
+  some design workflows. The declaration tells compatible software how to
+  interpret coordinates—it does not tell you whether the author intended the
+  final object to be the right physical size.
+</p>
+<h2>Inspect final resolved dimensions</h2>
+<p>
+  A 3MF package may contain multiple objects and build items placed with
+  transforms. The relevant dimensions for a print are the final resolved build
+  dimensions, not only the dimensions of an individual mesh before placement.
+  Use the <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> to
+  inspect width, height and depth, then compare them with the printer’s usable
+  area. Use the <a href="/3mf-viewer">3MF Viewer</a> to see whether multiple
+  parts are arranged as expected.
+</p>
+<h2>Why scale errors still happen</h2>
+<p>
+  A correct declaration cannot prevent every problem. The source application may
+  export with an unintended unit; a user may import only one part instead of the
+  whole build; a receiving slicer may not support every optional 3MF feature; or
+  a transform can produce surprising placement. Compatibility also varies
+  between slicer versions. Treat the declared unit as valuable evidence, then
+  verify what the receiving application actually resolves.
+</p>
+<h2>Scaling a multi-part build</h2>
+<p>
+  When a complete build needs proportional scaling, scale it as a whole where
+  possible. This preserves the relative position and size of parts that were
+  designed to fit together. Scaling one object alone can change clearances,
+  alignment or a mating feature. After any scale change, save a new copy,
+  remeasure it and check printer fit. Read
+  <a href="/how-to-scale-a-3mf-file">How to Scale a 3MF File</a> for the
+  practical workflow.
+</p>
+<h2>Units are one check in a larger preflight</h2>
+<p>
+  Correct size does not guarantee printable geometry. Check topology when a file
+  comes from an uncertain source, has been converted or produces slicer
+  warnings. The <a href="/3mf-quality-checker">3MF Quality Checker</a> can help
+  identify mesh problems, while the
+  <a href="/how-to-check-if-a-3d-model-fits-your-printer">printer-fit guide</a>
+  covers the physical constraints that dimensions alone cannot answer.
+</p>
+<p>
+  <a href="/3mf-dimensions-checker"><strong>Check 3MF dimensions</strong></a>
+  before committing to a print.
+</p>
+<h2>A short pre-print units checklist</h2>
+<ol>
+  <li>
+    Read the declared unit in the source package where your software exposes it.
+  </li>
+  <li>Measure the final resolved build, including every placed item.</li>
+  <li>
+    Compare dimensions with the design’s intended physical size and printer
+    volume.
+  </li>
+  <li>Save any scale correction as a separate copy.</li>
+  <li>
+    Reopen that copy and inspect it in the slicer that will produce the job.
+  </li>
+</ol>
+<p>
+  This modest check is more dependable than relying on a filename, an assumption
+  about millimetres or a visual impression from a zoomed viewer.
+</p>
+<h2>When applications disagree</h2>
+<p>
+  If two applications show different sizes, compare their reported dimensions
+  before changing the file. Check that both are showing the complete build
+  rather than a selected object, that neither has applied a display-only scale,
+  and that their versions support the package features in use. Re-export from
+  the original authoring application only after recording those facts. A
+  carefully measured comparison is much safer than repeatedly scaling and
+  re-saving a file until it merely looks plausible on screen.
+</p>

@@ -20,7 +20,13 @@ interface ViewerRuntime {
   readonly camera: import('three').PerspectiveCamera;
   readonly controls: import('three/examples/jsm/controls/OrbitControls.js').OrbitControls;
   readonly object: import('three').Object3D;
+  readonly issueLines: import('three').Group;
   frame: number;
+}
+
+export interface ViewerIssueLine {
+  readonly color: string;
+  readonly positions: readonly number[];
 }
 
 @Component({
@@ -32,6 +38,7 @@ export class ObjectViewerComponent {
   readonly object = input.required<import('three').Object3D>();
   readonly extent = input.required<number>();
   readonly ariaLabel = input.required<string>();
+  readonly issueLines = input<readonly ViewerIssueLine[]>([]);
   readonly chooseAnother = output<void>();
   readonly resetView = output<void>();
   readonly rendered = output<void>();
@@ -55,6 +62,7 @@ export class ObjectViewerComponent {
       }
       void this.render(this.object(), this.extent());
     });
+    effect(() => this.updateIssueLines(this.issueLines()));
   }
 
   reset(): void {
@@ -129,6 +137,8 @@ export class ObjectViewerComponent {
       const light = new THREE.DirectionalLight('#ffffff', 2.2);
       light.position.set(1, 2, 3);
       scene.add(light, object);
+      const issueLines = new THREE.Group();
+      scene.add(issueLines);
       host.replaceChildren(renderer.domElement);
       const controls = new controlsModule.OrbitControls(
         camera,
@@ -145,9 +155,11 @@ export class ObjectViewerComponent {
         camera,
         controls,
         object,
+        issueLines,
         frame: 0,
       };
       this.runtime = runtime;
+      this.updateIssueLines(this.issueLines());
       this.frame(runtime);
       this.observer = new ResizeObserver(() => this.resize(runtime));
       this.observer.observe(host);
@@ -199,6 +211,34 @@ export class ObjectViewerComponent {
     this.resize(runtime);
   }
 
+  private updateIssueLines(lines: readonly ViewerIssueLine[]): void {
+    const runtime = this.runtime;
+    if (!runtime) {
+      return;
+    }
+    this.disposeObject(runtime.issueLines);
+    runtime.issueLines.clear();
+    for (const line of lines) {
+      if (line.positions.length === 0) {
+        continue;
+      }
+      const geometry = new runtime.THREE.BufferGeometry();
+      geometry.setAttribute(
+        'position',
+        new runtime.THREE.Float32BufferAttribute(line.positions, 3),
+      );
+      const material = new runtime.THREE.LineBasicMaterial({
+        color: line.color,
+        depthTest: false,
+        transparent: true,
+        opacity: 0.95,
+      });
+      const segments = new runtime.THREE.LineSegments(geometry, material);
+      segments.renderOrder = 1;
+      runtime.issueLines.add(segments);
+    }
+  }
+
   private resize(runtime: ViewerRuntime): void {
     const host = this.viewport()?.nativeElement;
     if (!host) {
@@ -241,6 +281,7 @@ export class ObjectViewerComponent {
     }
     cancelAnimationFrame(runtime.frame);
     runtime.controls.dispose();
+    this.disposeObject(runtime.issueLines);
     this.disposeObject(runtime.object);
     runtime.renderer.dispose();
     runtime.renderer.domElement.remove();
@@ -249,14 +290,20 @@ export class ObjectViewerComponent {
 
   private disposeObject(object: import('three').Object3D): void {
     object.traverse((child) => {
-      const mesh = child as import('three').Mesh;
-      if (!mesh.isMesh) {
+      const drawable = child as unknown as {
+        readonly isMesh?: boolean;
+        readonly isLine?: boolean;
+        readonly geometry: import('three').BufferGeometry;
+        readonly material:
+          import('three').Material | import('three').Material[];
+      };
+      if (!drawable.isMesh && !drawable.isLine) {
         return;
       }
-      mesh.geometry.dispose();
-      const materials = Array.isArray(mesh.material)
-        ? mesh.material
-        : [mesh.material];
+      drawable.geometry.dispose();
+      const materials = Array.isArray(drawable.material)
+        ? drawable.material
+        : [drawable.material];
       for (const material of materials) {
         for (const value of Object.values(material)) {
           if (value && typeof value === 'object' && 'isTexture' in value) {

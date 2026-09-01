@@ -6,10 +6,23 @@ import {
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
+import { ViewerIssueLine } from '../shared/object-viewer/object-viewer';
+import { JobsService } from '../../core/api/jobs.service';
+import { StlJobService } from '../../core/api/stl-job.service';
+import {
+  createAndUploadStlJob,
+  pollStlJob,
+} from '../../core/api/stl-job-workflow';
+import { Job, JobStatus } from '../../models/job';
+import {
+  MeshIssueEdgeSegments,
+  MeshQualityReport,
+} from '../../models/mesh-quality-report';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 interface ModelInfo {
@@ -21,6 +34,7 @@ interface ModelInfo {
   readonly depth: number;
   readonly object: import('three').Object3D;
   readonly extent: number;
+  readonly centre: readonly [number, number, number];
 }
 @Component({
   selector: 'app-stl-viewer-page',
@@ -35,8 +49,16 @@ export class StlViewerPage {
   readonly model = signal<ModelInfo | null>(null);
   readonly loading = signal(false);
   readonly webglUnavailable = signal(false);
+  readonly analyzingIssues = signal(false);
+  readonly issueAnalysisError = signal('');
+  readonly issueReport = signal<MeshQualityReport | null>(null);
+  readonly showOpenEdges = signal(false);
+  readonly showNonManifoldEdges = signal(false);
   private readonly seo = inject(SeoService);
   private readonly analytics = inject(AnalyticsService);
+  private readonly jobs = inject(JobsService);
+  private readonly stlJobs = inject(StlJobService);
+  private issuePolling?: Subscription;
 
   constructor() {
     this.seo.apply({
@@ -75,7 +97,79 @@ export class StlViewerPage {
     this.analytics.trackStlViewerReset();
   }
 
+  analyzeIssues(): void {
+    const file = this.sourceFile;
+    if (!file || this.analyzingIssues()) {
+      return;
+    }
+    this.issueAnalysisError.set('');
+    this.analyzingIssues.set(true);
+    let createdJob: Job | null = null;
+    createAndUploadStlJob(this.stlJobs, this.jobs, file, (job) => {
+      createdJob = job;
+    }).subscribe({
+      next: () => {
+        if (!createdJob) {
+          this.analyzingIssues.set(false);
+          this.issueAnalysisError.set(
+            'We could not start issue analysis. Please try again.',
+          );
+          return;
+        }
+        this.issuePolling?.unsubscribe();
+        this.issuePolling = pollStlJob(this.jobs, createdJob.id).subscribe({
+          next: (updated) => this.receiveIssueJob(updated),
+          error: () => {
+            this.analyzingIssues.set(false);
+            this.issueAnalysisError.set(
+              'We could not retrieve issue analysis. Please try again.',
+            );
+          },
+        });
+      },
+      error: () => {
+        this.analyzingIssues.set(false);
+        this.issueAnalysisError.set(
+          'We could not start issue analysis. Please try again.',
+        );
+      },
+    });
+  }
+
+  clearHighlights(): void {
+    this.showOpenEdges.set(false);
+    this.showNonManifoldEdges.set(false);
+  }
+
+  setOpenEdges(event: Event): void {
+    this.showOpenEdges.set((event.target as HTMLInputElement).checked);
+  }
+
+  setNonManifoldEdges(event: Event): void {
+    this.showNonManifoldEdges.set((event.target as HTMLInputElement).checked);
+  }
+
+  issueLines(): readonly ViewerIssueLine[] {
+    const model = this.model();
+    const geometry = this.issueReport()?.issueGeometry;
+    if (!model || !geometry) return [];
+    const lines: ViewerIssueLine[] = [];
+    if (this.showOpenEdges()) {
+      lines.push(
+        this.toViewerLine(geometry.openEdges, model.centre, '#e69f00'),
+      );
+    }
+    if (this.showNonManifoldEdges()) {
+      lines.push(
+        this.toViewerLine(geometry.nonManifoldEdges, model.centre, '#cc79a7'),
+      );
+    }
+    return lines.filter((line) => line.positions.length > 0);
+  }
+
   private async load(file: File): Promise<void> {
+    this.issuePolling?.unsubscribe();
+    this.issuePolling = undefined;
     this.error.set('');
     if (!file.name.toLowerCase().endsWith('.stl')) {
       this.fail('Choose an STL file with a .stl extension.', 'wrong_extension');
@@ -115,6 +209,9 @@ export class StlViewerPage {
         roughness: 0.58,
         metalness: 0.05,
       });
+      this.sourceFile = file;
+      this.issueReport.set(null);
+      this.clearHighlights();
       this.model.set({
         name: file.name,
         size: file.size,
@@ -124,6 +221,7 @@ export class StlViewerPage {
         depth: size.z,
         object: new three.Mesh(geometry, material),
         extent: Math.max(size.x, size.y, size.z),
+        centre: [centre.x, centre.y, centre.z],
       });
     } catch {
       this.model.set(null);
@@ -136,6 +234,67 @@ export class StlViewerPage {
     } finally {
       this.loading.set(false);
     }
+  }
+
+  private sourceFile: File | null = null;
+
+  private receiveIssueJob(job: Job): void {
+    if (job.status === JobStatus.Completed) {
+      this.issueReport.set(job.report ?? null);
+      this.analyzingIssues.set(false);
+      return;
+    }
+    if (job.status === JobStatus.Failed) {
+      this.analyzingIssues.set(false);
+      this.issueAnalysisError.set(
+        'Issue analysis did not complete. You can try again.',
+      );
+    }
+  }
+
+  private toViewerLine(
+    issue: MeshIssueEdgeSegments | undefined,
+    centre: readonly [number, number, number],
+    color: string,
+  ): ViewerIssueLine {
+    const positions: number[] = [];
+    for (const segment of issue?.segments ?? []) {
+      const start = this.point(segment.start);
+      const end = this.point(segment.end);
+      if (start && end)
+        positions.push(
+          start[0] - centre[0],
+          start[1] - centre[1],
+          start[2] - centre[2],
+          end[0] - centre[0],
+          end[1] - centre[1],
+          end[2] - centre[2],
+        );
+    }
+    return { color, positions };
+  }
+
+  private point(value: unknown): readonly [number, number, number] | null {
+    if (
+      Array.isArray(value) &&
+      value.length === 3 &&
+      value.every(
+        (coordinate) =>
+          typeof coordinate === 'number' && Number.isFinite(coordinate),
+      )
+    )
+      return value as [number, number, number];
+    if (typeof value === 'object' && value !== null) {
+      const point = value as { x?: unknown; y?: unknown; z?: unknown };
+      if (
+        [point.x, point.y, point.z].every(
+          (coordinate) =>
+            typeof coordinate === 'number' && Number.isFinite(coordinate),
+        )
+      )
+        return [point.x as number, point.y as number, point.z as number];
+    }
+    return null;
   }
 
   private fail(

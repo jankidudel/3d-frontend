@@ -1,0 +1,97 @@
+---
+title: Why Won’t My 3MF File Slice? | InspectMesh
+description: Diagnose common 3MF slicing failures, from package and extension support to topology, transforms, scale and slicer compatibility.
+slug: why-wont-my-3mf-file-slice
+eyebrow: 3MF troubleshooting guide
+heading: Why Won’t My 3MF File Slice?
+faq:
+  - question: Can every slicer open every 3MF file?
+    answer: No. Slicers support different versions and optional 3MF features.
+  - question: Does a 3MF package always contain one mesh?
+    answer: No. It can contain multiple objects and build items with transforms.
+  - question: Should I convert a failing 3MF immediately?
+    answer: First isolate whether the problem is compatibility, package damage, placement or mesh topology.
+---
+
+<p class="lead">
+  A 3MF file can carry more information than an STL: declared units, model
+  objects, build items and optional extensions. That is useful, but it means a
+  slicing failure has several possible causes.
+</p>
+<h2>Start by isolating the failure</h2>
+<p>
+  Make a copy of the package, then try opening it in the slicer that reported
+  the problem and, if practical, a current alternative. Record whether it fails
+  to import, imports empty, appears at an unexpected scale or fails only when
+  slicing. Different slicers support different 3MF features, so a file that
+  works in one application is not proof that every application will accept every
+  extension.
+</p>
+<p>
+  Use the <a href="/3mf-quality-checker">3MF Quality Checker</a> to inspect the
+  package and resolved mesh data. The <a href="/3mf-viewer">3MF Viewer</a> helps
+  confirm that the intended objects and arrangement are present before you
+  change anything.
+</p>
+<h2>Check package and extension compatibility</h2>
+<p>
+  A 3MF is a package containing structured parts. An interrupted download,
+  incomplete export or damaged archive can prevent a slicer from reading it.
+  Export a fresh copy from the source application if possible. Optional 3MF
+  extensions can also be the issue: an application may understand basic geometry
+  but not a feature used by the file. Update the slicer, consult its
+  supported-import documentation, or export a simpler compatible package from
+  the authoring application. Avoid assuming that removing a file extension or
+  renaming the package repairs its contents.
+</p>
+<h2>Inspect topology and resolved objects</h2>
+<p>
+  3MF geometry can still contain open edges, non-manifold edges, duplicate faces
+  or degenerate triangles. These problems may allow an import but cause slice
+  generation to fail or produce missing layers. Check topology with the Quality
+  Checker, then use the
+  <a href="/3mf-watertight-checker">Watertight Checker</a> and
+  <a href="/3mf-manifold-checker">Manifold Checker</a> when a closed, simple
+  solid is expected. Repair in the modelling or mesh-repair tool that is
+  appropriate for the design, then validate the exported package again.
+</p>
+<h2>Review build items, transforms and placement</h2>
+<p>
+  A 3MF build can reference several model objects and place them using
+  transforms. An item may be outside the printable area, below the build plate,
+  tiny, enormous or overlapping another item after its transform is applied.
+  Inspect the final resolved arrangement rather than judging an individual
+  object in isolation. If the file includes multiple intended parts, check that
+  each has a valid placement and that the slicer has not hidden or discarded
+  one.
+</p>
+<h2>Confirm units, scale and slicer version</h2>
+<p>
+  3MF can declare units, but declared units do not prevent every scale surprise.
+  Use the <a href="/3mf-dimensions-checker">Dimensions Checker</a> to inspect
+  final dimensions and compare them with your printer’s usable volume. A model
+  may be technically valid but too large, too small or positioned outside the
+  bed. Also update the slicer before spending time on workarounds: format
+  support and import fixes change between versions.
+</p>
+<h2>Use a controlled fallback</h2>
+<p>
+  Once you know what fails, simplify only as far as necessary. Re-export from
+  the source application with widely supported options, repair a confirmed
+  topology issue, or import a reduced test build to identify the offending
+  object. Keep the original package and document the change. Converting blindly
+  can discard build arrangement, units or metadata that matter to the print.
+</p>
+<p>
+  <a href="/3mf-quality-checker"><strong>Check 3MF quality</strong></a> to begin
+  with evidence rather than guesswork.
+</p>
+<h2>Keep a small reproduction case</h2>
+<p>
+  For a persistent failure, make a copy containing one suspected object or build
+  item and test that in the same slicer version. If the small package slices,
+  add items back one at a time. If it does not, preserve the original package,
+  slicer version, error message and a screenshot of placement. This narrows a
+  support request and avoids changing several variables at once. Never discard a
+  working source merely because a particular slicer cannot import it today.
+</p>

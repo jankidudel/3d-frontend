@@ -1,0 +1,98 @@
+---
+title: How to Scale a 3MF File for 3D Printing | InspectMesh
+description: Learn how declared 3MF units, final build dimensions and proportional scaling affect printer fit and multi-part arrangements.
+slug: how-to-scale-a-3mf-file
+eyebrow: 3MF scale guide
+heading: How to Scale a 3MF File for 3D Printing
+faq:
+  - question: Are all 3MF files measured in millimetres?
+    answer: No. 3MF can declare a unit, so inspect the package and final dimensions instead of assuming millimetres.
+  - question: Does proportional scaling preserve a multi-part build?
+    answer: Scaling the complete build proportionally also scales its intended arrangement and relative spacing.
+  - question: Is a model that fits the printer ready to print?
+    answer: Fit is one check. You still need suitable orientation, clearance, materials and slicer settings.
+---
+
+<p class="lead">
+  Scaling a 3MF file is about more than typing a percentage. A 3MF package can
+  declare a unit and contain several objects placed as one build, so the useful
+  question is whether the final resolved build fits the printer while preserving
+  the intended arrangement.
+</p>
+<h2>Measure before changing anything</h2>
+<p>
+  Open the file in the
+  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> and note width,
+  height and depth of the resolved build. Compare those values with the
+  printer’s usable build volume, allowing space for a brim, supports and the
+  practical limits of the machine. The <a href="/3mf-viewer">3MF Viewer</a> is a
+  helpful second check for placement and part count.
+</p>
+<p>
+  Do not start from the assumption that every 3MF uses millimetres. The format
+  can declare a unit. A sensible workflow is to inspect what the file declares,
+  measure the final dimensions, and compare those dimensions with the physical
+  object you expect. This catches scale surprises before a change is baked into
+  an export.
+</p>
+<h2>Choose a proportional scale factor</h2>
+<p>
+  For a model that is uniformly too large or too small, use the same factor on
+  all three axes. To fit a target width, divide the target width by the measured
+  width and multiply by 100 for a percentage. For example, a 120-unit-wide
+  resolved model scaled to 90 units needs a factor of 0.75, or 75%. Check all
+  axes afterwards: a width that fits does not guarantee that the height will
+  fit.
+</p>
+<p>
+  Non-uniform scaling changes proportions. It can be appropriate for a
+  deliberate design change, but it can also turn round holes into ovals, alter
+  mating clearances and weaken walls. Prefer proportional scaling unless the
+  design specifically calls for distortion.
+</p>
+<h2>Scale the build, not just an isolated part</h2>
+<p>
+  A 3MF can include several model objects and build items with placement
+  transforms. If those parts were arranged to print together, scaling the
+  complete build proportionally scales their intended spacing too. Scaling only
+  one object can break a lid-and-box fit, a multi-part assembly or a carefully
+  positioned plate. Conversely, if one replacement part alone needs resizing,
+  isolate that object intentionally and check every relationship it has with the
+  rest of the build.
+</p>
+<h2>Use declared units as evidence, not a guarantee</h2>
+<p>
+  Declared units are better information than an STL’s unitless coordinates, but
+  they do not prevent every real-world mismatch. An author may have chosen the
+  wrong unit at export, a receiving application may handle an optional feature
+  differently, or the intended physical dimensions may simply be unclear. The
+  final dimensions and a printer-fit check are the evidence that matter.
+</p>
+<h2>Validate after scaling</h2>
+<p>
+  Save a separate scaled copy, reopen it and measure again. Confirm its resolved
+  dimensions, build-item placement and printer fit. Then check mesh quality if
+  the model came from an uncertain source or was edited: scale does not repair
+  open edges or non-manifold geometry. A final slicer preview is still essential
+  because supports, orientation and extrusion settings affect whether the
+  physical print succeeds.
+</p>
+<p>
+  For more detail on declarations and conversion, read
+  <a href="/3mf-units-explained">3MF Units Explained</a> and the
+  <a href="/how-to-check-if-a-3d-model-fits-your-printer">printer-fit guide</a>.
+</p>
+<p>
+  <a href="/3mf-dimensions-checker"><strong>Measure a 3MF file</strong></a>
+  before scaling it.
+</p>
+<h2>Account for print tolerances</h2>
+<p>
+  A scaled model can fit the printer while no longer fitting its companion
+  parts. Holes, snap joints, threads and sliding clearances do not always behave
+  perfectly at every size because nozzle width, shrinkage and layer height stay
+  physical. Make a small test piece where fit matters, and use the intended
+  material and printer profile. This is a manufacturing check rather than a
+  3MF-format issue, but it is the reason dimensions should be reviewed before
+  committing to a large print.
+</p>

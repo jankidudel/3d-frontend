@@ -81,6 +81,12 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
   },
   {
+    slug: 'how-to-repair-an-stl-file',
+    group: GuideGroupId.Stl,
+    order: 90,
+    enabled: true,
+  },
+  {
     slug: '3mf-vs-stl',
     group: GuideGroupId.ThreeMf,
     order: 10,
@@ -108,6 +114,24 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     slug: 'how-to-calculate-3mf-volume',
     group: GuideGroupId.ThreeMf,
     order: 50,
+    enabled: true,
+  },
+  {
+    slug: 'why-wont-my-3mf-file-slice',
+    group: GuideGroupId.ThreeMf,
+    order: 60,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-scale-a-3mf-file',
+    group: GuideGroupId.ThreeMf,
+    order: 70,
+    enabled: true,
+  },
+  {
+    slug: '3mf-units-explained',
+    group: GuideGroupId.ThreeMf,
+    order: 80,
     enabled: true,
   },
 ];

@@ -138,6 +138,28 @@
   width: 100%;
   margin-top: 0.75rem;
 }
+.issues-panel {
+  max-width: 58rem;
+  margin: 0 0 2rem;
+}
+.issues-panel label {
+  display: block;
+  margin: 0.75rem 0;
+}
+.issues-panel .button {
+  margin-top: 0.5rem;
+}
+.issue-legend {
+  color: #34495e;
+}
+.open-edge {
+  color: #9a6500;
+  font-weight: 700;
+}
+.non-manifold-edge {
+  color: #8a3970;
+  font-weight: 700;
+}
 .model-info dl div {
   border-bottom: 1px solid #e1e6eb;
   padding: 0.55rem 0;
