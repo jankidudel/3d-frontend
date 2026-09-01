@@ -63,20 +63,23 @@ export class SiteHeaderComponent {
   protected toggleMobileNav(): void {
     this.cancelToolsMenuClose();
     this.mobileNavOpen = !this.mobileNavOpen;
-    this.setToolsMenuOpen(false);
+    this.setToolsMenuOpen(this.mobileNavOpen);
   }
 
   protected toggleToolsMenu(): void {
     this.cancelToolsMenuClose();
-    if (this.toolsMenuOpen && this.isWithinToolsMenuOpenGracePeriod()) {
+    if (
+      this.toolsMenuOpen &&
+      !this.isMobileNavigation() &&
+      this.isWithinToolsMenuOpenGracePeriod()
+    ) {
       return;
     }
     this.setToolsMenuOpen(!this.toolsMenuOpen);
   }
 
   protected openToolsMenu(): void {
-    const defaultView = this.document.defaultView;
-    if (!defaultView?.matchMedia(MOBILE_NAVIGATION_MEDIA_QUERY).matches) {
+    if (!this.isMobileNavigation()) {
       this.cancelToolsMenuClose();
       this.setToolsMenuOpen(true);
     }
@@ -84,10 +87,7 @@ export class SiteHeaderComponent {
 
   protected scheduleToolsMenuClose(): void {
     const defaultView = this.document.defaultView;
-    if (
-      !defaultView ||
-      defaultView.matchMedia(MOBILE_NAVIGATION_MEDIA_QUERY).matches
-    ) {
+    if (!defaultView || this.isMobileNavigation()) {
       return;
     }
     this.cancelToolsMenuClose();
@@ -101,6 +101,9 @@ export class SiteHeaderComponent {
   }
 
   protected onDocumentPointerDown(event: PointerEvent): void {
+    if (this.isMobileNavigation()) {
+      return;
+    }
     const disclosure = this.toolsDisclosure()?.nativeElement;
     if (!disclosure || !(event.target instanceof Node)) {
       return;
@@ -145,6 +148,13 @@ export class SiteHeaderComponent {
     return (
       this.toolsMenuOpenedAt !== undefined &&
       Date.now() - this.toolsMenuOpenedAt < TOOLS_MENU_OPEN_GRACE_PERIOD_MS
+    );
+  }
+
+  private isMobileNavigation(): boolean {
+    return Boolean(
+      this.document.defaultView?.matchMedia(MOBILE_NAVIGATION_MEDIA_QUERY)
+        .matches,
     );
   }
 

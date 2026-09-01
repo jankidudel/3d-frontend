@@ -192,7 +192,6 @@ nav a.active {
   .top-nav-link {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
     min-height: 2.75rem;
     width: 100%;
     margin: 0;
@@ -203,9 +202,26 @@ nav a.active {
     text-align: left;
   }
 
+  .tools-trigger {
+    justify-content: space-between;
+  }
+
+  .top-nav-link {
+    justify-content: flex-start;
+  }
+
   .tools-trigger .chevron {
     display: block;
-    margin-left: auto;
+  }
+
+  .tools-trigger:hover,
+  .top-nav-link:hover {
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+  }
+
+  .tools-trigger:active,
+  .top-nav-link:active {
+    background: color-mix(in srgb, var(--primary) 14%, transparent);
   }
 
   .tools-menu {
