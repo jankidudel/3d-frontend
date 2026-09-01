@@ -1,4 +1,8 @@
-<div #container class="viewer-container">
+<div
+  #container
+  class="viewer-container"
+  [class.is-expanded]="isFallbackExpanded()"
+>
   <div
     #viewport
     class="viewport"
@@ -45,11 +49,31 @@
       </button>
       <button
         type="button"
-        aria-label="Toggle full screen"
-        title="Toggle full screen"
+        aria-label="Rotate model 90 degrees clockwise"
+        title="Rotate model 90 degrees clockwise"
+        (click)="rotateClockwise()"
+      >
+        <svg
+          class="rotate-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <g transform="translate(24 0) scale(-1 1)">
+            <path d="M7 8a7 7 0 1 1-1 6" />
+            <path d="M7 4v4h4" />
+          </g>
+        </svg>
+      </button>
+      <button
+        type="button"
+        [attr.aria-label]="
+          isExpanded() ? 'Close expanded viewer' : 'Expand viewer'
+        "
+        [title]="isExpanded() ? 'Close expanded viewer' : 'Expand viewer'"
         (click)="toggleFullscreen()"
       >
-        ⛶
+        {{ isExpanded() ? '×' : '⛶' }}
       </button>
     </div>
   </div>

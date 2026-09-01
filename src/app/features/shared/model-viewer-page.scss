@@ -31,8 +31,18 @@
 .viewer-results {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(17rem, 1fr);
+  grid-template-areas:
+    'viewer details'
+    'issues details';
+  align-items: start;
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+.viewer-results > app-object-viewer {
+  grid-area: viewer;
+}
+.model-info {
+  grid-area: details;
 }
 .viewport {
   height: min(60vw, 520px);
@@ -40,30 +50,43 @@
   overflow: hidden;
   border: 1px solid #d8e0e8;
   border-radius: 0.75rem;
+  background: #eaf3fc;
   margin-bottom: 0.75rem;
   cursor: grab;
 }
 .viewer-container {
   position: relative;
 }
-.viewer-container:fullscreen {
-  height: 100%;
-  padding: 1rem;
-  background: #e6edf5;
+.viewer-container:fullscreen,
+.viewer-container.is-expanded {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 100vh;
+  padding: max(1rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom))
+    max(1rem, env(safe-area-inset-left));
+  background: #eaf3fc;
 }
-.viewer-container:fullscreen .viewport {
+.viewer-container.is-expanded {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
   width: 100%;
-  height: 100%;
+}
+.viewer-container:fullscreen .viewport,
+.viewer-container.is-expanded .viewport {
+  flex: 1;
+  width: 100%;
+  height: auto;
+  min-height: 0;
   max-height: none;
   margin: 0;
 }
-.viewer-container:fullscreen .viewer-action-row {
-  position: absolute;
-  right: 1.75rem;
-  bottom: 1.75rem;
-}
-.viewer-container:fullscreen .viewer-file-actions {
-  display: none;
+.viewer-container:fullscreen .viewer-action-row,
+.viewer-container.is-expanded .viewer-action-row {
+  flex: 0 0 auto;
+  padding-top: 0.75rem;
 }
 .viewport canvas {
   display: block;
@@ -91,6 +114,7 @@
 }
 .viewer-action-row {
   justify-content: space-between;
+  background: var(--surface);
 }
 .viewer-controls {
   margin-left: auto;
@@ -109,6 +133,15 @@
 }
 .viewer-controls button:hover {
   background: #e6edf5;
+}
+.rotate-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
 }
 .viewer-controls button:focus-visible,
 .color-control input:focus-visible {
@@ -131,23 +164,27 @@
   margin: 1rem 0;
 }
 .model-info {
-  padding: clamp(1.25rem, 4vw, 2rem);
+  padding: 1.5rem;
 }
-.model-info .button {
-  display: flex;
-  width: 100%;
-  margin-top: 0.75rem;
+.viewer-issues {
+  padding: 1.5rem;
+  grid-area: issues;
 }
-.issues-panel {
-  max-width: 58rem;
-  margin: 0 0 2rem;
+.viewer-issues h2 {
+  margin: 0 0 0.875rem;
 }
-.issues-panel label {
+.viewer-issues p {
+  margin: 0 0 1rem;
+}
+.viewer-issues .issue-zero {
+  color: var(--muted);
+}
+.viewer-issues label {
   display: block;
-  margin: 0.75rem 0;
+  margin: 0.625rem 0;
 }
-.issues-panel .button {
-  margin-top: 0.5rem;
+.viewer-issues .button {
+  margin-top: 0.625rem;
 }
 .issue-legend {
   color: #34495e;
@@ -174,6 +211,10 @@
 @media (max-width: 700px) {
   .viewer-results {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'viewer'
+      'issues'
+      'details';
   }
   .viewport {
     height: 65vw;
@@ -184,5 +225,11 @@
   }
   .viewer-controls {
     margin-left: 0;
+  }
+  .model-info {
+    padding: 1.25rem;
+  }
+  .viewer-issues {
+    padding: 1.25rem;
   }
 }

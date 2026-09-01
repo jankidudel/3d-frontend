@@ -45,16 +45,37 @@ export class ObjectViewerComponent {
   readonly renderFailed = output<void>();
   readonly viewport = viewChild<ElementRef<HTMLDivElement>>('viewport');
   readonly container = viewChild<ElementRef<HTMLDivElement>>('container');
-  readonly modelColor = signal('#2563a8');
+  readonly modelColor = signal('#7B8794');
+  readonly isExpanded = signal(false);
+  readonly isFallbackExpanded = signal(false);
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
   private readonly ready = signal(false);
   private runtime: ViewerRuntime | null = null;
   private observer: ResizeObserver | null = null;
+  private expandedScrollY = 0;
+  private previousBodyStyle = '';
+  private rotationFrame = 0;
+  private rotationAnimating = false;
 
   constructor() {
     this.destroyRef.onDestroy(() => this.dispose());
+    if (this.browser) {
+      this.document.addEventListener(
+        'fullscreenchange',
+        this.onFullscreenChange,
+      );
+      this.document.addEventListener('keydown', this.onKeyDown);
+      this.destroyRef.onDestroy(() => {
+        this.document.removeEventListener(
+          'fullscreenchange',
+          this.onFullscreenChange,
+        );
+        this.document.removeEventListener('keydown', this.onKeyDown);
+        this.restorePageScroll();
+      });
+    }
     afterNextRender(() => this.ready.set(true));
     effect(() => {
       if (!this.ready() || !this.browser) {
@@ -87,6 +108,40 @@ export class ObjectViewerComponent {
     runtime.controls.update();
   }
 
+  rotateClockwise(): void {
+    const runtime = this.runtime;
+    if (!runtime || this.rotationAnimating) {
+      return;
+    }
+    this.rotationAnimating = true;
+    const start = performance.now();
+    const duration = 250;
+    const offset = runtime.camera.position.clone().sub(runtime.controls.target);
+    const target = runtime.controls.target.clone();
+    const axis = new runtime.THREE.Vector3(0, 1, 0);
+    const animate = (now: number): void => {
+      if (this.runtime !== runtime) {
+        return;
+      }
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - (1 - progress) * (1 - progress);
+      const position = offset
+        .clone()
+        .applyAxisAngle(axis, (Math.PI / 2) * eased)
+        .add(target);
+      runtime.camera.position.copy(position);
+      runtime.controls.target.copy(target);
+      runtime.controls.update();
+      if (progress < 1) {
+        this.rotationFrame = requestAnimationFrame(animate);
+        return;
+      }
+      this.rotationAnimating = false;
+      this.rotationFrame = 0;
+    };
+    this.rotationFrame = requestAnimationFrame(animate);
+  }
+
   onColorChange(event: Event): void {
     const color = (event.target as HTMLInputElement).value;
     this.modelColor.set(color);
@@ -98,11 +153,24 @@ export class ObjectViewerComponent {
     if (!container) {
       return;
     }
-    if (this.document.fullscreenElement === container) {
-      await this.document.exitFullscreen();
+    if (this.isExpanded()) {
+      await this.exitExpanded(container);
       return;
     }
-    await container.requestFullscreen();
+    try {
+      if (!container.requestFullscreen) {
+        throw new Error('Fullscreen API unavailable');
+      }
+      await container.requestFullscreen();
+      if (this.document.fullscreenElement === container) {
+        this.isExpanded.set(true);
+        this.scheduleResize();
+        return;
+      }
+    } catch {
+      // Mobile browsers can reject fullscreen even when the API is present.
+    }
+    this.enterFallbackFullscreen();
   }
 
   private async render(
@@ -126,7 +194,7 @@ export class ObjectViewerComponent {
       }
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color('#e6edf5');
+      scene.background = new THREE.Color('#EAF3FC');
       const camera = new THREE.PerspectiveCamera(
         45,
         1,
@@ -145,6 +213,7 @@ export class ObjectViewerComponent {
         renderer.domElement,
       );
       controls.enableDamping = true;
+      controls.addEventListener('start', () => this.cancelRotation());
       controls.minDistance = Math.max(extent * 0.05, 0.01);
       controls.maxDistance = Math.max(extent * 20, 100);
       this.applyModelColor(object, this.modelColor());
@@ -251,6 +320,62 @@ export class ObjectViewerComponent {
     runtime.camera.updateProjectionMatrix();
   }
 
+  private async exitExpanded(container: HTMLDivElement | null): Promise<void> {
+    if (this.document.fullscreenElement === container) {
+      await this.document.exitFullscreen();
+      return;
+    }
+    this.isFallbackExpanded.set(false);
+    this.isExpanded.set(false);
+    this.restorePageScroll();
+    this.scheduleResize();
+  }
+
+  private enterFallbackFullscreen(): void {
+    this.expandedScrollY = this.document.defaultView?.scrollY ?? 0;
+    this.previousBodyStyle = this.document.body.style.cssText;
+    this.document.body.style.position = 'fixed';
+    this.document.body.style.top = '-' + this.expandedScrollY + 'px';
+    this.document.body.style.width = '100%';
+    this.document.body.style.overflow = 'hidden';
+    this.isFallbackExpanded.set(true);
+    this.isExpanded.set(true);
+    this.scheduleResize();
+  }
+
+  private readonly onFullscreenChange = (): void => {
+    const container = this.container()?.nativeElement;
+    if (this.document.fullscreenElement === container) {
+      this.isExpanded.set(true);
+    } else if (!this.isFallbackExpanded()) {
+      this.isExpanded.set(false);
+    }
+    this.scheduleResize();
+  };
+
+  private readonly onKeyDown = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape' && this.isFallbackExpanded()) {
+      void this.exitExpanded(this.container()?.nativeElement ?? null);
+    }
+  };
+
+  private scheduleResize(): void {
+    requestAnimationFrame(() => {
+      if (this.runtime) {
+        this.resize(this.runtime);
+      }
+    });
+  }
+
+  private restorePageScroll(): void {
+    if (!this.isFallbackExpanded() && !this.previousBodyStyle) {
+      return;
+    }
+    this.document.body.style.cssText = this.previousBodyStyle;
+    this.previousBodyStyle = '';
+    this.document.defaultView?.scrollTo(0, this.expandedScrollY);
+  }
+
   private scrollIntoView(runtime: ViewerRuntime): void {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -280,12 +405,21 @@ export class ObjectViewerComponent {
       return;
     }
     cancelAnimationFrame(runtime.frame);
+    this.cancelRotation();
     runtime.controls.dispose();
     this.disposeObject(runtime.issueLines);
     this.disposeObject(runtime.object);
     runtime.renderer.dispose();
     runtime.renderer.domElement.remove();
     this.runtime = null;
+  }
+
+  private cancelRotation(): void {
+    if (this.rotationFrame) {
+      cancelAnimationFrame(this.rotationFrame);
+      this.rotationFrame = 0;
+    }
+    this.rotationAnimating = false;
   }
 
   private disposeObject(object: import('three').Object3D): void {

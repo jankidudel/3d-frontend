@@ -205,7 +205,7 @@ export class StlViewerPage {
       const centre = box.getCenter(new three.Vector3());
       geometry.translate(-centre.x, -centre.y, -centre.z);
       const material = new three.MeshStandardMaterial({
-        color: '#2563a8',
+        color: '#7B8794',
         roughness: 0.58,
         metalness: 0.05,
       });
@@ -241,6 +241,11 @@ export class StlViewerPage {
   private receiveIssueJob(job: Job): void {
     if (job.status === JobStatus.Completed) {
       this.issueReport.set(job.report ?? null);
+      const geometry = job.report?.issueGeometry;
+      this.showOpenEdges.set((geometry?.openEdges?.totalCount ?? 0) > 0);
+      this.showNonManifoldEdges.set(
+        (geometry?.nonManifoldEdges?.totalCount ?? 0) > 0,
+      );
       this.analyzingIssues.set(false);
       return;
     }

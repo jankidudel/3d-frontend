@@ -22,6 +22,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Always use exact versions in `package.json`; do not use semver ranges such as `^`, `~`, `>`, or `*`.
 - When adding or updating a package, pin the exact resolved version and update `package-lock.json` in the same change.
 - Use `npm install --save-exact <package>` or `npm install --save-dev --save-exact <package>` for new dependencies.
+- When a JavaScript dependency lacks bundled TypeScript declarations, prefer its
+  maintained `@types` package as a development dependency over a local ambient
+  declaration shim. Keep `@types/node` as a direct development dependency for
+  Node-based scripts.
 
 ## Angular Best Practices
 
