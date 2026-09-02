@@ -10,8 +10,11 @@ import { Subscription } from 'rxjs';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
-import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
-import { ViewerIssueLine } from '../shared/object-viewer/object-viewer';
+import {
+  ObjectViewerComponent,
+  ViewerIssueLine,
+} from '../shared/object-viewer/object-viewer';
+import { MeshIssueHighlightsComponent } from '../shared/mesh-issue-highlights/mesh-issue-highlights';
 import { JobsService } from '../../core/api/jobs.service';
 import { StlJobService } from '../../core/api/stl-job.service';
 import {
@@ -19,10 +22,7 @@ import {
   pollStlJob,
 } from '../../core/api/stl-job-workflow';
 import { Job, JobStatus } from '../../models/job';
-import {
-  MeshIssueEdgeSegments,
-  MeshQualityReport,
-} from '../../models/mesh-quality-report';
+import { MeshQualityReport } from '../../models/mesh-quality-report';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 interface ModelInfo {
@@ -38,7 +38,7 @@ interface ModelInfo {
 }
 @Component({
   selector: 'app-stl-viewer-page',
-  imports: [ObjectViewerComponent, RouterLink],
+  imports: [ObjectViewerComponent, MeshIssueHighlightsComponent, RouterLink],
   templateUrl: './stl-viewer-page.html',
   styleUrl: '../shared/model-viewer-page.scss',
 })
@@ -52,8 +52,7 @@ export class StlViewerPage {
   readonly analyzingIssues = signal(false);
   readonly issueAnalysisError = signal('');
   readonly issueReport = signal<MeshQualityReport | null>(null);
-  readonly showOpenEdges = signal(false);
-  readonly showNonManifoldEdges = signal(false);
+  readonly issueLines = signal<readonly ViewerIssueLine[]>([]);
   private readonly seo = inject(SeoService);
   private readonly analytics = inject(AnalyticsService);
   private readonly jobs = inject(JobsService);
@@ -136,37 +135,6 @@ export class StlViewerPage {
     });
   }
 
-  clearHighlights(): void {
-    this.showOpenEdges.set(false);
-    this.showNonManifoldEdges.set(false);
-  }
-
-  setOpenEdges(event: Event): void {
-    this.showOpenEdges.set((event.target as HTMLInputElement).checked);
-  }
-
-  setNonManifoldEdges(event: Event): void {
-    this.showNonManifoldEdges.set((event.target as HTMLInputElement).checked);
-  }
-
-  issueLines(): readonly ViewerIssueLine[] {
-    const model = this.model();
-    const geometry = this.issueReport()?.issueGeometry;
-    if (!model || !geometry) return [];
-    const lines: ViewerIssueLine[] = [];
-    if (this.showOpenEdges()) {
-      lines.push(
-        this.toViewerLine(geometry.openEdges, model.centre, '#e69f00'),
-      );
-    }
-    if (this.showNonManifoldEdges()) {
-      lines.push(
-        this.toViewerLine(geometry.nonManifoldEdges, model.centre, '#cc79a7'),
-      );
-    }
-    return lines.filter((line) => line.positions.length > 0);
-  }
-
   private async load(file: File): Promise<void> {
     this.issuePolling?.unsubscribe();
     this.issuePolling = undefined;
@@ -211,7 +179,7 @@ export class StlViewerPage {
       });
       this.sourceFile = file;
       this.issueReport.set(null);
-      this.clearHighlights();
+      this.issueLines.set([]);
       this.model.set({
         name: file.name,
         size: file.size,
@@ -241,11 +209,6 @@ export class StlViewerPage {
   private receiveIssueJob(job: Job): void {
     if (job.status === JobStatus.Completed) {
       this.issueReport.set(job.report ?? null);
-      const geometry = job.report?.issueGeometry;
-      this.showOpenEdges.set((geometry?.openEdges?.totalCount ?? 0) > 0);
-      this.showNonManifoldEdges.set(
-        (geometry?.nonManifoldEdges?.totalCount ?? 0) > 0,
-      );
       this.analyzingIssues.set(false);
       return;
     }
@@ -255,51 +218,6 @@ export class StlViewerPage {
         'Issue analysis did not complete. You can try again.',
       );
     }
-  }
-
-  private toViewerLine(
-    issue: MeshIssueEdgeSegments | undefined,
-    centre: readonly [number, number, number],
-    color: string,
-  ): ViewerIssueLine {
-    const positions: number[] = [];
-    for (const segment of issue?.segments ?? []) {
-      const start = this.point(segment.start);
-      const end = this.point(segment.end);
-      if (start && end)
-        positions.push(
-          start[0] - centre[0],
-          start[1] - centre[1],
-          start[2] - centre[2],
-          end[0] - centre[0],
-          end[1] - centre[1],
-          end[2] - centre[2],
-        );
-    }
-    return { color, positions };
-  }
-
-  private point(value: unknown): readonly [number, number, number] | null {
-    if (
-      Array.isArray(value) &&
-      value.length === 3 &&
-      value.every(
-        (coordinate) =>
-          typeof coordinate === 'number' && Number.isFinite(coordinate),
-      )
-    )
-      return value as [number, number, number];
-    if (typeof value === 'object' && value !== null) {
-      const point = value as { x?: unknown; y?: unknown; z?: unknown };
-      if (
-        [point.x, point.y, point.z].every(
-          (coordinate) =>
-            typeof coordinate === 'number' && Number.isFinite(coordinate),
-        )
-      )
-        return [point.x as number, point.y as number, point.z as number];
-    }
-    return null;
   }
 
   private fail(

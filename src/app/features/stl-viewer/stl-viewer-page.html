@@ -89,91 +89,15 @@
           check printer fit and scaling.
         </p>
       </aside>
-      <section class="card viewer-issues" aria-labelledby="mesh-issues-heading">
-        <h2 id="mesh-issues-heading">Mesh issues</h2>
-        @if (!issueReport()) {
-          <p>
-            Locate open and non-manifold edges with an analysis report. Your
-            model remains in this viewer; analysis uses the Quality Checker
-            upload flow.
-          </p>
-          <button
-            class="button"
-            type="button"
-            (click)="analyzeIssues()"
-            [disabled]="analyzingIssues()"
-          >
-            {{
-              analyzingIssues()
-                ? 'Analysing issues…'
-                : 'Analyse locatable issues'
-            }}
-          </button>
-        } @else if (issueReport()?.issueGeometry; as geometry) {
-          @if (
-            (geometry.openEdges?.totalCount ?? 0) +
-              (geometry.nonManifoldEdges?.totalCount ?? 0) >
-            0
-          ) {
-            <p class="issue-legend">
-              <span class="open-edge">Amber/orange</span> = open edges.
-              <span class="non-manifold-edge">Magenta/purple</span> =
-              non-manifold edges.
-            </p>
-            @if ((geometry.openEdges?.totalCount ?? 0) > 0) {
-              <label
-                ><input
-                  type="checkbox"
-                  [checked]="showOpenEdges()"
-                  (change)="setOpenEdges($event)"
-                />
-                Open edges ({{ geometry.openEdges?.totalCount ?? 0 }})</label
-              >
-            } @else {
-              <p class="issue-zero">No open edges found.</p>
-            }
-            @if ((geometry.nonManifoldEdges?.totalCount ?? 0) > 0) {
-              <label
-                ><input
-                  type="checkbox"
-                  [checked]="showNonManifoldEdges()"
-                  (change)="setNonManifoldEdges($event)"
-                />
-                Non-manifold edges ({{
-                  geometry.nonManifoldEdges?.totalCount ?? 0
-                }})</label
-              >
-            } @else {
-              <p class="issue-zero">No non-manifold edges found.</p>
-            }
-            @if (showOpenEdges() || showNonManifoldEdges()) {
-              <button class="button" type="button" (click)="clearHighlights()">
-                Clear highlights
-              </button>
-            }
-            @if (showOpenEdges() && geometry.openEdges?.truncated) {
-              <p>
-                Showing the first {{ geometry.openEdges?.returnedCount }} of
-                {{ geometry.openEdges?.totalCount }} highlighted edges.
-              </p>
-            }
-            @if (
-              showNonManifoldEdges() && geometry.nonManifoldEdges?.truncated
-            ) {
-              <p>
-                Showing the first
-                {{ geometry.nonManifoldEdges?.returnedCount }} of
-                {{ geometry.nonManifoldEdges?.totalCount }} highlighted edges.
-              </p>
-            }
-          } @else {
-            <p>No open or non-manifold edges were found in this model.</p>
-          }
-        }
-        @if (issueAnalysisError(); as message) {
-          <p class="error" role="alert">{{ message }}</p>
-        }
-      </section>
+      <app-mesh-issue-highlights
+        [report]="issueReport()"
+        [centre]="current.centre"
+        [analyzing]="analyzingIssues()"
+        [error]="issueAnalysisError()"
+        analysisDescription="Locate open and non-manifold edges with an analysis report. Your model remains in this viewer; analysis uses the Quality Checker upload flow."
+        (analyzeRequested)="analyzeIssues()"
+        (linesChange)="issueLines.set($event)"
+      />
     </section>
   }
   <section class="content">

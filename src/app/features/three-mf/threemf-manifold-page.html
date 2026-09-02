@@ -83,6 +83,11 @@
           Separate closed parts can be intentional. This is not an assembly,
           overlap or clearance check.
         </p>
+        <p>
+          To see sampled open and non-manifold edge markers in the resolved
+          build, open the Viewer and upload the same file for issue analysis.
+          Very large sets may be capped.
+        </p>
         <nav class="next-actions" aria-label="Related 3MF tools">
           <a class="button" [routerLink]="routeUrl.ThreeMfQualityCheck"
             >Run full 3MF quality check</a
@@ -93,7 +98,9 @@
           <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
             >Measure 3MF dimensions</a
           >
-          <a [routerLink]="routeUrl.ThreeMfViewer">View 3MF in 3D</a>
+          <a [routerLink]="routeUrl.ThreeMfViewer"
+            >Inspect problem areas in 3D</a
+          >
         </nav>
       }
     </section>

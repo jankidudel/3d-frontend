@@ -1,0 +1,94 @@
+<section class="card viewer-issues" aria-labelledby="mesh-issues-heading">
+  <h2 id="mesh-issues-heading">Mesh issues</h2>
+  @if (!report()) {
+    <p>{{ analysisDescription() }}</p>
+    <button
+      class="button"
+      type="button"
+      (click)="analyzeRequested.emit()"
+      [disabled]="analyzing()"
+    >
+      {{ analyzing() ? 'Analysing issues…' : 'Analyse locatable issues' }}
+    </button>
+  } @else if (geometry(); as issues) {
+    @if (
+      (issues.openEdges?.totalCount ?? 0) +
+        (issues.nonManifoldEdges?.totalCount ?? 0) >
+      0
+    ) {
+      <p class="issue-legend">
+        <span class="open-edge">Amber/orange</span> = open edges.
+        <span class="non-manifold-edge">Magenta/purple</span> = non-manifold
+        edges.
+      </p>
+      @if (
+        (issues.openEdges?.totalCount ?? 0) > 0 &&
+        (issues.openEdges?.returnedCount ?? 0) > 0
+      ) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="showOpenEdges()"
+            (change)="setOpenEdges($event)"
+          />
+          Open edges ({{ issues.openEdges?.totalCount ?? 0 }})</label
+        >
+      } @else if ((issues.openEdges?.totalCount ?? 0) > 0) {
+        <p>
+          Open edges were found, but no usable location samples were returned.
+        </p>
+      } @else {
+        <p class="issue-zero">No open edges found.</p>
+      }
+      @if (
+        (issues.nonManifoldEdges?.totalCount ?? 0) > 0 &&
+        (issues.nonManifoldEdges?.returnedCount ?? 0) > 0
+      ) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="showNonManifoldEdges()"
+            (change)="setNonManifoldEdges($event)"
+          />
+          Non-manifold edges ({{
+            issues.nonManifoldEdges?.totalCount ?? 0
+          }})</label
+        >
+      } @else if ((issues.nonManifoldEdges?.totalCount ?? 0) > 0) {
+        <p>
+          Non-manifold edges were found, but no usable location samples were
+          returned.
+        </p>
+      } @else {
+        <p class="issue-zero">No non-manifold edges found.</p>
+      }
+      @if (showOpenEdges() || showNonManifoldEdges()) {
+        <button class="button" type="button" (click)="clearHighlights()">
+          Clear highlights
+        </button>
+      }
+      @if (showOpenEdges() && issues.openEdges?.truncated) {
+        <p>
+          Showing the first {{ issues.openEdges?.returnedCount }} of
+          {{ issues.openEdges?.totalCount }} highlighted edges.
+        </p>
+      }
+      @if (showNonManifoldEdges() && issues.nonManifoldEdges?.truncated) {
+        <p>
+          Showing the first {{ issues.nonManifoldEdges?.returnedCount }} of
+          {{ issues.nonManifoldEdges?.totalCount }} highlighted edges.
+        </p>
+      }
+    } @else {
+      <p>No open or non-manifold edges were found in this model.</p>
+    }
+  } @else {
+    <p>
+      Issue counts are available in the report, but it has no locatable edge
+      samples.
+    </p>
+  }
+  @if (error(); as message) {
+    <p class="error" role="alert">{{ message }}</p>
+  }
+</section>

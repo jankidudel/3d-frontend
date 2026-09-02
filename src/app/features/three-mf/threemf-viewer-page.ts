@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   ElementRef,
   inject,
   PLATFORM_ID,
@@ -9,9 +10,18 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { unzipSync } from 'fflate';
+import { Subscription } from 'rxjs';
+import { JobsService } from '../../core/api/jobs.service';
+import { JobCreationService } from '../../core/api/job-creation.service';
+import { pollJob } from '../../core/api/job-polling';
+import { createAndUploadThreeMfJob } from '../../core/api/three-mf-job-workflow';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
+import { Job, JobStatus } from '../../models/job';
+import { MeshQualityReport } from '../../models/mesh-quality-report';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
+import { ViewerIssueLine } from '../shared/object-viewer/object-viewer';
+import { MeshIssueHighlightsComponent } from '../shared/mesh-issue-highlights/mesh-issue-highlights';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 
@@ -26,11 +36,12 @@ interface ModelInfo {
   readonly depth: number;
   readonly object: import('three').Object3D;
   readonly extent: number;
+  readonly centre: readonly [number, number, number];
 }
 
 @Component({
   selector: 'app-three-mf-viewer-page',
-  imports: [ObjectViewerComponent, RouterLink],
+  imports: [ObjectViewerComponent, MeshIssueHighlightsComponent, RouterLink],
   templateUrl: './threemf-viewer-page.html',
   styleUrl: './threemf-viewer-page.scss',
 })
@@ -41,8 +52,16 @@ export class ThreeMfViewerPage {
   readonly model = signal<ModelInfo | null>(null);
   readonly loading = signal(false);
   readonly webglUnavailable = signal(false);
+  readonly analyzingIssues = signal(false);
+  readonly issueAnalysisError = signal('');
+  readonly issueReport = signal<MeshQualityReport | null>(null);
+  readonly issueLines = signal<readonly ViewerIssueLine[]>([]);
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly seo = inject(SeoService);
+  private readonly jobs = inject(JobsService);
+  private readonly jobCreation = inject(JobCreationService);
+  private readonly destroyRef = inject(DestroyRef);
+  private issuePolling?: Subscription;
 
   constructor() {
     this.seo.apply({
@@ -52,6 +71,7 @@ export class ThreeMfViewerPage {
         'Open a 3MF file locally in your browser. Rotate, zoom and inspect its build geometry, declared units, dimensions and triangle count.',
       path: PublicRouteUrl.ThreeMfViewer,
     });
+    this.destroyRef.onDestroy(() => this.issuePolling?.unsubscribe());
   }
 
   openPicker(): void {
@@ -79,9 +99,46 @@ export class ThreeMfViewerPage {
     event.preventDefault();
   }
 
+  analyzeIssues(): void {
+    const file = this.sourceFile;
+    if (!file || this.analyzingIssues()) return;
+    this.issueAnalysisError.set('');
+    this.analyzingIssues.set(true);
+    let createdJob: Job | null = null;
+    createAndUploadThreeMfJob(this.jobCreation, this.jobs, file, (job) => {
+      createdJob = job;
+    }).subscribe({
+      next: () => {
+        if (!createdJob) {
+          this.analysisFailed(
+            'We could not start issue analysis. Please try again.',
+          );
+          return;
+        }
+        this.issuePolling?.unsubscribe();
+        this.issuePolling = pollJob(this.jobs, createdJob.id).subscribe({
+          next: (job) => this.receiveIssueJob(job),
+          error: () =>
+            this.analysisFailed(
+              'We could not retrieve issue analysis. Please try again.',
+            ),
+        });
+      },
+      error: () =>
+        this.analysisFailed(
+          'We could not start issue analysis. Please try again.',
+        ),
+    });
+  }
+
   private async load(file: File): Promise<void> {
+    this.issuePolling?.unsubscribe();
+    this.issuePolling = undefined;
     this.error.set('');
     this.model.set(null);
+    this.issueReport.set(null);
+    this.issueAnalysisError.set('');
+    this.issueLines.set([]);
     if (!this.browser) {
       return;
     }
@@ -121,6 +178,7 @@ export class ThreeMfViewerPage {
       const centre = bounds.getCenter(new three.Vector3());
       group.position.sub(centre);
       group.updateMatrixWorld(true);
+      this.sourceFile = file;
       this.model.set({
         name: file.name,
         size: file.size,
@@ -132,6 +190,7 @@ export class ThreeMfViewerPage {
         depth: size.z,
         object: group,
         extent: Math.max(size.x, size.y, size.z),
+        centre: [centre.x, centre.y, centre.z],
       });
     } catch {
       this.model.set(null);
@@ -143,6 +202,24 @@ export class ThreeMfViewerPage {
     } finally {
       this.loading.set(false);
     }
+  }
+
+  private sourceFile: File | null = null;
+
+  private receiveIssueJob(job: Job): void {
+    if (job.status === JobStatus.Completed) {
+      this.issueReport.set(job.report ?? null);
+      this.analyzingIssues.set(false);
+    } else if (job.status === JobStatus.Failed) {
+      this.analysisFailed(
+        'Issue analysis did not complete. You can try again.',
+      );
+    }
+  }
+
+  private analysisFailed(message: string): void {
+    this.analyzingIssues.set(false);
+    this.issueAnalysisError.set(message);
   }
 
   private declaredUnit(data: ArrayBuffer): string {

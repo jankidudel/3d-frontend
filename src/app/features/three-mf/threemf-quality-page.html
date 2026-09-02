@@ -119,6 +119,14 @@
         <p>
           Multiple build items are supported and are not necessarily errors.
         </p>
+        <p>
+          Visual markers show sampled issue edges in the resolved print build;
+          very large issue sets may be capped. To inspect them, upload the same
+          file in the Viewer and choose issue analysis.
+        </p>
+        <a class="button button-secondary" [routerLink]="routeUrl.ThreeMfViewer"
+          >Inspect problem areas in 3D</a
+        >
         <section class="issues" aria-labelledby="issues-title">
           <h3 id="issues-title">Validation issues</h3>
           @if (validationIsValid(value) && issues(value).length === 0) {

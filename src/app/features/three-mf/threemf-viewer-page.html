@@ -45,9 +45,19 @@
       <app-object-viewer
         [object]="current.object"
         [extent]="current.extent"
+        [issueLines]="issueLines()"
         ariaLabel="3D 3MF build geometry viewer"
         (chooseAnother)="openPicker()"
         (renderFailed)="onRenderFailed()"
+      />
+      <app-mesh-issue-highlights
+        [report]="issueReport()"
+        [centre]="current.centre"
+        [analyzing]="analyzingIssues()"
+        [error]="issueAnalysisError()"
+        analysisDescription="Locate sampled open and non-manifold edges in the resolved print build. Analysis securely uploads this file to the 3MF Quality Checker flow; viewing remains local until you choose this action."
+        (analyzeRequested)="analyzeIssues()"
+        (linesChange)="issueLines.set($event)"
       />
       <aside class="card model-info">
         <h2 id="model-title">Displayed build geometry</h2>

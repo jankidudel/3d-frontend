@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  grid-area: issues;
+}
+
+.card {
+  padding: 1.5rem;
+}
+
+h2 {
+  margin: 0 0 0.875rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+.error {
+  margin: 1rem 0 0;
+}
+
+.issue-zero {
+  color: var(--muted);
+}
+
+label {
+  display: block;
+  margin: 0.625rem 0;
+}
+
+.button {
+  margin-top: 0.625rem;
+}
+
+.issue-legend {
+  color: #34495e;
+}
+
+.open-edge {
+  color: #9a6500;
+  font-weight: 700;
+}
+
+.non-manifold-edge {
+  color: #8a3970;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 1.25rem;
+  }
+}
