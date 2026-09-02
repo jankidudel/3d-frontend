@@ -24,13 +24,15 @@
             </article>
           }
         </div>
+        <p>
+          <a
+            class="button button-secondary"
+            [routerLink]="group.exploreRoute"
+            >{{ group.homeLinkText }}</a
+          >
+        </p>
       </section>
     }
   </section>
-  <p>
-    <a class="button button-secondary" [routerLink]="routeUrl.Tools"
-      >View all STL tools</a
-    >
-  </p>
   <p><a [routerLink]="routeUrl.AllTools">All tools</a></p>
 </main>

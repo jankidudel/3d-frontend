@@ -9,6 +9,7 @@ export interface HomeTool {
 export interface HomeToolGroup {
   readonly exploreLinkText: string;
   readonly exploreRoute: string;
+  readonly homeLinkText: string;
   readonly id: string;
   readonly intro: string;
   readonly title: string;
@@ -19,6 +20,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
   {
     exploreLinkText: 'Explore all STL tools',
     exploreRoute: PublicRouteUrl.Tools,
+    homeLinkText: 'View all STL tools',
     id: 'stl-tools',
     intro:
       'Check the quality, shape, dimensions and material-volume estimates of STL models before printing.',
@@ -93,6 +95,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
   {
     exploreLinkText: 'Explore all 3MF tools',
     exploreRoute: PublicRouteUrl.ThreeMfTools,
+    homeLinkText: 'View all 3MF tools',
     id: '3mf-tools',
     intro:
       'Check 3MF mesh quality, declared units and build-item geometry before slicing.',

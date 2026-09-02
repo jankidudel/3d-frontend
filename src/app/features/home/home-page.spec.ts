@@ -44,6 +44,7 @@ describe('HomePage', () => {
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
       '/stl-to-3mf-converter',
+      '/stl-tools',
       '/3mf-viewer',
       '/3mf-quality-checker',
       '/3mf-watertight-checker',
@@ -52,7 +53,7 @@ describe('HomePage', () => {
       '/3mf-dimensions-checker',
       '/3mf-volume-calculator',
       '/3mf-to-stl-converter',
-      '/stl-tools',
+      '/3mf-tools',
       '/tools',
     ]);
   });
