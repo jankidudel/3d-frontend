@@ -80,6 +80,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         route: PublicRouteUrl.VolumeCalculator,
         cta: 'Calculate STL volume',
       },
+      {
+        icon: '⇄',
+        title: 'STL to 3MF Converter',
+        description:
+          'Convert an STL into a basic 3MF locally and choose the unit for its existing coordinates.',
+        route: PublicRouteUrl.StlToThreeMfConverter,
+        cta: 'Convert STL to 3MF',
+      },
     ],
   },
   {
@@ -145,6 +153,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
           'Calculate resolved 3MF build volume and estimate solid-model material weight.',
         route: PublicRouteUrl.ThreeMfVolumeCalculator,
         cta: 'Calculate 3MF volume',
+      },
+      {
+        icon: '⇄',
+        title: '3MF to STL Converter',
+        description:
+          'Export resolved 3MF build geometry as one binary STL locally in your browser.',
+        route: PublicRouteUrl.ThreeMfToStlConverter,
+        cta: 'Convert 3MF to STL',
       },
     ],
   },

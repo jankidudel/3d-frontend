@@ -26,6 +26,11 @@ describe('3MF public routes', () => {
         (route) => route.path === PublicRoutePath.ThreeMfManifoldChecker,
       ),
     ).toBe(true);
+    expect(
+      routes.some(
+        (route) => route.path === PublicRoutePath.ThreeMfToStlConverter,
+      ),
+    ).toBe(true);
   });
 
   it('prerenders all 3MF pages', () => {
@@ -49,6 +54,10 @@ describe('3MF public routes', () => {
         }),
         expect.objectContaining({
           path: PublicRoutePath.ThreeMfManifoldChecker,
+          renderMode: RenderMode.Prerender,
+        }),
+        expect.objectContaining({
+          path: PublicRoutePath.ThreeMfToStlConverter,
           renderMode: RenderMode.Prerender,
         }),
       ]),

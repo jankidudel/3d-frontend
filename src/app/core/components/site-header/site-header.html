@@ -91,6 +91,11 @@
             [route]="routePath.VolumeCalculator"
             (selected)="closeMenus()"
           />
+          <app-menu-link
+            label="STL to 3MF Converter"
+            [route]="routePath.StlToThreeMfConverter"
+            (selected)="closeMenus()"
+          />
         </div>
         <div class="tools-menu-group">
           <app-menu-link
@@ -132,6 +137,11 @@
           <app-menu-link
             label="3MF Volume Calculator"
             [route]="routePath.ThreeMfVolumeCalculator"
+            (selected)="closeMenus()"
+          />
+          <app-menu-link
+            label="3MF to STL Converter"
+            [route]="routePath.ThreeMfToStlConverter"
             (selected)="closeMenus()"
           />
         </div>

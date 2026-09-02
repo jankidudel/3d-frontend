@@ -69,6 +69,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.StlToThreeMfConverter,
+    loadComponent: () =>
+      import('./features/converters/local-converter-page').then(
+        (m) => m.StlToThreeMfConverterPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ThreeMfTools,
     loadComponent: () =>
       import('./features/three-mf/threemf-tools-page').then(
@@ -122,6 +129,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/three-mf/threemf-volume-page').then(
         (m) => m.ThreeMfVolumePage,
+      ),
+  },
+  {
+    path: PublicRoutePath.ThreeMfToStlConverter,
+    loadComponent: () =>
+      import('./features/converters/local-converter-page').then(
+        (m) => m.ThreeMfToStlConverterPage,
       ),
   },
   {

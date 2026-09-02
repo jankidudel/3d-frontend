@@ -31,6 +31,7 @@ describe('App', () => {
       '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/stl-to-3mf-converter',
       '/3mf-tools',
       '/3mf-viewer',
       '/3mf-quality-checker',
@@ -39,6 +40,7 @@ describe('App', () => {
       '/3mf-triangle-counter',
       '/3mf-dimensions-checker',
       '/3mf-volume-calculator',
+      '/3mf-to-stl-converter',
     ]);
   });
 
@@ -66,6 +68,7 @@ describe('App', () => {
       'STL Triangle Counter',
       'STL Dimensions Checker',
       'STL Volume Calculator',
+      'STL to 3MF Converter',
       '3MF tools',
       '3MF Viewer',
       '3MF Quality Checker',
@@ -74,6 +77,7 @@ describe('App', () => {
       '3MF Triangle Counter',
       '3MF Dimensions Checker',
       '3MF Volume Calculator',
+      '3MF to STL Converter',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
@@ -85,6 +89,7 @@ describe('App', () => {
       '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/stl-to-3mf-converter',
       '/3mf-tools',
       '/3mf-viewer',
       '/3mf-quality-checker',
@@ -93,6 +98,7 @@ describe('App', () => {
       '/3mf-triangle-counter',
       '/3mf-dimensions-checker',
       '/3mf-volume-calculator',
+      '/3mf-to-stl-converter',
     ]);
   });
 });

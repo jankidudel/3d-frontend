@@ -16,6 +16,10 @@ export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.TriangleCounter, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.VolumeCalculator, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Viewer, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.StlToThreeMfConverter,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.ThreeMfTools, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.ThreeMfViewer, renderMode: RenderMode.Prerender },
   {
@@ -40,6 +44,10 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: PublicRoutePath.ThreeMfVolumeCalculator,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.ThreeMfToStlConverter,
     renderMode: RenderMode.Prerender,
   },
   { path: PublicRoutePath.Guides, renderMode: RenderMode.Prerender },

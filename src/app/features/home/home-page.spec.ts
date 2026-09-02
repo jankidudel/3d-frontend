@@ -43,6 +43,7 @@ describe('HomePage', () => {
       '/stl-triangle-counter',
       '/stl-dimensions-checker',
       '/stl-volume-calculator',
+      '/stl-to-3mf-converter',
       '/3mf-viewer',
       '/3mf-quality-checker',
       '/3mf-watertight-checker',
@@ -50,6 +51,7 @@ describe('HomePage', () => {
       '/3mf-triangle-counter',
       '/3mf-dimensions-checker',
       '/3mf-volume-calculator',
+      '/3mf-to-stl-converter',
       '/stl-tools',
       '/tools',
     ]);

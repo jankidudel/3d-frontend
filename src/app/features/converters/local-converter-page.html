@@ -1,0 +1,161 @@
+<main class="page converter-page">
+  <p class="eyebrow">{{ eyebrow }}</p>
+  <h1>{{ title }}</h1>
+  @if (kind === 'stl-to-3mf') {
+    <p class="lead">
+      Create a basic, standards-compliant 3MF from STL geometry without
+      uploading your file.
+    </p>
+  } @else {
+    <p class="lead">
+      Export the final resolved geometry of a 3MF build as one binary STL
+      without uploading your file.
+    </p>
+  }
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">
+      Choose {{ kind === 'stl-to-3mf' ? 'an STL' : 'a 3MF' }} file
+    </h2>
+    <p class="privacy">
+      <strong
+        >Converted locally in your browser — your file is not uploaded.</strong
+      >
+    </p>
+    <p>
+      Files must be 25 MiB or smaller so conversion remains safe for this
+      browser.
+    </p>
+    <input
+      #picker
+      class="visually-hidden"
+      type="file"
+      [accept]="kind === 'stl-to-3mf' ? '.stl' : '.3mf'"
+      (change)="onPicker($event)"
+    />
+    <div
+      class="drop-zone"
+      tabindex="0"
+      role="button"
+      (click)="openPicker()"
+      (keydown.enter)="openPicker()"
+      (keydown.space)="openPicker()"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+    >
+      <strong>Drag and drop a file here, or choose a file</strong>
+    </div>
+    @if (file(); as selected) {
+      <p>
+        <strong>Selected:</strong> {{ selected.name }} ({{
+          format(selected.size / 1024 / 1024)
+        }}
+        MiB)
+      </p>
+    }
+    @if (kind === 'stl-to-3mf') {
+      <label for="output-unit">The STL coordinates represent</label>
+      <select
+        id="output-unit"
+        (change)="setUnit($event)"
+        [disabled]="converting()"
+      >
+        @for (unit of outputUnits; track unit) {
+          <option [value]="unit" [selected]="outputUnit() === unit">
+            {{ unitLabel(unit) }}
+          </option>
+        }
+      </select>
+      <p>
+        This declares what the existing STL coordinates mean; it does not resize
+        the model.
+      </p>
+    }
+    <button
+      class="button submit"
+      type="button"
+      [disabled]="!file() || converting()"
+      (click)="convert()"
+    >
+      {{
+        converting()
+          ? 'Converting locally…'
+          : kind === 'stl-to-3mf'
+            ? 'Convert STL to 3MF'
+            : 'Convert 3MF to STL'
+      }}
+    </button>
+    @if (status()) {
+      <p aria-live="polite">{{ status() }}</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert" aria-live="assertive">{{ error() }}</p>
+    }
+  </section>
+  @if (result(); as conversion) {
+    <section
+      class="results card"
+      aria-live="polite"
+      aria-labelledby="result-title"
+    >
+      <h2 id="result-title">Conversion complete</h2>
+      <dl class="metrics">
+        @if (kind === 'stl-to-3mf') {
+          <div>
+            <dt>Output unit</dt>
+            <dd>{{ unitLabel(conversion.unit!) }}</dd>
+          </div>
+        } @else {
+          <div>
+            <dt>Source declared unit</dt>
+            <dd>{{ conversion.sourceUnit }}</dd>
+          </div>
+        }
+        <div>
+          <dt>Resolved triangles</dt>
+          <dd>{{ format(conversion.triangles) }}</dd>
+        </div>
+        @if (conversion.dimensions; as dimensions) {
+          <div>
+            <dt>Final dimensions</dt>
+            <dd>
+              {{ format(dimensions[0]) }} × {{ format(dimensions[1]) }} ×
+              {{ format(dimensions[2]) }}
+            </dd>
+          </div>
+        }
+      </dl>
+    </section>
+  }
+  <section class="content">
+    @if (kind === 'stl-to-3mf') {
+      <h2>What this conversion keeps</h2>
+      <p>
+        STL stores geometry but no units or slicer settings. This converter
+        creates a basic 3MF with the geometry and the unit you choose; it cannot
+        recover print settings, materials or colours that were never in the STL.
+      </p>
+      <p>
+        <a [routerLink]="guideUrl">Read how to convert STL to 3MF</a> ·
+        <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a>
+      </p>
+    } @else {
+      <h2>Keep the original 3MF</h2>
+      <p>
+        <strong
+          >3MF to STL is a geometry-only export. Keep the original 3MF if you
+          need its units, separate build items, colours, materials or print
+          settings.</strong
+        >
+      </p>
+      <p>
+        Where a file has multiple build items, this export becomes one resolved
+        STL mesh. The original editable assembly cannot be reconstructed from
+        it.
+      </p>
+      <p>
+        <a [routerLink]="guideUrl">Read how to convert 3MF to STL</a> ·
+        <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a>
+      </p>
+    }
+  </section>
+</main>

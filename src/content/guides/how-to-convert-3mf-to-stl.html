@@ -1,0 +1,67 @@
+---
+title: 'How to Convert 3MF to STL for 3D Printing | InspectMesh'
+description: Learn how to export a 3MF model as an STL, what happens to build items and units, and which 3MF information is lost in a geometry-only STL export.
+slug: how-to-convert-3mf-to-stl
+eyebrow: 3MF conversion guide
+heading: How to Convert 3MF to STL for 3D Printing
+faq:
+  - question: Is converting 3MF to STL less accurate?
+    answer: The resolved triangle geometry can be exported accurately, but STL is less complete because it cannot retain 3MF units, colours, materials, print settings or build-item structure.
+  - question: Will a 3MF with several parts become several STL files?
+    answer: This converter exports the resolved print build as one STL mesh. Keep the original 3MF if you need its separate parts or assembly structure.
+  - question: Should I keep the original 3MF file?
+    answer: Yes. Keep it whenever you may need its declared units, metadata, colours, materials, separate build items or slicer settings later.
+---
+
+<p class="lead">
+  Exporting a 3MF to STL can help with older or geometry-only workflows, but STL
+  is a less complete container than the source 3MF.
+</p>
+<h2>When an STL export helps</h2>
+<p>
+  Some modelling, repair or legacy printing workflows accept STL more readily
+  than 3MF. The
+  <a href="/3mf-to-stl-converter">3MF to STL Converter</a> resolves supported
+  build geometry in your browser and produces one binary STL.
+</p>
+<h2>Convert the resolved print build</h2>
+<ol>
+  <li>Choose one 3MF file in the converter.</li>
+  <li>
+    Wait while its mesh objects, components, repeated items and transforms are
+    resolved locally.
+  </li>
+  <li>Download the resulting STL.</li>
+  <li>
+    Open it in the <a href="/stl-viewer">STL Viewer</a> and compare its final
+    dimensions and triangle count with the source build.
+  </li>
+</ol>
+<h2>Geometry preservation versus information loss</h2>
+<p>
+  The resolved triangle geometry can be exported accurately for supported
+  geometry. The limitation is completeness, not a general loss of geometric
+  accuracy: STL cannot retain declared units, colours, materials, metadata,
+  slicer or printer settings, component structure, build-item structure or
+  separate part identity.
+</p>
+<h2>One resolved mesh</h2>
+<p>
+  A 3MF can contain repeated, translated or rotated build items and component
+  references. This converter applies those placements and exports one resolved
+  STL mesh. It does not create separate STL files or preserve an editable
+  assembly.
+</p>
+<h2>Keep the original 3MF</h2>
+<p>
+  <strong
+    >3MF to STL is a geometry-only export. Keep the original 3MF if you need its
+    units, separate build items, colours, materials or print settings.</strong
+  >
+</p>
+<p>
+  <a href="/3mf-to-stl-converter"
+    ><strong>Convert 3MF to STL locally</strong></a
+  >
+  · <a href="/3mf-viewer">Open a 3MF in the Viewer</a>
+</p>

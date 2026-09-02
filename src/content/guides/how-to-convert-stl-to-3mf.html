@@ -1,0 +1,70 @@
+---
+title: 'How to Convert STL to 3MF for 3D Printing | InspectMesh'
+description: Learn how to convert an STL file to a basic 3MF, choose the correct output unit and understand which information an STL cannot provide.
+slug: how-to-convert-stl-to-3mf
+eyebrow: 3MF conversion guide
+heading: How to Convert STL to 3MF for 3D Printing
+faq:
+  - question: Does converting STL to 3MF improve model quality?
+    answer: No. Conversion preserves the existing mesh geometry; it cannot add detail or repair problems already present in the STL.
+  - question: Which unit should I choose when converting an STL?
+    answer: Choose the unit that the STL coordinates were originally intended to represent, commonly millimetres for 3D printing. Check the resulting dimensions before slicing.
+  - question: Does an STL to 3MF conversion include print settings?
+    answer: No. STL files do not contain slicer settings, material data or colours to carry into the new 3MF.
+---
+
+<p class="lead">
+  Converting an STL to 3MF can make the intended unit explicit for compatible
+  slicers, but it does not turn a geometry-only file into a complete print
+  project.
+</p>
+<h2>Why convert an STL to 3MF?</h2>
+<p>
+  STL is widely supported, but it stores triangles without declaring whether
+  their coordinates represent millimetres, inches or another unit. A basic 3MF
+  can declare that unit. This is useful when a receiving application understands
+  3MF and you want to reduce ambiguity about scale.
+</p>
+<h2>Identify the intended STL scale</h2>
+<p>
+  Start with the model’s documentation, CAD source or known intended
+  measurement. Millimetres are common for desktop printing, but they are not
+  guaranteed. Use the
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to compare the
+  coordinates with the expected physical size before selecting a unit.
+</p>
+<h2>Convert locally in your browser</h2>
+<ol>
+  <li>Open the <a href="/stl-to-3mf-converter">STL to 3MF Converter</a>.</li>
+  <li>Choose or drag in one ASCII or binary STL file.</li>
+  <li>Select the unit the existing coordinates were intended to represent.</li>
+  <li>Convert and download the generated 3MF.</li>
+  <li>
+    Open it in the <a href="/3mf-viewer">3MF Viewer</a> and check its dimensions
+    before slicing.
+  </li>
+</ol>
+<h2>What the conversion preserves</h2>
+<p>
+  The generated 3MF contains the same triangle geometry and your chosen unit
+  declaration. Choosing a unit describes existing coordinates; it does not
+  automatically resize them. Conversion cannot add detail, repair defects or
+  infer information absent from the STL.
+</p>
+<h2>What STL cannot provide</h2>
+<p>
+  STL has no slicer settings, material assignments, colours or print profile to
+  transfer. The result is deliberately a basic 3MF mesh, not a recovered
+  original design or print setup.
+</p>
+<h2>Keep the original STL</h2>
+<p>
+  Keep the source STL as well as the converted file, especially when you may
+  need to compare imports, retry a different unit or trace the source geometry
+  later.
+</p>
+<p>
+  <a href="/stl-to-3mf-converter"
+    ><strong>Convert STL to 3MF locally</strong></a
+  >
+</p>

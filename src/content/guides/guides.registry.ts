@@ -134,4 +134,16 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 80,
     enabled: true,
   },
+  {
+    slug: 'how-to-convert-stl-to-3mf',
+    group: GuideGroupId.ThreeMf,
+    order: 90,
+    enabled: true,
+  },
+  {
+    slug: 'how-to-convert-3mf-to-stl',
+    group: GuideGroupId.ThreeMf,
+    order: 100,
+    enabled: true,
+  },
 ];

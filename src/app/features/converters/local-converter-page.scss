@@ -1,0 +1,29 @@
+@use '../shared/model-checker-page.scss';
+
+.drop-zone {
+  border: 2px dashed var(--border-color, #8a97a5);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin: 1rem 0;
+  padding: 1.5rem;
+  text-align: center;
+}
+.drop-zone:focus-visible {
+  outline: 3px solid var(--focus-color, #155eef);
+  outline-offset: 3px;
+}
+.privacy {
+  color: #116329;
+}
+.visually-hidden {
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+  clip: rect(0 0 0 0);
+}
+select {
+  display: block;
+  margin: 0.5rem 0 1rem;
+  min-height: 2.5rem;
+}
