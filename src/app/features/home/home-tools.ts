@@ -46,7 +46,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '✦',
         title: 'STL Repair Tool',
         description:
-          'Safely remove duplicate and degenerate triangles, and correct simple orientation issues.',
+          'Clean duplicate and degenerate triangles, and correct simple orientation issues before checking the STL again.',
         route: PublicRouteUrl.StlRepair,
         cta: 'Clean an STL safely',
       },
@@ -158,7 +158,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Measure a 3MF file',
       },
       {
-        icon: '◒',
+        icon: '◈',
         title: '3MF Volume Calculator',
         description:
           'Calculate resolved 3MF build volume and estimate solid-model material weight.',
