@@ -1,0 +1,104 @@
+<main class="page quality-page">
+  <p class="eyebrow">Safe STL cleanup</p>
+  <h1>STL Repair Tool</h1>
+  <p class="lead">
+    Remove duplicate and degenerate triangles, and correct simple orientation
+    issues before checking your STL again.
+  </p>
+  <section class="upload card">
+    <h2>Upload an STL to clean safely</h2>
+    <p>
+      InspectMesh safely cleans only certain STL issues. It cannot reliably fill
+      holes or repair every non-manifold model automatically.
+    </p>
+    <app-stl-file-picker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    /><button
+      class="button submit"
+      type="button"
+      (click)="repair()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job...' : 'Clean STL safely' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section class="results card" aria-live="polite">
+      @if (processing() || timedOut()) {
+        <app-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="timedOut()"
+          [refreshing]="refreshing()"
+          headingId="repair-result"
+          (refresh)="refresh()"
+        />
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="repair-result">Safe cleanup could not run</h2>
+        <p class="error" role="alert">
+          The file could not be processed safely.
+        </p>
+      } @else if (report(); as repairReport) {
+        <h2 id="repair-result">Safe cleanup result</h2>
+        @if (repairReport.hasCleanedFile) {
+          <p class="success" role="status">
+            <strong>{{
+              repairReport.isFullyValid
+                ? 'Safe cleanup completed and the output passed validation.'
+                : 'Safe cleanup made changes, but the model still has issues.'
+            }}</strong>
+          </p>
+          <dl>
+            <div>
+              <dt>Duplicate triangles removed</dt>
+              <dd>{{ repairReport.duplicateTrianglesRemoved ?? 0 }}</dd>
+            </div>
+            <div>
+              <dt>Degenerate triangles removed</dt>
+              <dd>{{ repairReport.degenerateTrianglesRemoved ?? 0 }}</dd>
+            </div>
+            <div>
+              <dt>Orientation corrections</dt>
+              <dd>{{ repairReport.orientationsCorrected ?? 0 }}</dd>
+            </div>
+          </dl>
+          <p>
+            <a
+              class="button"
+              [href]="'/api/v1/jobs/' + currentJob.id + '/cleaned-stl'"
+              >Download cleaned STL</a
+            >
+          </p>
+          <p>
+            Upload the cleaned file to
+            <a [routerLink]="routeUrl.QualityCheck">check it again</a>.
+          </p>
+        } @else {
+          <p class="warning" role="status">
+            <strong
+              >No safe automatic repair was available for this file.</strong
+            >
+          </p>
+        }
+        @for (reason of repairReport.skippedReasons ?? []; track reason) {
+          <p>{{ reason }}</p>
+        }
+      }
+    </section>
+  }
+  <section class="content">
+    <p>
+      Read
+      <a href="/how-to-repair-an-stl-file"
+        >How to Repair an STL File for 3D Printing</a
+      >,
+      <a [routerLink]="routeUrl.ManifoldChecker">check non-manifold geometry</a
+      >, or
+      <a [routerLink]="routeUrl.WatertightChecker">check for open edges</a>.
+    </p>
+  </section>
+</main>

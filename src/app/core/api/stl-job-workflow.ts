@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { Job } from '../../models/job';
+import { JobOperation } from '../../models/job-operation';
 import { JobsService } from './jobs.service';
 import { StlJobService } from './stl-job.service';
 import { pollJob } from './job-polling';
@@ -17,6 +18,21 @@ export function createAndUploadStlJob(
   onCreated: (job: Job) => void,
 ): Observable<void> {
   return createAndUploadFormatJob(stlJobs, jobs, file, onCreated);
+}
+
+export function createAndUploadStlRepairJob(
+  stlJobs: StlJobService,
+  jobs: JobsService,
+  file: File,
+  onCreated: (job: Job) => void,
+): Observable<void> {
+  return createAndUploadFormatJob(
+    stlJobs,
+    jobs,
+    file,
+    onCreated,
+    JobOperation.SafeStlRepair,
+  );
 }
 
 export function pollStlJob(

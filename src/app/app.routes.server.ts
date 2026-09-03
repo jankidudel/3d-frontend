@@ -7,6 +7,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.AllTools, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Tools, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.QualityCheck, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.StlRepair, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.ManifoldChecker, renderMode: RenderMode.Prerender },
   {
     path: PublicRoutePath.WatertightChecker,

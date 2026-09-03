@@ -1,5 +1,6 @@
 import { Observable, switchMap, throwError } from 'rxjs';
 import { Job } from '../../models/job';
+import { JobOperation } from '../../models/job-operation';
 import { FormatJobService } from './format-job.service';
 import { JobsService } from './jobs.service';
 
@@ -10,9 +11,10 @@ export function createAndUploadFormatJob(
   jobs: JobsService,
   file: File,
   onCreated: (job: Job) => void,
+  operation?: JobOperation,
 ): Observable<void> {
   return formatJobs
-    .create({ fileName: file.name, fileSizeBytes: file.size })
+    .create({ fileName: file.name, fileSizeBytes: file.size, operation })
     .pipe(
       switchMap((job) => {
         onCreated(job);

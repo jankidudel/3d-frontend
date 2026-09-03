@@ -27,6 +27,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.StlRepair,
+    loadComponent: () =>
+      import('./features/stl-repair/stl-repair-page').then(
+        (m) => m.StlRepairPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ManifoldChecker,
     loadComponent: () =>
       import('./features/stl-manifold/stl-manifold-page').then(

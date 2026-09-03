@@ -43,6 +43,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check STL quality',
       },
       {
+        icon: '✦',
+        title: 'STL Repair Tool',
+        description:
+          'Safely remove duplicate and degenerate triangles, and correct simple orientation issues.',
+        route: PublicRouteUrl.StlRepair,
+        cta: 'Clean an STL safely',
+      },
+      {
         icon: '○',
         title: 'STL Watertight Checker',
         description:
