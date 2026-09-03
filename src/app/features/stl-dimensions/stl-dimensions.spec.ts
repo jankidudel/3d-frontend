@@ -1,4 +1,5 @@
 import {
+  assessPrinterOrientations,
   calculateBuildVolumeFit,
   calculateRightAngleRotationFits,
   calculateScale,
@@ -252,5 +253,42 @@ describe('STL dimension calculations', () => {
 
     expect(candidates.every((candidate) => !candidate.fit.fits)).toBe(true);
     expect(candidates[0].fit.maximumScalePercentage).toBeCloseTo(90);
+  });
+
+  it('recommends the fitting orientation with the greatest minimum clearance', () => {
+    const assessment = assessPrinterOrientations(
+      { width: 10, height: 20, depth: 30 },
+      'mm',
+      { width: 35, height: 25, depth: 20 },
+      'mm',
+    );
+
+    expect(assessment?.current.fit.fits).toBe(false);
+    expect(assessment?.recommended?.axisSources).toEqual({
+      width: 'depth',
+      height: 'height',
+      depth: 'width',
+    });
+    expect(assessment?.recommended?.minimumClearance).toBe(5);
+  });
+
+  it('keeps the current orientation when clearance is tied and compares before rounding', () => {
+    const assessment = assessPrinterOrientations(
+      { width: 10.004, height: 10, depth: 10 },
+      'mm',
+      { width: 10.004, height: 10, depth: 10 },
+      'mm',
+    );
+
+    expect(assessment?.current.fit.fits).toBe(true);
+    expect(assessment?.recommended).toBe(assessment?.current);
+    expect(
+      assessPrinterOrientations(
+        { width: 10.004, height: 10, depth: 10 },
+        'mm',
+        { width: 10, height: 10, depth: 10 },
+        'mm',
+      )?.current.fit.fits,
+    ).toBe(false);
   });
 });

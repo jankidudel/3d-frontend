@@ -40,7 +40,9 @@ describe('ThreeMfDimensionsPage', () => {
 
     const text = fixture.nativeElement.textContent;
     expect(text).toContain('10 × 20 × 30');
-    expect(text).toContain('Fits after a 90° rotation');
+    expect(text).toContain(
+      'Does not fit in its current orientation, but it fits when rotated.',
+    );
     expect(text).toContain('30 × 20 × 10');
   });
 
@@ -53,7 +55,7 @@ describe('ThreeMfDimensionsPage', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain(
-      'No checked 90° orientation fits this volume',
+      'does not fit the selected printer in any tested 90-degree orientation',
     );
   });
 });

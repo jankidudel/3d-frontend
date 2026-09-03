@@ -27,6 +27,12 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-rotate-a-3d-model-to-fit-your-printer',
+    group: GuideGroupId.General,
+    order: 20,
+    enabled: true,
+  },
+  {
     slug: 'how-to-check-if-a-3d-model-fits-your-printer',
     group: GuideGroupId.General,
     order: 10,

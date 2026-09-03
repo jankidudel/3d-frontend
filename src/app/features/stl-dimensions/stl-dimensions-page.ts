@@ -25,7 +25,7 @@ import { jobFailureMessage } from '../../models/job-failure';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
 import {
   calculateBuildVolumeFit,
-  calculateRightAngleRotationFits,
+  assessPrinterOrientations,
   calculateScale,
   convertLength,
   DimensionAxis,
@@ -149,22 +149,17 @@ export class StlDimensionsPage {
   readonly buildVolumeInvalid = computed(
     () => this.buildVolumeTouched() && this.buildVolumeFit() === null,
   );
-  readonly rotationFit = computed(() => {
-    if (this.buildVolumeFit()?.fits) {
-      return null;
-    }
+  readonly printerOrientations = computed(() => {
     const dimensions = this.rawDimensions();
     const volume = this.buildVolume();
     if (!dimensions || !volume) {
       return null;
     }
-    return (
-      calculateRightAngleRotationFits(
-        dimensions,
-        this.modelUnit(),
-        volume,
-        this.buildUnit(),
-      ).find((candidate) => candidate.fit.fits) ?? null
+    return assessPrinterOrientations(
+      dimensions,
+      this.modelUnit(),
+      volume,
+      this.buildUnit(),
     );
   });
   readonly validationIsValid = computed(() => {
@@ -296,12 +291,22 @@ export class StlDimensionsPage {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
   }
 
-  rotationRecommendation(): string {
-    const candidate = this.rotationFit();
-    if (!candidate) {
-      return '';
-    }
-    return `Fits if rotated so the current ${candidate.axisSources.width} becomes the printer's width, the current ${candidate.axisSources.height} becomes its height and the current ${candidate.axisSources.depth} becomes its depth.`;
+  orientationName(axisSources: Record<DimensionAxis, DimensionAxis>): string {
+    const names: Record<DimensionAxis, string> = {
+      width: 'width',
+      height: 'height',
+      depth: 'depth',
+    };
+    return `Place the current ${names[axisSources.width]} along the printer’s X axis, ${names[axisSources.height]} along Y and ${names[axisSources.depth]} along Z`;
+  }
+
+  limitingAxes(axes: readonly DimensionAxis[]): string {
+    const names: Record<DimensionAxis, string> = {
+      width: 'X',
+      height: 'Y',
+      depth: 'Z',
+    };
+    return axes.map((axis) => names[axis]).join(' and ');
   }
 
   trackScaleCalculation(): void {

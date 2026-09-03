@@ -181,13 +181,16 @@ describe('StlDimensionsPage', () => {
     fixture.detectChanges();
 
     const result = fixture.nativeElement.querySelector('.fit-result');
-    const table = fixture.nativeElement.querySelector('.fit-table');
+    const tables = fixture.nativeElement.querySelectorAll('.fit-table');
     expect(result.textContent).toContain('Does not fit at its current scale');
     expect(result.textContent).toContain('95.65%');
-    expect(table.textContent).toContain('Width');
-    expect(table.textContent).toContain('Depth');
-    expect(table.textContent).toContain('Exceeds by 10 mm');
-    expect(table.querySelectorAll('.exceeded')).toHaveLength(2);
+    expect(tables[1].textContent).toContain('Width');
+    expect(tables[1].textContent).toContain('Depth');
+    expect(tables[1].textContent).toContain('Exceeds by 10 mm');
+    expect(tables[1].querySelectorAll('.exceeded')).toHaveLength(2);
+    expect(fixture.nativeElement.textContent).toContain(
+      'does not fit the selected printer in any tested 90-degree orientation',
+    );
     expect(fixture.nativeElement.textContent).toContain(
       '220 × 181.739 × 248.696 mm',
     );

@@ -1,0 +1,80 @@
+---
+title: 'How to Rotate a 3D Model to Fit Your Printer | InspectMesh'
+description: Learn how changing a model’s 90-degree orientation can help it fit a 3D printer, how to compare dimensions, and when scaling is still necessary.
+slug: how-to-rotate-a-3d-model-to-fit-your-printer
+eyebrow: 3D printing fit guide
+heading: How to Rotate a 3D Model to Fit Your Printer
+faq:
+  - question: Can rotating a model make it fit a smaller 3D printer?
+    answer: Sometimes. A model that is too tall or too wide in its current orientation may fit when its dimensions are placed along different printer axes.
+  - question: Does rotating a model in a slicer change its size?
+    answer: No. Rotation changes which printer axis each model dimension uses, but it does not scale the model.
+  - question: Will every rotation be checked automatically?
+    answer: InspectMesh checks practical 90-degree orientations. An unusual angled rotation may fit differently, but it can also affect support needs, bed contact and print quality.
+---
+
+<p>
+  A model can be too tall when it stands upright but fit comfortably on its
+  side. Rotating it does not change its size: it changes which model dimension
+  uses the printer’s X, Y and Z axes.
+</p>
+
+<h2>Compare model dimensions with printer axes</h2>
+<p>
+  Printers describe a build volume as X × Y × Z. Your model is shown as width ×
+  height × depth. A fit needs each model dimension to be no larger than the
+  printer axis it is placed along. For example, moving a tall model’s height
+  onto the printer’s X axis can work when X is wider than Z is high.
+</p>
+
+<h2>Check practical 90-degree orientations in InspectMesh</h2>
+<p>
+  Upload the model and enter your printer’s usable build volume in the
+  appropriate Dimensions Checker. InspectMesh keeps the current-orientation
+  result, then compares the distinct practical 90-degree orientations. If
+  rotation helps, it names a recommended placement and shows the resulting
+  printer X × Y × Z dimensions. Open Compare orientations to see the other
+  tested choices.
+</p>
+<p><a href="/stl-dimensions-checker">Check an STL model’s dimensions</a></p>
+<p><a href="/3mf-dimensions-checker">Check a 3MF model’s dimensions</a></p>
+
+<h2>Apply the orientation in your slicer</h2>
+<ol>
+  <li>Import the model into your slicer.</li>
+  <li>
+    Choose the Rotate tool and use 90-degree turns to match the recommended axis
+    placement.
+  </li>
+  <li>
+    Recheck the slicer’s displayed X, Y and Z dimensions and confirm the model
+    remains inside the usable build area.
+  </li>
+  <li>Preview the slice before starting the print.</li>
+</ol>
+
+<h2>Fit is not the only orientation decision</h2>
+<p>
+  A placement that fits may still be a poor printing choice. A side-facing model
+  can need more supports, while another face may give better bed contact or
+  surface finish. Part strength can depend on layer direction, and a brim may
+  need extra room around the model. Check adhesion, supports, clamps and your
+  printer’s real usable area in the slicer.
+</p>
+
+<h2>When scaling is the better choice</h2>
+<p>
+  If no tested orientation fits, proportional scaling may be the right next
+  step. It reduces every dimension together, but it also changes the intended
+  size and can make thin features harder to print. Use the scaling controls to
+  calculate a size first; InspectMesh does not change or export your uploaded
+  model.
+</p>
+
+<h2>What this check does not cover</h2>
+<p>
+  InspectMesh checks practical right-angle, 90-degree orientations. It does not
+  exhaustively optimise arbitrary angled rotations. An angled placement may fit
+  differently, but it can change support needs, bed contact, print quality and
+  the reliability of the print. Confirm the final orientation in your slicer.
+</p>

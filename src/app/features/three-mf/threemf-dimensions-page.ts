@@ -20,7 +20,8 @@ import { Job, JobStatus } from '../../models/job';
 import { jobFailureMessageForFormat } from '../../models/job-failure';
 import {
   calculateBuildVolumeFit,
-  calculateRightAngleRotationFits,
+  assessPrinterOrientations,
+  DimensionAxis,
   ModelDimensions,
   ModelUnit,
 } from '../../shared/model-dimensions';
@@ -109,22 +110,17 @@ export class ThreeMfDimensionsPage {
   protected readonly buildVolumeInvalid = computed(
     () => this.buildVolumeTouched() && this.printerFit() === null,
   );
-  protected readonly rotationFit = computed(() => {
-    if (this.printerFit()?.fits) {
-      return null;
-    }
+  protected readonly printerOrientations = computed(() => {
     const dimensions = this.convertedDimensions()?.mm;
     const volume = this.buildVolume();
     if (!dimensions || !volume) {
       return null;
     }
-    return (
-      calculateRightAngleRotationFits(
-        dimensions,
-        'mm',
-        volume,
-        this.buildUnit(),
-      ).find((candidate) => candidate.fit.fits) ?? null
+    return assessPrinterOrientations(
+      dimensions,
+      'mm',
+      volume,
+      this.buildUnit(),
     );
   });
   protected readonly processing = computed(() => {
@@ -221,12 +217,24 @@ export class ThreeMfDimensionsPage {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
   }
 
-  protected rotationRecommendation(): string {
-    const candidate = this.rotationFit();
-    if (!candidate) {
-      return '';
-    }
-    return `Fits if rotated so the current ${candidate.axisSources.width} becomes the printer's width, the current ${candidate.axisSources.height} becomes its height and the current ${candidate.axisSources.depth} becomes its depth.`;
+  protected orientationName(
+    axisSources: Record<DimensionAxis, DimensionAxis>,
+  ): string {
+    const names: Record<DimensionAxis, string> = {
+      width: 'width',
+      height: 'height',
+      depth: 'depth',
+    };
+    return `Place the current ${names[axisSources.width]} along the printer’s X axis, ${names[axisSources.height]} along Y and ${names[axisSources.depth]} along Z`;
+  }
+
+  protected limitingAxes(axes: readonly DimensionAxis[]): string {
+    const names: Record<DimensionAxis, string> = {
+      width: 'X',
+      height: 'Y',
+      depth: 'Z',
+    };
+    return axes.map((axis) => names[axis]).join(' and ');
   }
 
   protected formatNumber(value: unknown): string {

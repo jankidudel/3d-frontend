@@ -323,29 +323,126 @@
               </div>
             </div>
 
-            @if (rotationFit(); as rotated) {
-              <div class="fit-result fit-result-success" role="status">
-                <div>
-                  <h4>Fits after a 90° rotation</h4>
-                  <p>{{ rotationRecommendation() }}</p>
-                  <p>
-                    <strong>Resulting W × H × D:</strong>
-                    {{ formatDimensions(rotated.dimensions) }} {{ buildUnit() }}
+            @if (printerOrientations(); as assessment) {
+              <section
+                class="printer-orientation"
+                aria-labelledby="orientation-title"
+              >
+                <h4 id="orientation-title">Printer fit and orientation</h4>
+                @if (assessment.current.fit.fits) {
+                  <p class="fit-result fit-result-success" role="status">
+                    <strong
+                      >Fits in the selected printer in its current
+                      orientation.</strong
+                    >
+                    @if (
+                      assessment.recommended &&
+                      assessment.recommended !== assessment.current
+                    ) {
+                      It also fits rotated, with more clearance in its tightest
+                      printer axis.
+                    }
                   </p>
-                </div>
-              </div>
-            } @else if (!fit.fits) {
-              <p class="slicer-note">
-                No right-angle orientation fits this volume. The maximum uniform
-                scale above remains the applicable size limit.
-              </p>
+                } @else if (assessment.recommended; as recommended) {
+                  <div class="fit-result fit-result-success" role="status">
+                    <strong
+                      >Does not fit in its current orientation, but it fits when
+                      rotated.</strong
+                    >
+                    <p>
+                      <strong>Recommended:</strong>
+                      {{ orientationName(recommended.axisSources) }}.
+                    </p>
+                    <p>
+                      <strong>Printer X × Y × Z:</strong>
+                      {{ formatDimensions(recommended.dimensions) }}
+                      {{ buildUnit() }}
+                    </p>
+                    <p>
+                      In your slicer, use the Rotate tool to place the model in
+                      this orientation, then confirm clearance for brims,
+                      supports and bed adhesion.
+                    </p>
+                  </div>
+                } @else if (assessment.nearest; as nearest) {
+                  <div class="fit-result fit-result-warning" role="status">
+                    <strong
+                      >This model does not fit the selected printer in any
+                      tested 90-degree orientation.</strong
+                    >
+                    <p>
+                      The nearest tested arrangement is
+                      {{ formatDimensions(nearest.dimensions) }}
+                      {{ buildUnit() }} and is limited by printer
+                      {{ limitingAxes(nearest.limitingAxes) }}.
+                    </p>
+                    <p>
+                      <a href="#scale-title"
+                        >Use the proportional scaling controls above</a
+                      >
+                      to calculate a smaller size; this does not apply a scale
+                      to your file.
+                    </p>
+                  </div>
+                }
+                <p class="slicer-note">
+                  These are tested 90-degree orientations, not every possible
+                  angled rotation. Physical printing can still need space for a
+                  brim, supports, clamps or a smaller usable printer area.
+                </p>
+                <details>
+                  <summary>Compare orientations</summary>
+                  <div class="table-scroll fit-table">
+                    <table>
+                      <caption>
+                        Unique tested 90-degree orientations in
+                        {{
+                          buildUnit()
+                        }}
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th>Orientation</th>
+                          <th>Printer X × Y × Z</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (
+                          orientation of assessment.orientations;
+                          track orientation.axisSources.width +
+                            orientation.axisSources.height +
+                            orientation.axisSources.depth
+                        ) {
+                          <tr [class.exceeded]="!orientation.fit.fits">
+                            <th>
+                              {{
+                                orientation === assessment.current
+                                  ? 'Current'
+                                  : orientationName(orientation.axisSources)
+                              }}
+                            </th>
+                            <td>
+                              {{ formatDimensions(orientation.dimensions) }}
+                            </td>
+                            <td>
+                              {{
+                                orientation.fit.fits
+                                  ? orientation === assessment.recommended
+                                    ? 'Fits — recommended'
+                                    : 'Fits'
+                                  : 'Does not fit — limited by ' +
+                                    limitingAxes(orientation.limitingAxes)
+                              }}
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+              </section>
             }
-
-            <p class="slicer-note">
-              This checks model bounds only. Set final orientation and allow for
-              supports, brim/raft, clearances, and printer limits in your
-              slicer.
-            </p>
 
             <div class="table-scroll fit-table">
               <table>
@@ -442,10 +539,11 @@
 
           <p class="slicer-note">
             This compares the model’s current axis-aligned dimensions with the
-            printer’s build volume. The optional rotation check considers only
-            90-degree orientations, not arbitrary angles, packing, supports,
-            brims, margins or collision paths. Confirm final orientation in your
-            slicer.
+            printer’s build volume. Learn
+            <a [routerLink]="routeUrl.RotateModelToFitPrinterGuide"
+              >how to rotate a 3D model to fit your printer</a
+            >
+            before slicing.
           </p>
         </section>
 

@@ -32,6 +32,19 @@ export interface RotationFitResult {
   readonly dimensions: ModelDimensions;
   readonly axisSources: Record<DimensionAxis, DimensionAxis>;
   readonly fit: BuildVolumeFitResult;
+  /** Space left on each printer axis. Values below zero are overflows. */
+  readonly clearance: Record<DimensionAxis, number>;
+  /** Printer axes that prevent this orientation from fitting. */
+  readonly limitingAxes: readonly DimensionAxis[];
+  readonly minimumClearance: number;
+}
+
+export interface PrinterOrientationAssessment {
+  readonly orientations: readonly RotationFitResult[];
+  readonly current: RotationFitResult;
+  readonly recommended: RotationFitResult | null;
+  /** The least-overflowing option when no tested orientation fits. */
+  readonly nearest: RotationFitResult | null;
 }
 
 export const MODEL_UNITS: readonly ModelUnit[] = ['mm', 'cm', 'm', 'in'];
@@ -191,10 +204,64 @@ export function calculateRightAngleRotationFits(
           depth: depthSource,
         },
         fit,
+        clearance: {
+          width: fit.dimensions.width.limit - fit.dimensions.width.model,
+          height: fit.dimensions.height.limit - fit.dimensions.height.model,
+          depth: fit.dimensions.depth.limit - fit.dimensions.depth.model,
+        },
+        limitingAxes: (['width', 'height', 'depth'] as const).filter(
+          (axis) => !fit.dimensions[axis].fits,
+        ),
+        minimumClearance: Math.min(
+          fit.dimensions.width.limit - fit.dimensions.width.model,
+          fit.dimensions.height.limit - fit.dimensions.height.model,
+          fit.dimensions.depth.limit - fit.dimensions.depth.model,
+        ),
       });
     }
   }
   return results;
+}
+
+/**
+ * Assesses every distinct practical right-angle orientation. Calculations use
+ * unrounded values in the printer's unit; callers round only when rendering.
+ */
+export function assessPrinterOrientations(
+  modelDimensions: ModelDimensions,
+  modelUnit: ModelUnit,
+  buildVolume: ModelDimensions,
+  buildUnit: ModelUnit,
+): PrinterOrientationAssessment | null {
+  const orientations = calculateRightAngleRotationFits(
+    modelDimensions,
+    modelUnit,
+    buildVolume,
+    buildUnit,
+  );
+  const current = orientations[0];
+  if (!current) {
+    return null;
+  }
+  const fitting = orientations.filter((orientation) => orientation.fit.fits);
+  const recommended = fitting.length
+    ? fitting.reduce((best, candidate) =>
+        candidate.minimumClearance > best.minimumClearance ? candidate : best,
+      )
+    : null;
+  const nearest = fitting.length
+    ? null
+    : orientations.reduce((best, candidate) =>
+        totalOverflow(candidate) < totalOverflow(best) ? candidate : best,
+      );
+  return { orientations, current, recommended, nearest };
+}
+
+function totalOverflow(orientation: RotationFitResult): number {
+  return Object.values(orientation.clearance).reduce(
+    (total, clearance) => total + Math.max(-clearance, 0),
+    0,
+  );
 }
 
 function permutations<T>(values: readonly T[]): readonly [T, T, T][] {

@@ -20,6 +20,7 @@ export const PublicRoutePath = {
   ThreeMfVolumeCalculator: '3mf-volume-calculator',
   ThreeMfToStlConverter: '3mf-to-stl-converter',
   Guides: 'guides',
+  RotateModelToFitPrinterGuide: 'how-to-rotate-a-3d-model-to-fit-your-printer',
   FixNonManifoldStlGuide: 'how-to-fix-non-manifold-stl',
   WatertightStlGuide: 'how-to-tell-if-an-stl-is-watertight',
   StlUnitsGuide: 'why-stl-files-have-no-units',
