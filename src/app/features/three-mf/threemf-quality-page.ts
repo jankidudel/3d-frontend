@@ -130,33 +130,7 @@ export class ThreeMfQualityPage {
       : 'Not available';
   }
   validationIsValid(report: ReportRecord): boolean {
-    return (
-      report['isValid'] === true ||
-      this.asRecord(report['validation'])?.['isValid'] === true
-    );
-  }
-  summary(report: ReportRecord, field: string): unknown {
-    return this.asRecord(report['summary'])?.[field];
-  }
-  resultStatus(report: ReportRecord): 'clean' | 'warning' | 'error' {
-    if (!this.validationIsValid(report)) return 'error';
-    return Number(this.summary(report, 'warningCount') ?? 0) > 0
-      ? 'warning'
-      : 'clean';
-  }
-  models(report: ReportRecord): readonly ReportRecord[] {
-    const models = report['models'];
-    return Array.isArray(models)
-      ? models
-          .map((model) => this.asRecord(model))
-          .filter((model): model is ReportRecord => model !== null)
-      : [];
-  }
-  modelDimension(
-    model: ReportRecord,
-    axis: 'width' | 'height' | 'depth',
-  ): unknown {
-    return this.asRecord(model['dimensions'])?.[axis];
+    return this.asRecord(report['validation'])?.['isValid'] === true;
   }
   dimension(report: ReportRecord, axis: 'width' | 'height' | 'depth'): unknown {
     return this.asRecord(report['dimensions'])?.[axis];
@@ -184,7 +158,7 @@ export class ThreeMfQualityPage {
     link.href = objectUrl;
     link.download = this.downloadFileName('json');
     link.click();
-    this.analytics.trackThreeMfQualityReportDownloaded('json');
+    this.analytics.trackThreeMfQualityReportDownloaded();
     view.setTimeout(() => view.URL.revokeObjectURL(objectUrl), 0);
   }
   async downloadPdfReport(): Promise<void> {
@@ -196,7 +170,7 @@ export class ThreeMfQualityPage {
     this.reportDownloadError.set('');
     try {
       await this.pdfService.download(job);
-      this.analytics.trackThreeMfQualityReportDownloaded('pdf');
+      this.analytics.trackThreeMfQualityReportDownloaded();
     } catch {
       this.reportDownloadError.set(
         'We could not generate the PDF report. Please try again.',
@@ -210,10 +184,7 @@ export class ThreeMfQualityPage {
       next: (job) => {
         this.job.set(job);
         if (job.status === JobStatus.Completed) {
-          const report = this.asRecord(job.report);
-          this.analytics.trackThreeMfQualityGenerated(
-            report ? this.resultStatus(report) : 'error',
-          );
+          this.analytics.trackThreeMfQualityGenerated();
         } else if (job.status === JobStatus.Failed) {
           this.analytics.trackThreeMfQualityFailed('processing_failed');
         }

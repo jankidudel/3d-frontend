@@ -41,17 +41,11 @@
         </p>
       } @else if (report(); as value) {
         <h2 id="results-title">
-          @switch (resultStatus(value)) {
-            @case ('clean') {
-              No critical issues found
-            }
-            @case ('warning') {
-              Checked with warnings
-            }
-            @default {
-              Issues found
-            }
-          }
+          {{
+            validationIsValid(value)
+              ? 'No mesh problems found'
+              : 'Mesh issues found'
+          }}
         </h2>
         <div class="report-actions">
           <button class="button" type="button" (click)="downloadJsonReport()">
@@ -71,39 +65,57 @@
         }
         <dl class="metrics">
           <div>
-            <dt>Resolved models</dt>
-            <dd>{{ format(summary(value, 'resolvedModelCount')) }}</dd>
+            <dt>Declared unit</dt>
+            <dd>{{ value['sourceUnit'] || 'Not available' }}</dd>
+          </div>
+          <div>
+            <dt>Model objects</dt>
+            <dd>{{ format(value['modelObjectCount']) }}</dd>
+          </div>
+          <div>
+            <dt>Build items</dt>
+            <dd>{{ format(value['buildItemCount']) }}</dd>
           </div>
           <div>
             <dt>Triangles</dt>
-            <dd>{{ format(summary(value, 'triangleCount')) }}</dd>
+            <dd>{{ format(value['triangleCount']) }}</dd>
           </div>
           <div>
-            <dt>Errors</dt>
-            <dd>{{ format(summary(value, 'errorCount')) }}</dd>
+            <dt>Width</dt>
+            <dd>
+              {{ format(dimension(value, 'width')) }}
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
           </div>
           <div>
-            <dt>Warnings</dt>
-            <dd>{{ format(summary(value, 'warningCount')) }}</dd>
+            <dt>Height</dt>
+            <dd>
+              {{ format(dimension(value, 'height')) }}
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+          <div>
+            <dt>Depth</dt>
+            <dd>
+              {{ format(dimension(value, 'depth')) }}
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+          <div>
+            <dt>Surface area</dt>
+            <dd>
+              {{ format(value['surfaceArea']) }} square
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
+          </div>
+          <div>
+            <dt>Volume</dt>
+            <dd>
+              {{ format(value['volume']) }} cubic
+              {{ value['sourceUnit'] || 'model units' }}
+            </dd>
           </div>
         </dl>
-        @if (models(value).length > 0) {
-          <section class="issues" aria-labelledby="models-title">
-            <h3 id="models-title">Resolved models</h3>
-            @for (model of models(value); track model['modelIndex']) {
-              <article>
-                <h4>{{ model['name'] }}</h4>
-                <p>
-                  {{ format(model['triangleCount']) }} triangles ·
-                  {{ format(modelDimension(model, 'width')) }} ×
-                  {{ format(modelDimension(model, 'height')) }} ×
-                  {{ format(modelDimension(model, 'depth')) }}
-                  {{ model['unit'] }}
-                </p>
-              </article>
-            }
-          </section>
-        }
         <p>
           Multiple build items are supported and are not necessarily errors.
         </p>
