@@ -152,4 +152,10 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 100,
     enabled: true,
   },
+  {
+    slug: 'how-to-repair-a-3mf-file',
+    group: GuideGroupId.ThreeMf,
+    order: 110,
+    enabled: true,
+  },
 ];

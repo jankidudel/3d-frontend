@@ -104,7 +104,11 @@ Enable the repository-managed pre-commit hook once after cloning:
 npm run hooks:install
 ```
 
-The pre-commit hook runs linting and unit tests. A pre-push hook runs the production SSG build, avoiding duplicate compilation on every commit while still checking the deployable artifact before code leaves the machine.
+The pre-commit hook formats files, then runs linting and unit tests. If
+formatting changes files, the commit is stopped so you can review and stage
+them. A pre-push hook runs the production SSG build, avoiding duplicate
+compilation on every commit while still checking the deployable artifact before
+code leaves the machine.
 
 ## Running end-to-end tests
 

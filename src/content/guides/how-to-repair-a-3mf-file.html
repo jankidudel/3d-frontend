@@ -1,0 +1,63 @@
+---
+title: 'How to Repair a 3MF File for 3D Printing | InspectMesh'
+description: Learn which 3MF mesh errors can be repaired safely, what must be fixed in CAD, and how to validate a repaired 3MF before printing.
+slug: how-to-repair-a-3mf-file
+eyebrow: 3MF repair guide
+heading: How to Repair a 3MF File for 3D Printing
+faq:
+  - question: Why can a 3MF open in a slicer but still have errors?
+    answer: Slicers can often display a model despite duplicate, degenerate, open or non-manifold mesh data. Displaying is not proof that every slice will be reliable.
+  - question: Does 3MF Repair fill holes?
+    answer: No. It removes only safe-to-remove triangles and can correct confidently determined orientation. It does not invent missing geometry.
+  - question: Will repair change my 3MF unit or build layout?
+    answer: No. The repair keeps the package unit, objects, build items and resources, updating only supported model mesh triangles.
+---
+
+<p class="lead">
+  A 3MF can retain units, colours and build structure while still containing
+  mesh errors. Start with a careful validation, make only safe edits, then
+  validate the repaired package again.
+</p>
+<h2>Why a 3MF can still need repair</h2>
+<p>
+  A slicer may open a package and show a plausible preview even when a mesh has
+  duplicate or zero-area triangles, inconsistent winding, open boundaries or
+  non-manifold edges. Use the
+  <a href="/3mf-quality-checker">3MF Quality Checker</a> to see those conditions
+  before trusting a print preview.
+</p>
+<h2>What InspectMesh repairs safely</h2>
+<p>
+  <a href="/3mf-repair">3MF Repair</a> removes degenerate triangles, exact
+  duplicate triangles and invalid triangle indexes when safe, and corrects
+  orientation only for closed, manifold regions where the result is unambiguous.
+  It preserves the 3MF unit, object IDs, build references, metadata and
+  unrelated package entries.
+</p>
+<h2>What it cannot safely fix</h2>
+<p>
+  The tool does not fill holes, reconstruct missing geometry, resolve
+  self-intersections, weld vertices, alter dimensions, or rebuild invalid object
+  and build references. Open and non-manifold edges can remain warnings. Return
+  to the original CAD model, or use a manual mesh editor, when the model needs
+  topology-changing work.
+</p>
+<h2>Safe before-and-after workflow</h2>
+<ol>
+  <li>
+    Inspect the file in the <a href="/3mf-viewer">3MF Viewer</a> and run the
+    quality check.
+  </li>
+  <li>
+    Upload it to 3MF Repair and download the repaired package only if the report
+    says it completed safely.
+  </li>
+  <li>
+    Review the remaining warnings, then re-run the checker and confirm final
+    size with the <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+  </li>
+</ol>
+<p>
+  If the same model repeatedly needs large repairs, fix the source design
+  instead. For format trade-offs, see <a href="/3mf-vs-stl">3MF vs STL</a>.
+</p>

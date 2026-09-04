@@ -35,6 +35,11 @@ export const AnalyticsEvent = {
   ThreeMfQualityReportGenerated: '3mf_quality_report_generated',
   ThreeMfQualityCheckFailed: '3mf_quality_check_failed',
   ThreeMfQualityReportDownloaded: '3mf_quality_report_downloaded',
+  ThreeMfRepairUploadStarted: '3mf_repair_upload_started',
+  ThreeMfRepairCompleted: '3mf_repair_completed',
+  ThreeMfRepairDownloaded: '3mf_repair_downloaded',
+  ThreeMfRepairJsonDownloaded: '3mf_repair_json_downloaded',
+  ThreeMfRepairPdfDownloaded: '3mf_repair_pdf_downloaded',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -211,6 +216,23 @@ export class AnalyticsService {
 
   trackThreeMfQualityReportDownloaded(): void {
     this.sendEvent(AnalyticsEvent.ThreeMfQualityReportDownloaded, {});
+  }
+
+  trackThreeMfRepair(
+    event:
+      | typeof AnalyticsEvent.ThreeMfRepairUploadStarted
+      | typeof AnalyticsEvent.ThreeMfRepairCompleted
+      | typeof AnalyticsEvent.ThreeMfRepairDownloaded
+      | typeof AnalyticsEvent.ThreeMfRepairJsonDownloaded
+      | typeof AnalyticsEvent.ThreeMfRepairPdfDownloaded,
+    fileSizeBytes?: number,
+  ): void {
+    this.sendEvent(
+      event,
+      fileSizeBytes === undefined
+        ? {}
+        : { file_size_kib: String(Math.round(fileSizeBytes / 1024)) },
+    );
   }
 
   private enable(): void {

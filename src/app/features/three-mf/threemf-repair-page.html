@@ -1,0 +1,98 @@
+<main class="page quality-page">
+  <p class="eyebrow">Safe 3MF cleanup</p>
+  <h1>Repair a 3MF File Online</h1>
+  <p class="lead">
+    Upload a 3MF file to safely remove common mesh errors and download a
+    repaired copy.
+  </p>
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Upload a 3MF file</h2>
+    <p>
+      InspectMesh does not reconstruct holes or severely damaged models. It
+      changes only safely repairable mesh triangles.
+    </p>
+    <app-three-mf-file-picker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    /><button
+      class="button submit"
+      type="button"
+      (click)="repair()"
+      [disabled]="!selectedFile() || submitting()"
+    >
+      {{ submitting() ? 'Creating job...' : 'Repair 3MF safely' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+  @if (job(); as currentJob) {
+    <section class="results card" aria-live="polite">
+      @if (processing() || timedOut()) {
+        <app-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          [pollingTimedOut]="timedOut()"
+          [refreshing]="refreshing()"
+          headingId="repair-result"
+          (refresh)="refresh()"
+        />
+      } @else if (currentJob.status === jobStatus.Failed) {
+        <h2 id="repair-result">File could not be repaired</h2>
+        <p class="error">The file could not be repaired safely.</p>
+      } @else if (report(); as report) {
+        <h2 id="repair-result">
+          {{
+            report.afterValidation?.validation?.isValid
+              ? 'Repaired safely'
+              : 'Repaired with remaining warnings'
+          }}
+        </h2>
+        @let repair = report.repair;
+        <dl>
+          <div>
+            <dt>Triangles</dt>
+            <dd>
+              {{ repair?.trianglesBefore ?? 0 }} before ·
+              {{ repair?.trianglesAfter ?? 0 }} after
+            </dd>
+          </div>
+          <div>
+            <dt>Degenerate triangles removed</dt>
+            <dd>{{ repair?.degenerateTrianglesRemoved ?? 0 }}</dd>
+          </div>
+          <div>
+            <dt>Duplicate triangles removed</dt>
+            <dd>{{ repair?.duplicateTrianglesRemoved ?? 0 }}</dd>
+          </div>
+          <div>
+            <dt>Orientation fixes applied</dt>
+            <dd>{{ repair?.orientationFixesApplied ?? 0 }}</dd>
+          </div>
+        </dl>
+        @if (repair?.repairedFileAvailable) {
+          <p>
+            <a
+              class="button"
+              [href]="'/api/v1/jobs/' + currentJob.id + '/cleaned-3mf'"
+              (click)="downloaded()"
+              >Download repaired 3MF</a
+            >
+          </p>
+        }
+        @for (warning of report.warnings ?? []; track warning) {
+          <p class="warning">{{ warning }}</p>
+        }
+      }
+    </section>
+  }
+  <section class="content">
+    <p>
+      <a [routerLink]="routeUrl.ThreeMfQualityCheck">3MF Quality Checker</a> ·
+      <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a> ·
+      <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+        >3MF Dimensions Checker</a
+      >
+    </p>
+  </section>
+</main>

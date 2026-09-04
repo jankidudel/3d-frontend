@@ -5,6 +5,12 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use strict type checking
 - Use explicit `{}` blocks for every `if`, `else`, loop, and other control-flow
   body, including single-statement bodies. Do not write braceless control flow.
+- Put every control-flow condition, opening brace, body statement, and closing
+  brace on its own appropriate line. Never compress an `if`, `else`, loop,
+  `switch` arm, `return`, or other statement into a single line.
+- Every `if` and `else` body must use braces, even for exactly one statement.
+  For example, write `if (condition) { ... } else { ... }` as multiline blocks;
+  never write an unbraced `if (condition) statement;` or `else statement;`.
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
 - Prefer named constants for repeated domain and configuration values; do not hardcode them in production code. For string-literal domains, use the TypeScript value-plus-type pattern: `export const JobStatus = { Created: 'created' } as const; export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus];`.

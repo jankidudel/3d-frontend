@@ -104,6 +104,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ThreeMfRepair,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-repair-page').then(
+        (m) => m.ThreeMfRepairPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ThreeMfDimensionsChecker,
     loadComponent: () =>
       import('./features/three-mf/threemf-dimensions-page').then(

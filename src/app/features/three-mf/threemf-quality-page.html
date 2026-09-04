@@ -253,6 +253,10 @@
     <h3>Are my units stored in a 3MF file?</h3>
     <p>3MF can declare a model unit, which this checker reports.</p>
     <h3>Can InspectMesh repair a 3MF file?</h3>
-    <p>No. This checker reports mesh health but does not modify files.</p>
+    <p>
+      <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair</a> can safely remove
+      certain duplicate and degenerate triangles; this checker itself does not
+      modify files.
+    </p>
   </section>
 </main>

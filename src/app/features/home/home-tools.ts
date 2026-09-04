@@ -67,14 +67,6 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check STL topology',
       },
       {
-        icon: '△',
-        title: 'STL Triangle Counter',
-        description:
-          'Count triangles and understand mesh complexity before slicing or sharing.',
-        route: PublicRouteUrl.TriangleCounter,
-        cta: 'Count STL triangles',
-      },
-      {
         icon: '↔',
         title: 'STL Dimensions Checker',
         description:
@@ -89,6 +81,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
           'Calculate your model’s volume, convert units and estimate approximate material weight.',
         route: PublicRouteUrl.VolumeCalculator,
         cta: 'Calculate STL volume',
+      },
+      {
+        icon: '△',
+        title: 'STL Triangle Counter',
+        description:
+          'Count triangles and understand mesh complexity before slicing or sharing.',
+        route: PublicRouteUrl.TriangleCounter,
+        cta: 'Count STL triangles',
       },
       {
         icon: '⇄',
@@ -126,6 +126,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check 3MF quality',
       },
       {
+        icon: '✦',
+        title: '3MF Repair Tool',
+        description:
+          'Safely remove duplicate and degenerate triangles from a 3MF package without rebuilding its resources.',
+        route: PublicRouteUrl.ThreeMfRepair,
+        cta: 'Repair a 3MF file',
+      },
+      {
         icon: '○',
         title: '3MF Watertight Checker',
         description:
@@ -142,14 +150,6 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check 3MF topology',
       },
       {
-        icon: '△',
-        title: '3MF Triangle Counter',
-        description:
-          'Count triangles in the resolved 3MF print build before slicing.',
-        route: PublicRouteUrl.ThreeMfTriangleCounter,
-        cta: 'Count 3MF triangles',
-      },
-      {
         icon: '↔',
         title: '3MF Dimensions Checker',
         description:
@@ -164,6 +164,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
           'Calculate resolved 3MF build volume and estimate solid-model material weight.',
         route: PublicRouteUrl.ThreeMfVolumeCalculator,
         cta: 'Calculate 3MF volume',
+      },
+      {
+        icon: '△',
+        title: '3MF Triangle Counter',
+        description:
+          'Count triangles in the resolved 3MF print build before slicing.',
+        route: PublicRouteUrl.ThreeMfTriangleCounter,
+        cta: 'Count 3MF triangles',
       },
       {
         icon: '⇄',
