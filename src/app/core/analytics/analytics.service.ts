@@ -197,8 +197,12 @@ export class AnalyticsService {
     });
   }
 
-  trackThreeMfQualityGenerated(): void {
-    this.sendEvent(AnalyticsEvent.ThreeMfQualityReportGenerated, {});
+  trackThreeMfQualityGenerated(
+    resultStatus: 'clean' | 'warning' | 'error' = 'error',
+  ): void {
+    this.sendEvent(AnalyticsEvent.ThreeMfQualityReportGenerated, {
+      result_status: resultStatus,
+    });
   }
 
   trackThreeMfQualityFailed(
@@ -209,8 +213,8 @@ export class AnalyticsService {
     });
   }
 
-  trackThreeMfQualityReportDownloaded(): void {
-    this.sendEvent(AnalyticsEvent.ThreeMfQualityReportDownloaded, {});
+  trackThreeMfQualityReportDownloaded(format: 'json' | 'pdf' = 'json'): void {
+    this.sendEvent(AnalyticsEvent.ThreeMfQualityReportDownloaded, { format });
   }
 
   private enable(): void {

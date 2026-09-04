@@ -215,7 +215,7 @@ describe('AnalyticsService', () => {
     expect(events).toContainEqual([
       'event',
       '3mf_quality_report_generated',
-      {},
+      { result_status: 'error' },
     ]);
     expect(events).toContainEqual([
       'event',
@@ -225,7 +225,7 @@ describe('AnalyticsService', () => {
     expect(events).toContainEqual([
       'event',
       '3mf_quality_report_downloaded',
-      {},
+      { format: 'json' },
     ]);
     expect(JSON.stringify(events)).not.toContain('model.3mf');
   });
