@@ -1,7 +1,7 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { canonicalPublicRoutePaths } from '../src/app/core/seo/public-routes.ts';
-import { guideRoutePaths } from '../src/app/features/guides/guides.generated.ts';
+import { guideRoutePaths } from '../src/app/features/guides/guide-route-data.generated.ts';
 
 type BuildConfiguration = 'development' | 'production';
 interface SiteConfig {

@@ -50,6 +50,9 @@ export class JobProgress {
       afterNextRender(
         () => {
           const target = this.scrollTarget();
+          if (typeof target.scrollIntoView !== 'function') {
+            return;
+          }
           target.scrollIntoView({
             behavior: this.prefersReducedMotion() ? 'auto' : 'smooth',
             block: 'center',

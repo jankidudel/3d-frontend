@@ -4,6 +4,7 @@ import {
   guidanceForIssues,
   normalizeValidationIssues,
 } from './mesh-validation-issues';
+import { createPdf, type JsPdf } from './pdf-engine';
 
 interface ReportRecord {
   [key: string]: unknown;
@@ -24,14 +25,17 @@ export class MeshQualityPdfService {
 
   async createReport(
     job: Job,
-  ): Promise<{ fileName: string; pdf: import('jspdf').jsPDF } | null> {
+  ): Promise<{ fileName: string; pdf: JsPdf } | null> {
     const report = this.asRecord(job.report);
     if (!report) {
       return null;
     }
 
-    const { jsPDF } = await import('jspdf');
-    const pdf = new jsPDF({ compress: false, format: 'a4', unit: 'mm' });
+    const pdf = await createPdf({
+      compress: false,
+      format: 'a4',
+      unit: 'mm',
+    });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     pdf.setCharSpace(0);

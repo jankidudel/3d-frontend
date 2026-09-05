@@ -386,7 +386,11 @@ export class ObjectViewerComponent {
         if (this.runtime !== runtime) {
           return;
         }
-        this.viewport()?.nativeElement.scrollIntoView({
+        const viewport = this.viewport()?.nativeElement;
+        if (!viewport || typeof viewport.scrollIntoView !== 'function') {
+          return;
+        }
+        viewport.scrollIntoView({
           behavior: this.prefersReducedMotion() ? 'auto' : 'smooth',
           block: 'center',
         });

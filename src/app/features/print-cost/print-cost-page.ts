@@ -11,6 +11,7 @@ import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Job, JobStatus } from '../../models/job';
+import { createPdf } from '../../shared/pdf-engine';
 import { ModelUnit } from '../stl-dimensions/stl-dimensions';
 import { convertVolume } from '../stl-volume/stl-volume';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
@@ -230,8 +231,7 @@ export class PrintCostPage {
     if (!result) {
       return;
     }
-    const { jsPDF } = await import('jspdf');
-    const pdf = new jsPDF();
+    const pdf = await createPdf();
     pdf.text('InspectMesh 3D Print Cost Calculator', 14, 18);
     pdf.text(`Generated: ${new Date().toLocaleString()}`, 14, 28);
     pdf.text(

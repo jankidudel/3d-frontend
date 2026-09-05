@@ -6,6 +6,7 @@
 /public/robots.txt
 /public/sitemap.xml
 /src/app/features/guides/guides.generated.ts
+/src/app/features/guides/guide-route-data.generated.ts
 /tmp
 /out-tsc
 /bazel-out
