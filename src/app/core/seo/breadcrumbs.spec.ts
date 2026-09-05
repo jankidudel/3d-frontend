@@ -25,6 +25,16 @@ describe('breadcrumbsForPath', () => {
     ]);
   });
 
+  it('builds the calculator trail directly from all 3D tools', () => {
+    expect(breadcrumbsForPath('/3d-print-cost-calculator')).toEqual([
+      { label: 'All 3D tools', href: '/tools' },
+      {
+        label: '3D Print Cost Calculator',
+        href: '/3d-print-cost-calculator',
+      },
+    ]);
+  });
+
   it('builds the STL hub trail without linking its current item', () => {
     expect(breadcrumbsForPath('/stl-tools')).toEqual([
       { label: 'All 3D tools', href: '/tools' },
@@ -81,6 +91,26 @@ describe('breadcrumbsForPath', () => {
           position: 3,
           name: 'STL Repair Tool',
           item: `${BREADCRUMB_PRODUCTION_ORIGIN}/stl-repair`,
+        },
+      ],
+    });
+  });
+
+  it('uses matching two-item JSON-LD for the calculator trail', () => {
+    expect(
+      breadcrumbStructuredData(breadcrumbsForPath('/3d-print-cost-calculator')),
+    ).toMatchObject({
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          position: 1,
+          name: 'All 3D tools',
+          item: 'https://www.inspectmesh.com/tools',
+        },
+        {
+          position: 2,
+          name: '3D Print Cost Calculator',
+          item: 'https://www.inspectmesh.com/3d-print-cost-calculator',
         },
       ],
     });

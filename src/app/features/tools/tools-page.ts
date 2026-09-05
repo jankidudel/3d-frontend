@@ -11,7 +11,16 @@ import { HOME_TOOL_GROUPS } from '../home/home-tools';
   styleUrl: './tools-page.scss',
 })
 export class ToolsPage {
-  readonly toolGroups = HOME_TOOL_GROUPS;
+  readonly toolGroups = HOME_TOOL_GROUPS.filter(
+    (group) => group.id !== 'planning-tools',
+  );
+  readonly printCostCalculator = {
+    cta: 'Calculate print cost',
+    description:
+      'Estimate material, energy and total print cost from slicer values, or start with an STL or 3MF model.',
+    route: PublicRouteUrl.PrintCostCalculator,
+    title: '3D Print Cost Calculator',
+  };
   private readonly seo = inject(SeoService);
 
   constructor() {

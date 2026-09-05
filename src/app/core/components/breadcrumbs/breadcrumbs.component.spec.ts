@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: '3mf-manifold-checker', component: BlankPage },
   { path: 'stl-tools', component: BlankPage },
   { path: '3mf-tools', component: BlankPage },
+  { path: '3d-print-cost-calculator', component: BlankPage },
   { path: 'how-to-repair-an-stl-file', component: BlankPage },
 ];
 
@@ -84,6 +85,22 @@ describe('BreadcrumbsComponent', () => {
     expect(breadcrumbItems(document)).toEqual([
       ['All 3D tools', 1, 'https://www.inspectmesh.com/tools'],
       ['3MF tools', 2, 'https://www.inspectmesh.com/3mf-tools'],
+    ]);
+
+    await router.navigateByUrl('/3d-print-cost-calculator');
+    fixture.detectChanges();
+    expect(trail(fixture.nativeElement)).toEqual([
+      ['All 3D tools', '/tools'],
+      ['3D Print Cost Calculator', null],
+    ]);
+    expect(currentPage(fixture.nativeElement)).toBe('3D Print Cost Calculator');
+    expect(breadcrumbItems(document)).toEqual([
+      ['All 3D tools', 1, 'https://www.inspectmesh.com/tools'],
+      [
+        '3D Print Cost Calculator',
+        2,
+        'https://www.inspectmesh.com/3d-print-cost-calculator',
+      ],
     ]);
 
     await router.navigateByUrl('/how-to-repair-an-stl-file');

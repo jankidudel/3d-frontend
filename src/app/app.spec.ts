@@ -74,6 +74,13 @@ describe('App', () => {
       'DIV',
       'DIV',
     ]);
+    expect(header.getAttribute('class')).toBe('tools-menu-header');
+    expect(getComputedStyle(header).display).toBe('contents');
+    expect(
+      Array.from(menu.querySelectorAll('.tools-menu-group')).map((group) =>
+        group.querySelector('.tools-group-heading')?.textContent?.trim(),
+      ),
+    ).toEqual(['STL tools', '3MF tools']);
   });
 
   it('makes the same STL tools available from the mobile navigation disclosure', () => {

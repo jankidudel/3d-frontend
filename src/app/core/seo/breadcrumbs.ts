@@ -57,6 +57,16 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
     ];
   }
 
+  if (normalizedPath === PublicRouteUrl.PrintCostCalculator) {
+    return [
+      { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
+      {
+        label: '3D Print Cost Calculator',
+        href: PublicRouteUrl.PrintCostCalculator,
+      },
+    ];
+  }
+
   const guide = guideBySlug[normalizedPath.slice(1)];
   if (guide) {
     return [
