@@ -1,0 +1,83 @@
+---
+title: 'ASCII vs Binary STL: What Is the Difference? | InspectMesh'
+description: Compare ASCII and binary STL files. Learn how they differ in size and readability, which one to use, and whether either affects 3D print quality.
+slug: ascii-vs-binary-stl
+eyebrow: STL format guide
+heading: 'ASCII vs Binary STL: What Is the Difference?'
+faq:
+  - question: Does binary STL produce better print quality than ASCII STL?
+    answer: No. Print quality depends on the mesh geometry and export resolution, not whether the same triangles are stored as ASCII text or binary data.
+  - question: Why are binary STL files smaller?
+    answer: Binary storage records triangle data compactly, while ASCII writes the same information as readable text with more characters.
+  - question: Can every slicer open binary STL files?
+    answer: Most modern slicers support both common STL encodings. If a file will not open, the issue may be corruption or parser compatibility rather than the encoding alone.
+---
+
+<p>
+  STL files commonly use one of two encodings: ASCII or binary. Both can
+  describe the same triangle mesh. The difference is how the data is stored, not
+  how detailed the model is.
+</p>
+<p>
+  An ASCII STL stores triangle information as readable text. A binary STL stores
+  the same kind of data in a compact machine-readable format.
+</p>
+<h2>ASCII STL files</h2>
+<p>
+  ASCII STL files can be opened in a text editor. You can see words such as
+  <code>solid</code>, <code>facet</code>, <code>vertex</code> and
+  <code>endsolid</code> alongside the numeric coordinates.
+</p>
+<p>
+  Their main advantage is readability. They can be useful for debugging or
+  inspecting a very small file manually.
+</p>
+<p>
+  Their main disadvantage is size. Text representations use more storage and can
+  become unwieldy for detailed models.
+</p>
+<h2>Binary STL files</h2>
+<p>
+  Binary STL is usually the practical default. It stores triangles more
+  compactly, so it is normally smaller and faster to load or transfer than an
+  equivalent ASCII STL.
+</p>
+<p>
+  Binary does not mean the model is encrypted or harder to print. It simply
+  means the geometry is stored in a compact format rather than as human-readable
+  text.
+</p>
+<h2>Does the encoding change print quality?</h2>
+<p>
+  No. If the triangles and coordinates are identical, the physical print result
+  is the same.
+</p>
+<p>Print quality is affected by:</p>
+<ul>
+  <li>triangle resolution on curved surfaces</li>
+  <li>model dimensions</li>
+  <li>mesh health</li>
+  <li>nozzle size and layer height</li>
+  <li>slicer settings</li>
+</ul>
+<p>
+  Use the <a href="/stl-triangle-counter">STL Triangle Counter</a> to understand
+  model complexity and the
+  <a href="/stl-quality-checker">STL Quality Checker</a> to inspect mesh
+  problems. Those checks matter more than whether the file is ASCII or binary.
+</p>
+<h2>Which format should you use?</h2>
+<p>
+  Use binary STL for ordinary 3D-printing exports unless you have a specific
+  reason to need readable text output.
+</p>
+<p>
+  Use ASCII STL when a particular legacy workflow requires it or when you are
+  debugging a small model manually.
+</p>
+<p>
+  InspectMesh supports both common STL encodings. If a file behaves strangely,
+  check it with the <a href="/stl-viewer">STL Viewer</a> and Quality Checker
+  rather than converting it blindly. A failure to open may be caused by a
+  damaged file or unexpected geometry, not by ASCII versus binary storage.
+</p>

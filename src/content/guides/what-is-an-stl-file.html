@@ -1,0 +1,82 @@
+---
+title: 'What Is an STL File? 3D Printing Format Explained | InspectMesh'
+description: Learn what an STL file is, how it represents a 3D model with triangles, its limitations, and how to check an STL before 3D printing.
+slug: what-is-an-stl-file
+eyebrow: STL file guide
+heading: What Is an STL File?
+faq:
+  - question: What does STL stand for?
+    answer: STL is commonly associated with stereolithography. In practice, it refers to a widely used 3D model file format made from triangular surface faces.
+  - question: Does an STL file contain colour or material information?
+    answer: Usually no. STL mainly stores surface geometry, not colours, textures, printer settings or reliable unit information.
+  - question: Is an STL file ready to print as soon as I download it?
+    answer: Not always. Check its dimensions and mesh health before slicing, especially for holes, non-manifold edges and unexpected scale.
+---
+
+<p>
+  An STL file is one of the most common formats used in 3D printing. It
+  describes the outside surface of a 3D object using many small triangles.
+</p>
+<p>
+  A flat box may need only a small number of triangles. A curved object, such as
+  a figurine or rounded enclosure, needs more triangles to approximate smooth
+  surfaces. Together, those faces form the mesh that your slicer turns into
+  printable layers.
+</p>
+<h2>What an STL file stores</h2>
+<p>
+  An STL mainly stores geometry. It tells software where the triangle corners
+  are and how the surface is connected.
+</p>
+<p>It normally does not store:</p>
+<ul>
+  <li>reliable units such as millimetres or inches</li>
+  <li>colours or textures</li>
+  <li>material settings</li>
+  <li>printer settings</li>
+  <li>build-plate placement</li>
+  <li>the editable CAD history of the model</li>
+</ul>
+<p>
+  That simplicity is why STL remains widely compatible. It is easy for most
+  slicers, viewers and model-sharing sites to handle.
+</p>
+<h2>Why units matter</h2>
+<p>
+  An STL coordinate value has no dependable built-in unit. A model designed as
+  50 mm can appear much too large or small if the receiving software assumes a
+  different unit.
+</p>
+<p>
+  Use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
+  measure the model before slicing. If you are unsure why scale changes between
+  applications, read
+  <a href="/why-stl-files-have-no-units">Why STL Files Have No Units</a>.
+</p>
+<h2>Check the mesh before printing</h2>
+<p>
+  A model can look fine on screen while still containing mesh problems. Holes,
+  non-manifold edges, duplicate triangles and inconsistent orientation can make
+  slicing unreliable.
+</p>
+<p>
+  Use the <a href="/stl-quality-checker">STL Quality Checker</a> before printing
+  an important model. If the file needs a basic clean-up, the
+  <a href="/stl-repair">STL Repair Tool</a> can make conservative repairs and
+  report what changed.
+</p>
+<h2>STL compared with newer formats</h2>
+<p>
+  STL is useful for simple, widely compatible geometry. It is not always the
+  best choice for a complete modern print project.
+</p>
+<p>
+  The 3MF format can preserve units, multiple objects, materials and other
+  print-related information. Read <a href="/3mf-vs-stl">3MF vs STL</a> to decide
+  which format fits your workflow.
+</p>
+<p>
+  An STL is not automatically printable just because it opens. Check its scale,
+  inspect its mesh and review the slicer preview before committing material and
+  printer time.
+</p>
