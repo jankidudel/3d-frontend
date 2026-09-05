@@ -18,6 +18,8 @@ import { ThreeMfFilePicker } from '../three-mf/threemf-file-picker';
 import {
   CostCurrency,
   CostMaterial,
+  COST_CURRENCY_OPTIONS,
+  DEFAULT_ELECTRICITY_PRICE_PER_KWH,
   calculatePrintCost,
   MATERIAL_DENSITIES,
 } from './print-cost';
@@ -30,6 +32,7 @@ import {
 })
 export class PrintCostPage {
   readonly routeUrl = PublicRouteUrl;
+  readonly currencyOptions = COST_CURRENCY_OPTIONS;
   readonly jobStatus = JobStatus;
   private readonly jobs = inject(JobsService);
   private readonly creation = inject(JobCreationService);
@@ -51,7 +54,9 @@ export class PrintCostPage {
   readonly spoolWeight = signal(1000);
   readonly printHours = signal(0);
   readonly printerWatts = signal(120);
-  readonly electricityPrice = signal<number | null>(null);
+  readonly electricityPrice = signal<number | null>(
+    DEFAULT_ELECTRICITY_PRICE_PER_KWH,
+  );
   readonly machineCost = signal(0);
   readonly labourCost = signal(0);
   readonly labourHours = signal(0);
@@ -175,14 +180,21 @@ export class PrintCostPage {
     });
   }
   format(value: number | null): string {
-    return value === null || !Number.isFinite(value)
-      ? '—'
-      : new Intl.NumberFormat('en-GB', {
-          style: 'currency',
-          currency: this.currency(),
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }).format(value);
+    if (value === null || !Number.isFinite(value)) {
+      return '—';
+    }
+    if (this.currency() === 'OTHER') {
+      return new Intl.NumberFormat('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    }
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: this.currency(),
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
   }
   number(value: number | null, digits = 3): string {
     return value === null || !Number.isFinite(value)

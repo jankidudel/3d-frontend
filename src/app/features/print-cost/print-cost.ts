@@ -1,4 +1,15 @@
-export type CostCurrency = 'GBP' | 'USD' | 'EUR';
+export const COST_CURRENCY_OPTIONS = [
+  { value: 'USD', label: 'USD ($)' },
+  { value: 'GBP', label: 'GBP (£)' },
+  { value: 'CAD', label: 'CAD ($)' },
+  { value: 'AUD', label: 'AUD ($)' },
+  { value: 'EUR', label: 'EUR (€)' },
+  { value: 'OTHER', label: 'Other' },
+] as const;
+
+export type CostCurrency = (typeof COST_CURRENCY_OPTIONS)[number]['value'];
+
+export const DEFAULT_ELECTRICITY_PRICE_PER_KWH = 0.3;
 export type CostMaterial = 'pla' | 'petg' | 'abs' | 'tpu' | 'custom';
 
 export const MATERIAL_DENSITIES: Record<

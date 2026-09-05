@@ -43,17 +43,18 @@
         [class.tools-menu-open]="toolsMenuOpen"
         aria-label="Tools"
       >
-        <app-menu-link
-          label="All 3D tools"
-          [route]="routePath.AllTools"
-          [variant]="menuLinkVariant.AllTools"
-          (selected)="closeMenus()"
-        />
-        <app-menu-link
-          label="3D Print Cost Calculator"
-          [route]="routePath.PrintCostCalculator"
-          (selected)="closeMenus()"
-        />
+        <div class="tools-menu-header">
+          <app-menu-link
+            label="All 3D tools"
+            [route]="routePath.AllTools"
+            (selected)="closeMenus()"
+          />
+          <app-menu-link
+            label="3D Print Cost Calculator"
+            [route]="routePath.PrintCostCalculator"
+            (selected)="closeMenus()"
+          />
+        </div>
         <div class="tools-menu-group">
           <app-menu-link
             label="STL tools"

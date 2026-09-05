@@ -48,6 +48,34 @@ describe('App', () => {
     ]);
   });
 
+  it('places the calculator beside the tools hub in the menu header', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+
+    const menu = fixture.nativeElement.querySelector(
+      '#tools-menu',
+    ) as HTMLElement;
+    const header = menu.querySelector('.tools-menu-header') as HTMLElement;
+    const links = Array.from(
+      header.querySelectorAll('a'),
+    ) as HTMLAnchorElement[];
+
+    expect(
+      links.map((link) => [
+        link.textContent?.trim(),
+        link.getAttribute('href'),
+      ]),
+    ).toEqual([
+      ['All 3D tools', '/tools'],
+      ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
+    ]);
+    expect(Array.from(menu.children).map((child) => child.tagName)).toEqual([
+      'DIV',
+      'DIV',
+      'DIV',
+    ]);
+  });
+
   it('makes the same STL tools available from the mobile navigation disclosure', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();

@@ -1,5 +1,9 @@
 import { Component, input, output, viewChild } from '@angular/core';
-import { MAX_STL_FILE_SIZE_BYTES } from '../../core/api/upload-limits';
+import {
+  getFilePickerTooLargeMessage,
+  getFileSelectionHint,
+  getMaxFileUploadSizeLimit,
+} from '../../core/api/upload-limits';
 import {
   FilePicker,
   FilePickerConfiguration,
@@ -23,10 +27,10 @@ export class ThreeMfFilePicker {
     extension: MODEL_FILE_FORMAT_DETAILS[ModelFileFormat.ThreeMf].extension,
     invalidFileMessage: 'The selected file must have a .3mf extension.',
     label: 'Choose 3MF file',
-    limitMessage: 'The selected 3MF file must be 25 MiB or smaller.',
-    maxBytes: MAX_STL_FILE_SIZE_BYTES,
-    noFileMessage: 'Select a non-empty .3mf file, up to 25 MB.',
-    selectionHint: 'Select a non-empty .3mf file, up to 25 MB.',
+    limitMessage: getFilePickerTooLargeMessage('3MF'),
+    maxBytes: getMaxFileUploadSizeLimit(),
+    noFileMessage: getFileSelectionHint('.3mf'),
+    selectionHint: getFileSelectionHint('.3mf'),
   };
   private readonly picker = viewChild(FilePicker);
 

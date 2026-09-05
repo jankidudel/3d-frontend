@@ -1,7 +1,8 @@
 import { Component, input, output, viewChild } from '@angular/core';
 import {
   FILE_PICKER_TOO_LARGE_MESSAGE,
-  MAX_STL_FILE_SIZE_BYTES,
+  getFileSelectionHint,
+  getMaxFileUploadSizeLimit,
 } from '../../../core/api/upload-limits';
 import {
   FilePicker,
@@ -12,7 +13,7 @@ import {
   ModelFileFormat,
 } from '../../../core/formats/model-file-format';
 
-export { MAX_STL_FILE_SIZE_BYTES } from '../../../core/api/upload-limits';
+export { getMaxFileUploadSizeLimit } from '../../../core/api/upload-limits';
 
 @Component({
   selector: 'app-stl-file-picker',
@@ -29,9 +30,9 @@ export class StlFilePicker {
     invalidFileMessage: 'The selected file must have an .stl extension.',
     label: 'Choose STL file',
     limitMessage: FILE_PICKER_TOO_LARGE_MESSAGE,
-    maxBytes: MAX_STL_FILE_SIZE_BYTES,
+    maxBytes: getMaxFileUploadSizeLimit(),
     noFileMessage: 'Choose an STL file to continue.',
-    selectionHint: 'Select a non-empty .stl file.',
+    selectionHint: getFileSelectionHint('.stl'),
   };
   private readonly picker = viewChild(FilePicker);
 

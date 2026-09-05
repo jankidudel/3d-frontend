@@ -95,6 +95,15 @@ nav a {
   display: grid;
 }
 
+.tools-menu-header {
+  display: grid;
+  grid-column: 1 / -1;
+  align-items: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+
 .top-nav-link {
   padding: 0.5rem;
 }
@@ -240,5 +249,11 @@ nav a.active {
   .tools-menu-group {
     gap: 0;
     padding: 0.25rem 0 0.25rem 0.75rem;
+  }
+
+  .tools-menu-header {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+    padding: 0.25rem 0 0.75rem;
   }
 }

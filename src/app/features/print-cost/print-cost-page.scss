@@ -11,6 +11,9 @@
   display: block;
   margin: 1rem 0;
 }
+.upload > .button {
+  margin-top: 1rem;
+}
 .format-choice,
 .mode-choice,
 .downloads {
@@ -19,7 +22,38 @@
   gap: 1rem;
   margin: 1rem 0;
 }
-.accuracy-note,
+.radio-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.radio-option input {
+  flex: 0 0 auto;
+  inline-size: 1rem;
+  block-size: 1rem;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--primary);
+}
+.radio-option label {
+  cursor: pointer;
+}
+.radio-option input:focus-visible + label {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 0.2rem;
+}
+.radio-option.is-disabled label {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+.accuracy-note {
+  padding: 1rem;
+  border-left: 0.25rem solid #b7791f;
+  color: #5f4700;
+  background: #fff8d8;
+}
 .warning {
   padding: 1rem;
   border-left: 0.25rem solid var(--accent);
@@ -45,8 +79,8 @@
   color: var(--muted);
   font-size: 0.9rem;
 }
-input,
-select {
+.field input,
+.field select {
   min-height: 2.7rem;
   padding: 0.5rem;
   border: 1px solid var(--border);

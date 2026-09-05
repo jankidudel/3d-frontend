@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { strToU8, zipSync, unzipSync } from 'fflate';
-import { MAX_STL_FILE_SIZE_BYTES } from '../../core/api/upload-limits';
+import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 
@@ -147,7 +147,7 @@ export class LocalConverterPage {
       this.error.set('The selected file is empty. Choose another file.');
       return;
     }
-    if (file.size > MAX_STL_FILE_SIZE_BYTES) {
+    if (file.size > getMaxFileUploadSizeLimit()) {
       this.error.set(
         'This file is over the 25 MiB browser-safe limit. Choose a smaller file.',
       );

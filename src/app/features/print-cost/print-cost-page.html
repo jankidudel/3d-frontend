@@ -19,24 +19,27 @@
       need your confirmation; slicer settings can substantially change actual
       use.
     </p>
-    <div class="format-choice">
-      <label
-        ><input
+    <div class="format-choice radio-group">
+      <div class="radio-option">
+        <input
+          id="format-stl"
           type="radio"
           name="format"
           [checked]="fileFormat() === 'stl'"
           (change)="setFormat('stl')"
         />
-        STL</label
-      ><label
-        ><input
+        <label for="format-stl">STL</label>
+      </div>
+      <div class="radio-option">
+        <input
+          id="format-3mf"
           type="radio"
           name="format"
           [checked]="fileFormat() === '3mf'"
           (change)="setFormat('3mf')"
         />
-        3MF</label
-      >
+        <label for="format-3mf">3MF</label>
+      </div>
     </div>
     @if (fileFormat() === 'stl') {
       <app-stl-file-picker
@@ -96,25 +99,30 @@
 
   <section class="card calculator" aria-labelledby="calculator-title">
     <h2 id="calculator-title">Calculate your print cost</h2>
-    <div class="mode-choice">
-      <label
-        ><input
+    <div class="mode-choice radio-group">
+      <div class="radio-option">
+        <input
+          id="source-slicer"
           type="radio"
           name="source"
           [checked]="source() === 'slicer'"
           (change)="source.set('slicer')"
         />
-        <strong>Use slicer values (recommended)</strong></label
-      ><label
-        ><input
+        <label for="source-slicer"
+          ><strong>Use slicer values (recommended)</strong></label
+        >
+      </div>
+      <div class="radio-option" [class.is-disabled]="modelWeight() === null">
+        <input
+          id="source-model"
           type="radio"
           name="source"
           [checked]="source() === 'model'"
           [disabled]="modelWeight() === null"
           (change)="source.set('model')"
         />
-        Use model estimate</label
-      >
+        <label for="source-model">Use model estimate</label>
+      </div>
     </div>
     @if (source() === 'slicer') {
       <p>Enter filament weight and print time from your slicer.</p>
@@ -152,9 +160,11 @@
       <label class="field"
         ><span>Currency</span
         ><select [value]="currency()" (change)="setCurrency($event)">
-          <option value="GBP">GBP (£)</option>
-          <option value="USD">USD ($)</option>
-          <option value="EUR">EUR (€)</option>
+          @for (currencyOption of currencyOptions; track currencyOption.value) {
+            <option [value]="currencyOption.value">
+              {{ currencyOption.label }}
+            </option>
+          }
         </select></label
       >
       @if (source() === 'slicer') {
@@ -350,8 +360,9 @@
       >
       and
       <a [routerLink]="'/how-much-filament-does-a-3d-print-use'"
-        >How Much Filament Does a 3D Print Use?</a
-      >.
+        >How Much Filament Does a 3D Print Use</a
+      >
+      .
     </p>
   </section>
 </main>
