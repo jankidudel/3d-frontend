@@ -12,9 +12,16 @@ export function createAndUploadFormatJob(
   file: File,
   onCreated: (job: Job) => void,
   operation?: JobOperation,
+  split?: { axis: 'X' | 'Y' | 'Z'; positionPercent: number },
 ): Observable<void> {
   return formatJobs
-    .create({ fileName: file.name, fileSizeBytes: file.size, operation })
+    .create({
+      fileName: file.name,
+      fileSizeBytes: file.size,
+      operation,
+      splitAxis: split?.axis,
+      splitPositionPercent: split?.positionPercent,
+    })
     .pipe(
       switchMap((job) => {
         onCreated(job);

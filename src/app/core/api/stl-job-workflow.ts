@@ -35,6 +35,24 @@ export function createAndUploadStlRepairJob(
   );
 }
 
+export function createAndUploadStlSplitJob(
+  stlJobs: StlJobService,
+  jobs: JobsService,
+  file: File,
+  axis: 'X' | 'Y' | 'Z',
+  positionPercent: number,
+  onCreated: (job: Job) => void,
+): Observable<void> {
+  return createAndUploadFormatJob(
+    stlJobs,
+    jobs,
+    file,
+    onCreated,
+    JobOperation.StlSplit,
+    { axis, positionPercent },
+  );
+}
+
 export function pollStlJob(
   jobsService: JobsService,
   jobId: string,

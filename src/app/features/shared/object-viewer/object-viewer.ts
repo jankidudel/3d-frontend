@@ -193,6 +193,7 @@ export class ObjectViewerComponent {
         return;
       }
       const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.localClippingEnabled = true;
       const scene = new THREE.Scene();
       scene.background = new THREE.Color('#EAF3FC');
       const camera = new THREE.PerspectiveCamera(

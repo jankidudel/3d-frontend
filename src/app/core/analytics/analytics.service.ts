@@ -40,6 +40,14 @@ export const AnalyticsEvent = {
   ThreeMfRepairDownloaded: '3mf_repair_downloaded',
   ThreeMfRepairJsonDownloaded: '3mf_repair_json_downloaded',
   ThreeMfRepairPdfDownloaded: '3mf_repair_pdf_downloaded',
+  SplitterUploadStarted: 'stl_splitter_upload_started',
+  SplitterSplitStarted: 'stl_splitter_split_started',
+  SplitterCompleted: 'stl_splitter_completed',
+  SplitterFailed: 'stl_splitter_failed',
+  SplitterPartADownloaded: 'stl_splitter_part_a_downloaded',
+  SplitterPartBDownloaded: 'stl_splitter_part_b_downloaded',
+  SplitterJsonDownloaded: 'stl_splitter_json_downloaded',
+  SplitterPdfDownloaded: 'stl_splitter_pdf_downloaded',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -225,6 +233,26 @@ export class AnalyticsService {
       | typeof AnalyticsEvent.ThreeMfRepairDownloaded
       | typeof AnalyticsEvent.ThreeMfRepairJsonDownloaded
       | typeof AnalyticsEvent.ThreeMfRepairPdfDownloaded,
+    fileSizeBytes?: number,
+  ): void {
+    this.sendEvent(
+      event,
+      fileSizeBytes === undefined
+        ? {}
+        : { file_size_kib: String(Math.round(fileSizeBytes / 1024)) },
+    );
+  }
+
+  trackSplitter(
+    event:
+      | typeof AnalyticsEvent.SplitterUploadStarted
+      | typeof AnalyticsEvent.SplitterSplitStarted
+      | typeof AnalyticsEvent.SplitterCompleted
+      | typeof AnalyticsEvent.SplitterFailed
+      | typeof AnalyticsEvent.SplitterPartADownloaded
+      | typeof AnalyticsEvent.SplitterPartBDownloaded
+      | typeof AnalyticsEvent.SplitterJsonDownloaded
+      | typeof AnalyticsEvent.SplitterPdfDownloaded,
     fileSizeBytes?: number,
   ): void {
     this.sendEvent(

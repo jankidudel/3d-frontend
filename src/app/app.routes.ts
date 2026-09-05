@@ -34,6 +34,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.StlSplitter,
+    loadComponent: () =>
+      import('./features/stl-splitter/stl-splitter-page').then(
+        (m) => m.StlSplitterPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ManifoldChecker,
     loadComponent: () =>
       import('./features/stl-manifold/stl-manifold-page').then(

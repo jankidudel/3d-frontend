@@ -75,6 +75,13 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Measure an STL file',
       },
       {
+        title: 'STL Splitter',
+        description: 'Split a valid STL into two capped printable parts.',
+        route: PublicRouteUrl.StlSplitter,
+        icon: '◈',
+        cta: 'Split an STL',
+      },
+      {
         icon: '◈',
         title: 'STL Volume Calculator',
         description:
