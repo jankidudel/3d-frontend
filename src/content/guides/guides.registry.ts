@@ -29,6 +29,22 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-calculate-3d-printing-cost',
+    group: GuideGroupId.General,
+    order: 30,
+    enabled: true,
+    publishDate: '2026-09-05',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: 'how-much-filament-does-a-3d-print-use',
+    group: GuideGroupId.General,
+    order: 40,
+    enabled: true,
+    publishDate: '2026-09-05',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-rotate-a-3d-model-to-fit-your-printer',
     group: GuideGroupId.General,
     order: 20,

@@ -101,7 +101,9 @@ export class ThreeMfViewerPage {
 
   analyzeIssues(): void {
     const file = this.sourceFile;
-    if (!file || this.analyzingIssues()) return;
+    if (!file || this.analyzingIssues()) {
+      return;
+    }
     this.issueAnalysisError.set('');
     this.analyzingIssues.set(true);
     let createdJob: Job | null = null;

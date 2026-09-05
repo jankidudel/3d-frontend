@@ -16,6 +16,7 @@ export default defineConfig(
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      curly: ['error', 'all'],
       '@angular-eslint/directive-selector': [
         'error',
         { type: 'attribute', prefix: 'app', style: 'camelCase' },

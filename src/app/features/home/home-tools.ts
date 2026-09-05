@@ -190,5 +190,23 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
       },
     ],
   },
+  {
+    exploreLinkText: 'Explore all 3D tools',
+    exploreRoute: PublicRouteUrl.AllTools,
+    homeLinkText: 'View all 3D tools',
+    id: 'planning-tools',
+    intro: 'Estimate the practical costs of a planned 3D print.',
+    title: 'Planning tools',
+    tools: [
+      {
+        icon: '£',
+        title: '3D Print Cost Calculator',
+        description:
+          'Estimate filament, energy, labour and a selling price from slicer values or model volume.',
+        route: PublicRouteUrl.PrintCostCalculator,
+        cta: 'Calculate print cost',
+      },
+    ],
+  },
 ];
 import { PublicRouteUrl } from '../../core/seo/public-routes';

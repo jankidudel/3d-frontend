@@ -1,0 +1,171 @@
+---
+title: 'How to Calculate 3D Printing Cost: Filament, Power and Time | InspectMesh'
+description: Learn how to estimate 3D printing cost using filament weight, electricity, printer time, labour, failed prints and a sensible profit margin.
+slug: how-to-calculate-3d-printing-cost
+eyebrow: 3D printing cost guide
+heading: How to Calculate 3D Printing Cost
+faq:
+  - question: How do I calculate the filament cost of a 3D print?
+    answer: Divide the filament weight used by the spool weight, then multiply by the spool price. For example, 80 g from a 1,000 g spool costing £20 has a material cost of £1.60.
+  - question: Is filament the only cost of a 3D print?
+    answer: No. Electricity, printer wear, failed prints, labour, packaging and extra parts can matter, especially when you sell printed parts.
+  - question: Can an STL file tell me the exact cost to print?
+    answer: No. An STL can help estimate solid-model volume, but only your slicer knows the final infill, walls, supports, print time and filament used for a particular setup.
+---
+
+<p>
+  A 3D print that uses only a few pounds of filament can still cost more than
+  its material alone. The real cost depends on how much plastic the slicer uses,
+  how long the printer runs, electricity, failed prints and—if you sell
+  parts—the time you spend preparing and finishing them.
+</p>
+<p>The simplest useful calculation is:</p>
+<p>
+  <strong
+    >total print cost = material + electricity + machine use + labour + extras +
+    failure allowance</strong
+  >
+</p>
+<p>
+  For a quick estimate, start with the two values your slicer provides after you
+  prepare the model: filament weight in grams and estimated print time. Those
+  figures are normally more reliable than calculating from an STL alone because
+  the slicer accounts for infill, wall count, supports, layer height and
+  orientation.
+</p>
+<p>
+  <a href="/3d-print-cost-calculator">Use the 3D Print Cost Calculator</a> to
+  add those values and see the full breakdown.
+</p>
+<h2>Calculate filament cost</h2>
+<p>You need three numbers:</p>
+<ol>
+  <li>Filament used for the print, in grams.</li>
+  <li>The net weight of the spool, usually 1,000 g.</li>
+  <li>The price you paid for that spool.</li>
+</ol>
+<p>Use this formula:</p>
+<p>
+  <strong>material cost = filament used ÷ spool weight × spool price</strong>
+</p>
+<p>If a 1 kg spool costs £20 and the slicer says the part uses 80 g:</p>
+<p><strong>80 ÷ 1,000 × £20 = £1.60</strong></p>
+<p>
+  This is the cost of the plastic used, not the cost of the print as a whole.
+  Include purge material and supports if your slicer includes them. If it does
+  not, add a little contingency rather than pretending the result is exact.
+</p>
+<h3>Estimating weight from a model</h3>
+<p>
+  If you have a model but have not sliced it yet, volume can provide a useful
+  starting point. Material density converts a solid volume into a
+  solid-model-equivalent weight. PLA is commonly around 1.24 g/cm³, while PETG,
+  ABS and TPU differ.
+</p>
+<p>
+  However, a hollow or low-infill print contains much less material than the
+  solid model. Walls and supports work in the other direction. Treat this as a
+  planning estimate only, then replace it with slicer output before quoting a
+  customer.
+</p>
+<p>
+  InspectMesh can calculate model volume for
+  <a href="/stl-volume-calculator">STL files</a> and
+  <a href="/3mf-volume-calculator">3MF files</a>, or use the combined
+  <a href="/3d-print-cost-calculator">3D Print Cost Calculator</a>.
+</p>
+<h2>Add electricity cost</h2>
+<p>
+  Electricity is usually a modest cost for a small desktop print, but it should
+  not be ignored on long jobs or when you run several printers.
+</p>
+<p>Use:</p>
+<p>
+  <strong
+    >electricity cost = printer power in kW × print time in hours × electricity
+    price per kWh</strong
+  >
+</p>
+<p>
+  A printer averaging 120 W is 0.12 kW. If it runs for 10 hours and electricity
+  costs £0.30/kWh:
+</p>
+<p><strong>0.12 × 10 × £0.30 = £0.36</strong></p>
+<p>
+  Actual power draw changes during heating, movement and idle time. If you want
+  a closer figure, measure your own printer with a plug-in energy meter.
+  Otherwise, use a conservative average and treat it as an estimate.
+</p>
+<h2>Include machine use and maintenance</h2>
+<p>
+  Printers wear: nozzles, beds, belts, bearings, fans and occasional repairs all
+  have a cost. You do not need to predict every replacement part for a hobby
+  print, but an hourly machine-use allowance is sensible when pricing work for
+  customers.
+</p>
+<p>
+  For example, adding £0.25 per print hour to a 10-hour job adds £2.50. The
+  right figure depends on your machine, how heavily you use it and whether you
+  need to recover the printer purchase cost. Keep this separate from electricity
+  so you can adjust it later.
+</p>
+<h2>Include your time and extra parts</h2>
+<p>
+  For personal prints, you may choose to treat your own time as free. For
+  selling prints, do not.
+</p>
+<p>Include time spent on tasks such as:</p>
+<ul>
+  <li>repairing or checking the model;</li>
+  <li>slicing and preparing the printer;</li>
+  <li>removing supports and post-processing;</li>
+  <li>quality checking;</li>
+  <li>packing and communicating with the customer.</li>
+</ul>
+<p>
+  Also add the actual cost of inserts, magnets, screws, paint, packaging and
+  shipping materials. These are easy to forget because they are not part of the
+  slicer estimate.
+</p>
+<h2>Allow for failed prints</h2>
+<p>
+  Failures are part of 3D printing. A small percentage allowance protects you
+  from reprints, supports that fail, material waste and occasional setup errors.
+</p>
+<p>
+  For a reliable, well-tested model, 5% may be enough. For a new design,
+  difficult material or long unattended print, a higher allowance can be more
+  realistic. Apply it to the full pre-failure subtotal, not only filament.
+</p>
+<p>
+  Do not use a failure allowance to hide an uncertain quote. If the model is
+  risky, inspect it first for open edges, non-manifold geometry and other issues
+  with the <a href="/stl-quality-checker">STL Quality Checker</a> or
+  <a href="/3mf-quality-checker">3MF Quality Checker</a>.
+</p>
+<h2>Add a profit margin only after costs</h2>
+<p>
+  Your cost tells you what the print consumes. Your selling price also needs to
+  reward your time, skill and risk.
+</p>
+<p>
+  First calculate the total cost. Then choose a margin that makes sense for your
+  market and the value of the finished item. Keep the margin visible rather than
+  mixing it into material or electricity figures; it helps you understand
+  whether a price change comes from higher costs or a deliberate business
+  decision.
+</p>
+<h2>A practical workflow</h2>
+<ol>
+  <li>Check the model for obvious mesh problems.</li>
+  <li>Slice it using your real printer, material and settings.</li>
+  <li>Copy the slicer’s filament weight and print time.</li>
+  <li>Add electricity, machine use, labour and extras.</li>
+  <li>Add a realistic failure allowance.</li>
+  <li>Add margin only if you are preparing a selling price.</li>
+</ol>
+<p>
+  The <a href="/3d-print-cost-calculator">3D Print Cost Calculator</a> keeps
+  those inputs in one place and gives you a clear material, energy and
+  total-cost breakdown.
+</p>

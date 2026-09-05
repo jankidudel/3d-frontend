@@ -5,6 +5,10 @@ import { guideSlugs } from './features/guides/guides.generated';
 export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.Home, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.AllTools, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.PrintCostCalculator,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.Tools, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.QualityCheck, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.StlRepair, renderMode: RenderMode.Prerender },

@@ -1,6 +1,7 @@
 export const PublicRoutePath = {
   Home: '',
   AllTools: 'tools',
+  PrintCostCalculator: '3d-print-cost-calculator',
   Tools: 'stl-tools',
   QualityCheck: 'stl-quality-checker',
   StlRepair: 'stl-repair',
@@ -48,6 +49,7 @@ export const PublicRouteUrl = Object.fromEntries(
 export const canonicalPublicRoutePaths = [
   PublicRoutePath.Home,
   PublicRoutePath.AllTools,
+  PublicRoutePath.PrintCostCalculator,
   PublicRoutePath.Tools,
   PublicRoutePath.QualityCheck,
   PublicRoutePath.StlRepair,

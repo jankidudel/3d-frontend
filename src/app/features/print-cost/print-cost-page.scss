@@ -1,0 +1,93 @@
+.cost-page {
+  --accent: #8a3f14;
+}
+.card {
+  max-width: 70rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+.upload app-stl-file-picker,
+.upload app-three-mf-file-picker {
+  display: block;
+  margin: 1rem 0;
+}
+.format-choice,
+.mode-choice,
+.downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.accuracy-note,
+.warning {
+  padding: 1rem;
+  border-left: 0.25rem solid var(--accent);
+  background: #fff2e6;
+}
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+.field span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.field-note {
+  grid-column: 1 / -1;
+  margin: -0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+input,
+select {
+  min-height: 2.7rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+}
+.breakdown {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+dl div {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+dt {
+  color: var(--muted);
+}
+dd {
+  margin: 0.35rem 0 0;
+  font-weight: 800;
+}
+.total {
+  background: var(--soft);
+}
+.selling {
+  border-color: var(--accent);
+  background: #fff2e6;
+}
+.error {
+  color: var(--error);
+  font-weight: 700;
+}
+@media (max-width: 42rem) {
+  .fields,
+  dl {
+    grid-template-columns: 1fr;
+  }
+}

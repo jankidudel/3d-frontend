@@ -32,7 +32,9 @@ export class MeshIssueHighlightsComponent {
   readonly lines = computed(() => {
     const geometry = this.geometry();
     const centre = this.centre();
-    if (!geometry) return [];
+    if (!geometry) {
+      return [];
+    }
     const lines: ViewerIssueLine[] = [];
     if (this.showOpenEdges()) {
       lines.push(this.toViewerLine(geometry.openEdges, centre, '#e69f00'));

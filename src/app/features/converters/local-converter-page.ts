@@ -91,7 +91,9 @@ export class LocalConverterPage {
 
   async convert(): Promise<void> {
     const file = this.file();
-    if (!file || this.converting() || !this.browser) return;
+    if (!file || this.converting() || !this.browser) {
+      return;
+    }
     const run = ++this.run;
     this.converting.set(true);
     this.error.set('');
@@ -102,7 +104,9 @@ export class LocalConverterPage {
         this.kind === 'stl-to-3mf'
           ? await this.stlToThreeMf(file, this.outputUnit())
           : await this.threeMfToStl(file);
-      if (run !== this.run) return;
+      if (run !== this.run) {
+        return;
+      }
       this.status.set('Preparing your download…');
       this.download(converted.bytes, converted.name, converted.type);
       this.result.set(converted.result);
@@ -110,11 +114,15 @@ export class LocalConverterPage {
         'Converted locally and downloaded. Your source file was not uploaded.',
       );
     } catch (error: unknown) {
-      if (run !== this.run) return;
+      if (run !== this.run) {
+        return;
+      }
       this.status.set('');
       this.error.set(this.messageFor(error));
     } finally {
-      if (run === this.run) this.converting.set(false);
+      if (run === this.run) {
+        this.converting.set(false);
+      }
     }
   }
 
@@ -125,7 +133,9 @@ export class LocalConverterPage {
     this.error.set('');
     this.status.set('');
     this.result.set(null);
-    if (!file) return;
+    if (!file) {
+      return;
+    }
     const extension = this.kind === 'stl-to-3mf' ? '.stl' : '.3mf';
     if (!file.name.toLowerCase().endsWith(extension)) {
       this.error.set(
@@ -153,8 +163,9 @@ export class LocalConverterPage {
     ]);
     const geometry = new STLLoader().parse(await file.arrayBuffer());
     const positions = geometry.getAttribute('position');
-    if (!positions || positions.count === 0 || positions.count % 3 !== 0)
+    if (!positions || positions.count === 0 || positions.count % 3 !== 0) {
       throw new Error('invalid-stl');
+    }
     await yieldToBrowser();
     this.status.set('Creating a minimal 3MF package locally…');
     const triangles = positions.count / 3;
@@ -170,7 +181,9 @@ export class LocalConverterPage {
       trianglesXml.push(
         `<triangle v1="${vertexIndex}" v2="${vertexIndex + 1}" v3="${vertexIndex + 2}"/>`,
       );
-      if (index > 0 && index % 30000 === 0) await yieldToBrowser();
+      if (index > 0 && index % 30000 === 0) {
+        await yieldToBrowser();
+      }
     }
     const model = `<?xml version="1.0" encoding="UTF-8"?><model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" unit="${unit}" xml:lang="en-US"><resources><object id="1" type="model"><mesh><vertices>${vertices.join('')}</vertices><triangles>${trianglesXml.join('')}</triangles></mesh></object></resources><build><item objectid="1"/></build></model>`;
     const bytes = zipSync({
@@ -200,17 +213,23 @@ export class LocalConverterPage {
     const group = new ThreeMFLoader().parse(data);
     group.updateMatrixWorld(true);
     const bounds = new three.Box3().setFromObject(group);
-    if (bounds.isEmpty()) throw new Error('empty-3mf');
+    if (bounds.isEmpty()) {
+      throw new Error('empty-3mf');
+    }
     const dimensionsVector = bounds.getSize(new three.Vector3());
     const facets: number[] = [];
     group.traverse((object) => {
       const mesh = object as import('three').Mesh;
-      if (!mesh.isMesh || !mesh.geometry) return;
+      if (!mesh.isMesh || !mesh.geometry) {
+        return;
+      }
       const geometry = mesh.geometry.index
         ? mesh.geometry.toNonIndexed()
         : mesh.geometry.clone();
       const positions = geometry.getAttribute('position');
-      if (!positions) return;
+      if (!positions) {
+        return;
+      }
       for (let index = 0; index < positions.count; index++) {
         const point = new three.Vector3(
           positions.getX(index),
@@ -221,8 +240,9 @@ export class LocalConverterPage {
       }
       geometry.dispose();
     });
-    if (facets.length === 0 || facets.length % 9 !== 0)
+    if (facets.length === 0 || facets.length % 9 !== 0) {
       throw new Error('empty-3mf');
+    }
     await yieldToBrowser();
     this.status.set('Writing one resolved binary STL locally…');
     const triangles = facets.length / 9;
@@ -233,16 +253,20 @@ export class LocalConverterPage {
       const offset = 84 + triangle * 50;
       const point = triangle * 9;
       const normal = normalFor(facets, point);
-      for (let coordinate = 0; coordinate < 3; coordinate++)
+      for (let coordinate = 0; coordinate < 3; coordinate++) {
         view.setFloat32(offset + coordinate * 4, normal[coordinate], true);
-      for (let coordinate = 0; coordinate < 9; coordinate++)
+      }
+      for (let coordinate = 0; coordinate < 9; coordinate++) {
         view.setFloat32(
           offset + 12 + coordinate * 4,
           facets[point + coordinate],
           true,
         );
+      }
       view.setUint16(offset + 48, 0, true);
-      if (triangle > 0 && triangle % 10000 === 0) await yieldToBrowser();
+      if (triangle > 0 && triangle % 10000 === 0) {
+        await yieldToBrowser();
+      }
     }
     return {
       bytes: new Uint8Array(buffer),
@@ -272,10 +296,12 @@ export class LocalConverterPage {
   }
 
   private messageFor(error: unknown): string {
-    if (error instanceof Error && error.message === 'invalid-stl')
+    if (error instanceof Error && error.message === 'invalid-stl') {
       return 'We could not read valid triangle geometry from that STL file.';
-    if (error instanceof Error && error.message === 'empty-3mf')
+    }
+    if (error instanceof Error && error.message === 'empty-3mf') {
       return 'This 3MF has no resolved build geometry to export.';
+    }
     return this.kind === 'stl-to-3mf'
       ? 'We could not convert that STL. Choose a valid ASCII or binary STL file and try again.'
       : 'We could not resolve that 3MF. Choose a standard, unencrypted 3MF with supported mesh geometry and try again.';

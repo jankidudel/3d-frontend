@@ -5,6 +5,13 @@ import { guideCanMatch } from './features/guides/guide-route';
 
 const breadcrumbRoutes: Routes = [
   {
+    path: PublicRoutePath.PrintCostCalculator,
+    loadComponent: () =>
+      import('./features/print-cost/print-cost-page').then(
+        (m) => m.PrintCostPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Tools,
     loadComponent: () =>
       import('./features/stl-tools/stl-tools-page').then((m) => m.StlToolsPage),

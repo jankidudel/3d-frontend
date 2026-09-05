@@ -16,7 +16,9 @@ export class ThreeMfTrianglePage extends ThreeMfQualityPage {
   private readonly triangleSeo = inject(SeoService);
   readonly complexity = computed(() => {
     const count = this.report()?.['triangleCount'];
-    if (typeof count !== 'number') return 'Not available';
+    if (typeof count !== 'number') {
+      return 'Not available';
+    }
     return count < 50_000 ? 'Low' : count < 500_000 ? 'Moderate' : 'High';
   });
   constructor() {

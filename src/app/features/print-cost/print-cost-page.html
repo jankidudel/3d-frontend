@@ -1,0 +1,357 @@
+<main class="page cost-page">
+  <p class="eyebrow">3D printing planning tool</p>
+  <h1>3D Print Cost Calculator</h1>
+  <p class="lead">
+    Estimate material, energy and print costs from slicer values, or start with
+    an STL or 3MF model.
+  </p>
+  <p class="accuracy-note">
+    <strong
+      >For the most accurate result, enter filament usage and print time from
+      your slicer.</strong
+    >
+  </p>
+
+  <section class="card upload" aria-labelledby="upload-title">
+    <h2 id="upload-title">Optional model estimate</h2>
+    <p>
+      Upload a model to calculate its solid-model-equivalent weight. STL units
+      need your confirmation; slicer settings can substantially change actual
+      use.
+    </p>
+    <div class="format-choice">
+      <label
+        ><input
+          type="radio"
+          name="format"
+          [checked]="fileFormat() === 'stl'"
+          (change)="setFormat('stl')"
+        />
+        STL</label
+      ><label
+        ><input
+          type="radio"
+          name="format"
+          [checked]="fileFormat() === '3mf'"
+          (change)="setFormat('3mf')"
+        />
+        3MF</label
+      >
+    </div>
+    @if (fileFormat() === 'stl') {
+      <app-stl-file-picker
+        [selectedFileFromParent]="selectedFile()"
+        (fileSelected)="selectFile($event)"
+      />
+    } @else {
+      <app-three-mf-file-picker
+        [selectedFileFromParent]="selectedFile()"
+        (fileSelected)="selectFile($event)"
+      />
+    }
+    @if (fileFormat() === 'stl') {
+      <label class="field unit"
+        ><span>STL model unit</span
+        ><select
+          [value]="modelUnit()"
+          (change)="modelUnit.set($any($event.target).value)"
+        >
+          <option value="mm">Millimetres (mm)</option>
+          <option value="cm">Centimetres (cm)</option>
+          <option value="m">Metres (m)</option>
+          <option value="in">Inches (in)</option>
+        </select></label
+      >
+    }
+    <button
+      class="button"
+      type="button"
+      [disabled]="!selectedFile() || submitting()"
+      (click)="upload()"
+    >
+      {{ submitting() ? 'Uploading…' : 'Calculate model volume' }}
+    </button>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (job(); as currentJob) {
+      @if (
+        currentJob.status === jobStatus.Created ||
+        currentJob.status === jobStatus.Processing
+      ) {
+        <app-job-progress
+          [job]="currentJob"
+          [uploading]="submitting()"
+          headingId="upload-title"
+        />
+      } @else if (volumeCm3() !== null) {
+        <p class="model-result">
+          Resolved model volume:
+          <strong>{{ number(volumeCm3(), 4) }} cm³</strong> · Solid-model
+          weight: <strong>{{ number(modelWeight(), 2) }} g</strong>
+        </p>
+      }
+    }
+  </section>
+
+  <section class="card calculator" aria-labelledby="calculator-title">
+    <h2 id="calculator-title">Calculate your print cost</h2>
+    <div class="mode-choice">
+      <label
+        ><input
+          type="radio"
+          name="source"
+          [checked]="source() === 'slicer'"
+          (change)="source.set('slicer')"
+        />
+        <strong>Use slicer values (recommended)</strong></label
+      ><label
+        ><input
+          type="radio"
+          name="source"
+          [checked]="source() === 'model'"
+          [disabled]="modelWeight() === null"
+          (change)="source.set('model')"
+        />
+        Use model estimate</label
+      >
+    </div>
+    @if (source() === 'slicer') {
+      <p>Enter filament weight and print time from your slicer.</p>
+    } @else {
+      <p class="warning">
+        Model estimate uses a completely solid part. Infill, walls, supports,
+        orientation and slicer settings can change real usage substantially.
+      </p>
+    }
+    <div class="fields">
+      <label class="field"
+        ><span>Material</span
+        ><select
+          [value]="material()"
+          (change)="material.set($any($event.target).value)"
+        >
+          <option value="pla">PLA</option>
+          <option value="petg">PETG</option>
+          <option value="abs">ABS</option>
+          <option value="tpu">TPU</option>
+          <option value="custom">Custom</option>
+        </select></label
+      >
+      @if (material() === 'custom') {
+        <label class="field"
+          ><span>Density (g/cm³)</span
+          ><input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="customDensity()"
+            (input)="setNumber('customDensity', $event)"
+        /></label>
+      }
+      <label class="field"
+        ><span>Currency</span
+        ><select [value]="currency()" (change)="setCurrency($event)">
+          <option value="GBP">GBP (£)</option>
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+        </select></label
+      >
+      @if (source() === 'slicer') {
+        <label class="field"
+          ><span>Filament weight (g)</span
+          ><input
+            type="number"
+            min="0"
+            step="any"
+            [value]="filamentWeight()"
+            (input)="setNumber('filamentWeight', $event)"
+        /></label>
+      }
+      <label class="field"
+        ><span>Print time (hours)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="printHours()"
+          (input)="setNumber('printHours', $event)"
+      /></label>
+      <label class="field"
+        ><span>Spool price</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="spoolPrice()"
+          (input)="setNumber('spoolPrice', $event)"
+      /></label>
+      <label class="field"
+        ><span>Spool weight (g)</span
+        ><input
+          type="number"
+          min="0.001"
+          step="any"
+          [value]="spoolWeight()"
+          (input)="setNumber('spoolWeight', $event)"
+      /></label>
+      <label class="field"
+        ><span>Printer power (W)</span
+        ><input
+          type="number"
+          min="0"
+          step="any"
+          [value]="printerWatts()"
+          (input)="setNumber('printerWatts', $event)"
+      /></label>
+      <label class="field"
+        ><span>Your electricity price per kWh</span
+        ><input
+          type="number"
+          min="0"
+          step="0.001"
+          placeholder="e.g. 0.30"
+          [value]="electricityPrice() ?? ''"
+          (input)="setElectricityPrice($event)"
+      /></label>
+      @if (electricityPrice() === null) {
+        <p class="field-note">
+          Enter the price from your electricity tariff. Currency only formats
+          results.
+        </p>
+      }
+      <label class="field"
+        ><span>Machine wear / maintenance per hour (optional)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="machineCost()"
+          (input)="setNumber('machineCost', $event)"
+      /></label>
+      <label class="field"
+        ><span>Labour cost per hour (optional)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="labourCost()"
+          (input)="setNumber('labourCost', $event)"
+      /></label>
+      <label class="field"
+        ><span>Labour time (hours)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="labourHours()"
+          (input)="setNumber('labourHours', $event)"
+      /></label>
+      <label class="field"
+        ><span>Extra parts cost (optional)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="extras()"
+          (input)="setNumber('extras', $event)"
+      /></label>
+      <label class="field"
+        ><span>Failure allowance (%)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.1"
+          [value]="failure()"
+          (input)="setNumber('failure', $event)"
+      /></label>
+      <label class="field"
+        ><span>For selling/quoting: profit margin (%)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.1"
+          [value]="margin()"
+          (input)="setNumber('margin', $event)"
+      /></label>
+    </div>
+    @if (result(); as costs) {
+      <section class="breakdown" aria-live="polite">
+        <h3>Cost breakdown</h3>
+        <dl>
+          <div>
+            <dt>Filament/material</dt>
+            <dd>{{ format(costs.materialCost) }}</dd>
+          </div>
+          <div>
+            <dt>Electricity</dt>
+            <dd>{{ format(costs.electricityCost) }}</dd>
+          </div>
+          <div>
+            <dt>Machine use</dt>
+            <dd>{{ format(costs.machineCost) }}</dd>
+          </div>
+          <div>
+            <dt>Labour</dt>
+            <dd>{{ format(costs.labourCost) }}</dd>
+          </div>
+          <div>
+            <dt>Extra parts</dt>
+            <dd>{{ format(costs.extraPartsCost) }}</dd>
+          </div>
+          <div>
+            <dt>Subtotal</dt>
+            <dd>{{ format(costs.subtotal) }}</dd>
+          </div>
+          <div>
+            <dt>Failure allowance</dt>
+            <dd>{{ format(costs.failureAllowance) }}</dd>
+          </div>
+          <div class="total">
+            <dt>Total print cost</dt>
+            <dd>{{ format(costs.totalCost) }}</dd>
+          </div>
+          @if (costs.suggestedSellingPrice !== null) {
+            <div class="selling">
+              <dt>Suggested selling price</dt>
+              <dd>{{ format(costs.suggestedSellingPrice) }}</dd>
+            </div>
+          }
+        </dl>
+        <p>
+          This is a planning estimate, not a quote, slicer estimate or
+          guaranteed print price.
+        </p>
+        <div class="downloads">
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="downloadJson()"
+          >
+            Download JSON report</button
+          ><button
+            class="button button-secondary"
+            type="button"
+            (click)="downloadPdf()"
+          >
+            Download PDF report
+          </button>
+        </div>
+      </section>
+    }
+  </section>
+  <section class="content">
+    <h2>Plan with slicer values</h2>
+    <p>
+      Your slicer is the best source for filament usage and print time. Learn
+      more in
+      <a [routerLink]="'/how-to-calculate-3d-printing-cost'"
+        >How to Calculate 3D Printing Cost</a
+      >
+      and
+      <a [routerLink]="'/how-much-filament-does-a-3d-print-use'"
+        >How Much Filament Does a 3D Print Use?</a
+      >.
+    </p>
+  </section>
+</main>

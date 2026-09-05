@@ -1,0 +1,157 @@
+---
+title: 'How Much Filament Does a 3D Print Use? Estimate Weight and Cost | InspectMesh'
+description: Learn how to estimate filament used by a 3D print from slicer output or model volume, and why infill, walls and supports change the final weight.
+slug: how-much-filament-does-a-3d-print-use
+eyebrow: 3D printing materials guide
+heading: How Much Filament Does a 3D Print Use?
+faq:
+  - question: Can I tell how much filament an STL file will use?
+    answer: You can estimate a solid-model weight from its volume and material density, but your slicer gives the more accurate answer because it includes infill, walls, supports and print settings.
+  - question: How much does 1 kg of PLA filament cost per gram?
+    answer: Divide the spool price by its net weight. A £20 spool containing 1,000 g costs £0.02 per gram before waste or shipping.
+  - question: Does lower infill always use less filament?
+    answer: Usually, but walls, top and bottom layers, supports and the chosen infill pattern can make a large difference. Compare slicer estimates rather than relying on infill percentage alone.
+---
+
+<p>
+  The best way to find out how much filament a 3D print will use is to slice the
+  model with your real printer settings. Your slicer estimates filament weight,
+  length and usually cost before you start the print.
+</p>
+<p>
+  If you have not sliced the model yet, you can still make a rough estimate from
+  its volume. That is useful for planning, but it is not a substitute for slicer
+  output.
+</p>
+<p>
+  <a href="/3d-print-cost-calculator"
+    >Estimate filament, electricity and full print cost with InspectMesh’s 3D
+    Print Cost Calculator.</a
+  >
+</p>
+<h2>Start with your slicer</h2>
+<p>
+  Load the STL or 3MF file in your slicer, choose the printer, material and
+  layer settings you actually intend to use, then slice the model. Look for
+  values such as:
+</p>
+<ul>
+  <li>filament weight in grams;</li>
+  <li>filament length in metres;</li>
+  <li>estimated print time;</li>
+  <li>material cost.</li>
+</ul>
+<p>
+  Use the weight in grams when comparing spools and calculating cost. It is less
+  confusing than filament length because different materials have different
+  densities.
+</p>
+<p>
+  The slicer estimate is more useful than a model-only calculation because it
+  includes the choices that control material use: infill, wall thickness, top
+  and bottom layers, supports, brims, rafts and print orientation.
+</p>
+<h2>Convert spool price into cost per gram</h2>
+<p>First, work out what one gram costs.</p>
+<p><strong>cost per gram = spool price ÷ spool weight</strong></p>
+<p>For a 1 kg spool costing £20:</p>
+<p><strong>£20 ÷ 1,000 g = £0.02 per gram</strong></p>
+<p>If the slicer estimates 75 g for the print:</p>
+<p><strong>75 × £0.02 = £1.50</strong></p>
+<p>
+  Remember to use the spool’s net filament weight, not the total shipping weight
+  including the reel and packaging.
+</p>
+<h2>Why infill percentage is not the whole story</h2>
+<p>
+  It is tempting to think a 20% infill print uses one fifth of the material of a
+  solid model. It does not work that neatly.
+</p>
+<p>
+  The outer walls and top and bottom layers may make up a large share of a small
+  print. A vase-shaped object might use very little infill but still require
+  several walls. A flat object can use a lot of material in its top and bottom
+  layers even with low infill.
+</p>
+<p>
+  The infill pattern matters too. Grid, gyroid and cubic patterns can have
+  different strength and material behaviour. Supports can add substantial
+  material, especially for overhangs and models printed in an inefficient
+  orientation.
+</p>
+<p>
+  That is why slicer output should be the final source of truth for a planned
+  print.
+</p>
+<h2>Estimate filament weight from volume</h2>
+<p>
+  A model’s volume can be converted into the weight of a completely solid part:
+</p>
+<p>
+  <strong
+    >solid weight = model volume in cm³ × material density in g/cm³</strong
+  >
+</p>
+<p>For example, a 30 cm³ solid PLA model at 1.24 g/cm³ weighs roughly:</p>
+<p><strong>30 × 1.24 = 37.2 g</strong></p>
+<p>
+  This is not the final filament requirement for an ordinary print. It is the
+  weight if the entire volume were solid. A low-infill print may use much less,
+  while supports, extra walls and purge waste increase usage.
+</p>
+<p>
+  Use this method when comparing the scale of models or planning before slicing.
+  Then replace it with the slicer’s filament figure once settings are known.
+</p>
+<p>
+  You can inspect a model’s volume with the
+  <a href="/stl-volume-calculator">STL Volume Calculator</a> or
+  <a href="/3mf-volume-calculator">3MF Volume Calculator</a>.
+</p>
+<h2>Material density changes the estimate</h2>
+<p>
+  The same geometry does not weigh the same in every filament. Common
+  approximate densities include:
+</p>
+<ul>
+  <li>PLA: about 1.24 g/cm³</li>
+  <li>PETG: about 1.27 g/cm³</li>
+  <li>ABS: about 1.04 g/cm³</li>
+  <li>TPU: about 1.21 g/cm³</li>
+</ul>
+<p>
+  Treat these as starting values. Filled, carbon-fibre, glow-in-the-dark and
+  specialty filaments can vary. If the manufacturer supplies a density, use that
+  number for a better estimate.
+</p>
+<h2>Reduce filament use without weakening the part</h2>
+<p>
+  The answer is rarely just “reduce infill.” Instead, match the settings to what
+  the part needs.
+</p>
+<p>
+  For a display model, fewer walls and lower infill may be perfectly suitable.
+  For a functional bracket, wall count and orientation often matter more than a
+  high infill percentage. Avoid unnecessary supports where you can, but do not
+  remove them if they are needed for print quality.
+</p>
+<p>
+  Before changing settings, make sure the model is clean and suitable for
+  slicing. Use the <a href="/stl-quality-checker">STL Quality Checker</a> or
+  <a href="/3mf-quality-checker">3MF Quality Checker</a> if a file is behaving
+  unexpectedly.
+</p>
+<h2>A simple practical method</h2>
+<ol>
+  <li>Slice the model with your intended printer profile.</li>
+  <li>Read the filament weight in grams.</li>
+  <li>Divide your spool price by its net weight to find cost per gram.</li>
+  <li>Multiply grams used by cost per gram.</li>
+  <li>Add a little allowance for waste or a possible reprint.</li>
+  <li>Add electricity and print time if you want the full cost.</li>
+</ol>
+<p>
+  The <a href="/3d-print-cost-calculator">3D Print Cost Calculator</a> lets you
+  enter slicer values or start with a volume-based estimate, then includes
+  material, energy, labour and margin in one calculation.
+</p>
