@@ -38,50 +38,103 @@
           (refresh)="refresh()"
         />
       } @else if (currentJob.status === jobStatus.Failed) {
-        <h2 id="repair-result">File could not be repaired</h2>
-        <p class="error">The file could not be repaired safely.</p>
-      } @else if (report(); as report) {
-        <h2 id="repair-result">
-          {{
-            report.afterValidation?.validation?.isValid
-              ? 'Repaired safely'
-              : 'Repaired with remaining warnings'
-          }}
-        </h2>
-        @let repair = report.repair;
-        <dl>
+        <div class="status-panel status-panel-error" role="alert">
+          <span class="status-icon" aria-hidden="true">!</span>
           <div>
+            <h2 id="repair-result">File could not be repaired</h2>
+            <p>
+              The file could not be processed safely. Keep the original and try
+              repairing it in a modelling or mesh-repair application.
+            </p>
+          </div>
+        </div>
+      } @else if (report(); as report) {
+        @let status = resultStatus(report);
+        @let repair = report.repair;
+        <div
+          class="status-panel"
+          [class.status-panel-warning]="status.warning"
+          [class.status-panel-success]="!status.warning"
+          role="status"
+        >
+          <span class="status-icon" aria-hidden="true">{{
+            status.warning ? '!' : '✓'
+          }}</span>
+          <div>
+            <p class="eyebrow">3MF repair result</p>
+            <h2 id="repair-result">{{ status.title }}</h2>
+            <p>{{ status.description }}</p>
+          </div>
+        </div>
+        <dl class="metrics" aria-label="Repair metrics">
+          <div class="metric metric-wide">
             <dt>Triangles</dt>
             <dd>
-              {{ repair?.trianglesBefore ?? 0 }} before ·
-              {{ repair?.trianglesAfter ?? 0 }} after
+              {{ formatInteger(repair?.trianglesBefore) }} before ·
+              {{ formatInteger(repair?.trianglesAfter) }} after
             </dd>
           </div>
-          <div>
+          <div class="metric">
             <dt>Degenerate triangles removed</dt>
-            <dd>{{ repair?.degenerateTrianglesRemoved ?? 0 }}</dd>
+            <dd>{{ formatInteger(repair?.degenerateTrianglesRemoved) }}</dd>
           </div>
-          <div>
+          <div class="metric">
             <dt>Duplicate triangles removed</dt>
-            <dd>{{ repair?.duplicateTrianglesRemoved ?? 0 }}</dd>
+            <dd>{{ formatInteger(repair?.duplicateTrianglesRemoved) }}</dd>
           </div>
-          <div>
+          <div class="metric">
             <dt>Orientation fixes applied</dt>
-            <dd>{{ repair?.orientationFixesApplied ?? 0 }}</dd>
+            <dd>{{ formatInteger(repair?.orientationFixesApplied) }}</dd>
           </div>
+          @if ((repair?.invalidIndexTrianglesRemoved ?? 0) > 0) {
+            <div class="metric">
+              <dt>Invalid-index triangles removed</dt>
+              <dd>{{ formatInteger(repair?.invalidIndexTrianglesRemoved) }}</dd>
+            </div>
+          }
         </dl>
-        @if (repair?.repairedFileAvailable) {
-          <p>
+        <div class="report-actions">
+          @if (canDownloadRepairedFile(report)) {
             <a
               class="button"
               [href]="'/api/v1/jobs/' + currentJob.id + '/cleaned-3mf'"
               (click)="downloaded()"
               >Download repaired 3MF</a
             >
-          </p>
+          }
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="downloadJsonReport()"
+          >
+            Download JSON report
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="downloadPdfReport()"
+            [disabled]="!report.afterValidation || generatingPdf()"
+          >
+            {{ generatingPdf() ? 'Generating PDF…' : 'Download PDF report' }}
+          </button>
+        </div>
+        @if (reportDownloadError(); as message) {
+          <p class="error" role="alert">{{ message }}</p>
         }
-        @for (warning of report.warnings ?? []; track warning) {
-          <p class="warning">{{ warning }}</p>
+        @if (remainingIssues(report).length > 0) {
+          <section class="issues" aria-labelledby="remaining-issues-title">
+            <h3 id="remaining-issues-title">Remaining issues</h3>
+            <ul>
+              @for (issue of remainingIssues(report); track $index) {
+                <li [class.issue-error]="issue.severity === 'error'">
+                  <strong>{{ issue.label }}</strong>
+                  @if (issue.detail) {
+                    <span>{{ issue.detail }}</span>
+                  }
+                </li>
+              }
+            </ul>
+          </section>
         }
       }
     </section>
