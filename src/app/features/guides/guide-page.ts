@@ -20,7 +20,7 @@ export class GuidePage {
       description: this.guide.description,
       path: this.guide.slug,
       openGraphType: 'article',
-      structuredData: this.faqStructuredData(),
+      structuredData: this.structuredData(),
     });
   }
 
@@ -32,22 +32,25 @@ export class GuidePage {
     throw new Error('A guide route must resolve to a known guide.');
   }
 
-  private faqStructuredData(): Record<string, unknown> | undefined {
-    if (this.guide.faqs.length === 0) {
-      return undefined;
-    }
-
+  private structuredData(): Record<string, unknown> {
     return {
       '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: this.guide.faqs.map((faq) => ({
-        '@type': 'Question',
-        name: faq.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: faq.answer,
+      '@graph': [
+        {
+          '@type': 'Article',
+          headline: this.guide.heading,
+          description: this.guide.description,
+          datePublished: this.guide.publishDate,
         },
-      })),
+        {
+          '@type': 'FAQPage',
+          mainEntity: this.guide.faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+          })),
+        },
+      ],
     };
   }
 }

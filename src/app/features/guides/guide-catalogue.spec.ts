@@ -15,6 +15,7 @@ const content = (slug: string): GuideContent => ({
   slug,
   heading: slug,
   eyebrow: 'Guide',
+  publishDate: '2026-09-05',
   faqs: [],
   html: '<p>Guide body.</p>',
 });
@@ -27,18 +28,28 @@ describe('guide catalogue', () => {
         enabled: true,
         group: 'stl',
         order: 20,
+        publishDate: '2026-09-05',
       },
       {
         slug: 'disabled-guide',
         enabled: false,
         group: 'general',
         order: 10,
+        publishDate: '2026-09-05',
+      },
+      {
+        slug: 'future-guide',
+        enabled: true,
+        group: 'general',
+        order: 20,
+        publishDate: '2999-01-01',
       },
       {
         slug: 'stl-first',
         enabled: true,
         group: 'stl',
         order: 10,
+        publishDate: '2026-09-05',
       },
     ];
     const catalogue = createGuideCatalogue(
@@ -47,6 +58,7 @@ describe('guide catalogue', () => {
       new Map([
         ['stl-second', content('stl-second')],
         ['disabled-guide', content('disabled-guide')],
+        ['future-guide', content('future-guide')],
         ['stl-first', content('stl-first')],
       ]),
     );
@@ -69,5 +81,6 @@ describe('guide catalogue', () => {
       expect.objectContaining({ slug: 'stl-second' }),
     ]);
     expect(catalogue.relatedGuidesBySlug['disabled-guide']).toBeUndefined();
+    expect(catalogue.relatedGuidesBySlug['future-guide']).toBeUndefined();
   });
 });

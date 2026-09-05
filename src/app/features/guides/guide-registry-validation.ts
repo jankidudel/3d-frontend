@@ -3,6 +3,8 @@ export interface GuideRegistryEntry {
   readonly enabled: boolean;
   readonly group: string;
   readonly order: number;
+  readonly publishDate: string;
+  readonly checkEditorialTargets?: boolean;
 }
 
 export interface GuideGroup {
@@ -14,7 +16,14 @@ export interface GuideContentReference {
   readonly slug: string;
 }
 
-const supportedRegistryFields = new Set(['slug', 'enabled', 'group', 'order']);
+const supportedRegistryFields = new Set([
+  'slug',
+  'enabled',
+  'group',
+  'order',
+  'publishDate',
+  'checkEditorialTargets',
+]);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export function guideContentFileName(slug: string): string {
@@ -95,7 +104,36 @@ function registryEntry(
     throw registryError(`entry "${slug}" must provide numeric "order".`);
   }
 
-  return { slug, enabled: record['enabled'], group, order };
+  const publishDate = requiredString(record, 'publishDate', index);
+  if (!isDateOnlyUtc(publishDate)) {
+    throw registryError(
+      `entry "${slug}" must provide valid YYYY-MM-DD "publishDate".`,
+    );
+  }
+  if (
+    'checkEditorialTargets' in record &&
+    typeof record['checkEditorialTargets'] !== 'boolean'
+  ) {
+    throw registryError(
+      `entry "${slug}" must provide boolean "checkEditorialTargets" when present.`,
+    );
+  }
+  return {
+    slug,
+    enabled: record['enabled'],
+    group,
+    order,
+    publishDate,
+    checkEditorialTargets: record['checkEditorialTargets'] as
+      boolean | undefined,
+  };
+}
+
+function isDateOnlyUtc(value: string): boolean {
+  return (
+    /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+    new Date(`${value}T00:00:00.000Z`).toISOString().slice(0, 10) === value
+  );
 }
 
 function requiredString(

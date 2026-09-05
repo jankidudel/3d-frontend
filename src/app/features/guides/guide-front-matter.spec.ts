@@ -10,28 +10,46 @@ const validGuide = {
   description: 'A useful example guide.',
   slug: 'example-guide',
   eyebrow: 'STL guide',
+  heading: 'Example guide',
+  publishDate: '2026-09-05',
+  faq: [
+    { question: 'Is this useful?', answer: 'Yes, it explains the example.' },
+    { question: 'Can I use it?', answer: 'Yes, use it as a test fixture.' },
+  ],
 };
 
 describe('guide front matter validation', () => {
   it('accepts a valid guide and creates its public route', () => {
     const guide = validateGuideFrontMatter(validGuide, filePath);
 
-    expect(guide).toMatchObject(validGuide);
-    expect(guide.faqs).toEqual([]);
+    expect(guide).toMatchObject({
+      title: validGuide.title,
+      description: validGuide.description,
+      slug: validGuide.slug,
+      eyebrow: validGuide.eyebrow,
+      heading: validGuide.heading,
+      publishDate: validGuide.publishDate,
+    });
+    expect(guide.faqs).toHaveLength(2);
     expect(guideRoutePath(guide.slug)).toBe('/example-guide');
   });
 
-  it.each(['title', 'description', 'slug', 'eyebrow'] as const)(
-    'rejects a missing required %s field',
-    (field) => {
-      const guide = { ...validGuide } as Record<string, unknown>;
-      delete guide[field];
+  it.each([
+    'title',
+    'description',
+    'slug',
+    'eyebrow',
+    'heading',
+    'faq',
+    'publishDate',
+  ] as const)('rejects a missing required %s field', (field) => {
+    const guide = { ...validGuide } as Record<string, unknown>;
+    delete guide[field];
 
-      expect(() => validateGuideFrontMatter(guide, filePath)).toThrow(
-        `Guide validation failed: ${filePath} is missing required front-matter field "${field}".`,
-      );
-    },
-  );
+    expect(() => validateGuideFrontMatter(guide, filePath)).toThrow(
+      `Guide validation failed: ${filePath} is missing required front-matter field "${field}".`,
+    );
+  });
 
   it('rejects invalid slug formats', () => {
     expect(() =>
@@ -52,10 +70,6 @@ describe('guide front matter validation', () => {
         },
       ]),
     ).toThrow('field "slug" duplicates "example-guide"');
-  });
-
-  it('accepts a guide without FAQ data', () => {
-    expect(validateGuideFrontMatter(validGuide, filePath).faqs).toEqual([]);
   });
 
   it('rejects malformed FAQ data', () => {

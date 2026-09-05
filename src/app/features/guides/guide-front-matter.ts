@@ -8,8 +8,9 @@ export interface GuideFrontMatter {
   readonly description: string;
   readonly slug: string;
   readonly eyebrow: string;
-  readonly heading?: string;
+  readonly heading: string;
   readonly faqs: readonly GuideFaq[];
+  readonly publishDate: string;
   readonly published?: string;
   readonly updated?: string;
   readonly image?: string;
@@ -34,6 +35,7 @@ const supportedFields = new Set([
   'image',
   'keywords',
   'relatedTools',
+  'publishDate',
 ]);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -48,6 +50,14 @@ export function validateGuideFrontMatter(
   const description = requiredString(record, 'description', filePath);
   const slug = requiredString(record, 'slug', filePath);
   const eyebrow = requiredString(record, 'eyebrow', filePath);
+  const heading = requiredString(record, 'heading', filePath);
+  const publishDate = requiredString(record, 'publishDate', filePath);
+  if (!isDateOnlyUtc(publishDate)) {
+    throw validationError(
+      filePath,
+      'field "publishDate" must use a real YYYY-MM-DD UTC date.',
+    );
+  }
   if (!slugPattern.test(slug)) {
     throw validationError(
       filePath,
@@ -60,8 +70,9 @@ export function validateGuideFrontMatter(
     description,
     slug,
     eyebrow,
-    heading: optionalString(record, 'heading', filePath),
-    faqs: optionalFaqs(record, filePath),
+    heading,
+    faqs: requiredFaqs(record, filePath),
+    publishDate,
     published: optionalString(record, 'published', filePath),
     updated: optionalString(record, 'updated', filePath),
     image: optionalString(record, 'image', filePath),
@@ -153,12 +164,15 @@ function optionalString(
   return value;
 }
 
-function optionalFaqs(
+function requiredFaqs(
   record: Record<string, unknown>,
   filePath: string,
 ): readonly GuideFaq[] {
   if (!('faq' in record)) {
-    return [];
+    throw validationError(
+      filePath,
+      'is missing required front-matter field "faq".',
+    );
   }
   const value = record['faq'];
   if (!Array.isArray(value) || value.length === 0) {
@@ -168,6 +182,13 @@ function optionalFaqs(
     );
   }
   return value.map((faq, index) => faqEntry(faq, index, filePath));
+}
+
+function isDateOnlyUtc(value: string): boolean {
+  return (
+    /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+    new Date(`${value}T00:00:00.000Z`).toISOString().slice(0, 10) === value
+  );
 }
 
 function faqEntry(value: unknown, index: number, filePath: string): GuideFaq {

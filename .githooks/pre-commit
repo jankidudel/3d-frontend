@@ -11,4 +11,8 @@ if [ "$before_format" != "$after_format" ]; then
 fi
 
 echo "Running pre-commit checks..."
+if ! git diff --cached --quiet -- src/content/guides src/app/features/guides; then
+  npm run generate:guides
+  npm run seo:check -- --source-only
+fi
 npm run precommit

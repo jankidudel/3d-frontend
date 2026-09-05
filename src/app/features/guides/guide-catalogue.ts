@@ -9,6 +9,7 @@ export interface GuideContent {
   readonly slug: string;
   readonly heading: string;
   readonly eyebrow: string;
+  readonly publishDate: string;
   readonly faqs: readonly {
     readonly question: string;
     readonly answer: string;
@@ -44,10 +45,11 @@ export function createGuideCatalogue(
   registry: readonly GuideRegistryEntry[],
   groups: Readonly<Record<string, GuideGroup>>,
   contentBySlug: ReadonlyMap<string, GuideContent>,
+  asOf = new Date().toISOString().slice(0, 10),
 ): GuideCatalogue {
   const groupIds = Object.keys(groups);
   const guides = registry
-    .filter((entry) => entry.enabled)
+    .filter((entry) => entry.enabled && entry.publishDate <= asOf)
     .sort(
       (first, second) =>
         groupIds.indexOf(first.group) - groupIds.indexOf(second.group) ||

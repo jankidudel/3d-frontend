@@ -13,6 +13,7 @@ const entry = {
   enabled: true,
   group: 'stl',
   order: 10,
+  publishDate: '2026-09-05',
 };
 
 describe('guide registry validation', () => {
