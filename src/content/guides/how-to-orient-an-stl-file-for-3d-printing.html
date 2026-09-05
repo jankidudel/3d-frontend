@@ -1,0 +1,88 @@
+---
+title: 'How to Orient an STL File for 3D Printing | InspectMesh'
+description: Learn how to choose the best STL orientation for 3D printing, reduce supports, improve strength and check whether the model fits your printer.
+slug: how-to-orient-an-stl-file-for-3d-printing
+eyebrow: 3D print preparation guide
+heading: How to Orient an STL File for 3D Printing
+faq:
+  - question: What is the best orientation for an STL file?
+    answer: The best orientation depends on surface quality, strength, support requirements and printer fit. There is rarely one universal direction that is best for every model.
+  - question: Does rotating a model change its dimensions?
+    answer: Rotation does not change the model itself, but it changes the width, depth and height it occupies on the printer bed.
+  - question: Should I always print with the largest flat side on the bed?
+    answer: Often, but not always. A large flat side can improve stability, while another orientation may reduce supports or improve strength in a critical direction.
+---
+
+<p>
+  Model orientation is one of the most important choices you make before slicing
+  an STL. Rotating a part changes which surfaces touch the bed, where supports
+  are needed, how layers build up and which direction the printed part is
+  strongest.
+</p>
+<p>
+  The best orientation is usually a compromise between print quality, strength,
+  speed and printer fit.
+</p>
+<h2>Start by inspecting the model</h2>
+<p>
+  Use the <a href="/stl-viewer">STL Viewer</a> to understand the model shape
+  before opening it in a slicer. Look for large flat surfaces, overhangs, long
+  thin features and cosmetic faces that you want to keep clean.
+</p>
+<p>
+  Then use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
+  confirm the model size. Rotation can change whether a long object fits inside
+  the build volume, even though the object itself is unchanged.
+</p>
+<h2>Reduce support where possible</h2>
+<p>
+  Overhangs often need support. A different orientation can reduce the amount of
+  support material, shorten print time and leave fewer marks on visible
+  surfaces.
+</p>
+<p>
+  Avoid placing an important cosmetic face directly on support if another
+  orientation can protect it. For example, a smooth display surface may print
+  better facing upward or against the bed rather than hanging over support
+  structures.
+</p>
+<p>
+  Do not avoid support at all costs. An unstable orientation can fail even if it
+  uses less material.
+</p>
+<h2>Consider part strength</h2>
+<p>
+  FDM prints are usually weaker between layers than within a layer. If a part
+  will be pulled, bent or loaded in one direction, orient it so the layer lines
+  do not become the easiest point of failure.
+</p>
+<p>
+  For a functional hook, bracket or clip, think about where the force will act
+  after printing. It may be worth accepting more supports to get stronger layer
+  alignment.
+</p>
+<h2>Check printer fit</h2>
+<p>
+  A model that does not fit flat may fit diagonally or on its side. Use the
+  <a href="/how-to-check-if-a-3d-model-fits-your-printer"
+    >guide to checking printer fit</a
+  >
+  and compare alternative orientations in your slicer.
+</p>
+<p>
+  If the model is still too large, do not scale a functional part without
+  checking its critical dimensions. Splitting the model into separate printable
+  pieces may be the better option.
+</p>
+<h2>Validate before printing</h2>
+<p>
+  After choosing an orientation, inspect the slicer preview. Look for
+  unsupported islands, weak-looking bridges, excessive supports and thin
+  features that disappear in the layers.
+</p>
+<p>
+  Also check mesh health with the
+  <a href="/stl-quality-checker">STL Quality Checker</a>. A good orientation
+  cannot compensate for holes, non-manifold edges or other geometry problems in
+  the STL itself.
+</p>

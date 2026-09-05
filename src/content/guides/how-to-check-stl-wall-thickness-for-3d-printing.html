@@ -1,0 +1,90 @@
+---
+title: 'How to Check STL Wall Thickness for 3D Printing | InspectMesh'
+description: Learn why STL wall thickness matters, how to check thin areas before printing, and how nozzle size and material affect a printable design.
+slug: how-to-check-stl-wall-thickness-for-3d-printing
+eyebrow: 3D print preparation guide
+heading: How to Check STL Wall Thickness for 3D Printing
+faq:
+  - question: What wall thickness is safe for 3D printing?
+    answer: It depends on the printer, nozzle, material and part purpose. A wall should normally be thick enough for multiple printed lines rather than relying on one fragile line.
+  - question: Can an STL look solid but have walls that are too thin?
+    answer: Yes. A model can be watertight and manifold while still containing areas that are thinner than your printer can produce reliably.
+  - question: Does scaling an STL change wall thickness?
+    answer: Yes. Scaling changes every dimension, including thin walls, holes and clearances.
+---
+
+<p>
+  Wall thickness is the distance between the inside and outside surfaces of a
+  model. A part can be perfectly watertight and still fail because some areas
+  are thinner than the printer can produce reliably.
+</p>
+<p>
+  Thin walls can disappear in the slicer, print as fragile single lines or break
+  during use.
+</p>
+<h2>Why wall thickness depends on the printer</h2>
+<p>
+  There is no single safe thickness for every print. The practical minimum
+  depends on:
+</p>
+<ul>
+  <li>nozzle diameter</li>
+  <li>line width</li>
+  <li>layer height</li>
+  <li>material</li>
+  <li>print orientation</li>
+  <li>whether the part is decorative or load-bearing</li>
+</ul>
+<p>
+  A 0.4 mm nozzle cannot reliably create every feature that is mathematically
+  wider than zero. In practice, walls normally need enough space for one or more
+  controlled extrusion lines.
+</p>
+<p>
+  Functional parts need more margin than display models. A thin decorative shell
+  may print successfully, while a thin bracket or clip can crack under load.
+</p>
+<h2>Check the model dimensions first</h2>
+<p>
+  Use the <a href="/stl-viewer">STL Viewer</a> to inspect thin-looking areas
+  such as edges, fins, small holes and decorative features.
+</p>
+<p>
+  Then use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
+  confirm overall size. If the entire model has been scaled down, walls that
+  were safe in the original design may no longer be printable.
+</p>
+<p>
+  InspectMesh does not currently calculate every local wall thickness in an STL.
+  Use your CAD software, slicer analysis tools or dedicated mesh software when
+  you need a precise thickness map.
+</p>
+<h2>Check the slicer preview</h2>
+<p>
+  The slicer preview is often the most practical test. Slice the model with your
+  actual printer profile and inspect thin areas layer by layer.
+</p>
+<p>Watch for:</p>
+<ul>
+  <li>walls that vanish</li>
+  <li>gaps between perimeters</li>
+  <li>isolated single lines</li>
+  <li>holes that close up</li>
+  <li>very small bridges or unsupported tips</li>
+</ul>
+<p>
+  If a feature disappears, increase the wall thickness in the original model
+  where possible. Scaling up may help for a decorative model, but it can change
+  functional dimensions.
+</p>
+<h2>Check mesh health as well</h2>
+<p>
+  Wall thickness is separate from mesh quality. Use the
+  <a href="/stl-quality-checker">STL Quality Checker</a> to find holes,
+  non-manifold edges and duplicate triangles before trying to solve printability
+  with slicer settings.
+</p>
+<p>
+  A reliable print starts with a clean mesh, suitable wall thickness and a
+  realistic printer profile.
+</p>

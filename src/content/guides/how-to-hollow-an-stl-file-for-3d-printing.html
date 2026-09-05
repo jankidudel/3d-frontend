@@ -1,0 +1,85 @@
+---
+title: 'How to Hollow an STL File for 3D Printing | InspectMesh'
+description: Learn how to hollow an STL model for 3D printing, reduce material use, choose wall thickness and add drain holes for resin printing.
+slug: how-to-hollow-an-stl-file-for-3d-printing
+eyebrow: 3D print preparation guide
+heading: How to Hollow an STL File for 3D Printing
+faq:
+  - question: Does hollowing always save filament or resin?
+    answer: It often reduces material use, but the benefit depends on wall thickness, infill settings, supports and the size of the model.
+  - question: Do hollow resin prints need drain holes?
+    answer: Usually, yes. Drain holes help uncured resin escape and make washing and curing the inside of the model more practical.
+  - question: Can I hollow a model with holes or non-manifold geometry?
+    answer: It is risky. Start with a clean, watertight model so the hollowing software can identify a dependable inside and outside surface.
+---
+
+<p>
+  Hollowing removes material from inside a model while keeping an outer shell.
+  It is common for large resin prints and can also be useful for some FDM
+  models.
+</p>
+<p>
+  The goal is to save material and reduce weight without making the shell too
+  weak to print or use.
+</p>
+<h2>Start with a clean model</h2>
+<p>
+  Before hollowing, check the STL with the
+  <a href="/stl-quality-checker">STL Quality Checker</a>. Hollowing works best
+  when the model is a closed, consistent solid.
+</p>
+<p>
+  Use the <a href="/stl-watertight-checker">STL Watertight Checker</a> to look
+  for open edges. A model with holes or non-manifold geometry can confuse the
+  process because the software may not be able to tell what is inside the
+  object.
+</p>
+<p>
+  If the file has simple repairable defects, try the
+  <a href="/stl-repair">STL Repair Tool</a> first, then validate it again.
+</p>
+<h2>Choose a suitable shell thickness</h2>
+<p>
+  The right shell thickness depends on the printing method and the model’s
+  purpose.
+</p>
+<p>
+  For FDM printing, walls need to work with your nozzle width, perimeter count
+  and infill strategy. In many cases, configuring perimeters and infill in the
+  slicer is more practical than hollowing the mesh itself.
+</p>
+<p>
+  For resin printing, hollowing is often more important because a fully solid
+  large model can use substantial resin and create high peel forces. The shell
+  still needs enough thickness to survive handling and curing.
+</p>
+<h2>Add drain holes for resin prints</h2>
+<p>
+  A hollow resin model needs a way for uncured resin to escape. Add drain holes
+  in low, hidden areas that will be reachable during washing and curing.
+</p>
+<p>
+  Without drainage, resin can remain trapped inside the model. This can create a
+  messy print, make cleaning difficult and cause later problems as trapped resin
+  expands or leaks.
+</p>
+<p>
+  Plan the print orientation before placing holes. The lowest points during
+  printing are often the most useful drainage locations.
+</p>
+<h2>Check the result before printing</h2>
+<p>
+  After hollowing, inspect the model in your slicer and review the layer
+  preview. Confirm that the shell remains thick enough, holes are in sensible
+  positions and supports do not block drainage.
+</p>
+<p>
+  Use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> if you
+  need to confirm the overall size after editing. Hollowing should not change
+  the outside dimensions, but checking avoids accidental scaling mistakes.
+</p>
+<p>
+  Hollowing is a design and print-preparation decision, not simply a file-size
+  trick. A clean mesh, suitable wall thickness and a proper drainage plan matter
+  more than removing the maximum possible material.
+</p>
