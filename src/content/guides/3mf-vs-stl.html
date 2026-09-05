@@ -1,175 +1,102 @@
 ---
 title: '3MF vs STL: Which 3D Printing File Format Should You Use? | InspectMesh'
-description: Compare 3MF and STL for 3D printing, including units, multiple build items, print settings, compatibility, file structure and when each format is the better choice.
+description: Compare 3MF and STL for 3D printing. Learn what each format stores, when STL is enough, and why 3MF is often better for modern workflows.
 slug: 3mf-vs-stl
-eyebrow: 3D file format guide
-heading: '3MF vs STL: Which Format Should You Use?'
+eyebrow: 3D printing file formats
+heading: '3MF vs STL: Which File Format Should You Use?'
 faq:
   - question: Is 3MF better than STL for 3D printing?
-    answer: 3MF is more capable because it can store units, multiple objects and additional metadata, but STL remains simpler and more widely supported.
-  - question: Does STL store units?
-    answer: No. STL stores geometry coordinates without explicitly recording whether they represent millimetres, inches or another unit.
-  - question: Can a 3MF file contain multiple objects?
-    answer: Yes. A 3MF package can describe multiple objects and build items rather than representing only a single triangle mesh.
-  - question: Should I convert all my STL files to 3MF?
-    answer: Not necessarily. STL is still useful for simple geometry exchange and broad compatibility. Use 3MF when its extra structure or metadata benefits your workflow.
+    answer: For most modern workflows, yes. 3MF can preserve units, multiple objects and other print-related information that STL does not reliably store.
+  - question: Should I convert all of my old STL files to 3MF?
+    answer: Not necessarily. A clean STL remains widely compatible. Convert when you need a 3MF workflow or want to preserve information that STL cannot hold.
+  - question: Does 3MF make a model more detailed than STL?
+    answer: No. The mesh geometry determines surface detail. 3MF can preserve more surrounding information, but it does not add geometric detail by itself.
 ---
 
-<p class="lead">
-  STL and 3MF can both carry 3D-printable geometry, but they were designed for
-  different generations of 3D-printing workflows.
-  <strong
-    >STL is simple and nearly universal. 3MF is newer and can store more
-    information about the model and print project.</strong
-  >
-</p>
-<h2>Quick comparison</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Feature</th>
-      <th>STL</th>
-      <th>3MF</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Triangle mesh geometry</td>
-      <td>Yes</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Explicit units</td>
-      <td>No</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Multiple build items</td>
-      <td>Limited workflow support</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Colours and materials</td>
-      <td>Not in standard STL</td>
-      <td>Supported by the format</td>
-    </tr>
-    <tr>
-      <td>Additional metadata</td>
-      <td>Very limited</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Compressed package</td>
-      <td>No</td>
-      <td>Yes</td>
-    </tr>
-    <tr>
-      <td>Broad legacy compatibility</td>
-      <td>Excellent</td>
-      <td>Increasingly broad</td>
-    </tr>
-    <tr>
-      <td>Easy to inspect as simple mesh data</td>
-      <td>Yes</td>
-      <td>More structured</td>
-    </tr>
-  </tbody>
-</table>
-<h2>What is STL?</h2>
 <p>
-  STL is one of the oldest and most widely supported file formats used in 3D
-  printing. It describes the surface of a model as a collection of triangles.
-  Almost every slicer and modelling application understands STL.
+  STL and 3MF can both be used for 3D printing, but they are built for different
+  generations of workflow.
 </p>
 <p>
-  A standard STL does not explicitly store physical units, colour, material
-  information, slicer settings or rich project metadata. You can inspect an STL
-  in the browser with the <a href="/stl-viewer">STL Viewer</a>, or browse all
-  available <a href="/stl-tools">STL tools</a>.
-</p>
-<h2>What is 3MF?</h2>
-<p>
-  3MF is a newer format designed specifically for modern 3D-manufacturing
-  workflows. Instead of being only a raw triangle list, a 3MF file is a
-  structured package that can describe geometry together with units, multiple
-  objects, build items, object relationships, colours or materials, metadata and
-  application-specific print information.
+  STL is the older, simple option. It stores a triangle surface and is supported
+  almost everywhere. 3MF is a newer manufacturing format that can store the
+  model plus useful context around it.
 </p>
 <p>
-  This makes 3MF particularly useful when a complete print project needs to move
-  between compatible applications. Inspect supported files using the
-  <a href="/3mf-viewer">3MF Viewer</a>, or browse all
-  <a href="/3mf-tools">3MF tools</a>.
+  For a basic single-colour model, STL is often enough. For a modern slicer
+  project, multiple parts, colour information or reliable units, 3MF is usually
+  the better choice.
 </p>
-<h2>Units: one of the biggest differences</h2>
+<h2>What STL stores</h2>
 <p>
-  STL does not explicitly identify its unit. A coordinate value of
-  <code>50</code> is simply <code>50</code>, and software often assumes
-  millimetres. 3MF can specify the unit used by the model, reducing the common
-  problem of opening a model that is unexpectedly huge or tiny.
+  An STL describes the surface of an object as triangles. That makes it simple
+  to export, share and open in nearly any slicer.
 </p>
 <p>
-  For an STL, use the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a>. For a 3MF file,
-  use the <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+  Its main limitation is that it normally does not contain reliable unit
+  information. A coordinate value of <code>50</code> could be intended as 50 mm,
+  50 inches or something else. STL also does not preserve colours, materials,
+  build placement or printer settings.
 </p>
-<h2>Multiple objects and build items</h2>
 <p>
-  An STL is fundamentally a surface mesh representation. Although it can contain
-  disconnected shells, it does not provide the richer object and build structure
-  available in 3MF. A 3MF package can describe multiple objects and how they are
-  placed in a build, which is useful for multi-part projects, assemblies, plates
-  containing several models, and workflows where object identity matters.
+  Use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
+  confirm size before printing an STL. Use the
+  <a href="/stl-quality-checker">STL Quality Checker</a> to check whether its
+  mesh has holes, non-manifold edges or other common problems.
 </p>
-<h2>Print settings and application data</h2>
-<p>
-  Some slicers use 3MF as a project format and may place printer, process or
-  application-specific information inside the package. This can make a 3MF more
-  useful than an STL when reopening a complete slicing project. Not every 3MF
-  contains the same settings, however, and compatibility still depends on the
-  software that created and opens the file.
-</p>
-<h2>File size</h2>
-<p>
-  3MF packages are compressed, while binary STL stores a simple triangle
-  representation. Which file is smaller depends on the model and its contents.
-  For STL files, triangle count is a useful indicator of mesh complexity - check
-  it with the <a href="/stl-triangle-counter">STL Triangle Counter</a>. For 3MF
-  files, use the <a href="/3mf-triangle-counter">3MF Triangle Counter</a>.
-</p>
-<h2>Compatibility</h2>
-<p>
-  STL still wins for maximum compatibility. It is supported by almost every
-  established slicer, CAD or modelling package, mesh editor and online 3D tool.
-  3MF support is common in modern 3D-printing software, but older programs and
-  specialised tools may still expect STL. Check which formats the recipient's
-  software accepts before sending a model.
-</p>
-<h2>When STL is the better choice</h2>
+<h2>What 3MF stores</h2>
+<p>A 3MF file can store mesh geometry plus information such as:</p>
 <ul>
-  <li>You only need to exchange mesh geometry.</li>
-  <li>Maximum software compatibility matters.</li>
-  <li>The receiving tool expects STL.</li>
-  <li>Units and project metadata are controlled elsewhere.</li>
-  <li>You want a simple, widely understood format.</li>
+  <li>units</li>
+  <li>multiple objects and build items</li>
+  <li>object placement</li>
+  <li>names and metadata</li>
+  <li>materials and colours where supported</li>
+  <li>slicer-related information in some workflows</li>
 </ul>
+<p>
+  This reduces the information lost when a model moves from CAD software to a
+  slicer.
+</p>
+<p>
+  A 3MF can still contain broken mesh geometry, so inspect it with the
+  <a href="/3mf-quality-checker">3MF Quality Checker</a> before printing an
+  important part.
+</p>
+<h2>When STL is the right choice</h2>
+<p>
+  Use STL when compatibility is your priority. It remains a sensible choice for:
+</p>
+<ul>
+  <li>simple single-part prints</li>
+  <li>sharing models on sites that expect STL</li>
+  <li>older slicer workflows</li>
+  <li>files where you only need the geometry</li>
+</ul>
+<p>STL is not obsolete. It is simply limited.</p>
 <h2>When 3MF is the better choice</h2>
-<ul>
-  <li>Preserving units matters.</li>
-  <li>A project contains multiple objects.</li>
-  <li>You want to keep richer project information.</li>
-  <li>Your slicer uses 3MF as its native or preferred project format.</li>
-  <li>All applications in the workflow support it.</li>
-</ul>
-<h2>Should you replace STL with 3MF?</h2>
 <p>
-  There is no need to choose only one format. STL remains useful for simple mesh
-  sharing, while 3MF can preserve information that an STL cannot represent. Use
-  the format that preserves the information your workflow actually needs.
+  Choose 3MF when you want to preserve a more complete print project. It is
+  especially useful for multi-part builds, colour-capable workflows and models
+  where scale needs to remain clear.
 </p>
-<h2>Inspect your 3D files</h2>
 <p>
-  Use the free <a href="/stl-tools">STL tools</a> to inspect STL geometry,
-  dimensions, volume and mesh quality, or use the
-  <a href="/3mf-tools">3MF tools</a> for supported 3MF files.
+  Use the <a href="/3mf-viewer">3MF Viewer</a> to inspect the model and the
+  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> to confirm its
+  size and printer fit.
+</p>
+<h2>Converting between the formats</h2>
+<p>
+  You can use the <a href="/stl-to-3mf-converter">STL to 3MF Converter</a> to
+  bring a simple STL mesh into a 3MF workflow.
+</p>
+<p>
+  Converting from 3MF to STL is possible too, but it can discard information
+  that STL cannot represent, such as multiple objects, units, colours and build
+  settings. Keep the original 3MF file whenever those details matter.
+</p>
+<p>
+  The best format is the one that your software supports while preserving the
+  information you need. For most new 3D-printing projects, start with 3MF where
+  possible; keep STL for broad compatibility and simple mesh sharing.
 </p>

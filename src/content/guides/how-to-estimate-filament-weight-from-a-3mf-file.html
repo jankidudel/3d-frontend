@@ -1,0 +1,76 @@
+---
+title: 'How to Estimate Filament Weight From a 3MF File | InspectMesh'
+description: Learn how to estimate material weight from a 3MF file’s volume, density and infill assumptions before preparing a 3D print.
+slug: how-to-estimate-filament-weight-from-a-3mf-file
+eyebrow: 3MF volume guide
+heading: How to Estimate Filament Weight From a 3MF File
+faq:
+  - question: Is a 3MF volume calculation the same as filament used?
+    answer: No. Model volume describes the solid geometry. Actual filament use depends on infill, wall count, supports, brim and slicer settings.
+  - question: Which filament density should I use?
+    answer: Use the density for the material you plan to print. PLA, PETG, ABS and filled materials have different densities.
+  - question: Can a broken 3MF give an unreliable volume result?
+    answer: Yes. Holes, open surfaces and inconsistent orientation can prevent dependable enclosed-volume calculations.
+---
+
+<p>
+  A 3MF file can help you estimate how much material a print may use, but the
+  result is an estimate—not a replacement for your slicer’s final filament
+  calculation.
+</p>
+<p>
+  The starting point is model volume. A larger solid volume generally needs more
+  material, but actual filament use depends on the print settings you choose.
+</p>
+<h2>Calculate model volume</h2>
+<p>
+  Upload the file to the
+  <a href="/3mf-volume-calculator">3MF Volume Calculator</a>. It reports the
+  volume of the resolved mesh geometry and can provide a material-weight
+  estimate.
+</p>
+<p>
+  Choose the correct unit and material density. The same model volume weighs
+  differently in PLA, PETG, ABS and filled filaments.
+</p>
+<h2>Understand the difference between volume and print weight</h2>
+<p>
+  A volume calculator works from the model’s solid geometry. Your slicer may
+  print that model partly hollow using infill.
+</p>
+<p>Actual material use depends on:</p>
+<ul>
+  <li>infill percentage and pattern</li>
+  <li>wall/perimeter count</li>
+  <li>top and bottom layers</li>
+  <li>supports</li>
+  <li>brim or raft</li>
+  <li>purge material for multi-colour printing</li>
+</ul>
+<p>
+  Use the calculator for an early estimate and your slicer for the final
+  print-planning figure.
+</p>
+<h2>Check mesh health first</h2>
+<p>
+  Volume is most dependable when the model forms a closed, consistently oriented
+  surface. Before relying on the result, use the
+  <a href="/3mf-quality-checker">3MF Quality Checker</a> and, where relevant,
+  the <a href="/3mf-watertight-checker">3MF Watertight Checker</a>.
+</p>
+<p>
+  A model with holes or non-manifold geometry can produce an unreliable
+  enclosed-volume calculation.
+</p>
+<h2>Use the estimate for planning</h2>
+<p>
+  A rough weight estimate is useful when deciding whether you have enough
+  filament, comparing design variants or estimating material cost before
+  slicing.
+</p>
+<p>
+  Then open the model in the <a href="/3mf-viewer">3MF Viewer</a>, confirm its
+  dimensions and produce a final slice with your intended printer profile. The
+  slicer remains the best source for the actual material estimate because it
+  knows the print settings that will determine how much filament is deposited.
+</p>

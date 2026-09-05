@@ -252,4 +252,28 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
+  {
+    slug: 'how-to-check-3mf-triangle-count',
+    group: GuideGroupId.ThreeMf,
+    order: 120,
+    enabled: true,
+    publishDate: '2026-09-05',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: 'how-to-tell-if-a-3mf-file-is-manifold',
+    group: GuideGroupId.ThreeMf,
+    order: 130,
+    enabled: true,
+    publishDate: '2026-09-05',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: 'how-to-estimate-filament-weight-from-a-3mf-file',
+    group: GuideGroupId.ThreeMf,
+    order: 140,
+    enabled: true,
+    publishDate: '2026-09-05',
+    checkEditorialTargets: false,
+  },
 ];
