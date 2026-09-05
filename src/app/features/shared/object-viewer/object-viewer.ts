@@ -39,6 +39,7 @@ export class ObjectViewerComponent {
   readonly extent = input.required<number>();
   readonly ariaLabel = input.required<string>();
   readonly issueLines = input<readonly ViewerIssueLine[]>([]);
+  readonly scrollOnRender = input(true);
   readonly chooseAnother = output<void>();
   readonly resetView = output<void>();
   readonly rendered = output<void>();
@@ -244,7 +245,9 @@ export class ObjectViewerComponent {
       };
       runtime.frame = requestAnimationFrame(animate);
       this.rendered.emit();
-      this.scrollIntoView(runtime);
+      if (this.scrollOnRender()) {
+        this.scrollIntoView(runtime);
+      }
     } catch {
       this.disposeObject(object);
       this.renderFailed.emit();

@@ -56,7 +56,9 @@
         {{ submitting() ? 'Creating job...' : 'Split into two parts' }}
       </button>
       @if (error()) {
-        <p class="splitter-error" role="alert">{{ error() }}</p>
+        <p class="status-panel status-panel-error splitter-error" role="alert">
+          {{ error() }}
+        </p>
       }
     </section>
     @if (preview(); as model) {
@@ -70,6 +72,7 @@
           [object]="model.object"
           [extent]="model.extent"
           ariaLabel="STL split cut-plane preview"
+          [scrollOnRender]="false"
         />
       </section>
     }
@@ -86,7 +89,7 @@
           />
         } @else if (currentJob.status === jobStatus.Failed) {
           <h2 id="split-result">Split could not run</h2>
-          <p class="splitter-error">
+          <p class="status-panel status-panel-error splitter-error">
             {{
               currentJob.failure?.error?.message ??
                 'The model could not be split safely.'
@@ -159,7 +162,9 @@
             </button>
           </p>
           @if (reportDownloadError()) {
-            <p class="splitter-error">{{ reportDownloadError() }}</p>
+            <p class="status-panel status-panel-error splitter-error">
+              {{ reportDownloadError() }}
+            </p>
           }
           <p>
             The split does not add alignment pins or connectors. Test-fit the
