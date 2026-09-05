@@ -1,0 +1,174 @@
+:host {
+  display: block;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.splitter-content {
+  display: grid;
+  gap: 1.5rem;
+  width: min(100%, 58rem);
+  margin-top: 2rem;
+}
+
+.splitter-card {
+  width: 100%;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.splitter-card > h2,
+.splitter-card > p {
+  margin-top: 0;
+}
+
+.splitter-card > p {
+  color: var(--muted);
+}
+
+app-stl-file-picker {
+  display: block;
+  margin-block: 1.5rem;
+}
+
+.split-controls {
+  display: grid;
+  grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: end;
+}
+
+.split-controls label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--text);
+  font-weight: 750;
+}
+
+.position-field > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.split-controls select,
+.split-controls input {
+  width: 100%;
+  min-height: 2.9rem;
+}
+
+.split-controls input[type='range'] {
+  padding: 0;
+}
+
+.cut-helper-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin: 1rem 0 1.5rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.submit {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.splitter-error {
+  margin: 1rem 0 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e5a8a3;
+  border-radius: 0.65rem;
+  color: #8f1d14 !important;
+  background: #fff5f4;
+  font-weight: 700;
+}
+
+.preview-card app-object-viewer {
+  display: block;
+  min-height: 28rem;
+}
+
+.split-results app-job-progress {
+  display: block;
+}
+
+.split-success {
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #86b99a;
+  border-radius: 0.75rem;
+  background: #f0fdf4;
+  color: #14532d;
+}
+
+.split-success h2,
+.split-success p {
+  margin: 0;
+}
+
+.split-success p {
+  margin-top: 0.35rem;
+  color: inherit;
+}
+
+.split-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.part-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: #fbfdfb;
+}
+
+.part-card h3,
+.part-card p {
+  margin: 0;
+}
+
+.part-card .button {
+  margin-top: 0.25rem;
+}
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1rem;
+}
+
+.content {
+  width: min(100%, 46rem);
+  margin-top: 1.5rem;
+}
+
+.content p {
+  margin: 0;
+  color: var(--muted);
+}
+
+@media (max-width: 42rem) {
+  .splitter-content {
+    gap: 1rem;
+  }
+
+  .split-controls,
+  .split-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-card app-object-viewer {
+    min-height: 22rem;
+  }
+}

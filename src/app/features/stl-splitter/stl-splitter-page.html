@@ -5,162 +5,182 @@
     Split a large STL model into two capped, printable parts that fit your
     printer more easily.
   </p>
-  <section class="checker card">
-    <h2>Choose an STL and cut position</h2>
-    <p>Only closed, manifold STL files can be split safely.</p>
-    <app-stl-file-picker
-      [selectedFileFromParent]="file()"
-      (fileSelected)="onFileSelected($event)"
-    />
-    @if (selectedBounds(); as cutBounds) {
-      <label
-        >Cut direction
-        <select [value]="axis()" (change)="setAxis($any($event.target).value)">
-          <option>X</option>
-          <option>Y</option>
-          <option>Z</option>
-        </select></label
-      ><label
-        >Cut position: {{ position() }}%
-        <input
-          type="range"
-          min="0"
-          max="100"
-          [value]="position()"
-          (input)="setPosition(+$any($event.target).value)"
-      /></label>
-      <p>
-        Range: {{ format(cutBounds.min) }} to {{ format(cutBounds.max) }} model
-        units. Selected coordinate: <strong>{{ format(coordinate()) }}</strong
-        >.
-      </p>
-    }
-    <button
-      class="button submit"
-      type="button"
-      [disabled]="!canSplit()"
-      (click)="split()"
-    >
-      {{ submitting() ? 'Creating job...' : 'Split into two parts' }}
-    </button>
-    @if (error()) {
-      <p class="error" role="alert">{{ error() }}</p>
-    }
-  </section>
-  @if (preview(); as model) {
-    <section class="card">
-      <h2>Cut-plane preview</h2>
-      <p>
-        Blue is Part A, orange is Part B, and the yellow plane marks the
-        selected cut. This is a positional preview; final caps are created and
-        validated by the processor.
-      </p>
-      <app-object-viewer
-        [object]="model.object"
-        [extent]="model.extent"
-        ariaLabel="STL split cut-plane preview"
+  <div class="splitter-content">
+    <section class="splitter-card card">
+      <h2>Choose an STL and cut position</h2>
+      <p>Only closed, manifold STL files can be split safely.</p>
+      <app-stl-file-picker
+        [selectedFileFromParent]="file()"
+        (fileSelected)="onFileSelected($event)"
       />
-    </section>
-  }
-  @if (job(); as currentJob) {
-    <section class="results card" aria-live="polite">
-      @if (processing() || timedOut()) {
-        <app-job-progress
-          [job]="currentJob"
-          [uploading]="submitting()"
-          [pollingTimedOut]="timedOut()"
-          [refreshing]="refreshing()"
-          headingId="split-result"
-          (refresh)="refresh()"
-        />
-      } @else if (currentJob.status === jobStatus.Failed) {
-        <h2 id="split-result">Split could not run</h2>
-        <p class="error">
-          {{
-            currentJob.failure?.error?.message ??
-              'The model could not be split safely.'
-          }}
-        </p>
-        <p>
-          <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-          <a [routerLink]="routeUrl.WatertightChecker">Watertight Checker</a> ·
-          <a [routerLink]="routeUrl.ManifoldChecker">Manifold Checker</a> ·
-          <a [routerLink]="routeUrl.StlRepair">STL Repair Tool</a>
-        </p>
-      } @else if (report(); as result) {
-        <h2 id="split-result">Split completed</h2>
-        <p>
-          Cut along {{ result.split?.axis }} at
-          {{ result.split?.positionPercent }}%.
-        </p>
-        <div class="result-grid">
-          @for (
-            part of [result.split?.partA, result.split?.partB];
-            track part.fileName
-          ) {
-            <article class="card">
-              <h3>{{ part === result.split?.partA ? 'Part A' : 'Part B' }}</h3>
-              <p>
-                {{ part.dimensions?.width }} × {{ part.dimensions?.height }} ×
-                {{ part.dimensions?.depth }} model units
-              </p>
-              <p>{{ part.triangleCount }} triangles · Watertight · Manifold</p>
-              <a
-                class="button"
-                [href]="
-                  '/api/v1/jobs/' +
-                  currentJob.id +
-                  '/' +
-                  (part === result.split?.partA
-                    ? 'split-part-a'
-                    : 'split-part-b')
-                "
-                (click)="downloadPart(part === result.split?.partA ? 'a' : 'b')"
-                >Download
-                {{ part === result.split?.partA ? 'Part A' : 'Part B' }}</a
-              >
-            </article>
-          }
+      @if (selectedBounds(); as cutBounds) {
+        <div class="split-controls">
+          <label class="axis-field"
+            ><span>Cut direction</span>
+            <select
+              [value]="axis()"
+              (change)="setAxis($any($event.target).value)"
+            >
+              <option>X</option>
+              <option>Y</option>
+              <option>Z</option>
+            </select></label
+          ><label class="position-field"
+            ><span
+              >Cut position <strong>{{ position() }}%</strong></span
+            >
+            <input
+              type="range"
+              min="0"
+              max="100"
+              [value]="position()"
+              (input)="setPosition(+$any($event.target).value)"
+          /></label>
         </div>
-        <p>
-          <button
-            class="button secondary"
-            type="button"
-            (click)="downloadJsonReport()"
+        <div class="cut-helper-row">
+          <span
+            >{{ axis() }} range: {{ format(cutBounds.min) }} to
+            {{ format(cutBounds.max) }} model units</span
           >
-            Download JSON report
-          </button>
-          <button
-            class="button secondary"
-            type="button"
-            [disabled]="generatingPdf()"
-            (click)="downloadPdfReport()"
+          <span
+            >Selected cut: <strong>{{ format(coordinate()) }}</strong></span
           >
-            {{ generatingPdf() ? 'Preparing PDF...' : 'Download PDF report' }}
-          </button>
-        </p>
-        @if (reportDownloadError()) {
-          <p class="error">{{ reportDownloadError() }}</p>
-        }
-        <p>
-          The split does not add alignment pins or connectors. Test-fit the
-          parts before final assembly.
-        </p>
+        </div>
+      }
+      <button
+        class="button submit"
+        type="button"
+        [disabled]="!canSplit()"
+        (click)="split()"
+      >
+        {{ submitting() ? 'Creating job...' : 'Split into two parts' }}
+      </button>
+      @if (error()) {
+        <p class="splitter-error" role="alert">{{ error() }}</p>
       }
     </section>
-  }
-  <section class="content">
-    <p>
-      Also use
-      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>,
-      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a>,
-      <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>,
-      <a href="/how-to-check-if-a-3d-model-fits-your-printer"
-        >printer fit guidance</a
-      >, and
-      <a href="/how-to-orient-an-stl-file-for-3d-printing"
-        >orientation guidance</a
-      >.
-    </p>
-  </section>
+    @if (preview(); as model) {
+      <section class="splitter-card preview-card card">
+        <h2>Cut-plane preview</h2>
+        <p>
+          Blue is Part A, orange is Part B, and the yellow plane marks the
+          selected cut. Final caps are created and validated by the processor.
+        </p>
+        <app-object-viewer
+          [object]="model.object"
+          [extent]="model.extent"
+          ariaLabel="STL split cut-plane preview"
+        />
+      </section>
+    }
+    @if (job(); as currentJob) {
+      <section class="splitter-card split-results card" aria-live="polite">
+        @if (processing() || timedOut()) {
+          <app-job-progress
+            [job]="currentJob"
+            [uploading]="submitting()"
+            [pollingTimedOut]="timedOut()"
+            [refreshing]="refreshing()"
+            headingId="split-result"
+            (refresh)="refresh()"
+          />
+        } @else if (currentJob.status === jobStatus.Failed) {
+          <h2 id="split-result">Split could not run</h2>
+          <p class="splitter-error">
+            {{
+              currentJob.failure?.error?.message ??
+                'The model could not be split safely.'
+            }}
+          </p>
+          <p>
+            <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+            <a [routerLink]="routeUrl.WatertightChecker">Watertight Checker</a>
+            · <a [routerLink]="routeUrl.ManifoldChecker">Manifold Checker</a> ·
+            <a [routerLink]="routeUrl.StlRepair">STL Repair Tool</a>
+          </p>
+        } @else if (report(); as result) {
+          <div class="split-success" role="status">
+            <h2 id="split-result">Split completed</h2>
+            <p>
+              Cut along {{ result.split?.axis }} at
+              {{ result.split?.positionPercent }}%.
+            </p>
+          </div>
+          <div class="split-result-grid">
+            @for (
+              part of [result.split?.partA, result.split?.partB];
+              track part.fileName
+            ) {
+              <article class="part-card">
+                <h3>
+                  {{ part === result.split?.partA ? 'Part A' : 'Part B' }}
+                </h3>
+                <p>
+                  {{ part.dimensions?.width }} × {{ part.dimensions?.height }} ×
+                  {{ part.dimensions?.depth }} model units
+                </p>
+                <p>
+                  {{ part.triangleCount }} triangles · Watertight · Manifold
+                </p>
+                <a
+                  class="button"
+                  [href]="
+                    '/api/v1/jobs/' +
+                    currentJob.id +
+                    '/' +
+                    (part === result.split?.partA
+                      ? 'split-part-a'
+                      : 'split-part-b')
+                  "
+                  (click)="
+                    downloadPart(part === result.split?.partA ? 'a' : 'b')
+                  "
+                  >Download
+                  {{ part === result.split?.partA ? 'Part A' : 'Part B' }}</a
+                >
+              </article>
+            }
+          </div>
+          <p class="report-actions">
+            <button
+              class="button secondary"
+              type="button"
+              (click)="downloadJsonReport()"
+            >
+              Download JSON report
+            </button>
+            <button
+              class="button secondary"
+              type="button"
+              [disabled]="generatingPdf()"
+              (click)="downloadPdfReport()"
+            >
+              {{ generatingPdf() ? 'Preparing PDF...' : 'Download PDF report' }}
+            </button>
+          </p>
+          @if (reportDownloadError()) {
+            <p class="splitter-error">{{ reportDownloadError() }}</p>
+          }
+          <p>
+            The split does not add alignment pins or connectors. Test-fit the
+            parts before final assembly.
+          </p>
+        }
+      </section>
+    }
+    <section class="splitter-content content">
+      <p>
+        Also use
+        <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>,
+        <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a>,
+        <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>,
+        <a href="/how-to-check-if-a-3d-model-fits-your-printer"
+          >printer fit guidance</a
+        >, and
+        <a href="/how-to-orient-an-stl-file-for-3d-printing"
+          >orientation guidance</a
+        >.
+      </p>
+    </section>
+  </div>
 </main>

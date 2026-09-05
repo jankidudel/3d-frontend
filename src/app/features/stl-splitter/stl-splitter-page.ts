@@ -23,7 +23,6 @@ import {
   AnalyticsEvent,
   AnalyticsService,
 } from '../../core/analytics/analytics.service';
-import { uploadErrorMessage } from '../../core/api/upload-error';
 import { Job, JobStatus } from '../../models/job';
 import { MeshQualityPdfService } from '../../shared/mesh-quality-pdf.service';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
@@ -52,7 +51,7 @@ interface StlSplitReport {
   selector: 'app-stl-splitter-page',
   imports: [RouterLink, StlFilePicker, JobProgress, ObjectViewerComponent],
   templateUrl: './stl-splitter-page.html',
-  styleUrl: '../stl-quality/stl-quality-page/stl-quality-page.scss',
+  styleUrl: './stl-splitter-page.scss',
 })
 export class StlSplitterPage {
   readonly routeUrl = PublicRouteUrl;
@@ -167,9 +166,11 @@ export class StlSplitterPage {
           this.poll(job.id);
         }
       },
-      error: (error) => {
+      error: () => {
         this.submitting.set(false);
-        this.error.set(uploadErrorMessage(error));
+        this.error.set(
+          'We could not create the job or upload the file. Please try again.',
+        );
         this.analytics.trackSplitter(AnalyticsEvent.SplitterFailed);
       },
     });
