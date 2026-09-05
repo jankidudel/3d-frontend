@@ -9,7 +9,6 @@ export interface GuideContent {
   readonly slug: string;
   readonly heading: string;
   readonly eyebrow: string;
-  readonly publishDate: string;
   readonly faqs: readonly {
     readonly question: string;
     readonly answer: string;
@@ -20,6 +19,7 @@ export interface GuideContent {
 export interface Guide extends GuideContent {
   readonly group: string;
   readonly order: number;
+  readonly publishDate: string;
 }
 
 export interface GuideCard {
@@ -87,7 +87,12 @@ function guideFromEntry(
       `Guide registry validation failed: entry "${entry.slug}" has no content.`,
     );
   }
-  return { ...content, group: entry.group, order: entry.order };
+  return {
+    ...content,
+    group: entry.group,
+    order: entry.order,
+    publishDate: entry.publishDate,
+  };
 }
 
 function guideCard(guide: Guide): GuideCard {

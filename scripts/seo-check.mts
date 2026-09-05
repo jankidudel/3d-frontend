@@ -95,19 +95,8 @@ for (const guide of catalogue.guides) {
   const source = sourceBySlug.get(guide.slug) ?? 'unknown';
   const route = `/${guide.slug}`;
   const entry = registry.find((candidate) => candidate.slug === guide.slug)!;
-  const front = matter(
-    await readFile(resolve(contentDir, `${guide.slug}.html`), 'utf8'),
-  ).data;
   const document = new JSDOM(guide.html).window.document;
   const checksEditorialTargets = entry.checkEditorialTargets !== false;
-  if (front['publishDate'] !== entry.publishDate)
-    report(
-      'ERROR',
-      source,
-      route,
-      'publish-date-mismatch',
-      'Keep front matter and registry publishDate identical.',
-    );
   if (guide.faqs.length < 2)
     report(
       'ERROR',

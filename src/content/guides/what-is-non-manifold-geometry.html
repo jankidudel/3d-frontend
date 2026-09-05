@@ -1,0 +1,98 @@
+---
+title: 'What Is Non-Manifold Geometry in 3D Printing? | InspectMesh'
+description: Learn what non-manifold geometry means, why it causes STL slicing problems, and how to check a 3D model before printing.
+slug: what-is-non-manifold-geometry
+eyebrow: STL mesh guide
+heading: What Is Non-Manifold Geometry?
+faq:
+  - question: Is a non-manifold model always impossible to print?
+    answer: Not always. Some slicers can cope with simple problems, but the result is less predictable and can include missing walls, stray material or incorrect infill.
+  - question: Are non-manifold edges the same as holes?
+    answer: No. A hole usually creates open edges, while a non-manifold edge is commonly shared by more than two faces. Both can prevent a clean solid mesh.
+  - question: Can InspectMesh repair non-manifold geometry?
+    answer: InspectMesh can identify non-manifold edges and safely remove some simple triangle-level defects. Complex topology problems may need manual repair or a return to the original model.
+---
+
+<p>
+  Non-manifold geometry is mesh geometry that does not describe one clear,
+  physically meaningful solid. In a printable model, software should be able to
+  identify a consistent outside, inside and surface boundary.
+</p>
+<p>
+  A simple example is an edge shared by three triangles. A normal solid surface
+  usually has exactly two triangles meeting along an internal edge: one on each
+  side of the surface. When three or more faces share that edge, the model
+  becomes ambiguous. The slicer no longer has a simple answer to the question:
+  what is inside the object?
+</p>
+<h2>Common types of non-manifold geometry</h2>
+<p>Non-manifold problems take several forms:</p>
+<ul>
+  <li>An edge shared by more than two faces.</li>
+  <li>Two separate parts that touch only along an edge or a single point.</li>
+  <li>Internal faces trapped inside an otherwise solid object.</li>
+  <li>Overlapping shells that were never properly combined.</li>
+  <li>
+    Zero-thickness surfaces, such as a single sheet of triangles with no wall
+    thickness.
+  </li>
+</ul>
+<p>
+  A hole is related but not identical. A hole creates open edges because the
+  surface is incomplete. Non-manifold geometry can exist even when there are no
+  open edges at all.
+</p>
+<h2>Why it matters for 3D printing</h2>
+<p>
+  A slicer converts a 3D model into layers and toolpaths. To do that reliably,
+  it needs a clear solid volume.
+</p>
+<p>Non-manifold geometry can cause unexpected results:</p>
+<ul>
+  <li>walls disappear or become extremely thin</li>
+  <li>infill appears outside the intended part</li>
+  <li>separate regions merge unexpectedly</li>
+  <li>a layer preview contains gaps or floating fragments</li>
+  <li>the slicer refuses to process the model</li>
+</ul>
+<p>
+  Some slicers attempt automatic fixes. That can be useful for minor defects,
+  but it is better to understand the model first rather than assume the slicer
+  made the correct decision.
+</p>
+<h2>How to check a model</h2>
+<p>
+  Upload the file to the
+  <a href="/stl-manifold-checker">STL Manifold Checker</a>. It reports
+  non-manifold edges, open edges and shell information so you can see whether
+  the mesh is likely to behave as a clean solid.
+</p>
+<p>
+  For a broader diagnosis, use the
+  <a href="/stl-quality-checker">STL Quality Checker</a>. It checks non-manifold
+  edges alongside duplicate triangles, degenerate triangles, invalid coordinates
+  and inconsistent orientation.
+</p>
+<p>
+  If the model has open edges too, run the
+  <a href="/stl-watertight-checker">STL Watertight Checker</a>. A printable part
+  should normally be both manifold and watertight.
+</p>
+<h2>What to do after finding an issue</h2>
+<p>
+  Start with the original CAD model whenever you have it. Rebuilding a clean
+  solid and exporting a new STL is usually more reliable than patching a damaged
+  mesh.
+</p>
+<p>
+  If you only have the STL, inspect the model in a mesh editor. Look for
+  overlapping components, internal faces, accidental duplicate surfaces and thin
+  sheets. Simple triangle-level problems may be improved by the
+  <a href="/stl-repair">STL Repair Tool</a>, but it should not be expected to
+  reconstruct complex topology automatically.
+</p>
+<p>
+  After making changes, check the model again and inspect its layer preview in
+  your slicer. A clean manifold result is one important part of print readiness;
+  scale, wall thickness, supports and printer settings still matter too.
+</p>

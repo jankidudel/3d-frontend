@@ -11,7 +11,6 @@ const validGuide = {
   slug: 'example-guide',
   eyebrow: 'STL guide',
   heading: 'Example guide',
-  publishDate: '2026-09-05',
   faq: [
     { question: 'Is this useful?', answer: 'Yes, it explains the example.' },
     { question: 'Can I use it?', answer: 'Yes, use it as a test fixture.' },
@@ -28,7 +27,6 @@ describe('guide front matter validation', () => {
       slug: validGuide.slug,
       eyebrow: validGuide.eyebrow,
       heading: validGuide.heading,
-      publishDate: validGuide.publishDate,
     });
     expect(guide.faqs).toHaveLength(2);
     expect(guideRoutePath(guide.slug)).toBe('/example-guide');
@@ -41,7 +39,6 @@ describe('guide front matter validation', () => {
     'eyebrow',
     'heading',
     'faq',
-    'publishDate',
   ] as const)('rejects a missing required %s field', (field) => {
     const guide = { ...validGuide } as Record<string, unknown>;
     delete guide[field];

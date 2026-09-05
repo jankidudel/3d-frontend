@@ -15,7 +15,6 @@ const content = (slug: string): GuideContent => ({
   slug,
   heading: slug,
   eyebrow: 'Guide',
-  publishDate: '2026-09-05',
   faqs: [],
   html: '<p>Guide body.</p>',
 });

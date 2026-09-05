@@ -107,7 +107,6 @@ for (const fileName of contentFiles) {
     heading: frontMatter.heading,
     eyebrow: frontMatter.eyebrow,
     faqs: frontMatter.faqs,
-    publishDate: frontMatter.publishDate,
     html: String(await htmlToSafeHtml.process(parsed.content)),
   });
 }
