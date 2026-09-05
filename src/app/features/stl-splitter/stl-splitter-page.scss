@@ -139,7 +139,7 @@ app-stl-file-picker {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin: 1.25rem 0 1rem;
+  margin: 1rem 0;
 }
 
 .content {
@@ -160,6 +160,14 @@ app-stl-file-picker {
   .split-controls,
   .split-result-grid {
     grid-template-columns: 1fr;
+  }
+
+  .report-actions {
+    flex-direction: column;
+  }
+
+  .report-actions .button {
+    width: 100%;
   }
 
   .preview-card app-object-viewer {

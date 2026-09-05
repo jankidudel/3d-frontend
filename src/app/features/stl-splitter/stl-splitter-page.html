@@ -144,7 +144,7 @@
               </article>
             }
           </div>
-          <p class="report-actions">
+          <div class="report-actions">
             <button
               class="button secondary"
               type="button"
@@ -160,7 +160,7 @@
             >
               {{ generatingPdf() ? 'Preparing PDF...' : 'Download PDF report' }}
             </button>
-          </p>
+          </div>
           @if (reportDownloadError()) {
             <p class="status-panel status-panel-error splitter-error">
               {{ reportDownloadError() }}
