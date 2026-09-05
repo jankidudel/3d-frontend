@@ -50,6 +50,9 @@ label:focus-visible {
     padding-block-start: clamp(2.5rem, calc(7vw - 3.25rem), 2.75rem);
   }
 }
+.breadcrumb-page-layout .page {
+  padding-block-start: 0;
+}
 .eyebrow {
   color: var(--primary);
   font-size: 0.82rem;

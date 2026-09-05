@@ -1,0 +1,16 @@
+@if (breadcrumbs().length > 0) {
+  <nav aria-label="Breadcrumb">
+    @for (
+      breadcrumb of breadcrumbs();
+      track breadcrumb.href;
+      let index = $index
+    ) {
+      @if (isCurrent(index)) {
+        <span aria-current="page">{{ breadcrumb.label }}</span>
+      } @else {
+        <a [routerLink]="breadcrumb.href">{{ breadcrumb.label }}</a>
+        <span class="separator" aria-hidden="true">›</span>
+      }
+    }
+  </nav>
+}

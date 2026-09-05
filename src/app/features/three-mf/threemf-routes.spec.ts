@@ -1,36 +1,23 @@
 import { RenderMode } from '@angular/ssr';
+import { Routes } from '@angular/router';
 import { routes } from '../../app.routes';
 import { serverRoutes } from '../../app.routes.server';
 import { PublicRoutePath } from '../../core/seo/public-routes';
 
 describe('3MF public routes', () => {
   it('registers all 3MF pages as lazy routes', () => {
-    expect(
-      routes.some((route) => route.path === PublicRoutePath.ThreeMfTools),
-    ).toBe(true);
-    expect(
-      routes.some(
-        (route) => route.path === PublicRoutePath.ThreeMfQualityCheck,
-      ),
-    ).toBe(true);
-    expect(
-      routes.some((route) => route.path === PublicRoutePath.ThreeMfViewer),
-    ).toBe(true);
-    expect(
-      routes.some(
-        (route) => route.path === PublicRoutePath.ThreeMfDimensionsChecker,
-      ),
-    ).toBe(true);
-    expect(
-      routes.some(
-        (route) => route.path === PublicRoutePath.ThreeMfManifoldChecker,
-      ),
-    ).toBe(true);
-    expect(
-      routes.some(
-        (route) => route.path === PublicRoutePath.ThreeMfToStlConverter,
-      ),
-    ).toBe(true);
+    expect(routeExists(routes, PublicRoutePath.ThreeMfTools)).toBe(true);
+    expect(routeExists(routes, PublicRoutePath.ThreeMfQualityCheck)).toBe(true);
+    expect(routeExists(routes, PublicRoutePath.ThreeMfViewer)).toBe(true);
+    expect(routeExists(routes, PublicRoutePath.ThreeMfDimensionsChecker)).toBe(
+      true,
+    );
+    expect(routeExists(routes, PublicRoutePath.ThreeMfManifoldChecker)).toBe(
+      true,
+    );
+    expect(routeExists(routes, PublicRoutePath.ThreeMfToStlConverter)).toBe(
+      true,
+    );
   });
 
   it('prerenders all 3MF pages', () => {
@@ -64,3 +51,9 @@ describe('3MF public routes', () => {
     );
   });
 });
+
+function routeExists(routes: Routes, path: string): boolean {
+  return routes.some(
+    (route) => route.path === path || routeExists(route.children ?? [], path),
+  );
+}

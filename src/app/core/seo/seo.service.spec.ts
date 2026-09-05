@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { SEO_CONFIG } from './seo-config';
 import { SeoService } from './seo.service';
+import { breadcrumbsForPath } from './breadcrumbs';
 
 describe('SeoService', () => {
   afterEach(() => TestBed.resetTestingModule());
@@ -133,6 +134,48 @@ describe('SeoService', () => {
         ?.getAttribute('content'),
     ).toBe('noindex, nofollow');
     expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();
+  });
+
+  it('adds one BreadcrumbList while preserving existing page schema', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: SEO_CONFIG,
+          useValue: {
+            indexingEnabled: true,
+            siteUrl: 'https://www.inspectmesh.com',
+          },
+        },
+      ],
+    });
+    const service = TestBed.inject(SeoService);
+    const document = TestBed.inject(DOCUMENT);
+
+    service.apply({
+      title: 'Guide',
+      description: 'Guide description.',
+      path: '/how-to-repair-an-stl-file',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@graph': [{ '@type': 'Article' }, { '@type': 'FAQPage' }],
+      },
+    });
+    service.setBreadcrumbs(breadcrumbsForPath('/how-to-repair-an-stl-file'));
+
+    const graph = JSON.parse(
+      document.head.querySelector('script[data-seo-structured-data]')
+        ?.textContent ?? '',
+    )['@graph'];
+    expect(graph.map((item: { '@type': string }) => item['@type'])).toEqual([
+      'Article',
+      'FAQPage',
+      'BreadcrumbList',
+    ]);
+    expect(
+      graph[2].itemListElement.map(
+        (item: { position: number }) => item.position,
+      ),
+    ).toEqual([1, 2]);
   });
 
   it('marks an error page as noindex and removes an existing canonical URL', () => {

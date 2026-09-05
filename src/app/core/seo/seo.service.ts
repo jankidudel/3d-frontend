@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { inject, Service } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { SEO_CONFIG } from './seo-config';
+import { Breadcrumb, breadcrumbStructuredData } from './breadcrumbs';
 
 export interface PageSeo {
   readonly title: string;
@@ -17,6 +18,8 @@ export class SeoService {
   private readonly meta = inject(Meta);
   private readonly document = inject(DOCUMENT);
   private readonly config = inject(SEO_CONFIG);
+  private pageStructuredData: Record<string, unknown> | undefined;
+  private breadcrumbs: readonly Breadcrumb[] = [];
 
   apply(page: PageSeo): void {
     this.title.setTitle(page.title);
@@ -29,7 +32,8 @@ export class SeoService {
     });
     this.updateCanonical(canonicalUrl);
     this.updateOpenGraph(page, canonicalUrl);
-    this.updateStructuredData(page.structuredData);
+    this.pageStructuredData = page.structuredData;
+    this.updateStructuredData();
   }
 
   applyNoIndex(title: string, description: string): void {
@@ -38,7 +42,13 @@ export class SeoService {
     this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     this.updateCanonical(null);
     this.removeOpenGraph();
-    this.updateStructuredData(undefined);
+    this.pageStructuredData = undefined;
+    this.updateStructuredData();
+  }
+
+  setBreadcrumbs(breadcrumbs: readonly Breadcrumb[]): void {
+    this.breadcrumbs = breadcrumbs;
+    this.updateStructuredData();
   }
 
   private canonicalUrl(path: string): string | null {
@@ -102,9 +112,8 @@ export class SeoService {
     }
   }
 
-  private updateStructuredData(
-    data: Record<string, unknown> | undefined,
-  ): void {
+  private updateStructuredData(): void {
+    const data = this.structuredData();
     const selector = 'script[data-seo-structured-data]';
     const existing =
       this.document.head.querySelector<HTMLScriptElement>(selector);
@@ -120,5 +129,26 @@ export class SeoService {
     if (!existing) {
       this.document.head.appendChild(script);
     }
+  }
+
+  private structuredData(): Record<string, unknown> | undefined {
+    if (this.breadcrumbs.length === 0) {
+      return this.pageStructuredData;
+    }
+
+    const breadcrumb = breadcrumbStructuredData(this.breadcrumbs);
+    if (!this.pageStructuredData) {
+      return breadcrumb;
+    }
+
+    const graph = this.pageStructuredData['@graph'];
+    if (Array.isArray(graph)) {
+      return { ...this.pageStructuredData, '@graph': [...graph, breadcrumb] };
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [this.pageStructuredData, breadcrumb],
+    };
   }
 }

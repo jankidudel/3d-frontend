@@ -1,23 +1,13 @@
 import { Routes } from '@angular/router';
+import { BreadcrumbPageLayout } from './core/components/breadcrumb-page-layout/breadcrumb-page-layout';
 import { PublicRoutePath } from './core/seo/public-routes';
 import { guideCanMatch } from './features/guides/guide-route';
 
-export const routes: Routes = [
-  {
-    path: PublicRoutePath.AllTools,
-    loadComponent: () =>
-      import('./features/tools/tools-page').then((m) => m.ToolsPage),
-  },
+const breadcrumbRoutes: Routes = [
   {
     path: PublicRoutePath.Tools,
     loadComponent: () =>
       import('./features/stl-tools/stl-tools-page').then((m) => m.StlToolsPage),
-  },
-  {
-    path: PublicRoutePath.Home,
-    pathMatch: 'full',
-    loadComponent: () =>
-      import('./features/home/home-page').then((m) => m.HomePage),
   },
   {
     path: PublicRoutePath.QualityCheck,
@@ -160,6 +150,26 @@ export const routes: Routes = [
       ),
   },
   {
+    path: ':guideSlug',
+    canMatch: [guideCanMatch],
+    loadComponent: () =>
+      import('./features/guides/guide-page').then((m) => m.GuidePage),
+  },
+];
+
+export const routes: Routes = [
+  {
+    path: PublicRoutePath.AllTools,
+    loadComponent: () =>
+      import('./features/tools/tools-page').then((m) => m.ToolsPage),
+  },
+  {
+    path: PublicRoutePath.Home,
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./features/home/home-page').then((m) => m.HomePage),
+  },
+  {
     path: PublicRoutePath.Guides,
     loadComponent: () =>
       import('./features/guides/guides-page').then((m) => m.GuidesPage),
@@ -175,10 +185,9 @@ export const routes: Routes = [
       import('./features/legal/cookies-page').then((m) => m.CookiesPage),
   },
   {
-    path: ':guideSlug',
-    canMatch: [guideCanMatch],
-    loadComponent: () =>
-      import('./features/guides/guide-page').then((m) => m.GuidePage),
+    path: '',
+    component: BreadcrumbPageLayout,
+    children: breadcrumbRoutes,
   },
   {
     path: PublicRoutePath.NotFound,
