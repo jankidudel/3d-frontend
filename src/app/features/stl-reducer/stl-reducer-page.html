@@ -204,13 +204,28 @@
   @if (previewModel(); as model) {
     <section class="card" aria-labelledby="preview-title">
       <h2 id="preview-title">
-        Preview: {{ preview() === 'original' ? 'Original' : 'Reduced' }}
+        Preview:
+        {{ preview() === previewVersion.Original ? 'Original' : 'Reduced' }}
       </h2>
       @if (result()) {
-        <p>
-          <button type="button" (click)="showOriginal()">Original</button>
-          <button type="button" (click)="showReduced()">Reduced</button>
-        </p>
+        <div class="preview-toggle" aria-label="Preview version">
+          <button
+            type="button"
+            [class.selected]="preview() === previewVersion.Original"
+            [attr.aria-pressed]="preview() === previewVersion.Original"
+            (click)="showOriginal()"
+          >
+            Original
+          </button>
+          <button
+            type="button"
+            [class.selected]="preview() === previewVersion.Reduced"
+            [attr.aria-pressed]="preview() === previewVersion.Reduced"
+            (click)="showReduced()"
+          >
+            Reduced
+          </button>
+        </div>
       }
       <app-object-viewer
         [object]="model.object"

@@ -41,6 +41,35 @@ fieldset button {
 .selected {
   outline: 3px solid #135d87;
 }
+.preview-toggle {
+  display: inline-flex;
+  margin: 0 0 1rem;
+  overflow: hidden;
+  border: 1px solid #7a90aa;
+  border-radius: 0.5rem;
+}
+.preview-toggle button {
+  min-height: 2.5rem;
+  padding: 0.45rem 0.9rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 750;
+}
+.preview-toggle button + button {
+  border-left: 1px solid #7a90aa;
+}
+.preview-toggle button.selected {
+  outline: 0;
+  background: var(--primary);
+  color: #fff;
+}
+.preview-toggle button:focus-visible {
+  position: relative;
+  outline: 3px solid #0b70c9;
+  outline-offset: -3px;
+}
 @media (max-width: 48rem) {
   fieldset {
     align-items: stretch;

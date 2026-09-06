@@ -17,6 +17,11 @@ import {
 } from './stl-reducer';
 
 type Mode = 'encoding' | 'reduction';
+export const PreviewVersion = {
+  Original: 'original',
+  Reduced: 'reduced',
+} as const;
+type PreviewVersion = (typeof PreviewVersion)[keyof typeof PreviewVersion];
 interface Result {
   readonly mesh: StlMesh;
   readonly blob: Blob;
@@ -35,6 +40,7 @@ interface PreviewModel {
 })
 export class StlReducerPage {
   readonly routeUrl = PublicRouteUrl;
+  readonly previewVersion = PreviewVersion;
   readonly file = signal<File | null>(null);
   readonly source = signal<StlMesh | null>(null);
   readonly result = signal<Result | null>(null);
@@ -42,7 +48,7 @@ export class StlReducerPage {
   readonly keepPercent = signal(75);
   readonly error = signal('');
   readonly processing = signal(false);
-  readonly preview = signal<'original' | 'reduced'>('original');
+  readonly preview = signal<PreviewVersion>(PreviewVersion.Original);
   readonly previewModel = signal<PreviewModel | null>(null);
   readonly sourceMetrics = computed(() => {
     const mesh = this.source();
@@ -87,7 +93,7 @@ export class StlReducerPage {
     try {
       this.source.set(await readStl(file));
       this.file.set(file);
-      this.preview.set('original');
+      this.preview.set(PreviewVersion.Original);
       await this.showPreview(this.source()!);
       this.analytics.trackReducer(AnalyticsEvent.ReducerFileSelected);
     } catch (error: unknown) {
@@ -158,7 +164,7 @@ export class StlReducerPage {
           return;
         }
         this.result.set({ mesh, blob, keepPercent: this.keepPercent() });
-        this.preview.set('reduced');
+        this.preview.set(PreviewVersion.Reduced);
         await this.showPreview(mesh);
         this.analytics.trackReducer(AnalyticsEvent.ReducerReductionCompleted);
       }
@@ -190,7 +196,7 @@ export class StlReducerPage {
     this.source.set(null);
     this.result.set(null);
     this.error.set('');
-    this.preview.set('original');
+    this.preview.set(PreviewVersion.Original);
     this.previewModel.set(null);
   }
   async showOriginal(): Promise<void> {
@@ -198,7 +204,7 @@ export class StlReducerPage {
     if (!source) {
       return;
     }
-    this.preview.set('original');
+    this.preview.set(PreviewVersion.Original);
     await this.showPreview(source);
   }
   async showReduced(): Promise<void> {
@@ -206,7 +212,7 @@ export class StlReducerPage {
     if (!result) {
       return;
     }
-    this.preview.set('reduced');
+    this.preview.set(PreviewVersion.Reduced);
     await this.showPreview(result.mesh);
   }
   formatBytes(bytes: number): string {
