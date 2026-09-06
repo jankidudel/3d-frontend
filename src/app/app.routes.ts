@@ -78,6 +78,13 @@ const breadcrumbRoutes: Routes = [
       import('./features/stl-scale/stl-scale-page').then((m) => m.StlScalePage),
   },
   {
+    path: PublicRoutePath.StlWallThicknessChecker,
+    loadComponent: () =>
+      import('./features/stl-wall-thickness/stl-wall-thickness-page').then(
+        (m) => m.StlWallThicknessPage,
+      ),
+  },
+  {
     path: PublicRoutePath.VolumeCalculator,
     loadComponent: () =>
       import('./features/stl-volume/stl-volume-page').then(

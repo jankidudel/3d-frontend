@@ -83,6 +83,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Scale an STL',
       },
       {
+        icon: '▤',
+        title: 'STL Wall Thickness Checker',
+        description:
+          'Estimate sampled wall thickness locally and identify areas that may need closer print-preparation review.',
+        route: PublicRouteUrl.StlWallThicknessChecker,
+        cta: 'Check wall thickness',
+      },
+      {
         title: 'STL Splitter',
         description: 'Split a valid STL into two capped printable parts.',
         route: PublicRouteUrl.StlSplitter,

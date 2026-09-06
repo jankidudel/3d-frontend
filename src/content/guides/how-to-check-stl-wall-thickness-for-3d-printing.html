@@ -84,6 +84,22 @@ faq:
   non-manifold edges and duplicate triangles before trying to solve printability
   with slicer settings.
 </p>
+<h2>Check sampled wall thickness online</h2>
+<p>
+  The <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a>
+  estimates thickness by sampling the mesh and measuring inward from the
+  surface. Choose the unit you believe the STL coordinates represent, set a
+  minimum thickness for your intended print, and inspect the colour map for
+  sampled thin areas.
+</p>
+<p>
+  Treat the result as a practical preflight check rather than a guarantee. STL
+  files do not contain a declared unit, and a suitable thickness depends on the
+  printer, nozzle, material, print orientation, layer height, and whether the
+  part is decorative or load-bearing. Check mesh errors with the
+  <a href="/stl-quality-checker">STL Quality Checker</a>, then confirm the final
+  dimensions before slicing.
+</p>
 <p>
   A reliable print starts with a clean mesh, suitable wall thickness and a
   realistic printer profile.

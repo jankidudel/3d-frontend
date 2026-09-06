@@ -43,6 +43,7 @@ describe('HomePage', () => {
       '/stl-manifold-checker',
       '/stl-dimensions-checker',
       '/stl-scale-tool',
+      '/stl-wall-thickness-checker',
       '/stl-splitter',
       '/stl-volume-calculator',
       '/stl-triangle-counter',

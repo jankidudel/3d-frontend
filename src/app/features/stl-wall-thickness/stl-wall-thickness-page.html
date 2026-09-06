@@ -1,0 +1,145 @@
+<main class="page tool-page wall-thickness-page">
+  <p class="eyebrow">STL printability check</p>
+  <h1>STL Wall Thickness Checker</h1>
+  <p class="lead">
+    Estimate wall thickness across an STL and highlight sampled areas that may
+    be too thin for your 3D-printing setup.
+  </p>
+  <section class="card viewer-tool" aria-labelledby="upload-title">
+    <h2 id="upload-title">Check your STL wall thickness</h2>
+    <div class="drop-zone">
+      <p>Choose an STL file to analyse locally.</p>
+      <button class="button" type="button" (click)="openPicker(wallPicker)">
+        Choose STL file</button
+      ><input
+        #wallPicker
+        type="file"
+        accept=".stl"
+        aria-label="Choose STL file"
+        (change)="onPicker($event)"
+      />
+    </div>
+    <p class="hint">
+      ASCII and binary STL files up to 25 MiB are supported. Your STL stays in
+      your browser.
+    </p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (mesh(); as mesh) {
+    <section class="card">
+      <h2>Model and threshold</h2>
+      <p>
+        <strong>{{ file()?.name }}</strong> · {{ formatBytes(file()!.size) }} ·
+        {{ (mesh.indices.length / 3).toLocaleString() }} triangles
+      </p>
+      <label
+        >Assumed unit
+        <select
+          [value]="assumedUnit()"
+          (change)="
+            assumedUnit.set($any($event.target).value); report.set(null)
+          "
+        >
+          <option value="mm">mm</option>
+          <option value="cm">cm</option>
+          <option value="inches">inches</option>
+        </select></label
+      ><label
+        >Minimum wall thickness
+        <input
+          type="number"
+          min="0.0001"
+          step="any"
+          [value]="threshold()"
+          (input)="setThreshold(+$any($event.target).value)"
+        />
+        {{ assumedUnit() }}</label
+      >
+      <p>
+        @for (preset of [0.8, 1, 1.2, 1.6, 2]; track preset) {
+          <button type="button" (click)="setThreshold(preset)">
+            {{ preset }}
+          </button>
+        }
+      </p>
+      @if (!thresholdValid()) {
+        <p class="error" role="alert">
+          Enter a finite threshold greater than zero.
+        </p>
+      }
+      <button
+        class="button"
+        type="button"
+        [disabled]="!thresholdValid() || analysing()"
+        (click)="analyse()"
+      >
+        {{ analysing() ? 'Analysing locally...' : 'Analyse wall thickness' }}
+      </button>
+      <p class="safety-note">
+        This is a sampled, normal-direction estimate. It does not repair a model
+        or guarantee a successful print. Printer settings, material,
+        orientation, supports, and part use also matter.
+      </p>
+    </section>
+  }
+  @if (report(); as result) {
+    <section class="card result">
+      <h2>Wall thickness result</h2>
+      <p>
+        <strong>{{
+          result.belowThreshold
+            ? 'Thin areas were found'
+            : result.unmeasured
+              ? 'Analysis completed with unmeasured areas'
+              : 'No sampled walls were below your threshold'
+        }}</strong>
+      </p>
+      <dl class="metrics">
+        <div>
+          <dt>Minimum sampled thickness</dt>
+          <dd>{{ format(result.minimum) }} {{ result.unit }}</dd>
+        </div>
+        <div>
+          <dt>Average sampled thickness</dt>
+          <dd>{{ format(result.average) }} {{ result.unit }}</dd>
+        </div>
+        <div>
+          <dt>Samples below threshold</dt>
+          <dd>{{ result.belowThreshold }}</dd>
+        </div>
+        <div>
+          <dt>Samples measured</dt>
+          <dd>{{ result.measured }}</dd>
+        </div>
+        <div>
+          <dt>Samples not measured</dt>
+          <dd>{{ result.unmeasured }}</dd>
+        </div>
+      </dl>
+      <p class="legend">
+        Heatmap legend: red below {{ result.threshold }} {{ result.unit }} ·
+        orange/yellow close to threshold · blue/green above threshold · grey
+        unmeasured.
+      </p>
+      @if (result.unmeasured) {
+        <p class="warning">
+          Some areas could not be measured reliably. Treat this analysis as
+          guidance, not a printability guarantee.
+        </p>
+      }
+      <p>
+        No sampled areas were below the selected threshold. Confirm the result
+        against your printer, material, nozzle, layer height, and intended use.
+      </p>
+      <p>
+        <a href="/stl-quality-checker">STL Quality Checker</a> ·
+        <a href="/stl-repair">STL Repair Tool</a> ·
+        <a href="/stl-dimensions-checker">STL Dimensions Checker</a> ·
+        <a href="/stl-scale-tool">STL Scale Tool</a> ·
+        <a href="/stl-splitter">STL Splitter</a>
+      </p>
+    </section>
+  }
+</main>
