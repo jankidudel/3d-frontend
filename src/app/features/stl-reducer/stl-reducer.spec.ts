@@ -8,7 +8,8 @@ vertex 1 0 0
 vertex 0 1 0
 endloop
 endfacet
-endsolid triangle`;
+endsolid triangle
+`;
 
 describe('STL reducer', () => {
   it('converts ASCII STL to binary without changing triangle count or geometry', async () => {

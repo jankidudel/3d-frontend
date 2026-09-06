@@ -82,6 +82,10 @@ h2 {
   --tool-section-gap: 2rem;
 }
 
+.tool-page > h1 {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+}
+
 .tool-page > .lead {
   max-width: var(--tool-content-width);
 }

@@ -141,7 +141,7 @@ export async function simplify(
 }
 
 function parseAscii(text: string): number[] {
-  if (!/^\s*solid\b/i.test(text) || !/endsolid\b.*$/i.test(text)) {
+  if (!/^\s*solid\b/i.test(text) || !/endsolid\b[^\r\n]*\s*$/i.test(text)) {
     throw new Error(
       'We could not read that STL file. Choose a valid ASCII or binary STL file.',
     );
