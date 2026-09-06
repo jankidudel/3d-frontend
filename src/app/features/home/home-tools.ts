@@ -75,6 +75,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Measure an STL file',
       },
       {
+        icon: '↗',
+        title: 'STL Scale Tool',
+        description:
+          'Resize an STL proportionally by percentage, target dimension, or an assumed unit conversion, then download it locally.',
+        route: PublicRouteUrl.StlScaleTool,
+        cta: 'Scale an STL',
+      },
+      {
         title: 'STL Splitter',
         description: 'Split a valid STL into two capped printable parts.',
         route: PublicRouteUrl.StlSplitter,

@@ -1,0 +1,226 @@
+<main class="page tool-page scale-page">
+  <p class="eyebrow">STL size adjustment</p>
+  <h1>STL Scale Tool</h1>
+  <p class="lead">
+    Resize an STL proportionally by percentage, target dimension, or an assumed
+    unit conversion before 3D printing.
+  </p>
+  <section class="card scale-upload" aria-labelledby="upload-title">
+    <h2 id="upload-title">Choose an STL file</h2>
+    <div class="drop-zone">
+      <p>Choose an STL file to resize locally.</p>
+      <button class="button" type="button" (click)="openPicker(scalePicker)">
+        Choose STL file
+      </button>
+      <input
+        #scalePicker
+        type="file"
+        accept=".stl"
+        aria-label="Choose STL file"
+        (change)="onPicker($event)"
+      />
+    </div>
+    <p class="hint">
+      ASCII and binary STL files up to 25 MiB are supported. Your STL stays in
+      your browser.
+    </p>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (source(); as source) {
+    <section class="card" aria-labelledby="file-title">
+      <h2 id="file-title">Uploaded model</h2>
+      <dl class="metrics">
+        <div>
+          <dt>File</dt>
+          <dd>{{ file()?.name }}</dd>
+        </div>
+        <div>
+          <dt>File size</dt>
+          <dd>{{ formatBytes(file()!.size) }}</dd>
+        </div>
+        <div>
+          <dt>Triangles</dt>
+          <dd>{{ (source.indices.length / 3).toLocaleString() }}</dd>
+        </div>
+        <div>
+          <dt>Current dimensions</dt>
+          <dd>
+            {{ format(sourceDimensions()!.width) }} ×
+            {{ format(sourceDimensions()!.depth) }} ×
+            {{ format(sourceDimensions()!.height) }} mm
+          </dd>
+        </div>
+      </dl>
+      <p class="unit-note">
+        STL files have no built-in units. Confirm the intended dimensions before
+        printing.
+      </p>
+    </section>
+    <section class="card controls" aria-labelledby="scale-title">
+      <h2 id="scale-title">Scale proportionally</h2>
+      <fieldset>
+        <legend>Scaling method</legend>
+        <label
+          ><input
+            type="radio"
+            name="method"
+            [checked]="method() === 'percentage'"
+            (change)="method.set('percentage')"
+          />
+          Scale by percentage</label
+        >
+        <label
+          ><input
+            type="radio"
+            name="method"
+            [checked]="method() === 'target'"
+            (change)="method.set('target')"
+          />
+          Set a target dimension</label
+        >
+        <label
+          ><input
+            type="radio"
+            name="method"
+            [checked]="method() === 'units'"
+            (change)="method.set('units')"
+          />
+          Convert assumed units</label
+        >
+      </fieldset>
+      @if (method() === 'percentage') {
+        <label
+          >Percentage
+          <input
+            type="number"
+            min="0.0001"
+            step="any"
+            [value]="percentage()"
+            (input)="setPercentage(+$any($event.target).value)"
+          />
+          %</label
+        >
+        <p class="quick-choices">
+          @for (choice of [50, 75, 100, 125, 200]; track choice) {
+            <button type="button" (click)="setPercentage(choice)">
+              {{ choice }}%
+            </button>
+          }
+        </p>
+      } @else if (method() === 'target') {
+        <div class="field-row">
+          <label
+            >Reference dimension
+            <select
+              [value]="targetDimension()"
+              (change)="targetDimension.set($any($event.target).value)"
+            >
+              <option value="width">Width</option>
+              <option value="depth">Depth</option>
+              <option value="height">Height</option>
+            </select></label
+          >
+          <label
+            >Target value
+            <input
+              type="number"
+              min="0.0001"
+              step="any"
+              (input)="setTargetValue($event)"
+          /></label>
+          <label
+            >Output unit
+            <select
+              [value]="targetUnit()"
+              (change)="targetUnit.set($any($event.target).value)"
+            >
+              <option value="mm">mm</option>
+              <option value="cm">cm</option>
+              <option value="inches">inches</option>
+            </select></label
+          >
+        </div>
+      } @else {
+        <div class="field-row">
+          <label
+            >Assumed source unit
+            <select
+              [value]="sourceUnit()"
+              (change)="sourceUnit.set($any($event.target).value)"
+            >
+              <option value="mm">mm</option>
+              <option value="cm">cm</option>
+              <option value="inches">inches</option>
+            </select></label
+          ><label
+            >Target unit
+            <select
+              [value]="conversionTargetUnit()"
+              (change)="conversionTargetUnit.set($any($event.target).value)"
+            >
+              <option value="mm">mm</option>
+              <option value="cm">cm</option>
+              <option value="inches">inches</option>
+            </select></label
+          >
+        </div>
+        <p>
+          This conversion uses your unit assumption. STL files do not declare
+          it.
+        </p>
+      }
+      @if (scaleFactor() === null) {
+        <p class="error" role="alert">
+          Enter a finite value greater than zero to calculate a scale.
+        </p>
+      }
+    </section>
+    @if (scaledMesh(); as scaled) {
+      <section class="card result" aria-labelledby="result-title">
+        <h2 id="result-title">Scaled model</h2>
+        <dl class="metrics">
+          <div>
+            <dt>Original dimensions</dt>
+            <dd>
+              {{ format(sourceDimensions()!.width) }} ×
+              {{ format(sourceDimensions()!.depth) }} ×
+              {{ format(sourceDimensions()!.height) }} mm
+            </dd>
+          </div>
+          <div>
+            <dt>New dimensions</dt>
+            <dd>
+              {{ format(scaledDimensions()!.width) }} ×
+              {{ format(scaledDimensions()!.depth) }} ×
+              {{ format(scaledDimensions()!.height) }} {{ outputUnit() }}
+            </dd>
+          </div>
+          <div>
+            <dt>Applied scale factor</dt>
+            <dd>{{ scaleFactor()!.toFixed(4) }}×</dd>
+          </div>
+          <div>
+            <dt>Triangle count</dt>
+            <dd>
+              {{ (source.indices.length / 3).toLocaleString() }} to
+              {{ (scaled.indices.length / 3).toLocaleString() }}
+            </dd>
+          </div>
+        </dl>
+        <button class="button" type="button" (click)="download()">
+          Download scaled STL
+        </button>
+        <p class="safety-note">
+          Scaling changes size only. It does not repair holes, non-manifold
+          edges, wall thickness, or orientation problems. Check the
+          <a href="/stl-quality-checker">STL Quality Checker</a>,
+          <a href="/stl-repair">STL Repair Tool</a>,
+          <a href="/stl-dimensions-checker">STL Dimensions Checker</a>, or
+          <a href="/stl-splitter">STL Splitter</a> before printing.
+        </p>
+      </section>
+    }
+  }
+</main>

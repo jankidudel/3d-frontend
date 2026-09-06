@@ -42,6 +42,7 @@ describe('HomePage', () => {
       '/stl-watertight-checker',
       '/stl-manifold-checker',
       '/stl-dimensions-checker',
+      '/stl-scale-tool',
       '/stl-splitter',
       '/stl-volume-calculator',
       '/stl-triangle-counter',

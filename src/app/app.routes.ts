@@ -73,6 +73,11 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.StlScaleTool,
+    loadComponent: () =>
+      import('./features/stl-scale/stl-scale-page').then((m) => m.StlScalePage),
+  },
+  {
     path: PublicRoutePath.VolumeCalculator,
     loadComponent: () =>
       import('./features/stl-volume/stl-volume-page').then(

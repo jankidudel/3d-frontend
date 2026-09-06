@@ -1,0 +1,104 @@
+---
+title: 'STL Scale Factor Explained: Percentages, Target Sizes, and Units'
+description: 'Learn how STL scale factors work, how to resize a model to an exact dimension, and why STL unit assumptions can cause 3D-print size mistakes.'
+slug: stl-scale-factor-explained
+eyebrow: STL printing guide
+heading: 'STL Scale Factor Explained: Percentages, Target Sizes, and Units'
+faq:
+  - question: What is an STL scale factor?
+    answer: It is the uniform multiplier applied to every STL coordinate. A factor of 0.5 halves each dimension and a factor of 2 doubles each dimension.
+  - question: Does an STL file declare its units?
+    answer: No. STL coordinate values do not identify whether they represent millimetres, centimetres, inches, or another unit, so confirm the intended size before printing.
+---
+
+<p class="lead">
+  A scale factor is the number used to multiply every coordinate in a 3D model.
+  If the factor is <code>2</code>, the model becomes twice as large in width,
+  depth, and height. If it is <code>0.5</code>, it becomes half as large.
+</p>
+<p>
+  For 3D printing, scaling is useful when a downloaded part does not fit the
+  printer, a miniature needs to match a chosen scale, or a functional model
+  needs to match a known measurement. The important rule is to use
+  <strong>uniform scaling</strong> when you want to preserve the model’s
+  proportions.
+</p>
+<h2>What a scale factor changes</h2>
+<p>
+  An STL model is made from triangle vertices. Applying a uniform scale factor
+  multiplies every vertex position by the same amount. The shape stays the same,
+  but its dimensions change.
+</p>
+<p>For example, a 40 mm wide model scaled by:</p>
+<ul>
+  <li><code>0.5</code> becomes 20 mm wide</li>
+  <li><code>0.75</code> becomes 30 mm wide</li>
+  <li><code>1.25</code> becomes 50 mm wide</li>
+  <li><code>2</code> becomes 80 mm wide</li>
+</ul>
+<p>
+  Triangle count does not change when a model is scaled. Scaling also does not
+  repair mesh errors, add wall thickness, or make a part fit mechanically. It
+  changes size only.
+</p>
+<h2>Calculate a scale factor from a target dimension</h2>
+<p>Use this formula:</p>
+<p><code>scale factor = desired dimension ÷ current dimension</code></p>
+<p>If a bracket is currently 60 mm wide and you need it to be 45 mm wide:</p>
+<p><code>45 ÷ 60 = 0.75</code></p>
+<p>
+  Apply a <code>0.75</code> scale factor to reduce the entire model to 75% of
+  its original size.
+</p>
+<p>If a 12 mm feature must become 18 mm:</p>
+<p><code>18 ÷ 12 = 1.5</code></p>
+<p>The model should be scaled to 150%.</p>
+<p>
+  Choose a measurement that you understand and can verify. For a functional
+  part, use a known critical measurement rather than guessing from the overall
+  model height.
+</p>
+<h2>Why STL units cause size mistakes</h2>
+<p>
+  STL files store coordinate numbers but do not declare whether those numbers
+  represent millimetres, centimetres, inches, or another unit. A model designed
+  in inches may therefore appear about 25.4 times too small when software
+  assumes millimetres.
+</p>
+<p>
+  Before scaling, inspect the model’s dimensions and decide what the numbers
+  were intended to mean. In most 3D-printing slicers, millimetres are the
+  practical default. If a model that should be 2 inches wide appears as 2 mm
+  wide, converting the assumed inch values to millimetres requires a factor of
+  <code>25.4</code>.
+</p>
+<p>
+  Do not change units merely because a model looks unusual on screen. Compare it
+  with the designer’s stated dimensions, a known part, or a test print.
+</p>
+<h2>Keep scaling proportional</h2>
+<p>
+  Changing only one axis stretches the design. That can be useful for deliberate
+  modelling work, but it can make round holes oval, alter thread pitch, weaken
+  walls, and prevent parts from fitting together.
+</p>
+<p>
+  For ordinary print preparation, set one target dimension and let the other two
+  update automatically. Then check that the resized model fits your printer’s
+  build volume.
+</p>
+<h2>Check the model before printing</h2>
+<p>
+  After resizing, confirm the final dimensions and inspect the mesh. A correctly
+  sized model can still have holes, non-manifold edges, flipped surfaces, or
+  walls that are too thin for the printer.
+</p>
+<p>
+  Use the InspectMesh <a href="/stl-scale-tool">STL Scale Tool</a> to calculate
+  and download a proportionally resized STL. Then use the
+  <a href="/stl-quality-checker">STL Quality Checker</a> and
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> before slicing.
+  If the model is too large even after sensible scaling, the
+  <a href="/stl-splitter">STL Splitter</a> can help divide it into printable
+  parts.
+</p>

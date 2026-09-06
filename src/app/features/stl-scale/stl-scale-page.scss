@@ -1,0 +1,41 @@
+@use '../shared/model-upload';
+
+.scale-page .card {
+  margin-block: 1.5rem;
+  padding: var(--tool-card-padding);
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+}
+.metrics dt {
+  font-weight: 700;
+}
+.metrics dd {
+  margin: 0.3rem 0 0;
+}
+.unit-note,
+.safety-note {
+  color: var(--muted);
+}
+.controls label {
+  display: block;
+  margin: 0.75rem 0;
+}
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.quick-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.quick-choices button {
+  padding: 0.45rem 0.75rem;
+}
+.result {
+  border-color: #9fc4aa;
+}

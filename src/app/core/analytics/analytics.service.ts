@@ -53,6 +53,7 @@ export const AnalyticsEvent = {
   ReducerReductionCompleted: 'stl_reducer_reduction_completed',
   ReducerReducedDownloaded: 'stl_reducer_reduced_downloaded',
   ReducerPresetSelected: 'stl_reducer_preset_selected',
+  StlScaleCompleted: 'stl_scale_completed',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -207,6 +208,10 @@ export class AnalyticsService {
 
   trackStlViewerQualityOpened(): void {
     this.sendEvent(AnalyticsEvent.StlViewerOpenedQualityChecker, {});
+  }
+
+  trackStlScaleCompleted(): void {
+    this.sendEvent(AnalyticsEvent.StlScaleCompleted, {});
   }
 
   trackThreeMfQualityStarted(fileSizeBytes: number): void {

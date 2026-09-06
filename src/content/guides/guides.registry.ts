@@ -109,6 +109,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
+    slug: 'stl-scale-factor-explained',
+    group: GuideGroupId.Stl,
+    order: 65,
+    enabled: true,
+    publishDate: '2026-09-06',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-reduce-stl-file-size',
     group: GuideGroupId.Stl,
     order: 70,
