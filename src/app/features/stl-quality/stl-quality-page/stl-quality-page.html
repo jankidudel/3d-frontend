@@ -28,7 +28,9 @@
       {{ submitting() ? 'Creating job…' : 'Check STL quality' }}
     </button>
     @if (error(); as message) {
-      <p class="error" role="alert">{{ message }}</p>
+      <div class="upload-error" role="alert">
+        <p>{{ message }}</p>
+      </div>
     }
   </section>
 

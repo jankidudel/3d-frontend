@@ -28,8 +28,16 @@ app-stl-file-picker {
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
 }
-.error {
-  color: var(--error);
+.upload-error {
+  margin-top: 1rem;
+  padding: 1rem;
+  color: #8f1d14;
+  background: #fff5f4;
+  border: 1px solid #e5a8a3;
+  border-radius: 0.8rem;
+}
+.upload-error p {
+  margin: 0;
   font-weight: 700;
 }
 app-job-status {

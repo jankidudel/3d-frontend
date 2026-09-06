@@ -1,4 +1,4 @@
-import { map, Observable, switchMap, throwError } from 'rxjs';
+import { map, Observable, switchMap, tap, throwError } from 'rxjs';
 import { Job } from '../../models/job';
 import { JobOperation } from '../../models/job-operation';
 import { FormatJobService } from './format-job.service';
@@ -24,10 +24,10 @@ export function createAndUploadFormatJob(
     })
     .pipe(
       switchMap((job) => {
-        onCreated(job);
         return job.upload
           ? jobs.uploadFile(job.upload, file).pipe(
               switchMap(() => jobs.completeUpload(job.id)),
+              tap(() => onCreated(job)),
               map(() => undefined),
             )
           : throwError(() => new MissingUploadDetailsError());

@@ -139,22 +139,30 @@ describe('StlQualityPage', () => {
     expect(jobsService.uploadFile).not.toHaveBeenCalled();
   });
 
-  it('shows the shared rolling-limit message for RATE_LIMITED', () => {
+  it('shows the API rolling-limit message for RATE_LIMITED', () => {
     stlJobs.create.mockReturnValue(
       throwError(
         () =>
           new HttpErrorResponse({
             status: 429,
-            error: { code: 'RATE_LIMITED', retryAfterSeconds: 120 },
+            error: {
+              code: 'RATE_LIMITED',
+              message: 'The API-selected quota message.',
+              retryAfterSeconds: 120,
+            },
           }),
       ),
     );
     const fixture = TestBed.createComponent(StlQualityPage);
     fixture.componentInstance.onFileSelected(new File(['mesh'], 'rotor.stl'));
     fixture.componentInstance.checkStl();
-    expect(fixture.componentInstance.error()).toContain(
-      '10 uploads per rolling hour',
+    fixture.detectChanges();
+    expect(fixture.componentInstance.error()).toBe(
+      'The API-selected quota message.',
     );
+    expect(
+      fixture.nativeElement.querySelector('.upload-error')?.textContent,
+    ).toContain('The API-selected quota message.');
     expect(jobsService.getJob).not.toHaveBeenCalled();
   });
 
@@ -168,7 +176,7 @@ describe('StlQualityPage', () => {
     fixture.detectChanges();
 
     expect(jobsService.uploadFile).toHaveBeenCalled();
-    expect(fixture.componentInstance.job()).toEqual(job);
+    expect(fixture.componentInstance.job()).toBeNull();
     expect(
       fixture.nativeElement.querySelector('[role="alert"]')?.textContent,
     ).toContain('could not create the job or upload');

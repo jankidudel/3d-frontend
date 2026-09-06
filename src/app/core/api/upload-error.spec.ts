@@ -3,18 +3,16 @@ import { uploadErrorMessage } from './upload-error';
 import { FILE_TOO_LARGE_MESSAGE } from './upload-limits';
 
 describe('uploadErrorMessage', () => {
-  it('formats a rate-limit response without backend details', () => {
+  it('uses the backend rate-limit message', () => {
     const error = new HttpErrorResponse({
       status: 429,
       error: {
         code: 'RATE_LIMITED',
         retryAfterSeconds: 120,
-        message: 'internal detail',
+        message: 'The API-selected quota message.',
       },
     });
-    expect(uploadErrorMessage(error)).toBe(
-      'Free limit reached: 10 uploads per rolling hour and 30 per rolling 24 hours. Please try again later.',
-    );
+    expect(uploadErrorMessage(error)).toBe('The API-selected quota message.');
   });
 
   it('formats a file-size response', () => {
