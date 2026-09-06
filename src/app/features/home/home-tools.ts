@@ -197,6 +197,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Calculate 3MF volume',
       },
       {
+        icon: '▤',
+        title: '3MF Wall Thickness Checker',
+        description:
+          'Estimate sampled wall thickness in resolved 3MF build geometry locally, including transforms and repeated objects.',
+        route: PublicRouteUrl.ThreeMfWallThicknessChecker,
+        cta: 'Check wall thickness',
+      },
+      {
         icon: '△',
         title: '3MF Triangle Counter',
         description:

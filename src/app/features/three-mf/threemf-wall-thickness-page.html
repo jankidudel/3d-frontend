@@ -1,0 +1,127 @@
+<main class="page tool-page wall-thickness-page">
+  <p class="eyebrow">3MF build-space preflight</p>
+  <h1>3MF Wall Thickness Checker</h1>
+  <p class="lead">
+    Estimate sampled wall thickness across the resolved 3MF build, including
+    placements, components and transforms.
+  </p>
+  <section class="card viewer-tool" aria-labelledby="upload-title">
+    <h2 id="upload-title">Check your 3MF wall thickness</h2>
+    <div class="drop-zone">
+      <p>Choose a 3MF file to analyse locally.</p>
+      <button class="button" type="button" (click)="openPicker(picker)">
+        Choose 3MF file</button
+      ><input
+        #picker
+        type="file"
+        accept=".3mf"
+        aria-label="Choose 3MF file"
+        (change)="onPicker($event)"
+      />
+    </div>
+    <p class="hint">
+      3MF files up to 25 MiB are supported. Your 3MF stays in your browser.
+    </p>
+    @if (loading()) {
+      <p role="status">Resolving build geometry locally...</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (resolved(); as model) {
+    <section class="card">
+      <h2>Model and threshold</h2>
+      <p>
+        <strong>{{ file()?.name }}</strong> ·
+        {{ (model.geometry.indices.length / 3).toLocaleString() }} resolved
+        triangles · declared unit: {{ model.declaredUnit }}
+      </p>
+      <label
+        >Minimum wall thickness
+        <input
+          type="number"
+          min="0.0001"
+          step="any"
+          [value]="threshold()"
+          (input)="setThreshold(+$any($event.target).value)"
+        />
+        mm</label
+      >
+      @if (!thresholdValid()) {
+        <p class="error" role="alert">
+          Enter a finite threshold greater than zero.
+        </p>
+      }
+      <button
+        class="button"
+        type="button"
+        [disabled]="!thresholdValid()"
+        (click)="analyse()"
+      >
+        Analyse wall thickness
+      </button>
+      <p class="safety-note">
+        This is a sampled, normal-direction estimate. It does not repair a model
+        or guarantee a successful print.
+      </p>
+    </section>
+  }
+  @if (report(); as result) {
+    <section class="card result">
+      <h2>Wall thickness result</h2>
+      <p>
+        <strong>{{ outcome(result) }}</strong>
+      </p>
+      <dl class="metrics">
+        <div>
+          <dt>Minimum sampled thickness</dt>
+          <dd>{{ format(result.minimum) }} mm</dd>
+        </div>
+        <div>
+          <dt>Average sampled thickness</dt>
+          <dd>{{ format(result.average) }} mm</dd>
+        </div>
+        <div>
+          <dt>Samples below threshold</dt>
+          <dd>{{ result.belowThreshold }}</dd>
+        </div>
+        <div>
+          <dt>Samples measured</dt>
+          <dd>{{ result.measured }}</dd>
+        </div>
+        <div>
+          <dt>Samples not measured</dt>
+          <dd>{{ result.unmeasured }}</dd>
+        </div>
+      </dl>
+      <p class="legend">
+        Heatmap legend: red below {{ result.threshold }} mm · orange/yellow
+        close to threshold · blue/green above threshold · grey unmeasured.
+      </p>
+      <label class="heatmap-toggle"
+        ><input
+          type="checkbox"
+          [checked]="showHeatmap()"
+          (change)="showHeatmap.set($any($event.target).checked)"
+        />
+        Show thickness heatmap</label
+      >
+      @if (heatmap(); as display) {
+        <app-object-viewer
+          [object]="display"
+          [extent]="resolved()?.extent ?? 1"
+          [preserveVertexColors]="true"
+          ariaLabel="3MF sampled wall thickness heatmap"
+          (chooseAnother)="openPicker(picker)"
+        />
+      }
+      @if (result.unmeasured) {
+        <p class="warning">
+          Some areas could not be measured reliably. Treat this analysis as
+          guidance, not a printability guarantee.
+        </p>
+      }
+    </section>
+  }
+</main>

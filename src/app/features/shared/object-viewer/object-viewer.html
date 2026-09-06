@@ -23,14 +23,16 @@
       </button>
     </div>
     <div class="viewer-controls" aria-label="Viewer controls">
-      <label class="color-control">
-        <span>Model colour</span>
-        <input
-          type="color"
-          [value]="modelColor()"
-          (input)="onColorChange($event)"
-        />
-      </label>
+      @if (!preserveVertexColors()) {
+        <label class="color-control">
+          <span>Model colour</span>
+          <input
+            type="color"
+            [value]="modelColor()"
+            (input)="onColorChange($event)"
+          />
+        </label>
+      }
       <button
         type="button"
         aria-label="Zoom out"

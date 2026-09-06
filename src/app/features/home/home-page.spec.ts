@@ -57,6 +57,7 @@ describe('HomePage', () => {
       '/3mf-manifold-checker',
       '/3mf-dimensions-checker',
       '/3mf-volume-calculator',
+      '/3mf-wall-thickness-checker',
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
       '/3mf-tools',

@@ -3,17 +3,24 @@ import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
+import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
+import { createWallThicknessHeatmap } from '../shared/wall-thickness/wall-thickness-heatmap';
+import {
+  roundedThickness,
+  wallThicknessOutcomeText,
+} from '../shared/wall-thickness/wall-thickness-result';
 import {
   analyseWallThickness,
   validThreshold,
   WallThicknessReport,
   WallThicknessUnit,
-} from './stl-wall-thickness';
+} from '../shared/wall-thickness/wall-thickness-analysis';
 
 @Component({
   selector: 'app-stl-wall-thickness-page',
   templateUrl: './stl-wall-thickness-page.html',
   styleUrl: './stl-wall-thickness-page.scss',
+  imports: [ObjectViewerComponent],
 })
 export class StlWallThicknessPage {
   readonly unit = WallThicknessUnit;
@@ -24,6 +31,27 @@ export class StlWallThicknessPage {
   );
   readonly threshold = signal(1.2);
   readonly report = signal<WallThicknessReport | null>(null);
+  readonly showHeatmap = signal(true);
+  readonly heatmap = computed(() => {
+    const mesh = this.mesh();
+    const report = this.report();
+    return mesh && report && this.showHeatmap()
+      ? createWallThicknessHeatmap(mesh, report)
+      : null;
+  });
+  readonly heatmapExtent = computed(() => {
+    const mesh = this.mesh();
+    if (!mesh) {
+      return 1;
+    }
+    let minimum = Infinity;
+    let maximum = -Infinity;
+    for (const coordinate of mesh.positions) {
+      minimum = Math.min(minimum, coordinate);
+      maximum = Math.max(maximum, coordinate);
+    }
+    return Math.max(maximum - minimum, 1);
+  });
   readonly error = signal('');
   readonly analysing = signal(false);
   readonly thresholdValid = computed(() => validThreshold(this.threshold()));
@@ -98,8 +126,9 @@ export class StlWallThicknessPage {
     }
   }
   format(value: number | null): string {
-    return value === null ? 'Not measured' : value.toFixed(2);
+    return roundedThickness(value);
   }
+  readonly outcome = wallThicknessOutcomeText;
   formatBytes(bytes: number): string {
     return bytes < 1024 * 1024
       ? `${(bytes / 1024).toFixed(1)} KiB`

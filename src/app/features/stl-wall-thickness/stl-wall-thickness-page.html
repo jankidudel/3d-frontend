@@ -123,16 +123,43 @@
         orange/yellow close to threshold · blue/green above threshold · grey
         unmeasured.
       </p>
+      <label class="heatmap-toggle">
+        <input
+          type="checkbox"
+          [checked]="showHeatmap()"
+          (change)="showHeatmap.set($any($event.target).checked)"
+        />
+        Show thickness heatmap
+      </label>
+      @if (heatmap(); as display) {
+        <section class="heatmap-viewer" aria-labelledby="heatmap-title">
+          <h3 id="heatmap-title">Sampled thickness heatmap</h3>
+          <app-object-viewer
+            [object]="display"
+            [extent]="heatmapExtent()"
+            [preserveVertexColors]="true"
+            ariaLabel="STL sampled wall thickness heatmap"
+            (chooseAnother)="openPicker(wallPicker)"
+          />
+        </section>
+      } @else if (!showHeatmap()) {
+        <p class="hint">
+          The heatmap is hidden. Text results remain available without WebGL.
+        </p>
+      }
       @if (result.unmeasured) {
         <p class="warning">
           Some areas could not be measured reliably. Treat this analysis as
           guidance, not a printability guarantee.
         </p>
       }
-      <p>
-        No sampled areas were below the selected threshold. Confirm the result
-        against your printer, material, nozzle, layer height, and intended use.
-      </p>
+      @if (result.belowThreshold === 0) {
+        <p>
+          No sampled areas were below the selected threshold. Confirm the result
+          against your printer, material, nozzle, layer height, and intended
+          use.
+        </p>
+      }
       <p>
         <a href="/stl-quality-checker">STL Quality Checker</a> ·
         <a href="/stl-repair">STL Repair Tool</a> ·

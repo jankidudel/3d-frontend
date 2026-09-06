@@ -365,6 +365,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
+    slug: 'how-to-check-3mf-wall-thickness-for-3d-printing',
+    group: GuideGroupId.ThreeMf,
+    order: 145,
+    enabled: true,
+    publishDate: '2026-09-06',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-estimate-filament-weight-from-a-3mf-file',
     group: GuideGroupId.ThreeMf,
     order: 140,

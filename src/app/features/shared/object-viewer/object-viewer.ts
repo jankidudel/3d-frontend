@@ -40,6 +40,7 @@ export class ObjectViewerComponent {
   readonly ariaLabel = input.required<string>();
   readonly issueLines = input<readonly ViewerIssueLine[]>([]);
   readonly scrollOnRender = input(true);
+  readonly preserveVertexColors = input(false);
   readonly chooseAnother = output<void>();
   readonly resetView = output<void>();
   readonly rendered = output<void>();
@@ -218,7 +219,9 @@ export class ObjectViewerComponent {
       controls.addEventListener('start', () => this.cancelRotation());
       controls.minDistance = Math.max(extent * 0.05, 0.01);
       controls.maxDistance = Math.max(extent * 20, 100);
-      this.applyModelColor(object, this.modelColor());
+      if (!this.preserveVertexColors()) {
+        this.applyModelColor(object, this.modelColor());
+      }
       const runtime: ViewerRuntime = {
         THREE,
         renderer,

@@ -18,6 +18,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   { path: PublicRoutePath.DimensionsChecker, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.StlWallThicknessChecker,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.StlSplitter, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.TriangleCounter, renderMode: RenderMode.Prerender },
   {
@@ -39,6 +43,10 @@ export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.ThreeMfRepair, renderMode: RenderMode.Prerender },
   {
     path: PublicRoutePath.ThreeMfDimensionsChecker,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.ThreeMfWallThicknessChecker,
     renderMode: RenderMode.Prerender,
   },
   {

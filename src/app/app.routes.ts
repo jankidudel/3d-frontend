@@ -141,6 +141,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ThreeMfWallThicknessChecker,
+    loadComponent: () =>
+      import('./features/three-mf/threemf-wall-thickness-page').then(
+        (m) => m.ThreeMfWallThicknessPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ThreeMfWatertightChecker,
     loadComponent: () =>
       import('./features/three-mf/threemf-watertight-page').then(

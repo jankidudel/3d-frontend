@@ -7,6 +7,12 @@
   </p>
   <app-format-tools-grid heading="3MF tools" [tools]="tools" />
   <p>
+    Need an approximate thin-wall preflight check?
+    <a [routerLink]="routeUrl.ThreeMfWallThicknessChecker"
+      >Check 3MF wall thickness</a
+    >.
+  </p>
+  <p>
     Need a broadly compatible geometry-only export?
     <a [routerLink]="routeUrl.ThreeMfToStlConverter">Convert 3MF to STL</a>.
   </p>

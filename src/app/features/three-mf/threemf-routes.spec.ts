@@ -12,6 +12,9 @@ describe('3MF public routes', () => {
     expect(routeExists(routes, PublicRoutePath.ThreeMfDimensionsChecker)).toBe(
       true,
     );
+    expect(
+      routeExists(routes, PublicRoutePath.ThreeMfWallThicknessChecker),
+    ).toBe(true);
     expect(routeExists(routes, PublicRoutePath.ThreeMfManifoldChecker)).toBe(
       true,
     );
@@ -37,6 +40,10 @@ describe('3MF public routes', () => {
         }),
         expect.objectContaining({
           path: PublicRoutePath.ThreeMfDimensionsChecker,
+          renderMode: RenderMode.Prerender,
+        }),
+        expect.objectContaining({
+          path: PublicRoutePath.ThreeMfWallThicknessChecker,
           renderMode: RenderMode.Prerender,
         }),
         expect.objectContaining({
