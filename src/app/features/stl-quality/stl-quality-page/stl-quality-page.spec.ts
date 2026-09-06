@@ -24,6 +24,7 @@ describe('StlQualityPage', () => {
   };
   const jobsService = {
     uploadFile: vi.fn(() => of(undefined)),
+    completeUpload: vi.fn(() => of(job)),
     getJob: vi.fn(() => of(job)),
   };
   const stlJobs = { create: vi.fn(() => of(job)) };

@@ -10,6 +10,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { uploadErrorMessage } from '../../core/api/upload-error';
 import { StlJobService } from '../../core/api/stl-job.service';
 import {
   createAndUploadStlSplitJob,
@@ -159,18 +160,14 @@ export class StlSplitterPage {
     ).subscribe({
       next: () => {
         this.submitting.set(false);
-        this.file.set(null);
-        this.picker()?.clear();
         const job = this.job();
         if (job) {
           this.poll(job.id);
         }
       },
-      error: () => {
+      error: (error: unknown) => {
         this.submitting.set(false);
-        this.error.set(
-          'We could not create the job or upload the file. Please try again.',
-        );
+        this.error.set(uploadErrorMessage(error));
         this.analytics.trackSplitter(AnalyticsEvent.SplitterFailed);
       },
     });

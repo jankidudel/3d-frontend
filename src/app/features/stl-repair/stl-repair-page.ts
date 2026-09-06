@@ -91,8 +91,6 @@ export class StlRepairPage {
     ).subscribe({
       next: () => {
         this.submitting.set(false);
-        this.selectedFile.set(null);
-        this.picker()?.clear();
         const job = this.job();
         if (job) {
           this.poll(job.id);

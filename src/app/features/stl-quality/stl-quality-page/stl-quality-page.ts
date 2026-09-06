@@ -103,9 +103,6 @@ export class StlQualityPage {
       this.job.set(job),
     ).subscribe({
       next: () => {
-        // Upload has succeeded; do not retain the file while processing.
-        this.selectedFile.set(null);
-        this.filePicker()?.clear();
         this.submitting.set(false);
         if (!this.uploadCompletedTracked) {
           this.analytics.trackUploadCompleted('quality_check');

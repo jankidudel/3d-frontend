@@ -94,8 +94,6 @@ export class ThreeMfQualityPage {
       this.job.set(job),
     ).subscribe({
       next: () => {
-        this.selectedFile.set(null);
-        this.picker()?.clear();
         this.submitting.set(false);
         const job = this.job();
         if (job) {

@@ -20,6 +20,13 @@ export class JobsService {
       .pipe(map(() => undefined));
   }
 
+  completeUpload(id: string): Observable<Job> {
+    return this.http.post<Job>(
+      `${this.config.baseUrl}/jobs/${encodeURIComponent(id)}/complete`,
+      {},
+    );
+  }
+
   getJob(id: string): Observable<Job> {
     return this.http.get<Job>(
       `${this.config.baseUrl}/jobs/${encodeURIComponent(id)}`,

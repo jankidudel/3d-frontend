@@ -176,8 +176,6 @@ export class StlVolumePage {
       this.job.set(job),
     ).subscribe({
       next: () => {
-        this.selectedFile.set(null);
-        this.filePicker()?.clear();
         this.submitting.set(false);
         if (!this.uploadCompletedTracked) {
           this.analytics.trackUploadCompleted('volume_calculator');

@@ -122,8 +122,6 @@ export class StlManifoldPage {
       this.job.set(job),
     ).subscribe({
       next: () => {
-        this.selectedFile.set(null);
-        this.filePicker()?.clear();
         this.submitting.set(false);
         this.analytics.trackUploadCompleted('manifold_checker');
         const job = this.job();

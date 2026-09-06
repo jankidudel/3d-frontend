@@ -1,6 +1,6 @@
 <div class="picker">
   <label class="choose" [for]="configuration().accept">{{
-    configuration().label
+    selectedFile() ? 'Choose another file' : configuration().label
   }}</label>
   <input
     #fileInput
@@ -9,19 +9,19 @@
     [accept]="configuration().accept"
     (change)="onFileChange($event)"
   />
-  <p class="hint">{{ configuration().selectionHint }}</p>
+  <p class="hint" aria-live="polite">{{ configuration().selectionHint }}</p>
   @if (error()) {
     <p class="error" role="alert">{{ error() }}</p>
   }
   @if (selectedFile(); as file) {
-    <dl class="file-details">
+    <dl class="file-details" aria-live="polite">
       <div>
         <dt>File</dt>
         <dd>{{ file.name }}</dd>
       </div>
       <div>
         <dt>Size</dt>
-        <dd>{{ file.size.toLocaleString() }} bytes</dd>
+        <dd>{{ formatSize(file.size) }}</dd>
       </div>
     </dl>
   }

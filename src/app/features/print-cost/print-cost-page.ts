@@ -6,6 +6,7 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { JobCreationService } from '../../core/api/job-creation.service';
 import { createAndUploadFormatJob } from '../../core/api/job-upload-workflow';
 import { JobsService } from '../../core/api/jobs.service';
+import { uploadErrorMessage } from '../../core/api/upload-error';
 import { pollJob } from '../../core/api/job-polling';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
@@ -172,11 +173,9 @@ export class PrintCostPage {
           });
         }
       },
-      error: () => {
+      error: (error: unknown) => {
         this.submitting.set(false);
-        this.error.set(
-          'We could not upload this file. Please check it and try again.',
-        );
+        this.error.set(uploadErrorMessage(error));
       },
     });
   }

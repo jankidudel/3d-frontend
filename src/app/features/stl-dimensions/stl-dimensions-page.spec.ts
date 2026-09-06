@@ -31,6 +31,7 @@ describe('StlDimensionsPage', () => {
   };
   const jobsService = {
     uploadFile: vi.fn(),
+    completeUpload: vi.fn(),
     getJob: vi.fn(() => of(completedJob)),
   };
   const stlJobs = { create: vi.fn() };

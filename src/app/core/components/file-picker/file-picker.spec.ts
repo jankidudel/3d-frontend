@@ -37,4 +37,20 @@ describe('FilePicker', () => {
 
     expect(fixture.componentInstance.error()).toBe('STL only.');
   });
+
+  it('shows the selected file name and formatted size, and changes the action to reset it', () => {
+    const fixture = TestBed.createComponent(FilePicker);
+    const file = new File([new Uint8Array(1536)], 'bracket.stl');
+    fixture.componentRef.setInput('configuration', stl);
+    fixture.componentRef.setInput('selectedFileFromParent', file);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('bracket.stl');
+    expect(fixture.nativeElement.textContent).toContain('1.5 KB');
+    expect(fixture.nativeElement.textContent).toContain('Choose another file');
+
+    fixture.componentRef.setInput('selectedFileFromParent', null);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).not.toContain('bracket.stl');
+  });
 });
