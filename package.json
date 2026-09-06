@@ -22,8 +22,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run generate:guides && ng test --watch=false && npm run test:internal-links",
+    "test": "npm run generate:guides && ng test --watch=false && npm run test:internal-links && npm run test:tool-layout",
     "test:internal-links": "vitest run scripts/check-internal-links.spec.mts",
+    "test:tool-layout": "vitest run scripts/tool-layout.spec.mts",
     "precommit": "npm run lint && npm test",
     "verify": "npm run format:check && npm run lint && npm run typecheck:scripts && npm test && npm run build && npm run check:internal-links",
     "hooks:install": "git config core.hooksPath .githooks"

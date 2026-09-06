@@ -1,4 +1,4 @@
-<main class="page quality-page">
+<main class="page tool-page quality-page">
   <p class="eyebrow">Safe STL cleanup</p>
   <h1>STL Repair Tool</h1>
   <p class="lead">
@@ -27,7 +27,7 @@
     }
   </section>
   @if (job(); as currentJob) {
-    <section class="results card" aria-live="polite">
+    <section class="tool-result results card" aria-live="polite">
       @if (processing() || timedOut()) {
         <app-job-progress
           [job]="currentJob"

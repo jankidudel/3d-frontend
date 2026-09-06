@@ -1,4 +1,4 @@
-<main class="page converter-page">
+<main class="page tool-page converter-page">
   <p class="eyebrow">{{ eyebrow }}</p>
   <h1>{{ title }}</h1>
   @if (kind === 'stl-to-3mf') {
@@ -93,7 +93,7 @@
   </section>
   @if (result(); as conversion) {
     <section
-      class="results card"
+      class="tool-result results card"
       aria-live="polite"
       aria-labelledby="result-title"
     >

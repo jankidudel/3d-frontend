@@ -1,4 +1,4 @@
-<main class="page quality-page">
+<main class="page tool-page quality-page">
   <p class="eyebrow">Printable STL parts</p>
   <h1>Split an STL File for 3D Printing</h1>
   <p class="lead">
@@ -77,7 +77,10 @@
       </section>
     }
     @if (job(); as currentJob) {
-      <section class="splitter-card split-results card" aria-live="polite">
+      <section
+        class="tool-result splitter-card split-results card"
+        aria-live="polite"
+      >
         @if (processing() || timedOut()) {
           <app-job-progress
             [job]="currentJob"

@@ -18,6 +18,9 @@
 .splitter-card {
   width: 100%;
   min-inline-size: 0;
+}
+
+.splitter-card:not(.tool-result) {
   padding: clamp(1.25rem, 4vw, 2rem);
 }
 
@@ -94,6 +97,10 @@ app-stl-file-picker {
 
 .split-results app-job-progress {
   display: block;
+}
+
+.splitter-content > .tool-result {
+  margin-top: 0;
 }
 
 .split-success {

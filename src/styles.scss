@@ -75,6 +75,16 @@ h2 {
   color: var(--muted);
   font-size: clamp(1.05rem, 2vw, 1.3rem);
 }
+
+.tool-page > .lead {
+  max-width: 58rem;
+}
+
+.tool-result {
+  max-width: 58rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
 .button {
   display: inline-flex;
   justify-content: center;

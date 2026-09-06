@@ -1,4 +1,4 @@
-<main class="page volume-page">
+<main class="page tool-page volume-page">
   <p class="eyebrow">3MF volume and material estimate</p>
   <h1>3MF Volume Calculator</h1>
   <p class="lead">
@@ -25,7 +25,7 @@
     }
   </section>
   @if (job(); as currentJob) {
-    <section class="results card" aria-live="polite">
+    <section class="tool-result results card" aria-live="polite">
       @if (processing() || pollingTimedOut()) {
         <app-job-progress
           [job]="currentJob"
