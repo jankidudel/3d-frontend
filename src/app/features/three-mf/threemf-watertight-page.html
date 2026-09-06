@@ -76,19 +76,24 @@
           Viewer and upload the same file for issue analysis. Very large sets
           may be capped.
         </p>
-        <nav class="next-actions" aria-label="Related 3MF tools">
+        <nav
+          class="next-actions next-actions-stacked"
+          aria-label="Related 3MF tools"
+        >
           <a class="button" [routerLink]="routeUrl.ThreeMfQualityCheck">
             Run full 3MF quality check
           </a>
-          <a [routerLink]="routeUrl.ThreeMfDimensionsChecker">
-            Measure 3MF dimensions
-          </a>
-          <a [routerLink]="routeUrl.ThreeMfViewer"
-            >Inspect problem areas in 3D</a
-          >
-          <a [routerLink]="routeUrl.ThreeMfManifoldChecker">
-            Check 3MF manifold geometry
-          </a>
+          <div class="next-actions-links">
+            <a [routerLink]="routeUrl.ThreeMfDimensionsChecker">
+              Measure 3MF dimensions
+            </a>
+            <a [routerLink]="routeUrl.ThreeMfViewer"
+              >Inspect problem areas in 3D</a
+            >
+            <a [routerLink]="routeUrl.ThreeMfManifoldChecker">
+              Check 3MF manifold geometry
+            </a>
+          </div>
         </nav>
       }
     </section>

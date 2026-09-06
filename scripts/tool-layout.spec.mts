@@ -43,14 +43,29 @@ const toolResultTemplates = [
   'src/app/features/three-mf/threemf-watertight-page.html',
 ];
 
+const standardContentTemplates = toolPageTemplates.filter(
+  (templatePath) =>
+    templatePath !== 'src/app/features/stl-splitter/stl-splitter-page.html',
+);
+
+const primaryQualityCheckTemplates = [
+  'src/app/features/three-mf/threemf-manifold-page.html',
+  'src/app/features/three-mf/threemf-watertight-page.html',
+];
+
 describe('tool page layout', () => {
   it('uses the shared full-width lead rule for every interactive tool page', async () => {
     const styles = await readFile(join(projectRoot, 'src/styles.scss'), 'utf8');
 
-    expect(styles).toContain('.tool-page > .lead {\n  max-width: 58rem;\n}');
+    expect(styles).toContain(
+      '.tool-page {\n  --tool-content-width: 58rem;\n  --tool-card-padding: clamp(1.25rem, 4vw, 2rem);\n  --tool-section-gap: 2rem;\n}',
+    );
+    expect(styles).toContain(
+      '.tool-page > .lead {\n  max-width: var(--tool-content-width);\n}',
+    );
 
     await Promise.all(
-      toolPageTemplates.map(async (templatePath) => {
+      standardContentTemplates.map(async (templatePath) => {
         const template = await readFile(
           join(projectRoot, templatePath),
           'utf8',
@@ -65,7 +80,7 @@ describe('tool page layout', () => {
     const styles = await readFile(join(projectRoot, 'src/styles.scss'), 'utf8');
 
     expect(styles).toContain(
-      '.tool-result {\n  max-width: 58rem;\n  margin-top: 2rem;\n  padding: clamp(1.25rem, 4vw, 2rem);\n}',
+      '.tool-result {\n  max-width: var(--tool-content-width);\n  margin-top: var(--tool-section-gap);\n  padding: var(--tool-card-padding);\n}',
     );
 
     await Promise.all(
@@ -76,6 +91,61 @@ describe('tool page layout', () => {
         );
 
         expect(template).toMatch(/class="[^"]*tool-result/);
+      }),
+    );
+  });
+
+  it('uses the shared full-width content rule for every tool page', async () => {
+    const styles = await readFile(join(projectRoot, 'src/styles.scss'), 'utf8');
+
+    expect(styles).toContain(
+      '.tool-page > .content,\n.tool-content > .content {\n  width: 100%;\n  max-width: var(--tool-content-width);\n}',
+    );
+
+    await Promise.all(
+      toolPageTemplates.map(async (templatePath) => {
+        const template = await readFile(
+          join(projectRoot, templatePath),
+          'utf8',
+        );
+
+        expect(template).toMatch(/class="[^"]*\bcontent\b/);
+      }),
+    );
+  });
+
+  it('uses the shared content container for the splitter workflow', async () => {
+    const styles = await readFile(join(projectRoot, 'src/styles.scss'), 'utf8');
+    const template = await readFile(
+      join(projectRoot, 'src/app/features/stl-splitter/stl-splitter-page.html'),
+      'utf8',
+    );
+
+    expect(template).toContain('class="tool-content splitter-content"');
+    expect(template).toContain('class="tool-related-links card"');
+    expect(styles).toContain(
+      '.tool-related-links {\n  width: 100%;\n  max-width: var(--tool-content-width);\n  padding: var(--tool-card-padding);\n}',
+    );
+  });
+
+  it('separates the primary 3MF quality action from supporting links', async () => {
+    const styles = await readFile(
+      join(projectRoot, 'src/app/features/shared/model-checker-page.scss'),
+      'utf8',
+    );
+
+    expect(styles).toContain('.next-actions-stacked {\n  display: grid;\n}');
+
+    await Promise.all(
+      primaryQualityCheckTemplates.map(async (templatePath) => {
+        const template = await readFile(
+          join(projectRoot, templatePath),
+          'utf8',
+        );
+
+        expect(template).toContain('next-actions next-actions-stacked');
+        expect(template).toContain('Run full 3MF quality check');
+        expect(template).toContain('class="next-actions-links"');
       }),
     );
   });

@@ -11,8 +11,6 @@
 .splitter-content {
   display: grid;
   gap: 1.5rem;
-  width: min(100%, 58rem);
-  margin-top: 2rem;
 }
 
 .splitter-card {
@@ -21,7 +19,7 @@
 }
 
 .splitter-card:not(.tool-result) {
-  padding: clamp(1.25rem, 4vw, 2rem);
+  padding: var(--tool-card-padding);
 }
 
 .splitter-card > h2,
@@ -153,12 +151,7 @@ app-stl-file-picker {
   margin: 1rem 0;
 }
 
-.content {
-  width: min(100%, 46rem);
-  margin-top: 1.5rem;
-}
-
-.content p {
+.tool-related-links p {
   margin: 0;
   color: var(--muted);
 }

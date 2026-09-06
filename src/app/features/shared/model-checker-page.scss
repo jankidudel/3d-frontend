@@ -19,6 +19,20 @@ app-three-mf-file-picker {
   margin-top: 1.5rem;
 }
 
+.next-actions-stacked {
+  display: grid;
+}
+
+.next-actions-stacked > .button {
+  justify-self: start;
+}
+
+.next-actions-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
 .repair-guidance {
   margin-top: 1.5rem;
 }

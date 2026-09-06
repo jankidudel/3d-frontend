@@ -76,14 +76,37 @@ h2 {
   font-size: clamp(1.05rem, 2vw, 1.3rem);
 }
 
+.tool-page {
+  --tool-content-width: 58rem;
+  --tool-card-padding: clamp(1.25rem, 4vw, 2rem);
+  --tool-section-gap: 2rem;
+}
+
 .tool-page > .lead {
-  max-width: 58rem;
+  max-width: var(--tool-content-width);
+}
+
+.tool-content {
+  width: min(100%, var(--tool-content-width));
+  margin-top: var(--tool-section-gap);
+}
+
+.tool-page > .content,
+.tool-content > .content {
+  width: 100%;
+  max-width: var(--tool-content-width);
 }
 
 .tool-result {
-  max-width: 58rem;
-  margin-top: 2rem;
-  padding: clamp(1.25rem, 4vw, 2rem);
+  max-width: var(--tool-content-width);
+  margin-top: var(--tool-section-gap);
+  padding: var(--tool-card-padding);
+}
+
+.tool-related-links {
+  width: 100%;
+  max-width: var(--tool-content-width);
+  padding: var(--tool-card-padding);
 }
 .button {
   display: inline-flex;
