@@ -10,7 +10,7 @@ faq:
   - question: What is the best way to check whether an STL has too many triangles?
     answer: Check its triangle count, inspect the model at its intended size and compare the mesh detail with what your printer can physically reproduce.
   - question: Can InspectMesh reduce STL file size automatically?
-    answer: InspectMesh can help you inspect triangle count and remove some unnecessary duplicate or degenerate triangles, but it does not currently perform general mesh simplification.
+    answer: InspectMesh can convert ASCII STL to binary locally and create a controlled simplified copy. Check every simplified result before printing.
 ---
 
 <p>
@@ -54,6 +54,24 @@ faq:
   into a more complicated problem.
 </p>
 <h2>Simplify the mesh carefully</h2>
+<h3>Convert ASCII STL to binary first</h3>
+<p>
+  An ASCII STL stores every triangle as readable text, which can make the file
+  much larger than the same geometry stored in binary STL. Converting an ASCII
+  STL to binary does not remove detail or change the model shape; it simply
+  stores the same triangle data more efficiently.
+</p>
+<p>
+  If the file is already binary STL, there is usually little room for a lossless
+  reduction. To make a binary STL substantially smaller, you normally need to
+  reduce its triangle count, which changes the mesh and should be checked before
+  printing.
+</p>
+<p>
+  Use the <a href="/stl-file-size-reducer">STL File Size Reducer</a> to see
+  whether your file is ASCII or binary, compare the size before and after
+  conversion, and optionally create a simplified copy.
+</p>
 <p>
   General mesh simplification is usually done in software such as Blender,
   MeshLab or your CAD/export tool. Look for options called decimate, reduce,

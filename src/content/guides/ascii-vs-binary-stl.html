@@ -52,6 +52,22 @@ faq:
   No. If the triangles and coordinates are identical, the physical print result
   is the same.
 </p>
+<h2>Which STL format has the smaller file size?</h2>
+<p>
+  Binary STL is normally much smaller than ASCII STL containing the same
+  triangles. ASCII uses readable words and decimal values for every triangle,
+  while binary stores compact numeric values.
+</p>
+<p>
+  Changing ASCII STL to binary is a lossless file-format optimisation: the
+  triangle count and geometry stay the same. It does not fix mesh problems or
+  make a high-poly model simpler. If a binary STL is still too large, reduce
+  triangles carefully and inspect the result before slicing.
+</p>
+<p>
+  Try the <a href="/stl-file-size-reducer">STL File Size Reducer</a> to convert
+  ASCII STL to binary or compare a controlled triangle reduction.
+</p>
 <p>Print quality is affected by:</p>
 <ul>
   <li>triangle resolution on curved surfaces</li>

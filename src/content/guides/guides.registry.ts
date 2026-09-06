@@ -117,6 +117,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
+    slug: 'how-to-reduce-stl-triangle-count',
+    group: GuideGroupId.Stl,
+    order: 75,
+    enabled: true,
+    publishDate: '2026-09-06',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'why-wont-my-stl-file-slice',
     group: GuideGroupId.Stl,
     order: 80,

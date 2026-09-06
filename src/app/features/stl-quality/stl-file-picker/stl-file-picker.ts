@@ -15,6 +15,18 @@ import {
 
 export { getMaxFileUploadSizeLimit } from '../../../core/api/upload-limits';
 
+export const STL_FILE_PICKER_CONFIGURATION: FilePickerConfiguration = {
+  accept: MODEL_FILE_FORMAT_DETAILS[ModelFileFormat.Stl].extension,
+  emptyFileMessage: 'The selected STL file is empty.',
+  extension: MODEL_FILE_FORMAT_DETAILS[ModelFileFormat.Stl].extension,
+  invalidFileMessage: 'The selected file must have an .stl extension.',
+  label: 'Choose STL file',
+  limitMessage: FILE_PICKER_TOO_LARGE_MESSAGE,
+  maxBytes: getMaxFileUploadSizeLimit(),
+  noFileMessage: 'Choose an STL file to continue.',
+  selectionHint: getFileSelectionHint('.stl'),
+};
+
 @Component({
   selector: 'app-stl-file-picker',
   imports: [FilePicker],
@@ -23,17 +35,7 @@ export { getMaxFileUploadSizeLimit } from '../../../core/api/upload-limits';
 export class StlFilePicker {
   readonly selectedFileFromParent = input<File | null>(null);
   readonly fileSelected = output<File | null>();
-  readonly configuration: FilePickerConfiguration = {
-    accept: MODEL_FILE_FORMAT_DETAILS[ModelFileFormat.Stl].extension,
-    emptyFileMessage: 'The selected STL file is empty.',
-    extension: MODEL_FILE_FORMAT_DETAILS[ModelFileFormat.Stl].extension,
-    invalidFileMessage: 'The selected file must have an .stl extension.',
-    label: 'Choose STL file',
-    limitMessage: FILE_PICKER_TOO_LARGE_MESSAGE,
-    maxBytes: getMaxFileUploadSizeLimit(),
-    noFileMessage: 'Choose an STL file to continue.',
-    selectionHint: getFileSelectionHint('.stl'),
-  };
+  readonly configuration = STL_FILE_PICKER_CONFIGURATION;
   private readonly picker = viewChild(FilePicker);
 
   clear(): void {

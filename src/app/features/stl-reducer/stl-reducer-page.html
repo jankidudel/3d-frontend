@@ -1,0 +1,244 @@
+<main class="page tool-page viewer-page reducer-page">
+  <p class="eyebrow">STL file optimisation</p>
+  <h1>STL File Size Reducer</h1>
+  <p class="lead">
+    Reduce a local STL by converting ASCII to compact binary, or create a
+    carefully simplified copy.
+  </p>
+  <p class="privacy-note">Your STL stays in your browser.</p>
+  <section
+    class="card viewer-tool reducer-upload"
+    aria-labelledby="select-title"
+  >
+    <h2 id="select-title">Choose an STL file</h2>
+    <div class="drop-zone">
+      <p>Choose an STL file to optimise locally.</p>
+      <button class="button" type="button" (click)="openPicker(reducerPicker)">
+        Choose STL file
+      </button>
+      <input
+        #reducerPicker
+        type="file"
+        accept=".stl"
+        aria-label="Choose STL file"
+        (change)="onPicker($event)"
+      />
+      <p class="hint">ASCII and binary STL files up to 25 MiB are supported.</p>
+    </div>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (sourceMetrics(); as sourceMetrics) {
+    <section class="card" aria-labelledby="analysis-title">
+      <h2 id="analysis-title">File analysis</h2>
+      <dl class="metrics">
+        <div>
+          <dt>Source format</dt>
+          <dd>{{ source()?.encoding }}</dd>
+        </div>
+        <div>
+          <dt>File size</dt>
+          <dd>{{ formatBytes(sourceMetrics.bytes) }}</dd>
+        </div>
+        <div>
+          <dt>Triangles</dt>
+          <dd>{{ sourceMetrics.triangleCount.toLocaleString() }}</dd>
+        </div>
+        <div>
+          <dt>Dimensions</dt>
+          <dd>{{ formatDimensions(sourceMetrics.dimensions) }}</dd>
+        </div>
+        <div>
+          <dt>Mesh quality</dt>
+          <dd>
+            {{
+              sourceMetrics.warnings.length
+                ? sourceMetrics.warnings.join(' ')
+                : 'No local topology warnings detected.'
+            }}
+          </dd>
+        </div>
+      </dl>
+    </section>
+    <section class="card" aria-labelledby="mode-title">
+      <h2 id="mode-title">Choose how to reduce file size</h2>
+      <label
+        ><input
+          type="radio"
+          name="mode"
+          [checked]="mode() === 'encoding'"
+          (change)="mode.set('encoding')"
+        />
+        Optimise file encoding (lossless)</label
+      >
+      <p>
+        Convert ASCII STL to binary without changing triangle count or geometry.
+      </p>
+      <label
+        ><input
+          type="radio"
+          name="mode"
+          [checked]="mode() === 'reduction'"
+          (change)="mode.set('reduction')"
+        />
+        Reduce triangle count (lossy)</label
+      >
+      <p>
+        Triangle reduction changes the mesh. Inspect the result before printing.
+      </p>
+      @if (mode() === 'encoding' && source()?.encoding === 'binary STL') {
+        <p>
+          This file is already in compact binary STL format. Use triangle
+          reduction to make it smaller.
+        </p>
+      }
+      @if (mode() === 'reduction') {
+        <fieldset>
+          <legend>Target detail</legend>
+          <button
+            type="button"
+            (click)="setPreset(75)"
+            [class.selected]="keepPercent() === 75"
+          >
+            Keep 75%</button
+          ><button
+            type="button"
+            (click)="setPreset(50)"
+            [class.selected]="keepPercent() === 50"
+          >
+            Keep 50%</button
+          ><button
+            type="button"
+            (click)="setPreset(25)"
+            [class.selected]="keepPercent() === 25"
+          >
+            Keep 25%</button
+          ><label
+            >Custom target triangle count
+            <input
+              type="number"
+              min="1"
+              [max]="sourceMetrics.triangleCount - 1"
+              (change)="setCustom($event)"
+          /></label>
+        </fieldset>
+      }
+      <button
+        class="button submit"
+        type="button"
+        [disabled]="
+          processing() ||
+          (mode() === 'encoding' && source()?.encoding === 'binary STL')
+        "
+        (click)="process()"
+      >
+        {{
+          processing()
+            ? 'Processing locally...'
+            : mode() === 'encoding'
+              ? 'Convert to binary STL'
+              : 'Reduce triangle count'
+        }}
+      </button>
+    </section>
+  }
+  @if (resultMetrics(); as resultMetrics) {
+    <section class="card" aria-labelledby="result-title">
+      <h2 id="result-title">Result comparison</h2>
+      <dl class="metrics">
+        <div>
+          <dt>File size</dt>
+          <dd>
+            {{ formatBytes(sourceMetrics()!.bytes) }} to
+            {{ formatBytes(resultMetrics.bytes) }}
+          </dd>
+        </div>
+        <div>
+          <dt>Triangles</dt>
+          <dd>
+            {{ sourceMetrics()!.triangleCount.toLocaleString() }} to
+            {{ resultMetrics.triangleCount.toLocaleString() }}
+          </dd>
+        </div>
+        <div>
+          <dt>Size reduction</dt>
+          <dd>
+            {{
+              (
+                100 *
+                (1 - resultMetrics.bytes / sourceMetrics()!.bytes)
+              ).toFixed(1)
+            }}%
+          </dd>
+        </div>
+        <div>
+          <dt>Dimensions</dt>
+          <dd>{{ formatDimensions(resultMetrics.dimensions) }}</dd>
+        </div>
+        <div>
+          <dt>Mesh quality</dt>
+          <dd>
+            {{
+              resultMetrics.warnings.length
+                ? resultMetrics.warnings.join(' ')
+                : 'No local topology warnings detected.'
+            }}
+          </dd>
+        </div>
+      </dl>
+      <p>
+        @if (mode() === 'encoding') {
+          Binary encoding reduces text overhead but does not reduce geometric
+          detail.
+        } @else {
+          This is a simplified copy. It is not guaranteed printable just because
+          it can be downloaded.
+        }
+      </p>
+      <button class="button" type="button" (click)="download()">
+        Download {{ mode() === 'encoding' ? 'binary STL' : 'reduced STL' }}
+      </button>
+    </section>
+  }
+  @if (previewModel(); as model) {
+    <section class="card" aria-labelledby="preview-title">
+      <h2 id="preview-title">
+        Preview: {{ preview() === 'original' ? 'Original' : 'Reduced' }}
+      </h2>
+      @if (result()) {
+        <p>
+          <button type="button" (click)="showOriginal()">Original</button>
+          <button type="button" (click)="showReduced()">Reduced</button>
+        </p>
+      }
+      <app-object-viewer
+        [object]="model.object"
+        [extent]="model.extent"
+        ariaLabel="STL reducer model preview"
+        [scrollOnRender]="false"
+        (chooseAnother)="reset()"
+      />
+    </section>
+  }
+  @if (file()) {
+    <p>
+      <button class="button secondary-action" type="button" (click)="reset()">
+        Choose another file
+      </button>
+    </p>
+  }
+  <section class="content">
+    <h2>Use reductions carefully</h2>
+    <p>
+      Keep your original STL and compare simplified copies around curved
+      surfaces, small features and fitting areas before slicing.
+    </p>
+    <p>
+      <a [routerLink]="routeUrl.StlTriangleCountGuide"
+        >Learn about STL triangle count</a
+      >
+      · <a [routerLink]="routeUrl.Tools">All STL tools</a>
+    </p>
+  </section>
+</main>

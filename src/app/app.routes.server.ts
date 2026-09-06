@@ -20,6 +20,10 @@ export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.DimensionsChecker, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.StlSplitter, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.TriangleCounter, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.StlFileSizeReducer,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.VolumeCalculator, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Viewer, renderMode: RenderMode.Prerender },
   {

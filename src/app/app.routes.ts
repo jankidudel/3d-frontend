@@ -59,6 +59,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.StlFileSizeReducer,
+    loadComponent: () =>
+      import('./features/stl-reducer/stl-reducer-page').then(
+        (m) => m.StlReducerPage,
+      ),
+  },
+  {
     path: PublicRoutePath.DimensionsChecker,
     loadComponent: () =>
       import('./features/stl-dimensions/stl-dimensions-page').then(

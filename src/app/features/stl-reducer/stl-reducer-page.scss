@@ -1,0 +1,49 @@
+@use '../shared/model-upload';
+
+.privacy-note {
+  color: #135d87;
+  font-weight: 700;
+}
+.reducer-page .card {
+  margin-block: 1.5rem;
+  padding: var(--tool-card-padding);
+}
+.metrics {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+.metrics div {
+  margin: 0;
+}
+.metrics dt {
+  font-weight: 700;
+}
+.metrics dd {
+  margin: 0.25rem 0 0;
+}
+fieldset {
+  border: 0;
+  margin: 1rem 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+fieldset button {
+  min-height: 2.75rem;
+}
+.secondary-action {
+  color: var(--primary);
+  background: var(--soft);
+}
+.selected {
+  outline: 3px solid #135d87;
+}
+@media (max-width: 48rem) {
+  fieldset {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

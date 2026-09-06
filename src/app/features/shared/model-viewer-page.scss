@@ -1,33 +1,4 @@
-.viewer-tool {
-  max-width: 58rem;
-  margin-bottom: 1.5rem;
-  padding: clamp(1.25rem, 4vw, 2rem);
-}
-.drop-zone {
-  border: 2px dashed #7a90aa;
-  border-radius: 0.75rem;
-  padding: 2rem;
-  text-align: center;
-}
-.drop-zone input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-.hint,
-.privacy {
-  color: #4b5b6b;
-}
-.error {
-  margin: 1rem 0 0;
-  padding: 0.75rem 1rem;
-  border: 1px solid #b42318;
-  border-radius: 0.5rem;
-  color: #8f1d15;
-  background: #fff1f0;
-  font-weight: 700;
-}
+@use './model-upload';
 .viewer-results {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(17rem, 1fr);
@@ -182,7 +153,6 @@
   padding: 1.5rem;
 }
 .viewer-issues {
-  padding: 1.5rem;
   grid-area: issues;
 }
 .viewer-issues h2 {
@@ -245,9 +215,6 @@
     margin-left: 0;
   }
   .model-info {
-    padding: 1.25rem;
-  }
-  .viewer-issues {
     padding: 1.25rem;
   }
 }

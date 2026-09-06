@@ -45,6 +45,7 @@ describe('HomePage', () => {
       '/stl-splitter',
       '/stl-volume-calculator',
       '/stl-triangle-counter',
+      '/stl-file-size-reducer',
       '/stl-to-3mf-converter',
       '/stl-tools',
       '/3mf-viewer',

@@ -98,6 +98,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Count STL triangles',
       },
       {
+        icon: '▽',
+        title: 'STL File Size Reducer',
+        description:
+          'Convert ASCII STL to binary locally or simplify a copy with clear before-and-after file and triangle counts.',
+        route: PublicRouteUrl.StlFileSizeReducer,
+        cta: 'Reduce STL file size',
+      },
+      {
         icon: '⇄',
         title: 'STL to 3MF Converter',
         description:

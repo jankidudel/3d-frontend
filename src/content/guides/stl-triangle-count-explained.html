@@ -75,6 +75,20 @@ faq:
   </li>
 </ul>
 <h2>Triangle count and print quality</h2>
+<h2>Reducing triangles to make an STL smaller</h2>
+<p>
+  A dense STL can be unnecessarily heavy for sharing, browser viewing or
+  slicing. Reducing triangle count can shrink the file substantially, but it is
+  a geometry change rather than file compression. Too much reduction can flatten
+  curves, remove fine features or affect fit.
+</p>
+<p>
+  Start with a conservative reduction, compare the original and reduced model,
+  then check the reduced mesh before printing. The
+  <a href="/stl-file-size-reducer">STL File Size Reducer</a> shows the
+  before-and-after triangle count and file size so you can make that trade-off
+  deliberately.
+</p>
 <p>
   Triangle count is only one factor. No amount of mesh detail can overcome a
   coarse nozzle, large layer height, inaccurate calibration or unsuitable print

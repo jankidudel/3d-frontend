@@ -48,6 +48,11 @@ export const AnalyticsEvent = {
   SplitterPartBDownloaded: 'stl_splitter_part_b_downloaded',
   SplitterJsonDownloaded: 'stl_splitter_json_downloaded',
   SplitterPdfDownloaded: 'stl_splitter_pdf_downloaded',
+  ReducerFileSelected: 'stl_reducer_file_selected',
+  ReducerLosslessCompleted: 'stl_reducer_lossless_completed',
+  ReducerReductionCompleted: 'stl_reducer_reduction_completed',
+  ReducerReducedDownloaded: 'stl_reducer_reduced_downloaded',
+  ReducerPresetSelected: 'stl_reducer_preset_selected',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -261,6 +266,17 @@ export class AnalyticsService {
         ? {}
         : { file_size_kib: String(Math.round(fileSizeBytes / 1024)) },
     );
+  }
+
+  trackReducer(
+    event:
+      | typeof AnalyticsEvent.ReducerFileSelected
+      | typeof AnalyticsEvent.ReducerLosslessCompleted
+      | typeof AnalyticsEvent.ReducerReductionCompleted
+      | typeof AnalyticsEvent.ReducerReducedDownloaded
+      | typeof AnalyticsEvent.ReducerPresetSelected,
+  ): void {
+    this.sendEvent(event, {});
   }
 
   private enable(): void {
