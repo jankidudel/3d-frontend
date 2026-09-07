@@ -87,5 +87,8 @@ jobs:
 
       - name: Deploy frontend files
         run: |
-          aws s3 sync dist/3d-frontend/browser "s3://$FRONTEND_BUCKET" --delete
+          # Keep prior content-hashed JavaScript chunks. A browser can keep an
+          # older entry document open during this deployment; deleting its lazy
+          # chunks would make menu navigation fail with dynamic-import 404s.
+          aws s3 sync dist/3d-frontend/browser "s3://$FRONTEND_BUCKET"
           aws cloudfront create-invalidation --distribution-id "$FRONTEND_DISTRIBUTION_ID" --paths '/*'
