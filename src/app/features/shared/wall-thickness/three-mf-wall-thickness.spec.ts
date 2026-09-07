@@ -22,6 +22,7 @@ describe('3MF package information', () => {
       declaredUnit: 'inch',
       declaredUnitExplicitly: true,
       buildItemCount: 2,
+      modelPartFound: true,
     });
   });
 
@@ -36,12 +37,15 @@ describe('3MF package information', () => {
     expect(info.declaredUnitExplicitly).toBe(false);
   });
 
-  it('rejects a package without a readable 3MF model part', () => {
+  it('keeps a package without the conventional model-part path diagnosable', () => {
     const archive = zipSync({ 'notes.txt': strToU8('not a model') });
     const buffer = archive.buffer.slice(
       archive.byteOffset,
       archive.byteOffset + archive.byteLength,
     ) as ArrayBuffer;
-    expect(() => readThreeMfPackageInfo(buffer)).toThrow('invalid-package');
+    expect(readThreeMfPackageInfo(buffer)).toMatchObject({
+      declaredUnit: 'millimeter',
+      modelPartFound: false,
+    });
   });
 });

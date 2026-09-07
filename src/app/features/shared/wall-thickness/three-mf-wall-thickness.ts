@@ -33,6 +33,7 @@ export interface ThreeMfPackageInfo {
   readonly declaredUnit: string;
   readonly declaredUnitExplicitly: boolean;
   readonly buildItemCount: number;
+  readonly modelPartFound: boolean;
 }
 
 /** Uses ThreeMFLoader's resolved build scene, including components and transforms. */
@@ -116,11 +117,14 @@ export function readDeclaredUnit(data: ArrayBuffer): string {
 export function readThreeMfPackageInfo(data: ArrayBuffer): ThreeMfPackageInfo {
   try {
     const files = unzipSync(new Uint8Array(data));
-    const modelFile = Object.keys(files).find((path) =>
-      /^3D\/[^/]*\.model$/i.test(path),
-    );
+    const modelFile = Object.keys(files).find((path) => /\.model$/i.test(path));
     if (!modelFile) {
-      throw new Error('missing-model');
+      return {
+        declaredUnit: 'millimeter',
+        declaredUnitExplicitly: false,
+        buildItemCount: 0,
+        modelPartFound: false,
+      };
     }
     const xml = new TextDecoder().decode(files[modelFile]);
     const declaredUnit = /<model\b[^>]*\bunit\s*=\s*["']([^"']+)["']/i.exec(
@@ -131,6 +135,7 @@ export function readThreeMfPackageInfo(data: ArrayBuffer): ThreeMfPackageInfo {
       declaredUnit: declaredUnit?.toLowerCase() ?? 'millimeter',
       declaredUnitExplicitly: declaredUnit !== undefined,
       buildItemCount: (build.match(/<item\b/gi) ?? []).length,
+      modelPartFound: true,
     };
   } catch {
     throw new Error('invalid-package');
