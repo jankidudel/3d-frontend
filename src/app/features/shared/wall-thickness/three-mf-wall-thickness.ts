@@ -22,8 +22,17 @@ const MILLIMETRES_PER_3MF_UNIT: Readonly<Record<string, number>> = {
 export interface ResolvedThreeMfGeometry {
   readonly geometry: IndexedTriangleGeometry;
   readonly declaredUnit: string;
+  readonly declaredUnitExplicitly: boolean;
   readonly displayUnit: WallThicknessUnit;
   readonly extent: number;
+  readonly buildItemCount: number;
+  readonly resolvedMeshCount: number;
+}
+
+export interface ThreeMfPackageInfo {
+  readonly declaredUnit: string;
+  readonly declaredUnitExplicitly: boolean;
+  readonly buildItemCount: number;
 }
 
 /** Uses ThreeMFLoader's resolved build scene, including components and transforms. */
@@ -36,13 +45,15 @@ export async function resolveThreeMfWallGeometry(
   ]);
   const group = new ThreeMFLoader().parse(data);
   group.updateMatrixWorld(true);
-  const declaredUnit = readDeclaredUnit(data);
+  const packageInfo = readThreeMfPackageInfo(data);
+  const declaredUnit = packageInfo.declaredUnit;
   const unitScale = MILLIMETRES_PER_3MF_UNIT[declaredUnit];
   if (!unitScale) {
     throw new Error('unsupported-unit');
   }
   const positions: number[] = [];
   const indices: number[] = [];
+  let resolvedMeshCount = 0;
   const point = new Vector3();
   group.traverse((child) => {
     const mesh = child as import('three').Mesh;
@@ -53,6 +64,7 @@ export async function resolveThreeMfWallGeometry(
     if (!position) {
       return;
     }
+    resolvedMeshCount += 1;
     const start = positions.length / 3;
     const transform = new Matrix4().copy(mesh.matrixWorld);
     for (let vertex = 0; vertex < position.count; vertex++) {
@@ -68,11 +80,14 @@ export async function resolveThreeMfWallGeometry(
     }
     const index = mesh.geometry.index;
     for (let face = 0; face < (index?.count ?? position.count); face += 3) {
-      indices.push(
-        start + (index ? index.getX(face) : face),
-        start + (index ? index.getX(face + 1) : face + 1),
-        start + (index ? index.getX(face + 2) : face + 2),
-      );
+      const first = start + (index ? index.getX(face) : face);
+      const second = start + (index ? index.getX(face + 1) : face + 1);
+      const third = start + (index ? index.getX(face + 2) : face + 2);
+      if (transform.determinant() < 0) {
+        indices.push(first, third, second);
+        continue;
+      }
+      indices.push(first, second, third);
     }
   });
   if (indices.length === 0 || indices.length % 3 !== 0) {
@@ -85,28 +100,39 @@ export async function resolveThreeMfWallGeometry(
       indices: new Uint32Array(indices),
     },
     declaredUnit,
+    declaredUnitExplicitly: packageInfo.declaredUnitExplicitly,
     displayUnit:
       UNIT_TO_WALL_UNIT[declaredUnit] ?? WallThicknessUnit.Millimetres,
     extent: Math.max(bounds.getSize(new Vector3()).length(), 1),
+    buildItemCount: packageInfo.buildItemCount,
+    resolvedMeshCount,
   };
 }
 
 export function readDeclaredUnit(data: ArrayBuffer): string {
+  return readThreeMfPackageInfo(data).declaredUnit;
+}
+
+export function readThreeMfPackageInfo(data: ArrayBuffer): ThreeMfPackageInfo {
   try {
     const files = unzipSync(new Uint8Array(data));
     const modelFile = Object.keys(files).find((path) =>
       /^3D\/[^/]*\.model$/i.test(path),
     );
     if (!modelFile) {
-      return 'millimeter';
+      throw new Error('missing-model');
     }
     const xml = new TextDecoder().decode(files[modelFile]);
-    return (
-      /<model\b[^>]*\bunit\s*=\s*["']([^"']+)["']/i
-        .exec(xml)?.[1]
-        .toLowerCase() ?? 'millimeter'
-    );
+    const declaredUnit = /<model\b[^>]*\bunit\s*=\s*["']([^"']+)["']/i.exec(
+      xml,
+    )?.[1];
+    const build = /<build\b[^>]*>([\s\S]*?)<\/build\s*>/i.exec(xml)?.[1] ?? '';
+    return {
+      declaredUnit: declaredUnit?.toLowerCase() ?? 'millimeter',
+      declaredUnitExplicitly: declaredUnit !== undefined,
+      buildItemCount: (build.match(/<item\b/gi) ?? []).length,
+    };
   } catch {
-    return 'millimeter';
+    throw new Error('invalid-package');
   }
 }

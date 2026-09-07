@@ -25,6 +25,30 @@ describe('breadcrumbsForPath', () => {
     ]);
   });
 
+  it('builds the 3MF print preflight trail and structured-data source', () => {
+    const breadcrumbs = breadcrumbsForPath('/3mf-print-preflight');
+
+    expect(breadcrumbs).toEqual([
+      { label: 'All 3D tools', href: '/tools' },
+      { label: '3MF tools', href: '/3mf-tools' },
+      { label: '3MF Print Preflight Checker', href: '/3mf-print-preflight' },
+    ]);
+    expect(breadcrumbStructuredData(breadcrumbs)).toMatchObject({
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        expect.objectContaining({
+          item: 'https://www.inspectmesh.com/tools',
+        }),
+        expect.objectContaining({
+          item: 'https://www.inspectmesh.com/3mf-tools',
+        }),
+        expect.objectContaining({
+          item: 'https://www.inspectmesh.com/3mf-print-preflight',
+        }),
+      ],
+    });
+  });
+
   it('builds the calculator trail directly from all 3D tools', () => {
     expect(breadcrumbsForPath('/3d-print-cost-calculator')).toEqual([
       { label: 'All 3D tools', href: '/tools' },

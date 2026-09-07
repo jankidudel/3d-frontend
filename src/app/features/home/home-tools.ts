@@ -165,6 +165,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check 3MF quality',
       },
       {
+        icon: '◎',
+        title: '3MF Print Preflight Checker',
+        description:
+          'Resolve a 3MF build locally and check unit, size, printer fit, mesh integrity, sampled wall thickness and volume guidance together.',
+        route: PublicRouteUrl.ThreeMfPrintPreflight,
+        cta: 'Run 3MF preflight',
+      },
+      {
         icon: '✦',
         title: '3MF Repair Tool',
         description:

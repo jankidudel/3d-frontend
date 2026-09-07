@@ -134,6 +134,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ThreeMfPrintPreflight,
+    loadComponent: () =>
+      import('./features/three-mf-print-preflight/three-mf-print-preflight-page').then(
+        (m) => m.ThreeMfPrintPreflightPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ThreeMfRepair,
     loadComponent: () =>
       import('./features/three-mf/threemf-repair-page').then(

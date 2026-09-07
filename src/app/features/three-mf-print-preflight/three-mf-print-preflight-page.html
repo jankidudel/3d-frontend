@@ -1,0 +1,253 @@
+<main class="page tool-page preflight-page">
+  <p class="eyebrow">3MF print preparation</p>
+  <h1>3MF Print Preflight Checker</h1>
+  <p class="lead">
+    Resolve one 3MF print build locally before slicing: package unit, build-item
+    dimensions, printer fit, mesh integrity, sampled wall thickness, complexity
+    and whether a volume estimate is meaningful.
+  </p>
+  <section class="card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Run a local 3MF preflight</h2>
+    <p>Your selected file stays in this browser. It is not uploaded.</p>
+    <app-three-mf-file-picker
+      [selectedFileFromParent]="file()"
+      (fileSelected)="onFileSelected($event)"
+    />
+    @if (analysing()) {
+      <p role="status">{{ progress() }}</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (resolved(); as build) {
+    <section class="card" aria-labelledby="report-title">
+      <h2 id="report-title">Preflight summary</h2>
+      <p class="status">
+        <strong>{{ status() }}</strong>
+      </p>
+      <p>
+        This report is based on the resolved print build, including supported
+        build items, component references, transforms and repeated objects.
+      </p>
+      <h3>What to do next</h3>
+      <ul>
+        @for (action of actions(); track action.route) {
+          <li>
+            <a [routerLink]="action.route">{{ action.label }}</a
+            >: {{ action.reason }}
+          </li>
+        }
+      </ul>
+    </section>
+    <section class="card">
+      <h2>3MF file and build</h2>
+      <dl class="metrics">
+        <div>
+          <dt>Declared unit</dt>
+          <dd>{{ build.declaredUnit }}</dd>
+        </div>
+        <div>
+          <dt>Build items</dt>
+          <dd>{{ build.buildItemCount }}</dd>
+        </div>
+        <div>
+          <dt>Resolved meshes</dt>
+          <dd>{{ build.resolvedMeshCount }}</dd>
+        </div>
+      </dl>
+      @if (build.declaredUnitExplicitly) {
+        <p>
+          The package explicitly declares {{ build.declaredUnit }}. This is not
+          STL-style unit ambiguity, but confirm that the final dimensions match
+          the intended physical size, especially for an unusual unit.
+        </p>
+      } @else {
+        <p>
+          The model has no explicit unit attribute, so the 3MF default of
+          millimetres was used. Confirm the resolved dimensions in the source
+          application or slicer before printing.
+        </p>
+      }
+    </section>
+    @if (integrity(); as report) {
+      <section class="card">
+        <h2>Mesh integrity</h2>
+        <dl class="metrics">
+          <div>
+            <dt>Open edges</dt>
+            <dd>{{ report.openEdges }}</dd>
+          </div>
+          <div>
+            <dt>Non-manifold edges</dt>
+            <dd>{{ report.nonManifoldEdges }}</dd>
+          </div>
+          <div>
+            <dt>Degenerate triangles</dt>
+            <dd>{{ report.degenerateTriangles }}</dd>
+          </div>
+          <div>
+            <dt>Duplicate triangles</dt>
+            <dd>{{ report.duplicateTriangles }}</dd>
+          </div>
+        </dl>
+        @if (
+          report.openEdges ||
+          report.nonManifoldEdges ||
+          report.degenerateTriangles ||
+          report.duplicateTriangles
+        ) {
+          <p>
+            These findings can confuse a slicer or make solid volume unreliable.
+            <a [routerLink]="routeUrl.ThreeMfRepair">Review 3MF Repair</a> for
+            conservative repairable findings, then use the
+            <a [routerLink]="routeUrl.ThreeMfQualityCheck"
+              >3MF Quality Checker</a
+            >
+            for its full report. Orientation is not independently classified by
+            this browser preflight.
+          </p>
+        } @else {
+          <p>
+            No open, non-manifold, degenerate or duplicate geometry was found in
+            this check.
+          </p>
+        }
+      </section>
+      @if (dimensions(); as size) {
+        @if (orientation(); as fit) {
+          <section class="card">
+            <h2>Size and printer fit</h2>
+            <p>
+              Resolved print dimensions: {{ format(size.width) }} ×
+              {{ format(size.height) }} × {{ format(size.depth) }} mm.
+            </p>
+            <label for="printer-preset"
+              >Printer preset
+              <select
+                id="printer-preset"
+                [value]="printerPreset()"
+                (change)="setPrinterPreset($any($event.target).value)"
+              >
+                <option value="compact">Compact: 180 × 180 × 180 mm</option>
+                <option value="standard">Standard: 220 × 220 × 250 mm</option>
+                <option value="large">Large: 300 × 300 × 300 mm</option>
+              </select>
+            </label>
+            <p>
+              Normal orientation
+              {{ fit.current.fit.fits ? 'fits' : 'does not fit' }} this preset.
+            </p>
+            <p>
+              {{
+                fit.recommended
+                  ? 'A tested right-angle rotation fits this preset.'
+                  : 'No tested right-angle rotation fits this preset.'
+              }}
+              @if (!fit.recommended) {
+                Use the
+                <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+                  >3MF Dimensions Checker</a
+                >
+                to compare exact limits and scaling options.
+              }
+            </p>
+          </section>
+        }
+      }
+      <section class="card">
+        <h2>Wall thickness</h2>
+        @if (wallReport(); as wall) {
+          <p>
+            Minimum sampled thickness:
+            {{
+              wall.minimum === null
+                ? 'not measured'
+                : format(wall.minimum) + ' mm'
+            }}. {{ wall.belowThreshold }} sampled areas were below the 1.2 mm
+            review threshold.
+          </p>
+        } @else {
+          <p>
+            Wall-thickness sampling was not available for this resolved build.
+          </p>
+        }
+        <p>
+          {{ wallThicknessLimitation }}
+          <a [routerLink]="routeUrl.ThreeMfWallThicknessChecker"
+            >Inspect wall thickness</a
+          >.
+        </p>
+      </section>
+      <section class="card">
+        <h2>Complexity and volume</h2>
+        <p>
+          {{ format(build.geometry.indices.length / 3) }} resolved triangles.
+        </p>
+        @if (report.volumeReliable) {
+          <p>
+            Resolved closed-mesh volume: {{ format(report.volume!) }} mm³. This
+            is geometric solid volume, not a slicer material estimate.
+          </p>
+          <p>
+            Approximate solid PLA weight at 1.24 g/cm³:
+            {{ format(estimatedPlaWeight()!) }} g. Infill, walls, supports and
+            material choice mean the slicer remains the source for print weight.
+            <a [routerLink]="routeUrl.ThreeMfVolumeCalculator"
+              >Calculate volume and weight</a
+            >.
+          </p>
+        } @else {
+          <p>
+            Volume is not shown because the resolved mesh is not a clean closed
+            manifold surface. A solid-volume estimate would not be meaningful.
+          </p>
+        }
+        <p>
+          <a [routerLink]="routeUrl.ThreeMfTriangleCounter"
+            >Review triangle complexity</a
+          >.
+        </p>
+      </section>
+    }
+  }
+  <section class="content">
+    <h2>How this 3MF preflight works</h2>
+    <p>
+      The checker resolves supported 3MF build items, component references,
+      transforms and repeated objects in your browser, then measures that final
+      build in millimetres. It does not substitute a raw resource or first mesh
+      for the placed print arrangement.
+    </p>
+    <p>
+      Wall thickness is sampled at up to 2,000 triangle locations, so it can
+      miss narrow features. A clean result cannot guarantee a physical print:
+      material, nozzle, orientation, supports, calibration and slicer settings
+      still matter.
+    </p>
+    <h2>Example workflow</h2>
+    <p>
+      A build with open edges, thin sampled areas and an oversized resolved
+      arrangement should be repaired first where that is safe, checked again,
+      then reviewed in the Dimensions and Wall Thickness Checkers. Do not solve
+      a mesh defect by scaling it, and do not convert to STL unless a
+      geometry-only copy is genuinely needed.
+    </p>
+    <h2>3MF preflight FAQ</h2>
+    <h3>Does this check every object placed in a 3MF build?</h3>
+    <p>
+      It resolves supported placed build geometry, including repeated objects
+      and transforms, before analysis.
+    </p>
+    <h3>Why can a declared unit still need review?</h3>
+    <p>
+      A unit declaration gives useful scale context, but it cannot prove the
+      source export used the intended physical size.
+    </p>
+    <h3>Can this guarantee that a 3MF will print?</h3>
+    <p>
+      No. It is a pre-slicing screen, not a replacement for the intended printer
+      profile and layer preview.
+    </p>
+  </section>
+</main>

@@ -1,5 +1,5 @@
 import { ModelDimensions } from '../../shared/model-dimensions';
-import { StlMesh } from '../stl-reducer/stl-reducer';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
 
 export type PreflightStatus =
   'Needs attention' | 'Check before slicing' | 'No issue found in this check';
@@ -24,7 +24,9 @@ export const UNIT_AMBIGUITY_MESSAGE =
 export const WALL_THICKNESS_LIMITATION_MESSAGE =
   'This is a sampled normal-direction screen, not a substitute for slicer, material or load-specific requirements.';
 
-export function inspectMesh(mesh: StlMesh): MeshIntegrityReport {
+export function inspectMesh(
+  mesh: IndexedTriangleGeometry,
+): MeshIntegrityReport {
   const edgeCounts = new Map<string, number>();
   const triangles = new Map<string, number>();
   let degenerateTriangles = 0;
@@ -97,7 +99,7 @@ export function inspectMesh(mesh: StlMesh): MeshIntegrityReport {
   };
 }
 
-export function meshDimensions(mesh: StlMesh): ModelDimensions {
+export function meshDimensions(mesh: IndexedTriangleGeometry): ModelDimensions {
   let minX = Infinity;
   let minY = Infinity;
   let minZ = Infinity;

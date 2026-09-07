@@ -44,6 +44,10 @@ export const serverRoutes: ServerRoute[] = [
     path: PublicRoutePath.ThreeMfQualityCheck,
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: PublicRoutePath.ThreeMfPrintPreflight,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.ThreeMfRepair, renderMode: RenderMode.Prerender },
   {
     path: PublicRoutePath.ThreeMfDimensionsChecker,

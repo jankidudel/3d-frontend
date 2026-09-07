@@ -8,6 +8,9 @@ describe('3MF public routes', () => {
   it('registers all 3MF pages as lazy routes', () => {
     expect(routeExists(routes, PublicRoutePath.ThreeMfTools)).toBe(true);
     expect(routeExists(routes, PublicRoutePath.ThreeMfQualityCheck)).toBe(true);
+    expect(routeExists(routes, PublicRoutePath.ThreeMfPrintPreflight)).toBe(
+      true,
+    );
     expect(routeExists(routes, PublicRoutePath.ThreeMfViewer)).toBe(true);
     expect(routeExists(routes, PublicRoutePath.ThreeMfDimensionsChecker)).toBe(
       true,
@@ -36,6 +39,10 @@ describe('3MF public routes', () => {
         }),
         expect.objectContaining({
           path: PublicRoutePath.ThreeMfQualityCheck,
+          renderMode: RenderMode.Prerender,
+        }),
+        expect.objectContaining({
+          path: PublicRoutePath.ThreeMfPrintPreflight,
           renderMode: RenderMode.Prerender,
         }),
         expect.objectContaining({

@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
@@ -21,7 +22,7 @@ import {
 
 @Component({
   selector: 'app-three-mf-wall-thickness-page',
-  imports: [ObjectViewerComponent],
+  imports: [ObjectViewerComponent, RouterLink],
   templateUrl: './threemf-wall-thickness-page.html',
   styleUrl: './threemf-wall-thickness-page.scss',
 })

@@ -1,33 +1,55 @@
 ---
 title: 'How to Check a 3MF File for Errors Before Printing | InspectMesh'
-description: Check a 3MF file for package and mesh problems before printing. Learn how to find holes, non-manifold edges, duplicate triangles and broken references.
+description: 'Check a 3MF print build before slicing: declared unit, resolved dimensions, printer fit, mesh integrity, sampled wall thickness and reliable volume.'
 slug: how-to-check-a-3mf-file-for-errors
-eyebrow: 3MF quality guide
-heading: How to Check a 3MF File for Errors Before Printing
+eyebrow: 3MF pre-print workflow
+heading: How to Check a 3MF File Before Slicing
 faq:
   - question: Can a 3MF file be valid but still fail to print?
     answer: Yes. A file can open correctly while one of its meshes contains holes, non-manifold edges, duplicate triangles or other geometry problems.
   - question: What errors should I check before printing a 3MF?
-    answer: Check package structure, object references, open edges, non-manifold edges, degenerate faces, duplicate faces and orientation where possible.
+    answer: Check package structure, declared unit, resolved build dimensions, printer fit, open edges, non-manifold edges, degenerate faces, duplicate faces, sampled wall thickness and volume reliability.
   - question: Can I repair a 3MF after checking it?
     answer: Yes, but only some issues are safe to repair automatically. Use the 3MF Repair Tool for conservative repairs, then check the result again.
 ---
 
 <p>
-  A 3MF file can contain more than one model, material setting or build item.
-  That makes it useful for printing, but it also means there is more to check
-  before you trust it.
+  A 3MF package can contain several objects, build items, component references
+  and transforms. Before slicing, check the final resolved print build rather
+  than trusting the first mesh resource or a reassuring-looking file name.
 </p>
 <p>
   A file opening in a slicer is not proof that every mesh inside it is healthy.
   The slicer may quietly compensate for a problem, or it may create unexpected
   walls and gaps later in the layer preview.
 </p>
-<h2>Run a 3MF quality check</h2>
+<h2>Start with one resolved-build preflight</h2>
 <p>
-  Upload the file to the <a href="/3mf-quality-checker">3MF Quality Checker</a>.
-  It checks both the file structure and the mesh geometry it can resolve.
+  Start with the <a href="/3mf-print-preflight">3MF Print Preflight Checker</a>.
+  It resolves supported placed geometry locally, including repeated build items
+  and transforms, then brings together unit, size, printer fit, mesh, sampled
+  wall-thickness, complexity and volume guidance. Your selected file stays in
+  the browser.
 </p>
+<p>
+  A preflight result is not a printable/not-printable score. It identifies the
+  next useful check. Use the slicer profile and layer preview that will actually
+  make the part before committing material and machine time.
+</p>
+<h2>Confirm the unit and final build size</h2>
+<p>
+  Unlike STL, 3MF can declare a coordinate unit. Read that declaration, but
+  still compare the final resolved width, height and depth with the intended
+  physical part. Microns, metres and inches are not automatically mistakes; they
+  simply deserve a deliberate dimensions check in context.
+</p>
+<p>
+  Select your printer preset in preflight, then review a fit failure in the
+  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>. Try a
+  right-angle rotation before changing scale. Scaling a functional part can
+  alter holes, clearances and wall thickness.
+</p>
+<h2>Check package and mesh health</h2>
 <p>The report can identify problems such as:</p>
 <ul>
   <li>unreadable package or model data</li>
@@ -40,8 +62,8 @@ faq:
   <li>inconsistent orientation where it can be determined</li>
 </ul>
 <p>
-  Read the per-model results as well as the overall result. A multi-object 3MF
-  can contain one healthy object and one object with serious issues.
+  Read the resolved-build result as well as package warnings. A multi-object 3MF
+  can contain one healthy resource and one placed part with serious issues.
 </p>
 <h2>Check whether the mesh is a clean solid</h2>
 <p>
@@ -87,4 +109,19 @@ faq:
   geometry outside the build area. A successful quality check improves
   confidence in the file; it does not replace normal print-preparation checks
   such as wall thickness, supports and printer settings.
+</p>
+<h2>Screen wall thickness and volume carefully</h2>
+<p>
+  Preflight samples wall thickness at a bounded number of locations so that it
+  remains usable in a browser. A zero thin-sample count does not prove every
+  point is suitable. Investigate important regions with the
+  <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a> and the
+  intended material, nozzle and slicer preview.
+</p>
+<p>
+  Treat volume as meaningful only for closed, manifold geometry. If the mesh has
+  open or non-manifold edges, repair or return to the source CAD model before
+  relying on a material estimate. The
+  <a href="/3mf-volume-calculator">3MF Volume Calculator</a> is useful after
+  that structural question is resolved.
 </p>

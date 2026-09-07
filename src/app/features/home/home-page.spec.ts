@@ -53,6 +53,7 @@ describe('HomePage', () => {
       '/stl-tools',
       '/3mf-viewer',
       '/3mf-quality-checker',
+      '/3mf-print-preflight',
       '/3mf-repair',
       '/3mf-watertight-checker',
       '/3mf-manifold-checker',
