@@ -44,22 +44,15 @@ export class StlPrintPreflightPage {
   readonly error = signal('');
   readonly analysing = signal(false);
   readonly unit = signal<ModelUnit>('mm');
-  readonly buildVolume = signal<ModelDimensions>({
-    width: 220,
-    height: 220,
-    depth: 250,
-  });
+  /** Printer fit is meaningful only after the user has chosen a printer volume. */
+  readonly buildVolume = signal<ModelDimensions | null>(null);
   readonly integrity = computed(() => this.integrityReport());
   readonly dimensions = computed(() => this.dimensionsReport());
   readonly orientation = computed(() => {
     const dimensions = this.dimensions();
-    return dimensions
-      ? assessPrinterOrientations(
-          dimensions,
-          this.unit(),
-          this.buildVolume(),
-          'mm',
-        )
+    const buildVolume = this.buildVolume();
+    return dimensions && buildVolume
+      ? assessPrinterOrientations(dimensions, this.unit(), buildVolume, 'mm')
       : null;
   });
   readonly wallReport = signal<WallThicknessReport | null>(null);
@@ -77,6 +70,29 @@ export class StlPrintPreflightPage {
           ? false
           : null,
     );
+  });
+  readonly statusReason = computed(() => {
+    const integrity = this.integrity();
+    if (!integrity) {
+      return '';
+    }
+    if (
+      integrity.openEdges ||
+      integrity.nonManifoldEdges ||
+      integrity.degenerateTriangles
+    ) {
+      return 'Mesh integrity findings need review before slicing.';
+    }
+    if ((this.wallReport()?.belowThreshold ?? 0) > 0) {
+      return 'Sampled areas are below the generic 1.2 mm review threshold.';
+    }
+    if (!this.buildVolume()) {
+      return 'Printer fit has not been checked because no build volume is selected.';
+    }
+    if (integrity.duplicateTriangles) {
+      return 'Duplicate triangles were found and should be reviewed.';
+    }
+    return 'No issue was found by the checks completed here.';
   });
   readonly actions = computed(() => {
     const integrity = this.integrity();
@@ -125,12 +141,12 @@ export class StlPrintPreflightPage {
       return;
     }
     this.analytics.trackPreflightUploadStarted(file.size);
+    this.file.set(file);
     this.analysing.set(true);
     try {
       this.progress.set('Reading mesh and dimensions...');
       const mesh = await readStl(file);
       this.mesh.set(mesh);
-      this.file.set(file);
       await this.yieldToBrowser();
       this.progress.set('Checking mesh integrity and printer fit...');
       this.integrityReport.set(inspectMesh(mesh));
@@ -159,6 +175,19 @@ export class StlPrintPreflightPage {
   onPicker(event: Event): void {
     const input = event.target as HTMLInputElement;
     void this.onFileSelected(input.files?.item(0) ?? null);
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    void this.onFileSelected(event.dataTransfer?.files.item(0) ?? null);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  openPicker(input: HTMLInputElement): void {
+    input.click();
   }
 
   setUnit(value: ModelUnit): void {

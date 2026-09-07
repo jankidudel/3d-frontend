@@ -46,6 +46,12 @@ describe('STL preflight analysis', () => {
     expect(WALL_THICKNESS_LIMITATION_MESSAGE).toContain('sampled');
   });
 
+  it('treats sampled thin areas as a review, not a print-failure claim', () => {
+    expect(preflightStatus(inspectMesh(closedTetrahedron), true, null)).toBe(
+      'Check before slicing',
+    );
+  });
+
   it('finds a right-angle printer fit when the normal orientation does not fit', () => {
     const assessment = assessPrinterOrientations(
       { width: 250, height: 100, depth: 180 },

@@ -6,19 +6,30 @@
     fit, sampled wall thickness, complexity and whether a volume estimate is
     meaningful.
   </p>
-  <section class="card" aria-labelledby="upload-title">
-    <h2 id="upload-title">Run a local preflight</h2>
-    <input
-      #picker
-      type="file"
-      accept=".stl"
-      aria-label="Choose STL file"
-      (change)="onPicker($event)"
-    />
-    <p>
-      Your file stays in this browser. The checker does not promise that a
-      physical print will succeed.
-    </p>
+  <section class="card viewer-tool" aria-labelledby="upload-title">
+    <h2 id="upload-title">Run an STL preflight</h2>
+    <div
+      class="drop-zone"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      aria-label="Drag and drop an STL file here, or choose a file"
+    >
+      <p>Drag and drop an STL file here</p>
+      <button class="button" type="button" (click)="openPicker(picker)">
+        Choose STL file
+      </button>
+      <input
+        #picker
+        type="file"
+        accept=".stl"
+        aria-label="Choose STL file"
+        (change)="onPicker($event)"
+      />
+      <p class="hint">.stl only - maximum 25 MB</p>
+      <p class="privacy">
+        Analysed locally in your browser - your file is not uploaded.
+      </p>
+    </div>
     @if (analysing()) {
       <p role="status">{{ progress() }}</p>
     }
@@ -32,6 +43,7 @@
       <p class="status">
         <strong>{{ status() }}</strong>
       </p>
+      <p>{{ statusReason() }}</p>
       <p>{{ unitAmbiguityMessage }}</p>
       <label
         >Assumed model unit
@@ -82,14 +94,26 @@
             <dd>{{ report.duplicateTriangles }}</dd>
           </div>
         </dl>
-        <p>
-          Open or non-manifold edges can make a surface unsuitable for a
-          reliable volume calculation or confusing to slice.
-          <a [routerLink]="routeUrl.StlRepair" (click)="trackAction()"
-            >Review STL Repair</a
-          >
-          when a mesh issue is reported.
-        </p>
+        @if (
+          report.openEdges ||
+          report.nonManifoldEdges ||
+          report.degenerateTriangles ||
+          report.duplicateTriangles
+        ) {
+          <p>
+            Reported mesh issues can make a surface unsuitable for a reliable
+            volume calculation or confusing to slice.
+            <a [routerLink]="routeUrl.StlRepair" (click)="trackAction()"
+              >Review STL Repair</a
+            >.
+          </p>
+        } @else {
+          <p>
+            No mesh integrity issue was found in this check. For a more detailed
+            mesh report and issue review, use the
+            <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a>.
+          </p>
+        }
       </section>
       <section class="card">
         <h2>Complexity and volume</h2>
@@ -127,6 +151,12 @@
                 ? 'A right-angle rotation fits.'
                 : 'No tested right-angle rotation fits this preset.'
             }}
+          </p>
+        } @else {
+          <p>
+            Printer fit has not been checked because no printer build volume is
+            selected. Use the Dimensions Checker to compare this model with your
+            printer.
           </p>
         }
         <p>

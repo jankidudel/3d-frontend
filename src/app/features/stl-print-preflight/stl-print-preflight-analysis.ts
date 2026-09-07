@@ -124,7 +124,6 @@ export function preflightStatus(
     integrity.openEdges ||
     integrity.nonManifoldEdges ||
     integrity.degenerateTriangles ||
-    thinAreas ||
     fitsPrinter === false
   ) {
     return 'Needs attention';
@@ -132,6 +131,7 @@ export function preflightStatus(
   if (
     integrity.duplicateTriangles ||
     !integrity.volumeReliable ||
+    thinAreas ||
     fitsPrinter === null
   ) {
     return 'Check before slicing';

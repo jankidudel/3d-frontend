@@ -1,22 +1,28 @@
 @use '../shared/model-upload';
+
 .preflight-page .card {
   margin-block: 1.5rem;
   padding: var(--tool-card-padding);
 }
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   gap: 1rem;
 }
+
 .metrics dt {
   font-weight: 700;
 }
+
 .metrics dd {
   margin: 0.25rem 0 0;
 }
+
 .status {
   color: #8a4d00;
 }
+
 .preflight-page label {
   display: block;
   margin-block: 1rem;
