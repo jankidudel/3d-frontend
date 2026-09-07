@@ -38,6 +38,7 @@ describe('HomePage', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/stl-viewer',
       '/stl-quality-checker',
+      '/stl-print-preflight',
       '/stl-repair',
       '/stl-watertight-checker',
       '/stl-manifold-checker',

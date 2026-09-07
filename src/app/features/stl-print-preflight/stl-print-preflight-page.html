@@ -1,0 +1,207 @@
+<main class="page tool-page preflight-page">
+  <p class="eyebrow">STL print preparation</p>
+  <h1>STL Print Preflight Checker</h1>
+  <p class="lead">
+    Check one STL locally before slicing: mesh integrity, assumed size, printer
+    fit, sampled wall thickness, complexity and whether a volume estimate is
+    meaningful.
+  </p>
+  <section class="card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Run a local preflight</h2>
+    <input
+      #picker
+      type="file"
+      accept=".stl"
+      aria-label="Choose STL file"
+      (change)="onPicker($event)"
+    />
+    <p>
+      Your file stays in this browser. The checker does not promise that a
+      physical print will succeed.
+    </p>
+    @if (analysing()) {
+      <p role="status">{{ progress() }}</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (mesh(); as model) {
+    <section class="card" aria-labelledby="report-title">
+      <h2 id="report-title">Preflight report</h2>
+      <p class="status">
+        <strong>{{ status() }}</strong>
+      </p>
+      <p>{{ unitAmbiguityMessage }}</p>
+      <label
+        >Assumed model unit
+        <select [value]="unit()" (change)="setUnit($any($event.target).value)">
+          <option value="mm">mm</option>
+          <option value="cm">cm</option>
+          <option value="m">m</option>
+          <option value="in">inches</option>
+        </select></label
+      >
+      <h3>What to do next</h3>
+      @if (actions().length) {
+        <ul>
+          @for (action of actions(); track action.route) {
+            <li>
+              <a [routerLink]="action.route" (click)="trackAction()">{{
+                action.label
+              }}</a
+              >: {{ action.reason }}
+            </li>
+          }
+        </ul>
+      } @else {
+        <p>
+          Review the model in your slicer with its printer, material,
+          orientation and support settings.
+        </p>
+      }
+    </section>
+    @if (integrity(); as report) {
+      <section class="card">
+        <h2>Mesh integrity</h2>
+        <dl class="metrics">
+          <div>
+            <dt>Open edges</dt>
+            <dd>{{ report.openEdges }}</dd>
+          </div>
+          <div>
+            <dt>Non-manifold edges</dt>
+            <dd>{{ report.nonManifoldEdges }}</dd>
+          </div>
+          <div>
+            <dt>Degenerate triangles</dt>
+            <dd>{{ report.degenerateTriangles }}</dd>
+          </div>
+          <div>
+            <dt>Duplicate triangles</dt>
+            <dd>{{ report.duplicateTriangles }}</dd>
+          </div>
+        </dl>
+        <p>
+          Open or non-manifold edges can make a surface unsuitable for a
+          reliable volume calculation or confusing to slice.
+          <a [routerLink]="routeUrl.StlRepair" (click)="trackAction()"
+            >Review STL Repair</a
+          >
+          when a mesh issue is reported.
+        </p>
+      </section>
+      <section class="card">
+        <h2>Complexity and volume</h2>
+        <p>{{ format(model.indices.length / 3) }} triangles.</p>
+        @if (report.volumeReliable) {
+          <p>
+            Closed-mesh volume: {{ format(report.volume!) }} {{ unit() }}³. This
+            is a geometric estimate, not a material quote.
+            <a [routerLink]="routeUrl.VolumeCalculator"
+              >Calculate volume and weight</a
+            >.
+          </p>
+        } @else {
+          <p>
+            Volume is not shown because this check found topology issues. A
+            closed, manifold surface is needed for a meaningful solid-volume
+            estimate.
+          </p>
+        }
+      </section>
+    }
+    @if (dimensions(); as size) {
+      <section class="card">
+        <h2>Size and printer fit</h2>
+        <p>
+          {{ format(size.width) }} × {{ format(size.height) }} ×
+          {{ format(size.depth) }} {{ unit() }}.
+        </p>
+        @if (orientation(); as fit) {
+          <p>
+            Preset build volume: 220 × 220 × 250 mm. Normal orientation
+            {{ fit.current.fit.fits ? 'fits' : 'does not fit' }}.
+            {{
+              fit.recommended
+                ? 'A right-angle rotation fits.'
+                : 'No tested right-angle rotation fits this preset.'
+            }}
+          </p>
+        }
+        <p>
+          <a [routerLink]="routeUrl.DimensionsChecker"
+            >Check dimensions and printer fit</a
+          >
+          or <a [routerLink]="routeUrl.StlScaleTool">scale a copy</a>.
+        </p>
+      </section>
+    }
+    <section class="card">
+      <h2>Wall thickness</h2>
+      @if (wallReport(); as wall) {
+        <p>
+          Minimum sampled thickness:
+          {{
+            wall.minimum === null
+              ? 'not measured'
+              : format(wall.minimum) + ' ' + wall.unit
+          }}. {{ wall.belowThreshold }} sampled areas were below 1.2
+          {{ wall.unit }}.
+        </p>
+      } @else {
+        <p>Wall-thickness sampling was not available for this mesh.</p>
+      }
+      <p>
+        {{ wallThicknessLimitationMessage }}
+        <a [routerLink]="routeUrl.StlWallThicknessChecker"
+          >Inspect wall thickness</a
+        >.
+      </p>
+    </section>
+  }
+  <section class="content">
+    <h2>How this check works</h2>
+    <p>
+      The report parses the STL once in your browser, counts topology findings,
+      calculates bounds and tests practical right-angle orientations against a
+      220 × 220 × 250 mm preset. It samples up to 2,000 triangle locations for
+      wall thickness, so narrow features can be missed and sampled values are
+      approximate.
+    </p>
+    <p>
+      STL does not declare units. Confirm whether the coordinates represent mm,
+      cm, metres or inches before trusting physical measurements. A clean report
+      cannot guarantee a successful print: calibration, material, orientation,
+      supports and slicer settings still matter.
+    </p>
+    <h2>Example workflow</h2>
+    <p>
+      An oversized model with open edges and sampled thin areas should be
+      repaired first, rechecked, then scaled or split only after the mesh is
+      understood. The report points to each relevant tool instead of treating
+      those different problems as one score.
+    </p>
+    <h2>Preflight FAQ</h2>
+    <h3>Can a preflight check tell me an STL is printable?</h3>
+    <p>
+      No. It identifies specific mesh, size and sampled-thickness concerns
+      before slicing; it cannot account for your printer setup or use case.
+    </p>
+    <h3>Why are STL units ambiguous?</h3>
+    <p>
+      STL stores coordinates but no reliable unit declaration, so the same
+      numbers can represent very different physical sizes.
+    </p>
+    <h3>Why does a closed mesh matter for volume?</h3>
+    <p>
+      A solid-volume calculation needs a closed, manifold surface. Holes and
+      non-manifold edges make that result unreliable.
+    </p>
+    <h3>Why is wall thickness sampled?</h3>
+    <p>
+      Sampling keeps the browser tool responsive, but it is not an exhaustive
+      measurement of every point on the model.
+    </p>
+  </section>
+</main>

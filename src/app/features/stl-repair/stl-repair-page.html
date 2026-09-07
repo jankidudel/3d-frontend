@@ -1,6 +1,12 @@
 <main class="page tool-page quality-page">
   <p class="eyebrow">Safe STL cleanup</p>
   <h1>STL Repair Tool</h1>
+  <p>
+    <a [routerLink]="routeUrl.StlPrintPreflight"
+      >Run STL Print Preflight first</a
+    >
+    when you need to understand the reported mesh issue before repair.
+  </p>
   <p class="lead">
     Remove duplicate and degenerate triangles, and correct simple orientation
     issues before checking your STL again.

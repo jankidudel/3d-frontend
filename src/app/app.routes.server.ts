@@ -11,6 +11,10 @@ export const serverRoutes: ServerRoute[] = [
   },
   { path: PublicRoutePath.Tools, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.QualityCheck, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.StlPrintPreflight,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.StlRepair, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.ManifoldChecker, renderMode: RenderMode.Prerender },
   {

@@ -1,12 +1,12 @@
 ---
 title: How to Check an STL File for Errors Before 3D Printing | InspectMesh
-description: Learn how to check an STL file for common mesh errors, understand open and non-manifold edges, and verify the model again after repairs.
+description: 'Follow a cautious STL preflight workflow: inspect mesh integrity, units, printer fit and wall thickness before slicing or repair.'
 slug: how-to-check-stl-for-errors
 eyebrow: STL mesh guide
 heading: How to Check an STL File for Errors
 faq:
-  - question: What errors should I check for in an STL file?
-    answer: Common STL problems include open edges, non-manifold edges, duplicate triangles, degenerate triangles, invalid coordinates and inconsistent triangle orientation.
+  - question: What can an STL preflight check tell me?
+    answer: It can identify mesh, size, printer-fit and sampled wall-thickness concerns before slicing. It cannot guarantee a physical print because printer setup, material, orientation, supports and slicer settings also matter.
   - question: Can an STL look correct but still contain errors?
     answer: Yes. A model can look normal in a 3D viewer while still containing topology problems that may affect slicing or printing.
   - question: Does checking an STL repair it automatically?
@@ -17,22 +17,35 @@ faq:
 
 <p class="lead">
   An STL file can look perfectly normal in a viewer and still contain mesh
-  problems that cause missing surfaces, strange slicing results or failed
-  repairs.
+  problems, unexpected scale or thin features that lead to confusing slicing
+  results. A useful preflight checks each concern separately before repair.
 </p>
 <p>A useful pre-print workflow is:</p>
 <ol>
   <li>Inspect the model visually.</li>
-  <li>Run automated mesh checks.</li>
-  <li>Understand any reported problems.</li>
-  <li>Repair the model if necessary.</li>
-  <li>Check the repaired file again before slicing.</li>
+  <li>Check mesh integrity.</li>
+  <li>Confirm scale and printer fit.</li>
+  <li>Check wall thickness where it matters.</li>
+  <li>Repair only a problem you understand, then verify again.</li>
+  <li>Slice with printer and material-specific settings.</li>
 </ol>
+<p>
+  Start with the <a href="/stl-print-preflight">STL Print Preflight Checker</a>
+  when you want one local report with clear next actions. It does not use a
+  single score or claim that an STL is guaranteed printable.
+</p>
 <h2>1. Inspect the STL visually</h2>
 <p>
   Start by opening the model in a 3D viewer. Look for missing surfaces, visible
   holes, disconnected pieces, unexpected thin geometry, or a model that appears
   much larger or smaller than expected.
+</p>
+<h2>Check wall thickness where the part needs it</h2>
+<p>
+  Wall thickness depends on material, nozzle, orientation and the part's job.
+  The <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a>
+  samples the surface to flag areas worth reviewing, but does not replace a
+  slicer or material-specific requirement.
 </p>
 <p>
   Visual inspection is useful, but it cannot reveal every topology problem. Use
@@ -102,6 +115,7 @@ faq:
 </p>
 <h2>Check your STL for errors</h2>
 <p>
-  Use the free <a href="/stl-quality-checker">STL Quality Checker</a> to inspect
-  your model for common mesh problems before printing.
+  Use the <a href="/stl-print-preflight">STL Print Preflight Checker</a> for a
+  practical first pass, then use its linked individual tools to investigate a
+  specific finding.
 </p>

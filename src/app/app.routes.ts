@@ -24,6 +24,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.StlPrintPreflight,
+    loadComponent: () =>
+      import('./features/stl-print-preflight/stl-print-preflight-page').then(
+        (m) => m.StlPrintPreflightPage,
+      ),
+  },
+  {
     path: PublicRoutePath.StlRepair,
     loadComponent: () =>
       import('./features/stl-repair/stl-repair-page').then(

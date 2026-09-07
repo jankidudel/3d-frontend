@@ -54,6 +54,10 @@ export const AnalyticsEvent = {
   ReducerReducedDownloaded: 'stl_reducer_reduced_downloaded',
   ReducerPresetSelected: 'stl_reducer_preset_selected',
   StlScaleCompleted: 'stl_scale_completed',
+  PreflightUploadStarted: 'stl_preflight_upload_started',
+  PreflightCompleted: 'stl_preflight_completed',
+  PreflightRemediationClicked: 'stl_preflight_remediation_clicked',
+  PreflightWallThickness: 'stl_preflight_wall_thickness',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -212,6 +216,26 @@ export class AnalyticsService {
 
   trackStlScaleCompleted(): void {
     this.sendEvent(AnalyticsEvent.StlScaleCompleted, {});
+  }
+
+  trackPreflightUploadStarted(fileSizeBytes: number): void {
+    this.sendEvent(AnalyticsEvent.PreflightUploadStarted, {
+      file_size_bucket: this.fileSizeBucket(fileSizeBytes),
+    });
+  }
+
+  trackPreflightCompleted(): void {
+    this.sendEvent(AnalyticsEvent.PreflightCompleted, {});
+  }
+
+  trackPreflightRemediationClicked(): void {
+    this.sendEvent(AnalyticsEvent.PreflightRemediationClicked, {});
+  }
+
+  trackPreflightWallThickness(
+    outcome: 'completed' | 'skipped' | 'failed',
+  ): void {
+    this.sendEvent(AnalyticsEvent.PreflightWallThickness, { outcome });
   }
 
   trackThreeMfQualityStarted(fileSizeBytes: number): void {

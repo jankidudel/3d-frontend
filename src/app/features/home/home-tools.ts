@@ -43,6 +43,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check STL quality',
       },
       {
+        icon: '◎',
+        title: 'STL Print Preflight Checker',
+        description:
+          'Run mesh, size, printer-fit, sampled wall-thickness and volume checks together before slicing.',
+        route: PublicRouteUrl.StlPrintPreflight,
+        cta: 'Run STL preflight',
+      },
+      {
         icon: '✦',
         title: 'STL Repair Tool',
         description:
