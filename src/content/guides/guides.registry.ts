@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: '3d-print-wall-thickness-guide',
+    group: GuideGroupId.General,
+    order: 1,
+    enabled: true,
+    publishDate: '2026-09-08',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-check-if-a-3d-model-is-ready-to-print',
     group: GuideGroupId.General,
     order: 5,
