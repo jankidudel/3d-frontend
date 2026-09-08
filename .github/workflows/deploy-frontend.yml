@@ -85,10 +85,40 @@ jobs:
           echo "FRONTEND_BUCKET=$FRONTEND_BUCKET" >> "$GITHUB_ENV"
           echo "FRONTEND_DISTRIBUTION_ID=$FRONTEND_DISTRIBUTION_ID" >> "$GITHUB_ENV"
 
-      - name: Deploy frontend files
+      - name: Upload immutable hashed assets
         run: |
-          # Keep prior content-hashed JavaScript chunks. A browser can keep an
-          # older entry document open during this deployment; deleting its lazy
-          # chunks would make menu navigation fail with dynamic-import 404s.
-          aws s3 sync dist/3d-frontend/browser "s3://$FRONTEND_BUCKET"
-          aws cloudfront create-invalidation --distribution-id "$FRONTEND_DISTRIBUTION_ID" --paths '/*'
+          # Do not add --delete here. An already-open tab can still require an
+          # older content-hashed lazy chunk after a new deployment.
+          aws s3 sync dist/3d-frontend/browser "s3://$FRONTEND_BUCKET" \
+            --size-only \
+            --exclude "*" \
+            --include "*.js" \
+            --include "*.css" \
+            --include "*.woff" \
+            --include "*.woff2" \
+            --include "*.ttf" \
+            --include "*.otf" \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Upload mutable documents and public files
+        run: |
+          aws s3 cp dist/3d-frontend/browser "s3://$FRONTEND_BUCKET" \
+            --recursive \
+            --exclude "*.js" \
+            --exclude "*.css" \
+            --exclude "*.woff" \
+            --exclude "*.woff2" \
+            --exclude "*.ttf" \
+            --exclude "*.otf" \
+            --cache-control "no-cache, max-age=0, must-revalidate"
+
+      - name: Invalidate mutable frontend documents
+        run: |
+          invalidation_id="$(aws cloudfront create-invalidation \
+            --distribution-id "$FRONTEND_DISTRIBUTION_ID" \
+            --paths '/' '/index.html' '/*/index.html' '/robots.txt' '/sitemap.xml' \
+            --query 'Invalidation.Id' \
+            --output text)"
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$FRONTEND_DISTRIBUTION_ID" \
+            --id "$invalidation_id"
