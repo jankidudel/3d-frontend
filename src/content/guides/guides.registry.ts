@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'best-file-format-for-3d-printing',
+    group: GuideGroupId.General,
+    order: 3,
+    enabled: true,
+    publishDate: '2026-09-09',
+    checkEditorialTargets: false,
+  },
+  {
     slug: '3d-print-file-preflight-checklist',
     group: GuideGroupId.General,
     order: 2,

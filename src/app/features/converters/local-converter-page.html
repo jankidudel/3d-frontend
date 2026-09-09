@@ -136,7 +136,10 @@
       </p>
       <p>
         <a [routerLink]="guideUrl">Read how to convert STL to 3MF</a> ·
-        <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a>
+        <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a> ·
+        <a routerLink="/best-file-format-for-3d-printing"
+          >Choose a print file format</a
+        >
       </p>
     } @else {
       <h2>Keep the original 3MF</h2>
@@ -154,7 +157,10 @@
       </p>
       <p>
         <a [routerLink]="guideUrl">Read how to convert 3MF to STL</a> ·
-        <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a>
+        <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a> ·
+        <a routerLink="/best-file-format-for-3d-printing"
+          >Choose a print file format</a
+        >
       </p>
     }
   </section>
