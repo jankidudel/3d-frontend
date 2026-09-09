@@ -1,285 +1,123 @@
-import { DOCUMENT } from '@angular/common';
-import {
-  Component,
-  computed,
-  DestroyRef,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { finalize, Subscription } from 'rxjs';
 import {
   AnalyticsEvent,
   AnalyticsService,
 } from '../../core/analytics/analytics.service';
-import { JobCreationService } from '../../core/api/job-creation.service';
-import { pollJob, PollingTimeoutError } from '../../core/api/job-polling';
-import { JobsService } from '../../core/api/jobs.service';
-import { createAndUploadThreeMfRepairJob } from '../../core/api/three-mf-job-workflow';
-import { uploadErrorMessage } from '../../core/api/upload-error';
-import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
-import { Job, JobStatus } from '../../models/job';
-import { MeshQualityReport } from '../../models/mesh-quality-report';
 import { ThreeMfFilePicker } from './threemf-file-picker';
 import {
-  DisplayIssue,
-  normalizeValidationIssues,
-} from '../../shared/mesh-validation-issues';
-import { MeshQualityPdfService } from '../../shared/mesh-quality-pdf.service';
+  analyseThreeMfForRepair,
+  defaultRepairPlan,
+  repairThreeMfLocally,
+  type ThreeMfRepairAnalysis,
+  type ThreeMfRepairPlan,
+  type ThreeMfRepairResult,
+} from './three-mf-local-repair';
 
-type Report = {
-  repair?: {
-    repairedFileAvailable?: boolean;
-    trianglesBefore?: number;
-    trianglesAfter?: number;
-    degenerateTrianglesRemoved?: number;
-    duplicateTrianglesRemoved?: number;
-    invalidIndexTrianglesRemoved?: number;
-    orientationFixesApplied?: number;
-  };
-  afterValidation?: MeshQualityReport;
-  warnings?: string[];
-};
-
-type RepairResultStatus = {
-  readonly description: string;
-  readonly title:
-    | 'No repairs needed'
-    | 'No safe repairs could be applied'
-    | 'Repaired safely'
-    | 'Repaired with remaining warnings';
-  readonly warning: boolean;
-};
 @Component({
   selector: 'app-three-mf-repair-page',
-  imports: [RouterLink, ThreeMfFilePicker, JobProgress],
+  imports: [RouterLink, ThreeMfFilePicker],
   templateUrl: './threemf-repair-page.html',
   styleUrl: './threemf-repair-page.scss',
 })
 export class ThreeMfRepairPage {
   readonly routeUrl = PublicRouteUrl;
-  readonly jobStatus = JobStatus;
-  readonly selectedFile = signal<File | null>(null);
-  readonly job = signal<Job | null>(null);
-  readonly submitting = signal(false);
-  readonly refreshing = signal(false);
-  readonly timedOut = signal(false);
+  readonly file = signal<File | null>(null);
+  readonly analysis = signal<ThreeMfRepairAnalysis | null>(null);
+  readonly result = signal<ThreeMfRepairResult | null>(null);
   readonly error = signal('');
-  readonly generatingPdf = signal(false);
-  readonly reportDownloadError = signal('');
-  readonly report = computed(() => this.job()?.report as Report | undefined);
-  readonly processing = computed(
-    () =>
-      (this.job()?.status === JobStatus.Created ||
-        this.job()?.status === JobStatus.Processing) &&
-      !this.timedOut(),
-  );
-  private readonly picker = viewChild(ThreeMfFilePicker);
-  private readonly document = inject(DOCUMENT);
-  private readonly jobs = inject(JobsService);
-  private readonly creation = inject(JobCreationService);
+  readonly loading = signal(false);
+  readonly plan = signal<ThreeMfRepairPlan>({
+    removeDegenerateTriangles: false,
+    removeDuplicateTriangles: false,
+    removeInvalidIndexTriangles: false,
+  });
+  readonly canRepair = computed(() => Object.values(this.plan()).some(Boolean));
   private readonly analytics = inject(AnalyticsService);
-  private readonly pdfService = inject(MeshQualityPdfService);
-  private polling?: Subscription;
   constructor() {
     inject(SeoService).apply({
-      title: '3MF Repair Tool - Safe 3MF Cleanup | InspectMesh',
+      title: '3MF Repair Tool - Conservative Local Mesh Cleanup | InspectMesh',
       description:
-        'Safely remove duplicate and degenerate 3MF triangles while preserving package resources and build structure.',
+        'Inspect a 3MF package locally, remove supported duplicate or degenerate triangles, and download a repaired 3MF copy to verify.',
       path: PublicRouteUrl.ThreeMfRepair,
     });
-    inject(DestroyRef).onDestroy(() => this.polling?.unsubscribe());
   }
-  onFileSelected(file: File | null): void {
-    this.polling?.unsubscribe();
-    this.selectedFile.set(file);
-    this.job.set(null);
+  async onFileSelected(file: File | null): Promise<void> {
+    this.file.set(null);
+    this.analysis.set(null);
+    this.result.set(null);
     this.error.set('');
-    this.timedOut.set(false);
-  }
-  repair(): void {
-    const file = this.selectedFile();
-    if (!file || this.submitting()) {
+    if (!file) {
       return;
     }
-    this.submitting.set(true);
+    this.loading.set(true);
     this.analytics.trackThreeMfRepair(
       AnalyticsEvent.ThreeMfRepairUploadStarted,
       file.size,
     );
-    createAndUploadThreeMfRepairJob(this.creation, this.jobs, file, (job) =>
-      this.job.set(job),
-    ).subscribe({
-      next: () => {
-        this.submitting.set(false);
-        const job = this.job();
-        if (job) {
-          this.poll(job.id);
-        }
-      },
-      error: (error: unknown) => {
-        this.submitting.set(false);
-        this.error.set(uploadErrorMessage(error));
-      },
-    });
-  }
-  refresh(): void {
-    const job = this.job();
-    if (!job) {
-      return;
-    }
-    this.refreshing.set(true);
-    this.jobs
-      .getJob(job.id)
-      .pipe(finalize(() => this.refreshing.set(false)))
-      .subscribe({
-        next: (value) => this.job.set(value),
-        error: () =>
-          this.error.set(
-            'We could not refresh this repair job. Please try again.',
-          ),
-      });
-  }
-  downloaded(): void {
-    this.analytics.trackThreeMfRepair(AnalyticsEvent.ThreeMfRepairDownloaded);
-  }
-  resultStatus(report: Report): RepairResultStatus {
-    if (!this.repairsApplied(report)) {
-      if (this.afterValidationIsClean(report)) {
-        return {
-          title: 'No repairs needed',
-          description:
-            'No safely repairable mesh issues were found. Your original 3MF file was left unchanged.',
-          warning: false,
-        };
-      }
-      return {
-        title: 'No safe repairs could be applied',
-        description:
-          'Holes, non-manifold geometry, corrupt structure, or similar issues may require manual repair.',
-        warning: true,
-      };
-    }
-    if (this.afterValidationIsClean(report)) {
-      return {
-        title: 'Repaired safely',
-        description:
-          'Safe mesh repairs were applied and the repaired file passed validation.',
-        warning: false,
-      };
-    }
-    return {
-      title: 'Repaired with remaining warnings',
-      description:
-        'Safe mesh repairs were applied, but the repaired file still has issues to review.',
-      warning: true,
-    };
-  }
-  repairsApplied(report: Report): boolean {
-    const repair = report.repair;
-    return (
-      (repair?.degenerateTrianglesRemoved ?? 0) > 0 ||
-      (repair?.duplicateTrianglesRemoved ?? 0) > 0 ||
-      (repair?.invalidIndexTrianglesRemoved ?? 0) > 0 ||
-      (repair?.orientationFixesApplied ?? 0) > 0
-    );
-  }
-  remainingIssues(report: Report): readonly DisplayIssue[] {
-    return normalizeValidationIssues(
-      report.afterValidation?.validation?.issues,
-    );
-  }
-  canDownloadRepairedFile(report: Report): boolean {
-    return (
-      this.repairsApplied(report) &&
-      report.repair?.repairedFileAvailable === true
-    );
-  }
-  formatInteger(value: number | undefined): string {
-    return new Intl.NumberFormat('en', { maximumFractionDigits: 0 }).format(
-      value ?? 0,
-    );
-  }
-  downloadJsonReport(): void {
-    const report = this.job()?.report;
-    const view = this.document.defaultView;
-    if (!report || !view) {
-      return;
-    }
-    const blob = new Blob([JSON.stringify(report, null, 2)], {
-      type: 'application/json',
-    });
-    const objectUrl = view.URL.createObjectURL(blob);
-    const link = this.document.createElement('a');
-    link.href = objectUrl;
-    link.download = this.downloadFileName('json');
-    link.click();
-    this.analytics.trackThreeMfRepair(
-      AnalyticsEvent.ThreeMfRepairJsonDownloaded,
-    );
-    view.setTimeout(() => view.URL.revokeObjectURL(objectUrl), 0);
-  }
-  async downloadPdfReport(): Promise<void> {
-    const job = this.job();
-    const afterValidation = this.report()?.afterValidation;
-    if (!job || !afterValidation || this.generatingPdf()) {
-      return;
-    }
-    this.generatingPdf.set(true);
-    this.reportDownloadError.set('');
     try {
-      await this.pdfService.download({ ...job, report: afterValidation });
+      const analysis = await analyseThreeMfForRepair(await file.arrayBuffer());
+      this.file.set(file);
+      this.analysis.set(analysis);
+      this.plan.set(defaultRepairPlan(analysis.counts));
       this.analytics.trackThreeMfRepair(
-        AnalyticsEvent.ThreeMfRepairPdfDownloaded,
+        AnalyticsEvent.ThreeMfRepairAnalysisCompleted,
       );
     } catch {
-      this.reportDownloadError.set(
-        'We could not generate the PDF report. Please try again.',
+      this.error.set(
+        'This 3MF package cannot be safely rewritten here. Choose a standard, readable 3MF with a relationship-selected mesh model; unsupported or ambiguous packages are left unchanged.',
       );
     } finally {
-      this.generatingPdf.set(false);
+      this.loading.set(false);
     }
   }
-  private poll(id: string): void {
-    this.polling = pollJob(this.jobs, id).subscribe({
-      next: (job) => {
-        this.job.set(job);
-        if (job.status === JobStatus.Completed) {
-          this.analytics.trackThreeMfRepair(
-            AnalyticsEvent.ThreeMfRepairCompleted,
-          );
-        }
-      },
-      error: (error) => {
-        if (error instanceof PollingTimeoutError) {
-          this.timedOut.set(true);
-        } else {
-          this.error.set(
-            'Automatic status updates were interrupted. Please refresh the result.',
-          );
-        }
-      },
-    });
+  setPlan(key: keyof ThreeMfRepairPlan, selected: boolean): void {
+    this.plan.update((plan) => ({ ...plan, [key]: selected }));
   }
-  private afterValidationIsClean(report: Report): boolean {
-    return (
-      report.afterValidation?.validation?.isValid === true &&
-      this.remainingIssues(report).length === 0
+  async repair(): Promise<void> {
+    const analysis = this.analysis();
+    if (!analysis || !this.canRepair() || this.loading()) {
+      return;
+    }
+    this.loading.set(true);
+    this.error.set('');
+    try {
+      this.result.set(await repairThreeMfLocally(analysis, this.plan()));
+      this.analytics.trackThreeMfRepair(AnalyticsEvent.ThreeMfRepairApplied);
+    } catch {
+      this.error.set(
+        'No selected repair could be applied safely. The original file has not been changed.',
+      );
+    } finally {
+      this.loading.set(false);
+    }
+  }
+  download(): void {
+    const result = this.result(),
+      file = this.file();
+    if (!result || !file) {
+      return;
+    }
+    const url = URL.createObjectURL(
+      new Blob([result.bytes.slice().buffer as ArrayBuffer], {
+        type: 'model/3mf',
+      }),
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${file.name.replace(/\.3mf$/i, '') || 'model'}-repaired.3mf`;
+    link.click();
+    this.analytics.trackThreeMfRepair(AnalyticsEvent.ThreeMfRepairDownloaded);
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
+  verifyClicked(): void {
+    this.analytics.trackThreeMfRepair(
+      AnalyticsEvent.ThreeMfRepairVerifyPreflightClicked,
     );
   }
-  private downloadFileName(extension: 'json' | 'pdf'): string {
-    const sourceName = this.job()?.fileName ?? 'model';
-    const safeStem = sourceName
-      .replace(/\.3mf$/i, '')
-      .trim()
-      .normalize('NFKD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-zA-Z0-9_-]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 100);
-    return `${safeStem || 'model'}-repair-report.${extension}`;
+  count(value: number): string {
+    return new Intl.NumberFormat().format(value);
   }
 }

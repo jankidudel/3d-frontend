@@ -11,6 +11,7 @@ describe('3MF public routes', () => {
     expect(routeExists(routes, PublicRoutePath.ThreeMfPrintPreflight)).toBe(
       true,
     );
+    expect(routeExists(routes, PublicRoutePath.ThreeMfRepair)).toBe(true);
     expect(routeExists(routes, PublicRoutePath.ThreeMfViewer)).toBe(true);
     expect(routeExists(routes, PublicRoutePath.ThreeMfDimensionsChecker)).toBe(
       true,
@@ -43,6 +44,10 @@ describe('3MF public routes', () => {
         }),
         expect.objectContaining({
           path: PublicRoutePath.ThreeMfPrintPreflight,
+          renderMode: RenderMode.Prerender,
+        }),
+        expect.objectContaining({
+          path: PublicRoutePath.ThreeMfRepair,
           renderMode: RenderMode.Prerender,
         }),
         expect.objectContaining({

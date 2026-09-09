@@ -183,8 +183,9 @@
               }
             </div>
             <p class="repair-guidance-note">
-              InspectMesh identifies issues; it does not repair files. Save
-              repairs under a new filename and run the checker again.
+              For clearly explained duplicate or degenerate triangle cleanup,
+              use <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair</a>. Save
+              the repaired copy under a new filename and run this checker again.
             </p>
           } @else if (issues(value).length === 0) {
             <p class="no-issues">

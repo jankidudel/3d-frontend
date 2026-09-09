@@ -1,152 +1,195 @@
 <main class="page tool-page quality-page">
-  <p class="eyebrow">Safe 3MF cleanup</p>
-  <h1>Repair a 3MF File Online</h1>
+  <p class="eyebrow">Browser-local 3MF cleanup</p>
+  <h1>Repair a 3MF File</h1>
   <p class="lead">
-    Upload a 3MF file to safely remove common mesh errors and download a
-    repaired copy.
+    Inspect a 3MF package locally, make only clearly explained mesh clean-up
+    changes, then download a separate copy to verify.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
-    <h2 id="upload-title">Upload a 3MF file</h2>
+    <h2 id="upload-title">Choose a 3MF file</h2>
     <p>
-      InspectMesh does not reconstruct holes or severely damaged models. It
-      changes only safely repairable mesh triangles.
+      Your file stays in this browser. Repair never overwrites or changes the
+      original.
     </p>
     <app-three-mf-file-picker
-      [selectedFileFromParent]="selectedFile()"
+      [selectedFileFromParent]="file()"
       (fileSelected)="onFileSelected($event)"
-    /><button
-      class="button submit"
-      type="button"
-      (click)="repair()"
-      [disabled]="!selectedFile() || submitting()"
-    >
-      {{ submitting() ? 'Creating job...' : 'Repair 3MF safely' }}
-    </button>
-    @if (error(); as message) {
-      <p class="error" role="alert">{{ message }}</p>
+    />
+    @if (loading()) {
+      <p role="status">Reading and validating the 3MF package locally…</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
-  @if (job(); as currentJob) {
-    <section class="tool-result results card" aria-live="polite">
-      @if (processing() || timedOut()) {
-        <app-job-progress
-          [job]="currentJob"
-          [uploading]="submitting()"
-          [pollingTimedOut]="timedOut()"
-          [refreshing]="refreshing()"
-          headingId="repair-result"
-          (refresh)="refresh()"
-        />
-      } @else if (currentJob.status === jobStatus.Failed) {
-        <div class="status-panel status-panel-error" role="alert">
-          <span class="status-icon" aria-hidden="true">!</span>
-          <div>
-            <h2 id="repair-result">File could not be repaired</h2>
-            <p>
-              The file could not be processed safely. Keep the original and try
-              repairing it in a modelling or mesh-repair application.
-            </p>
-          </div>
+  @if (analysis(); as before) {
+    <section class="tool-result results card" aria-labelledby="findings-title">
+      <h2 id="findings-title">Findings before repair</h2>
+      <p>
+        <strong>{{ file()?.name }}</strong> ·
+        {{ count(file()?.size ?? 0) }} bytes · declared unit:
+        {{ before.packageInfo.declaredUnit }} ·
+        {{ before.resolved.buildItemCount }} build items ·
+        {{ before.resolved.resolvedMeshCount }} resolved meshes.
+      </p>
+      <p>
+        Supported package structure can be rewritten while retaining its build
+        items, supported transforms, references, declared unit, and unrelated
+        package parts. Unsupported or ambiguous packages are not modified.
+      </p>
+      <dl class="metrics">
+        <div>
+          <dt>Degenerate triangles</dt>
+          <dd>{{ count(before.counts.degenerateTriangles) }}</dd>
         </div>
-      } @else if (report(); as report) {
-        @let status = resultStatus(report);
-        @let repair = report.repair;
-        <div
-          class="status-panel"
-          [class.status-panel-warning]="status.warning"
-          [class.status-panel-success]="!status.warning"
-          role="status"
+        <div>
+          <dt>Duplicate triangles</dt>
+          <dd>{{ count(before.counts.duplicateTriangles) }}</dd>
+        </div>
+        <div>
+          <dt>Invalid-index triangles</dt>
+          <dd>{{ count(before.counts.invalidIndexTriangles) }}</dd>
+        </div>
+        <div>
+          <dt>Open edges</dt>
+          <dd>{{ count(before.counts.openEdges) }}</dd>
+        </div>
+        <div>
+          <dt>Non-manifold edges</dt>
+          <dd>{{ count(before.counts.nonManifoldEdges) }}</dd>
+        </div>
+        <div>
+          <dt>Inconsistent winding edges</dt>
+          <dd>{{ count(before.counts.inconsistentWindingEdges) }}</dd>
+        </div>
+      </dl>
+      <h3>Repair plan</h3>
+      <p>
+        Only selected actions with a non-zero count can run. Open edges,
+        non-manifold geometry, self-intersections, missing surfaces, and
+        ambiguous internal geometry are reported but not repaired.
+      </p>
+      @if (before.counts.degenerateTriangles > 0) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="plan().removeDegenerateTriangles"
+            (change)="
+              setPlan('removeDegenerateTriangles', $any($event.target).checked)
+            "
+          />
+          Remove {{ count(before.counts.degenerateTriangles) }} degenerate
+          triangles</label
         >
-          <span class="status-icon" aria-hidden="true">{{
-            status.warning ? '!' : '✓'
-          }}</span>
-          <div>
-            <p class="eyebrow">3MF repair result</p>
-            <h2 id="repair-result">{{ status.title }}</h2>
-            <p>{{ status.description }}</p>
-          </div>
-        </div>
-        <dl class="metrics" aria-label="Repair metrics">
-          <div class="metric metric-wide">
-            <dt>Triangles</dt>
-            <dd>
-              {{ formatInteger(repair?.trianglesBefore) }} before ·
-              {{ formatInteger(repair?.trianglesAfter) }} after
-            </dd>
-          </div>
-          <div class="metric">
-            <dt>Degenerate triangles removed</dt>
-            <dd>{{ formatInteger(repair?.degenerateTrianglesRemoved) }}</dd>
-          </div>
-          <div class="metric">
-            <dt>Duplicate triangles removed</dt>
-            <dd>{{ formatInteger(repair?.duplicateTrianglesRemoved) }}</dd>
-          </div>
-          <div class="metric">
-            <dt>Orientation fixes applied</dt>
-            <dd>{{ formatInteger(repair?.orientationFixesApplied) }}</dd>
-          </div>
-          @if ((repair?.invalidIndexTrianglesRemoved ?? 0) > 0) {
-            <div class="metric">
-              <dt>Invalid-index triangles removed</dt>
-              <dd>{{ formatInteger(repair?.invalidIndexTrianglesRemoved) }}</dd>
-            </div>
-          }
-        </dl>
-        <div class="report-actions">
-          @if (canDownloadRepairedFile(report)) {
-            <a
-              class="button"
-              [href]="'/api/v1/jobs/' + currentJob.id + '/cleaned-3mf'"
-              (click)="downloaded()"
-              >Download repaired 3MF</a
-            >
-          }
-          <button
-            class="button button-secondary"
-            type="button"
-            (click)="downloadJsonReport()"
-          >
-            Download JSON report
-          </button>
-          <button
-            class="button button-secondary"
-            type="button"
-            (click)="downloadPdfReport()"
-            [disabled]="!report.afterValidation || generatingPdf()"
-          >
-            {{ generatingPdf() ? 'Generating PDF…' : 'Download PDF report' }}
-          </button>
-        </div>
-        @if (reportDownloadError(); as message) {
-          <p class="error" role="alert">{{ message }}</p>
-        }
-        @if (remainingIssues(report).length > 0) {
-          <section class="issues" aria-labelledby="remaining-issues-title">
-            <h3 id="remaining-issues-title">Remaining issues</h3>
-            <ul>
-              @for (issue of remainingIssues(report); track $index) {
-                <li [class.issue-error]="issue.severity === 'error'">
-                  <strong>{{ issue.label }}</strong>
-                  @if (issue.detail) {
-                    <span>{{ issue.detail }}</span>
-                  }
-                </li>
-              }
-            </ul>
-          </section>
-        }
       }
+      @if (before.counts.duplicateTriangles > 0) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="plan().removeDuplicateTriangles"
+            (change)="
+              setPlan('removeDuplicateTriangles', $any($event.target).checked)
+            "
+          />
+          Remove {{ count(before.counts.duplicateTriangles) }} exact duplicate
+          triangles</label
+        >
+      }
+      @if (before.counts.invalidIndexTriangles > 0) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="plan().removeInvalidIndexTriangles"
+            (change)="
+              setPlan(
+                'removeInvalidIndexTriangles',
+                $any($event.target).checked
+              )
+            "
+          />
+          Remove {{ count(before.counts.invalidIndexTriangles) }} invalid-index
+          triangles</label
+        >
+      }
+      @if (!canRepair()) {
+        <p>
+          <strong>{{
+            before.counts.openEdges || before.counts.nonManifoldEdges
+              ? 'Issue detected but not safely repairable'
+              : 'No supported repair needed'
+          }}</strong>
+        </p>
+      } @else {
+        <p><strong>Repair available</strong></p>
+      }
+      <button
+        class="button"
+        type="button"
+        [disabled]="!canRepair() || loading()"
+        (click)="repair()"
+      >
+        Apply selected repairs locally
+      </button>
+    </section>
+  }
+  @if (result(); as repaired) {
+    <section class="tool-result results card" aria-labelledby="after-title">
+      <h2 id="after-title">Repair completed — verify the saved copy</h2>
+      <p>
+        Removed {{ count(repaired.applied.degenerateTriangles) }} degenerate,
+        {{ count(repaired.applied.duplicateTriangles) }} duplicate, and
+        {{ count(repaired.applied.invalidIndexTriangles) }} invalid-index
+        triangles.
+      </p>
+      <dl class="metrics">
+        <div>
+          <dt>Triangles</dt>
+          <dd>
+            {{ count(repaired.before.counts.triangles) }} before ·
+            {{ count(repaired.after.counts.triangles) }} after
+          </dd>
+        </div>
+        <div>
+          <dt>Open edges after repair</dt>
+          <dd>{{ count(repaired.after.counts.openEdges) }}</dd>
+        </div>
+        <div>
+          <dt>Non-manifold edges after repair</dt>
+          <dd>{{ count(repaired.after.counts.nonManifoldEdges) }}</dd>
+        </div>
+      </dl>
+      <p class="warning">
+        A valid repaired package does not guarantee a successful physical print.
+        Remaining open or non-manifold geometry can still affect volume,
+        wall-thickness estimates, and slicer behaviour.
+      </p>
+      <button class="button" type="button" (click)="download()">
+        Download repaired 3MF
+      </button>
+      <a
+        class="button button-secondary"
+        [routerLink]="routeUrl.ThreeMfPrintPreflight"
+        (click)="verifyClicked()"
+        >Verify repaired file in 3MF Print Preflight</a
+      >
+      <p class="hint">
+        Save the downloaded copy, then upload it to Preflight. Browser file
+        permissions do not let this page transfer the file automatically.
+      </p>
     </section>
   }
   <section class="content">
     <p>
       <a [routerLink]="routeUrl.ThreeMfQualityCheck">3MF Quality Checker</a> ·
-      <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a> ·
       <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
         >3MF Dimensions Checker</a
       >
-      · <a [routerLink]="routeUrl.ThreeMfPrintPreflight">3MF Print Preflight</a>
+      ·
+      <a [routerLink]="routeUrl.ThreeMfWallThicknessChecker"
+        >3MF Wall Thickness Checker</a
+      >
+      ·
+      <a [routerLink]="routeUrl.ThreeMfToStlConverter">3MF to STL Converter</a>
     </p>
   </section>
 </main>

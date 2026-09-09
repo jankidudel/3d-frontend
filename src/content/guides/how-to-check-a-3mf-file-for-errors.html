@@ -87,21 +87,43 @@ faq:
   For ordinary 3D printing, a model should normally be both watertight and
   manifold.
 </p>
-<h2>Repair only what can be repaired safely</h2>
+<h2>Repair a 3MF file cautiously</h2>
 <p>
-  If the checker finds degenerate or exact duplicate triangles, the
-  <a href="/3mf-repair">3MF Repair Tool</a> may be able to remove them safely.
-  It can also correct orientation where the result is unambiguous.
+  Some 3MF problems can be cleaned up automatically, but not every warning has a
+  safe one-click fix.
 </p>
 <p>
-  Do not expect automatic repair to reconstruct missing geometry, resolve every
-  non-manifold connection or repair a corrupt package. Those cases often need
-  manual mesh work or a fresh export from the original CAD file.
+  The <a href="/3mf-repair">3MF Repair tool</a> is designed for conservative
+  clean-up. It can remove clearly invalid or duplicate mesh data where that can
+  be done without guessing what the original designer intended. It does not
+  claim to rebuild arbitrary missing surfaces, resolve every non-manifold area
+  or make a model guaranteed printable.
 </p>
 <p>
-  After repair, upload the repaired file to the Quality Checker again. The
-  after-repair report is more useful than assuming a download button means every
-  issue was fixed.
+  That distinction matters. A model with a few duplicate or zero-area triangles
+  may only need straightforward clean-up. A model with open surfaces,
+  self-intersections or ambiguous internal geometry may need inspection in
+  modelling software, because there can be several plausible ways to change it.
+</p>
+<p>A careful repair workflow is:</p>
+<ol>
+  <li>
+    run <a href="/3mf-print-preflight">3MF Print Preflight</a> or the
+    <a href="/3mf-quality-checker">3MF Quality Checker</a>;
+  </li>
+  <li>read which issues were found;</li>
+  <li>
+    use <a href="/3mf-repair">3MF Repair</a> only for supported, clearly
+    explained changes;
+  </li>
+  <li>download the repaired copy rather than replacing the original;</li>
+  <li>run Preflight again on the saved copy;</li>
+  <li>check dimensions, printer fit and wall thickness before slicing.</li>
+</ol>
+<p>
+  Repairing mesh data does not determine the final print orientation, supports,
+  material settings or whether a thin functional feature is strong enough. Those
+  remain separate preparation decisions.
 </p>
 <h2>Confirm size and slicing behaviour</h2>
 <p>

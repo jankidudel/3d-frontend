@@ -65,6 +65,12 @@
         This is a sampled, normal-direction estimate. It does not repair a model
         or guarantee a successful print.
       </p>
+      <p>
+        If open or ambiguous mesh geometry makes a thickness result less
+        trustworthy, inspect it first with the
+        <a routerLink="/3mf-repair">3MF Repair Tool</a> where conservative
+        cleanup is available.
+      </p>
     </section>
   }
   @if (report(); as result) {

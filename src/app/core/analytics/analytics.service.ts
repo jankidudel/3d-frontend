@@ -36,8 +36,11 @@ export const AnalyticsEvent = {
   ThreeMfQualityCheckFailed: '3mf_quality_check_failed',
   ThreeMfQualityReportDownloaded: '3mf_quality_report_downloaded',
   ThreeMfRepairUploadStarted: '3mf_repair_upload_started',
+  ThreeMfRepairAnalysisCompleted: '3mf_repair_analysis_completed',
+  ThreeMfRepairApplied: '3mf_repair_applied',
   ThreeMfRepairCompleted: '3mf_repair_completed',
   ThreeMfRepairDownloaded: '3mf_repair_downloaded',
+  ThreeMfRepairVerifyPreflightClicked: '3mf_repair_verify_preflight_clicked',
   ThreeMfRepairJsonDownloaded: '3mf_repair_json_downloaded',
   ThreeMfRepairPdfDownloaded: '3mf_repair_pdf_downloaded',
   SplitterUploadStarted: 'stl_splitter_upload_started',
@@ -263,8 +266,11 @@ export class AnalyticsService {
   trackThreeMfRepair(
     event:
       | typeof AnalyticsEvent.ThreeMfRepairUploadStarted
+      | typeof AnalyticsEvent.ThreeMfRepairAnalysisCompleted
+      | typeof AnalyticsEvent.ThreeMfRepairApplied
       | typeof AnalyticsEvent.ThreeMfRepairCompleted
       | typeof AnalyticsEvent.ThreeMfRepairDownloaded
+      | typeof AnalyticsEvent.ThreeMfRepairVerifyPreflightClicked
       | typeof AnalyticsEvent.ThreeMfRepairJsonDownloaded
       | typeof AnalyticsEvent.ThreeMfRepairPdfDownloaded,
     fileSizeBytes?: number,
