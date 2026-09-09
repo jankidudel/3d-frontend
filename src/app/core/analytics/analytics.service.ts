@@ -61,6 +61,10 @@ export const AnalyticsEvent = {
   PreflightCompleted: 'stl_preflight_completed',
   PreflightRemediationClicked: 'stl_preflight_remediation_clicked',
   PreflightWallThickness: 'stl_preflight_wall_thickness',
+  ToleranceCalculatorUsed: 'tolerance_calculator_used',
+  ToleranceCalibrationApplied: 'tolerance_calibration_applied',
+  ToleranceResultCopied: 'tolerance_result_copied',
+  ToleranceGuideOpened: 'tolerance_guide_opened',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -239,6 +243,16 @@ export class AnalyticsService {
     outcome: 'completed' | 'skipped' | 'failed',
   ): void {
     this.sendEvent(AnalyticsEvent.PreflightWallThickness, { outcome });
+  }
+
+  trackToleranceCalculator(
+    event:
+      | typeof AnalyticsEvent.ToleranceCalculatorUsed
+      | typeof AnalyticsEvent.ToleranceCalibrationApplied
+      | typeof AnalyticsEvent.ToleranceResultCopied
+      | typeof AnalyticsEvent.ToleranceGuideOpened,
+  ): void {
+    this.sendEvent(event, {});
   }
 
   trackThreeMfQualityStarted(fileSizeBytes: number): void {

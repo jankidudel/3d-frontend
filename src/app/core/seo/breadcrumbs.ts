@@ -66,6 +66,15 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
       },
     ];
   }
+  if (normalizedPath === PublicRouteUrl.ToleranceCalculator) {
+    return [
+      { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
+      {
+        label: '3D Print Tolerance & Clearance Calculator',
+        href: PublicRouteUrl.ToleranceCalculator,
+      },
+    ];
+  }
 
   const guideHeading = guideBreadcrumbLabelBySlug[normalizedPath.slice(1)];
   if (guideHeading) {

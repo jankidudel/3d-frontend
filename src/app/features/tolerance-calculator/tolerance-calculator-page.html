@@ -1,0 +1,269 @@
+<main class="page tool-page tolerance-page">
+  <p class="eyebrow">Functional 3D printing tool</p>
+  <h1>3D Print Tolerance &amp; Clearance Calculator</h1>
+  <p class="lead">
+    Turn the fit you want into editable hole and pin dimensions, then apply
+    measurements from your own calibration print.
+  </p>
+  <p class="accuracy-note">
+    <strong
+      >These are nominal model dimensions. Print behaviour can differ from your
+      design dimensions. For an important fit, print a small test first.</strong
+    >
+  </p>
+
+  <section class="card calculator" aria-labelledby="fit-title">
+    <h2 id="fit-title">Choose the fit you want</h2>
+    <p>
+      Start with the plain-language intent. You can always edit the diametral
+      clearance below.
+    </p>
+    <div class="fit-options" role="radiogroup" aria-label="Fit intent">
+      @for (
+        intent of [
+          fitIntent.Clearance,
+          fitIntent.Sliding,
+          fitIntent.Snug,
+          fitIntent.Interference,
+          fitIntent.Custom,
+        ];
+        track intent
+      ) {
+        <div class="radio-option">
+          <input
+            [id]="'fit-' + intent"
+            type="radio"
+            name="fit-intent"
+            [checked]="selectedIntent() === intent"
+            (change)="chooseIntent(intent)"
+          />
+          <label [for]="'fit-' + intent">{{ fitLabels[intent] }}</label>
+        </div>
+      }
+    </div>
+    @if (selectedIntent() === fitIntent.Interference) {
+      <p class="warning" role="note">
+        <strong>Press/interference fits use negative clearance.</strong> They
+        can crack, deform or become impossible to assemble when printer,
+        material, orientation or settings change. Test a small feature first.
+      </p>
+    }
+
+    <div class="fields">
+      <label class="field"
+        ><span>Nominal mating-part diameter (mm)</span
+        ><input
+          type="number"
+          min="0.001"
+          step="any"
+          [value]="nominalMatingDiameter()"
+          (input)="setNumber('nominalMatingDiameter', $event)"
+      /></label>
+      <label class="field"
+        ><span>Desired printed pin/shaft diameter (mm)</span
+        ><input
+          type="number"
+          min="0.001"
+          step="any"
+          [value]="desiredPrintedPinDiameter()"
+          (input)="setNumber('desiredPrintedPinDiameter', $event)"
+      /></label>
+      <label class="field"
+        ><span>Starting point preset</span
+        ><select
+          [value]="selectedPreset()"
+          (change)="choosePreset($any($event.target).value)"
+        >
+          @for (preset of presets; track preset.label) {
+            <option [value]="preset.label">
+              {{ preset.label }}
+              @if (preset.label !== 'Custom') {
+                ({{ preset.clearance.toFixed(2) }} mm)
+              }
+            </option>
+          }
+        </select></label
+      >
+      <label class="field"
+        ><span>Desired diametral clearance or interference (mm)</span
+        ><input
+          type="number"
+          step="any"
+          [value]="desiredClearance()"
+          (input)="setNumber('desiredClearance', $event)"
+        /><small
+          >Positive is a gap; zero is nominal contact; negative is
+          interference.</small
+        ></label
+      >
+    </div>
+    @if (validationMessage(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+    <details
+      class="calibration"
+      [open]="calibrationOpen()"
+      (toggle)="calibrationOpen.set($any($event.target).open)"
+    >
+      <summary>Use measurements from your own calibration print</summary>
+      <p>
+        Enter complete positive measurements only. Nothing is saved or sent to
+        analytics.
+      </p>
+      <div class="fields">
+        <label class="field"
+          ><span>Intended outside diameter (mm)</span
+          ><input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="intendedOutside() ?? ''"
+            (input)="setNumber('intendedOutside', $event)"
+        /></label>
+        <label class="field"
+          ><span>Measured outside diameter (mm)</span
+          ><input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="measuredOutside() ?? ''"
+            (input)="setNumber('measuredOutside', $event)"
+        /></label>
+        <label class="field"
+          ><span>Intended hole diameter (mm)</span
+          ><input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="intendedHole() ?? ''"
+            (input)="setNumber('intendedHole', $event)"
+        /></label>
+        <label class="field"
+          ><span>Measured hole diameter (mm)</span
+          ><input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="measuredHole() ?? ''"
+            (input)="setNumber('measuredHole', $event)"
+        /></label>
+      </div>
+      <p class="calibration-result">
+        Outside error:
+        <strong>{{ number(calibrationErrors().outsideError) }}</strong> · Hole
+        error: <strong>{{ number(calibrationErrors().holeError) }}</strong>
+      </p>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="applyCalibration()"
+        [disabled]="
+          calibrationErrors().outsideError === null &&
+          calibrationErrors().holeError === null
+        "
+      >
+        Apply these errors to the fit calculation
+      </button>
+    </details>
+  </section>
+
+  <section
+    class="card results"
+    aria-labelledby="results-title"
+    aria-live="polite"
+  >
+    <h2 id="results-title">Design summary</h2>
+    @if (result(); as calculation) {
+      <dl>
+        <div>
+          <dt>Fit intent</dt>
+          <dd>{{ fitLabels[selectedIntent()] }}</dd>
+        </div>
+        <div>
+          <dt>Desired diametral clearance</dt>
+          <dd>{{ number(desiredClearance()) }}</dd>
+        </div>
+        <div>
+          <dt>Radial clearance</dt>
+          <dd>{{ number(calculation.radialClearance) }}</dd>
+        </div>
+        <div>
+          <dt>Target printed hole diameter</dt>
+          <dd>{{ number(calculation.targetPrintedHoleDiameter) }}</dd>
+        </div>
+        <div>
+          <dt>Modelled hole diameter</dt>
+          <dd>{{ number(calculation.modelledHoleDiameter) }}</dd>
+        </div>
+        <div>
+          <dt>Modelled pin/shaft diameter</dt>
+          <dd>{{ number(calculation.modelledPinDiameter) }}</dd>
+        </div>
+      </dl>
+      <p class="formula">
+        <strong>Formula:</strong> target printed hole = nominal mating-part
+        diameter + desired diametral clearance. Modelled hole = target printed
+        hole - measured hole error. Modelled pin = desired printed pin -
+        measured outside error.
+      </p>
+      <p class="assumption">
+        Assumption: calibration errors are representative of this printer,
+        material, orientation and settings. This calculator does not guarantee
+        that printed parts will fit.
+      </p>
+      <div class="actions">
+        <button class="button" type="button" (click)="copyDimensions()">
+          Copy dimensions</button
+        ><button
+          class="button button-secondary"
+          type="button"
+          (click)="printSummary()"
+        >
+          Print summary</button
+        ><button
+          class="button button-secondary"
+          type="button"
+          (click)="reset()"
+        >
+          Reset
+        </button>
+      </div>
+      @if (copyStatus()) {
+        <p role="status">{{ copyStatus() }}</p>
+      }
+    } @else {
+      <p class="error">
+        Enter positive dimensions and adjust the clearance or errors until all
+        calculated dimensions remain positive.
+      </p>
+    }
+  </section>
+
+  <section class="next-steps" aria-labelledby="next-title">
+    <h2 id="next-title">Next steps</h2>
+    <ul>
+      <li>
+        <a [routerLink]="routeUrl.DimensionsChecker"
+          >Check the finished STL’s dimensions</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.StlWallThicknessChecker"
+          >Check thin walls around the hole or feature</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.StlPrintPreflight"
+          >Check the final file before slicing</a
+        >
+      </li>
+      <li>
+        <a
+          [routerLink]="routeUrl.ToleranceAndClearanceGuide"
+          (click)="openGuide()"
+          >Read the tolerance guide</a
+        >
+      </li>
+    </ul>
+  </section>
+</main>

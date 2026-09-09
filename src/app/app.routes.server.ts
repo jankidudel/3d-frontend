@@ -9,6 +9,10 @@ export const serverRoutes: ServerRoute[] = [
     path: PublicRoutePath.PrintCostCalculator,
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: PublicRoutePath.ToleranceCalculator,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.Tools, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.QualityCheck, renderMode: RenderMode.Prerender },
   {

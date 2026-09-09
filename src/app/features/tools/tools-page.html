@@ -4,15 +4,6 @@
   <p class="lead">
     InspectMesh helps you inspect, measure and prepare 3D files for printing.
   </p>
-  <section class="tools" aria-labelledby="print-cost-calculator">
-    <div class="section-intro">
-      <h2 id="print-cost-calculator">{{ printCostCalculator.title }}</h2>
-      <p>{{ printCostCalculator.description }}</p>
-      <a [routerLink]="printCostCalculator.route">{{
-        printCostCalculator.cta
-      }}</a>
-    </div>
-  </section>
   @for (group of toolGroups; track group.id) {
     <section class="tools" [attr.aria-labelledby]="group.id">
       <div class="section-intro">

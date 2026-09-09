@@ -243,9 +243,18 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     exploreRoute: PublicRouteUrl.AllTools,
     homeLinkText: 'View all 3D tools',
     id: 'planning-tools',
-    intro: 'Estimate the practical costs of a planned 3D print.',
-    title: 'Planning tools',
+    intro:
+      'Plan functional dimensions and estimate the practical costs of a planned 3D print.',
+    title: 'Planning and functional tools',
     tools: [
+      {
+        icon: '↔',
+        title: '3D Print Tolerance & Clearance Calculator',
+        description:
+          'Turn a chosen fit intent and your calibration measurements into editable hole and pin model dimensions.',
+        route: PublicRouteUrl.ToleranceCalculator,
+        cta: 'Calculate a fit',
+      },
       {
         icon: '£',
         title: '3D Print Cost Calculator',

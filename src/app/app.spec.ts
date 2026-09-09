@@ -24,6 +24,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
       '/3d-print-cost-calculator',
+      '/3d-print-tolerance-calculator',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',
@@ -74,6 +75,7 @@ describe('App', () => {
     ).toEqual([
       ['All 3D tools', '/tools'],
       ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
+      ['Tolerance & Clearance Calculator', '/3d-print-tolerance-calculator'],
     ]);
     expect(Array.from(menu.children).map((child) => child.tagName)).toEqual([
       'DIV',
@@ -106,6 +108,7 @@ describe('App', () => {
     expect(links.map((link) => link.textContent?.trim())).toEqual([
       'All 3D tools',
       '3D Print Cost Calculator',
+      'Tolerance & Clearance Calculator',
       'STL tools',
       'STL Viewer',
       'STL Quality Checker',
@@ -137,6 +140,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/tools',
       '/3d-print-cost-calculator',
+      '/3d-print-tolerance-calculator',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',

@@ -12,6 +12,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ToleranceCalculator,
+    loadComponent: () =>
+      import('./features/tolerance-calculator/tolerance-calculator-page').then(
+        (m) => m.ToleranceCalculatorPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Tools,
     loadComponent: () =>
       import('./features/stl-tools/stl-tools-page').then((m) => m.StlToolsPage),

@@ -59,6 +59,16 @@ describe('breadcrumbsForPath', () => {
     ]);
   });
 
+  it('builds the tolerance calculator trail directly from all 3D tools', () => {
+    expect(breadcrumbsForPath('/3d-print-tolerance-calculator')).toEqual([
+      { label: 'All 3D tools', href: '/tools' },
+      {
+        label: '3D Print Tolerance & Clearance Calculator',
+        href: '/3d-print-tolerance-calculator',
+      },
+    ]);
+  });
+
   it('builds the STL hub trail without linking its current item', () => {
     expect(breadcrumbsForPath('/stl-tools')).toEqual([
       { label: 'All 3D tools', href: '/tools' },

@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: '3d-print-tolerance-and-clearance-guide',
+    group: GuideGroupId.General,
+    order: 4,
+    enabled: true,
+    publishDate: '2026-09-09',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'best-file-format-for-3d-printing',
     group: GuideGroupId.General,
     order: 3,
