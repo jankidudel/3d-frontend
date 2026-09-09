@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: '3d-print-overhangs-and-supports-guide',
+    group: GuideGroupId.General,
+    order: 6,
+    enabled: true,
+    publishDate: '2026-09-09',
+    checkEditorialTargets: false,
+  },
+  {
     slug: '3d-print-tolerance-and-clearance-guide',
     group: GuideGroupId.General,
     order: 4,

@@ -99,6 +99,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.StlOverhangChecker,
+    loadComponent: () =>
+      import('./features/overhang/stl-overhang-page').then(
+        (m) => m.StlOverhangPage,
+      ),
+  },
+  {
     path: PublicRoutePath.VolumeCalculator,
     loadComponent: () =>
       import('./features/stl-volume/stl-volume-page').then(
@@ -166,6 +173,13 @@ const breadcrumbRoutes: Routes = [
     loadComponent: () =>
       import('./features/three-mf/threemf-wall-thickness-page').then(
         (m) => m.ThreeMfWallThicknessPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.ThreeMfOverhangChecker,
+    loadComponent: () =>
+      import('./features/overhang/three-mf-overhang-page').then(
+        (m) => m.ThreeMfOverhangPage,
       ),
   },
   {

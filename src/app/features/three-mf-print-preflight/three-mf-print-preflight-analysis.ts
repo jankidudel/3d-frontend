@@ -28,6 +28,12 @@ export function threeMfPreflightActions(
   triangleCount: number,
 ): readonly PreflightAction[] {
   const actions: PreflightAction[] = [];
+  actions.push({
+    label: 'Review overhang risk',
+    route: '/3mf-overhang-checker',
+    reason:
+      'Screen the resolved build for downward-facing geometry before slicing.',
+  });
   if (
     integrity.openEdges ||
     integrity.nonManifoldEdges ||

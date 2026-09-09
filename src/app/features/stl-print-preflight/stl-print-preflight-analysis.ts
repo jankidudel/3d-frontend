@@ -148,6 +148,12 @@ export function preflightActions(
   triangleCount: number,
 ): readonly PreflightAction[] {
   const actions: PreflightAction[] = [];
+  actions.push({
+    label: 'Review overhang risk',
+    route: '/stl-overhang-checker',
+    reason:
+      'Screen downward-facing geometry and compare sensible 90-degree rotations before slicing.',
+  });
   if (
     integrity.openEdges ||
     integrity.nonManifoldEdges ||

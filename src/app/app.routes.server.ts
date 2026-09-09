@@ -30,6 +30,10 @@ export const serverRoutes: ServerRoute[] = [
     path: PublicRoutePath.StlWallThicknessChecker,
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: PublicRoutePath.StlOverhangChecker,
+    renderMode: RenderMode.Prerender,
+  },
   { path: PublicRoutePath.StlSplitter, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.TriangleCounter, renderMode: RenderMode.Prerender },
   {
@@ -59,6 +63,10 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: PublicRoutePath.ThreeMfWallThicknessChecker,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.ThreeMfOverhangChecker,
     renderMode: RenderMode.Prerender,
   },
   {

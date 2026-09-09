@@ -99,6 +99,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Check wall thickness',
       },
       {
+        icon: '↘',
+        title: 'STL Overhang Checker',
+        description:
+          'Highlight downward-facing geometry that exceeds your chosen overhang review threshold.',
+        route: PublicRouteUrl.StlOverhangChecker,
+        cta: 'Check overhang risk',
+      },
+      {
         title: 'STL Splitter',
         description: 'Split a valid STL into two capped printable parts.',
         route: PublicRouteUrl.StlSplitter,
@@ -219,6 +227,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
           'Estimate sampled wall thickness in resolved 3MF build geometry locally, including transforms and repeated objects.',
         route: PublicRouteUrl.ThreeMfWallThicknessChecker,
         cta: 'Check wall thickness',
+      },
+      {
+        icon: '↘',
+        title: '3MF Overhang Checker',
+        description:
+          'Review resolved 3MF build geometry for downward-facing overhang risk before slicing.',
+        route: PublicRouteUrl.ThreeMfOverhangChecker,
+        cta: 'Check overhang risk',
       },
       {
         icon: '△',

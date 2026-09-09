@@ -1,0 +1,84 @@
+---
+title: '3D Print Overhangs and Supports: Check a Model Before Slicing | InspectMesh'
+description: 'Learn what 3D printing overhangs are, why support needs depend on orientation and settings, and how to check STL and 3MF models for unsupported geometry before slicing.'
+slug: 3d-print-overhangs-and-supports-guide
+eyebrow: 3D print preparation guide
+heading: '3D Print Overhangs and Supports: How to Check a Model Before Slicing'
+faq:
+  - question: What is an overhang in 3D printing?
+    answer: An overhang is geometry that extends outward from the layers below it. If the surface becomes too horizontal for the selected process and settings, it may sag or need support.
+  - question: Does every overhang need support?
+    answer: No. The result depends on printer capability, material, cooling, layer height, speed, bridge length, orientation and the surface quality you need. Use a threshold check as a screen, then confirm in your slicer.
+  - question: Is the 45-degree rule always correct?
+    answer: No. It is a useful FDM starting point, not a universal rule. Some printer and material combinations can handle steeper angles, while others need more conservative settings.
+  - question: Can rotating a model reduce supports?
+    answer: Often, yes. Rotation can reduce downward-facing surfaces, but it can also affect part strength, visible surface quality, build height, printer fit and the ease of support removal.
+---
+
+<p>
+  A model can be watertight, correctly scaled and still print poorly because
+  part of its geometry has little or no support from the layers below.
+</p>
+<p>
+  That geometry is usually described as an <strong>overhang</strong>. The useful
+  question is which surfaces are difficult in this orientation, and whether they
+  are acceptable for your printer, material and slicer settings.
+</p>
+<p>
+  Use the <a href="/stl-overhang-checker">STL Overhang Checker</a> or
+  <a href="/3mf-overhang-checker">3MF Overhang Checker</a> to find geometry that
+  deserves review before you slice.
+</p>
+<h2>What makes an overhang difficult to print?</h2>
+<p>
+  Layer-by-layer printers need each new layer to be supported by the layer below
+  it, support material or a bridge across a gap. As a surface becomes more
+  horizontal, more of each new layer extends beyond the material below.
+</p>
+<p>
+  For FDM, 45 degrees from vertical is a useful starting point for review, not a
+  guarantee. Resin needs a different mindset: orientation and supports affect
+  peel forces, surface finish, drainage and print stability.
+</p>
+<h2>Understand the angle convention</h2>
+<p>InspectMesh uses <strong>surface slope from vertical</strong>:</p>
+<ul>
+  <li><code>0°</code> means a vertical wall;</li>
+  <li><code>45°</code> means a diagonal surface;</li>
+  <li><code>90°</code> means a downward-facing horizontal surface.</li>
+</ul>
+<p>
+  The checker flags surfaces steeper than the threshold you choose. Raising the
+  threshold is less conservative; lowering it highlights more geometry for
+  review.
+</p>
+<h2>Use the result as a screen, not a verdict</h2>
+<p>
+  The checkers identify faces that exceed your chosen geometry threshold and
+  show how much surface area is flagged. A mesh analyser cannot reliably decide
+  whether an overhang is a manageable bridge, which support pattern you will
+  use, or whether a surface defect is acceptable.
+</p>
+<h2>Try a different orientation</h2>
+<p>
+  Rotation can reduce downward-facing surfaces, but lower overhang risk does not
+  automatically mean the best print orientation. It can change strength, visible
+  layer lines, support contact marks, build height, warping and printer fit.
+</p>
+<h2>Check mesh health and wall thickness</h2>
+<p>
+  Inspect important mesh warnings with the
+  <a href="/stl-print-preflight">STL Print Preflight Checker</a> or
+  <a href="/3mf-print-preflight">3MF Print Preflight Checker</a>. Overhangs are
+  not wall-thickness problems, so also check the
+  <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> or
+  <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a>.
+</p>
+<h2>A practical before-slicing workflow</h2>
+<ol>
+  <li>Inspect the model visually.</li>
+  <li>Run print preflight and confirm printer fit.</li>
+  <li>Check overhang risk in the likely orientation.</li>
+  <li>Compare a sensible rotation if flagged area is large.</li>
+  <li>Choose orientation and supports in the slicer.</li>
+</ol>
