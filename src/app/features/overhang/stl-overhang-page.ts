@@ -22,17 +22,21 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
       Find downward-facing STL geometry that exceeds a review threshold, locally
       in your browser.
     </p>
-    <section class="card">
+    <section class="card viewer-tool">
       <h2>Check your STL</h2>
-      <button class="button" type="button" (click)="picker.click()">
-        Choose STL file</button
-      ><input
-        #picker
-        type="file"
-        accept=".stl"
-        aria-label="Choose STL file"
-        (change)="pick($event)"
-      />
+      <div class="drop-zone">
+        <p>Choose an STL file to analyse locally.</p>
+        <button class="button" type="button" (click)="openPicker(picker)">
+          Choose STL file
+        </button>
+        <input
+          #picker
+          type="file"
+          accept=".stl"
+          aria-label="Choose STL file"
+          (change)="pick($event)"
+        />
+      </div>
       <p class="hint">
         STL does not store units. Angle analysis is based on geometry direction,
         not scale.
@@ -182,6 +186,9 @@ export class StlOverhangPage {
         'Check STL downward-facing geometry and compare 90-degree orientations locally before slicing.',
       path: PublicRouteUrl.StlOverhangChecker,
     });
+  }
+  openPicker(input: HTMLInputElement): void {
+    input.click();
   }
   async pick(event: Event): Promise<void> {
     const file = (event.target as HTMLInputElement).files?.item(0);

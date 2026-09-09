@@ -25,17 +25,21 @@ import {
       Resolve the complete 3MF print build, including repeated items and
       transforms, then review downward-facing geometry locally.
     </p>
-    <section class="card">
+    <section class="card viewer-tool">
       <h2>Check your 3MF build</h2>
-      <button class="button" type="button" (click)="picker.click()">
-        Choose 3MF file</button
-      ><input
-        #picker
-        type="file"
-        accept=".3mf"
-        aria-label="Choose 3MF file"
-        (change)="pick($event)"
-      />
+      <div class="drop-zone">
+        <p>Choose a 3MF file to resolve and analyse locally.</p>
+        <button class="button" type="button" (click)="openPicker(picker)">
+          Choose 3MF file
+        </button>
+        <input
+          #picker
+          type="file"
+          accept=".3mf"
+          aria-label="Choose 3MF file"
+          (change)="pick($event)"
+        />
+      </div>
       @if (error()) {
         <p class="error" role="alert">{{ error() }}</p>
       }
@@ -180,6 +184,9 @@ export class ThreeMfOverhangPage {
         'Check resolved 3MF-build downward-facing geometry and compare 90-degree orientations locally before slicing.',
       path: PublicRouteUrl.ThreeMfOverhangChecker,
     });
+  }
+  openPicker(input: HTMLInputElement): void {
+    input.click();
   }
   async pick(event: Event): Promise<void> {
     const file = (event.target as HTMLInputElement).files?.item(0);
