@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 const projectRoot = process.cwd();
 
 describe('frontend deployment workflow', () => {
-  it('preserves historical hashed assets and revalidates mutable files without invalidation', async () => {
+  it('preserves historical hashed assets without CloudFront invalidation', async () => {
     const [workflow, deploymentScript, angularConfiguration, main] =
       await Promise.all([
         readFile(
@@ -33,7 +33,7 @@ describe('frontend deployment workflow', () => {
       'aws cloudfront create-invalidation',
     );
     expect(deploymentScript).not.toContain('add_invalidation_paths');
-    expect(deploymentScript).toContain('zero minimum TTL');
+    expect(deploymentScript).toContain('content-addressed by the build');
     expect(deploymentScript.indexOf('immutable_cache_control')).toBeLessThan(
       deploymentScript.indexOf('mutable_cache_control'),
     );

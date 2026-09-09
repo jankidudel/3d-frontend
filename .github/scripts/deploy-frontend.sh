@@ -43,6 +43,6 @@ while IFS= read -r -d '' file; do
   fi
 done < <(find "$build_directory" -type f -print0 | sort -z)
 
-# Every cache behavior permits a zero minimum TTL. Mutable files therefore
-# revalidate on the next request from their no-cache response headers, while
-# immutable hashed assets remain available to already-open browser tabs.
+# Route documents revalidate through the caching-disabled behavior. Every
+# referenced JS and CSS entry asset is content-addressed by the build, so a
+# new deployment uses new URLs without CloudFront invalidations.
