@@ -43,161 +43,177 @@
         [class.tools-menu-open]="toolsMenuOpen"
         aria-label="Tools"
       >
-        <div class="tools-menu-header">
-          <app-menu-link
-            label="All 3D tools"
-            [route]="routePath.AllTools"
-            (selected)="closeMenus()"
-          />
+        <section
+          class="tools-menu-featured"
+          aria-labelledby="featured-tools-title"
+        >
+          <h2 id="featured-tools-title" class="tools-menu-section-title">
+            3D tools - Featured tools
+          </h2>
           <app-menu-link
             label="3D Print Cost Calculator"
             [route]="routePath.PrintCostCalculator"
             (selected)="closeMenus()"
           />
           <app-menu-link
-            label="Tolerance & Clearance Calculator"
+            label="Tolerance & Clearance"
             [route]="routePath.ToleranceCalculator"
             (selected)="closeMenus()"
           />
-        </div>
-        <div class="tools-menu-group">
+        </section>
+        <section
+          class="tools-menu-formats"
+          aria-labelledby="file-format-tools-title"
+        >
+          <h2 id="file-format-tools-title" class="tools-menu-section-title">
+            Tools by file format
+          </h2>
+          <div class="tools-menu-group">
+            <app-menu-link
+              label="STL tools"
+              [route]="routePath.Tools"
+              [variant]="menuLinkVariant.Heading"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Viewer"
+              [route]="routePath.Viewer"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Quality Checker"
+              [route]="routePath.QualityCheck"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Print Preflight Checker"
+              [route]="routePath.StlPrintPreflight"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Repair Tool"
+              [route]="routePath.StlRepair"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Watertight Checker"
+              [route]="routePath.WatertightChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Manifold Checker"
+              [route]="routePath.ManifoldChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Dimensions Checker"
+              [route]="routePath.DimensionsChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Scale Tool"
+              [route]="routePath.StlScaleTool"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Wall Thickness Checker"
+              [route]="routePath.StlWallThicknessChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Splitter"
+              [route]="routePath.StlSplitter"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Volume Calculator"
+              [route]="routePath.VolumeCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL Triangle Counter"
+              [route]="routePath.TriangleCounter"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL File Size Reducer"
+              [route]="routePath.StlFileSizeReducer"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="STL to 3MF Converter"
+              [route]="routePath.StlToThreeMfConverter"
+              (selected)="closeMenus()"
+            />
+          </div>
+          <div class="tools-menu-group">
+            <app-menu-link
+              label="3MF tools"
+              [route]="routePath.ThreeMfTools"
+              [variant]="menuLinkVariant.Heading"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Viewer"
+              [route]="routePath.ThreeMfViewer"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Quality Checker"
+              [route]="routePath.ThreeMfQualityCheck"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Print Preflight Checker"
+              [route]="routePath.ThreeMfPrintPreflight"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Repair Tool"
+              [route]="routePath.ThreeMfRepair"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Watertight Checker"
+              [route]="routePath.ThreeMfWatertightChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Manifold Checker"
+              [route]="routePath.ThreeMfManifoldChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Dimensions Checker"
+              [route]="routePath.ThreeMfDimensionsChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Wall Thickness Checker"
+              [route]="routePath.ThreeMfWallThicknessChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Volume Calculator"
+              [route]="routePath.ThreeMfVolumeCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF Triangle Counter"
+              [route]="routePath.ThreeMfTriangleCounter"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3MF to STL Converter"
+              [route]="routePath.ThreeMfToStlConverter"
+              (selected)="closeMenus()"
+            />
+          </div>
+        </section>
+        <div class="tools-menu-footer">
           <app-menu-link
-            label="STL tools"
-            [route]="routePath.Tools"
-            [variant]="menuLinkVariant.Heading"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Viewer"
-            [route]="routePath.Viewer"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Quality Checker"
-            [route]="routePath.QualityCheck"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Print Preflight Checker"
-            [route]="routePath.StlPrintPreflight"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Repair Tool"
-            [route]="routePath.StlRepair"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Watertight Checker"
-            [route]="routePath.WatertightChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Manifold Checker"
-            [route]="routePath.ManifoldChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Dimensions Checker"
-            [route]="routePath.DimensionsChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Scale Tool"
-            [route]="routePath.StlScaleTool"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Wall Thickness Checker"
-            [route]="routePath.StlWallThicknessChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Splitter"
-            [route]="routePath.StlSplitter"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Volume Calculator"
-            [route]="routePath.VolumeCalculator"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL Triangle Counter"
-            [route]="routePath.TriangleCounter"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL File Size Reducer"
-            [route]="routePath.StlFileSizeReducer"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="STL to 3MF Converter"
-            [route]="routePath.StlToThreeMfConverter"
-            (selected)="closeMenus()"
-          />
-        </div>
-        <div class="tools-menu-group">
-          <app-menu-link
-            label="3MF tools"
-            [route]="routePath.ThreeMfTools"
-            [variant]="menuLinkVariant.Heading"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Viewer"
-            [route]="routePath.ThreeMfViewer"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Quality Checker"
-            [route]="routePath.ThreeMfQualityCheck"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Print Preflight Checker"
-            [route]="routePath.ThreeMfPrintPreflight"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Repair Tool"
-            [route]="routePath.ThreeMfRepair"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Watertight Checker"
-            [route]="routePath.ThreeMfWatertightChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Manifold Checker"
-            [route]="routePath.ThreeMfManifoldChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Dimensions Checker"
-            [route]="routePath.ThreeMfDimensionsChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Wall Thickness Checker"
-            [route]="routePath.ThreeMfWallThicknessChecker"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Volume Calculator"
-            [route]="routePath.ThreeMfVolumeCalculator"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF Triangle Counter"
-            [route]="routePath.ThreeMfTriangleCounter"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="3MF to STL Converter"
-            [route]="routePath.ThreeMfToStlConverter"
+            label="View all 3D tools"
+            [route]="routePath.AllTools"
             (selected)="closeMenus()"
           />
         </div>

@@ -22,7 +22,6 @@ describe('App', () => {
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
-      '/tools',
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
       '/stl-tools',
@@ -52,43 +51,45 @@ describe('App', () => {
       '/3mf-volume-calculator',
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
+      '/tools',
     ]);
   });
 
-  it('places the calculator beside the tools hub in the menu header', () => {
+  it('groups featured tools and file-format tools into labelled sections', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
 
     const menu = fixture.nativeElement.querySelector(
       '#tools-menu',
     ) as HTMLElement;
-    const header = menu.querySelector('.tools-menu-header') as HTMLElement;
-    const links = Array.from(
-      header.querySelectorAll('a'),
+    const featured = menu.querySelector('.tools-menu-featured') as HTMLElement;
+    const featuredLinks = Array.from(
+      featured.querySelectorAll('a'),
     ) as HTMLAnchorElement[];
 
     expect(
-      links.map((link) => [
+      featuredLinks.map((link) => [
         link.textContent?.trim(),
         link.getAttribute('href'),
       ]),
     ).toEqual([
-      ['All 3D tools', '/tools'],
       ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
-      ['Tolerance & Clearance Calculator', '/3d-print-tolerance-calculator'],
+      ['Tolerance & Clearance', '/3d-print-tolerance-calculator'],
     ]);
-    expect(Array.from(menu.children).map((child) => child.tagName)).toEqual([
-      'DIV',
-      'DIV',
-      'DIV',
-    ]);
-    expect(header.getAttribute('class')).toBe('tools-menu-header');
-    expect(getComputedStyle(header).display).toBe('contents');
+    expect(
+      menu.querySelector('#featured-tools-title')?.textContent?.trim(),
+    ).toBe('3D tools - Featured tools');
+    expect(
+      menu.querySelector('#file-format-tools-title')?.textContent?.trim(),
+    ).toBe('Tools by file format');
     expect(
       Array.from(menu.querySelectorAll('.tools-menu-group')).map((group) =>
         group.querySelector('.tools-group-heading')?.textContent?.trim(),
       ),
     ).toEqual(['STL tools', '3MF tools']);
+    expect(
+      menu.querySelector('.tools-menu-footer a')?.textContent?.trim(),
+    ).toBe('View all 3D tools');
   });
 
   it('makes the same STL tools available from the mobile navigation disclosure', () => {
@@ -106,9 +107,8 @@ describe('App', () => {
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.textContent?.trim())).toEqual([
-      'All 3D tools',
       '3D Print Cost Calculator',
-      'Tolerance & Clearance Calculator',
+      'Tolerance & Clearance',
       'STL tools',
       'STL Viewer',
       'STL Quality Checker',
@@ -136,9 +136,9 @@ describe('App', () => {
       '3MF Volume Calculator',
       '3MF Triangle Counter',
       '3MF to STL Converter',
+      'View all 3D tools',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
-      '/tools',
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
       '/stl-tools',
@@ -168,6 +168,7 @@ describe('App', () => {
       '/3mf-volume-calculator',
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
+      '/tools',
     ]);
   });
 });

@@ -82,8 +82,8 @@ nav a {
   top: 100%;
   right: 0;
   display: none;
-  grid-template-columns: repeat(2, minmax(14rem, 1fr));
-  min-width: 34rem;
+  grid-template-columns: repeat(2, minmax(16rem, 1fr));
+  min-width: 36rem;
   padding: 0.45rem;
   border: 1px solid var(--border);
   border-radius: 0.5rem;
@@ -95,13 +95,38 @@ nav a {
   display: grid;
 }
 
-.tools-menu-header {
-  display: contents;
+.tools-menu-featured,
+.tools-menu-formats,
+.tools-menu-footer {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.35rem;
 }
 
-.tools-menu-header app-menu-link {
-  padding-block: 0.35rem;
+.tools-menu-featured {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.1rem 0.35rem 0.45rem;
   border-bottom: 1px solid var(--border);
+}
+
+.tools-menu-section-title {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0.35rem 0.25rem 0;
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.tools-menu-formats {
+  grid-template-columns: repeat(2, minmax(16rem, 1fr));
+  gap: 0;
+  padding: 0.1rem 0;
+}
+
+.tools-menu-footer {
+  padding: 0.35rem;
+  border-top: 1px solid var(--border);
 }
 
 .top-nav-link {
@@ -251,7 +276,28 @@ nav a.active {
     padding: 0.25rem 0 0.25rem 0.75rem;
   }
 
-  .tools-menu-header {
-    display: contents;
+  .tools-menu-featured,
+  .tools-menu-formats,
+  .tools-menu-footer {
+    display: grid;
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .tools-menu-featured {
+    padding: 0.25rem 0 0.25rem 0.75rem;
+  }
+
+  .tools-menu-formats {
+    padding: 0.25rem 0 0;
+  }
+
+  .tools-menu-section-title {
+    padding: 0.25rem 0.75rem;
+  }
+
+  .tools-menu-footer {
+    padding: 0.25rem 0 0.25rem 0.75rem;
   }
 }
