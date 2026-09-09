@@ -93,6 +93,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
+    slug: 'how-to-make-an-stl-file-printable',
+    group: GuideGroupId.Stl,
+    order: 15,
+    enabled: true,
+    publishDate: '2026-09-09',
+    checkEditorialTargets: true,
+  },
+  {
     slug: 'how-to-fix-non-manifold-stl',
     group: GuideGroupId.Stl,
     order: 20,
