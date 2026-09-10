@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
 import { unzipSync } from 'fflate';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { JobCreationService } from '../../core/api/job-creation.service';
 import { pollJob } from '../../core/api/job-polling';
 import { createAndUploadThreeMfJob } from '../../core/api/three-mf-job-workflow';
@@ -59,16 +60,16 @@ export class ThreeMfViewerPage {
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly seo = inject(SeoService);
   private readonly jobs = inject(JobsService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly jobCreation = inject(JobCreationService);
   private readonly destroyRef = inject(DestroyRef);
   private issuePolling?: Subscription;
 
   constructor() {
     this.seo.apply({
-      title:
-        'Free 3MF Viewer Online - Open and Inspect 3MF Files | InspectMesh',
+      title: 'Free 3MF Viewer with Measurements and Dimensions | InspectMesh',
       description:
-        'Open a 3MF file locally in your browser. Rotate, zoom and inspect its build geometry, declared units, dimensions and triangle count.',
+        'Open a 3MF file locally, inspect its resolved build geometry, measure point-to-point distances and review declared units and dimensions before 3D printing.',
       path: PublicRouteUrl.ThreeMfViewer,
     });
     this.destroyRef.onDestroy(() => this.issuePolling?.unsubscribe());
@@ -76,6 +77,29 @@ export class ThreeMfViewerPage {
 
   openPicker(): void {
     this.picker()?.nativeElement.click();
+  }
+
+  trackMeasurement(
+    event: 'enabled' | 'first_point' | 'completed' | 'cleared',
+  ): void {
+    const events = {
+      enabled: 'viewer_measurement_mode_enabled',
+      first_point: 'viewer_measurement_first_point_selected',
+      completed: 'viewer_measurement_completed',
+      cleared: 'viewer_measurement_cleared',
+    } as const;
+    this.analytics.trackViewerMeasurement(events[event], '3mf');
+  }
+
+  hasUsableUnit(unit: string): boolean {
+    return [
+      'micron',
+      'millimeter',
+      'centimeter',
+      'inch',
+      'foot',
+      'meter',
+    ].includes(unit.toLowerCase());
   }
 
   onPicker(event: Event): void {

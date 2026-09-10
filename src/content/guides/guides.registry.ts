@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-measure-3d-model',
+    group: GuideGroupId.General,
+    order: 7,
+    enabled: true,
+    publishDate: '2026-09-10',
+    checkEditorialTargets: false,
+  },
+  {
     slug: '3d-print-overhangs-and-supports-guide',
     group: GuideGroupId.General,
     order: 6,

@@ -1,0 +1,104 @@
+---
+title: 'How to Measure a 3D Model: STL and 3MF Dimensions Explained | InspectMesh'
+description: 'Learn how to measure an STL or 3MF model before 3D printing. Compare overall dimensions with point-to-point measurements, understand units and check scale before slicing.'
+slug: how-to-measure-3d-model
+eyebrow: 3D model measurement guide
+heading: How to Measure a 3D Model Before 3D Printing
+faq:
+  - question: Can I measure the distance between two points on an STL file?
+    answer: Yes. Open the model in an STL viewer with measurement tools, select two visible points and review the direct distance and X, Y and Z differences.
+  - question: Are STL measurements automatically in millimetres?
+    answer: No. STL files usually store triangle coordinates without reliable unit metadata. You need to know or choose whether the original coordinates should be interpreted as millimetres, inches or another unit.
+  - question: What is the difference between model dimensions and point-to-point measurement?
+    answer: Overall dimensions describe the model’s full width, height and depth. Point-to-point measurement checks the distance between two selected features, such as hole centres, an opening width or the length of a tab.
+  - question: Is measuring an STL viewer accurate enough for functional parts?
+    answer: It is useful for inspecting the mesh and checking intended dimensions. Accuracy still depends on the source mesh resolution, selected points and unit interpretation; use CAD or calibrated physical measurement for tighter requirements.
+---
+
+<p>
+  Before printing a 3D model, you may need to know how big a specific feature
+  actually is. A bounding box gives the model's full width, height and depth,
+  but it cannot tell you the distance between two holes, the width of an opening
+  or the length of a tab.
+</p>
+<p>
+  Use the <a href="/stl-viewer">STL Viewer</a> or
+  <a href="/3mf-viewer">3MF Viewer</a> to open a model locally, inspect it in 3D
+  and measure the distance between two visible points.
+</p>
+<h2>Start with overall dimensions</h2>
+<p>
+  Check the complete size first. Overall dimensions are useful for confirming
+  printer fit and spotting an incorrect scale before you inspect individual
+  features.
+</p>
+<ul>
+  <li><a href="/stl-dimensions-checker">STL Dimensions Checker</a></li>
+  <li><a href="/3mf-dimensions-checker">3MF Dimensions Checker</a></li>
+</ul>
+<p>
+  If a model is 250 mm wide and your usable build area is 220 mm wide, the fit
+  issue is clear without feature measurement.
+</p>
+<h2>Use point-to-point measurement for specific features</h2>
+<p>
+  Point-to-point measurement helps with a slot width, mounting tab, visible
+  hole-centre distance, lip, flange or protruding feature. In the Viewer,
+  activate <strong>Measure distance</strong>, then select two visible points on
+  the mesh.
+</p>
+<p>
+  The result shows the direct distance and the difference along the X, Y and Z
+  axes. Direct distance helps with diagonal features; axis differences show how
+  far the feature changes in each direction.
+</p>
+<h2>Understand the limits of mesh measurement</h2>
+<p>
+  An STL or 3MF viewer measures the mesh you opened, not the original parametric
+  CAD design. Curves are represented by triangles, so a low-resolution source
+  can approximate the intended design. Your selected points also affect the
+  result.
+</p>
+<p>
+  Use viewer measurement as a practical inspection tool. For a tight mechanical
+  fit, return to the CAD model where possible, or print and measure a
+  calibration test using the intended printer, material and settings. For
+  tolerance planning, use the
+  <a href="/3d-print-tolerance-calculator"
+    >3D Print Tolerance &amp; Clearance Calculator</a
+  >.
+</p>
+<h2>STL units need extra care</h2>
+<p>
+  STL usually stores triangle coordinates without reliable information about
+  whether values mean millimetres, inches, centimetres or another unit. A
+  measurement can be mathematically correct but physically interpreted
+  incorrectly. When using the <a href="/stl-viewer">STL Viewer</a>, choose the
+  intended unit before treating a result as a real-world dimension, then confirm
+  model scale with the
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a>.
+</p>
+<h2>3MF can provide more unit context</h2>
+<p>
+  3MF files can declare a package unit, which makes scale interpretation more
+  reliable when the package is valid and supported. The
+  <a href="/3mf-viewer">3MF Viewer</a> shows its resolved model and available
+  unit information. Confirm the resulting physical dimensions after conversion
+  or when receiving files from an unfamiliar workflow.
+</p>
+<h2>Measure, then verify</h2>
+<p>
+  Measuring one feature does not replace a complete pre-print check. Inspect the
+  model, check overall dimensions and printer fit, measure important visible
+  features, check mesh integrity and wall thickness where relevant, then run
+  <a href="/stl-print-preflight">STL Print Preflight</a> or
+  <a href="/3mf-print-preflight">3MF Print Preflight</a> on the final file
+  before slicing.
+</p>
+<h2>A measured model is easier to trust</h2>
+<p>
+  Point-to-point measurement does not turn a mesh viewer into a CAD package.
+  Combined with overall dimensions, unit checking and Preflight, it provides a
+  practical way to understand the file you received before material and print
+  time are committed.
+</p>

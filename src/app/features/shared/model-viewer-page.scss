@@ -16,6 +16,7 @@
   grid-area: details;
 }
 .viewport {
+  position: relative;
   height: min(60vw, 520px);
   min-height: 320px;
   min-inline-size: 0;
@@ -26,6 +27,53 @@
   background: #eaf3fc;
   margin-bottom: 0.75rem;
   cursor: grab;
+}
+.measurement-label {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -125%);
+  padding: 0.3rem 0.45rem;
+  border-radius: 0.3rem;
+  background: #16324a;
+  color: #fff;
+  font-weight: 700;
+  pointer-events: none;
+}
+.measurement-label.is-hidden {
+  display: none;
+}
+.model-actions-panel {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #b8c5d1;
+  border-radius: 0.5rem;
+  background: #f7fafc;
+}
+.model-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.model-actions-panel .hint,
+.measurement-limitation {
+  margin: 0.625rem 0 0;
+}
+.model-actions-panel dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 1rem;
+  margin: 0.75rem 0 0;
+}
+.model-actions-panel dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.model-actions-panel dt {
+  font-weight: 700;
+}
+.model-actions-panel dd {
+  margin: 0;
 }
 .viewer-container {
   position: relative;
@@ -60,14 +108,14 @@
   max-height: none;
   margin: 0;
 }
-.viewer-container:fullscreen .viewer-action-row,
-.viewer-container.is-expanded .viewer-action-row {
+.viewer-container:fullscreen .viewer-camera-row,
+.viewer-container.is-expanded .viewer-camera-row {
   flex: 0 0 auto;
   padding-top: 0.75rem;
   background: transparent;
 }
-.viewer-container:fullscreen .viewer-file-actions,
-.viewer-container.is-expanded .viewer-file-actions {
+.viewer-container:fullscreen .model-actions-panel,
+.viewer-container.is-expanded .model-actions-panel {
   display: none;
 }
 .viewport canvas {
@@ -80,6 +128,12 @@
 .viewport:active {
   cursor: grabbing;
 }
+.viewport.is-measuring {
+  cursor: crosshair;
+}
+.viewport.is-measuring:active {
+  cursor: crosshair;
+}
 .viewer-controls {
   display: flex;
   align-items: center;
@@ -90,20 +144,17 @@
   background: rgb(255 255 255 / 92%);
   box-shadow: 0 0.15rem 0.6rem rgb(35 56 75 / 20%);
 }
-.viewer-action-row,
-.viewer-file-actions {
+.viewer-camera-row {
   display: flex;
   align-items: center;
   min-inline-size: 0;
   gap: 0.5rem;
 }
-.viewer-action-row {
-  justify-content: space-between;
+.viewer-camera-row {
+  justify-content: flex-end;
   min-inline-size: 0;
   background: var(--surface);
-}
-.viewer-controls {
-  margin-left: auto;
+  margin-bottom: 0.75rem;
 }
 .viewer-controls button,
 .color-control input {
@@ -208,7 +259,7 @@
     height: 65vw;
     min-height: 280px;
   }
-  .viewer-action-row {
+  .viewer-camera-row {
     flex-wrap: wrap;
   }
   .viewer-controls {

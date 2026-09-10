@@ -53,6 +53,7 @@ export class StlViewerPage {
   readonly issueAnalysisError = signal('');
   readonly issueReport = signal<MeshQualityReport | null>(null);
   readonly issueLines = signal<readonly ViewerIssueLine[]>([]);
+  readonly selectedUnit = signal('');
   private readonly seo = inject(SeoService);
   private readonly analytics = inject(AnalyticsService);
   private readonly jobs = inject(JobsService);
@@ -61,10 +62,9 @@ export class StlViewerPage {
 
   constructor() {
     this.seo.apply({
-      title:
-        'Free STL Viewer Online - Open and Inspect STL Files | InspectMesh',
+      title: 'Free STL Viewer with Measurements and Dimensions | InspectMesh',
       description:
-        'Open and inspect STL files online in your browser. Rotate, zoom and pan your 3D model, then view its dimensions, triangle count and file size.',
+        'Open an STL file locally, inspect it in 3D, measure point-to-point distances and review dimensions and triangle count before 3D printing.',
       path: PublicRouteUrl.Viewer,
     });
   }
@@ -94,6 +94,22 @@ export class StlViewerPage {
 
   onResetView(): void {
     this.analytics.trackStlViewerReset();
+  }
+
+  onUnitChange(event: Event): void {
+    this.selectedUnit.set((event.target as HTMLSelectElement).value);
+  }
+
+  trackMeasurement(
+    event: 'enabled' | 'first_point' | 'completed' | 'cleared',
+  ): void {
+    const events = {
+      enabled: 'viewer_measurement_mode_enabled',
+      first_point: 'viewer_measurement_first_point_selected',
+      completed: 'viewer_measurement_completed',
+      cleared: 'viewer_measurement_cleared',
+    } as const;
+    this.analytics.trackViewerMeasurement(events[event], 'stl');
   }
 
   analyzeIssues(): void {

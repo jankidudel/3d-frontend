@@ -6,7 +6,8 @@
     mesh, size, fit and sampled wall-thickness checks before slicing.
   </p>
   <p class="lead">
-    Open an STL, rotate it freely, and review its dimensions and triangle count.
+    Open an STL locally, rotate it freely, inspect its dimensions and measure
+    the distance between visible model features.
   </p>
   <section class="card viewer-tool" aria-labelledby="viewer-upload-title">
     <h2 id="viewer-upload-title">Open an STL file</h2>
@@ -49,11 +50,17 @@
         [object]="current.object"
         [extent]="current.extent"
         [issueLines]="issueLines()"
+        [measurementUnit]="selectedUnit() || 'model units'"
+        [measurementAvailable]="true"
         ariaLabel="3D STL model viewer"
         (chooseAnother)="openPicker()"
         (resetView)="onResetView()"
         (rendered)="onModelRendered()"
         (renderFailed)="onRenderFailed()"
+        (measurementModeEnabled)="trackMeasurement('enabled')"
+        (measurementFirstPointSelected)="trackMeasurement('first_point')"
+        (measurementCompleted)="trackMeasurement('completed')"
+        (measurementCleared)="trackMeasurement('cleared')"
       />
       <aside class="card model-info">
         <h2 id="model-title">Model details</h2>
@@ -84,9 +91,20 @@
           </div>
         </dl>
         <p>
-          STL files do not contain unit information. Most slicers interpret
-          model units as millimetres.
+          STL coordinates do not reliably contain a declared unit. Choose the
+          intended interpretation before measuring in a real-world unit.
         </p>
+        <label for="stl-measurement-unit">Measurement unit</label>
+        <select
+          id="stl-measurement-unit"
+          [value]="selectedUnit()"
+          (change)="onUnitChange($event)"
+        >
+          <option value="">Choose intended unit</option>
+          <option value="mm">Millimetres (mm)</option>
+          <option value="in">Inches (in)</option>
+          <option value="cm">Centimetres (cm)</option>
+        </select>
         <p>
           Use the
           <a [routerLink]="routeUrl.DimensionsChecker">Dimensions Checker</a> to
@@ -113,12 +131,23 @@
         or two fingers.
       </li>
       <li>Review the model bounds and complexity.</li>
+      <li>
+        Choose the intended STL unit, activate Measure distance, then select two
+        visible mesh points.
+      </li>
     </ol>
     <h2>What the Viewer shows</h2>
     <p>
       The viewer calculates the model's bounding dimensions and triangle count
       directly from its geometry. STL coordinates have no native unit, so
       confirm scale in your slicer.
+    </p>
+    <p>
+      Bounding dimensions describe the full model. Point-to-point measurement
+      checks two selected features, such as an opening width or mounting-tab
+      length. Read
+      <a [routerLink]="'/how-to-measure-3d-model'">how to measure a 3D model</a>
+      for a practical workflow.
     </p>
     <h2>Locate mesh issues</h2>
     <p>
@@ -140,6 +169,12 @@
     <p>Yes, both common STL encodings are supported.</p>
     <h3>Why do STL dimensions not specify mm or inches?</h3>
     <p>STL stores coordinates but not a unit system.</p>
+    <h3>How accurate is the measurement tool?</h3>
+    <p>
+      It measures points on the displayed mesh. Results depend on mesh
+      resolution, selected points and your chosen unit; use CAD or calibrated
+      physical measurement for tighter tolerances.
+    </p>
     <h3>Does viewing an STL check whether it is printable?</h3>
     <p>No. It is a visual inspection tool, not a mesh validation service.</p>
     <h3>What should I use to check for holes or non-manifold geometry?</h3>

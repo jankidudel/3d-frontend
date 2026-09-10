@@ -24,6 +24,8 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 ## Writing Style
 
 - Use a normal hyphen (`-`). Do not use en-dash or em-dash characters in user-facing copy, code comments, documentation, or responses.
+- At the end of every completed task, report which user-facing pages were added and which existing user-facing pages were updated. State explicitly when neither applies.
+- Use `https://www.inspectmesh.com` as the base URL when reporting user-facing page URLs.
 
 ## Formatting
 

@@ -31,6 +31,11 @@ export const AnalyticsEvent = {
   StlViewerLoadFailed: 'stl_viewer_load_failed',
   StlViewerResetView: 'stl_viewer_reset_view',
   StlViewerOpenedQualityChecker: 'stl_viewer_opened_quality_checker',
+  ViewerMeasurementModeEnabled: 'viewer_measurement_mode_enabled',
+  ViewerMeasurementFirstPointSelected:
+    'viewer_measurement_first_point_selected',
+  ViewerMeasurementCompleted: 'viewer_measurement_completed',
+  ViewerMeasurementCleared: 'viewer_measurement_cleared',
   ThreeMfQualityCheckStarted: '3mf_quality_check_started',
   ThreeMfQualityReportGenerated: '3mf_quality_report_generated',
   ThreeMfQualityCheckFailed: '3mf_quality_check_failed',
@@ -219,6 +224,17 @@ export class AnalyticsService {
 
   trackStlViewerQualityOpened(): void {
     this.sendEvent(AnalyticsEvent.StlViewerOpenedQualityChecker, {});
+  }
+
+  trackViewerMeasurement(
+    event:
+      | typeof AnalyticsEvent.ViewerMeasurementModeEnabled
+      | typeof AnalyticsEvent.ViewerMeasurementFirstPointSelected
+      | typeof AnalyticsEvent.ViewerMeasurementCompleted
+      | typeof AnalyticsEvent.ViewerMeasurementCleared,
+    viewer: 'stl' | '3mf',
+  ): void {
+    this.sendEvent(event, { viewer });
   }
 
   trackStlScaleCompleted(): void {

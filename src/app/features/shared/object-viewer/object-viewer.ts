@@ -1,4 +1,4 @@
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, DecimalPipe, isPlatformBrowser } from '@angular/common';
 import {
   afterNextRender,
   Component,
@@ -21,6 +21,7 @@ interface ViewerRuntime {
   readonly controls: import('three/examples/jsm/controls/OrbitControls.js').OrbitControls;
   readonly object: import('three').Object3D;
   readonly issueLines: import('three').Group;
+  readonly measurement: import('three').Group;
   frame: number;
 }
 
@@ -29,8 +30,22 @@ export interface ViewerIssueLine {
   readonly positions: readonly number[];
 }
 
+interface MeasurementResult {
+  readonly distance: number;
+  readonly x: number;
+  readonly y: number;
+  readonly z: number;
+}
+
+interface MeasurementLabelPosition {
+  readonly x: number;
+  readonly y: number;
+  readonly visible: boolean;
+}
+
 @Component({
   selector: 'app-object-viewer',
+  imports: [DecimalPipe],
   templateUrl: './object-viewer.html',
   styleUrl: './object-viewer.scss',
 })
@@ -41,15 +56,31 @@ export class ObjectViewerComponent {
   readonly issueLines = input<readonly ViewerIssueLine[]>([]);
   readonly scrollOnRender = input(true);
   readonly preserveVertexColors = input(false);
+  readonly measurementUnit = input('model units');
+  readonly measurementAvailable = input(true);
   readonly chooseAnother = output<void>();
   readonly resetView = output<void>();
   readonly rendered = output<void>();
   readonly renderFailed = output<void>();
+  readonly measurementModeEnabled = output<void>();
+  readonly measurementFirstPointSelected = output<void>();
+  readonly measurementCompleted = output<void>();
+  readonly measurementCleared = output<void>();
   readonly viewport = viewChild<ElementRef<HTMLDivElement>>('viewport');
   readonly container = viewChild<ElementRef<HTMLDivElement>>('container');
   readonly modelColor = signal('#7B8794');
   readonly isExpanded = signal(false);
   readonly isFallbackExpanded = signal(false);
+  readonly measuring = signal(false);
+  readonly measurement = signal<MeasurementResult | null>(null);
+  readonly measurementLabelPosition = signal<MeasurementLabelPosition>({
+    x: 0,
+    y: 0,
+    visible: false,
+  });
+  readonly measurementHint = signal(
+    'Activate measurement mode to select two points.',
+  );
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
@@ -60,6 +91,10 @@ export class ObjectViewerComponent {
   private previousBodyStyle = '';
   private rotationFrame = 0;
   private rotationAnimating = false;
+  private measurementPoints: import('three').Vector3[] = [];
+  private measurementPreview: import('three').Vector3 | null = null;
+  private pointerStart: { readonly x: number; readonly y: number } | null =
+    null;
 
   constructor() {
     this.destroyRef.onDestroy(() => this.dispose());
@@ -95,6 +130,60 @@ export class ObjectViewerComponent {
     }
     this.frame(runtime);
     this.resetView.emit();
+  }
+
+  toggleMeasurement(): void {
+    if (!this.measurementAvailable()) {
+      return;
+    }
+    const active = !this.measuring();
+    this.measuring.set(active);
+    this.measurementHint.set(
+      active
+        ? 'Measurement mode: tap or click a visible point on the model.'
+        : 'Measurement mode is off.',
+    );
+    if (active) {
+      this.measurementModeEnabled.emit();
+    }
+  }
+
+  clearMeasurement(): void {
+    this.measurementPoints = [];
+    this.measurementPreview = null;
+    this.measurement.set(null);
+    this.measurementHint.set(
+      this.measuring()
+        ? 'Measurement mode: tap or click a visible point on the model.'
+        : 'Activate measurement mode to select two points.',
+    );
+    this.updateMeasurementOverlay();
+    this.measurementCleared.emit();
+  }
+
+  onViewportPointerDown(event: PointerEvent): void {
+    this.pointerStart = { x: event.clientX, y: event.clientY };
+  }
+
+  onViewportPointerUp(event: PointerEvent): void {
+    const start = this.pointerStart;
+    this.pointerStart = null;
+    if (
+      !this.measuring() ||
+      !start ||
+      Math.hypot(event.clientX - start.x, event.clientY - start.y) > 8
+    ) {
+      return;
+    }
+    this.selectMeasurementPoint(event);
+  }
+
+  onViewportPointerMove(event: PointerEvent): void {
+    if (!this.measuring() || this.measurementPoints.length !== 1) {
+      return;
+    }
+    this.measurementPreview = this.intersectMeasurementPoint(event);
+    this.updateMeasurementOverlay();
   }
 
   zoom(scale: number): void {
@@ -210,6 +299,8 @@ export class ObjectViewerComponent {
       scene.add(light, object);
       const issueLines = new THREE.Group();
       scene.add(issueLines);
+      const measurement = new THREE.Group();
+      scene.add(measurement);
       host.replaceChildren(renderer.domElement);
       const controls = new controlsModule.OrbitControls(
         camera,
@@ -230,10 +321,12 @@ export class ObjectViewerComponent {
         controls,
         object,
         issueLines,
+        measurement,
         frame: 0,
       };
       this.runtime = runtime;
       this.updateIssueLines(this.issueLines());
+      this.updateMeasurementOverlay();
       this.frame(runtime);
       this.observer = new ResizeObserver(() => this.resize(runtime));
       this.observer.observe(host);
@@ -243,6 +336,7 @@ export class ObjectViewerComponent {
           return;
         }
         controls.update();
+        this.updateMeasurementLabel(runtime);
         renderer.render(scene, camera);
         runtime.frame = requestAnimationFrame(animate);
       };
@@ -313,6 +407,120 @@ export class ObjectViewerComponent {
       segments.renderOrder = 1;
       runtime.issueLines.add(segments);
     }
+  }
+
+  private selectMeasurementPoint(event: PointerEvent): void {
+    const point = this.intersectMeasurementPoint(event);
+    if (!point) {
+      this.measurementHint.set(
+        'No visible mesh point was selected. Try again on the model.',
+      );
+      return;
+    }
+    if (this.measurementPoints.length === 2) {
+      this.measurementPoints = [];
+    }
+    this.measurementPoints.push(point);
+    this.measurementPreview = null;
+    if (this.measurementPoints.length === 1) {
+      this.measurementHint.set('Point A selected. Select point B.');
+      this.measurementFirstPointSelected.emit();
+    } else {
+      const [a, b] = this.measurementPoints;
+      this.measurement.set({
+        distance: a.distanceTo(b),
+        x: Math.abs(b.x - a.x),
+        y: Math.abs(b.y - a.y),
+        z: Math.abs(b.z - a.z),
+      });
+      this.measurementHint.set(
+        'Measurement complete. Select another point to start a new measurement.',
+      );
+      this.measurementCompleted.emit();
+    }
+    this.updateMeasurementOverlay();
+  }
+
+  private intersectMeasurementPoint(
+    event: PointerEvent,
+  ): import('three').Vector3 | null {
+    const runtime = this.runtime;
+    const host = this.viewport()?.nativeElement;
+    if (!runtime || !host) {
+      return null;
+    }
+    const bounds = host.getBoundingClientRect();
+    if (bounds.width === 0 || bounds.height === 0) {
+      return null;
+    }
+    const pointer = new runtime.THREE.Vector2(
+      ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+      -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
+    );
+    const raycaster = new runtime.THREE.Raycaster();
+    raycaster.setFromCamera(pointer, runtime.camera);
+    return (
+      raycaster.intersectObject(runtime.object, true)[0]?.point.clone() ?? null
+    );
+  }
+
+  private updateMeasurementOverlay(): void {
+    const runtime = this.runtime;
+    if (!runtime) {
+      return;
+    }
+    this.disposeObject(runtime.measurement);
+    runtime.measurement.clear();
+    const markerRadius = Math.max(this.extent() * 0.012, 0.1);
+    const markerMaterial = new runtime.THREE.MeshBasicMaterial({
+      color: '#c0392b',
+      depthTest: false,
+    });
+    for (const point of this.measurementPoints) {
+      const marker = new runtime.THREE.Mesh(
+        new runtime.THREE.SphereGeometry(markerRadius, 16, 12),
+        markerMaterial.clone(),
+      );
+      marker.position.copy(point);
+      marker.renderOrder = 2;
+      runtime.measurement.add(marker);
+    }
+    const endPoint = this.measurementPoints[1] ?? this.measurementPreview;
+    if (this.measurementPoints.length > 0 && endPoint) {
+      const geometry = new runtime.THREE.BufferGeometry().setFromPoints([
+        this.measurementPoints[0],
+        endPoint,
+      ]);
+      const line = new runtime.THREE.Line(
+        geometry,
+        new runtime.THREE.LineBasicMaterial({
+          color: '#c0392b',
+          depthTest: false,
+          transparent: true,
+          opacity: this.measurementPreview ? 0.75 : 1,
+        }),
+      );
+      line.renderOrder = 2;
+      runtime.measurement.add(line);
+    }
+  }
+
+  private updateMeasurementLabel(runtime: ViewerRuntime): void {
+    const points = this.measurementPoints;
+    const host = this.viewport()?.nativeElement;
+    if (points.length !== 2 || !host) {
+      return;
+    }
+    const midpoint = points[0]
+      .clone()
+      .add(points[1])
+      .multiplyScalar(0.5)
+      .project(runtime.camera);
+    this.measurementLabelPosition.set({
+      x: ((midpoint.x + 1) / 2) * host.clientWidth,
+      y: ((1 - midpoint.y) / 2) * host.clientHeight,
+      visible: midpoint.z >= -1 && midpoint.z <= 1,
+    });
   }
 
   private resize(runtime: ViewerRuntime): void {

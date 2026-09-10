@@ -6,22 +6,24 @@
   <div
     #viewport
     class="viewport"
+    [class.is-measuring]="measuring()"
     role="img"
     [attr.aria-label]="ariaLabel()"
+    (pointerdown)="onViewportPointerDown($event)"
+    (pointerup)="onViewportPointerUp($event)"
+    (pointermove)="onViewportPointerMove($event)"
   ></div>
-  <div class="viewer-action-row">
-    <div class="viewer-file-actions">
-      <button class="button button-secondary" type="button" (click)="reset()">
-        Reset view
-      </button>
-      <button
-        class="button button-secondary"
-        type="button"
-        (click)="chooseAnother.emit()"
-      >
-        Choose another file
-      </button>
-    </div>
+  @if (measurement(); as result) {
+    <output
+      class="measurement-label"
+      [class.is-hidden]="!measurementLabelPosition().visible"
+      [style.left.px]="measurementLabelPosition().x"
+      [style.top.px]="measurementLabelPosition().y"
+    >
+      {{ result.distance | number: '1.0-3' }} {{ measurementUnit() }}
+    </output>
+  }
+  <div class="viewer-camera-row">
     <div class="viewer-controls" aria-label="Viewer controls">
       @if (!preserveVertexColors()) {
         <label class="color-control">
@@ -79,4 +81,62 @@
       </button>
     </div>
   </div>
+  <section class="model-actions-panel" aria-live="polite">
+    <div class="model-actions">
+      <button class="button button-secondary" type="button" (click)="reset()">
+        Reset view
+      </button>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="chooseAnother.emit()"
+      >
+        Choose another file
+      </button>
+      <button
+        class="button button-secondary"
+        type="button"
+        [disabled]="!measurementAvailable()"
+        [attr.aria-pressed]="measuring()"
+        (click)="toggleMeasurement()"
+      >
+        {{ measuring() ? 'Stop measuring' : 'Measure distance' }}
+      </button>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="clearMeasurement()"
+      >
+        Clear measurement
+      </button>
+    </div>
+    <p class="hint">{{ measurementHint() }}</p>
+    @if (measurement(); as result) {
+      <dl>
+        <div>
+          <dt>Direct distance</dt>
+          <dd>
+            {{ result.distance | number: '1.0-3' }} {{ measurementUnit() }}
+          </dd>
+        </div>
+        <div>
+          <dt>Delta X</dt>
+          <dd>{{ result.x | number: '1.0-3' }} {{ measurementUnit() }}</dd>
+        </div>
+        <div>
+          <dt>Delta Y</dt>
+          <dd>{{ result.y | number: '1.0-3' }} {{ measurementUnit() }}</dd>
+        </div>
+        <div>
+          <dt>Delta Z</dt>
+          <dd>{{ result.z | number: '1.0-3' }} {{ measurementUnit() }}</dd>
+        </div>
+      </dl>
+      <p class="measurement-limitation">
+        This measures points on the displayed mesh. Accuracy depends on the
+        original model resolution, selected points and chosen unit. Use CAD or
+        calibrated physical measurement where tighter tolerances are required.
+      </p>
+    }
+  </section>
 </div>

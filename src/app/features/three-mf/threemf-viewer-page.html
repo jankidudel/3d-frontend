@@ -2,8 +2,8 @@
   <p class="eyebrow">Private browser-based 3MF inspection</p>
   <h1>Free 3MF Viewer Online</h1>
   <p class="lead">
-    Open a 3MF file, inspect its loaded build geometry, and review its declared
-    units and dimensions.
+    Open a 3MF file locally, inspect its loaded build geometry, measure visible
+    features and review declared units and dimensions.
   </p>
   <section class="card viewer-tool" aria-labelledby="viewer-upload-title">
     <h2 id="viewer-upload-title">Open a 3MF file</h2>
@@ -46,9 +46,15 @@
         [object]="current.object"
         [extent]="current.extent"
         [issueLines]="issueLines()"
+        [measurementUnit]="current.unit"
+        [measurementAvailable]="hasUsableUnit(current.unit)"
         ariaLabel="3D 3MF build geometry viewer"
         (chooseAnother)="openPicker()"
         (renderFailed)="onRenderFailed()"
+        (measurementModeEnabled)="trackMeasurement('enabled')"
+        (measurementFirstPointSelected)="trackMeasurement('first_point')"
+        (measurementCompleted)="trackMeasurement('completed')"
+        (measurementCleared)="trackMeasurement('cleared')"
       />
       <app-mesh-issue-highlights
         [report]="issueReport()"
@@ -101,6 +107,13 @@
           This is a visual inspection tool, not a printability or watertightness
           check.
         </p>
+        @if (!hasUsableUnit(current.unit)) {
+          <p>
+            The package unit is absent, invalid or unsupported, so
+            point-to-point measurements cannot be shown as a reliable physical
+            unit.
+          </p>
+        }
         <a
           class="button button-secondary"
           [routerLink]="routeUrl.ThreeMfQualityCheck"
@@ -128,12 +141,22 @@
         or two fingers.
       </li>
       <li>Review the displayed build geometry summary and declared unit.</li>
+      <li>
+        Activate Measure distance and select two visible mesh points to inspect
+        a specific feature.
+      </li>
     </ol>
     <h2>What the 3MF Viewer shows</h2>
     <p>
       The viewer displays the resolved build geometry, including repeated build
       items and their transforms. It calculates the displayed bounds and
       triangle count locally.
+    </p>
+    <p>
+      Overall dimensions describe the resolved build bounds. Point-to-point
+      measurement checks a specific feature. See
+      <a [routerLink]="'/how-to-measure-3d-model'">how to measure a 3D model</a>
+      for guidance and limitations.
     </p>
     <h2>Why 3MF differs from STL</h2>
     <p>
@@ -156,6 +179,12 @@
       No.
       <a [routerLink]="routeUrl.ThreeMfQualityCheck">Check 3MF quality</a> for a
       mesh-quality review.
+    </p>
+    <h3>How accurate is point-to-point measurement?</h3>
+    <p>
+      It measures the displayed mesh triangles. Accuracy depends on the source
+      mesh resolution and selected points; use CAD or calibrated physical
+      measurement for tighter tolerances.
     </p>
     <h3>Does this work for all 3MF files?</h3>
     <p>
