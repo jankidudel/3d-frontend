@@ -68,6 +68,8 @@ describe('HomePage', () => {
       '/3d-print-tolerance-calculator',
       '/3d-print-cost-calculator',
       '/tools',
+      '/gcode-preflight-checker',
+      '/tools',
       '/tools',
     ]);
   });

@@ -19,6 +19,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.GcodePreflightChecker,
+    loadComponent: () =>
+      import('./features/gcode-preflight/gcode-preflight-page').then(
+        (m) => m.GcodePreflightPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Tools,
     loadComponent: () =>
       import('./features/stl-tools/stl-tools-page').then((m) => m.StlToolsPage),

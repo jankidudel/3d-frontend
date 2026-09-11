@@ -169,6 +169,7 @@ export class SiteHeaderComponent {
   private isToolsRoute(url: string): boolean {
     return (
       url === `/${PublicRoutePath.AllTools}` ||
+      url === `/${PublicRoutePath.GcodePreflightChecker}` ||
       url.startsWith('/stl-') ||
       url.startsWith('/3mf-')
     );

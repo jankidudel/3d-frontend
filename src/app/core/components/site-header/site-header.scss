@@ -97,6 +97,7 @@ nav a {
 
 .tools-menu-featured,
 .tools-menu-formats,
+.tools-menu-after-slicing,
 .tools-menu-footer {
   display: grid;
   grid-column: 1 / -1;
@@ -125,6 +126,11 @@ nav a {
 }
 
 .tools-menu-footer {
+  padding: 0.35rem;
+}
+
+.tools-menu-after-slicing {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   padding: 0.35rem;
   border-top: 1px solid var(--border);
 }
@@ -278,6 +284,7 @@ nav a.active {
 
   .tools-menu-featured,
   .tools-menu-formats,
+  .tools-menu-after-slicing,
   .tools-menu-footer {
     display: grid;
     grid-column: auto;
@@ -291,6 +298,10 @@ nav a.active {
 
   .tools-menu-formats {
     padding: 0.25rem 0 0;
+  }
+
+  .tools-menu-after-slicing {
+    padding: 0.25rem 0 0.25rem 0.75rem;
   }
 
   .tools-menu-section-title {

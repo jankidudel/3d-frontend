@@ -51,6 +51,7 @@ describe('App', () => {
       '/3mf-volume-calculator',
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
+      '/gcode-preflight-checker',
       '/tools',
     ]);
   });
@@ -82,6 +83,12 @@ describe('App', () => {
     expect(
       menu.querySelector('#file-format-tools-title')?.textContent?.trim(),
     ).toBe('Tools by file format');
+    expect(
+      menu.querySelector('#after-slicing-tools-title')?.textContent?.trim(),
+    ).toBe('After slicing');
+    expect(
+      menu.querySelector('.tools-menu-after-slicing a')?.getAttribute('href'),
+    ).toBe('/gcode-preflight-checker');
     expect(
       Array.from(menu.querySelectorAll('.tools-menu-group')).map((group) =>
         group.querySelector('.tools-group-heading')?.textContent?.trim(),
@@ -136,6 +143,7 @@ describe('App', () => {
       '3MF Volume Calculator',
       '3MF Triangle Counter',
       '3MF to STL Converter',
+      'G-code Preflight Checker',
       'View all 3D tools',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
@@ -168,7 +176,25 @@ describe('App', () => {
       '/3mf-volume-calculator',
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
+      '/gcode-preflight-checker',
       '/tools',
     ]);
+  });
+
+  it('closes the keyboard-accessible tools disclosure with Escape', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '.tools-trigger',
+    ) as HTMLButtonElement;
+
+    trigger.focus();
+    trigger.click();
+    fixture.detectChanges();
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
   });
 });

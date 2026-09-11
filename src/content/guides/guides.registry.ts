@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-check-gcode-before-printing',
+    group: GuideGroupId.General,
+    order: 8,
+    enabled: true,
+    publishDate: '2026-09-10',
+    checkEditorialTargets: true,
+  },
+  {
     slug: 'how-to-measure-3d-model',
     group: GuideGroupId.General,
     order: 7,

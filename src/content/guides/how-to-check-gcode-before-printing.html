@@ -1,0 +1,190 @@
+---
+title: 'How to Check G-code Before 3D Printing | InspectMesh'
+description: 'Learn how to inspect G-code before 3D printing: check layers, toolpath size, estimated time, temperatures, slicer metadata and limitations before sending a file to your printer.'
+slug: how-to-check-gcode-before-printing
+eyebrow: G-code preflight guide
+heading: How to Check G-code Before You Start a 3D Print
+faq:
+  - question: Can I check G-code before sending it to my printer?
+    answer: Yes. A G-code preflight check can show readable slicer metadata, toolpath extents, layers, temperature targets and parsing limitations. It does not replace checking the file in your slicer or confirming printer compatibility.
+  - question: Does G-code contain the actual print settings?
+    answer: It often contains commands and comments that reveal settings such as temperature targets, layer information and estimated print time. The exact information depends on the slicer and printer workflow.
+  - question: Can a G-code checker guarantee that a print will succeed?
+    answer: No. Printer firmware, machine configuration, material, calibration, start G-code, bed preparation and slicer profile all affect the real print.
+  - question: Why does a G-code preview sometimes look incomplete?
+    answer: Different slicers and firmware use different commands. Unsupported arcs, macros, custom commands or unusual coordinate modes can limit what a browser-based parser can reliably show.
+---
+
+<p>
+  Once you slice a model, the STL or 3MF file is no longer the file your printer
+  follows.
+</p>
+<p>
+  Your printer receives <strong>G-code</strong>: a text-based set of
+  instructions for movement, extrusion, temperatures and other print actions. It
+  is the final stage between a prepared model and a physical print.
+</p>
+<p>That makes G-code worth checking before you press Print.</p>
+<p>
+  A quick inspection can help you spot an unexpectedly large toolpath, missing
+  slicer metadata, a surprising temperature target or a file whose commands
+  cannot be interpreted reliably by a general-purpose viewer.
+</p>
+<p>
+  Use the <a href="/gcode-preflight-checker">G-code Preflight Checker</a> to
+  inspect a sliced file locally in your browser.
+</p>
+<h2>What G-code contains</h2>
+<p>A typical 3D-printing G-code file contains a mixture of:</p>
+<ul>
+  <li>movement instructions for the print head;</li>
+  <li>extrusion and travel moves;</li>
+  <li>layer changes;</li>
+  <li>hotend and bed temperature commands;</li>
+  <li>homing and setup commands;</li>
+  <li>comments written by the slicer;</li>
+  <li>printer-specific start and end sequences.</li>
+</ul>
+<p>
+  The exact format is not identical across every slicer or printer firmware. Two
+  files that both end in <code>.gcode</code> can contain different comments,
+  custom commands and coordinate conventions.
+</p>
+<p>
+  That is why a useful checker should explain what it recognised and what it
+  could not interpret.
+</p>
+<h2>Check the file before sending it to the printer</h2>
+<p>
+  The <a href="/gcode-preflight-checker">G-code Preflight Checker</a> can help
+  you review:
+</p>
+<ul>
+  <li>file size and readable slicer metadata;</li>
+  <li>estimated print time when the slicer provides it;</li>
+  <li>declared filament use when available;</li>
+  <li>parsed layer count and Z range;</li>
+  <li>parsed X/Y/Z toolpath extents;</li>
+  <li>common hotend and bed temperature targets;</li>
+  <li>coordinate and extrusion modes;</li>
+  <li>unsupported commands that limit analysis.</li>
+</ul>
+<p>
+  This is not a replacement for your slicer preview. Think of it as a quick
+  independent inspection step, especially when the file came from someone else,
+  was sliced on another computer or has been modified.
+</p>
+<h2>Compare toolpath size with your printer</h2>
+<p>
+  A model can fit your printer in CAD and still produce unexpected G-code if the
+  wrong printer profile, scale or coordinate setup was used during slicing.
+</p>
+<p>
+  The toolpath extents in G-code show the range of movement the parser found.
+  Compare them with the usable dimensions of the intended printer.
+</p>
+<p>
+  If the parsed extents exceed the build volume you entered, stop and check the
+  slicer profile before printing.
+</p>
+<p>
+  An in-bounds result is still not a guarantee. Start G-code, coordinate
+  offsets, purge routines and printer-specific behaviour can affect how the
+  machine uses its build area.
+</p>
+<p>
+  For the earlier model-level check, use the
+  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> or
+  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+</p>
+<h2>Review layers and the 2D toolpath preview</h2>
+<p>
+  A layer preview can reveal whether the parsed print path looks broadly like
+  the object you expected.
+</p>
+<p>Use it to check:</p>
+<ul>
+  <li>whether extrusion paths appear across the expected area;</li>
+  <li>whether the first and final layers occur at sensible heights;</li>
+  <li>whether the overall shape is obviously wrong;</li>
+  <li>whether a selected layer has missing-looking toolpaths.</li>
+</ul>
+<p>
+  A browser preview cannot reproduce every slicer feature. Custom commands,
+  arcs, multiple tools or vendor-specific macros may limit what it can display.
+  If the tool reports a limitation, return to the slicer that generated the file
+  and inspect its native preview.
+</p>
+<h2>Check temperature targets without judging them in isolation</h2>
+<p>
+  G-code commonly includes commands that set hotend and bed targets. The checker
+  can show the temperatures it finds, including commands that wait for a target
+  before continuing.
+</p>
+<p>
+  That is useful for catching obvious surprises, such as loading a file intended
+  for a different material profile.
+</p>
+<p>
+  But a temperature number is not enough to judge a print. The correct setting
+  depends on the material, printer, nozzle, enclosure, cooling and manufacturer
+  guidance. Do not edit a G-code file merely because a generic checker displays
+  a value you did not expect.
+</p>
+<h2>Read parser limitations carefully</h2>
+<p>
+  G-code is not a single perfectly uniform language. Printer firmware, slicers
+  and custom start/end scripts can add commands that a general analyser does not
+  support.
+</p>
+<p>
+  A limitation warning does not automatically mean the file is broken. It means
+  the tool cannot make a reliable claim about that part of the file.
+</p>
+<p>Examples include:</p>
+<ul>
+  <li>vendor-specific commands;</li>
+  <li>macros and conditional logic;</li>
+  <li>arc moves;</li>
+  <li>unusual coordinate modes;</li>
+  <li>multi-tool workflows;</li>
+  <li>custom purge, probe or calibration routines.</li>
+</ul>
+<p>
+  When a file has important unsupported commands, use the checker for the
+  information it can show, then confirm the final preview in the slicer and on
+  the intended printer workflow.
+</p>
+<h2>G-code checking comes after model preflight</h2>
+<p>
+  A clean G-code file does not prove that the original model was well prepared.
+</p>
+<p>Before slicing, inspect the model itself:</p>
+<ol>
+  <li>
+    use <a href="/stl-print-preflight">STL Print Preflight</a> or
+    <a href="/3mf-print-preflight">3MF Print Preflight</a>;
+  </li>
+  <li>confirm dimensions, printer fit and mesh health;</li>
+  <li>review wall thickness and overhang risk where relevant;</li>
+  <li>choose orientation, supports and material settings in the slicer;</li>
+  <li>inspect the finished G-code before printing.</li>
+</ol>
+<p>
+  This sequence catches problems at the stage where they are easiest to
+  understand and correct.
+</p>
+<h2>Treat G-code as a final review, not an execution decision</h2>
+<p>
+  A G-code checker is useful because it lets you inspect the exact file that
+  will drive the printer. It can reveal useful facts about paths, dimensions,
+  layers and common settings without running any commands.
+</p>
+<p>
+  It cannot know your printer’s condition, firmware configuration, filament
+  state, bed preparation or physical environment.
+</p>
+<p>
+  Use it as the final file-level review before printing—then rely on your slicer
+  profile and printer-specific knowledge for the actual print decision.
+</p>

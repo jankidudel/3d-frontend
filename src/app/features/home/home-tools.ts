@@ -281,5 +281,24 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
       },
     ],
   },
+  {
+    exploreLinkText: 'Explore all 3D tools',
+    exploreRoute: PublicRouteUrl.AllTools,
+    homeLinkText: 'View all 3D tools',
+    id: 'print-workflow-tools',
+    intro:
+      'Inspect the sliced file as a final review between slicer preview and print.',
+    title: 'G-code and print workflow',
+    tools: [
+      {
+        icon: '⌁',
+        title: 'G-code Preflight Checker',
+        description:
+          'Read sliced G-code locally to review parsed toolpaths, metadata, temperatures and parser limitations before printing.',
+        route: PublicRouteUrl.GcodePreflightChecker,
+        cta: 'Inspect G-code',
+      },
+    ],
+  },
 ];
 import { PublicRouteUrl } from '../../core/seo/public-routes';

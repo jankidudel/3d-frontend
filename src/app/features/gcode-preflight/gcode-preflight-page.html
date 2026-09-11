@@ -1,0 +1,323 @@
+<main class="page tool-page gcode-page">
+  <p class="eyebrow">G-code final review</p>
+  <h1>G-code Preflight Checker</h1>
+  <p class="lead">
+    Inspect a sliced FDM/FFF G-code file locally before sending it to your
+    printer. This checker only reads the file; it never runs, sends or changes
+    G-code.
+  </p>
+  <section class="card viewer-tool">
+    <h2>Inspect G-code locally</h2>
+    <div class="drop-zone">
+      <p>Choose a .gcode, .gco or .gc file.</p>
+      <button class="button" type="button" (click)="openPicker(picker)">
+        Choose G-code file
+      </button>
+      <input
+        #picker
+        type="file"
+        accept=".gcode,.gco,.gc,text/plain"
+        aria-label="Choose G-code file"
+        (change)="pick($event)"
+      />
+      <p class="hint">
+        Read-only browser inspection — your file is not uploaded.
+      </p>
+    </div>
+    @if (parsing()) {
+      <p role="status">Reading G-code locally…</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (report(); as result) {
+    <section class="card">
+      <h2>Summary</h2>
+      <p class="status">
+        <strong>{{ summary() }}</strong>
+      </p>
+      <p>
+        Readable linear print-path data was found. Review the slicer preview and
+        printer-specific workflow before printing.
+      </p>
+      <dl class="metrics">
+        <div>
+          <dt>File</dt>
+          <dd>
+            {{ file()?.name }} ({{ file()?.size?.toLocaleString() }} bytes)
+          </dd>
+        </div>
+        <div>
+          <dt>Parsed layers</dt>
+          <dd>{{ result.layers.length }}</dd>
+        </div>
+        <div>
+          <dt>Extrusion moves</dt>
+          <dd>{{ result.extrusionMoves.toLocaleString() }}</dd>
+        </div>
+        <div>
+          <dt>Travel moves</dt>
+          <dd>{{ result.travelMoves.toLocaleString() }}</dd>
+        </div>
+      </dl>
+    </section>
+    <section class="card">
+      <h2>File and slicer information</h2>
+      <dl class="metrics">
+        <div>
+          <dt>Slicer</dt>
+          <dd>{{ result.metadata.slicer ?? 'Not provided by this file' }}</dd>
+        </div>
+        <div>
+          <dt>Declared print time</dt>
+          <dd>
+            {{ result.metadata.printTime ?? 'Not provided by this file' }}
+          </dd>
+        </div>
+        <div>
+          <dt>Declared layers</dt>
+          <dd>
+            {{ result.metadata.declaredLayers ?? 'Not provided by this file' }}
+          </dd>
+        </div>
+        <div>
+          <dt>Filament use</dt>
+          <dd>
+            {{
+              result.metadata.filament?.join(', ') ??
+                'Not provided by this file'
+            }}
+          </dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>
+            {{
+              result.tools.length
+                ? result.tools.join(', ')
+                : 'Not provided by this file'
+            }}
+          </dd>
+        </div>
+        <div>
+          <dt>Thumbnail marker</dt>
+          <dd>
+            {{
+              result.metadata.hasThumbnail
+                ? 'Declared by this file'
+                : 'Not provided by this file'
+            }}
+          </dd>
+        </div>
+      </dl>
+    </section>
+    <section class="card">
+      <h2>Parsed toolpath geometry</h2>
+      @if (result.extents; as extents) {
+        <dl class="metrics">
+          <div>
+            <dt>X extent</dt>
+            <dd>
+              {{ format(extents.min.x) }} to {{ format(extents.max.x) }} mm
+            </dd>
+          </div>
+          <div>
+            <dt>Y extent</dt>
+            <dd>
+              {{ format(extents.min.y) }} to {{ format(extents.max.y) }} mm
+            </dd>
+          </div>
+          <div>
+            <dt>Z range</dt>
+            <dd>
+              {{ format(extents.min.z) }} to {{ format(extents.max.z) }} mm
+            </dd>
+          </div>
+          @if (size(); as dimensions) {
+            <div>
+              <dt>Width × depth × height</dt>
+              <dd>
+                {{ format(dimensions.x) }} × {{ format(dimensions.y) }} ×
+                {{ format(dimensions.z) }} mm
+              </dd>
+            </div>
+          }
+        </dl>
+      }
+    </section>
+    <section class="card">
+      <h2>2D layer preview</h2>
+      <p>Parsed preview, not a slicer simulation.</p>
+      <div class="layer-controls">
+        <label class="layer-selector"
+          >Layer
+          <select
+            [value]="selectedLayer()"
+            (change)="setLayer(+$any($event.target).value)"
+          >
+            @for (layer of result.layers; track layer.z; let index = $index) {
+              <option [value]="index">
+                {{ index + 1 }} — Z {{ format(layer.z) }} mm
+              </option>
+            }
+          </select>
+        </label>
+        <label class="travel-toggle">
+          <input
+            type="checkbox"
+            [checked]="showTravel()"
+            (change)="setTravel($any($event.target).checked)"
+          />
+          Show travel moves
+        </label>
+        <div class="preview-actions">
+          <button
+            type="button"
+            class="button secondary"
+            (click)="zoom.set(zoom() * 1.25); setLayer(selectedLayer())"
+          >
+            Zoom
+          </button>
+          <button
+            type="button"
+            class="button secondary"
+            (click)="zoom.set(1); setLayer(selectedLayer())"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+      @if (selected(); as layer) {
+        <svg
+          viewBox="0 0 1000 600"
+          role="img"
+          aria-label="Parsed layer toolpath preview"
+        >
+          @for (path of layer.paths; track $index) {
+            @if (path.extrusion || showTravel()) {
+              <path
+                [class.travel]="!path.extrusion"
+                [attr.d]="previewPath(path)"
+              />
+            }
+          }
+        </svg>
+      }
+    </section>
+    <section class="card">
+      <h2>Temperatures and modes</h2>
+      <dl class="metrics">
+        <div>
+          <dt>Hotend targets</dt>
+          <dd>{{ temperatures(result.hotendTargets) }}</dd>
+        </div>
+        <div>
+          <dt>Bed targets</dt>
+          <dd>{{ temperatures(result.bedTargets) }}</dd>
+        </div>
+        <div>
+          <dt>Coordinate units</dt>
+          <dd>
+            {{
+              result.unit === 'mm'
+                ? 'Millimetres'
+                : 'Inches (converted to mm for this report)'
+            }}
+          </dd>
+        </div>
+        <div>
+          <dt>XYZ positioning</dt>
+          <dd>{{ result.positioning }}</dd>
+        </div>
+        <div>
+          <dt>Extrusion mode</dt>
+          <dd>{{ result.extrusionMode }}</dd>
+        </div>
+      </dl>
+      <p>
+        The printer profile and material instructions remain authoritative; this
+        checker does not judge temperature suitability.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Build-volume comparison</h2>
+      <p>Compare parsed motion extents only.</p>
+      <label
+        >X
+        <input
+          type="number"
+          min="0"
+          (input)="buildX.set(+$any($event.target).value); compareVolume()"
+        />
+        mm</label
+      ><label
+        >Y
+        <input
+          type="number"
+          min="0"
+          (input)="buildY.set(+$any($event.target).value); compareVolume()"
+        />
+        mm</label
+      ><label
+        >Z
+        <input
+          type="number"
+          min="0"
+          (input)="buildZ.set(+$any($event.target).value); compareVolume()"
+        />
+        mm</label
+      >
+      @if (volumeMessage()) {
+        <p class="status">{{ volumeMessage() }}</p>
+      }
+      <p>
+        Coordinate origins, offsets and printer-specific start G-code can affect
+        how this comparison should be interpreted.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Limitations and next steps</h2>
+      @if (result.limitations.length) {
+        <h3>Parser limitations</h3>
+        <ul>
+          @for (limitation of result.limitations; track limitation) {
+            <li>{{ limitation }}</li>
+          }
+        </ul>
+      } @else {
+        <p>
+          No unsupported commands were identified in the parsed subset. Custom
+          start/end G-code can still contain printer-specific actions.
+        </p>
+      }
+      <p>
+        This is read-only inspection. Unsupported commands may limit the preview
+        or summary; the chosen printer profile in the slicer remains the source
+        of truth. Review the slicer preview before printing.
+      </p>
+      <p>
+        Before slicing:
+        <a [routerLink]="routeUrl.StlPrintPreflight">STL Print Preflight</a> or
+        <a [routerLink]="routeUrl.ThreeMfPrintPreflight">3MF Print Preflight</a
+        >. Check model
+        <a [routerLink]="routeUrl.DimensionsChecker">dimensions and fit</a>,
+        <a [routerLink]="routeUrl.StlOverhangChecker">overhang risk</a>, and
+        <a [routerLink]="routeUrl.QualityCheck">geometry issues</a>.
+      </p>
+    </section>
+    <section class="card">
+      <h2>G-code preflight FAQ</h2>
+      <h3>Can this prove a file is safe to print?</h3>
+      <p>
+        No. Firmware, machine configuration, material, calibration, start G-code
+        and slicer profile affect the print.
+      </p>
+      <h3>Why can the parsed preview be incomplete?</h3>
+      <p>
+        Arcs, macros, conditional logic, multiple tools and vendor-specific
+        commands can limit a browser parser.
+      </p>
+    </section>
+  }
+</main>

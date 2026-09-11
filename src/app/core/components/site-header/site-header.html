@@ -210,6 +210,19 @@
             />
           </div>
         </section>
+        <section
+          class="tools-menu-after-slicing"
+          aria-labelledby="after-slicing-tools-title"
+        >
+          <h2 id="after-slicing-tools-title" class="tools-menu-section-title">
+            After slicing
+          </h2>
+          <app-menu-link
+            label="G-code Preflight Checker"
+            [route]="routePath.GcodePreflightChecker"
+            (selected)="closeMenus()"
+          />
+        </section>
         <div class="tools-menu-footer">
           <app-menu-link
             label="View all 3D tools"

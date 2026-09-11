@@ -70,6 +70,11 @@ export const AnalyticsEvent = {
   ToleranceCalibrationApplied: 'tolerance_calibration_applied',
   ToleranceResultCopied: 'tolerance_result_copied',
   ToleranceGuideOpened: 'tolerance_guide_opened',
+  GcodeUploadStarted: 'gcode_upload_started',
+  GcodeParsed: 'gcode_parsed',
+  GcodeLimitationShown: 'gcode_parser_limitation_shown',
+  GcodeLayerPreviewUsed: 'gcode_layer_preview_used',
+  GcodeBuildVolumeUsed: 'gcode_build_volume_comparison_used',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -269,6 +274,25 @@ export class AnalyticsService {
       | typeof AnalyticsEvent.ToleranceGuideOpened,
   ): void {
     this.sendEvent(event, {});
+  }
+
+  trackGcodeUploadStarted(fileSizeBytes: number): void {
+    this.sendEvent(AnalyticsEvent.GcodeUploadStarted, {
+      file_size_bucket: this.fileSizeBucket(fileSizeBytes),
+    });
+  }
+
+  trackGcodeParsed(): void {
+    this.sendEvent(AnalyticsEvent.GcodeParsed, {});
+  }
+  trackGcodeLimitationShown(): void {
+    this.sendEvent(AnalyticsEvent.GcodeLimitationShown, {});
+  }
+  trackGcodeLayerPreviewUsed(): void {
+    this.sendEvent(AnalyticsEvent.GcodeLayerPreviewUsed, {});
+  }
+  trackGcodeBuildVolumeUsed(): void {
+    this.sendEvent(AnalyticsEvent.GcodeBuildVolumeUsed, {});
   }
 
   trackThreeMfQualityStarted(fileSizeBytes: number): void {
