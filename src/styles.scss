@@ -27,7 +27,9 @@ body {
   line-height: 1.6;
 }
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 a {
@@ -36,6 +38,8 @@ a {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
 label:focus-visible {
   outline: 3px solid #86b99a;
   outline-offset: 3px;

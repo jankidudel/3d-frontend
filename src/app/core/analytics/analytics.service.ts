@@ -75,6 +75,9 @@ export const AnalyticsEvent = {
   GcodeLimitationShown: 'gcode_parser_limitation_shown',
   GcodeLayerPreviewUsed: 'gcode_layer_preview_used',
   GcodeBuildVolumeUsed: 'gcode_build_volume_comparison_used',
+  ContactFeedbackOpened: 'contact_feedback_opened',
+  ContactFeedbackStarted: 'contact_feedback_started',
+  ContactFeedbackSubmitted: 'contact_feedback_submitted',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -293,6 +296,18 @@ export class AnalyticsService {
   }
   trackGcodeBuildVolumeUsed(): void {
     this.sendEvent(AnalyticsEvent.GcodeBuildVolumeUsed, {});
+  }
+
+  trackContactFeedbackOpened(): void {
+    this.sendEvent(AnalyticsEvent.ContactFeedbackOpened, {});
+  }
+
+  trackContactFeedbackStarted(): void {
+    this.sendEvent(AnalyticsEvent.ContactFeedbackStarted, {});
+  }
+
+  trackContactFeedbackSubmitted(): void {
+    this.sendEvent(AnalyticsEvent.ContactFeedbackSubmitted, {});
   }
 
   trackThreeMfQualityStarted(fileSizeBytes: number): void {

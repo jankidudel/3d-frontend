@@ -15,6 +15,7 @@ import { pollJob, PollingTimeoutError } from '../../core/api/job-polling';
 import { JobCreationService } from '../../core/api/job-creation.service';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
+import { FeedbackLinkComponent } from '../../core/components/feedback-link/feedback-link';
 import { SeoService } from '../../core/seo/seo.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -32,7 +33,7 @@ import { ModelFileFormat } from '../../core/formats/model-file-format';
 type ReportRecord = Record<string, unknown>;
 @Component({
   selector: 'app-three-mf-quality-page',
-  imports: [RouterLink, ThreeMfFilePicker, JobProgress],
+  imports: [RouterLink, ThreeMfFilePicker, JobProgress, FeedbackLinkComponent],
   templateUrl: './threemf-quality-page.html',
   styleUrl: '../shared/model-checker-page.scss',
 })

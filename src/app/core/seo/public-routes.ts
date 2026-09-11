@@ -34,6 +34,7 @@ export const PublicRoutePath = {
   ThreeMfVolumeCalculator: '3mf-volume-calculator',
   ThreeMfToStlConverter: '3mf-to-stl-converter',
   Guides: 'guides',
+  Contact: 'contact',
   RotateModelToFitPrinterGuide: 'how-to-rotate-a-3d-model-to-fit-your-printer',
   FixNonManifoldStlGuide: 'how-to-fix-non-manifold-stl',
   WatertightStlGuide: 'how-to-tell-if-an-stl-is-watertight',
@@ -93,4 +94,5 @@ export const canonicalPublicRoutePaths = [
   PublicRoutePath.ThreeMfVolumeCalculator,
   PublicRoutePath.ThreeMfToStlConverter,
   PublicRoutePath.Guides,
+  PublicRoutePath.Contact,
 ] as const;

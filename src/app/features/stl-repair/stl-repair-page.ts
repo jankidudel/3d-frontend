@@ -16,6 +16,7 @@ import {
   PollingTimeoutError,
 } from '../../core/api/stl-job-workflow';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
+import { FeedbackLinkComponent } from '../../core/components/feedback-link/feedback-link';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { Job, JobStatus } from '../../models/job';
@@ -35,7 +36,7 @@ type RepairReport = {
 
 @Component({
   selector: 'app-stl-repair-page',
-  imports: [RouterLink, StlFilePicker, JobProgress],
+  imports: [RouterLink, StlFilePicker, JobProgress, FeedbackLinkComponent],
   templateUrl: './stl-repair-page.html',
   styleUrl: '../stl-quality/stl-quality-page/stl-quality-page.scss',
 })

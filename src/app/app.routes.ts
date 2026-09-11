@@ -260,6 +260,11 @@ export const routes: Routes = [
       import('./features/legal/cookies-page').then((m) => m.CookiesPage),
   },
   {
+    path: PublicRoutePath.Contact,
+    loadComponent: () =>
+      import('./features/contact/contact-page').then((m) => m.ContactPage),
+  },
+  {
     path: '',
     component: BreadcrumbPageLayout,
     children: breadcrumbRoutes,

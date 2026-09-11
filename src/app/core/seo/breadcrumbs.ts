@@ -47,6 +47,9 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
       { label: '3MF tools', href: PublicRouteUrl.ThreeMfTools },
     ];
   }
+  if (normalizedPath === PublicRouteUrl.Contact) {
+    return [{ label: 'Contact & feedback', href: PublicRouteUrl.Contact }];
+  }
 
   const tool = toolBreadcrumbs.get(normalizedPath);
   if (tool) {

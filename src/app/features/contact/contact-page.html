@@ -1,0 +1,106 @@
+<main class="page contact-page">
+  <p class="eyebrow">Get in touch</p>
+  <h1>Contact &amp; feedback</h1>
+  <p class="lead">
+    Found something unclear, missing or incorrect? Send feedback, report an
+    issue, request a tool, or get in touch about working together.
+  </p>
+
+  <section class="card contact-card" aria-labelledby="contact-form-title">
+    <h2 id="contact-form-title">How can we help?</h2>
+    <p class="privacy-note">
+      Messages are used to respond to your enquiry and improve InspectMesh.
+      Please do not include 3D files, private design details or payment details.
+    </p>
+    @if (submitted()) {
+      <p class="success" role="status">
+        Your email app should now be open with your message ready to send.
+      </p>
+    }
+    @if (!deliveryAvailable) {
+      <p class="error" role="alert">
+        Contact delivery is being configured. Please check back soon.
+      </p>
+    }
+    <form (submit)="submit($event)" novalidate>
+      <label class="field" for="contact-reason">
+        <span>Reason <strong aria-hidden="true">(required)</strong></span>
+        <select
+          id="contact-reason"
+          [value]="reason()"
+          (change)="update('reason', $event)"
+          [attr.aria-invalid]="errors()['reason'] ? 'true' : null"
+          aria-describedby="contact-reason-error"
+        >
+          <option value="">Choose a reason</option>
+          @for (option of reasons; track option) {
+            <option [value]="option">{{ option }}</option>
+          }
+        </select>
+      </label>
+      @if (errors()['reason']; as error) {
+        <p id="contact-reason-error" class="error" role="alert">{{ error }}</p>
+      }
+      <label class="field" for="contact-name"
+        ><span>Name <em>(optional)</em></span
+        ><input
+          id="contact-name"
+          type="text"
+          autocomplete="name"
+          [value]="name()"
+          (input)="update('name', $event)"
+      /></label>
+      <label class="field" for="contact-email"
+        ><span
+          >Email address <strong aria-hidden="true">(required)</strong></span
+        ><input
+          id="contact-email"
+          type="email"
+          autocomplete="email"
+          [value]="email()"
+          (input)="update('email', $event)"
+          [attr.aria-invalid]="errors()['email'] ? 'true' : null"
+          aria-describedby="contact-email-error"
+      /></label>
+      @if (errors()['email']; as error) {
+        <p id="contact-email-error" class="error" role="alert">{{ error }}</p>
+      }
+      <label class="field" for="contact-context"
+        ><span>Page or tool this relates to <em>(optional)</em></span
+        ><input
+          id="contact-context"
+          type="text"
+          [value]="context()"
+          (input)="update('context', $event)"
+      /></label>
+      <label class="field" for="contact-message"
+        ><span>Message <strong aria-hidden="true">(required)</strong></span
+        ><textarea
+          id="contact-message"
+          rows="7"
+          [value]="message()"
+          (input)="update('message', $event)"
+          [attr.aria-invalid]="errors()['message'] ? 'true' : null"
+          aria-describedby="contact-message-error"
+        ></textarea>
+      </label>
+      @if (errors()['message']; as error) {
+        <p id="contact-message-error" class="error" role="alert">{{ error }}</p>
+      }
+      <label class="honeypot" aria-hidden="true" for="contact-website"
+        >Leave this blank<input
+          id="contact-website"
+          tabindex="-1"
+          autocomplete="off"
+          [value]="honeypot()"
+          (input)="update('honeypot', $event)"
+      /></label>
+      <p class="delivery-note">
+        This will open your email app to send the message.
+      </p>
+      <button class="button" type="submit" [disabled]="!deliveryAvailable">
+        Open email app
+      </button>
+    </form>
+  </section>
+</main>

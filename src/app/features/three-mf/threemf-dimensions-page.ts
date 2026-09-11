@@ -14,6 +14,7 @@ import { createAndUploadThreeMfJob } from '../../core/api/three-mf-job-workflow'
 import { JobCreationService } from '../../core/api/job-creation.service';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
+import { FeedbackLinkComponent } from '../../core/components/feedback-link/feedback-link';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Job, JobStatus } from '../../models/job';
@@ -41,7 +42,7 @@ const MILLIMETRES_PER_3MF_UNIT: Readonly<Record<string, number>> = {
 
 @Component({
   selector: 'app-three-mf-dimensions-page',
-  imports: [RouterLink, ThreeMfFilePicker, JobProgress],
+  imports: [RouterLink, ThreeMfFilePicker, JobProgress, FeedbackLinkComponent],
   templateUrl: './threemf-dimensions-page.html',
   styleUrl: './threemf-dimensions-page.scss',
 })

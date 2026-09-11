@@ -7,6 +7,7 @@ import {
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { ThreeMfFilePicker } from './threemf-file-picker';
+import { FeedbackLinkComponent } from '../../core/components/feedback-link/feedback-link';
 import {
   analyseThreeMfForRepair,
   defaultRepairPlan,
@@ -18,7 +19,7 @@ import {
 
 @Component({
   selector: 'app-three-mf-repair-page',
-  imports: [RouterLink, ThreeMfFilePicker],
+  imports: [RouterLink, ThreeMfFilePicker, FeedbackLinkComponent],
   templateUrl: './threemf-repair-page.html',
   styleUrl: './threemf-repair-page.scss',
 })

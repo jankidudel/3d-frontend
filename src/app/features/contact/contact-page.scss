@@ -1,0 +1,61 @@
+.contact-page {
+  max-width: 52rem;
+}
+.contact-card {
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+.privacy-note,
+.delivery-note {
+  color: var(--muted);
+}
+form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+.field span {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.field em {
+  font-style: normal;
+  font-weight: 400;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 2.7rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  color: var(--ink);
+  background: var(--surface);
+}
+.field textarea {
+  resize: vertical;
+}
+.error {
+  margin: -0.45rem 0 0;
+  color: var(--error);
+  font-weight: 700;
+}
+.success {
+  padding: 0.8rem 1rem;
+  border-left: 0.25rem solid var(--primary);
+  background: var(--soft);
+  font-weight: 700;
+}
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

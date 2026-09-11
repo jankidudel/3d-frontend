@@ -11,6 +11,7 @@ import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { StlJobService } from '../../core/api/stl-job.service';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
+import { FeedbackLinkComponent } from '../../core/components/feedback-link/feedback-link';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
@@ -37,7 +38,7 @@ type ReportRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-stl-dimensions-page',
-  imports: [RouterLink, StlFilePicker, JobProgress],
+  imports: [RouterLink, StlFilePicker, JobProgress, FeedbackLinkComponent],
   templateUrl: './stl-dimensions-page.html',
   styleUrl: './stl-dimensions-page.scss',
 })

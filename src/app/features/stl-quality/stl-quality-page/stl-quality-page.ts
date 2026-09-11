@@ -21,10 +21,11 @@ import { PublicRouteUrl } from '../../../core/seo/public-routes';
 import { Job, JobStatus } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
 import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
+import { FeedbackLinkComponent } from '../../../core/components/feedback-link/feedback-link';
 
 @Component({
   selector: 'app-stl-quality-page',
-  imports: [StlFilePicker, JobStatusComponent],
+  imports: [StlFilePicker, JobStatusComponent, FeedbackLinkComponent],
   templateUrl: './stl-quality-page.html',
   styleUrl: './stl-quality-page.scss',
 })

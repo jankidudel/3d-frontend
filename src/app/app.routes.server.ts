@@ -102,6 +102,7 @@ export const serverRoutes: ServerRoute[] = [
   },
   { path: PublicRoutePath.Privacy, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Cookies, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Contact, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.NotFound, renderMode: RenderMode.Prerender },
   { path: '**', renderMode: RenderMode.Server },
 ];
