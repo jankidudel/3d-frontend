@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import matter from 'gray-matter';
 import rehypeParse from 'rehype-parse';
@@ -26,22 +26,17 @@ import { guidesAsOfDate } from '../src/app/features/guides/guide-publishing.ts';
 
 const frontendRoot = resolve(import.meta.dirname, '..');
 const contentDirectory = resolve(frontendRoot, 'src', 'content', 'guides');
-const outputPath = resolve(
+const generatedDirectory = resolve(
   frontendRoot,
   'src',
   'app',
   'features',
   'guides',
   'generated',
-  'guides.generated.ts',
 );
+const outputPath = resolve(generatedDirectory, 'guides.generated.ts');
 const routeDataOutputPath = resolve(
-  frontendRoot,
-  'src',
-  'app',
-  'features',
-  'guides',
-  'generated',
+  generatedDirectory,
   'guide-route-data.generated.ts',
 );
 const guideSchema: Options = {
@@ -127,6 +122,7 @@ function resolveInternalGuideLinks(content: string, filePath: string): string {
 const contentFiles = (await readdir(contentDirectory))
   .filter((file) => file.endsWith('.html'))
   .sort();
+await mkdir(generatedDirectory, { recursive: true });
 const registry = validateGuideRegistry(
   guideRegistry,
   guideGroups,
@@ -192,12 +188,7 @@ const generated = [
 await writeFile(outputPath, generated);
 
 const guideSlugOutputPath = resolve(
-  frontendRoot,
-  'src',
-  'app',
-  'features',
-  'guides',
-  'generated',
+  generatedDirectory,
   'guide-slug.generated.ts',
 );
 await writeFile(
