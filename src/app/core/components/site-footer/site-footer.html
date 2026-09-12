@@ -1,9 +1,6 @@
 <footer class="site-footer">
   <p>Simple, browser-friendly tools for better 3D prints.</p>
   <nav class="footer-links" aria-label="Site and legal links">
-    <a [routerLink]="['/', routePath.Contact]" routerLinkActive="active"
-      >Contact &amp; feedback</a
-    >
     <a [routerLink]="['/', routePath.Privacy]" routerLinkActive="active"
       >Privacy</a
     >
@@ -13,5 +10,8 @@
     <button type="button" (click)="consent.changeChoice()">
       Cookie settings
     </button>
+    <a [routerLink]="['/', routePath.Contact]" routerLinkActive="active"
+      >Contact</a
+    >
   </nav>
 </footer>

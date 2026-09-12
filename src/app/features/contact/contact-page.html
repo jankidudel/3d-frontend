@@ -12,11 +12,6 @@
       Messages are used to respond to your enquiry and improve InspectMesh.
       Please do not include 3D files, private design details or payment details.
     </p>
-    @if (!deliveryAvailable) {
-      <p class="error" role="alert">
-        Contact delivery is being configured. Please check back soon.
-      </p>
-    }
     <form (submit)="submit($event)" novalidate>
       <label class="field" for="contact-reason">
         <span>Reason <strong aria-hidden="true">(required)</strong></span>
