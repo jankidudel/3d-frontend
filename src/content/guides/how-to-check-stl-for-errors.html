@@ -30,19 +30,22 @@ faq:
   <li>Slice with printer and material-specific settings.</li>
 </ol>
 <p>
-  Start with the <a href="/stl-print-preflight">STL Print Preflight Checker</a>
+  Start with the
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+    >STL Print Preflight Checker</a
+  >
   when you want one local report with clear next actions. It does not use a
   single score or claim that an STL is guaranteed printable.
 </p>
 <p>
   For a format-neutral pre-slice checklist that also covers 3MF files, read
-  <a href="/how-to-check-if-a-3d-model-is-ready-to-print"
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
     >how to check if a 3D model is ready to print</a
   >.
 </p>
 <p>
   Mesh integrity is only one part of preparation. See the
-  <a href="/3d-print-file-preflight-checklist"
+  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
     >3D print file preflight checklist</a
   >
   for dimensions, printer fit, wall thickness and verification steps.
@@ -56,18 +59,23 @@ faq:
 <h2>Check wall thickness where the part needs it</h2>
 <p>
   Wall thickness depends on material, nozzle, orientation and the part's job.
-  The <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a>
+  The
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
   samples the surface to flag areas worth reviewing, but does not replace a
   slicer or material-specific requirement.
 </p>
 <p>
   Visual inspection is useful, but it cannot reveal every topology problem. Use
-  the free <a href="/stl-viewer">STL Viewer</a> to open an STL locally in your
-  browser and inspect its shape, dimensions and triangle count.
+  the free <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to open an
+  STL locally in your browser and inspect its shape, dimensions and triangle
+  count.
 </p>
 <h2>2. Run an STL quality check</h2>
 <p>
-  Next, use the <a href="/stl-quality-checker">STL Quality Checker</a>. It
+  Next, use the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
   checks for open edges, non-manifold edges, duplicate triangles, degenerate
   triangles, inconsistent triangle orientation and invalid coordinates. These
   checks examine the structure of the triangle mesh rather than just how the
@@ -80,15 +88,16 @@ faq:
   triangles. If an edge belongs to only one triangle, it is an
   <strong>open edge</strong>. Open edges commonly indicate a hole, gap or
   incomplete surface. Use the
-  <a href="/stl-watertight-checker">STL Watertight Checker</a> to focus on
-  whether the model forms a closed surface.
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  to focus on whether the model forms a closed surface.
 </p>
 <h3>Non-manifold edges</h3>
 <p>
   A <strong>non-manifold edge</strong> is typically shared by more than two
   triangles. This creates geometry that does not describe a simple printable
   solid and can confuse slicers or repair tools. Inspect these topology problems
-  with the <a href="/stl-manifold-checker">STL Manifold Checker</a>.
+  with the
+  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>.
 </p>
 <h3>Duplicate and degenerate triangles</h3>
 <p>
@@ -122,13 +131,16 @@ faq:
   A topologically valid STL can still be the wrong physical size. STL files do
   not store an explicit unit, so a model exported in millimetres can sometimes
   be interpreted as inches or vice versa. Use the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to inspect
-  dimensions, convert units, calculate proportional scaling and check printer
-  fit.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to inspect dimensions, convert units, calculate proportional scaling and check
+  printer fit.
 </p>
 <h2>Check your STL for errors</h2>
 <p>
-  Use the <a href="/stl-print-preflight">STL Print Preflight Checker</a> for a
-  practical first pass, then use its linked individual tools to investigate a
-  specific finding.
+  Use the
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+    >STL Print Preflight Checker</a
+  >
+  for a practical first pass, then use its linked individual tools to
+  investigate a specific finding.
 </p>

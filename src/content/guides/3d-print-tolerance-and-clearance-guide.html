@@ -42,7 +42,7 @@ faq:
 </blockquote>
 <p>
   Use the
-  <a href="/3d-print-tolerance-calculator"
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
     >3D Print Tolerance &amp; Clearance Calculator</a
   >
   to turn that answer into model dimensions.
@@ -128,8 +128,8 @@ faq:
   an outside error of +0.08 mm. If you need the final printed pin to be 10.00
   mm, model it slightly smaller to compensate. If a hole intended as 10.30 mm
   prints as 10.20 mm, its hole error is -0.10 mm. The
-  <a href="/3d-print-tolerance-calculator">calculator</a> performs these
-  calculations and keeps the sign convention visible.
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">calculator</a>
+  performs these calculations and keeps the sign convention visible.
 </p>
 
 <h2>Why nominal dimensions often do not print exactly</h2>
@@ -156,18 +156,21 @@ faq:
   A small chamfer can make a pin easier to insert. A thicker boss can make a
   hole less likely to split. A short test coupon can save a failed full-size
   enclosure. Before printing, use the
-  <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> to
-  inspect thin areas around holes, clips and other functional features.
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
+  to inspect thin areas around holes, clips and other functional features.
 </p>
 
 <h2>Test the final geometry before slicing</h2>
 <p>
   After changing dimensions, export the final STL or 3MF and check it again. Use
-  the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to confirm
-  that the exported model retains the intended dimensions. Then use
-  <a href="/stl-print-preflight">STL Print Preflight</a> to check mesh
-  condition, fit, wall-thickness warnings and other file-level issues before
-  slicing.
+  the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to confirm that the exported model retains the intended dimensions. Then use
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> to
+  check mesh condition, fit, wall-thickness warnings and other file-level issues
+  before slicing.
 </p>
 <ol>
   <li>choose the intended fit;</li>

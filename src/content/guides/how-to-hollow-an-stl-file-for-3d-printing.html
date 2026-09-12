@@ -25,18 +25,20 @@ faq:
 <h2>Start with a clean model</h2>
 <p>
   Before hollowing, check the STL with the
-  <a href="/stl-quality-checker">STL Quality Checker</a>. Hollowing works best
-  when the model is a closed, consistent solid.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
+  Hollowing works best when the model is a closed, consistent solid.
 </p>
 <p>
-  Use the <a href="/stl-watertight-checker">STL Watertight Checker</a> to look
-  for open edges. A model with holes or non-manifold geometry can confuse the
-  process because the software may not be able to tell what is inside the
-  object.
+  Use the
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  to look for open edges. A model with holes or non-manifold geometry can
+  confuse the process because the software may not be able to tell what is
+  inside the object.
 </p>
 <p>
   If the file has simple repairable defects, try the
-  <a href="/stl-repair">STL Repair Tool</a> first, then validate it again.
+  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> first, then
+  validate it again.
 </p>
 <h2>Choose a suitable shell thickness</h2>
 <p>
@@ -74,9 +76,11 @@ faq:
   positions and supports do not block drainage.
 </p>
 <p>
-  Use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> if you
-  need to confirm the overall size after editing. Hollowing should not change
-  the outside dimensions, but checking avoids accidental scaling mistakes.
+  Use the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  if you need to confirm the overall size after editing. Hollowing should not
+  change the outside dimensions, but checking avoids accidental scaling
+  mistakes.
 </p>
 <p>
   Hollowing is a design and print-preparation decision, not simply a file-size

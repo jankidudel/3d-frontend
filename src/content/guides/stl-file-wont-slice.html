@@ -25,8 +25,9 @@ faq:
 </p>
 <h2>Check for mesh errors</h2>
 <p>
-  The first step is the <a href="/stl-quality-checker">STL Quality Checker</a>.
-  It checks common issues that can interfere with slicing:
+  The first step is the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
+  checks common issues that can interfere with slicing:
 </p>
 <ul>
   <li>open edges and holes</li>
@@ -42,16 +43,18 @@ faq:
   make the mesh harder for software to interpret.
 </p>
 <p>
-  If issues are reported, use the <a href="/stl-repair">STL Repair Tool</a> for
-  conservative repairs. It can safely remove certain defective triangles and
-  correct orientation where the result is clear. It does not attempt to invent
-  missing geometry or hide serious topology problems.
+  If issues are reported, use the
+  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> for conservative
+  repairs. It can safely remove certain defective triangles and correct
+  orientation where the result is clear. It does not attempt to invent missing
+  geometry or hide serious topology problems.
 </p>
 <h2>Check whether the model is watertight and manifold</h2>
 <p>
   A good next step is to run both the
-  <a href="/stl-watertight-checker">STL Watertight Checker</a> and the
-  <a href="/stl-manifold-checker">STL Manifold Checker</a>.
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  and the
+  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>.
 </p>
 <p>
   A watertight model has no open boundaries. A manifold model describes a
@@ -66,9 +69,10 @@ faq:
   incorrectly.
 </p>
 <p>
-  Use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
-  inspect the width, height and depth, choose a sensible design unit and compare
-  it with your printer’s usable build volume.
+  Use the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to inspect the width, height and depth, choose a sensible design unit and
+  compare it with your printer’s usable build volume.
 </p>
 <p>
   If the model nearly fits, rotating it may help. If it is much larger than the

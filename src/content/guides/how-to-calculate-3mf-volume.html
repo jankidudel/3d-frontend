@@ -21,18 +21,19 @@ faq:
   print build, not merely a number from the first stored object.
 </p>
 <p>
-  Run <a href="/3mf-print-preflight">3MF Print Preflight</a> when you need to
-  establish that the resolved build is structurally suitable for a meaningful
-  volume estimate before calculating weight.
+  Run
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> when
+  you need to establish that the resolved build is structurally suitable for a
+  meaningful volume estimate before calculating weight.
 </p>
 
 <h2>Use the resolved build volume</h2>
 
 <p>
   Upload your file to the
-  <a href="/3mf-volume-calculator">3MF Volume Calculator</a>. It calculates the
-  aggregate volume of the resolved build geometry and uses the 3MF file's
-  declared unit for display and conversion.
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>.
+  It calculates the aggregate volume of the resolved build geometry and uses the
+  3MF file's declared unit for display and conversion.
 </p>
 
 <p>
@@ -66,9 +67,12 @@ faq:
 
 <p>
   If the calculator warns that volume may be unreliable, check the model with
-  the <a href="/3mf-watertight-checker">3MF Watertight Checker</a> and
-  <a href="/3mf-manifold-checker">3MF Manifold Checker</a>. For a broader
-  assessment, use the <a href="/3mf-quality-checker">3MF Quality Checker</a>.
+  the
+  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
+  and
+  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a>.
+  For a broader assessment, use the
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>.
 </p>
 
 <h2>Estimate solid-model material weight</h2>
@@ -98,12 +102,15 @@ faq:
 <ol>
   <li>
     Calculate volume with the
-    <a href="/3mf-volume-calculator">3MF Volume Calculator</a>.
+    <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a
+    >.
   </li>
   <li>Check warnings about open or non-manifold geometry.</li>
   <li>
     Confirm the build size using the
-    <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
+      >3MF Dimensions Checker</a
+    >.
   </li>
   <li>Use your slicer for the final filament and cost estimate.</li>
 </ol>

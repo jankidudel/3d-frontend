@@ -45,10 +45,10 @@ faq:
 </p>
 <p>
   Before slicing an STL, use the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> because STL does
-  not reliably store units. Use the
-  <a href="/stl-quality-checker">STL Quality Checker</a> to find holes,
-  non-manifold edges and other mesh problems.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  because STL does not reliably store units. Use the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> to
+  find holes, non-manifold edges and other mesh problems.
 </p>
 <h2>Exporting from STEP to STL</h2>
 <p>
@@ -61,15 +61,17 @@ faq:
   improving the printed result.
 </p>
 <p>
-  Use the <a href="/stl-triangle-counter">STL Triangle Counter</a> to inspect
-  the exported mesh, then view it at the intended print size. The right
+  Use the
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a> to
+  inspect the exported mesh, then view it at the intended print size. The right
   resolution depends on the part, printer and required finish.
 </p>
 <h2>Consider 3MF too</h2>
 <p>
   For modern print workflows, 3MF can be a useful alternative to STL because it
   can preserve units and other print-related information. Read
-  <a href="/3mf-vs-stl">3MF vs STL</a> before choosing an export format.
+  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a> before choosing an
+  export format.
 </p>
 <p>
   Keep the original STEP file whenever possible. Use it as the master design

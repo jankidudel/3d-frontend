@@ -62,9 +62,12 @@ faq:
 </p>
 <p>
   Before printing an STL, use the
-  <a href="/stl-print-preflight">STL Print Preflight Checker</a> to inspect mesh
-  condition, dimensions, fit, wall-thickness warnings and complexity. For the
-  focused comparison, see <a href="/3mf-vs-stl">3MF vs STL</a>.
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+    >STL Print Preflight Checker</a
+  >
+  to inspect mesh condition, dimensions, fit, wall-thickness warnings and
+  complexity. For the focused comparison, see
+  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a>.
 </p>
 
 <h2>3MF: a richer print-focused format</h2>
@@ -79,8 +82,11 @@ faq:
   multiple objects or repeated items, or you are keeping work in a modern
   supported workflow. Support is good but not universal, so a recipient with
   older software may still need STL. Use
-  <a href="/3mf-print-preflight">3MF Print Preflight Checker</a> to inspect the
-  resolved build, units, geometry, printer fit and wall thickness.
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
+    >3MF Print Preflight Checker</a
+  >
+  to inspect the resolved build, units, geometry, printer fit and wall
+  thickness.
 </p>
 
 <h2>STEP: editable CAD, not usually the final slicer file</h2>
@@ -144,17 +150,18 @@ faq:
 <h2>Converting between STL and 3MF</h2>
 <p>
   Conversion can help, but it does not magically improve geometry. Use the
-  <a href="/stl-to-3mf-converter">STL to 3MF Converter</a> when you need a 3MF
-  copy of an STL workflow. STL has no reliable stored unit, so verify intended
-  dimensions.
+  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL to 3MF Converter</a> when
+  you need a 3MF copy of an STL workflow. STL has no reliable stored unit, so
+  verify intended dimensions.
 </p>
 <p>
-  Use the <a href="/3mf-to-stl-converter">3MF to STL Converter</a> when a
-  recipient needs geometry-only STL. It may not retain 3MF build data or
+  Use the
+  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL Converter</a> when
+  a recipient needs geometry-only STL. It may not retain 3MF build data or
   appearance-related information. After conversion, open the result in the
-  <a href="/stl-viewer">STL Viewer</a> or
-  <a href="/3mf-viewer">3MF Viewer</a> and inspect the new file rather than
-  assuming it is identical in every practical respect.
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> and inspect the new
+  file rather than assuming it is identical in every practical respect.
 </p>
 
 <h2>Check the final file, not only the source format</h2>
@@ -165,9 +172,10 @@ faq:
   print. Conversion, repair or scaling can change a model unexpectedly.
 </p>
 <p>
-  Use <a href="/stl-print-preflight">STL Print Preflight</a> or
-  <a href="/3mf-print-preflight">3MF Print Preflight</a> as the final file-level
-  check.
+  Use
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> as
+  the final file-level check.
 </p>
 
 <h2>The best format is part of a reliable workflow</h2>

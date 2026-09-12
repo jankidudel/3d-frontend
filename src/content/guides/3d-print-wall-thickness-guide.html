@@ -45,7 +45,7 @@ faq:
 </p>
 <p>
   Wall thickness is one part of a broader file review. See the
-  <a href="/3d-print-file-preflight-checklist"
+  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
     >3D print file preflight checklist</a
   >
   for the complete before-slicing workflow.
@@ -53,7 +53,7 @@ faq:
 <p>
   For walls around holes, pins, clips and other mating features, pair this
   review with the
-  <a href="/3d-print-tolerance-calculator"
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
     >3D Print Tolerance &amp; Clearance Calculator</a
   >.
 </p>
@@ -150,12 +150,18 @@ faq:
 </p>
 <ul>
   <li>
-    Use the <a href="/stl-print-preflight">STL Print Preflight Checker</a> for
-    STL files.
+    Use the
+    <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+      >STL Print Preflight Checker</a
+    >
+    for STL files.
   </li>
   <li>
-    Use the <a href="/3mf-print-preflight">3MF Print Preflight Checker</a> for
-    3MF files.
+    Use the
+    <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
+      >3MF Print Preflight Checker</a
+    >
+    for 3MF files.
   </li>
 </ul>
 <p>
@@ -168,8 +174,16 @@ faq:
 <h2>Check for thin regions</h2>
 <p>For a focused inspection, use the dedicated wall-thickness tools:</p>
 <ul>
-  <li><a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a></li>
-  <li><a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a></li>
+  <li>
+    <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+      >STL Wall Thickness Checker</a
+    >
+  </li>
+  <li>
+    <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+      >3MF Wall Thickness Checker</a
+    >
+  </li>
 </ul>
 <p>
   These tools sample the model and highlight regions that deserve closer
@@ -200,8 +214,16 @@ faq:
   dimensions:
 </p>
 <ul>
-  <li><a href="/stl-dimensions-checker">STL Dimensions Checker</a></li>
-  <li><a href="/3mf-dimensions-checker">3MF Dimensions Checker</a></li>
+  <li>
+    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+      >STL Dimensions Checker</a
+    >
+  </li>
+  <li>
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
+      >3MF Dimensions Checker</a
+    >
+  </li>
 </ul>
 <p>
   STL files need extra care because they usually contain triangle coordinates
@@ -269,10 +291,12 @@ faq:
 </p>
 <p>
   If your report identifies important topology problems, inspect them first with
-  the <a href="/stl-quality-checker">STL Quality Checker</a> or
-  <a href="/3mf-quality-checker">3MF Quality Checker</a>. For repairable STL
-  issues, use <a href="/stl-repair">STL Repair</a>, then run the relevant checks
-  on the repaired copy.
+  the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> or
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>. For
+  repairable STL issues, use
+  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a>, then run the relevant
+  checks on the repaired copy.
 </p>
 
 <h2>A practical workflow before slicing</h2>

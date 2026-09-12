@@ -38,7 +38,9 @@ faq:
 <p>
   For a format-neutral explanation of thin areas and what to do with a warning,
   read the
-  <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a>.
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >3D Print Wall Thickness Guide</a
+  >.
 </p>
 <h2>Start with the right preflight tool</h2>
 <p>
@@ -48,11 +50,15 @@ faq:
 <ul>
   <li>
     For an STL, use the
-    <a href="/stl-print-preflight">STL Print Preflight Checker</a>.
+    <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+      >STL Print Preflight Checker</a
+    >.
   </li>
   <li>
     For a 3MF file, use the
-    <a href="/3mf-print-preflight">3MF Print Preflight Checker</a>.
+    <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
+      >3MF Print Preflight Checker</a
+    >.
   </li>
 </ul>
 <p>
@@ -62,14 +68,16 @@ faq:
 </p>
 <p>
   Once you slice, finish the workflow with the
-  <a href="/gcode-preflight-checker">G-code Preflight Checker</a> to inspect the
-  final read-only toolpath summary before printing.
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >G-code Preflight Checker</a
+  >
+  to inspect the final read-only toolpath summary before printing.
 </p>
 <h2>1. Look at the model first</h2>
 <p>Before analysing numbers, open the file and inspect it visually.</p>
 <p>
-  Use the <a href="/stl-viewer">STL Viewer</a> or
-  <a href="/3mf-viewer">3MF Viewer</a> to check that:
+  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to check that:
 </p>
 <ul>
   <li>the model opens as expected;</li>
@@ -113,15 +121,16 @@ faq:
 </p>
 <p>
   For a closer file-specific check, use the
-  <a href="/stl-quality-checker">STL Quality Checker</a> or
-  <a href="/3mf-quality-checker">3MF Quality Checker</a>.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> or
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>.
 </p>
 <p>
   If a result identifies repairable mesh clean-up issues, use
-  <a href="/stl-repair">STL Repair</a> or <a href="/3mf-repair">3MF Repair</a>,
-  then verify the saved copy again. Repair is not a substitute for understanding
-  the model: a tool can remove certain simple problems, but it cannot infer the
-  designer’s intent in every broken area.
+  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a> or
+  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a>, then verify the saved
+  copy again. Repair is not a substitute for understanding the model: a tool can
+  remove certain simple problems, but it cannot infer the designer’s intent in
+  every broken area.
 </p>
 <h2>3. Confirm the real-world size</h2>
 <p>A model can be geometrically healthy but still be the wrong size.</p>
@@ -132,13 +141,15 @@ faq:
   space you can use.
 </p>
 <p>
-  Use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> or
-  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> to review
-  dimensions and printer fit.
+  Use the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  or
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
+  to review dimensions and printer fit.
 </p>
 <p>
   For holes, pins and other mating features, the
-  <a href="/3d-print-tolerance-calculator"
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
     >3D Print Tolerance &amp; Clearance Calculator</a
   >
   helps turn a selected fit and calibration measurements into model dimensions.
@@ -176,7 +187,7 @@ faq:
 </p>
 <p>
   For a fuller explanation, see
-  <a href="/how-to-check-if-a-3d-model-fits-your-printer"
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
     >How to Check if a 3D Model Fits Your Printer</a
   >.
 </p>
@@ -194,9 +205,14 @@ faq:
 </p>
 <p>
   Use the
-  <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> or
-  <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a> to find
-  sampled areas that deserve closer review.
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
+  or
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+    >3MF Wall Thickness Checker</a
+  >
+  to find sampled areas that deserve closer review.
 </p>
 <p>
   Treat the result as a screening tool, not a final manufacturing guarantee.
@@ -215,12 +231,15 @@ faq:
 </p>
 <ul>
   <li>
-    Use the <a href="/stl-triangle-counter">STL Triangle Counter</a> or
-    <a href="/3mf-triangle-counter">3MF Triangle Counter</a>.
+    Use the
+    <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>
+    or
+    <a href="{{ GuideSlug.Route3mfTriangleCounter }}">3MF Triangle Counter</a>.
   </li>
   <li>
     If an STL is much larger or denser than it needs to be, use the
-    <a href="/stl-file-size-reducer">STL File Size Reducer</a> on a copy.
+    <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a>
+    on a copy.
   </li>
 </ul>
 <p>
@@ -240,10 +259,11 @@ faq:
 </p>
 <p>
   Once the mesh is in good condition, use the
-  <a href="/stl-volume-calculator">STL Volume Calculator</a> or
-  <a href="/3mf-volume-calculator">3MF Volume Calculator</a> for an estimate.
-  Remember that infill, shells, supports and slicer settings determine the
-  material actually used by a print.
+  <a href="{{ GuideSlug.RouteStlVolumeCalculator }}">STL Volume Calculator</a>
+  or
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>
+  for an estimate. Remember that infill, shells, supports and slicer settings
+  determine the material actually used by a print.
 </p>
 <h2>8. Repair or change one thing at a time, then verify again</h2>
 <p>A good preflight workflow is iterative:</p>

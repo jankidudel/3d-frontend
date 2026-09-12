@@ -25,11 +25,13 @@ faq:
 </p>
 <h2>Start with one resolved-build preflight</h2>
 <p>
-  Start with the <a href="/3mf-print-preflight">3MF Print Preflight Checker</a>.
-  It resolves supported placed geometry locally, including repeated build items
-  and transforms, then brings together unit, size, printer fit, mesh, sampled
-  wall-thickness, complexity and volume guidance. Your selected file stays in
-  the browser.
+  Start with the
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
+    >3MF Print Preflight Checker</a
+  >. It resolves supported placed geometry locally, including repeated build
+  items and transforms, then brings together unit, size, printer fit, mesh,
+  sampled wall-thickness, complexity and volume guidance. Your selected file
+  stays in the browser.
 </p>
 <p>
   A preflight result is not a printable/not-printable score. It identifies the
@@ -38,7 +40,7 @@ faq:
 </p>
 <p>
   For a format-neutral pre-slice checklist that also covers STL files, read
-  <a href="/how-to-check-if-a-3d-model-is-ready-to-print"
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
     >how to check if a 3D model is ready to print</a
   >.
 </p>
@@ -51,9 +53,9 @@ faq:
 </p>
 <p>
   Select your printer preset in preflight, then review a fit failure in the
-  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>. Try a
-  right-angle rotation before changing scale. Scaling a functional part can
-  alter holes, clearances and wall thickness.
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
+  >. Try a right-angle rotation before changing scale. Scaling a functional part
+  can alter holes, clearances and wall thickness.
 </p>
 <h2>Check package and mesh health</h2>
 <p>The report can identify problems such as:</p>
@@ -74,14 +76,14 @@ faq:
 <h2>Check whether the mesh is a clean solid</h2>
 <p>
   Open edges usually mean the model has a hole or incomplete surface. Use the
-  <a href="/3mf-watertight-checker">3MF Watertight Checker</a> when you
-  specifically need to confirm that a model is closed.
+  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
+  when you specifically need to confirm that a model is closed.
 </p>
 <p>
   Non-manifold geometry is different: the surface may be closed but still fail
   to describe one clear solid. Use the
-  <a href="/3mf-manifold-checker">3MF Manifold Checker</a> to investigate that
-  type of topology problem.
+  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a> to
+  investigate that type of topology problem.
 </p>
 <p>
   For ordinary 3D printing, a model should normally be both watertight and
@@ -93,11 +95,11 @@ faq:
   safe one-click fix.
 </p>
 <p>
-  The <a href="/3mf-repair">3MF Repair tool</a> is designed for conservative
-  clean-up. It can remove clearly invalid or duplicate mesh data where that can
-  be done without guessing what the original designer intended. It does not
-  claim to rebuild arbitrary missing surfaces, resolve every non-manifold area
-  or make a model guaranteed printable.
+  The <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair tool</a> is designed
+  for conservative clean-up. It can remove clearly invalid or duplicate mesh
+  data where that can be done without guessing what the original designer
+  intended. It does not claim to rebuild arbitrary missing surfaces, resolve
+  every non-manifold area or make a model guaranteed printable.
 </p>
 <p>
   That distinction matters. A model with a few duplicate or zero-area triangles
@@ -108,13 +110,15 @@ faq:
 <p>A careful repair workflow is:</p>
 <ol>
   <li>
-    run <a href="/3mf-print-preflight">3MF Print Preflight</a> or the
-    <a href="/3mf-quality-checker">3MF Quality Checker</a>;
+    run
+    <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> or
+    the
+    <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>;
   </li>
   <li>read which issues were found;</li>
   <li>
-    use <a href="/3mf-repair">3MF Repair</a> only for supported, clearly
-    explained changes;
+    use <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> only for
+    supported, clearly explained changes;
   </li>
   <li>download the repaired copy rather than replacing the original;</li>
   <li>run Preflight again on the saved copy;</li>
@@ -129,8 +133,8 @@ faq:
 <p>
   A clean mesh can still be the wrong size for your printer. Check width, height
   and depth with the
-  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>, then inspect the
-  layer preview in your slicer.
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
+  >, then inspect the layer preview in your slicer.
 </p>
 <p>
   Look for missing perimeters, unexpected cavities, disconnected fragments and
@@ -143,13 +147,15 @@ faq:
   Preflight samples wall thickness at a bounded number of locations so that it
   remains usable in a browser. A zero thin-sample count does not prove every
   point is suitable. Investigate important regions with the
-  <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a> and the
-  intended material, nozzle and slicer preview.
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+    >3MF Wall Thickness Checker</a
+  >
+  and the intended material, nozzle and slicer preview.
 </p>
 <p>
   Treat volume as meaningful only for closed, manifold geometry. If the mesh has
   open or non-manifold edges, repair or return to the source CAD model before
   relying on a material estimate. The
-  <a href="/3mf-volume-calculator">3MF Volume Calculator</a> is useful after
-  that structural question is resolved.
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>
+  is useful after that structural question is resolved.
 </p>

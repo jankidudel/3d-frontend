@@ -26,8 +26,9 @@ faq:
 <h2>Start with triangle count, not file size alone</h2>
 <p>
   File size is useful, but triangle count tells you more about mesh complexity.
-  Use the <a href="/stl-triangle-counter">STL Triangle Counter</a> to see how
-  many faces the model contains.
+  Use the
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a> to
+  see how many faces the model contains.
 </p>
 <p>
   A high count is not automatically wrong. Organic sculpts, miniatures and
@@ -36,22 +37,22 @@ faq:
   was exported with unnecessarily fine settings.
 </p>
 <p>
-  Use the <a href="/stl-viewer">STL Viewer</a> to inspect the file at its
-  intended print size. If you cannot see the individual facets or the extra
-  surface detail at that size, the model may be a good candidate for
+  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to inspect the
+  file at its intended print size. If you cannot see the individual facets or
+  the extra surface detail at that size, the model may be a good candidate for
   simplification.
 </p>
 <h2>Remove unnecessary mesh problems first</h2>
 <p>
   Before using a general mesh-reduction tool, run the file through the
-  <a href="/stl-quality-checker">STL Quality Checker</a>. Duplicate triangles
-  and degenerate faces add data without improving the print.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
+  Duplicate triangles and degenerate faces add data without improving the print.
 </p>
 <p>
-  The <a href="/stl-repair">STL Repair Tool</a> can safely remove exact
-  duplicates and degenerate triangles. This will not dramatically reduce every
-  large file, but it is a sensible clean-up step and avoids simplifying defects
-  into a more complicated problem.
+  The <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> can safely
+  remove exact duplicates and degenerate triangles. This will not dramatically
+  reduce every large file, but it is a sensible clean-up step and avoids
+  simplifying defects into a more complicated problem.
 </p>
 <h2>Simplify the mesh carefully</h2>
 <h3>Convert ASCII STL to binary first</h3>
@@ -68,8 +69,9 @@ faq:
   printing.
 </p>
 <p>
-  Use the <a href="/stl-file-size-reducer">STL File Size Reducer</a> to see
-  whether your file is ASCII or binary, compare the size before and after
+  Use the
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a> to
+  see whether your file is ASCII or binary, compare the size before and after
   conversion, and optionally create a simplified copy.
 </p>
 <p>
@@ -110,10 +112,10 @@ faq:
 <h2>Validate the smaller file</h2>
 <p>
   After reducing or re-exporting, use the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to confirm that
-  the overall size has not changed. Then re-run the
-  <a href="/stl-quality-checker">STL Quality Checker</a> and inspect the model
-  in your slicer.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to confirm that the overall size has not changed. Then re-run the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
+  inspect the model in your slicer.
 </p>
 <p>
   The best STL is not the smallest possible file. It is the smallest file that

@@ -21,6 +21,7 @@ import {
   loadGeneratedPages,
   validateGeneratedPages,
 } from './check-internal-links.mts';
+import { GuideSlug } from '../src/app/features/guides/generated/guide-slug.generated.ts';
 
 type Level = 'ERROR' | 'WARNING';
 interface Finding {
@@ -67,7 +68,14 @@ for (const file of files) {
   const parsed = matter(await readFile(resolve(contentDir, file), 'utf8'));
   try {
     const front = validateGuideFrontMatter(parsed.data, source);
-    contents.set(front.slug, { ...front, html: parsed.content });
+    contents.set(front.slug, {
+      ...front,
+      html: parsed.content.replace(
+        /href="\{\{\s*GuideSlug\.([A-Za-z][A-Za-z0-9]*)\s*\}\}"/g,
+        (_match, reference: keyof typeof GuideSlug) =>
+          `href="/${GuideSlug[reference]}"`,
+      ),
+    });
     sourceBySlug.set(front.slug, source);
   } catch (error) {
     report(

@@ -20,10 +20,10 @@ faq:
 </p>
 <h2>Open a 3MF file in your browser</h2>
 <p>
-  Use the <a href="/3mf-viewer">3MF Viewer</a> to inspect the model visually. It
-  is useful when you want to confirm that the file contains the expected object,
-  check its shape or look for obvious problems before opening a full slicer
-  project.
+  Use the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to inspect the
+  model visually. It is useful when you want to confirm that the file contains
+  the expected object, check its shape or look for obvious problems before
+  opening a full slicer project.
 </p>
 <p>
   A viewer is for inspection, not final print preparation. You still need a
@@ -52,9 +52,10 @@ faq:
   incomplete download can produce an unreadable 3MF package.
 </p>
 <p>
-  Then try the <a href="/3mf-quality-checker">3MF Quality Checker</a>. It can
-  help distinguish between a damaged package, broken model references and a file
-  that is structurally readable but contains mesh problems.
+  Then try the
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>. It
+  can help distinguish between a damaged package, broken model references and a
+  file that is structurally readable but contains mesh problems.
 </p>
 <p>
   If the file opens in one tool but not another, the problem may be
@@ -64,14 +65,14 @@ faq:
 <h2>Check the model before printing</h2>
 <p>
   Once the file opens, confirm its dimensions with the
-  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>. A 3MF can
-  preserve units, but it is still worth checking printer fit.
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
+  >. A 3MF can preserve units, but it is still worth checking printer fit.
 </p>
 <p>
   If the slicer preview looks wrong, inspect mesh health with the Quality
   Checker. For safely repairable triangle defects, use the
-  <a href="/3mf-repair">3MF Repair Tool</a>, then check the repaired output
-  again.
+  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair Tool</a>, then check the
+  repaired output again.
 </p>
 <p>
   Keep the original 3MF file. Converting it to STL can help with simple

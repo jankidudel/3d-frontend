@@ -22,9 +22,9 @@ faq:
   or the length of a tab.
 </p>
 <p>
-  Use the <a href="/stl-viewer">STL Viewer</a> or
-  <a href="/3mf-viewer">3MF Viewer</a> to open a model locally, inspect it in 3D
-  and measure the distance between two visible points.
+  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to open a model
+  locally, inspect it in 3D and measure the distance between two visible points.
 </p>
 <h2>Start with overall dimensions</h2>
 <p>
@@ -33,8 +33,16 @@ faq:
   features.
 </p>
 <ul>
-  <li><a href="/stl-dimensions-checker">STL Dimensions Checker</a></li>
-  <li><a href="/3mf-dimensions-checker">3MF Dimensions Checker</a></li>
+  <li>
+    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+      >STL Dimensions Checker</a
+    >
+  </li>
+  <li>
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
+      >3MF Dimensions Checker</a
+    >
+  </li>
 </ul>
 <p>
   If a model is 250 mm wide and your usable build area is 220 mm wide, the fit
@@ -64,7 +72,7 @@ faq:
   fit, return to the CAD model where possible, or print and measure a
   calibration test using the intended printer, material and settings. For
   tolerance planning, use the
-  <a href="/3d-print-tolerance-calculator"
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
     >3D Print Tolerance &amp; Clearance Calculator</a
   >.
 </p>
@@ -73,27 +81,30 @@ faq:
   STL usually stores triangle coordinates without reliable information about
   whether values mean millimetres, inches, centimetres or another unit. A
   measurement can be mathematically correct but physically interpreted
-  incorrectly. When using the <a href="/stl-viewer">STL Viewer</a>, choose the
-  intended unit before treating a result as a real-world dimension, then confirm
-  model scale with the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a>.
+  incorrectly. When using the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a>, choose the intended
+  unit before treating a result as a real-world dimension, then confirm model
+  scale with the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
+  >.
 </p>
 <h2>3MF can provide more unit context</h2>
 <p>
   3MF files can declare a package unit, which makes scale interpretation more
   reliable when the package is valid and supported. The
-  <a href="/3mf-viewer">3MF Viewer</a> shows its resolved model and available
-  unit information. Confirm the resulting physical dimensions after conversion
-  or when receiving files from an unfamiliar workflow.
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> shows its resolved
+  model and available unit information. Confirm the resulting physical
+  dimensions after conversion or when receiving files from an unfamiliar
+  workflow.
 </p>
 <h2>Measure, then verify</h2>
 <p>
   Measuring one feature does not replace a complete pre-print check. Inspect the
   model, check overall dimensions and printer fit, measure important visible
   features, check mesh integrity and wall thickness where relevant, then run
-  <a href="/stl-print-preflight">STL Print Preflight</a> or
-  <a href="/3mf-print-preflight">3MF Print Preflight</a> on the final file
-  before slicing.
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> on
+  the final file before slicing.
 </p>
 <h2>A measured model is easier to trust</h2>
 <p>

@@ -25,14 +25,15 @@ faq:
 </p>
 <h2>Start by inspecting the model</h2>
 <p>
-  Use the <a href="/stl-viewer">STL Viewer</a> to understand the model shape
-  before opening it in a slicer. Look for large flat surfaces, overhangs, long
-  thin features and cosmetic faces that you want to keep clean.
+  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to understand
+  the model shape before opening it in a slicer. Look for large flat surfaces,
+  overhangs, long thin features and cosmetic faces that you want to keep clean.
 </p>
 <p>
-  Then use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
-  confirm the model size. Rotation can change whether a long object fits inside
-  the build volume, even though the object itself is unchanged.
+  Then use the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to confirm the model size. Rotation can change whether a long object fits
+  inside the build volume, even though the object itself is unchanged.
 </p>
 <h2>Reduce support where possible</h2>
 <p>
@@ -64,7 +65,7 @@ faq:
 <h2>Check printer fit</h2>
 <p>
   A model that does not fit flat may fit diagonally or on its side. Use the
-  <a href="/how-to-check-if-a-3d-model-fits-your-printer"
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
     >guide to checking printer fit</a
   >
   and compare alternative orientations in your slicer.
@@ -82,7 +83,7 @@ faq:
 </p>
 <p>
   Also check mesh health with the
-  <a href="/stl-quality-checker">STL Quality Checker</a>. A good orientation
-  cannot compensate for holes, non-manifold edges or other geometry problems in
-  the STL itself.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. A
+  good orientation cannot compensate for holes, non-manifold edges or other
+  geometry problems in the STL itself.
 </p>

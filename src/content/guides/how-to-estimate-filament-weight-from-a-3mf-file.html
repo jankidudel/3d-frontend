@@ -25,9 +25,9 @@ faq:
 <h2>Calculate model volume</h2>
 <p>
   Upload the file to the
-  <a href="/3mf-volume-calculator">3MF Volume Calculator</a>. It reports the
-  volume of the resolved mesh geometry and can provide a material-weight
-  estimate.
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>.
+  It reports the volume of the resolved mesh geometry and can provide a
+  material-weight estimate.
 </p>
 <p>
   Choose the correct unit and material density. The same model volume weighs
@@ -55,8 +55,10 @@ faq:
 <p>
   Volume is most dependable when the model forms a closed, consistently oriented
   surface. Before relying on the result, use the
-  <a href="/3mf-quality-checker">3MF Quality Checker</a> and, where relevant,
-  the <a href="/3mf-watertight-checker">3MF Watertight Checker</a>.
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> and,
+  where relevant, the
+  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a
+  >.
 </p>
 <p>
   A model with holes or non-manifold geometry can produce an unreliable
@@ -69,7 +71,8 @@ faq:
   slicing.
 </p>
 <p>
-  Then open the model in the <a href="/3mf-viewer">3MF Viewer</a>, confirm its
+  Then open the model in the
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, confirm its
   dimensions and produce a final slice with your intended printer profile. The
   slicer remains the best source for the actual material estimate because it
   knows the print settings that will determine how much filament is deposited.

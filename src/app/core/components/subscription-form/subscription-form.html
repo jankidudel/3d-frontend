@@ -24,7 +24,7 @@
       {{ submitting() ? 'Subscribing…' : buttonLabel() }}
     </button>
   </div>
-  @if (verificationVisible()) {
+  @if (captchaAvailable) {
     <div
       class="verification"
       [attr.aria-labelledby]="idPrefix() + '-captcha-label'"

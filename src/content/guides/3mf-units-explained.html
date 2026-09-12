@@ -20,7 +20,8 @@ faq:
 </p>
 <p>
   For one resolved-build view of unit, dimensions, printer fit and mesh
-  findings, start with <a href="/3mf-print-preflight">3MF Print Preflight</a>.
+  findings, start with
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a>.
 </p>
 <h2>The important difference from STL</h2>
 <p>
@@ -45,10 +46,12 @@ faq:
   A 3MF package may contain multiple objects and build items placed with
   transforms. The relevant dimensions for a print are the final resolved build
   dimensions, not only the dimensions of an individual mesh before placement.
-  Use the <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> to
-  inspect width, height and depth, then compare them with the printer’s usable
-  area. Use the <a href="/3mf-viewer">3MF Viewer</a> to see whether multiple
-  parts are arranged as expected.
+  Use the
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
+  to inspect width, height and depth, then compare them with the printer’s
+  usable area. Use the
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to see whether
+  multiple parts are arranged as expected.
 </p>
 <h2>Why scale errors still happen</h2>
 <p>
@@ -66,20 +69,25 @@ faq:
   designed to fit together. Scaling one object alone can change clearances,
   alignment or a mating feature. After any scale change, save a new copy,
   remeasure it and check printer fit. Read
-  <a href="/how-to-scale-a-3mf-file">How to Scale a 3MF File</a> for the
-  practical workflow.
+  <a href="{{ GuideSlug.RouteHowToScaleA3mfFile }}">How to Scale a 3MF File</a>
+  for the practical workflow.
 </p>
 <h2>Units are one check in a larger preflight</h2>
 <p>
   Correct size does not guarantee printable geometry. Check topology when a file
   comes from an uncertain source, has been converted or produces slicer
-  warnings. The <a href="/3mf-quality-checker">3MF Quality Checker</a> can help
-  identify mesh problems, while the
-  <a href="/how-to-check-if-a-3d-model-fits-your-printer">printer-fit guide</a>
+  warnings. The
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> can
+  help identify mesh problems, while the
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >printer-fit guide</a
+  >
   covers the physical constraints that dimensions alone cannot answer.
 </p>
 <p>
-  <a href="/3mf-dimensions-checker"><strong>Check 3MF dimensions</strong></a>
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
+    ><strong>Check 3MF dimensions</strong></a
+  >
   before committing to a print.
 </p>
 <h2>A short pre-print units checklist</h2>

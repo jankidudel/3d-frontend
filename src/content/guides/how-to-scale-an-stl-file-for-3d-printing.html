@@ -36,10 +36,11 @@ faq:
 <h2>Measure the STL before scaling</h2>
 <p>
   Before changing anything, check the model's current dimensions. The
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> shows width,
-  height and depth and lets you work with different unit assumptions. Knowing
-  the current size helps distinguish between a simple scaling requirement, an
-  incorrect unit assumption, and a model exported at the wrong size.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  shows width, height and depth and lets you work with different unit
+  assumptions. Knowing the current size helps distinguish between a simple
+  scaling requirement, an incorrect unit assumption, and a model exported at the
+  wrong size.
 </p>
 <h2>How proportional scaling works</h2>
 <p>
@@ -91,8 +92,8 @@ faq:
   <code>150 ÷ 200 × 100 = 75%</code>. Scale the complete model to
   <strong>75%</strong>. A 40 mm part that needs to become 100 mm needs
   <strong>250%</strong>. The
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> can calculate
-  proportional scaling without manual arithmetic.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  can calculate proportional scaling without manual arithmetic.
 </p>
 <h2>Fixing an STL that is about 25.4 times too large or small</h2>
 <p>
@@ -112,16 +113,16 @@ faq:
 <p>
   Compare the final width, depth and height with the usable dimensions of the
   printer. The
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> includes
-  printer-fit checks for common printer build volumes. Orientation matters: a
-  part that does not fit in one orientation may fit after rotation.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  includes printer-fit checks for common printer build volumes. Orientation
+  matters: a part that does not fit in one orientation may fit after rotation.
 </p>
 <h2>Scaling does not reduce mesh complexity</h2>
 <p>
   Changing the physical size of an STL does not automatically change its
   triangle count. A model scaled to 50% still contains the same triangles unless
   the mesh itself is simplified. For a very large or slow STL, use the
-  <a href="/stl-triangle-counter">STL Triangle Counter</a>.
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>.
 </p>
 <h2>Recommended workflow</h2>
 <ol>
@@ -135,15 +136,18 @@ faq:
 <h2>Scale an STL online</h2>
 <p>
   If you know the percentage, exact target width, height, or depth, use the
-  <a href="/stl-scale-tool">STL Scale Tool</a> to resize the mesh proportionally
-  and download the result. Because STL files do not declare units, check the
-  reported dimensions before printing. For a deeper explanation of the maths and
-  unit conversions, see
-  <a href="/stl-scale-factor-explained">STL Scale Factor Explained</a>.
+  <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale Tool</a> to resize the
+  mesh proportionally and download the result. Because STL files do not declare
+  units, check the reported dimensions before printing. For a deeper explanation
+  of the maths and unit conversions, see
+  <a href="{{ GuideSlug.RouteStlScaleFactorExplained }}"
+    >STL Scale Factor Explained</a
+  >.
 </p>
 <h2>Measure and scale your STL</h2>
 <p>
-  Use the free <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
-  inspect model size, convert units, calculate proportional scaling and check
+  Use the free
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to inspect model size, convert units, calculate proportional scaling and check
   printer fit.
 </p>

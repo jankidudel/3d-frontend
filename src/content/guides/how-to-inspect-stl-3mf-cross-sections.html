@@ -22,8 +22,9 @@ faq:
   from different angles before you spend time slicing or printing.
 </p>
 <p>
-  Open a model locally in the <a href="/stl-viewer">STL Viewer</a> or
-  <a href="/3mf-viewer">3MF Viewer</a>, then use
+  Open a model locally in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, then use
   <strong>Inspect cross-section</strong> below the viewer controls. No file is
   uploaded just to view a cross-section.
 </p>
@@ -45,8 +46,13 @@ faq:
 <p>
   This visual check is useful before a more specific analysis. If a region needs
   closer thickness review, use the
-  <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> or
-  <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a>.
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
+  or
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+    >3MF Wall Thickness Checker</a
+  >.
 </p>
 <h2>How to inspect a model cross-section</h2>
 <ol>
@@ -79,8 +85,10 @@ faq:
   not a guaranteed design dimension. For a specific feature size, use
   point-to-point measurement and confirm the intended STL unit. For overall
   printer fit, use the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> or
-  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  or
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
+  >.
 </p>
 <h2>Cross-sections do not replace validation</h2>
 <p>
@@ -92,11 +100,13 @@ faq:
 </p>
 <p>
   After visual inspection, run
-  <a href="/stl-print-preflight">STL Print Preflight</a> or
-  <a href="/3mf-print-preflight">3MF Print Preflight</a> for mesh, size, fit and
-  other file-level checks. Then, after slicing, use the
-  <a href="/gcode-preflight-checker">G-code Preflight Checker</a> to review the
-  resulting toolpath separately.
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> for
+  mesh, size, fit and other file-level checks. Then, after slicing, use the
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >G-code Preflight Checker</a
+  >
+  to review the resulting toolpath separately.
 </p>
 <h2>Model cross-sections versus slicer layer preview</h2>
 <p>

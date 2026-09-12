@@ -14,9 +14,12 @@ faq:
 ---
 
 <p class="lead">
-  The <a href="/stl-print-preflight">STL Print Preflight Checker</a> combines
-  this topology concern with size, printer-fit and sampled wall-thickness
-  guidance before you slice.
+  The
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+    >STL Print Preflight Checker</a
+  >
+  combines this topology concern with size, printer-fit and sampled
+  wall-thickness guidance before you slice.
 </p>
 <p class="lead">
   A watertight STL describes a completely closed surface. Imagine filling the
@@ -32,11 +35,12 @@ faq:
 </p>
 <h2>The quickest way to check</h2>
 <p>
-  Use the free <a href="/stl-watertight-checker">STL Watertight Checker</a>. It
-  analyses the mesh and reports whether it finds open edges, together with the
-  number of separate shells. For a broader report that also checks duplicates,
-  degenerate triangles, non-manifold edges and face orientation, use the
-  <a href="/stl-quality-checker">STL Quality Checker</a>.
+  Use the free
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a
+  >. It analyses the mesh and reports whether it finds open edges, together with
+  the number of separate shells. For a broader report that also checks
+  duplicates, degenerate triangles, non-manifold edges and face orientation, use
+  the <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
 </p>
 <p>
   A zero open-edge count is a strong indication that a mesh is closed. It is
@@ -60,7 +64,8 @@ faq:
 </p>
 <h2>Visual checks are helpful, but not enough</h2>
 <p>
-  Opening the file in the <a href="/stl-viewer">STL Viewer</a> is useful for
+  Opening the file in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> is useful for
   inspecting its shape and dimensions, but a viewer alone cannot reliably reveal
   every tiny hole or internal topology issue. A mesh can look closed from the
   outside while still having open edges deep inside or beneath overlapping
@@ -76,7 +81,9 @@ faq:
   Start by finding the cause. A small missing face may be simple to fill.
   Intersecting parts may need a boolean union. A 3D scan can need hole filling
   and surface reconstruction. The guide
-  <a href="/how-to-fix-non-manifold-stl">How to Fix Non-Manifold STL Files</a>
+  <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
+    >How to Fix Non-Manifold STL Files</a
+  >
   explains common repair approaches and why some defects are not visible at
   first glance.
 </p>

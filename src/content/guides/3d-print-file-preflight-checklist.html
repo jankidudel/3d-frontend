@@ -64,9 +64,9 @@ faq:
   converted files.
 </p>
 <p>
-  Use the <a href="/stl-viewer">STL Viewer</a> or
-  <a href="/3mf-viewer">3MF Viewer</a>. Visual inspection is only the first
-  check: it does not prove that the underlying geometry is valid.
+  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Visual inspection is
+  only the first check: it does not prove that the underlying geometry is valid.
 </p>
 
 <h2>2. Check dimensions before print settings</h2>
@@ -77,12 +77,16 @@ faq:
   therefore be interpreted at a very different physical size.
 </p>
 <p>
-  The <a href="/stl-dimensions-checker">STL Dimensions Checker</a> and
-  <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> show X, Y and Z
-  dimensions and support a practical size/fit review. For STL unit assumptions
-  and proportional changes, see
-  <a href="/why-stl-files-have-no-units">why STL files have no units</a> and the
-  <a href="/stl-scale-tool">STL Scale Tool</a>.
+  The
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  and
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
+  show X, Y and Z dimensions and support a practical size/fit review. For STL
+  unit assumptions and proportional changes, see
+  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
+    >why STL files have no units</a
+  >
+  and the <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale Tool</a>.
 </p>
 
 <h2>3. Confirm that the model fits the printer</h2>
@@ -94,14 +98,16 @@ faq:
 </p>
 <p>
   Use the dimensions checkers and
-  <a href="/how-to-check-if-a-3d-model-fits-your-printer">printer-fit guide</a>
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >printer-fit guide</a
+  >
   to review size in context. Fitting inside a build volume does not settle
   supports, bed adhesion, clearances or printer-specific restrictions; those
   remain slicer and user decisions.
 </p>
 <p>
   If your model contains holes, pins or mating parts, use the
-  <a href="/3d-print-tolerance-calculator"
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
     >3D Print Tolerance &amp; Clearance Calculator</a
   >
   before exporting the final file. It turns a chosen fit and calibration
@@ -116,13 +122,14 @@ faq:
   slicer interprets the surface, but not every warning requires repair.
 </p>
 <p>
-  Use the <a href="/stl-quality-checker">STL Quality Checker</a> or
-  <a href="/3mf-quality-checker">3MF Quality Checker</a> for a broad report. For
-  focused topology checks, use the
-  <a href="/stl-manifold-checker">STL Manifold Checker</a> or
-  <a href="/stl-watertight-checker">STL Watertight Checker</a>. Modern slicers
-  can compensate for some defects; the point is to reveal the geometry so you
-  can decide deliberately.
+  Use the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> or
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> for a
+  broad report. For focused topology checks, use the
+  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a> or
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a
+  >. Modern slicers can compensate for some defects; the point is to reveal the
+  geometry so you can decide deliberately.
 </p>
 
 <h2>5. Check watertightness when closed geometry matters</h2>
@@ -143,16 +150,23 @@ faq:
   Wall thickness is different from mesh validity. A manifold, watertight model
   can still contain walls that are too thin for a particular process or intended
   load. Use the
-  <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> or
-  <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a> to
-  identify potentially thin regions, then inspect the heatmap and intended print
-  settings.
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
+  or
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+    >3MF Wall Thickness Checker</a
+  >
+  to identify potentially thin regions, then inspect the heatmap and intended
+  print settings.
 </p>
 <p>
   Thickness analysis is a geometric estimate. It does not know every nozzle,
   resin process, material property or mechanical requirement, so a thin-region
   result is information for investigation—not a guarantee of failure. The
-  <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a>
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >3D Print Wall Thickness Guide</a
+  >
   explains how to act on a warning.
 </p>
 
@@ -162,19 +176,23 @@ faq:
   file size and slow browser, CAD or slicer work without improving a shape that
   does not need that resolution. A low count can be entirely appropriate for
   simple geometry. Use the
-  <a href="/stl-triangle-counter">STL Triangle Counter</a>,
-  <a href="/3mf-triangle-counter">3MF Triangle Counter</a>, and the
-  <a href="/stl-triangle-count-explained">triangle-count guide</a> to spot
-  obvious excess rather than minimise triangles automatically.
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>,
+  <a href="{{ GuideSlug.Route3mfTriangleCounter }}">3MF Triangle Counter</a>,
+  and the
+  <a href="{{ GuideSlug.RouteStlTriangleCountExplained }}"
+    >triangle-count guide</a
+  >
+  to spot obvious excess rather than minimise triangles automatically.
 </p>
 <p>
   Volume can help compare material use or reveal an unexpected geometry change,
   but it is meaningful only when the mesh supports an enclosed-volume
   interpretation. Substantial holes, self-intersections and other mesh problems
   can make the number misleading. Use the
-  <a href="/stl-volume-calculator">STL Volume Calculator</a> or
-  <a href="/3mf-volume-calculator">3MF Volume Calculator</a> after reviewing
-  mesh health.
+  <a href="{{ GuideSlug.RouteStlVolumeCalculator }}">STL Volume Calculator</a>
+  or
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>
+  after reviewing mesh health.
 </p>
 
 <h2>8. Repair only when you understand the change</h2>
@@ -184,10 +202,10 @@ faq:
   original, make one conservative change, then inspect the saved copy again.
 </p>
 <p>
-  Use <a href="/stl-repair">STL Repair</a> or
-  <a href="/3mf-repair">3MF Repair</a> only for their supported, explained
-  clean-up actions. They do not reconstruct arbitrary missing surfaces or guess
-  design intent.
+  Use <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a> or
+  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> only for their
+  supported, explained clean-up actions. They do not reconstruct arbitrary
+  missing surfaces or guess design intent.
 </p>
 <blockquote>
   <p><strong>Repair → verify again.</strong></p>
@@ -196,11 +214,11 @@ faq:
 <h2>9. Verify conversions, scaling and reduction</h2>
 <p>
   The same rule applies after
-  <a href="/stl-to-3mf-converter">STL to 3MF conversion</a>,
-  <a href="/3mf-to-stl-converter">3MF to STL conversion</a>, scaling, mesh
-  reduction or repair. Compare dimensions, visual geometry, mesh integrity, and
-  triangle count where it changed. For format trade-offs, read
-  <a href="/3mf-vs-stl">3MF vs STL</a>.
+  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL to 3MF conversion</a>,
+  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL conversion</a>,
+  scaling, mesh reduction or repair. Compare dimensions, visual geometry, mesh
+  integrity, and triangle count where it changed. For format trade-offs, read
+  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a>.
 </p>
 <p>
   This creates a practical workflow:
@@ -254,8 +272,10 @@ faq:
   STL is simple and widely supported, but it does not store an authoritative
   physical unit and has limited metadata. 3MF can preserve units and richer
   structural information, but its geometry should still be inspected. See
-  <a href="/3mf-vs-stl">the dedicated STL vs 3MF comparison</a> for the fuller
-  decision.
+  <a href="{{ GuideSlug.Route3mfVsStl }}"
+    >the dedicated STL vs 3MF comparison</a
+  >
+  for the fuller decision.
 </p>
 
 <h2>Before you slice</h2>

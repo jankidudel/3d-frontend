@@ -26,16 +26,17 @@ faq:
 </p>
 <h2>How to check an STL's size</h2>
 <p>
-  Upload it to the <a href="/stl-dimensions-checker">STL Dimensions Checker</a>.
-  It reports the model's width, height and depth and lets you view the values as
-  millimetres, centimetres or inches. You can also calculate proportional
+  Upload it to the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
+  >. It reports the model's width, height and depth and lets you view the values
+  as millimetres, centimetres or inches. You can also calculate proportional
   scaling and compare the model with a printer build volume.
 </p>
 <p>
   If you only need a quick visual look at the geometry and raw bounds, the
-  <a href="/stl-viewer">STL Viewer</a> shows dimensions locally in your browser.
-  Remember that neither tool can know the original author's intended unit from
-  the STL itself.
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> shows dimensions
+  locally in your browser. Remember that neither tool can know the original
+  author's intended unit from the STL itself.
 </p>
 <h2>Common scaling mistakes</h2>
 <h3>Millimetres interpreted as inches</h3>
@@ -76,7 +77,8 @@ faq:
 <p>
   Unlike STL, 3MF can store a declared model unit. If your workflow supports it,
   3MF can reduce ambiguity between modelling and slicing. InspectMesh's
-  <a href="/3mf-quality-checker">3MF Quality Checker</a> reports the declared
-  unit, and the <a href="/3mf-viewer">3MF Viewer</a> lets you inspect the
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>
+  reports the declared unit, and the
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> lets you inspect the
   displayed model locally.
 </p>

@@ -27,15 +27,15 @@ faq:
 <h2>Check whether duplicates are present</h2>
 <p>
   Upload the model to the
-  <a href="/stl-quality-checker">STL Quality Checker</a>. The report identifies
-  duplicate triangles as a separate issue, so you can distinguish them from
-  non-manifold geometry or degenerate faces.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. The
+  report identifies duplicate triangles as a separate issue, so you can
+  distinguish them from non-manifold geometry or degenerate faces.
 </p>
 <p>
   It is useful to check the total complexity too. The
-  <a href="/stl-triangle-counter">STL Triangle Counter</a> shows how many
-  triangles the file contains. If a relatively simple object has an unexpectedly
-  high count, duplicates may be one possible cause.
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>
+  shows how many triangles the file contains. If a relatively simple object has
+  an unexpectedly high count, duplicates may be one possible cause.
 </p>
 <h2>Why duplicate faces appear</h2>
 <p>
@@ -54,8 +54,8 @@ faq:
 </p>
 <h2>Remove duplicates conservatively</h2>
 <p>
-  Use the <a href="/stl-repair">STL Repair Tool</a> to remove exact duplicate
-  triangles. The repair report should show:
+  Use the <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> to remove
+  exact duplicate triangles. The repair report should show:
 </p>
 <ul>
   <li>triangle count before and after</li>
@@ -66,8 +66,8 @@ faq:
 <p>
   If duplicates were removed, the after count should be lower than the before
   count. Download the repaired file, then run the
-  <a href="/stl-quality-checker">STL Quality Checker</a> again to confirm that
-  duplicate-triangle issues are gone.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> again
+  to confirm that duplicate-triangle issues are gone.
 </p>
 <h2>Do not confuse duplicates with overlapping parts</h2>
 <p>
@@ -83,7 +83,8 @@ faq:
 </p>
 <p>
   If the quality report still shows non-manifold edges after duplicate removal,
-  use the <a href="/stl-manifold-checker">STL Manifold Checker</a> to
+  use the
+  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a> to
   investigate the remaining topology.
 </p>
 <h2>Re-check before slicing</h2>

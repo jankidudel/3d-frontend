@@ -26,9 +26,10 @@ faq:
 </p>
 <h2>Check orientation before trying to fix it</h2>
 <p>
-  Start with the <a href="/stl-quality-checker">STL Quality Checker</a>. It can
-  report inconsistent triangle orientation alongside holes, duplicate faces and
-  non-manifold edges.
+  Start with the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
+  can report inconsistent triangle orientation alongside holes, duplicate faces
+  and non-manifold edges.
 </p>
 <p>
   Do not assume every dark-looking face in a 3D viewer is a flipped normal.
@@ -57,7 +58,8 @@ faq:
   are inconsistent with their neighbours and reverse them safely.
 </p>
 <p>
-  Upload the file to the <a href="/stl-repair">STL Repair Tool</a>. It applies
+  Upload the file to the
+  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a>. It applies
   conservative repairs and reports how many orientation fixes were made. If it
   cannot determine a safe result, it should leave the geometry unchanged rather
   than guessing.
@@ -65,8 +67,8 @@ faq:
 <p>
   After repair, download the file only if the report confirms that changes were
   applied. Then run the repaired file through the
-  <a href="/stl-quality-checker">STL Quality Checker</a> again to confirm
-  whether orientation issues remain.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> again
+  to confirm whether orientation issues remain.
 </p>
 <h2>Manual correction options</h2>
 <p>
@@ -89,8 +91,9 @@ faq:
 <p>
   Open the corrected STL in your slicer and inspect the layer preview. Watch for
   missing walls, inverted cavities or unexpected filled regions. You can also
-  use the <a href="/stl-manifold-checker">STL Manifold Checker</a> to find
-  topology issues that may be related to the orientation problem.
+  use the
+  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a> to
+  find topology issues that may be related to the orientation problem.
 </p>
 <p>
   Correct normals make the mesh easier for other software to interpret, but they

@@ -29,12 +29,14 @@ faq:
 <h2>First, check what is actually wrong</h2>
 <p>
   Do not start repairing blindly. Upload the file to the
-  <a href="/stl-quality-checker">STL Quality Checker</a> to see the counts for
-  open edges, non-manifold edges, duplicate triangles, degenerate triangles and
-  orientation issues. If the main question is whether the model forms a closed
-  surface, use the <a href="/stl-watertight-checker">STL Watertight Checker</a>.
-  The <a href="/stl-manifold-checker">STL Manifold Checker</a> gives a more
-  focused topology report.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> to
+  see the counts for open edges, non-manifold edges, duplicate triangles,
+  degenerate triangles and orientation issues. If the main question is whether
+  the model forms a closed surface, use the
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a
+  >. The
+  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>
+  gives a more focused topology report.
 </p>
 <p>
   The report tells you whether a repair is likely to be simple. A few open edges
@@ -94,9 +96,9 @@ faq:
 <h2>Re-check after repair</h2>
 <p>
   Export or save the repaired model under a new filename, then run the
-  <a href="/stl-quality-checker">STL Quality Checker</a> again. Ideally,
-  open-edge and non-manifold-edge counts should be zero for a single closed
-  printable solid. Separate shells are not automatically wrong - for example, a
-  print plate can contain several independent parts - but each part should still
-  be a valid surface where appropriate.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>
+  again. Ideally, open-edge and non-manifold-edge counts should be zero for a
+  single closed printable solid. Separate shells are not automatically wrong -
+  for example, a print plate can contain several independent parts - but each
+  part should still be a valid surface where appropriate.
 </p>

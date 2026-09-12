@@ -1,6 +1,6 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import { PublicRoutePath } from './core/seo/public-routes';
-import { guideSlugs } from './features/guides/guide-route-data.generated';
+import { guideSlugs } from './features/guides/generated/guide-route-data.generated';
 
 export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.Home, renderMode: RenderMode.Prerender },

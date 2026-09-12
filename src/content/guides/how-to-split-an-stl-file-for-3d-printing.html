@@ -25,8 +25,8 @@ faq:
 <h2>Confirm that the model is too large</h2>
 <p>
   Measure the STL first with the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a>. Compare width,
-  depth and height with your printer’s usable build volume.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
+  >. Compare width, depth and height with your printer’s usable build volume.
 </p>
 <p>
   Try rotating the model before deciding to split it. A diagonal or vertical
@@ -36,7 +36,8 @@ faq:
 <p>If the model still does not fit, splitting is a practical next step.</p>
 <p>
   For a simple straight X, Y or Z cut, use the
-  <a href="/stl-splitter">STL Splitter</a> to create two capped STL parts.
+  <a href="{{ GuideSlug.RouteStlSplitter }}">STL Splitter</a> to create two
+  capped STL parts.
 </p>
 <h2>Choose the cut location carefully</h2>
 <p>
@@ -74,14 +75,15 @@ faq:
 <h2>Check each part before slicing</h2>
 <p>
   After splitting, inspect each new STL separately. Use the
-  <a href="/stl-viewer">STL Viewer</a> to check the cut faces and the
-  <a href="/stl-quality-checker">STL Quality Checker</a> to make sure the
-  operation did not create holes or non-manifold geometry.
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to check the cut faces
+  and the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> to
+  make sure the operation did not create holes or non-manifold geometry.
 </p>
 <p>
   Each half should be a clean printable solid. Use the
-  <a href="/stl-watertight-checker">STL Watertight Checker</a> if you need to
-  confirm that the cut produced a closed surface.
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  if you need to confirm that the cut produced a closed surface.
 </p>
 <h2>Plan the assembly</h2>
 <p>

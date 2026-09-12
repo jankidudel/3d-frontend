@@ -28,10 +28,11 @@ faq:
   extension.
 </p>
 <p>
-  Use the <a href="/3mf-quality-checker">3MF Quality Checker</a> to inspect the
-  package and resolved mesh data. The <a href="/3mf-viewer">3MF Viewer</a> helps
-  confirm that the intended objects and arrangement are present before you
-  change anything.
+  Use the
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> to
+  inspect the package and resolved mesh data. The
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> helps confirm that the
+  intended objects and arrangement are present before you change anything.
 </p>
 <h2>Check package and extension compatibility</h2>
 <p>
@@ -50,10 +51,10 @@ faq:
   or degenerate triangles. These problems may allow an import but cause slice
   generation to fail or produce missing layers. Check topology with the Quality
   Checker, then use the
-  <a href="/3mf-watertight-checker">Watertight Checker</a> and
-  <a href="/3mf-manifold-checker">Manifold Checker</a> when a closed, simple
-  solid is expected. Repair in the modelling or mesh-repair tool that is
-  appropriate for the design, then validate the exported package again.
+  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">Watertight Checker</a> and
+  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">Manifold Checker</a> when a
+  closed, simple solid is expected. Repair in the modelling or mesh-repair tool
+  that is appropriate for the design, then validate the exported package again.
 </p>
 <h2>Review build items, transforms and placement</h2>
 <p>
@@ -68,10 +69,11 @@ faq:
 <h2>Confirm units, scale and slicer version</h2>
 <p>
   3MF can declare units, but declared units do not prevent every scale surprise.
-  Use the <a href="/3mf-dimensions-checker">Dimensions Checker</a> to inspect
-  final dimensions and compare them with your printer’s usable volume. A model
-  may be technically valid but too large, too small or positioned outside the
-  bed. Also update the slicer before spending time on workarounds: format
+  Use the
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">Dimensions Checker</a> to
+  inspect final dimensions and compare them with your printer’s usable volume. A
+  model may be technically valid but too large, too small or positioned outside
+  the bed. Also update the slicer before spending time on workarounds: format
   support and import fixes change between versions.
 </p>
 <h2>Use a controlled fallback</h2>
@@ -83,8 +85,10 @@ faq:
   can discard build arrangement, units or metadata that matter to the print.
 </p>
 <p>
-  <a href="/3mf-quality-checker"><strong>Check 3MF quality</strong></a> to begin
-  with evidence rather than guesswork.
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}"
+    ><strong>Check 3MF quality</strong></a
+  >
+  to begin with evidence rather than guesswork.
 </p>
 <h2>Keep a small reproduction case</h2>
 <p>

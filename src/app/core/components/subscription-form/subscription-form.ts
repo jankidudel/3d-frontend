@@ -1,4 +1,5 @@
 import {
+  afterNextRender,
   Component,
   computed,
   inject,
@@ -30,7 +31,6 @@ export class SubscriptionFormComponent {
   protected readonly submitted = signal(false);
   protected readonly submitting = signal(false);
   protected readonly captchaError = signal('');
-  protected readonly verificationVisible = signal(false);
   protected readonly emailInvalid = computed(() =>
     /^(Enter a valid email address|Email address must)/.test(this.error()),
   );
@@ -45,6 +45,14 @@ export class SubscriptionFormComponent {
   private captchaWidgetId?: string;
   private captchaLoading = false;
   private pendingCaptchaSubmission = false;
+
+  constructor() {
+    afterNextRender(() => {
+      if (this.captchaAvailable) {
+        void this.renderCaptcha();
+      }
+    });
+  }
 
   protected update(field: 'email' | 'honeypot', event: Event): void {
     const value = (event.target as HTMLInputElement).value;
@@ -73,9 +81,7 @@ export class SubscriptionFormComponent {
     }
     if (!this.captchaToken()) {
       this.error.set('Complete verification to subscribe.');
-      this.verificationVisible.set(true);
       this.pendingCaptchaSubmission = true;
-      setTimeout(() => void this.renderCaptcha());
       return;
     }
     this.sendSubscription(email);

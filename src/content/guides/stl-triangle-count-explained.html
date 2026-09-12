@@ -26,13 +26,14 @@ faq:
 </p>
 <h2>Check your model's triangle count</h2>
 <p>
-  Use the <a href="/stl-triangle-counter">STL Triangle Counter</a> to count
-  faces and see a simple explanation of mesh complexity. The
-  <a href="/stl-viewer">STL Viewer</a> also shows the triangle count while you
-  inspect the model in 3D. Use the
-  <a href="/stl-quality-checker">STL Quality Checker</a> if you also want to
-  check whether the mesh has duplicates, degenerate triangles or topology
-  problems.
+  Use the
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a> to
+  count faces and see a simple explanation of mesh complexity. The
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> also shows the
+  triangle count while you inspect the model in 3D. Use the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> if
+  you also want to check whether the mesh has duplicates, degenerate triangles
+  or topology problems.
 </p>
 <h2>More triangles are not always better</h2>
 <p>
@@ -85,9 +86,9 @@ faq:
 <p>
   Start with a conservative reduction, compare the original and reduced model,
   then check the reduced mesh before printing. The
-  <a href="/stl-file-size-reducer">STL File Size Reducer</a> shows the
-  before-and-after triangle count and file size so you can make that trade-off
-  deliberately.
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a>
+  shows the before-and-after triangle count and file size so you can make that
+  trade-off deliberately.
 </p>
 <p>
   Triangle count is only one factor. No amount of mesh detail can overcome a
@@ -98,6 +99,7 @@ faq:
 <p>
   For a more complete pre-print check, combine triangle count with dimensions
   and mesh health: use the
-  <a href="/stl-dimensions-checker">STL Dimensions Checker</a> and the
-  <a href="/stl-quality-checker">STL Quality Checker</a>.
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  and the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
 </p>

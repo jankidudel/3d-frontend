@@ -1,4 +1,4 @@
-import { guideBreadcrumbLabelBySlug } from '../../features/guides/guide-route-data.generated';
+import { guideBreadcrumbLabelBySlug } from '../../features/guides/generated/guide-route-data.generated';
 import { HOME_TOOL_GROUPS } from '../../features/home/home-tools';
 import { PublicRouteUrl } from './public-routes';
 

@@ -15,19 +15,21 @@ faq:
 
 <p>
   For STL files, the
-  <a href="/stl-print-preflight">STL Print Preflight Checker</a>
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+    >STL Print Preflight Checker</a
+  >
   adds mesh and sampled wall-thickness findings to this printer-fit review.
 </p>
 <p>
   For the wider pre-slice workflow, see
-  <a href="/how-to-check-if-a-3d-model-is-ready-to-print"
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
     >how to check if a 3D model is ready to print</a
   >.
 </p>
 <p>
   For a tool-linked sequence from visual inspection through final verification,
   see the
-  <a href="/3d-print-file-preflight-checklist"
+  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
     >3D print file preflight checklist</a
   >.
 </p>
@@ -51,15 +53,17 @@ faq:
 <h2>Measure the model before scaling it</h2>
 
 <p>
-  For STL, use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a>.
-  STL files normally do not declare a reliable unit, so first choose the unit
+  For STL, use the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
+  >. STL files normally do not declare a reliable unit, so first choose the unit
   used by the design software. A model interpreted as millimetres instead of
   inches can be wrong by a very large factor.
 </p>
 
 <p>
-  For 3MF, use the <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
-  A 3MF can declare a unit and can contain multiple placed build items, so
+  For 3MF, use the
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
+  >. A 3MF can declare a unit and can contain multiple placed build items, so
   inspect the final resolved build dimensions rather than assuming the first
   stored object represents the print.
 </p>
@@ -104,7 +108,7 @@ faq:
 
 <p>
   For more help with unit assumptions and proportional scaling, read
-  <a href="/how-to-scale-an-stl-file-for-3d-printing"
+  <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
     >how to scale an STL file for 3D printing</a
   >.
 </p>

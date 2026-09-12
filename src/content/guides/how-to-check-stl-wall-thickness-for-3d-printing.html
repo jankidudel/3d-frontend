@@ -14,13 +14,18 @@ faq:
 ---
 
 <p>
-  Start with the <a href="/stl-print-preflight">STL Print Preflight Checker</a>
+  Start with the
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+    >STL Print Preflight Checker</a
+  >
   when you also need to review mesh integrity, scale and printer fit before
   investigating sampled thin areas.
 </p>
 <p>
   For the format-neutral workflow and warning context, read the
-  <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a>.
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >3D Print Wall Thickness Guide</a
+  >.
 </p>
 <p>
   Wall thickness is the distance between the inside and outside surfaces of a
@@ -55,12 +60,13 @@ faq:
 </p>
 <h2>Check the model dimensions first</h2>
 <p>
-  Use the <a href="/stl-viewer">STL Viewer</a> to inspect thin-looking areas
-  such as edges, fins, small holes and decorative features.
+  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to inspect
+  thin-looking areas such as edges, fins, small holes and decorative features.
 </p>
 <p>
-  Then use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to
-  confirm overall size. If the entire model has been scaled down, walls that
+  Then use the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to confirm overall size. If the entire model has been scaled down, walls that
   were safe in the original design may no longer be printable.
 </p>
 <p>
@@ -89,13 +95,16 @@ faq:
 <h2>Check mesh health as well</h2>
 <p>
   Wall thickness is separate from mesh quality. Use the
-  <a href="/stl-quality-checker">STL Quality Checker</a> to find holes,
-  non-manifold edges and duplicate triangles before trying to solve printability
-  with slicer settings.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> to
+  find holes, non-manifold edges and duplicate triangles before trying to solve
+  printability with slicer settings.
 </p>
 <h2>Check sampled wall thickness online</h2>
 <p>
-  The <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a>
+  The
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
   estimates thickness by sampling the mesh and measuring inward from the
   surface. Choose the unit you believe the STL coordinates represent, set a
   minimum thickness for your intended print, and inspect the colour map for
@@ -106,8 +115,8 @@ faq:
   files do not contain a declared unit, and a suitable thickness depends on the
   printer, nozzle, material, print orientation, layer height, and whether the
   part is decorative or load-bearing. Check mesh errors with the
-  <a href="/stl-quality-checker">STL Quality Checker</a>, then confirm the final
-  dimensions before slicing.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>, then
+  confirm the final dimensions before slicing.
 </p>
 <p>
   A reliable print starts with a clean mesh, suitable wall thickness and a

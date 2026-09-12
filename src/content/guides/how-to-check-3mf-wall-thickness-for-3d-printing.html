@@ -19,12 +19,15 @@ faq:
 </p>
 <p>
   For the format-neutral workflow and warning context, read the
-  <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a>.
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >3D Print Wall Thickness Guide</a
+  >.
 </p>
 <p>
-  Use <a href="/3mf-print-preflight">3MF Print Preflight</a> first when wall
-  thickness is only one part of the decision: it also reports the resolved build
-  unit, dimensions, printer fit and mesh findings.
+  Use
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> first
+  when wall thickness is only one part of the decision: it also reports the
+  resolved build unit, dimensions, printer fit and mesh findings.
 </p>
 <h2>Check the resolved build, not an object in isolation</h2>
 <p>
@@ -36,11 +39,13 @@ faq:
 </p>
 <p>
   The
-  <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a> resolves
-  supported build geometry locally in your browser. It does not upload the
-  selected file. It uses the declared 3MF unit, converts the resolved geometry
-  to build-space millimetres for the calculation, and presents the threshold in
-  millimetres.
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+    >3MF Wall Thickness Checker</a
+  >
+  resolves supported build geometry locally in your browser. It does not upload
+  the selected file. It uses the declared 3MF unit, converts the resolved
+  geometry to build-space millimetres for the calculation, and presents the
+  threshold in millimetres.
 </p>
 <h2>How to use the checker</h2>
 <ol>
@@ -82,9 +87,11 @@ faq:
 </p>
 <p>
   For STL files, coordinates do not declare a unit. Use the
-  <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> only
-  after selecting the unit your slicer uses. 3MF is usually clearer because it
-  can declare a unit, but that still does not replace checking the selected
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
+  only after selecting the unit your slicer uses. 3MF is usually clearer because
+  it can declare a unit, but that still does not replace checking the selected
   printer profile.
 </p>
 <h2>When the checker cannot resolve a file</h2>
@@ -98,8 +105,8 @@ faq:
 <h2>Next steps</h2>
 <p>
   Combine the thickness result with the
-  <a href="/3mf-quality-checker">3MF Quality Checker</a>, the
-  <a href="/3mf-watertight-checker">3MF Watertight Checker</a> and your slicer
-  preview. These checks help you investigate geometry before committing material
-  and machine time; they cannot guarantee printability.
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>, the
+  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
+  and your slicer preview. These checks help you investigate geometry before
+  committing material and machine time; they cannot guarantee printability.
 </p>

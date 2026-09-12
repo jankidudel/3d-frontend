@@ -63,20 +63,20 @@ faq:
 <h2>How to check a model</h2>
 <p>
   Upload the file to the
-  <a href="/stl-manifold-checker">STL Manifold Checker</a>. It reports
-  non-manifold edges, open edges and shell information so you can see whether
-  the mesh is likely to behave as a clean solid.
+  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>. It
+  reports non-manifold edges, open edges and shell information so you can see
+  whether the mesh is likely to behave as a clean solid.
 </p>
 <p>
   For a broader diagnosis, use the
-  <a href="/stl-quality-checker">STL Quality Checker</a>. It checks non-manifold
-  edges alongside duplicate triangles, degenerate triangles, invalid coordinates
-  and inconsistent orientation.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
+  checks non-manifold edges alongside duplicate triangles, degenerate triangles,
+  invalid coordinates and inconsistent orientation.
 </p>
 <p>
   If the model has open edges too, run the
-  <a href="/stl-watertight-checker">STL Watertight Checker</a>. A printable part
-  should normally be both manifold and watertight.
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a
+  >. A printable part should normally be both manifold and watertight.
 </p>
 <h2>What to do after finding an issue</h2>
 <p>
@@ -88,8 +88,8 @@ faq:
   If you only have the STL, inspect the model in a mesh editor. Look for
   overlapping components, internal faces, accidental duplicate surfaces and thin
   sheets. Simple triangle-level problems may be improved by the
-  <a href="/stl-repair">STL Repair Tool</a>, but it should not be expected to
-  reconstruct complex topology automatically.
+  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a>, but it should
+  not be expected to reconstruct complex topology automatically.
 </p>
 <p>
   After making changes, check the model again and inspect its layer preview in

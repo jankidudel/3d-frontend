@@ -19,25 +19,25 @@ faq:
   validate the repaired package again.
 </p>
 <p>
-  <a href="/3mf-print-preflight">3MF Print Preflight</a> can identify which
-  mesh, fit and sampled-thickness concerns need attention before choosing a
-  conservative repair action.
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> can
+  identify which mesh, fit and sampled-thickness concerns need attention before
+  choosing a conservative repair action.
 </p>
 <h2>Why a 3MF can still need repair</h2>
 <p>
   A slicer may open a package and show a plausible preview even when a mesh has
   duplicate or zero-area triangles, inconsistent winding, open boundaries or
   non-manifold edges. Use the
-  <a href="/3mf-quality-checker">3MF Quality Checker</a> to see those conditions
-  before trusting a print preview.
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> to
+  see those conditions before trusting a print preview.
 </p>
 <h2>What InspectMesh repairs safely</h2>
 <p>
-  <a href="/3mf-repair">3MF Repair</a> removes degenerate triangles, exact
-  duplicate triangles and invalid triangle indexes when safe, and corrects
-  orientation only for closed, manifold regions where the result is unambiguous.
-  It preserves the 3MF unit, object IDs, build references, metadata and
-  unrelated package entries.
+  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> removes degenerate
+  triangles, exact duplicate triangles and invalid triangle indexes when safe,
+  and corrects orientation only for closed, manifold regions where the result is
+  unambiguous. It preserves the 3MF unit, object IDs, build references, metadata
+  and unrelated package entries.
 </p>
 <h2>What it cannot safely fix</h2>
 <p>
@@ -50,8 +50,9 @@ faq:
 <h2>Safe before-and-after workflow</h2>
 <ol>
   <li>
-    Inspect the file in the <a href="/3mf-viewer">3MF Viewer</a> and run the
-    quality check.
+    Inspect the file in the
+    <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> and run the quality
+    check.
   </li>
   <li>
     Upload it to 3MF Repair and download the repaired package only if the report
@@ -59,10 +60,14 @@ faq:
   </li>
   <li>
     Review the remaining warnings, then re-run the checker and confirm final
-    size with the <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a>.
+    size with the
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
+      >3MF Dimensions Checker</a
+    >.
   </li>
 </ol>
 <p>
   If the same model repeatedly needs large repairs, fix the source design
-  instead. For format trade-offs, see <a href="/3mf-vs-stl">3MF vs STL</a>.
+  instead. For format trade-offs, see
+  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a>.
 </p>

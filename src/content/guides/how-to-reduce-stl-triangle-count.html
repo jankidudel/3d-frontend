@@ -25,9 +25,11 @@ faq:
   preserving the shape and important features.
 </p>
 <p>
-  <a href="/stl-file-size-reducer">Use the STL File Size Reducer</a> to compare
-  file size, triangle count and the original versus reduced model before
-  downloading a new STL.
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}"
+    >Use the STL File Size Reducer</a
+  >
+  to compare file size, triangle count and the original versus reduced model
+  before downloading a new STL.
 </p>
 <h2>What does STL triangle count mean?</h2>
 <p>
@@ -40,9 +42,9 @@ faq:
 </p>
 <p>
   Before reducing anything, check how dense the model is with the
-  <a href="/stl-triangle-counter">STL Triangle Counter</a>. A high number is
-  only a problem when it creates a practical issue, such as slow slicing, a
-  large upload or a file that is hard to share.
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>. A
+  high number is only a problem when it creates a practical issue, such as slow
+  slicing, a large upload or a file that is hard to share.
 </p>
 <h2>Triangle reduction versus lossless file optimisation</h2>
 <p>
@@ -80,10 +82,11 @@ faq:
   output introduces warnings, use a gentler setting or keep the original.
 </p>
 <p>
-  The <a href="/stl-file-size-reducer">STL File Size Reducer</a> shows the
-  original and reduced model separately, along with the file size and triangle
-  count. For a separate mesh-health check, use the
-  <a href="/stl-quality-checker">STL Quality Checker</a>.
+  The
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a>
+  shows the original and reduced model separately, along with the file size and
+  triangle count. For a separate mesh-health check, use the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
 </p>
 <h2>Choose the right target for the job</h2>
 <p>

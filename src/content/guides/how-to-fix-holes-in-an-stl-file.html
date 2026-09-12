@@ -32,15 +32,15 @@ faq:
 </p>
 <p>
   Upload the file to the
-  <a href="/stl-watertight-checker">STL Watertight Checker</a> first. It looks
-  for open edges: triangle edges that are used only once instead of being shared
-  by a neighbouring triangle.
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  first. It looks for open edges: triangle edges that are used only once instead
+  of being shared by a neighbouring triangle.
 </p>
 <p>
   You can also use the
-  <a href="/stl-quality-checker">STL Quality Checker</a> for a broader report.
-  It checks for open edges alongside other problems, including degenerate
-  triangles, duplicate faces and non-manifold geometry.
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> for a
+  broader report. It checks for open edges alongside other problems, including
+  degenerate triangles, duplicate faces and non-manifold geometry.
 </p>
 <p>
   If the report shows open edges, the STL is not watertight. It may still be
@@ -84,9 +84,9 @@ faq:
 </p>
 <h2>What InspectMesh can repair safely</h2>
 <p>
-  The <a href="/stl-repair">STL Repair Tool</a> can safely remove certain
-  triangle-level defects, such as exact duplicate or degenerate triangles. These
-  repairs may improve a file that has several issues at once.
+  The <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> can safely
+  remove certain triangle-level defects, such as exact duplicate or degenerate
+  triangles. These repairs may improve a file that has several issues at once.
 </p>
 <p>
   It does <strong>not</strong> pretend to fill missing geometry automatically.
@@ -95,9 +95,9 @@ faq:
 </p>
 <p>
   After any repair, run the file through the
-  <a href="/stl-watertight-checker">STL Watertight Checker</a> again. A
-  successful result should show that the mesh is closed, with no open edges
-  remaining.
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  again. A successful result should show that the mesh is closed, with no open
+  edges remaining.
 </p>
 <h2>Check the slicer before printing</h2>
 <p>

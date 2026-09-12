@@ -41,10 +41,13 @@ faq:
   mesh health, size, printer fit, wall thickness or unnecessary complexity.
 </p>
 <p>
-  Use the <a href="/stl-print-preflight">STL Print Preflight Checker</a> for the
-  fastest broad overview. It brings together mesh integrity, dimensions, printer
-  fit, wall-thickness warnings, triangle complexity and volume reliability in
-  one report.
+  Use the
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+    >STL Print Preflight Checker</a
+  >
+  for the fastest broad overview. It brings together mesh integrity, dimensions,
+  printer fit, wall-thickness warnings, triangle complexity and volume
+  reliability in one report.
 </p>
 <p>
   If you already know what needs attention, you can also go directly to the
@@ -52,19 +55,24 @@ faq:
 </p>
 <ul>
   <li>
-    <a href="/stl-quality-checker">STL Quality Checker</a> for mesh errors;
+    <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> for
+    mesh errors;
   </li>
   <li>
-    <a href="/stl-dimensions-checker">STL Dimensions Checker</a> for size and
-    printer fit;
+    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+      >STL Dimensions Checker</a
+    >
+    for size and printer fit;
   </li>
   <li>
-    <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> for
-    sampled thin regions;
+    <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+      >STL Wall Thickness Checker</a
+    >
+    for sampled thin regions;
   </li>
   <li>
-    <a href="/stl-triangle-counter">STL Triangle Counter</a> for mesh
-    complexity.
+    <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>
+    for mesh complexity.
   </li>
 </ul>
 <p>
@@ -105,14 +113,16 @@ faq:
 </p>
 <p>
   For a deeper explanation, see
-  <a href="/how-to-check-stl-for-errors">How to Check an STL File for Errors</a
+  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
+    >How to Check an STL File for Errors</a
   >.
 </p>
 
 <h2>Repair only what can be repaired safely</h2>
 <p>
   When the report identifies supported clean-up issues, use
-  <a href="/stl-repair">STL Repair</a> to create a separate repaired copy.
+  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a> to create a separate
+  repaired copy.
 </p>
 <p>
   A careful repair tool can remove or normalise certain clearly identified mesh
@@ -144,7 +154,11 @@ faq:
   metadata. A value of <code>50</code> might have been designed as 50 mm, 50 cm
   or 50 inches, depending on the software and export workflow.
 </p>
-<p>Use the <a href="/stl-dimensions-checker">STL Dimensions Checker</a> to:</p>
+<p>
+  Use the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
+  to:
+</p>
 <ul>
   <li>measure width, height and depth;</li>
   <li>choose the intended unit for interpretation;</li>
@@ -163,7 +177,10 @@ faq:
   that are too thin for the intended printer, material or purpose.
 </p>
 <p>
-  Use the <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a>
+  Use the
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >STL Wall Thickness Checker</a
+  >
   to find sampled thin regions worth reviewing.
 </p>
 <p>
@@ -196,9 +213,10 @@ faq:
 </p>
 <p>
   Check complexity with the
-  <a href="/stl-triangle-counter">STL Triangle Counter</a>. If the file is
-  unnecessarily large, use the
-  <a href="/stl-file-size-reducer">STL File Size Reducer</a> on a copy.
+  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>. If
+  the file is unnecessarily large, use the
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a> on
+  a copy.
 </p>
 <p>
   After reducing a mesh, compare it visually and repeat the important checks.
@@ -211,10 +229,10 @@ faq:
   rotation, splitting can be a practical option.
 </p>
 <p>
-  Use the <a href="/stl-splitter">STL Splitter</a> to divide a copy into
-  printable sections. Plan the split carefully: seam placement, alignment,
-  strength and assembly method are design decisions, not just geometry
-  operations.
+  Use the <a href="{{ GuideSlug.RouteStlSplitter }}">STL Splitter</a> to divide
+  a copy into printable sections. Plan the split carefully: seam placement,
+  alignment, strength and assembly method are design decisions, not just
+  geometry operations.
 </p>
 <p>
   After splitting, inspect each section for fit and check that the cut does not
@@ -239,8 +257,9 @@ faq:
   </li>
 </ul>
 <p>
-  Run <a href="/stl-print-preflight">STL Print Preflight</a> again for a final
-  combined check.
+  Run
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> again
+  for a final combined check.
 </p>
 
 <h2>A repaired STL is only one stage of preparation</h2>
