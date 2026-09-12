@@ -109,6 +109,18 @@
       >
         Clear measurement
       </button>
+      <button
+        class="button button-secondary"
+        type="button"
+        [attr.aria-pressed]="crossSectionEnabled()"
+        (click)="toggleCrossSection()"
+      >
+        {{
+          crossSectionEnabled()
+            ? 'Close cross-section'
+            : 'Inspect cross-section'
+        }}
+      </button>
     </div>
     <p class="hint">{{ measurementHint() }}</p>
     @if (measurement(); as result) {
@@ -137,6 +149,54 @@
         original model resolution, selected points and chosen unit. Use CAD or
         calibrated physical measurement where tighter tolerances are required.
       </p>
+    }
+    @if (crossSectionEnabled()) {
+      <section
+        class="cross-section-controls"
+        aria-labelledby="cross-section-title"
+      >
+        <h2 id="cross-section-title">Cross-section inspection</h2>
+        <p>
+          Move the cut through the displayed model to inspect its interior. This
+          is a visual aid; it does not cap, repair or validate the mesh.
+        </p>
+        <div class="cross-section-inputs">
+          <label for="cross-section-axis">
+            Cut axis
+            <select
+              id="cross-section-axis"
+              [value]="crossSectionAxis()"
+              (change)="onCrossSectionAxisChange($event)"
+            >
+              <option value="x">X (left to right)</option>
+              <option value="y">Y (bottom to top)</option>
+              <option value="z">Z (front to back)</option>
+            </select>
+          </label>
+          <label class="cross-section-range" for="cross-section-position">
+            Cut position: {{ crossSectionPosition() }}% across the displayed
+            model
+            <input
+              id="cross-section-position"
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              [value]="crossSectionPosition()"
+              (input)="onCrossSectionPositionChange($event)"
+            />
+          </label>
+          <label class="cross-section-guide" for="cross-section-guide">
+            <input
+              id="cross-section-guide"
+              type="checkbox"
+              [checked]="crossSectionGuideVisible()"
+              (change)="onCrossSectionGuideChange($event)"
+            />
+            Show cut-plane guide
+          </label>
+        </div>
+      </section>
     }
   </section>
 </div>

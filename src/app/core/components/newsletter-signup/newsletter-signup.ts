@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { SubscriptionFormComponent } from '../subscription-form/subscription-form';
 import { SubscriptionPreferencesService } from '../subscription-form/subscription-preferences.service';
 
@@ -15,6 +15,17 @@ export class NewsletterSignupComponent {
   readonly compact = input(false);
   readonly placeholder = input('Email for updates');
   readonly buttonLabel = input('Keep me updated');
-  protected readonly subscribed = inject(SubscriptionPreferencesService)
+  readonly showSuccessOnlyAfterCurrentSubscription = input(false);
+  protected readonly justSubscribed = signal(false);
+  private readonly subscribed = inject(SubscriptionPreferencesService)
     .subscribed;
+  protected readonly showSuccessMessage = computed(() =>
+    this.showSuccessOnlyAfterCurrentSubscription()
+      ? this.justSubscribed()
+      : this.subscribed(),
+  );
+
+  protected showSuccess(): void {
+    this.justSubscribed.set(true);
+  }
 }

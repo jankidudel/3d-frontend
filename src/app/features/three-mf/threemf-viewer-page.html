@@ -145,6 +145,10 @@
         Activate Measure distance and select two visible mesh points to inspect
         a specific feature.
       </li>
+      <li>
+        Use Inspect cross-section to move a cut through the resolved build and
+        inspect geometry that is hidden inside or behind another part.
+      </li>
     </ol>
     <h2>What the 3MF Viewer shows</h2>
     <p>
@@ -157,6 +161,17 @@
       measurement checks a specific feature. See
       <a [routerLink]="'/how-to-measure-3d-model'">how to measure a 3D model</a>
       for guidance and limitations.
+    </p>
+    <h2>Inspect a cross-section</h2>
+    <p>
+      Choose <strong>Inspect cross-section</strong> below the viewer, select an
+      X, Y or Z cut axis, then move the cut through the displayed build. The
+      viewer hides one side of the mesh for visual inspection; it does not
+      repair, cap or validate the model. Read
+      <a [routerLink]="'/how-to-inspect-stl-3mf-cross-sections'"
+        >how to inspect STL and 3MF cross-sections</a
+      >
+      for the recommended workflow.
     </p>
     <h2>Why 3MF differs from STL</h2>
     <p>

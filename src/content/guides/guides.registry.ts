@@ -37,6 +37,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: true,
   },
   {
+    slug: 'how-to-inspect-stl-3mf-cross-sections',
+    group: GuideGroupId.General,
+    order: 9,
+    enabled: true,
+    publishDate: '2026-09-12',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-measure-3d-model',
     group: GuideGroupId.General,
     order: 7,

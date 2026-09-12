@@ -22,6 +22,7 @@ interface ViewerRuntime {
   readonly object: import('three').Object3D;
   readonly issueLines: import('three').Group;
   readonly measurement: import('three').Group;
+  readonly crossSectionGuide: import('three').Group;
   frame: number;
 }
 
@@ -81,6 +82,10 @@ export class ObjectViewerComponent {
   readonly measurementHint = signal(
     'Activate measurement mode to select two points.',
   );
+  readonly crossSectionEnabled = signal(false);
+  readonly crossSectionAxis = signal<'x' | 'y' | 'z'>('z');
+  readonly crossSectionPosition = signal(50);
+  readonly crossSectionGuideVisible = signal(true);
   private readonly browser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
@@ -121,6 +126,13 @@ export class ObjectViewerComponent {
       void this.render(this.object(), this.extent());
     });
     effect(() => this.updateIssueLines(this.issueLines()));
+    effect(() => {
+      this.crossSectionEnabled();
+      this.crossSectionAxis();
+      this.crossSectionPosition();
+      this.crossSectionGuideVisible();
+      this.updateCrossSection();
+    });
   }
 
   reset(): void {
@@ -159,6 +171,28 @@ export class ObjectViewerComponent {
     );
     this.updateMeasurementOverlay();
     this.measurementCleared.emit();
+  }
+
+  toggleCrossSection(): void {
+    this.crossSectionEnabled.update((enabled) => !enabled);
+  }
+
+  onCrossSectionAxisChange(event: Event): void {
+    this.crossSectionAxis.set(
+      (event.target as HTMLSelectElement).value as 'x' | 'y' | 'z',
+    );
+  }
+
+  onCrossSectionPositionChange(event: Event): void {
+    this.crossSectionPosition.set(
+      Number((event.target as HTMLInputElement).value),
+    );
+  }
+
+  onCrossSectionGuideChange(event: Event): void {
+    this.crossSectionGuideVisible.set(
+      (event.target as HTMLInputElement).checked,
+    );
   }
 
   onViewportPointerDown(event: PointerEvent): void {
@@ -301,6 +335,8 @@ export class ObjectViewerComponent {
       scene.add(issueLines);
       const measurement = new THREE.Group();
       scene.add(measurement);
+      const crossSectionGuide = new THREE.Group();
+      scene.add(crossSectionGuide);
       host.replaceChildren(renderer.domElement);
       const controls = new controlsModule.OrbitControls(
         camera,
@@ -322,11 +358,13 @@ export class ObjectViewerComponent {
         object,
         issueLines,
         measurement,
+        crossSectionGuide,
         frame: 0,
       };
       this.runtime = runtime;
       this.updateIssueLines(this.issueLines());
       this.updateMeasurementOverlay();
+      this.updateCrossSection();
       this.frame(runtime);
       this.observer = new ResizeObserver(() => this.resize(runtime));
       this.observer.observe(host);
@@ -407,6 +445,67 @@ export class ObjectViewerComponent {
       segments.renderOrder = 1;
       runtime.issueLines.add(segments);
     }
+  }
+
+  private updateCrossSection(): void {
+    const runtime = this.runtime;
+    if (!runtime) {
+      return;
+    }
+    this.disposeObject(runtime.crossSectionGuide);
+    runtime.crossSectionGuide.clear();
+    if (!this.crossSectionEnabled()) {
+      this.applyClippingPlane(runtime.object, null);
+      return;
+    }
+
+    const bounds = new runtime.THREE.Box3().setFromObject(runtime.object);
+    const axis = this.crossSectionAxis();
+    const minimum = bounds.min[axis];
+    const maximum = bounds.max[axis];
+    const position =
+      minimum + ((maximum - minimum) * this.crossSectionPosition()) / 100;
+    const normal = new runtime.THREE.Vector3(
+      axis === 'x' ? 1 : 0,
+      axis === 'y' ? 1 : 0,
+      axis === 'z' ? 1 : 0,
+    );
+    const plane = new runtime.THREE.Plane(normal, -position);
+    this.applyClippingPlane(runtime.object, plane);
+
+    if (this.crossSectionGuideVisible()) {
+      const size = Math.max(
+        bounds.max.x - bounds.min.x,
+        bounds.max.y - bounds.min.y,
+        bounds.max.z - bounds.min.z,
+        1,
+      );
+      runtime.crossSectionGuide.add(
+        new runtime.THREE.PlaneHelper(plane, size * 1.1, '#0b70c9'),
+      );
+    }
+  }
+
+  private applyClippingPlane(
+    object: import('three').Object3D,
+    plane: import('three').Plane | null,
+  ): void {
+    object.traverse((child) => {
+      const mesh = child as import('three').Mesh;
+      if (!mesh.isMesh) {
+        return;
+      }
+      const materials = Array.isArray(mesh.material)
+        ? mesh.material
+        : [mesh.material];
+      for (const material of materials) {
+        const clippingMaterial = material as import('three').Material & {
+          clippingPlanes: import('three').Plane[] | null;
+        };
+        clippingMaterial.clippingPlanes = plane ? [plane] : null;
+        clippingMaterial.needsUpdate = true;
+      }
+    });
   }
 
   private selectMeasurementPoint(event: PointerEvent): void {
@@ -627,6 +726,7 @@ export class ObjectViewerComponent {
     this.cancelRotation();
     runtime.controls.dispose();
     this.disposeObject(runtime.issueLines);
+    this.disposeObject(runtime.crossSectionGuide);
     this.disposeObject(runtime.object);
     runtime.renderer.dispose();
     runtime.renderer.domElement.remove();

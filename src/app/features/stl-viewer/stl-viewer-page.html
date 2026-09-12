@@ -135,6 +135,10 @@
         Choose the intended STL unit, activate Measure distance, then select two
         visible mesh points.
       </li>
+      <li>
+        Use Inspect cross-section to move a cut through the displayed mesh and
+        look for internal geometry that is hard to see from the outside.
+      </li>
     </ol>
     <h2>What the Viewer shows</h2>
     <p>
@@ -148,6 +152,17 @@
       length. Read
       <a [routerLink]="'/how-to-measure-3d-model'">how to measure a 3D model</a>
       for a practical workflow.
+    </p>
+    <h2>Inspect a cross-section</h2>
+    <p>
+      Choose <strong>Inspect cross-section</strong> below the viewer, choose an
+      X, Y or Z cut axis, then move the cut position through the displayed
+      model. It hides one side of the mesh so you can inspect internal geometry
+      from different angles. Read
+      <a [routerLink]="'/how-to-inspect-stl-3mf-cross-sections'"
+        >how to inspect STL and 3MF cross-sections</a
+      >
+      for a careful workflow and its limits.
     </p>
     <h2>Locate mesh issues</h2>
     <p>

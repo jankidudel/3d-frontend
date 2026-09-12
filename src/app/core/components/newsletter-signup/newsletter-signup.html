@@ -4,7 +4,7 @@
   [attr.aria-labelledby]="compact() ? null : idPrefix() + '-title'"
   [attr.aria-label]="compact() ? 'Newsletter signup' : null"
 >
-  @if (subscribed()) {
+  @if (showSuccessMessage()) {
     <p class="subscription-success" role="status">Successfully subscribed.</p>
   } @else {
     @if (!compact()) {
@@ -15,6 +15,7 @@
       [idPrefix]="idPrefix()"
       [placeholder]="placeholder()"
       [buttonLabel]="buttonLabel()"
+      (subscriptionSucceeded)="showSuccess()"
     />
   }
 </section>
