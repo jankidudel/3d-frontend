@@ -44,6 +44,9 @@ p {
 }
 
 .close {
+  display: grid;
+  place-items: center;
+  padding: 0;
   flex: none;
   width: 2rem;
   height: 2rem;

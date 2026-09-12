@@ -1,18 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NewsletterSignupComponent } from '../../core/components/newsletter-signup/newsletter-signup';
-import { HomeNewsletterPromptComponent } from '../home/home-newsletter-prompt';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { HOME_TOOL_GROUPS } from '../home/home-tools';
 
 @Component({
   selector: 'app-tools-page',
-  imports: [
-    HomeNewsletterPromptComponent,
-    NewsletterSignupComponent,
-    RouterLink,
-  ],
+  imports: [NewsletterSignupComponent, RouterLink],
   templateUrl: './tools-page.html',
   styleUrl: './tools-page.scss',
 })

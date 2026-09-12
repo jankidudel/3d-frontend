@@ -2,7 +2,6 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   afterNextRender,
   Component,
-  DestroyRef,
   inject,
   PLATFORM_ID,
   signal,
@@ -15,10 +14,10 @@ import { SubscriptionFormComponent } from '../../core/components/subscription-fo
 import { SubscriptionPreferencesService } from '../../core/components/subscription-form/subscription-preferences.service';
 
 export const NEWSLETTER_PROMPT_DISMISSAL_STORAGE_KEY =
-  'homepage_newsletter_dismissed_until_v1';
+  'newsletter_prompt_dismissed_until_v1';
 export const CONTACT_SUBMITTED_STORAGE_KEY = 'contact_form_submitted_v1';
-const DISMISSAL_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
-const ENGAGEMENT_SCROLL_RATIO = 0.4;
+const DISMISSAL_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
+const DISPLAY_DELAY_MS = 10_000;
 const MOBILE_QUERY = '(max-width: 42rem)';
 
 @Component({
@@ -34,10 +33,7 @@ export class HomeNewsletterPromptComponent {
   private readonly document = inject(DOCUMENT);
   private readonly analytics = inject(AnalyticsService);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-  private readonly destroyRef = inject(DestroyRef);
   private readonly preferences = inject(SubscriptionPreferencesService);
-  private engaged = false;
-  private delayElapsed = false;
   private shown = false;
 
   constructor() {
@@ -86,57 +82,11 @@ export class HomeNewsletterPromptComponent {
       return;
     }
 
-    browserWindow.setTimeout(() => {
-      this.delayElapsed = true;
-      this.maybeShow();
-    }, 15_000);
-
-    browserWindow.addEventListener('scroll', this.handleScroll, {
-      passive: true,
-    });
-    this.document.addEventListener('pointerdown', this.handleInteraction, {
-      passive: true,
-    });
-    this.destroyRef.onDestroy(() => {
-      browserWindow.removeEventListener('scroll', this.handleScroll);
-      this.document.removeEventListener('pointerdown', this.handleInteraction);
-    });
-  }
-
-  private readonly handleScroll = (): void => {
-    const browserWindow = this.document.defaultView;
-    const root = this.document.documentElement;
-    if (!browserWindow || !root) {
-      return;
-    }
-    const scrollableHeight = root.scrollHeight - browserWindow.innerHeight;
-    if (
-      scrollableHeight > 0 &&
-      browserWindow.scrollY / scrollableHeight >= ENGAGEMENT_SCROLL_RATIO
-    ) {
-      this.markEngaged();
-    }
-  };
-
-  private readonly handleInteraction = (event: Event): void => {
-    const target = event.target;
-    if (target instanceof Element && target.closest('main')) {
-      this.markEngaged();
-    }
-  };
-
-  private markEngaged(): void {
-    this.engaged = true;
-    this.maybeShow();
+    browserWindow.setTimeout(() => this.maybeShow(), DISPLAY_DELAY_MS);
   }
 
   private maybeShow(): void {
-    if (
-      !this.delayElapsed ||
-      !this.engaged ||
-      this.shown ||
-      this.isSuppressed()
-    ) {
+    if (this.shown || this.isSuppressed()) {
       return;
     }
     this.shown = true;

@@ -24,28 +24,18 @@ describe('HomeNewsletterPromptComponent', () => {
     vi.useRealTimers();
   });
 
-  it('waits for both engagement and the delay before showing the panel', async () => {
+  it('shows the panel after ten seconds', async () => {
     const fixture = TestBed.createComponent(HomeNewsletterPromptComponent);
     fixture.detectChanges();
     await Promise.resolve();
 
-    vi.advanceTimersByTime(15_000);
+    vi.advanceTimersByTime(9_999);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('aside')).toBeNull();
 
-    document.body.dispatchEvent(
-      new PointerEvent('pointerdown', { bubbles: true }),
-    );
+    vi.advanceTimersByTime(1);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.prompt-panel')).toBeNull();
-
-    const main = document.createElement('main');
-    document.body.appendChild(main);
-    main.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
-    fixture.detectChanges();
-
     expect(fixture.nativeElement.querySelector('.prompt-panel')).not.toBeNull();
-    main.remove();
   });
 
   it('does not show after a contact form has been submitted', async () => {
@@ -54,13 +44,9 @@ describe('HomeNewsletterPromptComponent', () => {
     fixture.detectChanges();
     await Promise.resolve();
 
-    const main = document.createElement('main');
-    document.body.appendChild(main);
-    main.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
-    vi.advanceTimersByTime(15_000);
+    vi.advanceTimersByTime(10_000);
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('aside')).toBeNull();
-    main.remove();
   });
 });

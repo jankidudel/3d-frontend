@@ -44,8 +44,5 @@ describe('ToolsPage', () => {
       'Get occasional updates on new tools and practical 3D-print guides.',
     );
     expect(newsletter.textContent).toContain('Subscribe');
-    expect(
-      fixture.nativeElement.querySelector('app-home-newsletter-prompt'),
-    ).not.toBeNull();
   });
 });
