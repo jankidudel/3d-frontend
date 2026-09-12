@@ -56,6 +56,7 @@ export class ContactPage implements AfterViewInit {
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly contactService = inject(ContactService);
   private readonly turnstile = inject(TurnstileService);
+  private captchaWidgetId?: string;
   private started = false;
 
   constructor() {
@@ -168,6 +169,7 @@ export class ContactPage implements AfterViewInit {
             'We could not send your message. Please try again.',
           );
           this.submitting.set(false);
+          this.resetCaptcha();
         },
       });
   }
@@ -179,7 +181,7 @@ export class ContactPage implements AfterViewInit {
     }
     try {
       const turnstile = await this.turnstile.load();
-      turnstile.render(element, {
+      this.captchaWidgetId = turnstile.render(element, {
         sitekey: this.captchaSiteKey,
         callback: (token) => this.captchaToken.set(token),
         'expired-callback': () => this.captchaToken.set(''),
@@ -192,6 +194,14 @@ export class ContactPage implements AfterViewInit {
       this.captchaError.set(
         'CAPTCHA could not load. Please refresh and try again.',
       );
+    }
+  }
+
+  private resetCaptcha(): void {
+    this.captchaToken.set('');
+    this.captchaError.set('');
+    if (this.captchaWidgetId) {
+      window.turnstile?.reset(this.captchaWidgetId);
     }
   }
 
