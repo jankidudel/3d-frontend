@@ -1,7 +1,15 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { ContactService } from '../../core/api/contact.service';
+import { TurnstileService } from '../../core/contact/turnstile.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SITE_CONFIG } from '../../core/site/site-config';
@@ -24,7 +32,7 @@ const CONTACT_REASONS: readonly ContactReason[] = [
   templateUrl: './contact-page.html',
   styleUrl: './contact-page.scss',
 })
-export class ContactPage {
+export class ContactPage implements AfterViewInit {
   protected readonly reasons = CONTACT_REASONS;
   protected readonly reason = signal<ContactReason | ''>('');
   protected readonly name = signal('');
@@ -34,14 +42,20 @@ export class ContactPage {
   protected readonly honeypot = signal('');
   protected readonly errors = signal<Record<string, string>>({});
   protected readonly submitted = signal(false);
+  protected readonly submitting = signal(false);
+  protected readonly submitError = signal('');
+  protected readonly captchaToken = signal('');
+  protected readonly captchaError = signal('');
   private readonly siteConfig = inject(SITE_CONFIG);
   protected readonly deliveryAvailable = Boolean(
-    this.siteConfig.contactEmail ?? this.siteConfig.privacyContactEmail,
+    (this.siteConfig.contactEmail ?? this.siteConfig.privacyContactEmail) &&
+    this.siteConfig.contactCaptchaSiteKey,
   );
-  private readonly contactEmail =
-    this.siteConfig.contactEmail ?? this.siteConfig.privacyContactEmail;
+  private readonly captchaSiteKey = this.siteConfig.contactCaptchaSiteKey;
   private readonly analytics = inject(AnalyticsService);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly contactService = inject(ContactService);
+  private readonly turnstile = inject(TurnstileService);
   private started = false;
 
   constructor() {
@@ -57,6 +71,12 @@ export class ContactPage {
       path: PublicRouteUrl.Contact,
     });
     this.analytics.trackContactFeedbackOpened();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.deliveryAvailable && this.captchaSiteKey && this.isBrowser) {
+      void this.renderCaptcha();
+    }
   }
 
   protected update(
@@ -91,6 +111,7 @@ export class ContactPage {
       delete remaining[field];
       return remaining;
     });
+    this.submitError.set('');
     if (!this.started && field !== 'honeypot') {
       this.started = true;
       this.analytics.trackContactFeedbackStarted();
@@ -111,26 +132,67 @@ export class ContactPage {
     if (!this.message().trim()) {
       errors['message'] = 'Enter a message.';
     }
+    if (!this.captchaToken()) {
+      errors['captcha'] = 'Complete the CAPTCHA before sending your message.';
+    }
     if (this.honeypot()) {
       return;
     }
     this.errors.set(errors);
-    if (Object.keys(errors).length || !this.contactEmail || !this.isBrowser) {
+    if (
+      Object.keys(errors).length ||
+      !this.deliveryAvailable ||
+      this.submitting()
+    ) {
       return;
     }
+    this.submitting.set(true);
+    this.contactService
+      .send({
+        reason: this.reason(),
+        name: this.name().trim(),
+        email: this.email().trim(),
+        message: this.message().trim(),
+        context: this.context().trim(),
+        website: this.honeypot(),
+        turnstileToken: this.captchaToken(),
+      })
+      .subscribe({
+        next: () => {
+          this.analytics.trackContactFeedbackSubmitted();
+          this.submitted.set(true);
+          this.submitting.set(false);
+        },
+        error: () => {
+          this.submitError.set(
+            'We could not send your message. Please try again.',
+          );
+          this.submitting.set(false);
+        },
+      });
+  }
 
-    const body = [
-      `Reason: ${this.reason()}`,
-      `Name: ${this.name().trim() || 'Not provided'}`,
-      `Email: ${this.email().trim()}`,
-      `Page or tool: ${this.context().trim() || 'Not provided'}`,
-      '',
-      this.message().trim(),
-    ].join('\n');
-    const href = `mailto:${encodeURIComponent(this.contactEmail)}?subject=${encodeURIComponent(`InspectMesh feedback: ${this.reason()}`)}&body=${encodeURIComponent(body)}`;
-    this.analytics.trackContactFeedbackSubmitted();
-    this.submitted.set(true);
-    window.location.assign(href);
+  private async renderCaptcha(): Promise<void> {
+    const element = document.getElementById('contact-turnstile');
+    if (!element || !this.captchaSiteKey) {
+      return;
+    }
+    try {
+      const turnstile = await this.turnstile.load();
+      turnstile.render(element, {
+        sitekey: this.captchaSiteKey,
+        callback: (token) => this.captchaToken.set(token),
+        'expired-callback': () => this.captchaToken.set(''),
+        'error-callback': () =>
+          this.captchaError.set(
+            'CAPTCHA could not load. Please refresh and try again.',
+          ),
+      });
+    } catch {
+      this.captchaError.set(
+        'CAPTCHA could not load. Please refresh and try again.',
+      );
+    }
   }
 
   private isValidEmail(value: string): boolean {

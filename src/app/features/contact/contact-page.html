@@ -13,9 +13,7 @@
       Please do not include 3D files, private design details or payment details.
     </p>
     @if (submitted()) {
-      <p class="success" role="status">
-        Your email app should now be open with your message ready to send.
-      </p>
+      <p class="success" role="status">Thanks — your message has been sent.</p>
     }
     @if (!deliveryAvailable) {
       <p class="error" role="alert">
@@ -87,6 +85,18 @@
       @if (errors()['message']; as error) {
         <p id="contact-message-error" class="error" role="alert">{{ error }}</p>
       }
+      <div class="field" aria-labelledby="contact-captcha-label">
+        <span id="contact-captcha-label"
+          >Verification <strong aria-hidden="true">(required)</strong></span
+        >
+        <div id="contact-turnstile"></div>
+      </div>
+      @if (errors()['captcha']; as error) {
+        <p class="error" role="alert">{{ error }}</p>
+      }
+      @if (captchaError()) {
+        <p class="error" role="alert">{{ captchaError() }}</p>
+      }
       <label class="honeypot" aria-hidden="true" for="contact-website"
         >Leave this blank<input
           id="contact-website"
@@ -95,11 +105,15 @@
           [value]="honeypot()"
           (input)="update('honeypot', $event)"
       /></label>
-      <p class="delivery-note">
-        This will open your email app to send the message.
-      </p>
-      <button class="button" type="submit" [disabled]="!deliveryAvailable">
-        Open email app
+      @if (submitError()) {
+        <p class="error" role="alert">{{ submitError() }}</p>
+      }
+      <button
+        class="button"
+        type="submit"
+        [disabled]="!deliveryAvailable || submitting()"
+      >
+        {{ submitting() ? 'Sending…' : 'Send message' }}
       </button>
     </form>
   </section>

@@ -6,6 +6,7 @@ export const SITE_CONFIG = new InjectionToken<SiteConfig>('SITE_CONFIG', {
   providedIn: 'root',
   factory: () => ({
     contactEmail: environment.contactEmail,
+    contactCaptchaSiteKey: environment.contactCaptchaSiteKey,
     privacyContactEmail: environment.privacyContactEmail,
   }),
 });
