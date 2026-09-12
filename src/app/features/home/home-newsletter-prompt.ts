@@ -15,7 +15,6 @@ import { SubscriptionPreferencesService } from '../../core/components/subscripti
 
 export const NEWSLETTER_PROMPT_DISMISSAL_STORAGE_KEY =
   'newsletter_prompt_dismissed_until_v1';
-export const CONTACT_SUBMITTED_STORAGE_KEY = 'contact_form_submitted_v1';
 const DISMISSAL_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
 const DISPLAY_DELAY_MS = 10_000;
 const MOBILE_QUERY = '(max-width: 42rem)';
@@ -98,10 +97,7 @@ export class HomeNewsletterPromptComponent {
   }
 
   private isSuppressed(): boolean {
-    if (
-      this.preferences.subscribed() ||
-      this.load(CONTACT_SUBMITTED_STORAGE_KEY) === 'true'
-    ) {
+    if (this.preferences.subscribed()) {
       return true;
     }
     const dismissedUntil = Number(

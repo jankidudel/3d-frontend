@@ -30,7 +30,11 @@ export class SubscriptionFormComponent {
   protected readonly error = signal('');
   protected readonly submitted = signal(false);
   protected readonly submitting = signal(false);
+  protected readonly captchaLoading = signal(false);
   protected readonly captchaError = signal('');
+  protected readonly submitDisabled = computed(
+    () => this.submitting() || !this.captchaAvailable || !this.captchaToken(),
+  );
   protected readonly emailInvalid = computed(() =>
     /^(Enter a valid email address|Email address must)/.test(this.error()),
   );
@@ -43,8 +47,6 @@ export class SubscriptionFormComponent {
   private readonly preferences = inject(SubscriptionPreferencesService);
   private readonly turnstile = inject(TurnstileService);
   private captchaWidgetId?: string;
-  private captchaLoading = false;
-  private pendingCaptchaSubmission = false;
 
   constructor() {
     afterNextRender(() => {
@@ -58,7 +60,6 @@ export class SubscriptionFormComponent {
     const value = (event.target as HTMLInputElement).value;
     if (field === 'email') {
       this.email.set(value);
-      this.pendingCaptchaSubmission = false;
     } else {
       this.honeypot.set(value);
     }
@@ -81,7 +82,6 @@ export class SubscriptionFormComponent {
     }
     if (!this.captchaToken()) {
       this.error.set('Complete verification to subscribe.');
-      this.pendingCaptchaSubmission = true;
       return;
     }
     this.sendSubscription(email);
@@ -148,11 +148,11 @@ export class SubscriptionFormComponent {
       !element ||
       !this.captchaSiteKey ||
       this.captchaWidgetId ||
-      this.captchaLoading
+      this.captchaLoading()
     ) {
       return;
     }
-    this.captchaLoading = true;
+    this.captchaLoading.set(true);
     try {
       const turnstile = await this.turnstile.load();
       this.captchaWidgetId = turnstile.render(element, {
@@ -160,28 +160,27 @@ export class SubscriptionFormComponent {
         callback: (token) => {
           this.captchaToken.set(token);
           this.error.set('');
-          if (this.pendingCaptchaSubmission) {
-            this.pendingCaptchaSubmission = false;
-            this.sendSubscription(this.email().trim());
-          }
         },
-        'expired-callback': () => this.captchaToken.set(''),
-        'error-callback': () =>
+        'expired-callback': () => {
+          this.captchaToken.set('');
+        },
+        'error-callback': () => {
+          this.captchaToken.set('');
           this.captchaError.set(
             'CAPTCHA could not load. Please refresh and try again.',
-          ),
+          );
+        },
       });
     } catch {
       this.captchaError.set(
         'CAPTCHA could not load. Please refresh and try again.',
       );
     } finally {
-      this.captchaLoading = false;
+      this.captchaLoading.set(false);
     }
   }
 
   private resetCaptcha(): void {
-    this.pendingCaptchaSubmission = false;
     this.captchaToken.set('');
     this.captchaError.set('');
     if (this.captchaWidgetId) {

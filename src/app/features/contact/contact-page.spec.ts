@@ -1,18 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { ContactService } from '../../core/api/contact.service';
 import { TurnstileService } from '../../core/contact/turnstile.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { SITE_CONFIG } from '../../core/site/site-config';
-import { CONTACT_SUBMITTED_STORAGE_KEY, ContactPage } from './contact-page';
+import { ContactPage } from './contact-page';
 
 describe('ContactPage', () => {
   let fixture: ComponentFixture<ContactPage>;
 
   beforeEach(() => {
-    localStorage.removeItem(CONTACT_SUBMITTED_STORAGE_KEY);
     TestBed.configureTestingModule({
       imports: [ContactPage],
       providers: [
@@ -81,20 +79,5 @@ describe('ContactPage', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'Message must be 5,000 characters or fewer.',
     );
-  });
-
-  it('remembers a successful submission locally', () => {
-    const contact = TestBed.inject(ContactService);
-    vi.spyOn(contact, 'send').mockReturnValue(of(void 0));
-    fixture.componentInstance['reason'].set('General question');
-    fixture.componentInstance['email'].set('ada@example.com');
-    fixture.componentInstance['message'].set('Hello');
-    fixture.componentInstance['captchaToken'].set('token');
-
-    fixture.nativeElement
-      .querySelector('form')
-      .dispatchEvent(new SubmitEvent('submit'));
-
-    expect(localStorage.getItem(CONTACT_SUBMITTED_STORAGE_KEY)).toBe('true');
   });
 });

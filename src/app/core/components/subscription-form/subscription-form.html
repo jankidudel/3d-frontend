@@ -20,7 +20,7 @@
       [attr.aria-invalid]="error() ? 'true' : null"
       [attr.aria-describedby]="idPrefix() + '-status'"
     />
-    <button class="button" type="submit" [disabled]="submitting()">
+    <button class="button" type="submit" [disabled]="submitDisabled()">
       {{ submitting() ? 'Subscribing…' : buttonLabel() }}
     </button>
   </div>
@@ -33,6 +33,15 @@
         >Verification <strong aria-hidden="true">(required)</strong></span
       >
       <div [id]="idPrefix() + '-turnstile'"></div>
+      @if (!captchaToken() && !captchaError()) {
+        <p class="verification-status" aria-live="polite">
+          {{
+            captchaLoading()
+              ? 'Verification is loading…'
+              : 'Complete verification to enable Subscribe.'
+          }}
+        </p>
+      }
     </div>
   }
   <label class="honeypot" aria-hidden="true" [for]="idPrefix() + '-website'"

@@ -86,7 +86,8 @@
           <h3 id="fit-title">Printer fit</h3>
           <p>
             Enter your printer's usable build volume. This is an axis-aligned
-            size check, not a guarantee of printability.
+            size check, not a guarantee of printability. Valid values are saved
+            only on this device for the STL and 3MF fit checks.
           </p>
           <div class="calculator-fields">
             <label class="field"
@@ -96,6 +97,7 @@
                 min="0"
                 step="any"
                 inputmode="decimal"
+                [value]="buildWidth() ?? ''"
                 (input)="setBuildDimension('width', $event)"
             /></label>
             <label class="field"
@@ -105,6 +107,7 @@
                 min="0"
                 step="any"
                 inputmode="decimal"
+                [value]="buildHeight() ?? ''"
                 (input)="setBuildDimension('height', $event)"
             /></label>
             <label class="field"
@@ -114,6 +117,7 @@
                 min="0"
                 step="any"
                 inputmode="decimal"
+                [value]="buildDepth() ?? ''"
                 (input)="setBuildDimension('depth', $event)"
             /></label>
             <label class="field"
@@ -126,6 +130,18 @@
               </select></label
             >
           </div>
+          @if (hasSavedPrinterProfile()) {
+            <p>
+              Your custom printer profile is saved on this device.
+              <button
+                type="button"
+                class="text-button"
+                (click)="clearSavedPrinterProfile()"
+              >
+                Forget saved profile
+              </button>
+            </p>
+          }
           @if (buildVolumeInvalid()) {
             <p class="error" role="alert">
               Enter finite build-volume dimensions greater than zero.

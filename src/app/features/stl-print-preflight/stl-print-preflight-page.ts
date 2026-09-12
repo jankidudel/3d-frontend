@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
+import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import {
@@ -34,6 +35,10 @@ export class StlPrintPreflightPage {
   readonly routeUrl = PublicRouteUrl;
   readonly unitAmbiguityMessage = UNIT_AMBIGUITY_MESSAGE;
   readonly wallThicknessLimitationMessage = WALL_THICKNESS_LIMITATION_MESSAGE;
+  private readonly printerProfileService = inject(PrinterProfileService);
+  readonly printerProfile = computed(() =>
+    this.printerProfileService.profile(),
+  );
   readonly file = signal<File | null>(null);
   readonly mesh = signal<StlMesh | null>(null);
   readonly integrityReport = signal<ReturnType<typeof inspectMesh> | null>(
@@ -44,15 +49,20 @@ export class StlPrintPreflightPage {
   readonly error = signal('');
   readonly analysing = signal(false);
   readonly unit = signal<ModelUnit>('mm');
-  /** Printer fit is meaningful only after the user has chosen a printer volume. */
-  readonly buildVolume = signal<ModelDimensions | null>(null);
+  /** Printer fit is meaningful only after a custom printer profile is saved. */
+  readonly buildVolume = computed(() => this.printerProfile());
   readonly integrity = computed(() => this.integrityReport());
   readonly dimensions = computed(() => this.dimensionsReport());
   readonly orientation = computed(() => {
     const dimensions = this.dimensions();
     const buildVolume = this.buildVolume();
     return dimensions && buildVolume
-      ? assessPrinterOrientations(dimensions, this.unit(), buildVolume, 'mm')
+      ? assessPrinterOrientations(
+          dimensions,
+          this.unit(),
+          buildVolume,
+          buildVolume.unit,
+        )
       : null;
   });
   readonly wallReport = signal<WallThicknessReport | null>(null);
@@ -87,7 +97,7 @@ export class StlPrintPreflightPage {
       return 'Sampled areas are below the generic 1.2 mm review threshold.';
     }
     if (!this.buildVolume()) {
-      return 'Printer fit has not been checked because no build volume is selected.';
+      return 'Printer fit has not been checked because no custom printer profile is saved.';
     }
     if (integrity.duplicateTriangles) {
       return 'Duplicate triangles were found and should be reviewed.';

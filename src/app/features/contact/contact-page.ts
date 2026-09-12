@@ -33,7 +33,6 @@ const CONTACT_LIMITS = {
   context: 240,
   message: 5000,
 } as const;
-export const CONTACT_SUBMITTED_STORAGE_KEY = 'contact_form_submitted_v1';
 
 @Component({
   selector: 'app-contact-page',
@@ -187,7 +186,6 @@ export class ContactPage implements AfterViewInit {
           this.analytics.trackContactFeedbackSubmitted();
           this.clearForm();
           this.submitted.set(true);
-          this.saveSubmittedFlag();
           this.submitting.set(false);
           this.resetCaptcha();
         },
@@ -241,21 +239,6 @@ export class ContactPage implements AfterViewInit {
     this.honeypot.set('');
     this.errors.set({});
     this.submitError.set('');
-  }
-
-  private saveSubmittedFlag(): void {
-    if (!this.isBrowser) {
-      return;
-    }
-    try {
-      localStorage.setItem(CONTACT_SUBMITTED_STORAGE_KEY, 'true');
-    } catch (error) {
-      console.warn(
-        'Could not save the contact submission flag locally.',
-        error,
-      );
-      // Sending still succeeds if the browser blocks local storage.
-    }
   }
 
   private isValidEmail(value: string): boolean {

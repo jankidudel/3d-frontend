@@ -149,11 +149,26 @@
                 [value]="printerPreset()"
                 (change)="setPrinterPreset($any($event.target).value)"
               >
+                @if (savedPrinterProfile(); as profile) {
+                  <option value="saved">
+                    My saved printer: {{ format(profile.width) }} ×
+                    {{ format(profile.height) }} × {{ format(profile.depth) }}
+                    {{ profile.unit }}
+                  </option>
+                }
                 <option value="compact">Compact: 180 × 180 × 180 mm</option>
                 <option value="standard">Standard: 220 × 220 × 250 mm</option>
                 <option value="large">Large: 300 × 300 × 300 mm</option>
               </select>
             </label>
+            @if (printerPreset() === 'saved') {
+              <p>
+                Edit your saved printer profile in the
+                <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+                  >3MF Dimensions Checker</a
+                >.
+              </p>
+            }
             <p>
               Normal orientation
               {{ fit.current.fit.fits ? 'fits' : 'does not fit' }} this preset.

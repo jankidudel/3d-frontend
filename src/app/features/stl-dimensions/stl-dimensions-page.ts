@@ -14,6 +14,7 @@ import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { FeedbackLinkComponent } from '../../core/components/feedback-link/feedback-link';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
+import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import {
@@ -49,6 +50,7 @@ export class StlDimensionsPage {
   private readonly jobsService = inject(JobsService);
   private readonly stlJobs = inject(StlJobService);
   private readonly analytics = inject(AnalyticsService);
+  private readonly printerProfile = inject(PrinterProfileService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
@@ -75,6 +77,9 @@ export class StlDimensionsPage {
   readonly buildDepth = signal<number | null>(null);
   readonly buildUnit = signal<ModelUnit>('mm');
   readonly buildVolumeTouched = signal(false);
+  readonly hasSavedPrinterProfile = computed(
+    () => this.printerProfile.profile() !== null,
+  );
 
   readonly processing = computed(() => {
     const status = this.job()?.status;
@@ -172,6 +177,7 @@ export class StlDimensionsPage {
   );
 
   constructor() {
+    this.applySavedPrinterProfile();
     this.seo.apply({
       title: 'STL Dimensions Checker - Measure, Convert and Scale STL Files',
       description:
@@ -284,10 +290,16 @@ export class StlDimensionsPage {
     } else {
       this.buildDepth.set(parsedValue);
     }
+    this.savePrinterProfile();
   }
 
   setBuildUnit(event: Event): void {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
+    this.savePrinterProfile();
+  }
+
+  clearSavedPrinterProfile(): void {
+    this.printerProfile.clear();
   }
 
   orientationName(axisSources: Record<DimensionAxis, DimensionAxis>): string {
@@ -343,6 +355,32 @@ export class StlDimensionsPage {
     this.polling = pollStlJob(this.jobsService, jobId).subscribe({
       next: (job) => this.updateJob(job),
       error: (error: unknown) => this.handlePollingError(error),
+    });
+  }
+
+  private applySavedPrinterProfile(): void {
+    const profile = this.printerProfile.profile();
+    if (!profile) {
+      return;
+    }
+    this.buildWidth.set(profile.width);
+    this.buildHeight.set(profile.height);
+    this.buildDepth.set(profile.depth);
+    this.buildUnit.set(profile.unit);
+  }
+
+  private savePrinterProfile(): void {
+    const width = this.buildWidth();
+    const height = this.buildHeight();
+    const depth = this.buildDepth();
+    if (width === null || height === null || depth === null) {
+      return;
+    }
+    this.printerProfile.save({
+      width,
+      height,
+      depth,
+      unit: this.buildUnit(),
     });
   }
 

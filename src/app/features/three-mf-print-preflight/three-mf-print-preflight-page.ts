@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
+import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import {
@@ -43,6 +44,10 @@ const PLA_DENSITY_GRAMS_PER_CUBIC_CENTIMETRE = 1.24;
 export class ThreeMfPrintPreflightPage {
   readonly routeUrl = PublicRouteUrl;
   readonly wallThicknessLimitation = THREE_MF_WALL_THICKNESS_LIMITATION;
+  private readonly printerProfileService = inject(PrinterProfileService);
+  readonly savedPrinterProfile = computed(() =>
+    this.printerProfileService.profile(),
+  );
   readonly file = signal<File | null>(null);
   readonly resolved = signal<ResolvedThreeMfGeometry | null>(null);
   readonly integrity = computed(() => {
@@ -58,11 +63,27 @@ export class ThreeMfPrintPreflightPage {
   readonly progress = signal('');
   readonly error = signal('');
   readonly analysing = signal(false);
-  readonly buildVolume = computed(() => PRINTER_PRESETS[this.printerPreset()]);
+  readonly buildVolume = computed(() => {
+    const savedProfile = this.savedPrinterProfile();
+    return this.printerPreset() === 'saved' && savedProfile
+      ? savedProfile
+      : (PRINTER_PRESETS[this.printerPreset()] ?? PRINTER_PRESETS['standard']);
+  });
+  readonly buildVolumeUnit = computed(() => {
+    const savedProfile = this.savedPrinterProfile();
+    return this.printerPreset() === 'saved' && savedProfile
+      ? savedProfile.unit
+      : 'mm';
+  });
   readonly orientation = computed(() => {
     const dimensions = this.dimensions();
     return dimensions
-      ? assessPrinterOrientations(dimensions, 'mm', this.buildVolume(), 'mm')
+      ? assessPrinterOrientations(
+          dimensions,
+          'mm',
+          this.buildVolume(),
+          this.buildVolumeUnit(),
+        )
       : null;
   });
   readonly fitsPrinter = computed(
@@ -106,6 +127,9 @@ export class ThreeMfPrintPreflightPage {
   private readonly seo = inject(SeoService);
 
   constructor() {
+    if (this.savedPrinterProfile()) {
+      this.printerPreset.set('saved');
+    }
     this.seo.apply({
       title: '3MF Print Preflight Checker - Check Before Slicing | InspectMesh',
       description:
@@ -167,7 +191,10 @@ export class ThreeMfPrintPreflightPage {
   }
 
   setPrinterPreset(value: string): void {
-    if (value in PRINTER_PRESETS) {
+    if (
+      value in PRINTER_PRESETS ||
+      (value === 'saved' && this.savedPrinterProfile())
+    ) {
       this.printerPreset.set(value);
     }
   }

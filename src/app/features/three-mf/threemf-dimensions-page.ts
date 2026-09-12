@@ -16,6 +16,7 @@ import { uploadErrorMessage } from '../../core/api/upload-error';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { FeedbackLinkComponent } from '../../core/components/feedback-link/feedback-link';
 import { SeoService } from '../../core/seo/seo.service';
+import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Job, JobStatus } from '../../models/job';
 import { jobFailureMessageForFormat } from '../../models/job-failure';
@@ -62,6 +63,9 @@ export class ThreeMfDimensionsPage {
   protected readonly buildDepth = signal<number | null>(null);
   protected readonly buildUnit = signal<ModelUnit>('mm');
   protected readonly buildVolumeTouched = signal(false);
+  protected readonly hasSavedPrinterProfile = computed(
+    () => this.printerProfile.profile() !== null,
+  );
   protected readonly report = computed(() => this.asRecord(this.job()?.report));
   protected readonly dimensions = computed<ModelDimensions | null>(() => {
     const values = this.asRecord(this.report()?.['dimensions']);
@@ -135,10 +139,12 @@ export class ThreeMfDimensionsPage {
   private readonly jobs = inject(JobsService);
   private readonly jobCreation = inject(JobCreationService);
   private readonly seo = inject(SeoService);
+  private readonly printerProfile = inject(PrinterProfileService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
 
   constructor() {
+    this.applySavedPrinterProfile();
     this.seo.apply({
       title: '3MF Dimensions Checker - Measure 3MF Files Online | InspectMesh',
       description:
@@ -210,10 +216,16 @@ export class ThreeMfDimensionsPage {
     } else {
       this.buildDepth.set(parsed);
     }
+    this.savePrinterProfile();
   }
 
   protected setBuildUnit(event: Event): void {
     this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
+    this.savePrinterProfile();
+  }
+
+  protected clearSavedPrinterProfile(): void {
+    this.printerProfile.clear();
   }
 
   protected orientationName(
@@ -260,6 +272,32 @@ export class ThreeMfDimensionsPage {
           );
         }
       },
+    });
+  }
+
+  private applySavedPrinterProfile(): void {
+    const profile = this.printerProfile.profile();
+    if (!profile) {
+      return;
+    }
+    this.buildWidth.set(profile.width);
+    this.buildHeight.set(profile.height);
+    this.buildDepth.set(profile.depth);
+    this.buildUnit.set(profile.unit);
+  }
+
+  private savePrinterProfile(): void {
+    const width = this.buildWidth();
+    const height = this.buildHeight();
+    const depth = this.buildDepth();
+    if (width === null || height === null || depth === null) {
+      return;
+    }
+    this.printerProfile.save({
+      width,
+      height,
+      depth,
+      unit: this.buildUnit(),
     });
   }
 

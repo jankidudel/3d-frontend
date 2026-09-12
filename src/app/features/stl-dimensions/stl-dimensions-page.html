@@ -237,7 +237,8 @@
           <h3 id="printer-fit-title">Will it fit my 3D printer?</h3>
           <p>
             Enter your printer’s usable build volume to compare it with this
-            model.
+            model. When all three values are valid, they are saved only on this
+            device for the STL and 3MF fit checks.
           </p>
           <div class="build-volume-fields">
             <label class="field">
@@ -247,6 +248,7 @@
                 min="0"
                 step="any"
                 inputmode="decimal"
+                [value]="buildWidth() ?? ''"
                 [attr.aria-invalid]="buildVolumeInvalid()"
                 aria-describedby="build-volume-error"
                 (input)="setBuildDimension('width', $event)"
@@ -260,6 +262,7 @@
                 min="0"
                 step="any"
                 inputmode="decimal"
+                [value]="buildHeight() ?? ''"
                 [attr.aria-invalid]="buildVolumeInvalid()"
                 aria-describedby="build-volume-error"
                 (input)="setBuildDimension('height', $event)"
@@ -273,6 +276,7 @@
                 min="0"
                 step="any"
                 inputmode="decimal"
+                [value]="buildDepth() ?? ''"
                 [attr.aria-invalid]="buildVolumeInvalid()"
                 aria-describedby="build-volume-error"
                 (input)="setBuildDimension('depth', $event)"
@@ -289,6 +293,19 @@
               </select>
             </label>
           </div>
+
+          @if (hasSavedPrinterProfile()) {
+            <p>
+              Your custom printer profile is saved on this device.
+              <button
+                type="button"
+                class="text-button"
+                (click)="clearSavedPrinterProfile()"
+              >
+                Forget saved profile
+              </button>
+            </p>
+          }
 
           @if (buildVolumeInvalid()) {
             <p id="build-volume-error" class="error" role="alert">
