@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { BreadcrumbPageLayout } from './core/components/breadcrumb-page-layout/breadcrumb-page-layout';
-import { PublicRoutePath } from './core/seo/public-routes';
+import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
 import { guideCanMatch } from './features/guides/guide-route';
 
 const breadcrumbRoutes: Routes = [
@@ -23,6 +23,13 @@ const breadcrumbRoutes: Routes = [
     loadComponent: () =>
       import('./features/gcode-preflight/gcode-preflight-page').then(
         (m) => m.GcodePreflightPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.OrientationPlanner,
+    loadComponent: () =>
+      import('./features/orientation-planner/orientation-planner-page').then(
+        (m) => m.OrientationPlannerPage,
       ),
   },
   {

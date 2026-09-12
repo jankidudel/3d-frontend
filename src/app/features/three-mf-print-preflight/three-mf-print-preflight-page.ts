@@ -66,7 +66,11 @@ export class ThreeMfPrintPreflightPage {
   readonly buildVolume = computed(() => {
     const savedProfile = this.savedPrinterProfile();
     return this.printerPreset() === 'saved' && savedProfile
-      ? savedProfile
+      ? {
+          width: savedProfile.width,
+          height: savedProfile.height,
+          depth: savedProfile.depth,
+        }
       : (PRINTER_PRESETS[this.printerPreset()] ?? PRINTER_PRESETS['standard']);
   });
   readonly buildVolumeUnit = computed(() => {

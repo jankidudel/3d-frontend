@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CookieConsentService } from '../../analytics/cookie-consent.service';
-import { PublicRoutePath } from '../../seo/public-routes';
+import { PublicRoutePathValue } from '../../seo/public-routes';
 
 @Component({
   selector: 'app-site-footer',
@@ -11,5 +11,5 @@ import { PublicRoutePath } from '../../seo/public-routes';
 })
 export class SiteFooterComponent {
   readonly consent = inject(CookieConsentService);
-  readonly routePath = PublicRoutePath;
+  readonly routePath = PublicRoutePathValue;
 }

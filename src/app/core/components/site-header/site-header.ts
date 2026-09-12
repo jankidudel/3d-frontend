@@ -15,7 +15,11 @@ import {
 } from '@angular/router';
 import { filter } from 'rxjs';
 import { MenuLink, MenuLinkVariant } from '../menu-link/menu-link';
-import { PublicRoutePath } from '../../seo/public-routes';
+import {
+  getPublicRouteForUrl,
+  PageType,
+  PublicRoutePathValue,
+} from '../../seo/public-routes';
 
 const MOBILE_NAVIGATION_MEDIA_QUERY = '(max-width: 48rem)';
 const TOOLS_MENU_CLOSE_DELAY_MS = 1_000;
@@ -36,7 +40,7 @@ export class SiteHeaderComponent {
   private readonly document = inject(DOCUMENT);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
-  readonly routePath = PublicRoutePath;
+  readonly routePath = PublicRoutePathValue;
   readonly menuLinkVariant = MenuLinkVariant;
   readonly toolsDisclosure =
     viewChild<ElementRef<HTMLElement>>('toolsDisclosure');
@@ -167,11 +171,6 @@ export class SiteHeaderComponent {
   }
 
   private isToolsRoute(url: string): boolean {
-    return (
-      url === `/${PublicRoutePath.AllTools}` ||
-      url === `/${PublicRoutePath.GcodePreflightChecker}` ||
-      url.startsWith('/stl-') ||
-      url.startsWith('/3mf-')
-    );
+    return getPublicRouteForUrl(url)?.pageType === PageType.Tool;
   }
 }

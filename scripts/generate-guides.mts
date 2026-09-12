@@ -13,7 +13,7 @@ import {
   guideGroups,
   guideRegistry,
 } from '../src/content/guides/guides.registry.ts';
-import { PublicRoutePath } from '../src/app/core/seo/public-routes.ts';
+import { PublicRoutePathValue } from '../src/app/core/seo/public-routes.ts';
 import {
   validateGuideRegistry,
   validateRegistryContentConsistency,
@@ -90,7 +90,7 @@ const htmlToSafeHtml = unified()
 const internalGuideLinkToken =
   /href="\{\{\s*GuideSlug\.([A-Za-z][A-Za-z0-9]*)\s*\}\}"/g;
 const internalRouteSlugs = new Set([
-  ...Object.values(PublicRoutePath),
+  ...Object.values(PublicRoutePathValue),
   ...guideRegistry.map((guide) => guide.slug),
 ]);
 const guideSlugReference = Object.fromEntries(

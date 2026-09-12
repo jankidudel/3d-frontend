@@ -15,6 +15,21 @@ describe('App', () => {
     expect(TestBed.createComponent(App).componentInstance).toBeTruthy();
   });
 
+  it('places the newsletter signup immediately before the site footer', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+
+    const newsletter = fixture.nativeElement.querySelector(
+      'app-newsletter-signup',
+    ) as HTMLElement;
+    const footer = fixture.nativeElement.querySelector(
+      'app-site-footer',
+    ) as HTMLElement;
+
+    expect(newsletter.textContent).toContain('Subscribe');
+    expect(newsletter.nextElementSibling).toBe(footer);
+  });
+
   it('renders ordinary anchors for the STL tool hub and individual tools', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
@@ -24,6 +39,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
+      '/3d-print-orientation-planner',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',
@@ -76,6 +92,7 @@ describe('App', () => {
     ).toEqual([
       ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
       ['Tolerance & Clearance', '/3d-print-tolerance-calculator'],
+      ['Orientation Planner', '/3d-print-orientation-planner'],
     ]);
     expect(
       menu.querySelector('#featured-tools-title')?.textContent?.trim(),
@@ -116,6 +133,7 @@ describe('App', () => {
     expect(links.map((link) => link.textContent?.trim())).toEqual([
       '3D Print Cost Calculator',
       'Tolerance & Clearance',
+      'Orientation Planner',
       'STL tools',
       'STL Viewer',
       'STL Quality Checker',
@@ -149,6 +167,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
+      '/3d-print-orientation-planner',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',

@@ -50,7 +50,12 @@ export class StlPrintPreflightPage {
   readonly analysing = signal(false);
   readonly unit = signal<ModelUnit>('mm');
   /** Printer fit is meaningful only after a custom printer profile is saved. */
-  readonly buildVolume = computed(() => this.printerProfile());
+  readonly buildVolume = computed(() => {
+    const profile = this.printerProfile();
+    return profile
+      ? { width: profile.width, height: profile.height, depth: profile.depth }
+      : null;
+  });
   readonly integrity = computed(() => this.integrityReport());
   readonly dimensions = computed(() => this.dimensionsReport());
   readonly orientation = computed(() => {
@@ -61,7 +66,7 @@ export class StlPrintPreflightPage {
           dimensions,
           this.unit(),
           buildVolume,
-          buildVolume.unit,
+          this.printerProfile()?.unit ?? 'mm',
         )
       : null;
   });

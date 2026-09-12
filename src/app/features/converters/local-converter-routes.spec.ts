@@ -2,7 +2,7 @@ import { RenderMode } from '@angular/ssr';
 import { Routes } from '@angular/router';
 import { routes } from '../../app.routes';
 import { serverRoutes } from '../../app.routes.server';
-import { PublicRoutePath } from '../../core/seo/public-routes';
+import { PublicRoutePathValue as PublicRoutePath } from '../../core/seo/public-routes';
 
 describe('local converter routes', () => {
   it('registers and prerenders both browser-local converters', () => {

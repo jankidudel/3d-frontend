@@ -1,0 +1,31 @@
+@use '../shared/model-upload';
+
+.orientation-planner-page .card {
+  margin-block: 1.5rem;
+  padding: var(--tool-card-padding);
+}
+.orientation-planner-page input[type='file'] {
+  display: none;
+}
+.orientation-planner-page label {
+  display: block;
+  margin-block: 1rem;
+}
+.orientation-planner-page select,
+.orientation-planner-page input {
+  margin-left: 0.5rem;
+}
+.orientation-planner-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.orientation-planner-page th,
+.orientation-planner-page td {
+  padding: 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.table-scroll {
+  overflow-x: auto;
+}

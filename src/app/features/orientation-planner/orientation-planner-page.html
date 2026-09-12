@@ -1,0 +1,186 @@
+<main class="page tool-page orientation-planner-page">
+  <p class="eyebrow">Print preparation</p>
+  <h1>3D Print Orientation Planner</h1>
+  <p class="lead">
+    Compare sensible STL and 3MF orientations locally before slicing. Review
+    printer fit, downward-facing geometry and estimated first-layer contact in
+    one place.
+  </p>
+  <section class="card viewer-tool" aria-labelledby="upload-title">
+    <h2 id="upload-title">Choose a model</h2>
+    <p>Your STL or 3MF stays in this browser. It is not uploaded or changed.</p>
+    <button class="button" type="button" (click)="openPicker(picker)">
+      Choose STL or 3MF file
+    </button>
+    <input
+      #picker
+      type="file"
+      accept=".stl,.3mf"
+      aria-label="Choose an STL or 3MF file"
+      (change)="chooseFile($event)"
+    />
+    @if (analysing()) {
+      <p role="status">{{ progress() }}</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+
+  @if (mesh()) {
+    <section class="card" aria-labelledby="settings-title">
+      <h2 id="settings-title">Comparison settings</h2>
+      @if (format() === 'stl') {
+        <label
+          >Assumed STL unit
+          <select [value]="stlUnit()" (change)="setStlUnit($event)">
+            <option value="mm">Millimetres (mm)</option>
+            <option value="cm">Centimetres (cm)</option>
+            <option value="m">Metres (m)</option>
+            <option value="in">Inches (in)</option>
+          </select>
+        </label>
+        <p>
+          STL does not declare units. This assumption affects printer-fit
+          comparison, not the angle screen.
+        </p>
+      }
+      <label
+        >Flag surfaces steeper than this angle from vertical
+        <input
+          type="number"
+          min="0"
+          max="89.9"
+          step="0.1"
+          [value]="threshold()"
+          (input)="setThreshold($event)"
+        />
+        degrees
+      </label>
+      @if (printerProfile(); as profile) {
+        <p>
+          Using your saved printer profile: {{ formatNumber(profile.width) }} ×
+          {{ formatNumber(profile.height) }} × {{ formatNumber(profile.depth) }}
+          {{ profile.unit }}.
+          <a
+            [routerLink]="
+              format() === '3mf'
+                ? routeUrl.ThreeMfDimensionsChecker
+                : routeUrl.DimensionsChecker
+            "
+            >Edit profile</a
+          >.
+        </p>
+      } @else {
+        <p>
+          Save your usable build volume in the
+          <a
+            [routerLink]="
+              format() === '3mf'
+                ? routeUrl.ThreeMfDimensionsChecker
+                : routeUrl.DimensionsChecker
+            "
+            >Dimensions Checker</a
+          >
+          to include printer fit.
+        </p>
+      }
+    </section>
+
+    @if (recommended(); as plan) {
+      <section class="card" aria-labelledby="recommendation-title">
+        <h2 id="recommendation-title">First orientation to review</h2>
+        <p>
+          <strong>{{ plan.label }}</strong> has the lowest flagged
+          downward-facing area among the compared orientations{{
+            plan.fit && !plan.fit.fits
+              ? ', but it does not fit the saved printer profile'
+              : ''
+          }}.
+        </p>
+        <p>
+          This is a review priority, not a support plan or a guarantee of print
+          success.
+        </p>
+      </section>
+    }
+
+    <section class="card" aria-labelledby="comparison-title">
+      <h2 id="comparison-title">Orientation comparison</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Orientation</th>
+              <th>Printer fit</th>
+              <th>Flagged surface</th>
+              <th>Estimated bed contact</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (plan of plans(); track plan.label) {
+              <tr>
+                <th scope="row">{{ plan.label }}</th>
+                <td>
+                  {{
+                    plan.fit
+                      ? plan.fit.fits
+                        ? 'Fits profile'
+                        : 'Does not fit profile'
+                      : 'Add a printer profile'
+                  }}
+                </td>
+                <td>{{ formatNumber(plan.overhang.flaggedPercentage) }}%</td>
+                <td>
+                  {{ formatNumber(plan.bedContactArea) }}
+                  {{ format() === '3mf' ? 'mm²' : stlUnit() + '²' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Bed contact estimates only faces lying on the initial build plane.
+        Brims, rafts, supports, strength, visible surfaces, material and slicer
+        settings can change the best practical choice.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Next checks</h2>
+      <p>
+        <a
+          [routerLink]="
+            format() === '3mf'
+              ? routeUrl.ThreeMfOverhangChecker
+              : routeUrl.StlOverhangChecker
+          "
+          >Inspect overhang risk</a
+        >
+        ·
+        <a
+          [routerLink]="
+            format() === '3mf'
+              ? routeUrl.ThreeMfWallThicknessChecker
+              : routeUrl.StlWallThicknessChecker
+          "
+          >Check wall thickness</a
+        >
+        ·
+        <a [routerLink]="routeUrl.GcodePreflightChecker"
+          >Inspect sliced G-code</a
+        >
+      </p>
+    </section>
+  }
+
+  <section class="card">
+    <h2>What this planner can and cannot decide</h2>
+    <p>
+      It compares six axis-aligned build directions. It does not test every
+      angled rotation, generate supports, predict warping or replace slicer
+      preview. Confirm the chosen orientation with the intended printer,
+      material and slicer settings.
+    </p>
+  </section>
+</main>

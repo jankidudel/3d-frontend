@@ -264,6 +264,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     title: 'Planning and functional tools',
     tools: [
       {
+        icon: '↻',
+        title: '3D Print Orientation Planner',
+        description:
+          'Compare six sensible STL or 3MF build directions for printer fit, downward-facing geometry and estimated bed contact.',
+        route: PublicRouteUrl.OrientationPlanner,
+        cta: 'Plan an orientation',
+      },
+      {
         icon: '↔',
         title: '3D Print Tolerance & Clearance Calculator',
         description:

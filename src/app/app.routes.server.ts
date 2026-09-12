@@ -1,5 +1,5 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { PublicRoutePath } from './core/seo/public-routes';
+import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
 import { guideSlugs } from './features/guides/generated/guide-route-data.generated';
 
 export const serverRoutes: ServerRoute[] = [
@@ -15,6 +15,10 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: PublicRoutePath.GcodePreflightChecker,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.OrientationPlanner,
     renderMode: RenderMode.Prerender,
   },
   { path: PublicRoutePath.Tools, renderMode: RenderMode.Prerender },

@@ -7,6 +7,12 @@
     time.
   </p>
   <app-format-tools-grid heading="STL tools" [tools]="tools" />
+  <p>
+    Choosing how to place a model before slicing?
+    <a [routerLink]="routeUrl.OrientationPlanner"
+      >Use the 3D Print Orientation Planner</a
+    >.
+  </p>
   <p><a [routerLink]="routeUrl.AllTools">Browse all 3D file tools</a></p>
   <section class="content" aria-labelledby="need-title">
     <h2 id="need-title">Which tool do I need?</h2>
@@ -91,12 +97,4 @@
       affect the physical result.
     </p>
   </section>
-  <app-newsletter-signup
-    title="Newsletter"
-    description="Get occasional updates on new tools and practical 3D-print guides."
-    idPrefix="stl-tools-subscribe"
-    [compact]="true"
-    placeholder="Email address"
-    buttonLabel="Subscribe"
-  />
 </main>

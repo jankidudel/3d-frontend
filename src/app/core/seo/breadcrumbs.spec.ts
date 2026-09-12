@@ -69,6 +69,16 @@ describe('breadcrumbsForPath', () => {
     ]);
   });
 
+  it('builds the orientation planner trail directly from all 3D tools', () => {
+    expect(breadcrumbsForPath('/3d-print-orientation-planner')).toEqual([
+      { label: 'All 3D tools', href: '/tools' },
+      {
+        label: '3D Print Orientation Planner',
+        href: '/3d-print-orientation-planner',
+      },
+    ]);
+  });
+
   it('builds the STL hub trail without linking its current item', () => {
     expect(breadcrumbsForPath('/stl-tools')).toEqual([
       { label: 'All 3D tools', href: '/tools' },

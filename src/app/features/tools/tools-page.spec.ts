@@ -37,12 +37,5 @@ describe('ToolsPage', () => {
     expect(
       fixture.nativeElement.querySelector('nav[aria-label="Breadcrumb"]'),
     ).toBeNull();
-    const newsletter = fixture.nativeElement.querySelector(
-      'app-newsletter-signup',
-    ) as HTMLElement;
-    expect(newsletter.textContent).toContain(
-      'Get occasional updates on new tools and practical 3D-print guides.',
-    );
-    expect(newsletter.textContent).toContain('Subscribe');
   });
 });

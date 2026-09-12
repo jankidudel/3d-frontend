@@ -47,6 +47,15 @@ input.invalid:focus-visible {
   padding-inline: 0.8rem;
 }
 
+/* Verification is required before a subscription can be sent. Keep this
+ * distinctly neutral rather than making a disabled action look available. */
+.button:disabled {
+  color: #fff;
+  background: #667268;
+  border-color: #667268;
+  opacity: 1;
+}
+
 .visually-hidden {
   position: absolute;
   overflow: hidden;
