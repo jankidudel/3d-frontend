@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { FormatToolsGrid } from '../../core/components/format-tools-grid/format-tools-grid';
+import { NewsletterSignupComponent } from '../../core/components/newsletter-signup/newsletter-signup';
 import { HOME_TOOL_GROUPS } from '../home/home-tools';
 
 @Component({
   selector: 'app-three-mf-tools-page',
-  imports: [FormatToolsGrid, RouterLink],
+  imports: [FormatToolsGrid, NewsletterSignupComponent, RouterLink],
   templateUrl: './threemf-tools-page.html',
   styleUrl: '../shared/model-tools-page.scss',
 })

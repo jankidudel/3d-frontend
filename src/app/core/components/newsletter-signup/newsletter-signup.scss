@@ -1,0 +1,52 @@
+:host {
+  display: block;
+}
+
+.newsletter-signup {
+  margin-top: 1.5rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+app-subscription-form {
+  margin-top: 1rem;
+}
+
+.newsletter-signup--compact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+}
+
+.newsletter-signup--compact p {
+  flex: 1;
+  margin: 0;
+}
+
+.newsletter-signup--compact app-subscription-form {
+  flex: none;
+  width: min(100%, 25rem);
+  margin-top: 0;
+}
+
+@media (max-width: 42rem) {
+  .newsletter-signup--compact {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .newsletter-signup--compact app-subscription-form {
+    width: 100%;
+  }
+}

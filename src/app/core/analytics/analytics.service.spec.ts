@@ -21,7 +21,7 @@ describe('AnalyticsService', () => {
   }
 
   beforeEach(() => {
-    localStorage.clear();
+    localStorage.removeItem('cookie_consent_v1');
     TestBed.configureTestingModule({
       providers: [
         provideRouter([]),

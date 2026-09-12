@@ -15,6 +15,11 @@ import { SITE_CONFIG } from '../../core/site/site-config';
         Uploaded files are processed only to provide the requested analysis and
         are not used for advertising or marketing.
       </p>
+      <h2>Subscriptions</h2>
+      <p>
+        If you subscribe to InspectMesh updates, we store your email address so
+        we can keep a record of your request and send product updates.
+      </p>
       <h2>Analytics cookies</h2>
       <p>
         If you choose analytics cookies, we use Google Analytics to understand

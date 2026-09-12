@@ -1,0 +1,16 @@
+<section
+  class="newsletter-signup card"
+  [class.newsletter-signup--compact]="compact()"
+  [attr.aria-labelledby]="compact() ? null : idPrefix() + '-title'"
+  [attr.aria-label]="compact() ? 'Newsletter signup' : null"
+>
+  @if (!compact()) {
+    <h2 [id]="idPrefix() + '-title'">{{ title() }}</h2>
+  }
+  <p>{{ description() }}</p>
+  <app-subscription-form
+    [idPrefix]="idPrefix()"
+    [placeholder]="placeholder()"
+    [buttonLabel]="buttonLabel()"
+  />
+</section>

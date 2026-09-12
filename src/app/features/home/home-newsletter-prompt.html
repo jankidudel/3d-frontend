@@ -1,0 +1,44 @@
+@if (visible()) {
+  <aside
+    class="newsletter-prompt"
+    [class.newsletter-prompt--expanded]="expanded()"
+    aria-label="InspectMesh newsletter"
+  >
+    @if (expanded()) {
+      <div id="home-newsletter-panel" class="prompt-panel">
+        <div class="prompt-heading">
+          <div>
+            <strong>New tools &amp; guides</strong>
+            <p>
+              Occasional updates when InspectMesh adds useful tools and guides.
+            </p>
+          </div>
+          <button
+            class="close"
+            type="button"
+            (click)="dismiss()"
+            aria-label="Close newsletter sign-up"
+          >
+            ×
+          </button>
+        </div>
+        <app-subscription-form
+          idPrefix="home-prompt-subscribe"
+          placeholder="Email address"
+          buttonLabel="Subscribe"
+          (subscriptionSucceeded)="subscribed()"
+        />
+      </div>
+    } @else {
+      <button
+        class="prompt-tab"
+        type="button"
+        (click)="open()"
+        [attr.aria-expanded]="expanded()"
+        aria-controls="home-newsletter-panel"
+      >
+        New tools &amp; guides
+      </button>
+    }
+  </aside>
+}

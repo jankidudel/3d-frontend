@@ -1,0 +1,59 @@
+<form class="subscription-form" (submit)="subscribe($event)" novalidate>
+  <label class="visually-hidden" [for]="idPrefix() + '-email'">{{
+    label()
+  }}</label>
+  <div class="subscribe-controls">
+    @if (inlineLabel(); as label) {
+      <span class="inline-label">{{ label }}</span>
+    }
+    <input
+      [id]="idPrefix() + '-email'"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      maxlength="254"
+      [placeholder]="placeholder()"
+      [value]="email()"
+      (input)="update('email', $event)"
+      (blur)="validateOnBlur()"
+      [class.invalid]="emailInvalid()"
+      [attr.aria-invalid]="error() ? 'true' : null"
+      [attr.aria-describedby]="idPrefix() + '-status'"
+    />
+    <button class="button" type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Subscribing…' : buttonLabel() }}
+    </button>
+  </div>
+  @if (verificationVisible()) {
+    <div
+      class="verification"
+      [attr.aria-labelledby]="idPrefix() + '-captcha-label'"
+    >
+      <span [id]="idPrefix() + '-captcha-label'"
+        >Verification <strong aria-hidden="true">(required)</strong></span
+      >
+      <div [id]="idPrefix() + '-turnstile'"></div>
+    </div>
+  }
+  <label class="honeypot" aria-hidden="true" [for]="idPrefix() + '-website'"
+    >Leave this blank<input
+      [id]="idPrefix() + '-website'"
+      tabindex="-1"
+      autocomplete="off"
+      [value]="honeypot()"
+      (input)="update('honeypot', $event)"
+  /></label>
+  @if (captchaError()) {
+    <p [id]="idPrefix() + '-status'" class="error" role="alert">
+      {{ captchaError() }}
+    </p>
+  } @else if (error()) {
+    <p [id]="idPrefix() + '-status'" class="error" role="alert">
+      {{ error() }}
+    </p>
+  } @else if (submitted()) {
+    <p [id]="idPrefix() + '-status'" class="success" role="status">
+      Thanks — you're subscribed.
+    </p>
+  }
+</form>

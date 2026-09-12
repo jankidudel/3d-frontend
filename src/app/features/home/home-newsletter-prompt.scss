@@ -1,0 +1,91 @@
+:host {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+}
+
+.newsletter-prompt {
+  width: min(23rem, calc(100vw - 2rem));
+}
+
+.prompt-panel {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  box-shadow: 0 0.75rem 2rem rgb(18 45 31 / 18%);
+}
+
+.prompt-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+strong {
+  color: var(--ink);
+}
+
+p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.close,
+.prompt-tab {
+  border: 1px solid var(--border);
+  color: var(--ink);
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.close {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.prompt-tab {
+  padding: 0.65rem 0.85rem;
+  border-radius: 999px;
+  box-shadow: 0 0.4rem 1.2rem rgb(18 45 31 / 16%);
+  font-weight: 700;
+}
+
+app-subscription-form {
+  display: block;
+  width: 100%;
+  margin-top: 0.85rem;
+}
+
+.close:focus-visible,
+.prompt-tab:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+@media (max-width: 42rem) {
+  :host {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+
+  .newsletter-prompt--expanded {
+    width: min(23rem, calc(100vw - 1.5rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}

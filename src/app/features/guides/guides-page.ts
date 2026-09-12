@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { NewsletterSignupComponent } from '../../core/components/newsletter-signup/newsletter-signup';
 import { guideIndexGroups } from './guides.generated';
 
 @Component({
   selector: 'app-guides-page',
+  imports: [NewsletterSignupComponent],
   templateUrl: './guides-page.html',
   styleUrl: './guides-page.scss',
 })

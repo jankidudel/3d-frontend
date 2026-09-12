@@ -1,0 +1,100 @@
+:host {
+  display: block;
+  width: min(100%, 22rem);
+}
+
+.subscription-form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.subscribe-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inline-label {
+  flex: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+input {
+  min-width: 0;
+  flex: 1;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+input.invalid {
+  border-color: var(--error);
+  background: color-mix(in srgb, var(--error) 6%, var(--surface));
+}
+
+input.invalid:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--error) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.button {
+  min-height: 2.5rem;
+  padding-inline: 0.8rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.verification {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.verification > span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.error,
+.success {
+  margin: 0;
+  font-weight: 650;
+}
+
+.error {
+  color: var(--error);
+}
+
+.success {
+  color: var(--primary);
+}
+
+@media (max-width: 28rem) {
+  :host {
+    width: 100%;
+  }
+
+  .subscribe-controls {
+    flex-direction: column;
+  }
+}

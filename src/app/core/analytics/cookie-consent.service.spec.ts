@@ -3,7 +3,7 @@ import { CookieConsentService } from './cookie-consent.service';
 
 describe('CookieConsentService', () => {
   beforeEach(() => {
-    localStorage.clear();
+    localStorage.removeItem('cookie_consent_v1');
     TestBed.configureTestingModule({});
   });
 

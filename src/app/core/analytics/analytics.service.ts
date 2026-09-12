@@ -78,6 +78,10 @@ export const AnalyticsEvent = {
   ContactFeedbackOpened: 'contact_feedback_opened',
   ContactFeedbackStarted: 'contact_feedback_started',
   ContactFeedbackSubmitted: 'contact_feedback_submitted',
+  NewsletterPromptDisplayed: 'newsletter_prompt_displayed',
+  NewsletterPromptOpened: 'newsletter_prompt_opened',
+  NewsletterPromptDismissed: 'newsletter_prompt_dismissed',
+  NewsletterPromptSubmitted: 'newsletter_prompt_submitted',
 } as const;
 
 type AnalyticsEventName = (typeof AnalyticsEvent)[keyof typeof AnalyticsEvent];
@@ -308,6 +312,16 @@ export class AnalyticsService {
 
   trackContactFeedbackSubmitted(): void {
     this.sendEvent(AnalyticsEvent.ContactFeedbackSubmitted, {});
+  }
+
+  trackNewsletterPrompt(
+    event:
+      | typeof AnalyticsEvent.NewsletterPromptDisplayed
+      | typeof AnalyticsEvent.NewsletterPromptOpened
+      | typeof AnalyticsEvent.NewsletterPromptDismissed
+      | typeof AnalyticsEvent.NewsletterPromptSubmitted,
+  ): void {
+    this.sendEvent(event, {});
   }
 
   trackThreeMfQualityStarted(fileSizeBytes: number): void {

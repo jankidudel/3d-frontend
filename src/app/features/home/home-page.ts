@@ -3,10 +3,11 @@ import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { HOME_TOOL_GROUPS } from './home-tools';
+import { HomeNewsletterPromptComponent } from './home-newsletter-prompt';
 
 @Component({
   selector: 'app-home-page',
-  imports: [RouterLink],
+  imports: [HomeNewsletterPromptComponent, RouterLink],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

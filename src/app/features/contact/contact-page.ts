@@ -27,6 +27,14 @@ const CONTACT_REASONS: readonly ContactReason[] = [
   'Partnership or business enquiry',
 ];
 
+const CONTACT_LIMITS = {
+  name: 120,
+  email: 254,
+  context: 240,
+  message: 5000,
+} as const;
+export const CONTACT_SUBMITTED_STORAGE_KEY = 'contact_form_submitted_v1';
+
 @Component({
   selector: 'app-contact-page',
   templateUrl: './contact-page.html',
@@ -34,6 +42,7 @@ const CONTACT_REASONS: readonly ContactReason[] = [
 })
 export class ContactPage implements AfterViewInit {
   protected readonly reasons = CONTACT_REASONS;
+  protected readonly limits = CONTACT_LIMITS;
   protected readonly reason = signal<ContactReason | ''>('');
   protected readonly name = signal('');
   protected readonly email = signal('');
@@ -130,9 +139,23 @@ export class ContactPage implements AfterViewInit {
       errors['email'] = 'Enter your email address.';
     } else if (!this.isValidEmail(this.email())) {
       errors['email'] = 'Enter a valid email address.';
+    } else if (this.email().trim().length > CONTACT_LIMITS.email) {
+      errors['email'] =
+        `Email address must be ${CONTACT_LIMITS.email} characters or fewer.`;
+    }
+    if (this.name().trim().length > CONTACT_LIMITS.name) {
+      errors['name'] =
+        `Name must be ${CONTACT_LIMITS.name} characters or fewer.`;
     }
     if (!this.message().trim()) {
       errors['message'] = 'Enter a message.';
+    } else if (this.message().trim().length > CONTACT_LIMITS.message) {
+      errors['message'] =
+        `Message must be ${CONTACT_LIMITS.message.toLocaleString()} characters or fewer.`;
+    }
+    if (this.context().trim().length > CONTACT_LIMITS.context) {
+      errors['context'] =
+        `Page or tool must be ${CONTACT_LIMITS.context} characters or fewer.`;
     }
     if (!this.captchaToken()) {
       errors['captcha'] = 'Complete the CAPTCHA before sending your message.';
@@ -164,6 +187,7 @@ export class ContactPage implements AfterViewInit {
           this.analytics.trackContactFeedbackSubmitted();
           this.clearForm();
           this.submitted.set(true);
+          this.saveSubmittedFlag();
           this.submitting.set(false);
           this.resetCaptcha();
         },
@@ -217,6 +241,21 @@ export class ContactPage implements AfterViewInit {
     this.honeypot.set('');
     this.errors.set({});
     this.submitError.set('');
+  }
+
+  private saveSubmittedFlag(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+    try {
+      localStorage.setItem(CONTACT_SUBMITTED_STORAGE_KEY, 'true');
+    } catch (error) {
+      console.warn(
+        'Could not save the contact submission flag locally.',
+        error,
+      );
+      // Sending still succeeds if the browser blocks local storage.
+    }
   }
 
   private isValidEmail(value: string): boolean {

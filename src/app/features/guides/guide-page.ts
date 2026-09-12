@@ -1,10 +1,12 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NewsletterSignupComponent } from '../../core/components/newsletter-signup/newsletter-signup';
 import { SeoService } from '../../core/seo/seo.service';
 import { Guide, guideBySlug } from './guides.generated';
 
 @Component({
   selector: 'app-guide-page',
+  imports: [NewsletterSignupComponent],
   templateUrl: './guide-page.html',
   styleUrl: './guide-page.scss',
   encapsulation: ViewEncapsulation.None,

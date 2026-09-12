@@ -37,9 +37,15 @@
           id="contact-name"
           type="text"
           autocomplete="name"
+          [maxLength]="limits.name"
           [value]="name()"
           (input)="update('name', $event)"
+          [attr.aria-invalid]="errors()['name'] ? 'true' : null"
+          aria-describedby="contact-name-error"
       /></label>
+      @if (errors()['name']; as error) {
+        <p id="contact-name-error" class="error" role="alert">{{ error }}</p>
+      }
       <label class="field" for="contact-email"
         ><span
           >Email address <strong aria-hidden="true">(required)</strong></span
@@ -47,6 +53,7 @@
           id="contact-email"
           type="email"
           autocomplete="email"
+          [maxLength]="limits.email"
           [value]="email()"
           (input)="update('email', $event)"
           [attr.aria-invalid]="errors()['email'] ? 'true' : null"
@@ -60,14 +67,25 @@
         ><input
           id="contact-context"
           type="text"
+          [maxLength]="limits.context"
           [value]="context()"
           (input)="update('context', $event)"
+          [attr.aria-invalid]="errors()['context'] ? 'true' : null"
+          aria-describedby="contact-context-error"
       /></label>
+      @if (errors()['context']; as error) {
+        <p id="contact-context-error" class="error" role="alert">{{ error }}</p>
+      }
       <label class="field" for="contact-message"
-        ><span>Message <strong aria-hidden="true">(required)</strong></span
+        ><span
+          >Message
+          <strong aria-hidden="true"
+            >(required, max 5,000 characters)</strong
+          ></span
         ><textarea
           id="contact-message"
           rows="7"
+          [maxLength]="limits.message"
           [value]="message()"
           (input)="update('message', $event)"
           [attr.aria-invalid]="errors()['message'] ? 'true' : null"

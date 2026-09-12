@@ -49,6 +49,9 @@ describe('PrivacyPage', () => {
     expect(text).toContain(
       'Uploaded files are processed only to provide the requested analysis and are not used for advertising or marketing.',
     );
+    expect(text).toContain(
+      'If you subscribe to InspectMesh updates, we store your email address so we can keep a record of your request and send product updates.',
+    );
     expect(text).not.toContain('Google Analytics 4');
     expect(text).not.toContain('GA4');
     expect(text).not.toContain('cloudfront.net');

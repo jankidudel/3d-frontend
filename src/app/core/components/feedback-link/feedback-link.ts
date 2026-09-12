@@ -1,13 +1,20 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { NewsletterSignupComponent } from '../newsletter-signup/newsletter-signup';
 import { PublicRouteUrl } from '../../seo/public-routes';
 
 @Component({
   selector: 'app-feedback-link',
+  imports: [NewsletterSignupComponent],
   template: `
     <p class="feedback-link">
       <a [href]="href">Something missing or incorrect? Send feedback</a>
     </p>
+    <app-newsletter-signup
+      title="Was this useful?"
+      description="Get occasional updates when we add new 3D-print file checks."
+      idPrefix="result-subscribe"
+    />
   `,
   styles: `
     .feedback-link {
