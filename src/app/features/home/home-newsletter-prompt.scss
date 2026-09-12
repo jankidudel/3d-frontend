@@ -65,6 +65,11 @@ app-subscription-form {
   margin-top: 0.85rem;
 }
 
+.subscription-success {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .close:focus-visible,
 .prompt-tab:focus-visible {
   outline: 3px solid var(--primary);

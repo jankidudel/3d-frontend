@@ -9,6 +9,7 @@ import {
 import { SubscriptionService } from '../../api/subscription.service';
 import { TurnstileService } from '../../contact/turnstile.service';
 import { SITE_CONFIG } from '../../site/site-config';
+import { SubscriptionPreferencesService } from './subscription-preferences.service';
 
 @Component({
   selector: 'app-subscription-form',
@@ -39,14 +40,17 @@ export class SubscriptionFormComponent {
   );
   private readonly captchaSiteKey = this.siteConfig.contactCaptchaSiteKey;
   private readonly subscriptions = inject(SubscriptionService);
+  private readonly preferences = inject(SubscriptionPreferencesService);
   private readonly turnstile = inject(TurnstileService);
   private captchaWidgetId?: string;
   private captchaLoading = false;
+  private pendingCaptchaSubmission = false;
 
   protected update(field: 'email' | 'honeypot', event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     if (field === 'email') {
       this.email.set(value);
+      this.pendingCaptchaSubmission = false;
     } else {
       this.honeypot.set(value);
     }
@@ -68,11 +72,16 @@ export class SubscriptionFormComponent {
       return;
     }
     if (!this.captchaToken()) {
-      this.error.set('Complete the CAPTCHA before subscribing.');
+      this.error.set('Complete verification to subscribe.');
       this.verificationVisible.set(true);
+      this.pendingCaptchaSubmission = true;
       setTimeout(() => void this.renderCaptcha());
       return;
     }
+    this.sendSubscription(email);
+  }
+
+  private sendSubscription(email: string): void {
     if (this.submitting()) {
       return;
     }
@@ -91,6 +100,7 @@ export class SubscriptionFormComponent {
           this.submitted.set(true);
           this.submitting.set(false);
           this.resetCaptcha();
+          this.preferences.markSubscribed();
           this.subscriptionSucceeded.emit();
         },
         error: (response: { error?: { error?: unknown } }) => {
@@ -141,7 +151,14 @@ export class SubscriptionFormComponent {
       const turnstile = await this.turnstile.load();
       this.captchaWidgetId = turnstile.render(element, {
         sitekey: this.captchaSiteKey,
-        callback: (token) => this.captchaToken.set(token),
+        callback: (token) => {
+          this.captchaToken.set(token);
+          this.error.set('');
+          if (this.pendingCaptchaSubmission) {
+            this.pendingCaptchaSubmission = false;
+            this.sendSubscription(this.email().trim());
+          }
+        },
         'expired-callback': () => this.captchaToken.set(''),
         'error-callback': () =>
           this.captchaError.set(
@@ -158,6 +175,7 @@ export class SubscriptionFormComponent {
   }
 
   private resetCaptcha(): void {
+    this.pendingCaptchaSubmission = false;
     this.captchaToken.set('');
     this.captchaError.set('');
     if (this.captchaWidgetId) {

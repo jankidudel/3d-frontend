@@ -5,13 +5,13 @@ import {
   CONTACT_SUBMITTED_STORAGE_KEY,
   HomeNewsletterPromptComponent,
   NEWSLETTER_PROMPT_DISMISSAL_STORAGE_KEY,
-  NEWSLETTER_PROMPT_SUBSCRIBED_STORAGE_KEY,
 } from './home-newsletter-prompt';
+import { NEWSLETTER_SUBSCRIBED_STORAGE_KEY } from '../../core/components/subscription-form/subscription-preferences.service';
 
 describe('HomeNewsletterPromptComponent', () => {
   beforeEach(() => {
     localStorage.removeItem(NEWSLETTER_PROMPT_DISMISSAL_STORAGE_KEY);
-    localStorage.removeItem(NEWSLETTER_PROMPT_SUBSCRIBED_STORAGE_KEY);
+    localStorage.removeItem(NEWSLETTER_SUBSCRIBED_STORAGE_KEY);
     localStorage.removeItem(CONTACT_SUBMITTED_STORAGE_KEY);
     vi.useFakeTimers();
     TestBed.configureTestingModule({

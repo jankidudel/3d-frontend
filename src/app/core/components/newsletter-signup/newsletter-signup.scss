@@ -21,6 +21,12 @@ app-subscription-form {
   margin-top: 1rem;
 }
 
+.subscription-success {
+  margin: 0;
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .newsletter-signup--compact {
   display: flex;
   align-items: center;

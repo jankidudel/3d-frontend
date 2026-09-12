@@ -12,11 +12,10 @@ import {
   AnalyticsService,
 } from '../../core/analytics/analytics.service';
 import { SubscriptionFormComponent } from '../../core/components/subscription-form/subscription-form';
+import { SubscriptionPreferencesService } from '../../core/components/subscription-form/subscription-preferences.service';
 
 export const NEWSLETTER_PROMPT_DISMISSAL_STORAGE_KEY =
   'homepage_newsletter_dismissed_until_v1';
-export const NEWSLETTER_PROMPT_SUBSCRIBED_STORAGE_KEY =
-  'homepage_newsletter_subscribed_v1';
 export const CONTACT_SUBMITTED_STORAGE_KEY = 'contact_form_submitted_v1';
 const DISMISSAL_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
 const ENGAGEMENT_SCROLL_RATIO = 0.4;
@@ -31,10 +30,12 @@ const MOBILE_QUERY = '(max-width: 42rem)';
 export class HomeNewsletterPromptComponent {
   protected readonly visible = signal(false);
   protected readonly expanded = signal(false);
+  protected readonly subscriptionSucceeded = signal(false);
   private readonly document = inject(DOCUMENT);
   private readonly analytics = inject(AnalyticsService);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly destroyRef = inject(DestroyRef);
+  private readonly preferences = inject(SubscriptionPreferencesService);
   private engaged = false;
   private delayElapsed = false;
   private shown = false;
@@ -66,12 +67,14 @@ export class HomeNewsletterPromptComponent {
   }
 
   protected subscribed(): void {
-    this.save(NEWSLETTER_PROMPT_SUBSCRIBED_STORAGE_KEY, 'true');
-    this.visible.set(false);
-    this.expanded.set(false);
+    this.subscriptionSucceeded.set(true);
     this.analytics.trackNewsletterPrompt(
       AnalyticsEvent.NewsletterPromptSubmitted,
     );
+    this.document.defaultView?.setTimeout(() => {
+      this.visible.set(false);
+      this.expanded.set(false);
+    }, 5_000);
   }
 
   private initialise(): void {
@@ -146,7 +149,7 @@ export class HomeNewsletterPromptComponent {
 
   private isSuppressed(): boolean {
     if (
-      this.load(NEWSLETTER_PROMPT_SUBSCRIBED_STORAGE_KEY) === 'true' ||
+      this.preferences.subscribed() ||
       this.load(CONTACT_SUBMITTED_STORAGE_KEY) === 'true'
     ) {
       return true;

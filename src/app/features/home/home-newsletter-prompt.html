@@ -22,12 +22,18 @@
             ×
           </button>
         </div>
-        <app-subscription-form
-          idPrefix="home-prompt-subscribe"
-          placeholder="Email address"
-          buttonLabel="Subscribe"
-          (subscriptionSucceeded)="subscribed()"
-        />
+        @if (subscriptionSucceeded()) {
+          <p class="subscription-success" role="status">
+            Successfully subscribed.
+          </p>
+        } @else {
+          <app-subscription-form
+            idPrefix="home-prompt-subscribe"
+            placeholder="Email address"
+            buttonLabel="Subscribe"
+            (subscriptionSucceeded)="subscribed()"
+          />
+        }
       </div>
     } @else {
       <button

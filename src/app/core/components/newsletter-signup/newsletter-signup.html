@@ -4,13 +4,17 @@
   [attr.aria-labelledby]="compact() ? null : idPrefix() + '-title'"
   [attr.aria-label]="compact() ? 'Newsletter signup' : null"
 >
-  @if (!compact()) {
-    <h2 [id]="idPrefix() + '-title'">{{ title() }}</h2>
+  @if (subscribed()) {
+    <p class="subscription-success" role="status">Successfully subscribed.</p>
+  } @else {
+    @if (!compact()) {
+      <h2 [id]="idPrefix() + '-title'">{{ title() }}</h2>
+    }
+    <p>{{ description() }}</p>
+    <app-subscription-form
+      [idPrefix]="idPrefix()"
+      [placeholder]="placeholder()"
+      [buttonLabel]="buttonLabel()"
+    />
   }
-  <p>{{ description() }}</p>
-  <app-subscription-form
-    [idPrefix]="idPrefix()"
-    [placeholder]="placeholder()"
-    [buttonLabel]="buttonLabel()"
-  />
 </section>
