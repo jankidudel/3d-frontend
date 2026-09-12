@@ -15,7 +15,7 @@ describe('App', () => {
     expect(TestBed.createComponent(App).componentInstance).toBeTruthy();
   });
 
-  it('places the newsletter signup immediately before the site footer', () => {
+  it('places the newsletter signup inside the site footer', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
 
@@ -26,8 +26,8 @@ describe('App', () => {
       'app-site-footer',
     ) as HTMLElement;
 
+    expect(footer.contains(newsletter)).toBe(true);
     expect(newsletter.textContent).toContain('Subscribe');
-    expect(newsletter.nextElementSibling).toBe(footer);
   });
 
   it('renders ordinary anchors for the STL tool hub and individual tools', () => {

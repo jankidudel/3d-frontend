@@ -3,16 +3,19 @@
 }
 
 .site-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
   width: min(100% - 2rem, 70rem);
   margin-top: 1rem;
   margin-inline: auto;
   padding-block: 1.5rem 2.5rem;
   border-top: 1px solid var(--border);
   color: var(--muted);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .footer-links {
@@ -52,7 +55,7 @@
 }
 
 @media (max-width: 32rem) {
-  .site-footer {
+  .footer-content {
     align-items: flex-start;
     flex-direction: column;
   }
