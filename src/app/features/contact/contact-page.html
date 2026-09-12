@@ -12,9 +12,6 @@
       Messages are used to respond to your enquiry and improve InspectMesh.
       Please do not include 3D files, private design details or payment details.
     </p>
-    @if (submitted()) {
-      <p class="success" role="status">Thanks — your message has been sent.</p>
-    }
     @if (!deliveryAvailable) {
       <p class="error" role="alert">
         Contact delivery is being configured. Please check back soon.
@@ -105,6 +102,11 @@
           [value]="honeypot()"
           (input)="update('honeypot', $event)"
       /></label>
+      @if (submitted()) {
+        <p class="success" role="status">
+          Thanks — your message has been sent.
+        </p>
+      }
       @if (submitError()) {
         <p class="error" role="alert">{{ submitError() }}</p>
       }

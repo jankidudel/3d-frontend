@@ -113,6 +113,7 @@ export class ContactPage implements AfterViewInit {
       return remaining;
     });
     this.submitError.set('');
+    this.submitted.set(false);
     if (!this.started && field !== 'honeypot') {
       this.started = true;
       this.analytics.trackContactFeedbackStarted();
@@ -161,8 +162,10 @@ export class ContactPage implements AfterViewInit {
       .subscribe({
         next: () => {
           this.analytics.trackContactFeedbackSubmitted();
+          this.clearForm();
           this.submitted.set(true);
           this.submitting.set(false);
+          this.resetCaptcha();
         },
         error: () => {
           this.submitError.set(
@@ -203,6 +206,17 @@ export class ContactPage implements AfterViewInit {
     if (this.captchaWidgetId) {
       window.turnstile?.reset(this.captchaWidgetId);
     }
+  }
+
+  private clearForm(): void {
+    this.reason.set('');
+    this.name.set('');
+    this.email.set('');
+    this.message.set('');
+    this.context.set('');
+    this.honeypot.set('');
+    this.errors.set({});
+    this.submitError.set('');
   }
 
   private isValidEmail(value: string): boolean {
