@@ -236,12 +236,46 @@
         </div>
       </dl>
       <p>
-        The printer profile and material instructions remain authoritative; this
-        checker does not judge temperature suitability.
+        Optionally enter the maximum temperatures you allow for this
+        printer/material workflow. These are your review limits, not generic
+        recommendations.
       </p>
+      <label
+        >Maximum hotend
+        <input
+          type="number"
+          min="1"
+          [value]="maximumHotend() ?? ''"
+          (input)="setMaximum(maximumHotend, $event)"
+        />
+        °C</label
+      >
+      <label
+        >Maximum bed
+        <input
+          type="number"
+          min="1"
+          [value]="maximumBed() ?? ''"
+          (input)="setMaximum(maximumBed, $event)"
+        />
+        °C</label
+      >
+      @if (temperatureLimitMessage()) {
+        <p class="status">{{ temperatureLimitMessage() }}</p>
+      }
     </section>
     <section class="card">
       <h2>Build-volume comparison</h2>
+      @if (printerProfile(); as profile) {
+        <p>
+          Using your saved printer profile: {{ format(profile.width) }} ×
+          {{ format(profile.depth) }} × {{ format(profile.height) }}
+          {{ profile.unit }}.
+        </p>
+        @if (savedProfileVolumeMessage()) {
+          <p class="status">{{ savedProfileVolumeMessage() }}</p>
+        }
+      }
       <p>Compare parsed motion extents only.</p>
       <label
         >X

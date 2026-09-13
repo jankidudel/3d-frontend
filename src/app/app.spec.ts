@@ -40,6 +40,7 @@ describe('App', () => {
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
       '/3d-print-orientation-planner',
+      '/3d-print-bed-layout-planner',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',
@@ -93,6 +94,7 @@ describe('App', () => {
       ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
       ['Tolerance & Clearance', '/3d-print-tolerance-calculator'],
       ['Orientation Planner', '/3d-print-orientation-planner'],
+      ['Bed Layout Planner', '/3d-print-bed-layout-planner'],
     ]);
     expect(
       menu.querySelector('#featured-tools-title')?.textContent?.trim(),
@@ -134,6 +136,7 @@ describe('App', () => {
       '3D Print Cost Calculator',
       'Tolerance & Clearance',
       'Orientation Planner',
+      'Bed Layout Planner',
       'STL tools',
       'STL Viewer',
       'STL Quality Checker',
@@ -168,6 +171,7 @@ describe('App', () => {
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
       '/3d-print-orientation-planner',
+      '/3d-print-bed-layout-planner',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',

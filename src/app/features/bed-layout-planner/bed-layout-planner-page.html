@@ -1,0 +1,145 @@
+<main class="page tool-page bed-layout-page">
+  <p class="eyebrow">Print planning</p>
+  <h1>3D Print Bed Layout Planner</h1>
+  <p class="lead">
+    Arrange multiple STL and 3MF footprints on your saved printer bed. Files
+    stay in this browser and are never uploaded.
+  </p>
+  <section class="card">
+    <h2>Choose parts</h2>
+    <p>Choose one or more models to read their rectangular bed footprints.</p>
+    <button class="button" type="button" (click)="openPicker(picker)">
+      Choose STL or 3MF files
+    </button>
+    <input
+      #picker
+      class="file-input"
+      type="file"
+      multiple
+      accept=".stl,.3mf"
+      aria-label="Choose STL or 3MF files"
+      (change)="chooseFiles($event)"
+    />
+    <p class="hint">Read-only, browser-local planning. No model is uploaded.</p>
+    @if (loading()) {
+      <p role="status">Reading model footprints locally…</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+  @if (parts().length) {
+    <section class="card">
+      <h2>Layout settings</h2>
+      <label
+        >Bed width
+        <input
+          type="number"
+          min="1"
+          [value]="bed().width"
+          (input)="setBedDimension('width', $event)"
+        />
+        mm</label
+      ><label
+        >Bed depth
+        <input
+          type="number"
+          min="1"
+          [value]="bed().depth"
+          (input)="setBedDimension('depth', $event)"
+        />
+        mm</label
+      >
+      <label
+        >Clearance between parts
+        <input
+          type="number"
+          min="0"
+          [value]="margin()"
+          (input)="setMargin($event)"
+        />
+        mm</label
+      ><button class="button secondary" type="button" (click)="clear()">
+        Clear parts
+      </button>
+      @if (profile(); as printer) {
+        <p>
+          Using saved bed: {{ format(printer.width) }} ×
+          {{ format(printer.depth) }} {{ printer.unit }}.
+          <a [routerLink]="routeUrl.DimensionsChecker">Edit printer profile</a>.
+        </p>
+      } @else {
+        <p>
+          Using the editable 220 × 220 mm starter bed. Save a millimetre build
+          volume in the
+          <a [routerLink]="routeUrl.DimensionsChecker"
+            >STL Dimensions Checker</a
+          >
+          to plan a layout.
+        </p>
+      }
+    </section>
+  }
+  @if (plan(); as layout) {
+    <section class="card">
+      <h2>Suggested first batch</h2>
+      <div class="layout-summary" role="status">
+        <strong
+          >{{ layout.placed.length }} of {{ parts().length }} parts in this
+          batch</strong
+        >
+        <span
+          >{{ format(bedUse().percentage) }}% of the bed footprint used</span
+        >
+      </div>
+      <div class="bed" [style.aspect-ratio]="bed().width + ' / ' + bed().depth">
+        @for (part of layout.placed; track part.name) {
+          <div
+            class="part"
+            [style.left.%]="(part.x / bed().width) * 100"
+            [style.top.%]="(part.y / bed().depth) * 100"
+            [style.width.%]="(part.width / bed().width) * 100"
+            [style.height.%]="(part.depth / bed().depth) * 100"
+          >
+            {{ part.name }}
+          </div>
+        }
+      </div>
+      <h3>Placed parts</h3>
+      <ul class="placed-parts">
+        @for (part of layout.placed; track part.name) {
+          <li>
+            <strong>{{ part.name }}</strong
+            >: {{ format(part.width) }} × {{ format(part.depth) }} mm{{
+              part.rotated ? ' (rotated 90°)' : ''
+            }}
+          </li>
+        }
+      </ul>
+      <p>
+        {{ layout.placed.length }} part(s) fit this simple rectangular-footprint
+        layout.
+        {{
+          layout.remaining.length
+            ? layout.remaining.length + ' part(s) need another batch.'
+            : 'All selected parts fit this suggested batch.'
+        }}
+      </p>
+      <p>
+        Rotate marks a 90° bed turn only. This is not a collision test, slicer
+        arrangement, support plan or print guarantee; confirm the final layout
+        in your slicer.
+      </p>
+    </section>
+  }
+  <section class="card">
+    <h2>Plan print batches conservatively</h2>
+    <p>
+      Use the
+      <a [routerLink]="'/how-to-arrange-multiple-parts-on-a-3d-printer-bed'"
+        >bed layout guide</a
+      >
+      for spacing, brims and stability considerations.
+    </p>
+  </section>
+</main>

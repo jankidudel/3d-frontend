@@ -33,6 +33,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.BedLayoutPlanner,
+    loadComponent: () =>
+      import('./features/bed-layout-planner/bed-layout-planner-page').then(
+        (m) => m.BedLayoutPlannerPage,
+      ),
+  },
+  {
     path: PublicRoutePath.Tools,
     loadComponent: () =>
       import('./features/stl-tools/stl-tools-page').then((m) => m.StlToolsPage),

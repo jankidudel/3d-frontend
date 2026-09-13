@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-arrange-multiple-parts-on-a-3d-printer-bed',
+    group: GuideGroupId.General,
+    order: 11,
+    enabled: true,
+    publishDate: '2026-09-13',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-check-gcode-before-printing',
     group: GuideGroupId.General,
     order: 8,

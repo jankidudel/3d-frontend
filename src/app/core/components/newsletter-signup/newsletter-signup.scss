@@ -30,9 +30,14 @@ app-subscription-form {
 .newsletter-signup--compact {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+  margin-top: 0;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
 }
 
 .newsletter-signup--compact p {
@@ -40,9 +45,20 @@ app-subscription-form {
   margin: 0;
 }
 
+.newsletter-signup--compact p::before {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  content: 'Occasional updates';
+}
+
 .newsletter-signup--compact app-subscription-form {
   flex: none;
-  width: min(100%, 25rem);
+  width: min(100%, 23rem);
   margin-top: 0;
 }
 

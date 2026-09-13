@@ -272,6 +272,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Plan an orientation',
       },
       {
+        icon: '▦',
+        title: '3D Print Bed Layout Planner',
+        description:
+          'Arrange multiple STL and 3MF model footprints on your saved printer bed before opening the slicer.',
+        route: PublicRouteUrl.BedLayoutPlanner,
+        cta: 'Plan a print bed',
+      },
+      {
         icon: '↔',
         title: '3D Print Tolerance & Clearance Calculator',
         description:

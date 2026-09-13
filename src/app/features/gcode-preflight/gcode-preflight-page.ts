@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
+import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import {
@@ -31,6 +32,10 @@ export class GcodePreflightPage {
   readonly buildY = signal<number | null>(null);
   readonly buildZ = signal<number | null>(null);
   readonly zoom = signal(1);
+  readonly maximumHotend = signal<number | null>(null);
+  readonly maximumBed = signal<number | null>(null);
+  private readonly printers = inject(PrinterProfileService);
+  readonly printerProfile = computed(() => this.printers.profile());
   readonly selected = computed<GcodeLayer | null>(
     () => this.report()?.layers[this.selectedLayer()] ?? null,
   );
@@ -45,6 +50,45 @@ export class GcodePreflightPage {
     return report && x !== null && y !== null && z !== null
       ? buildVolumeMessage(report, { x, y, z })
       : null;
+  });
+  readonly savedProfileVolumeMessage = computed(() => {
+    const profile = this.printerProfile();
+    const report = this.report();
+    return profile?.unit === 'mm' && report
+      ? buildVolumeMessage(report, {
+          x: profile.width,
+          y: profile.depth,
+          z: profile.height,
+        })
+      : null;
+  });
+  readonly temperatureLimitMessage = computed(() => {
+    const report = this.report();
+    if (!report) {
+      return null;
+    }
+    const hotend = this.maximumHotend();
+    const bed = this.maximumBed();
+    const hotendMax = Math.max(
+      ...report.hotendTargets.map((target) => target.value),
+      -Infinity,
+    );
+    const bedMax = Math.max(
+      ...report.bedTargets.map((target) => target.value),
+      -Infinity,
+    );
+    const notices = [];
+    if (hotend !== null && hotendMax > hotend) {
+      notices.push(`hotend target reaches ${hotendMax}°C (limit ${hotend}°C)`);
+    }
+    if (bed !== null && bedMax > bed) {
+      notices.push(`bed target reaches ${bedMax}°C (limit ${bed}°C)`);
+    }
+    return notices.length
+      ? `Review: ${notices.join('; ')}.`
+      : hotend !== null || bed !== null
+        ? 'Parsed targets are within the limits you entered.'
+        : null;
   });
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
@@ -175,6 +219,10 @@ export class GcodePreflightPage {
   }
   format(value: number): string {
     return value.toFixed(2);
+  }
+  setMaximum(signalToSet: typeof this.maximumHotend, event: Event): void {
+    const value = Number((event.target as HTMLInputElement).value);
+    signalToSet.set(Number.isFinite(value) && value > 0 ? value : null);
   }
   private reset(): void {
     this.file.set(null);
