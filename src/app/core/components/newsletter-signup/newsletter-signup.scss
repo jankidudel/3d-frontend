@@ -62,10 +62,12 @@ app-subscription-form {
   margin-top: 0;
 }
 
-@media (max-width: 42rem) {
+@media (max-width: 52rem) {
   .newsletter-signup--compact {
     align-items: stretch;
     flex-direction: column;
+    gap: 1rem;
+    padding-block: 1.5rem;
   }
 
   .newsletter-signup--compact app-subscription-form {

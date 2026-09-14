@@ -19,6 +19,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.ShrinkageCalculator,
+    loadComponent: () =>
+      import('./features/shrinkage-calculator/shrinkage-calculator-page').then(
+        (m) => m.ShrinkageCalculatorPage,
+      ),
+  },
+  {
     path: PublicRoutePath.GcodePreflightChecker,
     loadComponent: () =>
       import('./features/gcode-preflight/gcode-preflight-page').then(

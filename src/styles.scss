@@ -87,6 +87,7 @@ h2 {
 }
 
 .tool-page > h1 {
+  max-width: none;
   font-size: clamp(2.25rem, 5vw, 3.75rem);
 }
 

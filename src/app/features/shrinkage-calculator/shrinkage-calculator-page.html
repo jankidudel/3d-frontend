@@ -1,0 +1,130 @@
+<main class="page tool-page shrinkage-page">
+  <p class="eyebrow">Dimensional accuracy tool</p>
+  <h1>3D Print Shrinkage Calculator</h1>
+  <p class="lead">
+    Turn measurements from your own calibration print into per-axis scale
+    compensation for the next model.
+  </p>
+  <p class="accuracy-note">
+    <strong
+      >Use a test printed with the same printer, material, orientation and
+      slicer profile as the part you are designing.</strong
+    >
+    Material names alone do not provide a reliable universal compensation value.
+  </p>
+
+  <section class="card calculator" aria-labelledby="measurement-title">
+    <h2 id="measurement-title">Measure a calibration feature</h2>
+    <p>
+      Print a simple test with known X, Y and Z dimensions. Enter the original
+      model dimension and the caliper measurement for each axis.
+    </p>
+    <div class="axis-grid" role="group" aria-label="Calibration measurements">
+      @for (axis of axes; track axis) {
+        <section class="axis-card">
+          <h3>{{ axis.toUpperCase() }} axis</h3>
+          <label
+            ><span>Designed test dimension (mm)</span
+            ><input
+              type="number"
+              min="0.001"
+              step="any"
+              [value]="designed[axis]()"
+              (input)="setValue('designed', axis, $event)"
+          /></label>
+          <label
+            ><span>Measured print dimension (mm)</span
+            ><input
+              type="number"
+              min="0.001"
+              step="any"
+              [value]="measured[axis]()"
+              (input)="setValue('measured', axis, $event)"
+          /></label>
+          <label
+            ><span>Desired final dimension (mm)</span
+            ><input
+              type="number"
+              min="0.001"
+              step="any"
+              [value]="target[axis]()"
+              (input)="setValue('target', axis, $event)"
+          /></label>
+        </section>
+      }
+    </div>
+  </section>
+
+  <section
+    class="card results"
+    aria-live="polite"
+    aria-labelledby="results-title"
+  >
+    <h2 id="results-title">Scale compensation</h2>
+    @if (result(); as calculation) {
+      <div class="result-grid">
+        @for (axis of axes; track axis) {
+          <section>
+            <h3>{{ axis.toUpperCase() }} axis</h3>
+            <dl>
+              <div>
+                <dt>Measured shrinkage</dt>
+                <dd>{{ format(calculation[axis].shrinkagePercent) }}%</dd>
+              </div>
+              <div>
+                <dt>Scale factor</dt>
+                <dd>{{ format(calculation[axis].scalePercent) }}%</dd>
+              </div>
+              <div>
+                <dt>Model for target size</dt>
+                <dd>
+                  {{ format(calculation[axis].compensatedModelDimension) }} mm
+                </dd>
+              </div>
+            </dl>
+          </section>
+        }
+      </div>
+      <p class="formula">
+        <strong>Formula:</strong> scale factor = designed test dimension ÷
+        measured print dimension. Compensated model dimension = desired final
+        dimension × scale factor.
+      </p>
+      <p class="assumption">
+        A positive shrinkage result means the test print measured smaller than
+        its CAD dimension. A negative result means it measured larger. Confirm
+        important fits with a second test; this calculation does not guarantee
+        final dimensions.
+      </p>
+      <button class="button button-secondary" type="button" (click)="reset()">
+        Reset example values
+      </button>
+    } @else {
+      <p class="error" role="alert">
+        Enter a positive designed, measured and target dimension for every axis.
+      </p>
+    }
+  </section>
+
+  <section class="card next-steps">
+    <h2>Use compensation carefully</h2>
+    <ul>
+      <li>
+        <a [routerLink]="routeUrl.ToleranceCalculator"
+          >Calculate hole and pin clearance separately</a
+        >; whole-model scaling does not solve every fit problem.
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.DimensionsChecker"
+          >Check the exported STL dimensions</a
+        >
+        before slicing.
+      </li>
+      <li>
+        <a [routerLink]="'/how-to-compensate-for-3d-print-shrinkage'"
+          >Read the shrinkage compensation guide</a
+        >.
+      </li>
+    </ul>
+  </section>
+</main>

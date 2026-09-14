@@ -288,6 +288,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         cta: 'Calculate a fit',
       },
       {
+        icon: '↗',
+        title: '3D Print Shrinkage Calculator',
+        description:
+          'Calculate per-axis CAD or slicer scale compensation from your own measured calibration print.',
+        route: PublicRouteUrl.ShrinkageCalculator,
+        cta: 'Calculate shrinkage',
+      },
+      {
         icon: '£',
         title: '3D Print Cost Calculator',
         description:

@@ -104,12 +104,19 @@ input.invalid:focus-visible {
   color: var(--primary);
 }
 
-@media (max-width: 28rem) {
+@media (max-width: 52rem) {
   :host {
     width: 100%;
   }
 
   .subscribe-controls {
+    align-items: stretch;
     flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  input,
+  .button {
+    width: 100%;
   }
 }

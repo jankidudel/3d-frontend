@@ -29,6 +29,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-compensate-for-3d-print-shrinkage',
+    group: GuideGroupId.General,
+    order: 12,
+    enabled: true,
+    publishDate: '2026-09-14',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-arrange-multiple-parts-on-a-3d-printer-bed',
     group: GuideGroupId.General,
     order: 11,

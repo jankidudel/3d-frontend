@@ -1,0 +1,76 @@
+.shrinkage-page .card {
+  max-width: 70rem;
+  margin-top: 1.5rem;
+  padding: var(--tool-card-padding);
+}
+.accuracy-note,
+.assumption {
+  max-width: 70rem;
+  padding: 1rem;
+  border-left: 0.25rem solid #b7791f;
+  background: #fff8d8;
+}
+.axis-grid,
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.axis-card,
+.result-grid > section {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--primary) 3%, var(--surface));
+}
+.axis-card h3,
+.result-grid h3 {
+  margin-top: 0;
+}
+label {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+}
+label span,
+dt {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+input {
+  min-height: 2.7rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+}
+dl {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+}
+dl div {
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+}
+dd {
+  margin: 0.15rem 0 0;
+  font-weight: 800;
+}
+.formula {
+  margin-top: 1.25rem;
+}
+.error {
+  color: var(--error);
+  font-weight: 700;
+}
+.next-steps {
+  background: var(--soft);
+}
+@media (max-width: 52rem) {
+  .axis-grid,
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}

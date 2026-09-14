@@ -39,6 +39,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
+      '/3d-print-shrinkage-calculator',
       '/3d-print-orientation-planner',
       '/3d-print-bed-layout-planner',
       '/stl-tools',
@@ -95,6 +96,7 @@ describe('App', () => {
     ).toEqual([
       ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
       ['Tolerance & Clearance', '/3d-print-tolerance-calculator'],
+      ['Shrinkage Calculator', '/3d-print-shrinkage-calculator'],
       ['Orientation Planner', '/3d-print-orientation-planner'],
       ['Bed Layout Planner', '/3d-print-bed-layout-planner'],
     ]);
@@ -137,6 +139,7 @@ describe('App', () => {
     expect(links.map((link) => link.textContent?.trim())).toEqual([
       '3D Print Cost Calculator',
       'Tolerance & Clearance',
+      'Shrinkage Calculator',
       'Orientation Planner',
       'Bed Layout Planner',
       'STL tools',
@@ -174,6 +177,7 @@ describe('App', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
       '/3d-print-tolerance-calculator',
+      '/3d-print-shrinkage-calculator',
       '/3d-print-orientation-planner',
       '/3d-print-bed-layout-planner',
       '/stl-tools',

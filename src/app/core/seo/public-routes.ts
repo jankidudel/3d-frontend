@@ -30,6 +30,7 @@ export const PublicRoutePath = {
   AllTools: toolRoute('tools'),
   PrintCostCalculator: toolRoute('3d-print-cost-calculator'),
   ToleranceCalculator: toolRoute('3d-print-tolerance-calculator'),
+  ShrinkageCalculator: toolRoute('3d-print-shrinkage-calculator'),
   GcodePreflightChecker: toolRoute('gcode-preflight-checker'),
   OrientationPlanner: toolRoute('3d-print-orientation-planner'),
   BedLayoutPlanner: toolRoute('3d-print-bed-layout-planner'),
@@ -74,6 +75,9 @@ export const PublicRoutePath = {
   StlToThreeMfGuide: guideRoute('how-to-convert-stl-to-3mf'),
   ToleranceAndClearanceGuide: guideRoute(
     '3d-print-tolerance-and-clearance-guide',
+  ),
+  ShrinkageCompensationGuide: guideRoute(
+    'how-to-compensate-for-3d-print-shrinkage',
   ),
   ThreeMfToStlGuide: guideRoute('how-to-convert-3mf-to-stl'),
   Privacy: defineRoute('privacy', PageType.Legal),
@@ -120,6 +124,7 @@ export const canonicalPublicRoutePaths = [
   PublicRoutePath.AllTools.path,
   PublicRoutePath.PrintCostCalculator.path,
   PublicRoutePath.ToleranceCalculator.path,
+  PublicRoutePath.ShrinkageCalculator.path,
   PublicRoutePath.GcodePreflightChecker.path,
   PublicRoutePath.OrientationPlanner.path,
   PublicRoutePath.BedLayoutPlanner.path,

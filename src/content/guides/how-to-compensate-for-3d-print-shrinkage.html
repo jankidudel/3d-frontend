@@ -1,0 +1,106 @@
+---
+title: 'How to Compensate for 3D Print Shrinkage | InspectMesh'
+description: 'Learn how to measure 3D print shrinkage with a calibration test, calculate per-axis scale compensation, and avoid confusing shrinkage with fit clearance.'
+slug: how-to-compensate-for-3d-print-shrinkage
+eyebrow: Dimensional accuracy guide
+heading: 'How to Compensate for 3D Print Shrinkage'
+faq:
+  - question: How do I calculate 3D print shrinkage?
+    answer: Print a feature with a known CAD dimension, measure it, then calculate shrinkage as designed dimension minus measured dimension divided by designed dimension. Use that measurement as a starting point for the same printer, material, orientation and slicer profile.
+  - question: Should I use one shrinkage value for every 3D print?
+    answer: No. Shrinkage can vary by material, printer, profile, geometry, orientation and axis. Measure a representative calibration print rather than relying on a universal material value.
+  - question: Is shrinkage compensation the same as hole clearance?
+    answer: No. Shrinkage compensation adjusts overall dimensions from a measured calibration result. Hole and pin fits also depend on extrusion shape, bridging, orientation and intended clearance, so calculate those features separately.
+  - question: Can I apply the same scale factor to X, Y and Z?
+    answer: Only if your own calibration measurements support it. Recording X, Y and Z separately makes axis-specific behaviour visible before you use uniform scaling.
+---
+
+<p>
+  A 3D printed part can measure smaller or larger than the dimension in CAD. The
+  difference is often called shrinkage, although the final result can also be
+  affected by extrusion, cooling, orientation and calibration.
+</p>
+<p>
+  The reliable way to compensate is not to copy one universal PLA, PETG or ABS
+  percentage. Print a small test with the same printer, material and profile as
+  the intended part, measure it, and calculate the adjustment from that result.
+</p>
+<p>
+  The
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+    >3D Print Shrinkage Calculator</a
+  >
+  keeps the calculation separate for X, Y and Z and gives a compensated model
+  dimension for a target final size.
+</p>
+
+<h2>Print and measure a simple calibration test</h2>
+<p>
+  Use a part with clearly measurable straight features in all three axes. A 20
+  mm cube is a simple starting point, though a test that resembles the final
+  part’s size and orientation is more representative. Measure with suitable
+  calipers after the part has cooled and any intended post-processing is done.
+</p>
+<ol>
+  <li>record the designed test dimension for X, Y and Z;</li>
+  <li>record the printed measurement for each axis;</li>
+  <li>
+    keep the printer, filament, orientation and slicer profile with the
+    measurement;
+  </li>
+  <li>repeat the test if the part is important or the result is surprising.</li>
+</ol>
+
+<h2>Calculate the scale factor</h2>
+<p>
+  The compensation is based on the ratio between the original design and the
+  printed measurement:
+</p>
+<blockquote>
+  <p>
+    <strong
+      >Scale factor = designed test dimension ÷ measured print dimension</strong
+    >
+  </p>
+</blockquote>
+<p>
+  If a 20.00 mm feature measures 19.80 mm, the scale factor is 20 ÷ 19.8 =
+  1.0101, or 101.01%. To aim for a 50 mm final feature under the same
+  conditions, model or scale it to about 50.505 mm.
+</p>
+<p>
+  A positive shrinkage percentage means the printed test was smaller than its
+  CAD dimension. A negative percentage means it printed larger. Neither result
+  is automatically a defect: first confirm the measurement and whether it is
+  representative of the final part.
+</p>
+
+<h2>Keep X, Y and Z separate when needed</h2>
+<p>
+  A single uniform scale is convenient, but it can hide an axis-specific result.
+  Bed adhesion, cooling, layer stacking and part orientation can affect the
+  result differently across the axes. If X and Y agree but Z does not, use the
+  axis-specific values as a starting point and verify with another test before
+  applying them to a critical model.
+</p>
+
+<h2>Shrinkage is not clearance</h2>
+<p>
+  Whole-model compensation does not make every hole, pin or snap fit correct.
+  Those features also depend on extrusion width, bridging, orientation and the
+  clearance you actually need between mating parts. Use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >Tolerance and Clearance Calculator</a
+  >
+  for those dimensions, then validate the final exported model with the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
+  >.
+</p>
+
+<h2>Use measured values as a starting point, not a guarantee</h2>
+<p>
+  A calibration factor belongs to a particular printer, filament, profile and
+  geometry. Changing nozzle settings, material batch, temperature, cooling or
+  orientation can change the outcome. Test important fits and large dimensions
+  again, especially after changing a slicer profile.
+</p>

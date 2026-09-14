@@ -68,6 +68,7 @@ describe('HomePage', () => {
       '/3d-print-orientation-planner',
       '/3d-print-bed-layout-planner',
       '/3d-print-tolerance-calculator',
+      '/3d-print-shrinkage-calculator',
       '/3d-print-cost-calculator',
       '/tools',
       '/gcode-preflight-checker',
