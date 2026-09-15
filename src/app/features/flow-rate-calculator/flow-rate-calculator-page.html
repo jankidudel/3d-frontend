@@ -1,0 +1,118 @@
+<main class="page tool-page">
+  <p class="eyebrow">Browser-local calibration tool</p>
+  <h1>3D Print Flow Rate Calculator</h1>
+  <p class="lead">
+    Use a measured single-wall calibration print to calculate a starting
+    flow-rate correction for your slicer. Your file stays in your browser.
+  </p>
+  <section class="card calculator" aria-labelledby="calculator-title">
+    <h2 id="calculator-title">Calculate a starting correction</h2>
+    <p class="calculator-intro">
+      Enter the intended line width and a clean wall measurement. The result is
+      a starting point for this material and slicer profile.
+    </p>
+    <div class="fields">
+      <label class="field-label"
+        ><span>Current flow (%)</span
+        ><input
+          type="number"
+          [value]="current() ?? ''"
+          (input)="set('current', $event)" /></label
+      ><label class="field-label"
+        ><span>Expected wall thickness (mm)</span
+        ><input
+          type="number"
+          [value]="expected() ?? ''"
+          (input)="set('expected', $event)" /></label
+      ><label class="field-label"
+        ><span>Measured wall thickness (mm)</span
+        ><input
+          type="number"
+          [disabled]="useAverage()"
+          [value]="measured() ?? ''"
+          (input)="set('measured', $event)"
+      /></label>
+    </div>
+    <label class="repeat-toggle"
+      ><input
+        type="checkbox"
+        [checked]="useAverage()"
+        (change)="useAverage.set($any($event.target).checked)"
+      />
+      Average repeat measurements</label
+    >
+    @if (useAverage()) {
+      <div class="fields">
+        @for (value of repeats(); track $index; let i = $index) {
+          <label class="field-label"
+            >Repeat {{ i + 1 }} (mm)<input
+              type="number"
+              [value]="value ?? ''"
+              (input)="setRepeat(i, $event)"
+          /></label>
+        }
+      </div>
+      <p>Average: {{ measuredValue()?.toFixed(3) ?? '—' }} mm</p>
+    }
+    @if (touched() && error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (result(); as flow) {
+      <section aria-live="polite">
+        <h2>Starting flow: {{ flow.toFixed(1) }}%</h2>
+        <p>Change: {{ change(flow) }} percentage points.</p>
+        <p>{{ summary(flow) }}</p>
+      </section>
+    }
+    <button class="button button-secondary" type="button" (click)="reset()">
+      Reset
+    </button>
+  </section>
+  <p class="warning">
+    <strong
+      >Use a purpose-made single-wall / vase-mode test for the chosen nozzle and
+      line width.</strong
+    >
+    Multi-wall overlap makes this misleading. Temperature, filament, nozzle,
+    line width and speed affect the result. Large corrections warrant checks for
+    line width, filament diameter, partial clogs, extruder steps and measuring
+    method.
+  </p>
+  <section class="content">
+    <h2>How to use this calculator</h2>
+    <ol>
+      <li>
+        Slice a single-wall test with the printer, nozzle, material and profile
+        you are calibrating.
+      </li>
+      <li>Measure several clean areas away from the seam and base.</li>
+      <li>Enter the expected line width and measured average.</li>
+      <li>
+        Use the result as a starting value, print again, then stop when walls
+        are consistently close to target.
+      </li>
+    </ol>
+    <h2>Flow rate is not dimensional compensation</h2>
+    <p>
+      Flow does not replace hole clearance, XY compensation or whole-model scale
+      compensation. Use the
+      <a [routerLink]="routeUrl.ToleranceCalculator"
+        >Tolerance &amp; Clearance Calculator</a
+      >
+      for mating parts or the
+      <a [routerLink]="routeUrl.ShrinkageCalculator">Shrinkage Calculator</a>
+      for consistent whole-part size error.
+    </p>
+    <h2>FAQ</h2>
+    <h3>Is flow rate the same as e-steps?</h3>
+    <p>
+      No. E-steps or rotation distance are machine-level extrusion calibration;
+      flow is a material-and-profile slicer adjustment.
+    </p>
+    <h3>Will this fix holes that print too tight?</h3>
+    <p>
+      Not reliably. Holes and pins often need clearance or XY compensation after
+      flow is calibrated.
+    </p>
+  </section>
+</main>

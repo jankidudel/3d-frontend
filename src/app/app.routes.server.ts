@@ -14,6 +14,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    path: PublicRoutePath.FlowRateCalculator,
+    renderMode: RenderMode.Prerender,
+  },
+  {
     path: PublicRoutePath.ShrinkageCalculator,
     renderMode: RenderMode.Prerender,
   },

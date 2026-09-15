@@ -1,0 +1,65 @@
+---
+title: '3D Print Hole Size Compensation: Make Holes and Pins Fit'
+description: 'Learn why 3D-printed holes often come out tight, how to measure the error and how to choose clearance or CAD compensation for holes and pins.'
+slug: 3d-print-hole-size-compensation
+eyebrow: Calibration and fit
+heading: '3D Print Hole Size Compensation: Make Holes and Pins Fit'
+faq:
+  - question: Why are my 3D-printed holes too small?
+    answer: Perimeter width, curved paths, cooling, shrinkage and feature orientation can make holes undersized.
+  - question: Should I enlarge every hole by the same amount?
+    answer: Test the relevant size range first. Small holes often behave differently from large openings and the desired fit matters.
+---
+
+<p>
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    ><strong>Calculate starting hole and pin dimensions</strong></a
+  >
+</p>
+<p>
+  A hole designed at 10 mm does not always print as a clean 10 mm hole.
+  Extrusion width, curved perimeters, cooling, shrinkage and feature orientation
+  can all reduce a printed diameter. Scaling the whole model is usually not the
+  answer.
+</p>
+<h2>Start with the fit you need</h2>
+<p>
+  Loose clearance, sliding motion, a snug lid and a press fit need different
+  gaps. Decide whether the hole passes a bolt, guides a pin or grips a part
+  permanently, then model dimensions for that intent. The
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >Tolerance &amp; Clearance Calculator</a
+  >
+  provides a starting CAD dimension from your own test print.
+</p>
+<h2>Measure a simple test</h2>
+<p>
+  Print several holes and pins near the sizes you use, with the final printer,
+  material, nozzle, layer height and orientation. Measure with calipers and note
+  whether holes are undersized, pins oversized or both. Consistent whole-model
+  error belongs in the
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+    >Shrinkage Calculator</a
+  >; feature-specific error belongs in clearance or hole compensation.
+</p>
+<h2>Check surrounding geometry</h2>
+<p>
+  Thin walls around a hole can deform or slice poorly. Inspect them with the STL
+  or 3MF Wall Thickness Checker, then verify line count and orientation in the
+  slicer.
+</p>
+<h2>Practical cautions</h2>
+<ul>
+  <li>Drilling or reaming may be better for precision holes.</li>
+  <li>Horizontal and vertical holes can need different compensation.</li>
+  <li>
+    Flow calibration makes extrusion more consistent but does not remove the
+    need for clearance.
+  </li>
+  <li>Record successful values by material and profile.</li>
+</ul>
+<p>
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    ><strong>Plan a test fit before altering your CAD model</strong></a
+  >
+</p>

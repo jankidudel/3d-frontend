@@ -34,6 +34,7 @@ import {
   ModelDimensions,
   ModelUnit,
 } from '../../shared/model-dimensions';
+import { PrinterFitControls } from '../../shared/printer-fit-controls';
 
 type ReportRecord = Record<string, unknown>;
 
@@ -51,6 +52,9 @@ export class StlDimensionsPage {
   private readonly stlJobs = inject(StlJobService);
   private readonly analytics = inject(AnalyticsService);
   private readonly printerProfile = inject(PrinterProfileService);
+  private readonly printerFitControls = new PrinterFitControls(
+    this.printerProfile,
+  );
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
@@ -72,14 +76,15 @@ export class StlDimensionsPage {
   readonly targetAxis = signal<DimensionAxis>('width');
   readonly desiredSize = signal<number | null>(null);
   readonly desiredSizeTouched = signal(false);
-  readonly buildWidth = signal<number | null>(null);
-  readonly buildHeight = signal<number | null>(null);
-  readonly buildDepth = signal<number | null>(null);
-  readonly buildUnit = signal<ModelUnit>('mm');
-  readonly buildVolumeTouched = signal(false);
+  readonly buildWidth = this.printerFitControls.buildWidth;
+  readonly buildHeight = this.printerFitControls.buildHeight;
+  readonly buildDepth = this.printerFitControls.buildDepth;
+  readonly buildUnit = this.printerFitControls.buildUnit;
+  readonly buildVolumeTouched = this.printerFitControls.buildVolumeTouched;
   readonly hasSavedPrinterProfile = computed(
     () => this.printerProfile.profile() !== null,
   );
+  readonly printerPresets = this.printerFitControls.presets;
 
   readonly processing = computed(() => {
     const status = this.job()?.status;
@@ -177,7 +182,6 @@ export class StlDimensionsPage {
   );
 
   constructor() {
-    this.applySavedPrinterProfile();
     this.seo.apply({
       title: 'STL Dimensions Checker - Measure, Convert and Scale STL Files',
       description:
@@ -279,45 +283,28 @@ export class StlDimensionsPage {
   }
 
   setBuildDimension(axis: DimensionAxis, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.trim();
-    this.buildVolumeTouched.set(true);
-    const parsedValue = value === '' ? null : Number(value);
-    if (axis === 'width') {
-      this.buildWidth.set(parsedValue);
-    } else if (axis === 'height') {
-      this.buildHeight.set(parsedValue);
-    } else {
-      this.buildDepth.set(parsedValue);
-    }
-    this.savePrinterProfile();
+    this.printerFitControls.setDimension(axis, event);
   }
 
   setBuildUnit(event: Event): void {
-    this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
-    this.savePrinterProfile();
+    this.printerFitControls.setUnit(event);
+  }
+
+  applyPrinterPreset(event: Event): void {
+    this.printerFitControls.applyPreset(event);
+    this.trackPrinterFitCheck();
   }
 
   clearSavedPrinterProfile(): void {
-    this.printerProfile.clear();
+    this.printerFitControls.clear();
   }
 
   orientationName(axisSources: Record<DimensionAxis, DimensionAxis>): string {
-    const names: Record<DimensionAxis, string> = {
-      width: 'width',
-      height: 'height',
-      depth: 'depth',
-    };
-    return `Place the current ${names[axisSources.width]} along the printer’s X axis, ${names[axisSources.height]} along Y and ${names[axisSources.depth]} along Z`;
+    return this.printerFitControls.orientationName(axisSources);
   }
 
   limitingAxes(axes: readonly DimensionAxis[]): string {
-    const names: Record<DimensionAxis, string> = {
-      width: 'X',
-      height: 'Y',
-      depth: 'Z',
-    };
-    return axes.map((axis) => names[axis]).join(' and ');
+    return this.printerFitControls.limitingAxes(axes);
   }
 
   trackScaleCalculation(): void {
@@ -355,32 +342,6 @@ export class StlDimensionsPage {
     this.polling = pollStlJob(this.jobsService, jobId).subscribe({
       next: (job) => this.updateJob(job),
       error: (error: unknown) => this.handlePollingError(error),
-    });
-  }
-
-  private applySavedPrinterProfile(): void {
-    const profile = this.printerProfile.profile();
-    if (!profile) {
-      return;
-    }
-    this.buildWidth.set(profile.width);
-    this.buildHeight.set(profile.height);
-    this.buildDepth.set(profile.depth);
-    this.buildUnit.set(profile.unit);
-  }
-
-  private savePrinterProfile(): void {
-    const width = this.buildWidth();
-    const height = this.buildHeight();
-    const depth = this.buildDepth();
-    if (width === null || height === null || depth === null) {
-      return;
-    }
-    this.printerProfile.save({
-      width,
-      height,
-      depth,
-      unit: this.buildUnit(),
     });
   }
 

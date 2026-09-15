@@ -110,6 +110,11 @@
     <h2>Use compensation carefully</h2>
     <ul>
       <li>
+        <a [routerLink]="routeUrl.FlowRateCalculator"
+          >Set a stable material flow profile first</a
+        >; extrusion consistency and whole-part scale are separate checks.
+      </li>
+      <li>
         <a [routerLink]="routeUrl.ToleranceCalculator"
           >Calculate hole and pin clearance separately</a
         >; whole-model scaling does not solve every fit problem.

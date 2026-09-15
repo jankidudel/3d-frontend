@@ -1,0 +1,74 @@
+---
+title: 'Does 3MF Keep Colours, Materials and Print Settings? | InspectMesh'
+description: Learn which colours, materials and print settings a 3MF can carry, why support varies between programs, and when to keep the original project file.
+slug: does-3mf-keep-colours-materials-and-settings
+eyebrow: 3MF file guide
+heading: Does 3MF Keep Colours, Materials and Print Settings?
+faq:
+  - question: Does every 3MF file preserve slicer settings?
+    answer: No. A slicer may store settings in its own 3MF extensions, and another program can ignore or reinterpret them. Check the imported project before printing.
+  - question: Does converting a 3MF to STL keep colours?
+    answer: No. STL is a geometry-only format, so a converted STL cannot retain 3MF colours, materials, units, build items or print settings.
+  - question: Can 3MF store more than one object?
+    answer: Yes. A 3MF can include multiple objects, placements and component references, though support for every feature depends on the application opening it.
+---
+
+<p>
+  3MF can keep much more context than STL, but it is not a promise that every
+  program will reproduce a print project exactly. The format can describe mesh
+  geometry, units, object placement, materials and colours. Slicers can also add
+  their own project information, which may only be fully understood by that
+  slicer or a compatible version.
+</p>
+
+<h2>What a 3MF can retain</h2>
+<p>
+  A well-supported 3MF can retain named objects, multiple build items, their
+  transforms, declared units, colour assignments and material information. This
+  makes it useful for colour-capable prints and builds with several parts. It
+  can also carry metadata that makes a project easier to identify later.
+</p>
+
+<h2>Why print settings are less portable</h2>
+<p>
+  Layer height, supports, infill, temperatures and printer profiles are often
+  specific to the slicer and printer that created the file. Another slicer may
+  open the geometry while ignoring those settings, substituting defaults, or
+  asking you to select a compatible printer. Treat an imported 3MF as a project
+  to review, not as a ready-to-run job.
+</p>
+
+<h2>Check before slicing</h2>
+<ol>
+  <li>Keep the original 3MF and note the slicer and printer it came from.</li>
+  <li>
+    Open it in the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to
+    inspect the resolved model and expected build items.
+  </li>
+  <li>
+    Check size and usable build volume with the
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
+      >3MF Dimensions Checker</a
+    >.
+  </li>
+  <li>
+    In your slicer, explicitly verify material, colour, supports and printer
+    profile.
+  </li>
+</ol>
+
+<h2>Do not use STL as a project backup</h2>
+<p>
+  Exporting an STL is useful for a geometry-only or legacy workflow, but it
+  flattens the resolved geometry and drops the surrounding 3MF information. Keep
+  the 3MF whenever you may need colours, material assignments, units, separate
+  parts or print settings. Read
+  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL for 3D Printing</a>
+  for the practical format trade-off.
+</p>
+
+<p>
+  <a href="{{ GuideSlug.Route3mfViewer }}"
+    ><strong>Open a 3MF locally before printing</strong></a
+  >
+</p>

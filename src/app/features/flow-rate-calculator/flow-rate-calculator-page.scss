@@ -1,0 +1,86 @@
+.fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 0;
+}
+.calculator {
+  width: min(100%, 58rem);
+  margin-top: 2rem;
+  padding: var(--tool-card-padding);
+}
+.calculator h2 {
+  margin: 0;
+}
+.calculator-intro {
+  max-width: 44rem;
+  margin: 0.65rem 0 0;
+  color: var(--muted);
+}
+.field-label {
+  display: grid;
+  gap: 0.4rem;
+}
+.field-label span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.field-label input {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  background: var(--surface);
+}
+.repeat-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.calculator > .button {
+  display: flex;
+  width: fit-content;
+  margin-top: 1rem;
+}
+.repeat-toggle input[type='checkbox'] {
+  appearance: auto;
+  flex: 0 0 auto;
+  inline-size: 1.2rem !important;
+  block-size: 1.2rem !important;
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  min-width: 1.2rem;
+  min-height: 1.2rem !important;
+  padding: 0;
+  margin: 0;
+}
+.error {
+  margin: 1rem 0 0;
+  color: var(--error);
+  font-weight: 700;
+}
+section[aria-live] {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-left: 0.3rem solid var(--primary);
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+}
+.warning {
+  max-width: 58rem;
+  margin-top: 1.5rem;
+}
+@media (max-width: 48rem) {
+  .fields {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

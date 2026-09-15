@@ -19,6 +19,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.FlowRateCalculator,
+    loadComponent: () =>
+      import('./features/flow-rate-calculator/flow-rate-calculator-page').then(
+        (m) => m.FlowRateCalculatorPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ShrinkageCalculator,
     loadComponent: () =>
       import('./features/shrinkage-calculator/shrinkage-calculator-page').then(

@@ -240,6 +240,23 @@
             model. When all three values are valid, they are saved only on this
             device for the STL and 3MF fit checks.
           </p>
+          <label class="field">
+            <span>Start with a common printer size</span>
+            <select (change)="applyPrinterPreset($event)">
+              <option value="">Choose a preset (optional)</option>
+              @for (
+                preset of printerPresets;
+                track preset.label;
+                let index = $index
+              ) {
+                <option [value]="index">{{ preset.label }}</option>
+              }
+            </select>
+          </label>
+          <p class="slicer-note">
+            Presets are common nominal sizes, not printer profiles. Confirm your
+            machine’s usable X × Y × Z area before printing.
+          </p>
           <div class="build-volume-fields">
             <label class="field">
               <span>Printer build width</span>

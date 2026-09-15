@@ -2,6 +2,7 @@ export const GuideGroupId = {
   General: 'general',
   Stl: 'stl',
   ThreeMf: '3mf',
+  Calibration: 'calibration',
 } as const;
 
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
@@ -25,9 +26,34 @@ export const guideGroups = {
   [GuideGroupId.ThreeMf]: {
     label: '3MF Guides',
   },
+  [GuideGroupId.Calibration]: { label: 'Calibration and fit' },
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: '3d-printer-calibration-guide',
+    group: GuideGroupId.Calibration,
+    order: 1,
+    enabled: true,
+    publishDate: '2026-09-15',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: '3d-print-flow-rate-vs-e-steps',
+    group: GuideGroupId.Calibration,
+    order: 2,
+    enabled: true,
+    publishDate: '2026-09-15',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: '3d-print-hole-size-compensation',
+    group: GuideGroupId.Calibration,
+    order: 3,
+    enabled: true,
+    publishDate: '2026-09-15',
+    checkEditorialTargets: false,
+  },
   {
     slug: 'how-to-compensate-for-3d-print-shrinkage',
     group: GuideGroupId.General,
@@ -370,6 +396,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 20,
     enabled: true,
     publishDate: '2026-09-05',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: 'does-3mf-keep-colours-materials-and-settings',
+    group: GuideGroupId.ThreeMf,
+    order: 25,
+    enabled: true,
+    publishDate: '2026-09-15',
     checkEditorialTargets: false,
   },
   {

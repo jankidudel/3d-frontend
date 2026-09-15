@@ -25,10 +25,10 @@ import {
   assessPrinterOrientations,
   DimensionAxis,
   ModelDimensions,
-  ModelUnit,
 } from '../../shared/model-dimensions';
 import { ThreeMfFilePicker } from './threemf-file-picker';
 import { ModelFileFormat } from '../../core/formats/model-file-format';
+import { PrinterFitControls } from '../../shared/printer-fit-controls';
 
 type ReportRecord = Record<string, unknown>;
 
@@ -48,6 +48,10 @@ const MILLIMETRES_PER_3MF_UNIT: Readonly<Record<string, number>> = {
   styleUrl: './threemf-dimensions-page.scss',
 })
 export class ThreeMfDimensionsPage {
+  private readonly printerProfile = inject(PrinterProfileService);
+  private readonly printerFitControls = new PrinterFitControls(
+    this.printerProfile,
+  );
   protected readonly routeUrl = PublicRouteUrl;
   protected readonly jobStatus = JobStatus;
   protected readonly jobFailureMessage = (failure: Job['failure']) =>
@@ -58,14 +62,16 @@ export class ThreeMfDimensionsPage {
   protected readonly refreshing = signal(false);
   protected readonly pollingTimedOut = signal(false);
   protected readonly error = signal('');
-  protected readonly buildWidth = signal<number | null>(null);
-  protected readonly buildHeight = signal<number | null>(null);
-  protected readonly buildDepth = signal<number | null>(null);
-  protected readonly buildUnit = signal<ModelUnit>('mm');
-  protected readonly buildVolumeTouched = signal(false);
+  protected readonly buildWidth = this.printerFitControls.buildWidth;
+  protected readonly buildHeight = this.printerFitControls.buildHeight;
+  protected readonly buildDepth = this.printerFitControls.buildDepth;
+  protected readonly buildUnit = this.printerFitControls.buildUnit;
+  protected readonly buildVolumeTouched =
+    this.printerFitControls.buildVolumeTouched;
   protected readonly hasSavedPrinterProfile = computed(
     () => this.printerProfile.profile() !== null,
   );
+  protected readonly printerPresets = this.printerFitControls.presets;
   protected readonly report = computed(() => this.asRecord(this.job()?.report));
   protected readonly dimensions = computed<ModelDimensions | null>(() => {
     const values = this.asRecord(this.report()?.['dimensions']);
@@ -139,12 +145,10 @@ export class ThreeMfDimensionsPage {
   private readonly jobs = inject(JobsService);
   private readonly jobCreation = inject(JobCreationService);
   private readonly seo = inject(SeoService);
-  private readonly printerProfile = inject(PrinterProfileService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
 
   constructor() {
-    this.applySavedPrinterProfile();
     this.seo.apply({
       title: '3MF Dimensions Checker - Measure 3MF Files Online | InspectMesh',
       description:
@@ -206,46 +210,29 @@ export class ThreeMfDimensionsPage {
     axis: 'width' | 'height' | 'depth',
     event: Event,
   ): void {
-    const value = (event.target as HTMLInputElement).value.trim();
-    const parsed = value === '' ? null : Number(value);
-    this.buildVolumeTouched.set(true);
-    if (axis === 'width') {
-      this.buildWidth.set(parsed);
-    } else if (axis === 'height') {
-      this.buildHeight.set(parsed);
-    } else {
-      this.buildDepth.set(parsed);
-    }
-    this.savePrinterProfile();
+    this.printerFitControls.setDimension(axis, event);
   }
 
   protected setBuildUnit(event: Event): void {
-    this.buildUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
-    this.savePrinterProfile();
+    this.printerFitControls.setUnit(event);
+  }
+
+  protected applyPrinterPreset(event: Event): void {
+    this.printerFitControls.applyPreset(event);
   }
 
   protected clearSavedPrinterProfile(): void {
-    this.printerProfile.clear();
+    this.printerFitControls.clear();
   }
 
   protected orientationName(
     axisSources: Record<DimensionAxis, DimensionAxis>,
   ): string {
-    const names: Record<DimensionAxis, string> = {
-      width: 'width',
-      height: 'height',
-      depth: 'depth',
-    };
-    return `Place the current ${names[axisSources.width]} along the printer’s X axis, ${names[axisSources.height]} along Y and ${names[axisSources.depth]} along Z`;
+    return this.printerFitControls.orientationName(axisSources);
   }
 
   protected limitingAxes(axes: readonly DimensionAxis[]): string {
-    const names: Record<DimensionAxis, string> = {
-      width: 'X',
-      height: 'Y',
-      depth: 'Z',
-    };
-    return axes.map((axis) => names[axis]).join(' and ');
+    return this.printerFitControls.limitingAxes(axes);
   }
 
   protected formatNumber(value: unknown): string {
@@ -272,32 +259,6 @@ export class ThreeMfDimensionsPage {
           );
         }
       },
-    });
-  }
-
-  private applySavedPrinterProfile(): void {
-    const profile = this.printerProfile.profile();
-    if (!profile) {
-      return;
-    }
-    this.buildWidth.set(profile.width);
-    this.buildHeight.set(profile.height);
-    this.buildDepth.set(profile.depth);
-    this.buildUnit.set(profile.unit);
-  }
-
-  private savePrinterProfile(): void {
-    const width = this.buildWidth();
-    const height = this.buildHeight();
-    const depth = this.buildDepth();
-    if (width === null || height === null || depth === null) {
-      return;
-    }
-    this.printerProfile.save({
-      width,
-      height,
-      depth,
-      unit: this.buildUnit(),
     });
   }
 

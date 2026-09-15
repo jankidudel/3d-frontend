@@ -1,0 +1,62 @@
+---
+title: '3D Print Flow Rate vs E-Steps: What Is the Difference?'
+description: 'Flow rate and e-steps both affect extrusion, but they solve different problems. Learn what to calibrate at the printer and what to tune in the slicer.'
+slug: 3d-print-flow-rate-vs-e-steps
+eyebrow: Calibration and fit
+heading: '3D Print Flow Rate vs E-Steps: What Is the Difference?'
+faq:
+  - question: Can I fix incorrect e-steps by changing flow?
+    answer: It can hide a small error for one profile, but machine-level extrusion behaviour should be corrected first.
+  - question: Is 100 percent flow always correct?
+    answer: It is a sensible starting point, not a universal answer. Measure a calibration print made with your own material and settings.
+---
+
+<p>
+  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
+    ><strong>Work out a starting flow value from a single-wall test</strong></a
+  >
+</p>
+<p>
+  Flow rate and e-steps both affect extrusion, but they are not interchangeable.
+  Treating them as the same can create a profile that works for one spool and
+  fails when material changes.
+</p>
+<h2>E-steps or rotation distance: printer-level</h2>
+<p>
+  This setting describes the relationship between extruder motor motion and
+  filament movement. If it is substantially wrong, every profile starts from the
+  wrong extrusion amount. Follow the process for your firmware and inspect
+  mechanical causes such as a slipping drive gear.
+</p>
+<h2>Flow rate: slicer-level</h2>
+<p>
+  Flow, also called extrusion multiplier, is a small correction in a slicer
+  profile. It accounts for a particular filament, nozzle, line width,
+  temperature and speed. PLA, PETG and different nozzle sizes can need different
+  values.
+</p>
+<h2>Which comes first?</h2>
+<p>
+  First make sure extrusion hardware and machine-level calibration are sane.
+  Then tune flow per material/profile. If a calculation suggests an unusually
+  large change, check line width, nozzle condition and measurement method
+  instead of accepting it blindly.
+</p>
+<h2>Neither fixes every fit issue</h2>
+<p>
+  Correct flow does not guarantee a nominal hole or decide a sliding gap. Use
+  the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >Tolerance &amp; Clearance Calculator</a
+  >
+  for mating dimensions and the
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+    >Shrinkage Calculator</a
+  >
+  for consistent whole-model axis error.
+</p>
+<p>
+  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
+    ><strong>Calculate a flow correction locally</strong></a
+  >
+</p>

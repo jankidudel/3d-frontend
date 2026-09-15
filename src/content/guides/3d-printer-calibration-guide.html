@@ -1,0 +1,85 @@
+---
+title: '3D Printer Calibration Guide: What to Calibrate First'
+description: 'A practical order for calibrating a 3D printer: mechanical checks, extrusion, temperature, flow, dimensions and fit. Avoid changing several variables at once.'
+slug: 3d-printer-calibration-guide
+eyebrow: Calibration and fit
+heading: '3D Printer Calibration Guide: What to Calibrate First'
+faq:
+  - question: How often should I calibrate a 3D printer?
+    answer: Repeat relevant tests after changing material, nozzle, major mechanical parts or slicer profile; a stable setup does not need every test before every print.
+  - question: Should I calibrate flow or dimensions first?
+    answer: Get extrusion broadly correct, choose a stable material profile, then calibrate flow before judging small dimensional errors and clearance.
+---
+
+<p>
+  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
+    ><strong>Calculate a starting flow correction</strong></a
+  >
+</p>
+<p>
+  Calibration is easier when each test answers one question. Changing
+  temperature, flow, speed and dimensions together may improve a print, but it
+  does not reveal why. Work from basic motion and extrusion towards material
+  settings and finally parts that must fit.
+</p>
+<h2>A sensible calibration order</h2>
+<h3>1. Check mechanical basics</h3>
+<p>
+  Secure belts, pulleys, bed mounting and hot end. A loose pulley, slipping belt
+  or unstable frame creates inconsistent dimensions no slicer calculation can
+  fix. Start with a clean nozzle and smooth filament path.
+</p>
+<h3>2. Confirm extrusion broadly</h3>
+<p>
+  Check the manufacturer procedure for extruder steps or rotation distance where
+  adjustable. Do not hide a mechanical extrusion fault with extreme slicer flow
+  values.
+</p>
+<h3>3. Choose a stable material and temperature</h3>
+<p>
+  Use one dry spool and a known-good profile. Pick a temperature with stable
+  extrusion and acceptable layer bonding before judging fine fit.
+</p>
+<h3>4. Calibrate flow</h3>
+<p>
+  Print a purpose-made single-wall test, measure clean areas and use the
+  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
+    >Flow Rate Calculator</a
+  >
+  for a starting correction. It is a small material/profile adjustment, not a
+  cure for a blocked nozzle or wrong line width.
+</p>
+<h3>5. Check whole-part dimensions</h3>
+<p>
+  Measure a simple model with known X, Y and Z dimensions. Use the
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+    >Shrinkage Calculator</a
+  >
+  for consistent axis error. Scaling a whole part does not necessarily make a
+  hole fit a shaft.
+</p>
+<h3>6. Tune mating tolerances</h3>
+<p>
+  Print a small fit test in the final orientation. The
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >Tolerance &amp; Clearance Calculator</a
+  >
+  turns test measurements into starting CAD dimensions; it is never a universal
+  clearance promise.
+</p>
+<h2>Keep a short calibration record</h2>
+<p>
+  For each material, record printer, nozzle, temperatures, layer height, line
+  width, flow, orientation and date. This makes a successful profile repeatable.
+</p>
+<h2>What calibration cannot replace</h2>
+<p>
+  Calibration does not make a broken model printable. Check downloaded files
+  with STL or 3MF Print Preflight, then confirm placement and supports in the
+  slicer.
+</p>
+<p>
+  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
+    ><strong>Use the flow calculator for your next material profile</strong></a
+  >
+</p>

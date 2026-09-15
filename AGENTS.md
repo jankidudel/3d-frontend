@@ -80,6 +80,9 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Templates
 
+- In authored guide HTML, use `{{ GuideSlug.Route... }}` for every internal
+  link. Do not add root-relative literal routes, so route changes and internal
+  link validation stay centralised.
 - Keep templates simple and avoid complex logic
 - Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
 - Use the async pipe to handle observables
