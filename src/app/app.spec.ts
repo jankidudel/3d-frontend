@@ -39,6 +39,8 @@ describe('App', () => {
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
+      '/filament-length-calculator',
+      '/3d-print-flow-rate-calculator',
       '/3d-print-tolerance-calculator',
       '/3d-print-shrinkage-calculator',
       '/3d-print-orientation-planner',
@@ -77,33 +79,35 @@ describe('App', () => {
     ]);
   });
 
-  it('groups featured tools and file-format tools into labelled sections', () => {
+  it('groups planning and file-format tools into labelled sections', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
 
     const menu = fixture.nativeElement.querySelector(
       '#tools-menu',
     ) as HTMLElement;
-    const featured = menu.querySelector('.tools-menu-featured') as HTMLElement;
-    const featuredLinks = Array.from(
-      featured.querySelectorAll('a'),
+    const planning = menu.querySelector('.tools-menu-planning') as HTMLElement;
+    const planningLinks = Array.from(
+      planning.querySelectorAll('a'),
     ) as HTMLAnchorElement[];
 
     expect(
-      featuredLinks.map((link) => [
+      planningLinks.map((link) => [
         link.textContent?.trim(),
         link.getAttribute('href'),
       ]),
     ).toEqual([
       ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
+      ['Filament Length Calculator', '/filament-length-calculator'],
+      ['Flow Rate Calculator', '/3d-print-flow-rate-calculator'],
       ['Tolerance & Clearance', '/3d-print-tolerance-calculator'],
       ['Shrinkage Calculator', '/3d-print-shrinkage-calculator'],
       ['Orientation Planner', '/3d-print-orientation-planner'],
       ['Bed Layout Planner', '/3d-print-bed-layout-planner'],
     ]);
     expect(
-      menu.querySelector('#featured-tools-title')?.textContent?.trim(),
-    ).toBe('3D tools - Featured tools');
+      menu.querySelector('#planning-tools-title')?.textContent?.trim(),
+    ).toBe('Planning & calibration');
     expect(
       menu.querySelector('.tools-menu-formats')?.getAttribute('aria-label'),
     ).toBe('Tools by file format');
@@ -139,6 +143,8 @@ describe('App', () => {
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.textContent?.trim())).toEqual([
       '3D Print Cost Calculator',
+      'Filament Length Calculator',
+      'Flow Rate Calculator',
       'Tolerance & Clearance',
       'Shrinkage Calculator',
       'Orientation Planner',
@@ -177,6 +183,8 @@ describe('App', () => {
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
+      '/filament-length-calculator',
+      '/3d-print-flow-rate-calculator',
       '/3d-print-tolerance-calculator',
       '/3d-print-shrinkage-calculator',
       '/3d-print-orientation-planner',

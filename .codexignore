@@ -1,0 +1,20 @@
+# Rebuildable frontend output and local tooling caches.
+node_modules/
+.angular/
+dist/
+coverage/
+tmp/
+out-tsc/
+bazel-out/
+src/app/features/guides/generated/
+public/version.json
+public/robots.txt
+public/sitemap.xml
+
+# Local editor and diagnostic files.
+.idea/
+.history/
+*.log
+*.tsbuildinfo
+.env
+.env.*

@@ -47,15 +47,25 @@
       >
         <div class="tools-menu-secondary">
           <section
-            class="tools-menu-featured"
-            aria-labelledby="featured-tools-title"
+            class="tools-menu-planning"
+            aria-labelledby="planning-tools-title"
           >
-            <h2 id="featured-tools-title" class="tools-menu-section-title">
-              3D tools - Featured tools
+            <h2 id="planning-tools-title" class="tools-menu-section-title">
+              Planning &amp; calibration
             </h2>
             <app-menu-link
               label="3D Print Cost Calculator"
               [route]="routePath.PrintCostCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="Filament Length Calculator"
+              [route]="routePath.FilamentLengthCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="Flow Rate Calculator"
+              [route]="routePath.FlowRateCalculator"
               (selected)="closeMenus()"
             />
             <app-menu-link
