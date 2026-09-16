@@ -42,47 +42,65 @@
         class="tools-menu"
         [class.tools-menu-open]="toolsMenuOpen"
         aria-label="Tools"
+        (mouseenter)="cancelToolsMenuClose()"
+        (mouseleave)="scheduleToolsMenuClose()"
       >
-        <section
-          class="tools-menu-featured"
-          aria-labelledby="featured-tools-title"
-        >
-          <h2 id="featured-tools-title" class="tools-menu-section-title">
-            3D tools - Featured tools
-          </h2>
-          <app-menu-link
-            label="3D Print Cost Calculator"
-            [route]="routePath.PrintCostCalculator"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="Tolerance & Clearance"
-            [route]="routePath.ToleranceCalculator"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="Shrinkage Calculator"
-            [route]="routePath.ShrinkageCalculator"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="Orientation Planner"
-            [route]="routePath.OrientationPlanner"
-            (selected)="closeMenus()"
-          />
-          <app-menu-link
-            label="Bed Layout Planner"
-            [route]="routePath.BedLayoutPlanner"
-            (selected)="closeMenus()"
-          />
-        </section>
-        <section
-          class="tools-menu-formats"
-          aria-labelledby="file-format-tools-title"
-        >
-          <h2 id="file-format-tools-title" class="tools-menu-section-title">
-            Tools by file format
-          </h2>
+        <div class="tools-menu-secondary">
+          <section
+            class="tools-menu-featured"
+            aria-labelledby="featured-tools-title"
+          >
+            <h2 id="featured-tools-title" class="tools-menu-section-title">
+              3D tools - Featured tools
+            </h2>
+            <app-menu-link
+              label="3D Print Cost Calculator"
+              [route]="routePath.PrintCostCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="Tolerance & Clearance"
+              [route]="routePath.ToleranceCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="Shrinkage Calculator"
+              [route]="routePath.ShrinkageCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="Orientation Planner"
+              [route]="routePath.OrientationPlanner"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="Bed Layout Planner"
+              [route]="routePath.BedLayoutPlanner"
+              (selected)="closeMenus()"
+            />
+          </section>
+          <section
+            class="tools-menu-after-slicing"
+            aria-labelledby="after-slicing-tools-title"
+          >
+            <h2 id="after-slicing-tools-title" class="tools-menu-section-title">
+              After slicing
+            </h2>
+            <app-menu-link
+              label="G-code Preflight Checker"
+              [route]="routePath.GcodePreflightChecker"
+              (selected)="closeMenus()"
+            />
+          </section>
+          <div class="tools-menu-footer">
+            <app-menu-link
+              label="View all 3D tools"
+              [route]="routePath.AllTools"
+              (selected)="closeMenus()"
+            />
+          </div>
+        </div>
+        <section class="tools-menu-formats" aria-label="Tools by file format">
           <div class="tools-menu-group">
             <app-menu-link
               label="STL tools"
@@ -235,26 +253,6 @@
             />
           </div>
         </section>
-        <section
-          class="tools-menu-after-slicing"
-          aria-labelledby="after-slicing-tools-title"
-        >
-          <h2 id="after-slicing-tools-title" class="tools-menu-section-title">
-            After slicing
-          </h2>
-          <app-menu-link
-            label="G-code Preflight Checker"
-            [route]="routePath.GcodePreflightChecker"
-            (selected)="closeMenus()"
-          />
-        </section>
-        <div class="tools-menu-footer">
-          <app-menu-link
-            label="View all 3D tools"
-            [route]="routePath.AllTools"
-            (selected)="closeMenus()"
-          />
-        </div>
       </div>
     </div>
     <a

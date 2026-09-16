@@ -157,12 +157,12 @@ export class SiteHeaderComponent {
 
   private isMobileNavigation(): boolean {
     return Boolean(
-      this.document.defaultView?.matchMedia(MOBILE_NAVIGATION_MEDIA_QUERY)
+      this.document.defaultView?.matchMedia?.(MOBILE_NAVIGATION_MEDIA_QUERY)
         .matches,
     );
   }
 
-  private cancelToolsMenuClose(): void {
+  protected cancelToolsMenuClose(): void {
     if (this.toolsMenuCloseTimeout === undefined) {
       return;
     }

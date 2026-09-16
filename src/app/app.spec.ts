@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { vi } from 'vitest';
 import { routes } from './app.routes';
 import { App } from './app';
 
@@ -42,6 +43,8 @@ describe('App', () => {
       '/3d-print-shrinkage-calculator',
       '/3d-print-orientation-planner',
       '/3d-print-bed-layout-planner',
+      '/gcode-preflight-checker',
+      '/tools',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',
@@ -71,8 +74,6 @@ describe('App', () => {
       '/3mf-volume-calculator',
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
-      '/gcode-preflight-checker',
-      '/tools',
     ]);
   });
 
@@ -104,7 +105,7 @@ describe('App', () => {
       menu.querySelector('#featured-tools-title')?.textContent?.trim(),
     ).toBe('3D tools - Featured tools');
     expect(
-      menu.querySelector('#file-format-tools-title')?.textContent?.trim(),
+      menu.querySelector('.tools-menu-formats')?.getAttribute('aria-label'),
     ).toBe('Tools by file format');
     expect(
       menu.querySelector('#after-slicing-tools-title')?.textContent?.trim(),
@@ -142,6 +143,8 @@ describe('App', () => {
       'Shrinkage Calculator',
       'Orientation Planner',
       'Bed Layout Planner',
+      'G-code Preflight Checker',
+      'View all 3D tools',
       'STL tools',
       'STL Viewer',
       'STL Quality Checker',
@@ -171,8 +174,6 @@ describe('App', () => {
       '3MF Volume Calculator',
       '3MF Triangle Counter',
       '3MF to STL Converter',
-      'G-code Preflight Checker',
-      'View all 3D tools',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
@@ -180,6 +181,8 @@ describe('App', () => {
       '/3d-print-shrinkage-calculator',
       '/3d-print-orientation-planner',
       '/3d-print-bed-layout-planner',
+      '/gcode-preflight-checker',
+      '/tools',
       '/stl-tools',
       '/stl-viewer',
       '/stl-quality-checker',
@@ -209,8 +212,6 @@ describe('App', () => {
       '/3mf-volume-calculator',
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
-      '/gcode-preflight-checker',
-      '/tools',
     ]);
   });
 
@@ -229,5 +230,43 @@ describe('App', () => {
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     fixture.detectChanges();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('closes the desktop tools menu one second after leaving it', () => {
+    vi.useFakeTimers();
+    try {
+      const fixture = TestBed.createComponent(App);
+      fixture.detectChanges();
+      const disclosure = fixture.nativeElement.querySelector(
+        '.tools-disclosure',
+      ) as HTMLElement;
+      const menu = fixture.nativeElement.querySelector(
+        '#tools-menu',
+      ) as HTMLElement;
+      const trigger = fixture.nativeElement.querySelector(
+        '.tools-trigger',
+      ) as HTMLButtonElement;
+
+      disclosure.dispatchEvent(new MouseEvent('mouseenter'));
+      fixture.detectChanges();
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+
+      menu.dispatchEvent(new MouseEvent('mouseleave'));
+      vi.advanceTimersByTime(999);
+      fixture.detectChanges();
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+
+      menu.dispatchEvent(new MouseEvent('mouseenter'));
+      vi.advanceTimersByTime(1);
+      fixture.detectChanges();
+      expect(trigger.getAttribute('aria-expanded')).toBe('true');
+
+      menu.dispatchEvent(new MouseEvent('mouseleave'));
+      vi.advanceTimersByTime(1_000);
+      fixture.detectChanges();
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

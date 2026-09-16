@@ -9,6 +9,18 @@ const projectRoot = process.cwd();
 const runFile = promisify(execFile);
 
 describe('frontend deployment workflow', () => {
+  it('requires an explicit environment selection before deploying', async () => {
+    const workflow = await readFile(
+      join(projectRoot, '.github/workflows/deploy-frontend.yml'),
+      'utf8',
+    );
+
+    expect(workflow).toContain('workflow_dispatch:');
+    expect(workflow).toContain('required: true');
+    expect(workflow).not.toMatch(/^  push:/m);
+    expect(workflow).not.toContain("github.event_name == 'push'");
+  });
+
   it('preserves historical hashed assets without CloudFront invalidation', async () => {
     const [workflow, deploymentScript, angularConfiguration, main] =
       await Promise.all([
