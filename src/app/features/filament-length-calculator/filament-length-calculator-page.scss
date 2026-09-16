@@ -1,0 +1,75 @@
+.filament-length-page {
+  --accent: #285c52;
+}
+
+.card,
+.next-steps {
+  max-width: 70rem;
+  margin-top: 1.5rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.mode-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.mode-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+}
+
+.mode-options input {
+  accent-color: var(--primary);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  min-height: 2.7rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+}
+
+.result-value {
+  margin: 0.5rem 0;
+  color: var(--accent);
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-weight: 800;
+}
+
+.note {
+  border-left: 0.25rem solid #b7791f;
+  background: #fff8d8;
+}
+
+.next-steps {
+  background: var(--soft);
+}
+
+@media (max-width: 42rem) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+}

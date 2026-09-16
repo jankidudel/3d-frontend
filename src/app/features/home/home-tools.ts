@@ -303,6 +303,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         route: PublicRouteUrl.PrintCostCalculator,
         cta: 'Calculate print cost',
       },
+      {
+        icon: '⌇',
+        title: 'Filament Length Calculator',
+        description:
+          'Convert filament weight to length, or length to weight, using spool diameter and material density.',
+        route: PublicRouteUrl.FilamentLengthCalculator,
+        cta: 'Convert filament length',
+      },
     ],
   },
   {

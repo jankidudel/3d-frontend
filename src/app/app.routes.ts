@@ -12,6 +12,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.FilamentLengthCalculator,
+    loadComponent: () =>
+      import('./features/filament-length-calculator/filament-length-calculator-page').then(
+        (m) => m.FilamentLengthCalculatorPage,
+      ),
+  },
+  {
     path: PublicRoutePath.ToleranceCalculator,
     loadComponent: () =>
       import('./features/tolerance-calculator/tolerance-calculator-page').then(

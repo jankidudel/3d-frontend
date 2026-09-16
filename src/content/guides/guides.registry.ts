@@ -159,6 +159,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
+    slug: 'how-many-metres-in-1kg-filament',
+    group: GuideGroupId.General,
+    order: 41,
+    enabled: true,
+    publishDate: '2026-09-16',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-rotate-a-3d-model-to-fit-your-printer',
     group: GuideGroupId.General,
     order: 20,

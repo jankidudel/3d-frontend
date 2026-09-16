@@ -1,0 +1,148 @@
+---
+title: 'How Many Metres Are in 1 kg of 3D Printer Filament? | InspectMesh'
+description: Find out how many metres are in a 1 kg filament spool, why 1.75 mm and 2.85 mm spools differ, and how to convert filament length and weight.
+slug: how-many-metres-in-1kg-filament
+eyebrow: 3D printing materials guide
+heading: How Many Metres Are in 1 kg of 3D Printer Filament?
+faq:
+  - question: How many metres is 1 kg of 1.75 mm PLA filament?
+    answer: A 1 kg spool of 1.75 mm PLA with a density of about 1.24 g/cm³ is roughly 335 metres. The manufacturer’s stated length is the best value for a specific spool because diameter and density can vary.
+  - question: Why does 2.85 mm filament have fewer metres per kilogram?
+    answer: Thicker filament has a larger cross-sectional area, so each metre contains more plastic. At the same weight and material density, a 2.85 mm spool is much shorter than a 1.75 mm spool.
+  - question: Should I use metres or grams from my slicer?
+    answer: Use grams for material cost and comparing remaining filament by weight. Length is useful when a spool label or slicer shows metres. Both describe the same amount of filament when diameter and density are known.
+---
+
+<p>
+  A typical 1 kg spool of 1.75 mm PLA contains about 335 metres of filament.
+  That is a useful rule of thumb, not a universal spool specification. The exact
+  length depends on the filament diameter and the density of the material.
+</p>
+<p>
+  If you have a number from a slicer or spool label and need the other unit, use
+  InspectMesh’s
+  <a href="{{ GuideSlug.RouteFilamentLengthCalculator }}"
+    >Filament Length Calculator</a
+  >. It converts between grams and metres with your chosen diameter and material
+  density, entirely in your browser.
+</p>
+
+<h2>Why a 1 kg spool does not always have the same length</h2>
+<p>
+  Spool weight measures mass, while length measures how far the filament runs. A
+  filament strand is effectively a long cylinder. A wider cylinder contains more
+  material in every metre, and a denser material weighs more for the same
+  length.
+</p>
+<p>
+  This means two 1 kg spools can have different stated lengths even when they
+  are both intended for the same printer. The most important factors are:
+</p>
+<ul>
+  <li>filament diameter, commonly 1.75 mm or 2.85 mm;</li>
+  <li>material density, which differs between PLA, PETG, ABS and TPU;</li>
+  <li>the manufacturer’s diameter tolerance and the actual formulation.</li>
+</ul>
+<p>
+  Filled, carbon-fibre, glow and other speciality filaments can differ more from
+  a generic material density. When a spool label gives both weight and length,
+  use the manufacturer’s figures for that spool.
+</p>
+
+<h2>Typical 1 kg spool lengths</h2>
+<p>
+  The following values use common approximate material densities. They are
+  planning figures, rounded to the nearest metre.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Material</th>
+      <th>1.75 mm filament</th>
+      <th>2.85 mm filament</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PLA</td>
+      <td>about 335 m</td>
+      <td>about 126 m</td>
+    </tr>
+    <tr>
+      <td>PETG</td>
+      <td>about 327 m</td>
+      <td>about 123 m</td>
+    </tr>
+    <tr>
+      <td>ABS</td>
+      <td>about 400 m</td>
+      <td>about 150 m</td>
+    </tr>
+    <tr>
+      <td>TPU</td>
+      <td>about 344 m</td>
+      <td>about 129 m</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The wider 2.85 mm filament is not less efficient. It simply has a larger
+  cross-section, so the same kilogram is spread over fewer metres.
+</p>
+
+<h2>How to convert filament grams to metres</h2>
+<p>
+  The calculation uses the volume of a cylinder. First, divide the filament
+  weight by its density to find volume. Then divide that volume by the
+  filament’s cross-sectional area to find length.
+</p>
+<p>
+  For a 1 kg spool of 1.75 mm PLA at approximately 1.24 g/cm³, the result is
+  about 335 m. Reversing the calculation converts a slicer’s length estimate
+  back into grams.
+</p>
+<p>
+  You do not need to calculate this by hand for ordinary use. Enter the value
+  you know in the
+  <a href="{{ GuideSlug.RouteFilamentLengthCalculator }}"
+    >Filament Length Calculator</a
+  >, choose the spool diameter and material, and it will provide the matching
+  estimate.
+</p>
+
+<h2>When grams are more useful than metres</h2>
+<p>
+  Grams are usually the clearer unit for cost and remaining-stock decisions.
+  Material cost is based on the fraction of a spool’s weight that a print uses,
+  regardless of filament diameter. If a slicer estimates 80 g from a 1,000 g
+  spool, that print uses eight percent of the spool.
+</p>
+<p>
+  For a fuller estimate that includes electricity, printer time, labour and a
+  failure allowance, use the
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
+    >3D Print Cost Calculator</a
+  >. If you are trying to estimate material use for a particular model, read
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >how much filament a 3D print uses</a
+  >
+  first. Your slicer remains the best source for a final print estimate because
+  it accounts for infill, walls, supports and purge material.
+</p>
+
+<h2>Check a spool without a length label</h2>
+<ol>
+  <li>Read the filament diameter on the spool or printer specification.</li>
+  <li>
+    Choose the closest material-density preset or use the manufacturer’s
+    density.
+  </li>
+  <li>Weigh the remaining filament if you need a stock estimate.</li>
+  <li>Convert the remaining grams to metres with the calculator.</li>
+  <li>Keep a margin for purge material, supports and a possible reprint.</li>
+</ol>
+<p>
+  A kitchen scale cannot separate the reel weight from filament weight unless
+  you know the empty reel’s mass. Treat any remaining-length result as an
+  estimate and avoid planning a long print too close to the calculated limit.
+</p>

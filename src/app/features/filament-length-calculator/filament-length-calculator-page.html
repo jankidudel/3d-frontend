@@ -1,0 +1,144 @@
+<main class="page tool-page filament-length-page">
+  <p class="eyebrow">Browser-local 3D printing tool</p>
+  <h1>Filament Length Calculator</h1>
+  <p class="lead">
+    Convert 3D printer filament between weight in grams and length in metres.
+    Choose the diameter and material density on your spool for a useful planning
+    estimate.
+  </p>
+
+  <section class="card calculator" aria-labelledby="calculator-title">
+    <h2 id="calculator-title">Convert your filament</h2>
+    <div
+      class="mode-options"
+      role="radiogroup"
+      aria-label="Conversion direction"
+    >
+      <label>
+        <input
+          type="radio"
+          name="mode"
+          [checked]="mode() === conversionMode.WeightToLength"
+          (change)="setMode(conversionMode.WeightToLength)"
+        />
+        Grams to metres
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="mode"
+          [checked]="mode() === conversionMode.LengthToWeight"
+          (change)="setMode(conversionMode.LengthToWeight)"
+        />
+        Metres to grams
+      </label>
+    </div>
+
+    <div class="fields">
+      @if (mode() === conversionMode.WeightToLength) {
+        <label class="field">
+          <span>Filament weight (g)</span>
+          <input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="weightGrams()"
+            (input)="setNumber('weightGrams', $event)"
+          />
+        </label>
+      } @else {
+        <label class="field">
+          <span>Filament length (m)</span>
+          <input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="lengthMetres()"
+            (input)="setNumber('lengthMetres', $event)"
+          />
+        </label>
+      }
+      <label class="field">
+        <span>Filament diameter</span>
+        <select [value]="diameterMillimetres()" (change)="setDiameter($event)">
+          @for (diameter of diameterOptions; track diameter) {
+            <option [value]="diameter">{{ diameter }} mm</option>
+          }
+        </select>
+      </label>
+      <label class="field">
+        <span>Material</span>
+        <select [value]="material()" (change)="setMaterial($event)">
+          @for (option of materialOptions; track option[0]) {
+            <option [value]="option[0]">{{ option[1].label }}</option>
+          }
+        </select>
+      </label>
+      @if (material() === 'Custom') {
+        <label class="field">
+          <span>Material density (g/cm³)</span>
+          <input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="customDensity()"
+            (input)="setNumber('customDensity', $event)"
+          />
+        </label>
+      }
+    </div>
+  </section>
+
+  <section
+    class="card results"
+    aria-live="polite"
+    aria-labelledby="result-title"
+  >
+    <h2 id="result-title">Estimated result</h2>
+    @if (mode() === conversionMode.WeightToLength) {
+      <p class="result-value">{{ format(result(), 'm') }}</p>
+      <p>This is the approximate filament length for the entered weight.</p>
+    } @else {
+      <p class="result-value">{{ format(result(), 'g') }}</p>
+      <p>This is the approximate filament weight for the entered length.</p>
+    }
+    <button class="button button-secondary" type="button" (click)="reset()">
+      Reset
+    </button>
+  </section>
+
+  <section class="card note" aria-labelledby="note-title">
+    <h2 id="note-title">What this estimate includes</h2>
+    <p>
+      The calculation treats filament as a solid cylinder. It is useful for
+      comparing spool labels, planning stock and translating slicer estimates.
+      Actual spool length can vary with diameter tolerance, density, additives
+      and manufacturer specification. Use the value printed on your spool when
+      it differs.
+    </p>
+  </section>
+
+  <section class="next-steps" aria-labelledby="next-title">
+    <h2 id="next-title">Next steps</h2>
+    <ul>
+      <li>
+        <a [routerLink]="routeUrl.PrintCostCalculator"
+          >Estimate the material, energy and labour cost of a print</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.VolumeCalculator"
+          >Calculate an STL model’s volume and solid-material weight</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.ThreeMfVolumeCalculator"
+          >Calculate a 3MF build’s volume and solid-material weight</a
+        >
+      </li>
+      <li>
+        <a [routerLink]="routeUrl.Guides">Read more 3D printing guides</a>
+      </li>
+    </ul>
+  </section>
+</main>
