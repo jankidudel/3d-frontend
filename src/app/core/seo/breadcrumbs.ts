@@ -64,7 +64,7 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
     return [
       { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
       {
-        label: '3D Print Cost Calculator',
+        label: '3D Print Price Calculator',
         href: PublicRouteUrl.PrintCostCalculator,
       },
     ];

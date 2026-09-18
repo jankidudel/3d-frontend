@@ -63,8 +63,15 @@ export class PrintCostPage {
   readonly labourCost = signal(0);
   readonly labourHours = signal(0);
   readonly extras = signal(0);
+  readonly packaging = signal(0);
+  readonly shipping = signal(0);
   readonly failure = signal(0);
-  readonly margin = signal(0);
+  readonly targetMargin = signal(20);
+  readonly marketplaceFeePercent = signal(0);
+  readonly marketplaceFixedFee = signal(0);
+  readonly desiredSellingPrice = signal<number | null>(null);
+  readonly salesTaxPercent = signal(0);
+  readonly quoteItem = signal('3D printed part');
   readonly report = computed(
     () => this.job()?.report as Record<string, unknown> | undefined,
   );
@@ -115,16 +122,21 @@ export class PrintCostPage {
       labourHourlyCost: this.labourCost(),
       labourHours: this.labourHours(),
       extraPartsCost: this.extras(),
+      packagingCost: this.packaging(),
+      shippingCost: this.shipping(),
       failureAllowancePercent: this.failure(),
-      marginPercent: this.margin(),
+      targetMarginPercent: this.targetMargin(),
+      marketplaceFeePercent: this.marketplaceFeePercent(),
+      marketplaceFixedFee: this.marketplaceFixedFee(),
+      desiredSellingPrice: this.desiredSellingPrice(),
+      salesTaxPercent: this.salesTaxPercent(),
     }),
   );
   constructor() {
     inject(SeoService).apply({
-      title:
-        '3D Print Cost Calculator: Estimate Filament, Energy and Print Price | InspectMesh',
+      title: '3D Print Price Calculator: Cost, Profit and Quotes | InspectMesh',
       description:
-        'Estimate 3D printing cost from an STL or 3MF file, or enter slicer filament weight and print time. Include material, electricity, labour and margin.',
+        'Calculate your real 3D-printing cost, choose a price, and create a clear quote for a customer. Keep material, fees, profit and tax transparent.',
       path: PublicRouteUrl.PrintCostCalculator,
     });
   }
@@ -148,6 +160,10 @@ export class PrintCostPage {
   setElectricityPrice(event: Event): void {
     const value = (event.target as HTMLInputElement).value.trim();
     this.electricityPrice.set(value === '' ? null : Number(value));
+  }
+  setDesiredSellingPrice(event: Event): void {
+    const value = (event.target as HTMLInputElement).value.trim();
+    this.desiredSellingPrice.set(value === '' ? null : Number(value));
   }
   upload(): void {
     const file = this.selectedFile();
@@ -220,7 +236,7 @@ export class PrintCostPage {
         null,
         2,
       ),
-      '3d-print-cost-report.json',
+      '3d-print-price-report.json',
       'application/json',
     );
     this.analytics.trackReportDownloaded('volume_calculator', 'json');
@@ -231,23 +247,27 @@ export class PrintCostPage {
       return;
     }
     const pdf = await createPdf();
-    pdf.text('InspectMesh 3D Print Cost Calculator', 14, 18);
+    pdf.text('InspectMesh 3D Print Quote', 14, 18);
     pdf.text(`Generated: ${new Date().toLocaleString()}`, 14, 28);
+    pdf.text(`Item: ${this.quoteItem() || '3D printed part'}`, 14, 36);
     pdf.text(
-      `Values from: ${this.source() === 'slicer' ? 'slicer input' : 'solid-model estimate'}`,
+      `Quoted price: ${this.format(result.customerQuotedPrice)}`,
       14,
-      36,
+      46,
     );
-    let y = 48;
-    Object.entries(result).forEach(([label, value]) => {
-      pdf.text(
-        `${label}: ${typeof value === 'number' ? this.format(value) : '—'}`,
-        14,
-        y,
-      );
-      y += 8;
-    });
-    pdf.save('3d-print-cost-report.pdf');
+    pdf.text(`Includes shipping: ${this.format(result.shippingCost)}`, 14, 56);
+    pdf.text(
+      `Sales tax shown separately: ${this.format(result.salesTax)}`,
+      14,
+      66,
+    );
+    pdf.text(
+      'This is an estimate. Actual material use, fees, tax and delivery costs can vary.',
+      14,
+      78,
+      { maxWidth: 180 },
+    );
+    pdf.save('3d-print-quote.pdf');
     this.analytics.trackReportDownloaded('volume_calculator', 'pdf');
   }
   private inputs(): object {
@@ -261,6 +281,13 @@ export class PrintCostPage {
       spoolWeight: this.spoolWeight(),
       printerWatts: this.printerWatts(),
       electricityPrice: this.electricityPrice(),
+      packagingCost: this.packaging(),
+      shippingCost: this.shipping(),
+      marketplaceFeePercent: this.marketplaceFeePercent(),
+      marketplaceFixedFee: this.marketplaceFixedFee(),
+      targetMarginPercent: this.targetMargin(),
+      desiredSellingPrice: this.desiredSellingPrice(),
+      salesTaxPercent: this.salesTaxPercent(),
     };
   }
   private download(text: string, name: string, type: string): void {

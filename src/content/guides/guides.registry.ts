@@ -71,6 +71,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
+    slug: 'how-to-open-and-view-gcode-files',
+    group: GuideGroupId.General,
+    order: 13,
+    enabled: true,
+    publishDate: '2026-09-18',
+    checkEditorialTargets: false,
+  },
+  {
     slug: 'how-to-check-gcode-before-printing',
     group: GuideGroupId.General,
     order: 8,
@@ -148,6 +156,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     enabled: true,
     publishDate: '2026-09-05',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: 'how-much-to-charge-for-3d-prints',
+    group: GuideGroupId.General,
+    order: 31,
+    enabled: true,
+    publishDate: '2026-09-18',
     checkEditorialTargets: false,
   },
   {

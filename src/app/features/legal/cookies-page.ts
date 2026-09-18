@@ -4,6 +4,7 @@ import { SeoService } from '../../core/seo/seo.service';
 
 @Component({
   selector: 'app-cookies-page',
+  styleUrl: './legal-page.scss',
   template: `
     <main class="page legal-page">
       <p class="eyebrow">Your choices</p>
@@ -21,14 +22,6 @@ import { SeoService } from '../../core/seo/seo.service';
         Change cookie settings
       </button>
     </main>
-  `,
-  styles: `
-    .legal-page {
-      max-width: 50rem;
-    }
-    .legal-page p:not(.eyebrow) {
-      color: var(--muted);
-    }
   `,
 })
 export class CookiesPage {

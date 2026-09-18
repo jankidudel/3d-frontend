@@ -297,7 +297,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
       },
       {
         icon: '£',
-        title: '3D Print Cost Calculator',
+        title: '3D Print Price Calculator',
         description:
           'Estimate filament, energy, labour and a selling price from slicer values or model volume.',
         route: PublicRouteUrl.PrintCostCalculator,
@@ -324,9 +324,9 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     tools: [
       {
         icon: '⌁',
-        title: 'G-code Preflight Checker',
+        title: 'G-code Viewer & Preflight Checker',
         description:
-          'Read sliced G-code locally to review parsed toolpaths, metadata, temperatures and parser limitations before printing.',
+          'Open sliced G-code locally to inspect parsed layers, extrusion and travel paths, metadata and preflight details before printing.',
         route: PublicRouteUrl.GcodePreflightChecker,
         cta: 'Inspect G-code',
       },

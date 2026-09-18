@@ -6,48 +6,8 @@ import { SITE_CONFIG } from '../../core/site/site-config';
 @Component({
   selector: 'app-privacy-page',
   imports: [RouterLink],
-  template: `
-    <main class="page legal-page">
-      <p class="eyebrow">Your privacy</p>
-      <h1>Privacy</h1>
-      <h2>Uploaded files</h2>
-      <p>
-        Uploaded files are processed only to provide the requested analysis and
-        are not used for advertising or marketing.
-      </p>
-      <h2>Subscriptions</h2>
-      <p>
-        If you subscribe to InspectMesh updates, we store your email address so
-        we can keep a record of your request and send product updates.
-      </p>
-      <h2>Analytics cookies</h2>
-      <p>
-        If you choose analytics cookies, we use Google Analytics to understand
-        how visitors use the site and improve our tools.
-      </p>
-      <p>
-        Learn more or change your choice on the
-        <a routerLink="/cookies">cookies page</a>.
-      </p>
-      @if (privacyContactEmail) {
-        <p>
-          For privacy questions, contact us at
-          <a [href]="'mailto:' + privacyContactEmail">{{
-            privacyContactEmail
-          }}</a
-          >.
-        </p>
-      }
-    </main>
-  `,
-  styles: `
-    .legal-page {
-      max-width: 50rem;
-    }
-    .legal-page p:not(.eyebrow) {
-      color: var(--muted);
-    }
-  `,
+  styleUrl: './legal-page.scss',
+  templateUrl: './privacy-page.html',
 })
 export class PrivacyPage {
   protected readonly privacyContactEmail =

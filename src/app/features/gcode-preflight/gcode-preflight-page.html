@@ -1,13 +1,13 @@
 <main class="page tool-page gcode-page">
-  <p class="eyebrow">G-code final review</p>
-  <h1>G-code Preflight Checker</h1>
+  <p class="eyebrow">Browser-local G-code viewer</p>
+  <h1>Free G-code Viewer</h1>
   <p class="lead">
-    Inspect a sliced FDM/FFF G-code file locally before sending it to your
-    printer. This checker only reads the file; it never runs, sends or changes
-    G-code.
+    Open a sliced G-code file locally, inspect parsed layers and review
+    practical preflight details before printing. This G-code Preflight Checker
+    only reads the file; it never uploads, runs, sends or changes G-code.
   </p>
   <section class="card viewer-tool">
-    <h2>Inspect G-code locally</h2>
+    <h2>Open a G-code file locally</h2>
     <div class="drop-zone">
       <p>Choose a .gcode, .gco or .gc file.</p>
       <button class="button" type="button" (click)="openPicker(picker)">
@@ -33,7 +33,7 @@
   </section>
   @if (report(); as result) {
     <section class="card">
-      <h2>Summary</h2>
+      <h2>G-code viewer summary</h2>
       <p class="status">
         <strong>{{ summary() }}</strong>
       </p>
@@ -147,8 +147,12 @@
       }
     </section>
     <section class="card">
-      <h2>2D layer preview</h2>
-      <p>Parsed preview, not a slicer simulation.</p>
+      <h2>Parsed 2D layer viewer</h2>
+      <p>
+        This is a parsed preview, not firmware execution or a complete slicer
+        simulation. Solid teal paths are extrusion moves; dashed grey paths are
+        travel moves.
+      </p>
       <div class="layer-controls">
         <label class="layer-selector"
           >Layer
@@ -163,6 +167,38 @@
             }
           </select>
         </label>
+        <label class="layer-scrubber"
+          >Scrub layers
+          <input
+            type="range"
+            min="0"
+            [max]="result.layers.length - 1"
+            step="1"
+            [value]="selectedLayer()"
+            [attr.aria-valuetext]="
+              'Layer ' + (selectedLayer() + 1) + ' of ' + result.layers.length
+            "
+            (input)="setLayer(+$any($event.target).value)"
+          />
+        </label>
+        <div class="layer-step-controls" aria-label="Layer navigation">
+          <button
+            type="button"
+            class="button secondary"
+            [disabled]="selectedLayer() === 0"
+            (click)="previousLayer()"
+          >
+            Previous layer
+          </button>
+          <button
+            type="button"
+            class="button secondary"
+            [disabled]="selectedLayer() === result.layers.length - 1"
+            (click)="nextLayer()"
+          >
+            Next layer
+          </button>
+        </div>
         <label class="travel-toggle">
           <input
             type="checkbox"
@@ -189,6 +225,13 @@
         </div>
       </div>
       @if (selected(); as layer) {
+        <p class="layer-summary" role="status">
+          Layer {{ selectedLayer() + 1 }} at Z {{ format(layer.z) }} mm:
+          {{ selectedLayerMoves().extrusion }} extrusion
+          {{ selectedLayerMoves().extrusion === 1 ? 'move' : 'moves' }} and
+          {{ selectedLayerMoves().travel }} travel
+          {{ selectedLayerMoves().travel === 1 ? 'move' : 'moves' }} parsed.
+        </p>
         <svg
           viewBox="0 0 1000 600"
           role="img"
@@ -329,6 +372,16 @@
         This is read-only inspection. Unsupported commands may limit the preview
         or summary; the chosen printer profile in the slicer remains the source
         of truth. Review the slicer preview before printing.
+      </p>
+      <p>
+        Need help reading the preview? See
+        <a [routerLink]="'/' + guideSlug.RouteHowToOpenAndViewGcodeFiles"
+          >How to Open and View G-code Files</a
+        >, then use the existing
+        <a [routerLink]="'/' + guideSlug.RouteHowToCheckGcodeBeforePrinting"
+          >G-code preflight guide</a
+        >
+        for a final review checklist.
       </p>
       <p>
         Before slicing:

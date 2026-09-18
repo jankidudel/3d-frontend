@@ -15,6 +15,11 @@ export interface GcodeLayer {
   readonly paths: readonly GcodePath[];
 }
 
+export interface GcodeLayerMoveCounts {
+  readonly extrusion: number;
+  readonly travel: number;
+}
+
 export interface GcodeMetadata {
   readonly slicer?: string;
   readonly printTime?: string;
@@ -251,6 +256,16 @@ export function dimensions(extents: GcodeExtents): GcodePoint {
     y: extents.max.y - extents.min.y,
     z: extents.max.z - extents.min.z,
   };
+}
+
+export function layerMoveCounts(layer: GcodeLayer): GcodeLayerMoveCounts {
+  return layer.paths.reduce<GcodeLayerMoveCounts>(
+    (moves, path) =>
+      path.extrusion
+        ? { ...moves, extrusion: moves.extrusion + 1 }
+        : { ...moves, travel: moves.travel + 1 },
+    { extrusion: 0, travel: 0 },
+  );
 }
 
 type Values = Partial<Record<'x' | 'y' | 'z' | 'e' | 's', number>>;

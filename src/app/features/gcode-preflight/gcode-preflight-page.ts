@@ -4,12 +4,14 @@ import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { GuideSlug } from '../guides/generated/guide-slug.generated';
 import { SeoService } from '../../core/seo/seo.service';
 import {
   buildVolumeMessage,
   dimensions,
   GcodeLayer,
   GcodeReport,
+  layerMoveCounts,
 } from './gcode-parser';
 
 @Component({
@@ -20,6 +22,7 @@ import {
 })
 export class GcodePreflightPage {
   readonly routeUrl = PublicRouteUrl;
+  readonly guideSlug = GuideSlug;
   readonly file = signal<File | null>(null);
   readonly report = signal<GcodeReport | null>(null);
   readonly error = signal('');
@@ -39,6 +42,13 @@ export class GcodePreflightPage {
   readonly selected = computed<GcodeLayer | null>(
     () => this.report()?.layers[this.selectedLayer()] ?? null,
   );
+  readonly selectedLayerMoves = computed(() => {
+    const layer = this.selected();
+    if (!layer) {
+      return { extrusion: 0, travel: 0 };
+    }
+    return layerMoveCounts(layer);
+  });
   readonly size = computed(() =>
     this.report()?.extents ? dimensions(this.report()!.extents!) : null,
   );
@@ -95,9 +105,9 @@ export class GcodePreflightPage {
 
   constructor() {
     this.seo.apply({
-      title: 'G-code Preflight Checker - Inspect Before Printing | InspectMesh',
+      title: 'Free G-code Viewer & Preflight Checker | InspectMesh',
       description:
-        'Inspect sliced G-code locally for toolpaths, layers, metadata, temperatures and parser limitations before printing.',
+        'Open a sliced G-code file locally to inspect parsed layers, toolpaths, metadata and practical preflight details before printing.',
       path: PublicRouteUrl.GcodePreflightChecker,
     });
   }
@@ -144,11 +154,21 @@ export class GcodePreflightPage {
     }
   }
   setLayer(index: number): void {
-    this.selectedLayer.set(index);
+    const layers = this.report()?.layers.length ?? 0;
+    if (!layers) {
+      return;
+    }
+    this.selectedLayer.set(Math.min(Math.max(index, 0), layers - 1));
     if (!this.previewUsed()) {
       this.previewUsed.set(true);
       this.analytics.trackGcodeLayerPreviewUsed();
     }
+  }
+  previousLayer(): void {
+    this.setLayer(this.selectedLayer() - 1);
+  }
+  nextLayer(): void {
+    this.setLayer(this.selectedLayer() + 1);
   }
   setTravel(value: boolean): void {
     this.showTravel.set(value);

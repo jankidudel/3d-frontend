@@ -1,9 +1,9 @@
 <main class="page tool-page cost-page">
   <p class="eyebrow">3D printing planning tool</p>
-  <h1>3D Print Cost Calculator</h1>
+  <h1>3D Print Price Calculator</h1>
   <p class="lead">
-    Estimate material, energy and print costs from slicer values, or start with
-    an STL or 3MF model.
+    Calculate your real 3D-printing cost, choose a price, and create a clear
+    quote for a customer.
   </p>
   <p class="accuracy-note">
     <strong
@@ -27,8 +27,7 @@
           name="format"
           [checked]="fileFormat() === 'stl'"
           (change)="setFormat('stl')"
-        />
-        <label for="format-stl">STL</label>
+        /><label for="format-stl">STL</label>
       </div>
       <div class="radio-option">
         <input
@@ -37,8 +36,7 @@
           name="format"
           [checked]="fileFormat() === '3mf'"
           (change)="setFormat('3mf')"
-        />
-        <label for="format-3mf">3MF</label>
+        /><label for="format-3mf">3MF</label>
       </div>
     </div>
     @if (fileFormat() === 'stl') {
@@ -98,7 +96,7 @@
   </section>
 
   <section class="card calculator" aria-labelledby="calculator-title">
-    <h2 id="calculator-title">Calculate your print cost</h2>
+    <h2 id="calculator-title">Build a price and quote</h2>
     <div class="mode-choice radio-group">
       <div class="radio-option">
         <input
@@ -107,8 +105,7 @@
           name="source"
           [checked]="source() === 'slicer'"
           (change)="source.set('slicer')"
-        />
-        <label for="source-slicer"
+        /><label for="source-slicer"
           ><strong>Use slicer values (recommended)</strong></label
         >
       </div>
@@ -120,8 +117,7 @@
           [checked]="source() === 'model'"
           [disabled]="modelWeight() === null"
           (change)="source.set('model')"
-        />
-        <label for="source-model">Use model estimate</label>
+        /><label for="source-model">Use model estimate</label>
       </div>
     </div>
     @if (source() === 'slicer') {
@@ -133,6 +129,13 @@
       </p>
     }
     <div class="fields">
+      <label class="field"
+        ><span>Quote item description</span
+        ><input
+          type="text"
+          [value]="quoteItem()"
+          (input)="quoteItem.set($any($event.target).value)"
+      /></label>
       <label class="field"
         ><span>Material</span
         ><select
@@ -225,13 +228,13 @@
           (input)="setElectricityPrice($event)"
       /></label>
       @if (electricityPrice() === null) {
-        <p class="field-note">
+        <p class="field-note" role="alert">
           Enter the price from your electricity tariff. Currency only formats
           results.
         </p>
       }
       <label class="field"
-        ><span>Machine wear / maintenance per hour (optional)</span
+        ><span>Machine wear / maintenance per hour</span
         ><input
           type="number"
           min="0"
@@ -240,7 +243,7 @@
           (input)="setNumber('machineCost', $event)"
       /></label>
       <label class="field"
-        ><span>Labour cost per hour (optional)</span
+        ><span>Labour cost per hour</span
         ><input
           type="number"
           min="0"
@@ -249,7 +252,7 @@
           (input)="setNumber('labourCost', $event)"
       /></label>
       <label class="field"
-        ><span>Labour time (hours)</span
+        ><span>Labour and post-processing time (hours)</span
         ><input
           type="number"
           min="0"
@@ -258,13 +261,31 @@
           (input)="setNumber('labourHours', $event)"
       /></label>
       <label class="field"
-        ><span>Extra parts cost (optional)</span
+        ><span>Extra parts cost</span
         ><input
           type="number"
           min="0"
           step="0.01"
           [value]="extras()"
           (input)="setNumber('extras', $event)"
+      /></label>
+      <label class="field"
+        ><span>Packaging cost</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="packaging()"
+          (input)="setNumber('packaging', $event)"
+      /></label>
+      <label class="field"
+        ><span>Shipping included in this quote</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="shipping()"
+          (input)="setNumber('shipping', $event)"
       /></label>
       <label class="field"
         ><span>Failure allowance (%)</span
@@ -276,18 +297,56 @@
           (input)="setNumber('failure', $event)"
       /></label>
       <label class="field"
-        ><span>For selling/quoting: profit margin (%)</span
+        ><span>Marketplace or payment fee (%)</span
         ><input
           type="number"
           min="0"
           step="0.1"
-          [value]="margin()"
-          (input)="setNumber('margin', $event)"
+          [value]="marketplaceFeePercent()"
+          (input)="setNumber('marketplaceFeePercent', $event)"
+      /></label>
+      <label class="field"
+        ><span>Marketplace or payment fixed fee</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="marketplaceFixedFee()"
+          (input)="setNumber('marketplaceFixedFee', $event)"
+      /></label>
+      <label class="field"
+        ><span>Target profit margin (%)</span
+        ><input
+          type="number"
+          min="0"
+          max="99.9"
+          step="0.1"
+          [value]="targetMargin()"
+          (input)="setNumber('targetMargin', $event)"
+      /></label>
+      <label class="field"
+        ><span>Or set desired selling price before tax</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Leave blank to use target margin"
+          [value]="desiredSellingPrice() ?? ''"
+          (input)="setDesiredSellingPrice($event)"
+      /></label>
+      <label class="field"
+        ><span>Sales tax to show separately (%)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.1"
+          [value]="salesTaxPercent()"
+          (input)="setNumber('salesTaxPercent', $event)"
       /></label>
     </div>
     @if (result(); as costs) {
       <section class="breakdown" aria-live="polite">
-        <h3>Cost breakdown</h3>
+        <h3>Price and profit breakdown</h3>
         <dl>
           <div>
             <dt>Filament/material</dt>
@@ -306,31 +365,50 @@
             <dd>{{ format(costs.labourCost) }}</dd>
           </div>
           <div>
-            <dt>Extra parts</dt>
-            <dd>{{ format(costs.extraPartsCost) }}</dd>
+            <dt>Direct production cost</dt>
+            <dd>{{ format(costs.directProductionCost) }}</dd>
           </div>
           <div>
-            <dt>Subtotal</dt>
-            <dd>{{ format(costs.subtotal) }}</dd>
+            <dt>Packaging, delivery and extra parts</dt>
+            <dd>{{ format(costs.overheadCost) }}</dd>
           </div>
           <div>
             <dt>Failure allowance</dt>
             <dd>{{ format(costs.failureAllowance) }}</dd>
           </div>
           <div class="total">
-            <dt>Total print cost</dt>
+            <dt>Actual print cost</dt>
             <dd>{{ format(costs.totalCost) }}</dd>
           </div>
-          @if (costs.suggestedSellingPrice !== null) {
-            <div class="selling">
-              <dt>Suggested selling price</dt>
-              <dd>{{ format(costs.suggestedSellingPrice) }}</dd>
-            </div>
-          }
+          <div class="selling">
+            <dt>Pre-fee selling price</dt>
+            <dd>{{ format(costs.preFeeSellingPrice) }}</dd>
+          </div>
+          <div>
+            <dt>Estimated marketplace/payment fees</dt>
+            <dd>{{ format(costs.estimatedMarketplaceFees) }}</dd>
+          </div>
+          <div class="selling">
+            <dt>Customer-facing quoted price</dt>
+            <dd>{{ format(costs.customerQuotedPrice) }}</dd>
+          </div>
+          <div>
+            <dt>Estimated profit</dt>
+            <dd>{{ format(costs.estimatedProfit) }}</dd>
+          </div>
+          <div>
+            <dt>Margin after fees</dt>
+            <dd>{{ number(costs.marginPercent, 1) }}%</dd>
+          </div>
+          <div>
+            <dt>Sales tax shown separately</dt>
+            <dd>{{ format(costs.salesTax) }}</dd>
+          </div>
         </dl>
         <p>
-          This is a planning estimate, not a quote, slicer estimate or
-          guaranteed print price.
+          Margin is profit as a share of the selling price; markup is a share of
+          cost. This is an estimate, not a market-value guarantee. Actual fees,
+          tax, failures, material use and delivery costs can vary.
         </p>
         <div class="downloads">
           <button
@@ -344,17 +422,22 @@
             type="button"
             (click)="downloadPdf()"
           >
-            Download PDF report
+            Download customer quote
           </button>
         </div>
       </section>
+    } @else {
+      <p class="error" role="alert">
+        Check that all values are non-negative and that your target margin plus
+        percentage fee is below 100%.
+      </p>
     }
   </section>
   <section class="content">
     <p>
       Before estimating a production run, use the
-      <a [routerLink]="routeUrl.FlowRateCalculator">Flow Rate Calculator</a>
-      to check a material profile with a single-wall test.
+      <a [routerLink]="routeUrl.FlowRateCalculator">Flow Rate Calculator</a> to
+      check a material profile with a single-wall test.
     </p>
     <h2>Plan with slicer values</h2>
     <p>
@@ -366,8 +449,13 @@
       and
       <a [routerLink]="'/how-much-filament-does-a-3d-print-use'"
         >How Much Filament Does a 3D Print Use</a
-      >
-      .
+      >.
+    </p>
+    <p>
+      Learn how to turn that cost into a transparent customer price in
+      <a [routerLink]="'/how-much-to-charge-for-3d-prints'"
+        >How Much to Charge for 3D Prints</a
+      >.
     </p>
   </section>
 </main>

@@ -1,0 +1,117 @@
+---
+title: 'How to Open and View G-code Files | InspectMesh'
+description: 'Learn how to open a sliced G-code file locally, inspect parsed layers and toolpaths, and understand why a browser preview differs from slicer simulation.'
+slug: how-to-open-and-view-gcode-files
+eyebrow: G-code viewer guide
+heading: How to Open and View G-code Files
+faq:
+  - question: Can I open a G-code file without sending it to a printer?
+    answer: Yes. A browser-based G-code viewer can read a file locally and show the subset of movement and metadata it recognises without uploading, running or changing the file.
+  - question: Is a parsed G-code preview the same as slicer simulation?
+    answer: No. A parsed preview shows recognised commands and paths. A slicer simulation can include printer profiles, feature types, custom scripts and firmware-specific behaviour that a general browser viewer cannot reproduce.
+  - question: Can a G-code viewer guarantee a successful print?
+    answer: No. Printer firmware, calibration, material, machine condition, start G-code and slicer settings all affect the real print.
+---
+
+<p>
+  A sliced <strong>G-code</strong> file is the set of instructions your printer
+  will receive. Opening it in a viewer is a useful final check when a file came
+  from another computer, was sliced with an unfamiliar profile or simply needs a
+  quick visual review before printing.
+</p>
+<p>
+  Use the
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >G-code Viewer and Preflight Checker</a
+  >
+  to open a <code>.gcode</code>, <code>.gco</code> or <code>.gc</code> file
+  locally in your browser. It reads the file only: it does not upload, execute,
+  send or modify it.
+</p>
+<h2>Open the file and inspect its parsed layers</h2>
+<p>
+  Choose the sliced file from your device. The viewer reads common linear motion
+  commands, groups recognised paths by layer and presents a 2D preview.
+</p>
+<ol>
+  <li>select a G-code file from your device;</li>
+  <li>check that the summary reports readable layers and motion;</li>
+  <li>
+    use the layer selector, scrubber or previous and next buttons to move
+    through the preview;
+  </li>
+  <li>compare solid extrusion paths with the optional dashed travel paths;</li>
+  <li>
+    read the per-layer move count and the parser limitations before making a
+    print decision.
+  </li>
+</ol>
+<p>
+  The preview is most useful for catching an obviously unexpected shape, missing
+  looking paths, a surprising Z range or movement that extends beyond the area
+  you expected.
+</p>
+<h2>What to inspect in a G-code viewer</h2>
+<p>
+  A viewer can provide practical file-level context without making assumptions
+  about a particular printer. Review the information the file actually contains:
+</p>
+<ul>
+  <li>parsed layer count and Z range;</li>
+  <li>
+    extrusion and travel paths on representative early, middle and final layers;
+  </li>
+  <li>parsed X, Y and Z motion extents;</li>
+  <li>
+    slicer comments, declared print time and filament details when present;
+  </li>
+  <li>hotend and bed targets that the parser recognises;</li>
+  <li>
+    coordinate modes, extrusion mode, tool markers and limitation warnings.
+  </li>
+</ul>
+<p>
+  For a more detailed final checklist, use the
+  <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
+    >guide to checking G-code before printing</a
+  >.
+</p>
+<h2>Why a browser preview differs from slicer simulation</h2>
+<p>
+  A slicer knows the model, its configured printer profile and feature-specific
+  decisions it made while generating the file. A browser viewer instead reads a
+  conservative subset of the finished text file. It can accurately display the
+  paths it recognises, but it does not run firmware or recreate the complete
+  slicer environment.
+</p>
+<p>
+  Treat the preview as an independent inspection aid, not a replacement for the
+  slicer's native preview. Confirm the selected printer, material, orientation,
+  supports and start sequence in the slicer that produced the file.
+</p>
+<h2>Read limitations before relying on the preview</h2>
+<p>
+  G-code dialects vary between slicers, firmware and printer workflows. Arcs,
+  macros, conditional logic, vendor-specific commands and multi-tool workflows
+  may be incomplete or absent from a general parser's preview. A limitation
+  notice does not necessarily mean the file is wrong; it means the viewer cannot
+  make a reliable claim about that part of it.
+</p>
+<p>
+  When a limitation matters to your workflow, return to the slicer's native
+  preview and confirm the file against the intended printer and firmware.
+</p>
+<h2>Use G-code viewing after model preflight</h2>
+<p>
+  G-code viewing is the final file-level stage. Before slicing, use
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> to
+  inspect the model itself. Then check dimensions, geometry, wall thickness and
+  overhang risk as relevant, slice with the intended printer profile, and view
+  the resulting G-code before printing.
+</p>
+<p>
+  No browser inspection can guarantee print success. Firmware configuration,
+  machine condition, material, calibration, bed preparation and physical
+  environment remain part of the real print outcome.
+</p>

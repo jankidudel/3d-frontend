@@ -2,6 +2,7 @@ import {
   GcodeParseError,
   buildVolumeMessage,
   dimensions,
+  layerMoveCounts,
   parseGcode,
 } from './gcode-parser';
 import { commonGcodeFixture } from './fixtures/common-gcode.fixture';
@@ -52,5 +53,12 @@ describe('parseGcode', () => {
     expect(buildVolumeMessage(report, { x: 10, y: 30, z: 30 })).toBe(
       'The parsed motion extents exceed the entered dimensions.',
     );
+  });
+  it('counts extrusion and travel moves for the selected viewer layer', () => {
+    const report = parseGcode(commonGcodeFixture);
+    expect(layerMoveCounts(report.layers[0])).toEqual({
+      extrusion: 2,
+      travel: 1,
+    });
   });
 });
