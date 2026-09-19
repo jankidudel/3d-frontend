@@ -39,6 +39,7 @@ describe('App', () => {
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
+      '/3d-printing-price-calculator',
       '/filament-length-calculator',
       '/3d-print-flow-rate-calculator',
       '/3d-print-tolerance-calculator',
@@ -97,7 +98,8 @@ describe('App', () => {
         link.getAttribute('href'),
       ]),
     ).toEqual([
-      ['3D Print Price Calculator', '/3d-print-cost-calculator'],
+      ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
+      ['3D Printing Price Calculator', '/3d-printing-price-calculator'],
       ['Filament Length Calculator', '/filament-length-calculator'],
       ['Flow Rate Calculator', '/3d-print-flow-rate-calculator'],
       ['Tolerance & Clearance', '/3d-print-tolerance-calculator'],
@@ -142,7 +144,8 @@ describe('App', () => {
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.textContent?.trim())).toEqual([
-      '3D Print Price Calculator',
+      '3D Print Cost Calculator',
+      '3D Printing Price Calculator',
       'Filament Length Calculator',
       'Flow Rate Calculator',
       'Tolerance & Clearance',
@@ -183,6 +186,7 @@ describe('App', () => {
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/3d-print-cost-calculator',
+      '/3d-printing-price-calculator',
       '/filament-length-calculator',
       '/3d-print-flow-rate-calculator',
       '/3d-print-tolerance-calculator',

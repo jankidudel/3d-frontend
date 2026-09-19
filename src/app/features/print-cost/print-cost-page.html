@@ -1,9 +1,9 @@
 <main class="page tool-page cost-page">
   <p class="eyebrow">3D printing planning tool</p>
-  <h1>3D Print Price Calculator</h1>
+  <h1>3D Print Cost Calculator</h1>
   <p class="lead">
-    Calculate your real 3D-printing cost, choose a price, and create a clear
-    quote for a customer.
+    Estimate material, energy and production costs from slicer values or an STL
+    or 3MF model.
   </p>
   <p class="accuracy-note">
     <strong
@@ -96,7 +96,7 @@
   </section>
 
   <section class="card calculator" aria-labelledby="calculator-title">
-    <h2 id="calculator-title">Build a price and quote</h2>
+    <h2 id="calculator-title">Calculate your print cost</h2>
     <div class="mode-choice radio-group">
       <div class="radio-option">
         <input
@@ -296,57 +296,10 @@
           [value]="failure()"
           (input)="setNumber('failure', $event)"
       /></label>
-      <label class="field"
-        ><span>Marketplace or payment fee (%)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.1"
-          [value]="marketplaceFeePercent()"
-          (input)="setNumber('marketplaceFeePercent', $event)"
-      /></label>
-      <label class="field"
-        ><span>Marketplace or payment fixed fee</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="marketplaceFixedFee()"
-          (input)="setNumber('marketplaceFixedFee', $event)"
-      /></label>
-      <label class="field"
-        ><span>Target profit margin (%)</span
-        ><input
-          type="number"
-          min="0"
-          max="99.9"
-          step="0.1"
-          [value]="targetMargin()"
-          (input)="setNumber('targetMargin', $event)"
-      /></label>
-      <label class="field"
-        ><span>Or set desired selling price before tax</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="Leave blank to use target margin"
-          [value]="desiredSellingPrice() ?? ''"
-          (input)="setDesiredSellingPrice($event)"
-      /></label>
-      <label class="field"
-        ><span>Sales tax to show separately (%)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.1"
-          [value]="salesTaxPercent()"
-          (input)="setNumber('salesTaxPercent', $event)"
-      /></label>
     </div>
     @if (result(); as costs) {
       <section class="breakdown" aria-live="polite">
-        <h3>Price and profit breakdown</h3>
+        <h3>Cost breakdown</h3>
         <dl>
           <div>
             <dt>Filament/material</dt>
@@ -380,35 +333,10 @@
             <dt>Actual print cost</dt>
             <dd>{{ format(costs.totalCost) }}</dd>
           </div>
-          <div class="selling">
-            <dt>Pre-fee selling price</dt>
-            <dd>{{ format(costs.preFeeSellingPrice) }}</dd>
-          </div>
-          <div>
-            <dt>Estimated marketplace/payment fees</dt>
-            <dd>{{ format(costs.estimatedMarketplaceFees) }}</dd>
-          </div>
-          <div class="selling">
-            <dt>Customer-facing quoted price</dt>
-            <dd>{{ format(costs.customerQuotedPrice) }}</dd>
-          </div>
-          <div>
-            <dt>Estimated profit</dt>
-            <dd>{{ format(costs.estimatedProfit) }}</dd>
-          </div>
-          <div>
-            <dt>Margin after fees</dt>
-            <dd>{{ number(costs.marginPercent, 1) }}%</dd>
-          </div>
-          <div>
-            <dt>Sales tax shown separately</dt>
-            <dd>{{ format(costs.salesTax) }}</dd>
-          </div>
         </dl>
         <p>
-          Margin is profit as a share of the selling price; markup is a share of
-          cost. This is an estimate, not a market-value guarantee. Actual fees,
-          tax, failures, material use and delivery costs can vary.
+          This is a production-cost estimate. Actual material use, failures and
+          delivery costs can vary.
         </p>
         <div class="downloads">
           <button
@@ -422,18 +350,24 @@
             type="button"
             (click)="downloadPdf()"
           >
-            Download customer quote
+            Download PDF report
           </button>
         </div>
       </section>
     } @else {
       <p class="error" role="alert">
-        Check that all values are non-negative and that your target margin plus
-        percentage fee is below 100%.
+        Check that all values are non-negative and that spool weight is above
+        zero.
       </p>
     }
   </section>
   <section class="content">
+    <p>
+      Need to quote a customer? Use the
+      <a [routerLink]="routeUrl.PrintPriceCalculator"
+        >3D Printing Price Calculator</a
+      >.
+    </p>
     <p>
       Before estimating a production run, use the
       <a [routerLink]="routeUrl.FlowRateCalculator">Flow Rate Calculator</a> to

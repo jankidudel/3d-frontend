@@ -1,0 +1,65 @@
+.price-page {
+  --accent: #8a3f14;
+}
+.card {
+  max-width: 70rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+.fields,
+dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+label {
+  display: grid;
+  gap: 0.35rem;
+}
+label span,
+dt {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+input,
+select {
+  min-height: 2.7rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+}
+.results {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+dl div {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+dd {
+  margin: 0.35rem 0 0;
+  font-weight: 800;
+}
+.price {
+  border-color: var(--accent);
+  background: #fff2e6;
+}
+.button + .button {
+  margin-left: 0.75rem;
+}
+.error {
+  color: var(--error);
+  font-weight: 700;
+}
+@media (max-width: 42rem) {
+  .fields,
+  dl {
+    grid-template-columns: 1fr;
+  }
+  .button + .button {
+    margin: 0.75rem 0 0;
+  }
+}

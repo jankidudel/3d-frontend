@@ -62,7 +62,8 @@ export class StlViewerPage {
 
   constructor() {
     this.seo.apply({
-      title: 'Free STL Viewer with Measurements and Dimensions | InspectMesh',
+      title:
+        'Free STL Viewer Online - Open and Inspect STL Files | InspectMesh',
       description:
         'Open an STL file locally, inspect it in 3D, measure point-to-point distances and review dimensions and triangle count before 3D printing.',
       path: PublicRouteUrl.Viewer,

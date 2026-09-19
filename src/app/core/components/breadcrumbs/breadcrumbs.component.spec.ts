@@ -91,15 +91,13 @@ describe('BreadcrumbsComponent', () => {
     fixture.detectChanges();
     expect(trail(fixture.nativeElement)).toEqual([
       ['All 3D tools', '/tools'],
-      ['3D Print Price Calculator', null],
+      ['3D Print Cost Calculator', null],
     ]);
-    expect(currentPage(fixture.nativeElement)).toBe(
-      '3D Print Price Calculator',
-    );
+    expect(currentPage(fixture.nativeElement)).toBe('3D Print Cost Calculator');
     expect(breadcrumbItems(document)).toEqual([
       ['All 3D tools', 1, 'https://www.inspectmesh.com/tools'],
       [
-        '3D Print Price Calculator',
+        '3D Print Cost Calculator',
         2,
         'https://www.inspectmesh.com/3d-print-cost-calculator',
       ],

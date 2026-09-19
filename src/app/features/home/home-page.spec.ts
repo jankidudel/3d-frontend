@@ -70,6 +70,7 @@ describe('HomePage', () => {
       '/3d-print-tolerance-calculator',
       '/3d-print-shrinkage-calculator',
       '/3d-print-cost-calculator',
+      '/3d-printing-price-calculator',
       '/filament-length-calculator',
       '/tools',
       '/gcode-preflight-checker',

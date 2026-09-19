@@ -12,6 +12,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.PrintPriceCalculator,
+    loadComponent: () =>
+      import('./features/print-price/print-price-page').then(
+        (m) => m.PrintPricePage,
+      ),
+  },
+  {
     path: PublicRoutePath.FilamentLengthCalculator,
     loadComponent: () =>
       import('./features/filament-length-calculator/filament-length-calculator-page').then(

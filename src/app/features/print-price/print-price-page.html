@@ -1,0 +1,256 @@
+<main class="page tool-page price-page">
+  <p class="eyebrow">3D printing business calculator</p>
+  <h1>3D Printing Price Calculator</h1>
+  <p class="lead">
+    Calculate a clear customer price from your real production costs, quantity
+    and target profit margin.
+  </p>
+  <section class="card" aria-labelledby="price-inputs">
+    <h2 id="price-inputs">Price a 3D print</h2>
+    <p>
+      All calculations happen locally in your browser. Shipping and tax are not
+      included unless you add them to fixed order overhead.
+    </p>
+    <div class="fields">
+      <label
+        ><span>Currency</span
+        ><select
+          [value]="currency()"
+          (change)="currency.set($any($event.target).value)"
+        >
+          <option value="USD">USD ($)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="EUR">EUR (€)</option>
+        </select></label
+      >
+      <label
+        ><span>Material price per kg</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="materialPrice()"
+          (input)="setNumber('materialPrice', $event)"
+      /></label>
+      <label
+        ><span>Material used per item (g)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.1"
+          [value]="materialUsed()"
+          (input)="setNumber('materialUsed', $event)"
+      /></label>
+      <label
+        ><span>Waste or supports (%)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.1"
+          [value]="waste()"
+          (input)="setNumber('waste', $event)"
+      /></label>
+      <label
+        ><span>Print time per item (hours)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="printHours()"
+          (input)="setNumber('printHours', $event)"
+      /></label>
+      <label
+        ><span>Average printer power (W)</span
+        ><input
+          type="number"
+          min="0"
+          step="1"
+          [value]="watts()"
+          (input)="setNumber('watts', $event)"
+      /></label>
+      <label
+        ><span>Electricity price per kWh</span
+        ><input
+          type="number"
+          min="0"
+          step="0.001"
+          [value]="electricity()"
+          (input)="setNumber('electricity', $event)"
+      /></label>
+      <label
+        ><span>Machine wear per print hour</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="machineWear()"
+          (input)="setNumber('machineWear', $event)"
+      /></label>
+      <label
+        ><span>Labour and post-processing (hours)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="labourHours()"
+          (input)="setNumber('labourHours', $event)"
+      /></label>
+      <label
+        ><span>Labour rate per hour</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="labourRate()"
+          (input)="setNumber('labourRate', $event)"
+      /></label>
+      <label
+        ><span>Fixed order overhead</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="overhead()"
+          (input)="setNumber('overhead', $event)"
+      /></label>
+      <label
+        ><span>Failure allowance (%)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.1"
+          [value]="failure()"
+          (input)="setNumber('failure', $event)"
+      /></label>
+      <label
+        ><span>Quantity</span
+        ><input
+          type="number"
+          min="1"
+          step="1"
+          [value]="quantity()"
+          (input)="setNumber('quantity', $event)"
+      /></label>
+      <label
+        ><span>Target profit margin (%)</span
+        ><input
+          type="number"
+          min="0"
+          max="99.9"
+          step="0.1"
+          [value]="margin()"
+          (input)="setNumber('margin', $event)"
+      /></label>
+      <label
+        ><span>Minimum order charge (optional)</span
+        ><input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="minimumOrder()"
+          (input)="setNumber('minimumOrder', $event)"
+      /></label>
+    </div>
+    @if (result(); as price) {
+      <section class="results" aria-live="polite">
+        <h2>Recommended customer price</h2>
+        <dl>
+          <div>
+            <dt>Material per item</dt>
+            <dd>{{ format(price.materialCostPerItem) }}</dd>
+          </div>
+          <div>
+            <dt>Electricity per item</dt>
+            <dd>{{ format(price.electricityCostPerItem) }}</dd>
+          </div>
+          <div>
+            <dt>Machine wear per item</dt>
+            <dd>{{ format(price.machineCostPerItem) }}</dd>
+          </div>
+          <div>
+            <dt>Labour per item</dt>
+            <dd>{{ format(price.labourCostPerItem) }}</dd>
+          </div>
+          <div>
+            <dt>Overhead per item</dt>
+            <dd>{{ format(price.overheadPerItem) }}</dd>
+          </div>
+          <div>
+            <dt>Failure allowance per item</dt>
+            <dd>{{ format(price.failureAllowancePerItem) }}</dd>
+          </div>
+          <div>
+            <dt>True cost per item</dt>
+            <dd>{{ format(price.trueCostPerItem) }}</dd>
+          </div>
+          <div class="price">
+            <dt>Recommended price per item</dt>
+            <dd>{{ format(price.recommendedPricePerItem) }}</dd>
+          </div>
+          <div class="price">
+            <dt>Quote for {{ quantity() }} items</dt>
+            <dd>{{ format(price.orderQuote) }}</dd>
+          </div>
+          <div>
+            <dt>Expected gross profit for order</dt>
+            <dd>{{ format(price.grossProfitForOrder) }}</dd>
+          </div>
+        </dl>
+        <p>
+          Margin is profit as a share of selling price, not a markup on cost.
+          This is an illustrative calculation, not a promise that customers will
+          accept the price.
+        </p>
+        <button class="button" type="button" (click)="copyQuote()">
+          Copy quote summary</button
+        ><button
+          class="button button-secondary"
+          type="button"
+          (click)="reset()"
+        >
+          Reset defaults
+        </button>
+      </section>
+    } @else {
+      <p class="error" role="alert">
+        Use non-negative numbers, a quantity above zero, and a target margin
+        below 100%.
+      </p>
+    }
+  </section>
+  <section class="content">
+    <h2>How to calculate a 3D printing price</h2>
+    <p>
+      Add material, power, machine wear, labour, order overhead and a realistic
+      failure allowance before applying a margin. The worked defaults are
+      illustrative only.
+    </p>
+    <h2>Cost vs price vs profit margin</h2>
+    <p>
+      Cost is what producing the item consumes. Price is what the customer pays.
+      Profit margin is profit divided by price, after the costs entered here.
+    </p>
+    <h2>Frequently asked questions</h2>
+    <h3>How much should I charge for a 3D print?</h3>
+    <p>
+      Use your real costs and choose a margin that fits your work and market; a
+      calculator cannot determine market demand.
+    </p>
+    <h3>Does this include electricity and failed prints?</h3>
+    <p>Yes, when you enter electricity and failure allowance values.</p>
+    <h3>Does the price include shipping and tax?</h3>
+    <p>
+      No. Add only costs you intend to include in the fixed order overhead, and
+      handle tax separately where required.
+    </p>
+    <p>
+      Need production costs only? Use the
+      <a [routerLink]="routeUrl.PrintCostCalculator">3D Print Cost Calculator</a
+      >. Check a model with the
+      <a [routerLink]="routeUrl.StlPrintPreflight"
+        >STL Print Preflight Checker</a
+      >
+      before quoting.
+    </p>
+  </section>
+</main>

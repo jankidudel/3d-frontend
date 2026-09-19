@@ -54,8 +54,13 @@
               Planning &amp; calibration
             </h2>
             <app-menu-link
-              label="3D Print Price Calculator"
+              label="3D Print Cost Calculator"
               [route]="routePath.PrintCostCalculator"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3D Printing Price Calculator"
+              [route]="routePath.PrintPriceCalculator"
               (selected)="closeMenus()"
             />
             <app-menu-link

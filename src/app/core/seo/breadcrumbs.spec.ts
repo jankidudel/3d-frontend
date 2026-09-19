@@ -53,7 +53,7 @@ describe('breadcrumbsForPath', () => {
     expect(breadcrumbsForPath('/3d-print-cost-calculator')).toEqual([
       { label: 'All 3D tools', href: '/tools' },
       {
-        label: '3D Print Price Calculator',
+        label: '3D Print Cost Calculator',
         href: '/3d-print-cost-calculator',
       },
     ]);
@@ -153,7 +153,7 @@ describe('breadcrumbsForPath', () => {
         },
         {
           position: 2,
-          name: '3D Print Price Calculator',
+          name: '3D Print Cost Calculator',
           item: 'https://www.inspectmesh.com/3d-print-cost-calculator',
         },
       ],

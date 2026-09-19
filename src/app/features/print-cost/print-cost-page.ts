@@ -134,9 +134,10 @@ export class PrintCostPage {
   );
   constructor() {
     inject(SeoService).apply({
-      title: '3D Print Price Calculator: Cost, Profit and Quotes | InspectMesh',
+      title:
+        '3D Print Cost Calculator: Material, Energy and Print Cost | InspectMesh',
       description:
-        'Calculate your real 3D-printing cost, choose a price, and create a clear quote for a customer. Keep material, fees, profit and tax transparent.',
+        'Estimate 3D printing production cost from slicer values or a model estimate. Include material, electricity, machine wear, labour and failure allowance.',
       path: PublicRouteUrl.PrintCostCalculator,
     });
   }

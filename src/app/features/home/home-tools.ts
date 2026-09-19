@@ -297,11 +297,19 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
       },
       {
         icon: '£',
-        title: '3D Print Price Calculator',
+        title: '3D Print Cost Calculator',
         description:
-          'Estimate filament, energy, labour and a selling price from slicer values or model volume.',
+          'Estimate filament, energy, machine and labour costs from slicer values or model volume.',
         route: PublicRouteUrl.PrintCostCalculator,
         cta: 'Calculate print cost',
+      },
+      {
+        icon: '£',
+        title: '3D Printing Price Calculator',
+        description:
+          'Build a customer quote from production costs, quantity and target profit margin.',
+        route: PublicRouteUrl.PrintPriceCalculator,
+        cta: 'Calculate a price',
       },
       {
         icon: '⌇',

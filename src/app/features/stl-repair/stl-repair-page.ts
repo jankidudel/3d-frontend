@@ -66,7 +66,7 @@ export class StlRepairPage {
 
   constructor() {
     this.seo.apply({
-      title: 'STL Repair Tool - Safe STL Cleanup | InspectMesh',
+      title: 'Free STL Repair Tool - Repair STL Files Online | InspectMesh',
       description:
         'Remove duplicate and degenerate STL triangles, and correct safe simple orientation issues before checking your STL again.',
       path: PublicRouteUrl.StlRepair,
