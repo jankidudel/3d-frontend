@@ -54,6 +54,11 @@
               Planning &amp; calibration
             </h2>
             <app-menu-link
+              label="Compare 3D Printers"
+              [route]="routePath.Compare3dPrinters"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
               label="3D Print Cost Calculator"
               [route]="routePath.PrintCostCalculator"
               (selected)="closeMenus()"

@@ -2,8 +2,23 @@ import { Routes } from '@angular/router';
 import { BreadcrumbPageLayout } from './core/components/breadcrumb-page-layout/breadcrumb-page-layout';
 import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
 import { guideCanMatch } from './features/guides/guide-route';
+import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 
 const breadcrumbRoutes: Routes = [
+  {
+    path: PublicRoutePath.Compare3dPrinters,
+    loadComponent: () =>
+      import('./features/printer-comparison/printer-comparison-page').then(
+        (m) => m.PrinterComparisonPage,
+      ),
+  },
+  ...curatedComparisonPaths.map((path) => ({
+    path,
+    loadComponent: () =>
+      import('./features/printer-comparison/printer-pair-page').then(
+        (m) => m.PrinterPairPage,
+      ),
+  })),
   {
     path: PublicRoutePath.PrintCostCalculator,
     loadComponent: () =>

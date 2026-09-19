@@ -28,6 +28,8 @@ const guideRoute = <Path extends string>(path: Path) =>
 export const PublicRoutePath = {
   Home: defineRoute('', PageType.Home),
   AllTools: toolRoute('tools'),
+  Compare3dPrinters: toolRoute('compare-3d-printers'),
+  Compare: toolRoute('compare'),
   PrintCostCalculator: toolRoute('3d-print-cost-calculator'),
   PrintPriceCalculator: toolRoute('3d-printing-price-calculator'),
   FilamentLengthCalculator: toolRoute('filament-length-calculator'),
@@ -125,6 +127,12 @@ export function getPublicRouteForUrl(
 export const canonicalPublicRoutePaths = [
   PublicRoutePath.Home.path,
   PublicRoutePath.AllTools.path,
+  PublicRoutePath.Compare3dPrinters.path,
+  'compare/bambu-lab-p1s-vs-p2s',
+  'compare/bambu-lab-a1-vs-p2s',
+  'compare/bambu-lab-a1-vs-a1-mini',
+  'compare/bambu-lab-p1s-vs-a1',
+  'compare/bambu-lab-p1p-vs-p1s',
   PublicRoutePath.PrintCostCalculator.path,
   PublicRoutePath.PrintPriceCalculator.path,
   PublicRoutePath.FilamentLengthCalculator.path,

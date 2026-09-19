@@ -1,0 +1,49 @@
+.comparison-detail {
+  width: min(100% - 2rem, 56rem);
+  margin: 0 auto;
+}
+.breadcrumbs {
+  margin-top: 1.5rem;
+  color: var(--muted);
+}
+.verdict,
+.choose-grid article {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+.verdict {
+  background: #fff2e6;
+  border-color: #8a3f14;
+}
+.comparison-detail section {
+  margin: 2rem 0;
+}
+.choose-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+thead {
+  background: #fff2e6;
+}
+@media (max-width: 40rem) {
+  .choose-grid {
+    grid-template-columns: 1fr;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}

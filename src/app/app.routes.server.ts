@@ -1,10 +1,16 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
 import { guideSlugs } from './features/guides/generated/guide-route-data.generated';
+import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 
 export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.Home, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.AllTools, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Compare3dPrinters, renderMode: RenderMode.Prerender },
+  ...curatedComparisonPaths.map((path) => ({
+    path,
+    renderMode: RenderMode.Prerender as RenderMode.Prerender,
+  })),
   {
     path: PublicRoutePath.PrintCostCalculator,
     renderMode: RenderMode.Prerender,

@@ -1,0 +1,127 @@
+<main class="page tool-page comparison-page">
+  <p class="eyebrow">Printer selection tool</p>
+  <h1>Compare 3D Printers</h1>
+  <p class="lead">
+    Compare current, attributable specifications and practical trade-offs.
+    Specifications are not hands-on test results.
+  </p>
+  <section class="card selector" aria-labelledby="select-printers-title">
+    <h2 id="select-printers-title">Choose two printers</h2>
+    <div class="selector-fields">
+      <label
+        ><span>First printer</span
+        ><select [value]="leftId()" (change)="setLeft($event)">
+          @for (printer of printers; track printer.id) {
+            <option [value]="printer.id" [disabled]="printer.id === rightId()">
+              {{ printer.displayName }}
+            </option>
+          }
+        </select></label
+      >
+      <button
+        class="button secondary"
+        type="button"
+        (click)="swap()"
+        aria-label="Swap selected printers"
+      >
+        Swap sides
+      </button>
+      <label
+        ><span>Second printer</span
+        ><select [value]="rightId()" (change)="setRight($event)">
+          @for (printer of printers; track printer.id) {
+            <option [value]="printer.id" [disabled]="printer.id === leftId()">
+              {{ printer.displayName }}
+            </option>
+          }
+        </select></label
+      >
+    </div>
+    <label class="toggle"
+      ><input
+        type="checkbox"
+        [checked]="differencesOnly()"
+        (change)="differencesOnly.set($any($event.target).checked)"
+      />
+      Show differences only</label
+    >
+  </section>
+  <section class="quick-answer" aria-live="polite">
+    <article>
+      <h2>{{ left().displayName }}</h2>
+      <p><strong>Best for:</strong> {{ left().bestFor }}</p>
+      <p>
+        <strong>Indicative price:</strong> {{ formatPrice(left()) }}
+        <small>({{ left().lastVerified }})</small>
+      </p>
+    </article>
+    <article>
+      <h2>{{ right().displayName }}</h2>
+      <p><strong>Best for:</strong> {{ right().bestFor }}</p>
+      <p>
+        <strong>Indicative price:</strong> {{ formatPrice(right()) }}
+        <small>({{ right().lastVerified }})</small>
+      </p>
+    </article>
+  </section>
+  @if (curated(); as comparison) {
+    <p class="curated-cta">
+      <a class="button" [routerLink]="comparisonUrl(comparison.slug)"
+        >Read the detailed {{ left().displayName }} vs
+        {{ right().displayName }} comparison</a
+      >
+    </p>
+  }
+  <section class="card table-wrap" aria-labelledby="specifications-title">
+    <h2 id="specifications-title">Specifications and practical context</h2>
+    <p>
+      Maximum speed and acceleration are manufacturer claims, not InspectMesh
+      performance benchmarks. Missing values are not replaced with estimates.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Feature</th>
+          <th scope="col">{{ left().displayName }}</th>
+          <th scope="col">{{ right().displayName }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of visibleRows(); track row.label) {
+          <tr>
+            <th scope="row">{{ row.label }}</th>
+            <td>{{ row.left }}</td>
+            <td>{{ row.right }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Running-cost considerations</h2>
+    <p>
+      Enclosure use, speed, filament drying, multicolour purge waste and the
+      actual print profile can all change a job's cost. Estimate the real cost
+      of a job on either printer with slicer values.
+    </p>
+    <a [routerLink]="routeUrl.PrintCostCalculator"
+      >Open the 3D Print Cost Calculator</a
+    >
+  </section>
+  <section class="card" aria-labelledby="curated-title">
+    <h2 id="curated-title">Curated Bambu Lab comparisons</h2>
+    <p>
+      Only these research-backed combinations are published as indexable
+      comparison pages.
+    </p>
+    <ul>
+      @for (comparison of curatedComparisons; track comparison.slug) {
+        <li>
+          <a [routerLink]="comparisonUrl(comparison.slug)">{{
+            comparison.title
+          }}</a>
+        </li>
+      }
+    </ul>
+  </section>
+</main>
