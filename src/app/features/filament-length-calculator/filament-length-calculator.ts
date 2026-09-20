@@ -1,8 +1,14 @@
+import { materials } from '../materials/material-catalogue';
+
 export const FILAMENT_PRESETS = {
-  Pla: { label: 'PLA', density: 1.24 },
-  Petg: { label: 'PETG', density: 1.27 },
-  Abs: { label: 'ABS', density: 1.04 },
-  Tpu: { label: 'TPU', density: 1.21 },
+  Pla: { label: 'PLA', density: materials[0].density },
+  Petg: { label: 'PETG', density: materials[1].density },
+  Abs: { label: 'ABS', density: materials[2].density },
+  Asa: { label: 'ASA', density: materials[3].density },
+  Tpu: { label: 'TPU', density: materials[4].density },
+  Nylon: { label: 'PA / Nylon', density: materials[5].density },
+  Pc: { label: 'Polycarbonate / PC', density: materials[6].density },
+  Pp: { label: 'Polypropylene / PP', density: materials[7].density },
   Custom: { label: 'Custom density', density: 1.24 },
 } as const;
 

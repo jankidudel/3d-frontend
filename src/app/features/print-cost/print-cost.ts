@@ -10,17 +10,15 @@ export const COST_CURRENCY_OPTIONS = [
 export type CostCurrency = (typeof COST_CURRENCY_OPTIONS)[number]['value'];
 
 export const DEFAULT_ELECTRICITY_PRICE_PER_KWH = 0.3;
-export type CostMaterial = 'pla' | 'petg' | 'abs' | 'tpu' | 'custom';
+import { materials, MaterialId } from '../materials/material-catalogue';
+export type CostMaterial = MaterialId | 'custom';
 
 export const MATERIAL_DENSITIES: Record<
   Exclude<CostMaterial, 'custom'>,
   number
-> = {
-  pla: 1.24,
-  petg: 1.27,
-  abs: 1.04,
-  tpu: 1.21,
-};
+> = Object.fromEntries(
+  materials.map((material) => [material.id, material.density]),
+) as Record<Exclude<CostMaterial, 'custom'>, number>;
 export interface PrintCostInputs {
   filamentWeightGrams: number;
   spoolWeightGrams: number;

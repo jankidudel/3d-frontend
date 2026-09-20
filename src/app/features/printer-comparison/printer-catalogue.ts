@@ -64,7 +64,7 @@ const a1Source: SourceReference = {
 export const printers: readonly PrinterRecord[] = [
   {
     id: 'bambu-lab-a1-mini',
-    slug: 'bambu-lab-a1-mini',
+    slug: PrinterSlug.BambuLabA1Mini,
     displayName: 'Bambu Lab A1 Mini',
     status: PrinterStatus.Current,
     bestFor: 'small PLA, PETG and TPU projects where footprint matters',
@@ -105,7 +105,7 @@ export const printers: readonly PrinterRecord[] = [
   },
   {
     id: 'bambu-lab-a1',
-    slug: 'bambu-lab-a1',
+    slug: PrinterSlug.BambuLabA1,
     displayName: 'Bambu Lab A1',
     status: PrinterStatus.Current,
     bestFor: 'larger open-frame PLA, PETG and TPU projects with simple setup',
@@ -137,7 +137,7 @@ export const printers: readonly PrinterRecord[] = [
   },
   {
     id: 'bambu-lab-p1p',
-    slug: 'bambu-lab-p1p',
+    slug: PrinterSlug.BambuLabP1P,
     displayName: 'Bambu Lab P1P',
     status: PrinterStatus.Discontinued,
     bestFor: 'owners of the older open-frame CoreXY platform',
@@ -170,7 +170,7 @@ export const printers: readonly PrinterRecord[] = [
   },
   {
     id: 'bambu-lab-p1s',
-    slug: 'bambu-lab-p1s',
+    slug: PrinterSlug.BambuLabP1S,
     displayName: 'Bambu Lab P1S',
     status: PrinterStatus.Current,
     bestFor: 'enclosed CoreXY printing and access to a mature AMS ecosystem',
@@ -202,7 +202,7 @@ export const printers: readonly PrinterRecord[] = [
   },
   {
     id: 'bambu-lab-p2s',
-    slug: 'p2s',
+    slug: PrinterSlug.BambuLabP2S,
     displayName: 'Bambu Lab P2S',
     status: PrinterStatus.Current,
     bestFor:
@@ -387,3 +387,4 @@ export function printerById(id: string): PrinterRecord {
   }
   return printer;
 }
+import { PrinterSlug } from '../../core/seo/public-routes';

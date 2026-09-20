@@ -1,4 +1,8 @@
 import { printerById, PrinterRecord } from './printer-catalogue';
+import {
+  PrinterComparisonSlug,
+  PublicRoutePathValue as PublicRoutePath,
+} from '../../core/seo/public-routes';
 
 export interface CuratedComparison {
   readonly slug: string;
@@ -20,7 +24,7 @@ const create = (comparison: CuratedComparison) => comparison;
 
 export const curatedComparisons: readonly CuratedComparison[] = [
   create({
-    slug: 'bambu-lab-p1s-vs-p2s',
+    slug: PrinterComparisonSlug.BambuLabP1SVsP2S,
     leftId: 'bambu-lab-p1s',
     rightId: 'bambu-lab-p2s',
     title: 'Bambu Lab P1S vs P2S: Differences and Buying Advice',
@@ -58,7 +62,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
     ],
   }),
   create({
-    slug: 'bambu-lab-a1-vs-p2s',
+    slug: PrinterComparisonSlug.BambuLabA1VsP2S,
     leftId: 'bambu-lab-a1',
     rightId: 'bambu-lab-p2s',
     title: 'Bambu Lab A1 vs P2S: Open-Frame Value or Enclosed CoreXY?',
@@ -90,7 +94,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
     ],
   }),
   create({
-    slug: 'bambu-lab-a1-vs-a1-mini',
+    slug: PrinterComparisonSlug.BambuLabA1VsA1Mini,
     leftId: 'bambu-lab-a1',
     rightId: 'bambu-lab-a1-mini',
     title: 'Bambu Lab A1 vs A1 Mini: Which Is Right for You?',
@@ -122,7 +126,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
     ],
   }),
   create({
-    slug: 'bambu-lab-p1s-vs-a1',
+    slug: PrinterComparisonSlug.BambuLabP1SVsA1,
     leftId: 'bambu-lab-p1s',
     rightId: 'bambu-lab-a1',
     title: 'Bambu Lab P1S vs A1: Enclosure or Open-Frame Value?',
@@ -154,7 +158,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
     ],
   }),
   create({
-    slug: 'bambu-lab-p1p-vs-p1s',
+    slug: PrinterComparisonSlug.BambuLabP1PVsP1S,
     leftId: 'bambu-lab-p1p',
     rightId: 'bambu-lab-p1s',
     title: 'Bambu Lab P1P vs P1S: Is the Enclosure Worth It?',
@@ -187,7 +191,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
   }),
   ...[
     [
-      'bambu-lab-x1-carbon-vs-p2s',
+      PrinterComparisonSlug.BambuLabX1CarbonVsP2S,
       'bambu-lab-x1-carbon',
       'bambu-lab-p2s',
       'Bambu Lab X1 Carbon vs P2S: Premium Platform or Newer P-Series?',
@@ -196,7 +200,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
       'you prefer the newer P-series interface and its bundle is a closer match',
     ],
     [
-      'prusa-core-one-vs-bambu-lab-p1s',
+      PrinterComparisonSlug.PrusaCoreOneVsBambuLabP1S,
       'prusa-core-one',
       'bambu-lab-p1s',
       'Original Prusa CORE One vs Bambu Lab P1S: Enclosed CoreXY Choices',
@@ -205,7 +209,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
       'you want the P1S AMS ecosystem and its 256 mm cube fits your work',
     ],
     [
-      'prusa-mk4s-vs-bambu-lab-a1',
+      PrinterComparisonSlug.PrusaMk4SVsBambuLabA1,
       'prusa-mk4s',
       'bambu-lab-a1',
       'Original Prusa MK4S vs Bambu Lab A1: Open-Frame Printer Choices',
@@ -214,7 +218,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
       'a 256 mm cube and AMS lite option better fit your projects',
     ],
     [
-      'creality-k1c-vs-bambu-lab-p1s',
+      PrinterComparisonSlug.CrealityK1CVsBambuLabP1S,
       'creality-k1c',
       'bambu-lab-p1s',
       'Creality K1C vs Bambu Lab P1S: Compact or Larger Enclosed CoreXY?',
@@ -223,7 +227,7 @@ export const curatedComparisons: readonly CuratedComparison[] = [
       'you need the larger 256 mm cube and Bambu AMS ecosystem',
     ],
     [
-      'elegoo-neptune-4-plus-vs-bambu-lab-a1',
+      PrinterComparisonSlug.ElegooNeptune4PlusVsBambuLabA1,
       'elegoo-neptune-4-plus',
       'bambu-lab-a1',
       'Elegoo Neptune 4 Plus vs Bambu Lab A1: Large Format or 256 mm Cube?',
@@ -263,7 +267,7 @@ export const curatedComparisonsBySlug = new Map(
 );
 
 export const curatedComparisonPaths = curatedComparisons.map(
-  (comparison) => `compare/${comparison.slug}`,
+  (comparison) => `${PublicRoutePath.Compare}/${comparison.slug}`,
 );
 
 export function comparisonPrinters(

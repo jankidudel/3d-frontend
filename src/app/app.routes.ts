@@ -4,8 +4,45 @@ import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-route
 import { guideCanMatch } from './features/guides/guide-route';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 import { printers } from './features/printer-comparison/printer-catalogue';
+import { materials } from './features/materials/material-catalogue';
+import { materialComparisonPaths } from './features/materials/material-comparisons';
 
 const breadcrumbRoutes: Routes = [
+  {
+    path: PublicRoutePath.Materials,
+    loadComponent: () =>
+      import('./features/materials/material-pages').then(
+        (m) => m.MaterialHubPage,
+      ),
+  },
+  ...materials.map((material) => ({
+    path: `${PublicRoutePath.Materials}/${material.slug}`,
+    loadComponent: () =>
+      import('./features/materials/material-pages').then(
+        (m) => m.MaterialDetailPage,
+      ),
+  })),
+  {
+    path: PublicRoutePath.MaterialSelector,
+    loadComponent: () =>
+      import('./features/materials/material-tools').then(
+        (m) => m.MaterialSelectorPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.CompareMaterials,
+    loadComponent: () =>
+      import('./features/materials/material-tools').then(
+        (m) => m.MaterialComparisonPage,
+      ),
+  },
+  ...materialComparisonPaths.map((path) => ({
+    path,
+    loadComponent: () =>
+      import('./features/materials/material-pages').then(
+        (m) => m.MaterialComparisonDetailPage,
+      ),
+  })),
   {
     path: PublicRoutePath.PrinterFitChecker,
     loadComponent: () =>
@@ -23,7 +60,7 @@ const breadcrumbRoutes: Routes = [
   ...printers
     .filter((printer) => printer.published !== false)
     .map((printer) => ({
-      path: `3d-printers/${printer.slug}`,
+      path: `${PublicRoutePath.Printers}/${printer.slug}`,
       loadComponent: () =>
         import('./features/printer-comparison/printer-pages').then(
           (m) => m.PrinterDetailPage,

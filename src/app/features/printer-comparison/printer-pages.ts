@@ -4,6 +4,7 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { curatedComparisons } from './comparison-catalogue';
 import { printers, printersBySlug } from './printer-catalogue';
+import { compatibilityFor, materials } from '../materials/material-catalogue';
 
 @Component({
   selector: 'app-printer-hub-page',
@@ -81,6 +82,24 @@ export class PrinterHubPage {
       <strong>Editorial basis:</strong> specification research, not a hands-on
       review.
     </p>
+    <section>
+      <h2>Material compatibility guidance</h2>
+      <p>
+        These are conservative, evidence-led starting points. They do not
+        promise compatibility with every formulation, filled variant or spool.
+      </p>
+      <ul>
+        @for (material of materialCompatibility(); track material.id) {
+          <li>
+            <a [routerLink]="['/3d-printing-materials', material.slug]">{{
+              material.displayName
+            }}</a>
+            - {{ material.verdict }}: {{ material.reason }}
+          </li>
+        }
+      </ul>
+      <a [routerLink]="routeUrl.MaterialSelector">Use the material selector</a>
+    </section>
     <section>
       <h2>Key specifications</h2>
       <table>
@@ -205,6 +224,18 @@ export class PrinterDetailPage {
         comparison.leftId === this.printer().id ||
         comparison.rightId === this.printer().id,
     ),
+  );
+  readonly materialCompatibility = computed(() =>
+    materials.map((material) => {
+      const result = compatibilityFor(this.printer(), material);
+      return {
+        id: material.id,
+        slug: material.slug,
+        displayName: material.displayName,
+        verdict: result.verdict,
+        reason: result.reasons[0],
+      };
+    }),
   );
   constructor() {
     const printer = this.printer();
