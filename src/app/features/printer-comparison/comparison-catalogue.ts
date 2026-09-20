@@ -185,6 +185,77 @@ export const curatedComparisons: readonly CuratedComparison[] = [
       },
     ],
   }),
+  ...[
+    [
+      'bambu-lab-x1-carbon-vs-p2s',
+      'bambu-lab-x1-carbon',
+      'bambu-lab-p2s',
+      'Bambu Lab X1 Carbon vs P2S: Premium Platform or Newer P-Series?',
+      'Compare Bambu Lab X1 Carbon and P2S for buyers weighing premium sensors, bundle price and current P-series workflow.',
+      'you value the X1 Carbon configuration and its current bundle fits your budget',
+      'you prefer the newer P-series interface and its bundle is a closer match',
+    ],
+    [
+      'prusa-core-one-vs-bambu-lab-p1s',
+      'prusa-core-one',
+      'bambu-lab-p1s',
+      'Original Prusa CORE One vs Bambu Lab P1S: Enclosed CoreXY Choices',
+      'Compare two enclosed CoreXY printers by build volume, ecosystem, service approach and current price context.',
+      'you prefer the Prusa ecosystem and its build shape fits your models',
+      'you want the P1S AMS ecosystem and its 256 mm cube fits your work',
+    ],
+    [
+      'prusa-mk4s-vs-bambu-lab-a1',
+      'prusa-mk4s',
+      'bambu-lab-a1',
+      'Original Prusa MK4S vs Bambu Lab A1: Open-Frame Printer Choices',
+      'Compare open-frame Prusa MK4S and Bambu Lab A1 specifications, workflow and build-volume trade-offs.',
+      'a repairable Prusa workflow is your priority',
+      'a 256 mm cube and AMS lite option better fit your projects',
+    ],
+    [
+      'creality-k1c-vs-bambu-lab-p1s',
+      'creality-k1c',
+      'bambu-lab-p1s',
+      'Creality K1C vs Bambu Lab P1S: Compact or Larger Enclosed CoreXY?',
+      'Compare Creality K1C and Bambu Lab P1S for build volume, enclosure and current accessory ecosystem context.',
+      '220 mm square capacity is sufficient and its current price matters',
+      'you need the larger 256 mm cube and Bambu AMS ecosystem',
+    ],
+    [
+      'elegoo-neptune-4-plus-vs-bambu-lab-a1',
+      'elegoo-neptune-4-plus',
+      'bambu-lab-a1',
+      'Elegoo Neptune 4 Plus vs Bambu Lab A1: Large Format or 256 mm Cube?',
+      'Compare a larger open-frame build volume with the Bambu Lab A1 workflow and nominal capacity.',
+      'you need the Neptune 4 Plus 320 x 320 x 385 mm build volume',
+      '256 mm cube capacity is enough and the A1 workflow suits your setup',
+    ],
+  ].map(
+    ([slug, leftId, rightId, title, description, chooseLeft, chooseRight]) =>
+      create({
+        slug: slug as string,
+        leftId: leftId as string,
+        rightId: rightId as string,
+        title: title as string,
+        description: description as string,
+        verdict:
+          'Neither printer is a universal winner. Match the stated build volume, enclosure, material guidance, accessory ecosystem and current like-for-like bundle price to the jobs you actually print.',
+        chooseLeftIf: [chooseLeft as string],
+        chooseRightIf: [chooseRight as string],
+        analysis: [
+          'Build volume is a hard constraint: check the longest dimension of your model with the Fit Checker before treating a smaller machine as interchangeable.',
+          'Maximum speed figures are manufacturer claims, not InspectMesh benchmark results. Estimate cost from the sliced job, material and waste rather than a headline speed.',
+        ],
+        faq: [
+          {
+            question: 'Which printer is better?',
+            answer:
+              'There is no universal winner. Compare the published specifications, current price and your intended materials and model sizes.',
+          },
+        ],
+      }),
+  ),
 ];
 
 export const curatedComparisonsBySlug = new Map(

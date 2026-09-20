@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { guideIndexGroups } from './generated/guides.generated';
+import { filterGuideGroups } from './guide-search';
 
 @Component({
   selector: 'app-guides-page',
@@ -9,7 +10,16 @@ import { guideIndexGroups } from './generated/guides.generated';
   styleUrl: './guides-page.scss',
 })
 export class GuidesPage {
-  protected readonly guideGroups = guideIndexGroups;
+  protected readonly query = signal('');
+  protected readonly guideGroups = computed(() =>
+    filterGuideGroups(guideIndexGroups, this.query()),
+  );
+  protected readonly hasSearchQuery = computed(
+    () => this.query().trim() !== '',
+  );
+  protected readonly resultCount = computed(() =>
+    this.guideGroups().reduce((count, group) => count + group.guides.length, 0),
+  );
   protected readonly routeUrl = PublicRouteUrl;
   private readonly seo = inject(SeoService);
 
@@ -20,5 +30,13 @@ export class GuidesPage {
         'Practical guides for checking, repairing and preparing STL files for 3D printing.',
       path: PublicRouteUrl.Guides,
     });
+  }
+
+  protected setQuery(event: Event): void {
+    this.query.set((event.target as HTMLInputElement).value);
+  }
+
+  protected clearQuery(): void {
+    this.query.set('');
   }
 }

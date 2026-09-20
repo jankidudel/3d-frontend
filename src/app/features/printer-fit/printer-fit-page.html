@@ -1,0 +1,151 @@
+<main class="page tool-page printer-fit-page">
+  <p class="eyebrow">Local file analysis</p>
+  <h1>3D Printer Fit Checker</h1>
+  <p class="lead">
+    Check whether an STL or 3MF bounding box fits a selected printer, with
+    clearance, right-angle rotation and scale context.
+  </p>
+  <section class="card" aria-labelledby="file-title">
+    <h2 id="file-title">Choose an STL or 3MF file</h2>
+    <p>Files stay in this browser. They are not uploaded by this checker.</p>
+    <label class="field"
+      ><span>3D model file</span
+      ><input type="file" accept=".stl,.3mf" (change)="chooseFile($event)"
+    /></label>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (progress()) {
+      <p role="status">{{ progress() }}</p>
+    }
+  </section>
+  <section class="card" aria-labelledby="printer-title">
+    <h2 id="printer-title">Printer and clearance</h2>
+    <label class="field"
+      ><span>Named printer</span
+      ><select [value]="selectedPrinterId()" (change)="setPrinter($event)">
+        @for (printer of printers; track printer.id) {
+          <option [value]="printer.id">
+            {{ printer.displayName }} -
+            {{ printer.buildVolumeMm.join(' x ') }} mm
+          </option>
+        }
+      </select></label
+    >
+    <label class="field"
+      ><span>Safety margin per axis (mm)</span
+      ><input
+        type="number"
+        min="0"
+        step="0.1"
+        [value]="margin()"
+        (input)="setMargin($event)"
+    /></label>
+    <label class="field"
+      ><span>Orientation check</span
+      ><select [value]="orientationMode()" (change)="setOrientation($event)">
+        <option value="automatic">Automatic right-angle search</option>
+        <option value="current">Current orientation only</option>
+      </select></label
+    >
+    <details>
+      <summary>Use custom build volume</summary>
+      <p>
+        Replace the selected nominal volume when your slicer or manufacturer
+        specifies a smaller usable region.
+      </p>
+      <div class="calculator-fields">
+        @for (axis of ['width', 'height', 'depth']; track axis) {
+          <label class="field"
+            ><span>{{ axis }} (mm)</span
+            ><input
+              type="number"
+              min="0"
+              step="any"
+              (input)="setCustom(axis, $event)"
+          /></label>
+        }
+      </div>
+      <button type="button" class="text-button" (click)="clearCustom()">
+        Use selected printer again
+      </button>
+    </details>
+  </section>
+  @if (fileKind() === 'stl') {
+    <section class="card">
+      <label class="field"
+        ><span>STL design unit</span
+        ><select [value]="stlUnit()" (change)="setStlUnit($event)">
+          <option value="mm">Millimetres</option>
+          <option value="cm">Centimetres</option>
+          <option value="m">Metres</option>
+          <option value="in">Inches</option>
+        </select></label
+      >
+      <p>
+        STL coordinates have no declared unit. Confirm the unit used by the
+        model author.
+      </p>
+    </section>
+  }
+  @if (assessment(); as result) {
+    <section class="card tool-result" aria-live="polite">
+      <h2>{{ result.verdict }}</h2>
+      <p>
+        <strong>Model:</strong> {{ format(resolvedDimensions()!.width) }} x
+        {{ format(resolvedDimensions()!.height) }} x
+        {{ format(resolvedDimensions()!.depth) }} mm.
+        <strong>Effective build volume:</strong>
+        {{ format(result.effectiveVolume.width) }} x
+        {{ format(result.effectiveVolume.height) }} x
+        {{ format(result.effectiveVolume.depth) }} mm.
+      </p>
+      <p>
+        <strong>Best tested right-angle orientation:</strong> current
+        {{ result.orientation.axisSources.width }} to X,
+        {{ result.orientation.axisSources.height }} to Y and
+        {{ result.orientation.axisSources.depth }} to Z.
+      </p>
+      <p>
+        <strong>Clearance:</strong> X
+        {{ format(result.orientation.clearance.width) }} mm, Y
+        {{ format(result.orientation.clearance.height) }} mm, Z
+        {{ format(result.orientation.clearance.depth) }} mm.
+        <strong>Limiting axis:</strong>
+        {{ axisLabel(result.orientation.limitingAxes[0] ?? 'width') }}.
+      </p>
+      <p>
+        <strong>Maximum uniform fit scale:</strong>
+        {{ format(result.orientation.fit.maximumScalePercentage) }}%.
+        Recommended print scale is capped at
+        {{ format(result.recommendedScalePercentage) }}%.
+      </p>
+      <p>
+        <a [routerLink]="['/3d-printers', selectedPrinter().slug]"
+          >View {{ selectedPrinter().displayName }} specifications</a
+        >
+        · <a [routerLink]="routeUrl.PrintCostCalculator">Estimate print cost</a>
+      </p>
+      <p class="disclaimer">
+        This is a bounding-box check, not a slicer guarantee. Leave room for
+        brims, skirts, supports, purge towers, toolhead or gantry limits, bed
+        adhesion and slicer placement rules.
+      </p>
+    </section>
+  }
+  <section class="content">
+    <h2>How fit is calculated</h2>
+    <p>
+      The checker compares resolved millimetre dimensions with the selected
+      usable build volume after subtracting your margin. Automatic mode tests
+      only axis-aligned, right-angle permutations; it does not claim
+      arbitrary-angle optimisation.
+    </p>
+    <h2>Why a slicer can still reject a model</h2>
+    <p>
+      Nominal build volume can differ from the usable region. Multi-colour purge
+      towers, support space, sequential-print clearance and manufacturer
+      exclusions can require more room than a bounding box.
+    </p>
+  </section>
+</main>

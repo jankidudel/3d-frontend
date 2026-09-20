@@ -3,8 +3,39 @@ import { BreadcrumbPageLayout } from './core/components/breadcrumb-page-layout/b
 import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
 import { guideCanMatch } from './features/guides/guide-route';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
+import { printers } from './features/printer-comparison/printer-catalogue';
 
 const breadcrumbRoutes: Routes = [
+  {
+    path: PublicRoutePath.PrinterFitChecker,
+    loadComponent: () =>
+      import('./features/printer-fit/printer-fit-page').then(
+        (m) => m.PrinterFitPage,
+      ),
+  },
+  {
+    path: PublicRoutePath.Printers,
+    loadComponent: () =>
+      import('./features/printer-comparison/printer-pages').then(
+        (m) => m.PrinterHubPage,
+      ),
+  },
+  ...printers
+    .filter((printer) => printer.published !== false)
+    .map((printer) => ({
+      path: `3d-printers/${printer.slug}`,
+      loadComponent: () =>
+        import('./features/printer-comparison/printer-pages').then(
+          (m) => m.PrinterDetailPage,
+        ),
+    })),
+  {
+    path: '3d-printers/review-draft',
+    loadComponent: () =>
+      import('./features/printer-comparison/printer-review-draft-page').then(
+        (m) => m.PrinterReviewDraftPage,
+      ),
+  },
   {
     path: PublicRoutePath.Compare3dPrinters,
     loadComponent: () =>

@@ -38,6 +38,8 @@ describe('App', () => {
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/3d-printer-fit-checker',
+      '/3d-printers',
       '/compare-3d-printers',
       '/3d-print-cost-calculator',
       '/3d-printing-price-calculator',
@@ -99,6 +101,8 @@ describe('App', () => {
         link.getAttribute('href'),
       ]),
     ).toEqual([
+      ['3D Printer Fit Checker', '/3d-printer-fit-checker'],
+      ['3D Printers', '/3d-printers'],
       ['Compare 3D Printers', '/compare-3d-printers'],
       ['3D Print Cost Calculator', '/3d-print-cost-calculator'],
       ['3D Printing Price Calculator', '/3d-printing-price-calculator'],
@@ -146,6 +150,8 @@ describe('App', () => {
       fixture.nativeElement.querySelectorAll('#tools-menu a'),
     ) as HTMLAnchorElement[];
     expect(links.map((link) => link.textContent?.trim())).toEqual([
+      '3D Printer Fit Checker',
+      '3D Printers',
       'Compare 3D Printers',
       '3D Print Cost Calculator',
       '3D Printing Price Calculator',
@@ -188,6 +194,8 @@ describe('App', () => {
       '3MF to STL Converter',
     ]);
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/3d-printer-fit-checker',
+      '/3d-printers',
       '/compare-3d-printers',
       '/3d-print-cost-calculator',
       '/3d-printing-price-calculator',

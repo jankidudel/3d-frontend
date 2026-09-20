@@ -5,6 +5,15 @@ export const PrinterStatus = {
 
 export type PrinterStatus = (typeof PrinterStatus)[keyof typeof PrinterStatus];
 
+export const PrinterEditorialState = {
+  SpecResearch: 'spec_research',
+  EditorialComparison: 'editorial_comparison',
+  HandsOnReview: 'hands_on_review',
+} as const;
+
+export type PrinterEditorialState =
+  (typeof PrinterEditorialState)[keyof typeof PrinterEditorialState];
+
 export interface SourceReference {
   readonly label: string;
   readonly url: string;
@@ -32,6 +41,11 @@ export interface PrinterRecord {
   readonly officialProductUrl: string;
   readonly sources: readonly SourceReference[];
   readonly lastVerified: string;
+  readonly published?: boolean;
+  readonly editorialState?: PrinterEditorialState;
+  readonly summary?: string;
+  readonly strengths?: readonly string[];
+  readonly limitations?: readonly string[];
 }
 
 const verified = '2026-09-20';
@@ -76,6 +90,18 @@ export const printers: readonly PrinterRecord[] = [
       },
     ],
     lastVerified: verified,
+    published: true,
+    editorialState: PrinterEditorialState.SpecResearch,
+    summary:
+      'A compact open-frame printer with a 180 mm cube build volume and optional AMS lite multicolour workflow.',
+    strengths: [
+      'Small footprint for a desktop FDM printer',
+      'Optional four-colour AMS lite workflow',
+    ],
+    limitations: [
+      '180 mm build volume limits larger parts',
+      'Open frame is not intended for enclosure-dependent materials',
+    ],
   },
   {
     id: 'bambu-lab-a1',
@@ -99,6 +125,15 @@ export const printers: readonly PrinterRecord[] = [
     officialProductUrl: `${bambuStore}/products/a1`,
     sources: [a1Source],
     lastVerified: verified,
+    published: true,
+    editorialState: PrinterEditorialState.SpecResearch,
+    summary:
+      'An open-frame 256 mm cube printer aimed at common materials and simple multicolour printing.',
+    strengths: ['256 mm cube build volume', 'Optional AMS lite support'],
+    limitations: [
+      'Open frame limits temperature control',
+      'AMS lite needs additional workspace',
+    ],
   },
   {
     id: 'bambu-lab-p1p',
@@ -131,6 +166,7 @@ export const printers: readonly PrinterRecord[] = [
       },
     ],
     lastVerified: verified,
+    published: false,
   },
   {
     id: 'bambu-lab-p1s',
@@ -154,6 +190,15 @@ export const printers: readonly PrinterRecord[] = [
     officialProductUrl: `${bambuStore}/collections/3d-printer/products/p1s`,
     sources: [p1Source],
     lastVerified: verified,
+    published: true,
+    editorialState: PrinterEditorialState.SpecResearch,
+    summary:
+      'An enclosed 256 mm CoreXY printer for users who need a controlled printing environment and AMS ecosystem.',
+    strengths: ['Enclosed chamber', 'Current AMS compatibility'],
+    limitations: [
+      'Larger footprint than open-frame alternatives',
+      'Accessory and bundle costs vary',
+    ],
   },
   {
     id: 'bambu-lab-p2s',
@@ -187,7 +232,145 @@ export const printers: readonly PrinterRecord[] = [
       },
     ],
     lastVerified: verified,
+    published: true,
+    editorialState: PrinterEditorialState.SpecResearch,
+    summary:
+      'A current enclosed P-series model with a 256 mm cube build volume and newer automation features.',
+    strengths: [
+      'Enclosed 256 mm cube platform',
+      'Higher stated bed-temperature limit than P1S',
+    ],
+    limitations: [
+      'Pricing and bundles vary by region',
+      'Build volume is unchanged from P1S',
+    ],
   },
+  ...[
+    [
+      'bambu-lab-x1-carbon',
+      'bambu-lab-x1-carbon',
+      'Bambu Lab X1 Carbon',
+      [256, 256, 256],
+      true,
+      1449,
+      'Premium enclosed CoreXY printer with AMS-ready multicolour workflow.',
+      'https://us.store.bambulab.com/products/x1-carbon',
+      'For users who value its enclosed platform, sensors and established AMS workflow.',
+    ],
+    [
+      'prusa-core-one',
+      'prusa-core-one',
+      'Original Prusa CORE One',
+      [250, 220, 270],
+      true,
+      1199,
+      'Enclosed CoreXY printer from Prusa with a distinctive 250 x 220 x 270 mm build volume.',
+      'https://www.prusa3d.com/product/original-prusa-core-one/',
+      'For makers who prefer Prusa hardware, serviceability and an enclosed CoreXY layout.',
+    ],
+    [
+      'prusa-mk4s',
+      'prusa-mk4s',
+      'Original Prusa MK4S',
+      [250, 210, 220],
+      false,
+      799,
+      'Open-frame Prusa bed-slinger with a 250 x 210 x 220 mm build volume.',
+      'https://www.prusa3d.com/product/original-prusa-mk4s-3d-printer-kit/',
+      'For users who value a documented, repairable open-frame Prusa workflow.',
+    ],
+    [
+      'creality-k1c',
+      'creality-k1c',
+      'Creality K1C',
+      [220, 220, 250],
+      true,
+      549,
+      'Enclosed Creality CoreXY model with a 220 x 220 x 250 mm stated build volume.',
+      'https://store.creality.com/products/creality-k1c-3d-printer',
+      'For a compact enclosed CoreXY option where its material guidance fits the job.',
+    ],
+    [
+      'elegoo-neptune-4-plus',
+      'elegoo-neptune-4-plus',
+      'Elegoo Neptune 4 Plus',
+      [320, 320, 385],
+      false,
+      429,
+      'Large-format open-frame Elegoo FDM printer with a 320 x 320 x 385 mm stated build volume.',
+      'https://us.elegoo.com/products/neptune-4-plus-fdm-3d-printer',
+      'For larger common-material parts when an open frame is acceptable.',
+    ],
+    [
+      'sovol-sv06-ace',
+      'sovol-sv06-ace',
+      'Sovol SV06 ACE',
+      [220, 220, 250],
+      false,
+      299,
+      'Value-focused open-frame FDM printer with a 220 x 220 x 250 mm stated build volume.',
+      'https://sovol3d.com/products/sovol-sv06-ace-3d-printer',
+      'For cost-conscious common-material printing with a conventional build size.',
+    ],
+  ].map(
+    ([
+      id,
+      slug,
+      displayName,
+      volume,
+      enclosed,
+      price,
+      summary,
+      url,
+      bestFor,
+    ]) => ({
+      id: id as string,
+      slug: slug as string,
+      displayName: displayName as string,
+      status: PrinterStatus.Current,
+      bestFor: bestFor as string,
+      buildVolumeMm: volume as unknown as readonly [number, number, number],
+      machineDimensionsMm: volume as unknown as readonly [
+        number,
+        number,
+        number,
+      ],
+      enclosed: enclosed as boolean,
+      maxNozzleTemperatureC: 300,
+      maxBedTemperatureC: 100,
+      maxClaimedSpeedMmS: 0,
+      maxClaimedAccelerationMmS2: 0,
+      camera:
+        'See the manufacturer documentation for the current configuration.',
+      multicolour:
+        'See the manufacturer documentation for compatible accessories.',
+      materials:
+        'Follow the printer and filament manufacturer guidance for the selected material and enclosure conditions.',
+      indicativeUsdPrice: price as number,
+      priceDescription:
+        'Indicative manufacturer-listing price observed; configurations and tax can vary.',
+      officialProductUrl: url as string,
+      sources: [
+        {
+          label: `${displayName} official product page`,
+          url: url as string,
+          lastVerified: verified,
+        },
+      ],
+      lastVerified: verified,
+      published: true,
+      editorialState: PrinterEditorialState.SpecResearch,
+      summary: summary as string,
+      strengths: [
+        'Published build-volume information',
+        'Official specification source recorded',
+      ],
+      limitations: [
+        'Maximum performance figures are not InspectMesh test results',
+        'Confirm bundle contents and current availability with the manufacturer',
+      ],
+    }),
+  ),
 ];
 
 export const printersById = new Map(

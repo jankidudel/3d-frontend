@@ -65,6 +65,7 @@ describe('HomePage', () => {
       '/3mf-triangle-counter',
       '/3mf-to-stl-converter',
       '/3mf-tools',
+      '/3d-printer-fit-checker',
       '/3d-print-orientation-planner',
       '/3d-print-bed-layout-planner',
       '/3d-print-tolerance-calculator',

@@ -20,6 +20,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
 - Prefer named constants for repeated domain and configuration values; do not hardcode them in production code. For string-literal domains, use the TypeScript value-plus-type pattern: `export const JobStatus = { Created: 'created' } as const; export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus];`.
+- Never declare a string-literal union for a domain state or repeat a domain-state literal in production code. Export a value-plus-type constant first, then use its named members in records, comparisons, and control flow.
 
 ## Writing Style
 

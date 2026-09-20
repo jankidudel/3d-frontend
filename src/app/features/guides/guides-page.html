@@ -5,14 +5,50 @@
     Learn how to check mesh health, diagnose common STL problems and prepare a
     model before slicing.
   </p>
-  @for (group of guideGroups; track group.id) {
+  <section class="guide-search" aria-labelledby="guide-search-title">
+    <h2 id="guide-search-title">Find a guide</h2>
+    <label class="field" for="guide-search-input">
+      <span>Search guides by topic or tool</span>
+      <input
+        id="guide-search-input"
+        type="search"
+        placeholder="For example: STL scale, 3MF units or wall thickness"
+        [value]="query()"
+        (input)="setQuery($event)"
+        aria-describedby="guide-search-status"
+      />
+    </label>
+    @if (hasSearchQuery()) {
+      <button type="button" class="text-button" (click)="clearQuery()">
+        Clear search
+      </button>
+    }
+    <p id="guide-search-status" class="guide-search-status" aria-live="polite">
+      @if (hasSearchQuery()) {
+        {{ resultCount() }} {{ resultCount() === 1 ? 'guide' : 'guides' }} found
+        for “{{ query() }}”.
+      } @else {
+        Search filters the guide list as you type.
+      }
+    </p>
+  </section>
+  @if (hasSearchQuery() && resultCount() === 0) {
+    <section class="guide-empty" aria-labelledby="guide-empty-title">
+      <h2 id="guide-empty-title">No matching guides</h2>
+      <p>
+        Try a broader term such as STL, 3MF, repair, scale, dimensions or print
+        preparation.
+      </p>
+    </section>
+  }
+  @for (group of guideGroups(); track group.id) {
     <section
       [attr.aria-labelledby]="
-        guideGroups.length > 1 ? 'guide-group-' + group.id : null
+        guideGroups().length > 1 ? 'guide-group-' + group.id : null
       "
-      [attr.aria-label]="guideGroups.length === 1 ? 'Guides' : null"
+      [attr.aria-label]="guideGroups().length === 1 ? 'Guides' : null"
     >
-      @if (guideGroups.length > 1) {
+      @if (guideGroups().length > 1) {
         <h2 [id]="'guide-group-' + group.id">{{ group.label }}</h2>
       }
       <ul class="guide-list">

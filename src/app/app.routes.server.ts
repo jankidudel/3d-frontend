@@ -2,11 +2,21 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
 import { guideSlugs } from './features/guides/generated/guide-route-data.generated';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
+import { printers } from './features/printer-comparison/printer-catalogue';
 
 export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.Home, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.AllTools, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Compare3dPrinters, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.PrinterFitChecker, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Printers, renderMode: RenderMode.Prerender },
+  ...printers
+    .filter((printer) => printer.published !== false)
+    .map((printer) => ({
+      path: `3d-printers/${printer.slug}`,
+      renderMode: RenderMode.Prerender as RenderMode.Prerender,
+    })),
+  { path: '3d-printers/review-draft', renderMode: RenderMode.Prerender },
   ...curatedComparisonPaths.map((path) => ({
     path,
     renderMode: RenderMode.Prerender as RenderMode.Prerender,

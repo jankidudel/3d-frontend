@@ -264,6 +264,14 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
     title: 'Planning and functional tools',
     tools: [
       {
+        icon: '▣',
+        title: '3D Printer Fit Checker',
+        description:
+          'Check an STL or 3MF bounding box against a named printer or custom build volume, with local unit, clearance, rotation and scale guidance.',
+        route: PublicRouteUrl.PrinterFitChecker,
+        cta: 'Check printer fit',
+      },
+      {
         icon: '↻',
         title: '3D Print Orientation Planner',
         description:

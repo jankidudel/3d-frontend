@@ -1,0 +1,93 @@
+.printer-fit-page > .card {
+  max-width: var(--tool-content-width);
+  margin-top: 1.25rem;
+  padding: var(--tool-card-padding);
+}
+
+.printer-fit-page .card > :first-child {
+  margin-top: 0;
+}
+
+.printer-fit-page .field {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 32rem;
+  margin: 1rem 0;
+}
+
+.printer-fit-page .field span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.printer-fit-page input:not([type='file']),
+.printer-fit-page select {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #89978d;
+  border-radius: 0.45rem;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.printer-fit-page input[type='file'] {
+  max-width: 100%;
+  color: var(--muted);
+}
+
+.printer-fit-page input[type='file']::file-selector-button {
+  min-height: 2.6rem;
+  margin-right: 0.7rem;
+  padding: 0.55rem 0.85rem;
+  border: 0;
+  border-radius: 0.45rem;
+  color: white;
+  background: var(--primary);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.printer-fit-page details {
+  max-width: 44rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.printer-fit-page summary {
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.printer-fit-page .calculator-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.printer-fit-page .text-button {
+  padding: 0.25rem 0;
+  border: 0;
+  color: var(--primary);
+  background: transparent;
+  font-weight: 750;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.printer-fit-page .error {
+  color: var(--error);
+  font-weight: 700;
+}
+
+.printer-fit-page .content {
+  margin-top: var(--tool-section-gap);
+}
+
+@media (max-width: 40rem) {
+  .printer-fit-page .calculator-fields {
+    grid-template-columns: 1fr;
+  }
+}

@@ -6,6 +6,61 @@
   margin-top: 3rem;
 }
 
+.guides-page .guide-search {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.guide-search h2,
+.guide-empty h2 {
+  margin-top: 0;
+}
+
+.guide-search .field {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 38rem;
+}
+
+.guide-search .field span {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+
+.guide-search input {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #89978d;
+  border-radius: 0.45rem;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.guide-search .text-button {
+  margin-top: 0.75rem;
+  padding: 0.25rem 0;
+  border: 0;
+  color: var(--primary);
+  background: transparent;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.guide-search-status {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+}
+
+.guides-page .guide-empty {
+  margin-top: 2rem;
+}
+
 .guide-list {
   display: grid;
   gap: 1rem;

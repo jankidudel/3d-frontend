@@ -54,6 +54,16 @@
               Planning &amp; calibration
             </h2>
             <app-menu-link
+              label="3D Printer Fit Checker"
+              [route]="routePath.PrinterFitChecker"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
+              label="3D Printers"
+              [route]="routePath.Printers"
+              (selected)="closeMenus()"
+            />
+            <app-menu-link
               label="Compare 3D Printers"
               [route]="routePath.Compare3dPrinters"
               (selected)="closeMenus()"
