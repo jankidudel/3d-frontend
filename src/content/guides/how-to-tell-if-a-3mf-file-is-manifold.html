@@ -18,6 +18,15 @@ faq:
   usually, one clear solid. This helps a slicer decide where the outside of the
   object ends and where printable material belongs.
 </p>
+<h2>Interpret the resolved build, not only a resource</h2>
+<p>
+  Check each build item after its transform is applied. Separate shells can be
+  intentional, but an edge shared by more than two faces, a T-junction or
+  overlapping solids can make inside and outside ambiguous. A manifold result is
+  useful topology evidence, not proof of wall thickness, printer fit or slicing.
+  Use the 3MF quality report to locate the affected object, then return to
+  source CAD when the intended join is unclear.
+</p>
 <p>
   A common non-manifold problem is an edge shared by more than two triangles.
   Other examples include overlapping shells, internal faces and parts that touch

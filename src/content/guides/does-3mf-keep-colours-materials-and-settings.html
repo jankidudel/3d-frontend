@@ -20,6 +20,37 @@ faq:
   their own project information, which may only be fully understood by that
   slicer or a compatible version.
 </p>
+<h2>Verify portability at the receiving application</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Information</th>
+      <th>What to verify</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Geometry and units</td>
+      <td>Resolved dimensions and object placement</td>
+    </tr>
+    <tr>
+      <td>Colours and materials</td>
+      <td>Whether both applications support the relevant property extension</td>
+    </tr>
+    <tr>
+      <td>Process settings</td>
+      <td>Whether the receiving slicer imports, maps or ignores them</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  3MF can carry richer information than STL, but a feature existing in a file
+  does not force every application to preserve or use it. Save an original,
+  inspect the receiving application's import report and preview, and check the
+  <a href="https://3mf.io/compatibility-matrix/">3MF compatibility matrix</a>
+  for self-reported support. Do not assume an imported profile is safe for a
+  different printer or material.
+</p>
 
 <h2>What a 3MF can retain</h2>
 <p>

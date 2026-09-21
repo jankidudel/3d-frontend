@@ -18,6 +18,13 @@ faq:
   describe the same triangle mesh. The difference is how the data is stored, not
   how detailed the model is.
 </p>
+<h2>Encoding does not change geometry</h2>
+<p>
+  Binary STL is usually smaller because it stores triangles compactly; ASCII is
+  readable text. Both can describe the same triangles, so binary conversion can
+  address storage or transfer friction without simplifying the model. Re-open
+  the converted file to verify it.
+</p>
 <p>
   An ASCII STL stores triangle information as readable text. A binary STL stores
   the same kind of data in a compact machine-readable format.

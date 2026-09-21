@@ -50,6 +50,15 @@
     >
       @if (guideGroups().length > 1) {
         <h2 [id]="'guide-group-' + group.id">{{ group.label }}</h2>
+        @if (group.description) {
+          <p>{{ group.description }}</p>
+        }
+        @if (group.pillar) {
+          <p>
+            Start with:
+            <a [href]="'/' + group.pillar">the cluster guide</a>.
+          </p>
+        }
       }
       <ul class="guide-list">
         @for (guide of group.guides; track guide.slug) {

@@ -18,6 +18,23 @@ faq:
   mesh errors. Start with a careful validation, make only safe edits, then
   validate the repaired package again.
 </p>
+<h2>Repair the resolved build, then verify what remains</h2>
+<p>
+  A 3MF package can contain reusable object resources, transforms and build
+  items. A mesh repair may address a geometry fault without preserving every
+  package feature in another application. Inspect the resolved build first, keep
+  the original package, and verify object count, placement, dimensions and any
+  material or process information that matters after saving. The 3MF Core
+  Specification distinguishes resources from the build items selected for
+  manufacture, so an object existing in a package is not by itself evidence that
+  it belongs in the final build.
+</p>
+<p>
+  Use the <a href="https://3mf.io/spec/">3MF Core Specification</a> for format
+  details, then rerun the 3MF quality and dimensions checks. If repair requires
+  inventing missing geometry or resolving overlapping design intent, return to
+  the source CAD rather than trusting an automatic result.
+</p>
 <p>
   <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> can
   identify which mesh, fit and sampled-thickness concerns need attention before

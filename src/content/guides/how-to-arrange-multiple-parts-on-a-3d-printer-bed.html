@@ -16,6 +16,32 @@ faq:
   the risk: a loose part, poor adhesion or a failed support can affect the whole
   batch.
 </p>
+<h2>A practical batch-layout workflow</h2>
+<ol>
+  <li>Confirm each part's orientation, support needs and footprint.</li>
+  <li>Leave clearance for brims, skirts, toolhead travel and part removal.</li>
+  <li>
+    Group parts with similar height and risk rather than simply filling every
+    gap.
+  </li>
+  <li>
+    Inspect the slicer preview for collisions, travel paths and cooling time.
+  </li>
+  <li>
+    Prefer smaller batches when a failed tall part would spoil several critical
+    pieces.
+  </li>
+</ol>
+<p>
+  Sequential printing needs extra caution: the toolhead and gantry must clear
+  every completed part, and the printer's own sequential-print limits are
+  authoritative. Multiple parts can improve throughput, but they also create a
+  shared failure domain. A compact test batch is often more useful than a fully
+  packed long run. Check individual size first with the
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >printer-fit guide</a
+  >.
+</p>
 <p>
   Use the
   <a href="{{ GuideSlug.Route3dPrintBedLayoutPlanner }}"

@@ -19,6 +19,13 @@ faq:
   unnecessary mesh data and can make a file harder for slicers and repair tools
   to interpret.
 </p>
+<h2>Do not confuse duplicates with overlaps</h2>
+<p>
+  An exact duplicate face can often be removed conservatively. Intersecting
+  shells or nearly coincident surfaces are a different geometry problem and may
+  need CAD correction. Run a quality check before and after cleanup, then
+  inspect the layer preview for unintended cavities or missing walls.
+</p>
 <p>
   A few duplicates may not stop a print. But when they appear alongside holes,
   flipped faces or non-manifold edges, they are worth removing before you rely

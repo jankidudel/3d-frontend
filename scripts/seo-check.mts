@@ -97,6 +97,7 @@ const publicRoutes = new Set([
   ...canonicalPublicRoutePaths.map((path) => `/${path}`),
   ...catalogue.guides.map((guide) => `/${guide.slug}`),
 ]);
+const removedGuideRoute = '/why-wont-my-stl-file-slice';
 const titles = new Map<string, string>();
 const descriptions = new Map<string, string>();
 for (const guide of catalogue.guides) {
@@ -229,6 +230,17 @@ for (const guide of catalogue.guides) {
       'Consider including InspectMesh in the title.',
     );
 }
+for (const [slug, source] of sourceBySlug) {
+  if (source === removedGuideRoute || slug === removedGuideRoute.slice(1)) {
+    report(
+      'ERROR',
+      source,
+      removedGuideRoute,
+      'removed-guide-content',
+      'Do not retain content for the permanently redirected guide route.',
+    );
+  }
+}
 if (!sourceOnly) {
   await checkGeneratedOutput();
 }
@@ -247,6 +259,33 @@ async function checkGeneratedOutput(): Promise<void> {
         `${failure.reason}; correct the link or canonical.`,
       );
     const sitemap = await readFile(resolve(root, 'public/sitemap.xml'), 'utf8');
+    const sitemapRoutes = new Set(
+      [
+        ...sitemap.matchAll(
+          /<loc>https:\/\/www\.inspectmesh\.com([^<]*)<\/loc>/g,
+        ),
+      ].map((match) => match[1] || '/'),
+    );
+    if (sitemapRoutes.has(removedGuideRoute)) {
+      report(
+        'ERROR',
+        'public/sitemap.xml',
+        removedGuideRoute,
+        'redirecting-sitemap-url',
+        'Sitemaps must contain the final canonical route, not a redirect.',
+      );
+    }
+    for (const sitemapRoute of sitemapRoutes) {
+      if (!publicRoutes.has(sitemapRoute)) {
+        report(
+          'ERROR',
+          'public/sitemap.xml',
+          sitemapRoute,
+          'noncanonical-sitemap-url',
+          'Remove URLs that do not map to a canonical generated public page.',
+        );
+      }
+    }
     const renderedTitles = new Map<string, string>();
     const renderedDescriptions = new Map<string, string>();
     for (const route of publicRoutes) {
@@ -278,8 +317,8 @@ async function checkGeneratedOutput(): Promise<void> {
           'canonical',
           'Render exactly one canonical URL.',
         );
-      if (!doc.querySelector('h1'))
-        report('ERROR', page.filePath, route, 'h1', 'Render one H1.');
+      if (doc.querySelectorAll('h1').length !== 1)
+        report('ERROR', page.filePath, route, 'h1', 'Render exactly one H1.');
       const title = doc.title.trim();
       const description = doc
         .querySelector('meta[name="description"]')

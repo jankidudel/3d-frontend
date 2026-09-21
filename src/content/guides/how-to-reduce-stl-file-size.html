@@ -18,6 +18,13 @@ faq:
   contain hundreds of thousands of triangles even when the final print cannot
   show that level of surface detail.
 </p>
+<h2>Choose lossless or lossy reduction</h2>
+<p>
+  Binary STL conversion can reduce bytes without changing triangles. Decimation
+  changes geometry and needs a copy plus before/after checks of dimensions,
+  silhouette and critical holes. Pick a reduction target based on the workflow
+  problem, not a universal triangle number.
+</p>
 <p>
   Reducing file size is not about making a model rougher for the sake of it. The
   aim is to remove detail your printer cannot reproduce while keeping the shape

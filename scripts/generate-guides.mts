@@ -13,6 +13,7 @@ import {
   guideGroups,
   guideRegistry,
 } from '../src/content/guides/guides.registry.ts';
+import { createGuideClusterIndex } from '../src/content/guides/guide-clusters.ts';
 import { PublicRoutePathValue } from '../src/app/core/seo/public-routes.ts';
 import {
   validateGuideRegistry,
@@ -178,10 +179,10 @@ const generated = [
   'export interface GuideFaq { readonly question: string; readonly answer: string; }',
   'export interface Guide { readonly title: string; readonly description: string; readonly slug: string; readonly heading: string; readonly eyebrow: string; readonly group: string; readonly order: number; readonly publishDate: string; readonly faqs: readonly GuideFaq[]; readonly html: string; }',
   'export interface GuideCard { readonly title: string; readonly description: string; readonly slug: string; readonly heading: string; }',
-  'export interface GuideIndexGroup { readonly id: string; readonly label: string; readonly guides: readonly GuideCard[]; }',
+  'export interface GuideIndexGroup { readonly id: string; readonly label: string; readonly description?: string; readonly pillar?: string; readonly guides: readonly GuideCard[]; }',
   `export const guides: readonly Guide[] = ${JSON.stringify(catalogue.guides, null, 2)};`,
   'export const guideBySlug: Readonly<Record<string, Guide>> = Object.fromEntries(guides.map((guide) => [guide.slug, guide]));',
-  `export const guideIndexGroups: readonly GuideIndexGroup[] = ${JSON.stringify(catalogue.guideIndexGroups, null, 2)};`,
+  `export const guideIndexGroups: readonly GuideIndexGroup[] = ${JSON.stringify(createGuideClusterIndex(catalogue.guides.map((guide) => ({ title: guide.title, description: guide.description, slug: guide.slug, heading: guide.heading }))), null, 2)};`,
   `export const relatedGuidesBySlug: Readonly<Record<string, readonly GuideCard[]>> = ${JSON.stringify(catalogue.relatedGuidesBySlug, null, 2)};`,
   '',
 ].join('\n');

@@ -55,6 +55,40 @@ faq:
   >
   for consistent whole-model axis error.
 </p>
+<h2>Diagnose before changing either value</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Symptom</th>
+      <th>Check first</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Every material under-extrudes similarly</td>
+      <td>Filament path, drive gear, nozzle and extruder calibration</td>
+    </tr>
+    <tr>
+      <td>One material shows thin walls</td>
+      <td>
+        Temperature, moisture, line-width preview and a material-specific flow
+        test
+      </td>
+    </tr>
+    <tr>
+      <td>Only corners or seams look wrong</td>
+      <td>Pressure/linear-advance behaviour, acceleration and cooling</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  E-steps describe commanded extruder travel; flow is a profile-level multiplier
+  used by the slicer. Do not use a flow multiplier to hide a mechanical feed
+  problem, and do not change firmware extruder calibration to correct one
+  unusual filament. Print a controlled single-wall or manufacturer-recommended
+  test, measure several positions, make a small documented adjustment, then
+  repeat.
+</p>
 <p>
   <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
     ><strong>Calculate a flow correction locally</strong></a

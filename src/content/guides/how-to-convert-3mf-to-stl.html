@@ -17,6 +17,15 @@ faq:
   Exporting a 3MF to STL can help with older or geometry-only workflows, but STL
   is a less complete container than the source 3MF.
 </p>
+<h2>Understand the information lost on export</h2>
+<p>
+  STL is a triangle mesh delivery format. A 3MF-to-STL export normally flattens
+  the selected resolved build to mesh geometry and cannot retain the package's
+  declared units, build-item structure, colours, material properties or slicer
+  configuration in STL. Confirm whether a multi-object build becomes separate
+  files or one combined mesh, then re-check dimensions, topology and the slicer
+  preview. Keep the original 3MF for future editing.
+</p>
 <h2>When an STL export helps</h2>
 <p>
   Some modelling, repair or legacy printing workflows accept STL more readily

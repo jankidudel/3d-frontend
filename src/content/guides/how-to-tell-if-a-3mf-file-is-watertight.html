@@ -18,6 +18,15 @@ faq:
   3D-printing terms, it gives the slicer a clearer closed boundary for
   determining the inside and outside of a part.
 </p>
+<h2>Read open edges in context</h2>
+<p>
+  An open boundary may indicate a missing surface, but intentional shells and
+  separate objects exist too. Check the resolved build and the intended role of
+  each shell before repairing it. Watertightness supports a closed-volume
+  interpretation; it does not establish that walls are thick enough, parts are
+  properly joined, or a slicer will generate the desired toolpath. Preserve the
+  original package and validate repaired geometry in the target slicer.
+</p>
 
 <p>
   3MF files can contain more than one object and can place objects repeatedly in

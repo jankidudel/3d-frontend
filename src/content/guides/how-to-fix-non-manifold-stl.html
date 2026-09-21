@@ -19,6 +19,14 @@ faq:
   <strong>non-manifold geometry</strong>: the mesh does not describe one clean,
   unambiguous surface with a usable inside and outside.
 </p>
+<h2>Identify the topology case first</h2>
+<p>
+  Edges used by more than two faces, disconnected shells, T-junctions and
+  internal overlaps need different remedies. Use the manifold result to find the
+  category, then prefer source-CAD correction when a repair would need to decide
+  which volume was intended. Re-check the saved copy instead of assuming a
+  slicer warning disappeared for the right reason.
+</p>
 <p class="lead">
   For most 3D-printing models, each edge should join exactly two triangles. An
   edge used by only one triangle is an open edge - a hole in the surface. An

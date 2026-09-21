@@ -19,6 +19,41 @@ faq:
   slicer. Keep the original file and work on a copy so that every change can be
   checked.
 </p>
+<h2>Choose the repair method by fault</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Finding</th>
+      <th>Usually safe next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Exact duplicate or degenerate faces</td>
+      <td>Conservative cleanup, then re-check</td>
+    </tr>
+    <tr>
+      <td>Inconsistent normals on a closed shell</td>
+      <td>Recalculate orientation and inspect the result</td>
+    </tr>
+    <tr>
+      <td>Small open boundary</td>
+      <td>Repair only when the intended surface is clear</td>
+    </tr>
+    <tr>
+      <td>Overlapping shells, self-intersections or missing features</td>
+      <td>Return to source CAD or specialist mesh editing</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Repair is not reconstruction. Keep the original, save a separately named copy,
+  make one deliberate operation, then run the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
+  inspect the slicer preview again. For a specific action, use the linked holes,
+  non-manifold, normals and duplicate-triangle guides rather than applying broad
+  automatic changes to an unfamiliar model.
+</p>
 
 <h2>Safe STL Repair in InspectMesh</h2>
 <p>

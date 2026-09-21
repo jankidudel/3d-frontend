@@ -18,6 +18,13 @@ faq:
   solid model, neighbouring triangles follow a consistent direction around the
   surface.
 </p>
+<h2>Know when recalculation is insufficient</h2>
+<p>
+  Recalculating normals can help a closed shell with inconsistent winding. It
+  cannot resolve overlapping solids, internal faces, open boundaries or missing
+  design intent. Inspect the repaired copy in a viewer and slicer, then return
+  to source CAD if the outside surface remains ambiguous.
+</p>
 <p>
   A flipped normal means one or more triangles point the opposite way. On a
   simple closed object, this may only cause odd shading in a viewer. In a more

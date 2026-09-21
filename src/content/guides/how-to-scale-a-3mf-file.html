@@ -18,6 +18,15 @@ faq:
   fit a smaller printer, make a test part easier to handle or correct an export
   that is obviously the wrong size.
 </p>
+<h2>Scale the placed build with its unit context</h2>
+<p>
+  Check the declared unit and the resolved dimensions before changing a 3MF. A
+  build may reuse objects with transforms, so scaling one resource is not always
+  the same as scaling every placed item. For a 150 mm target from a 100 mm
+  current dimension, the factor is 1.5; verify all axes and multi-object spacing
+  after the change. Scaling changes wall thickness, clearances and printer fit,
+  so re-run those checks and inspect the slicer preview.
+</p>
 <p>
   For functional parts, scaling needs care. A small percentage change can alter
   screw holes, snap fits, bearing seats and clearances enough to make a part

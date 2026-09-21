@@ -19,6 +19,39 @@ faq:
   are needed, how layers build up and which direction the printed part is
   strongest.
 </p>
+<h2>Make the trade-off explicit</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Priority</th>
+      <th>Orientation question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Surface finish</td>
+      <td>Which faces should avoid supports or stair-stepping?</td>
+    </tr>
+    <tr>
+      <td>Strength</td>
+      <td>How will layer direction relate to the likely load?</td>
+    </tr>
+    <tr>
+      <td>Reliability</td>
+      <td>Is the contact area stable and are overhangs supportable?</td>
+    </tr>
+    <tr>
+      <td>Fit</td>
+      <td>Does a rotation affect the printer envelope?</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  No automatic orientation is universally best. Use right-angle rotation to test
+  fit, but choose the final orientation in the slicer after checking support
+  contact, cooling, seams and the intended load. A model that fits the bed may
+  still be a poor orientation for strength or visible surfaces.
+</p>
 <p>
   The best orientation is usually a compromise between print quality, strength,
   speed and printer fit.

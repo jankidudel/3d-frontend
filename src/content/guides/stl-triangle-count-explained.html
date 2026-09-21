@@ -19,6 +19,13 @@ faq:
   can approximate curves and small details more smoothly, but they also make the
   file larger and can slow down editing, viewing and slicing.
 </p>
+<h2>Complexity is not file size or quality</h2>
+<p>
+  Triangle count describes mesh tessellation. A dense mesh can be useful for a
+  detailed curve but wasteful for a flat surface; a compact binary file can
+  still have many triangles. Use count to diagnose processing cost, then inspect
+  visual and dimensional damage if you simplify.
+</p>
 <p class="lead">
   There is no single ideal triangle count. The right level of detail depends on
   the model's physical size, the printer's resolution and the features you want

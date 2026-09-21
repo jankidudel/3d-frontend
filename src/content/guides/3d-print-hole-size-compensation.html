@@ -16,6 +16,26 @@ faq:
     ><strong>Calculate starting hole and pin dimensions</strong></a
   >
 </p>
+<h2>Separate a hole from a clearance decision</h2>
+<p>
+  A printed hole that measures undersize and two parts that bind are related but
+  different problems. Measure the printed feature with suitable calipers,
+  compare it with the CAD dimension, and test the intended pin or fastener
+  rather than assuming a nominal diameter is enough. For example, if a 10.00 mm
+  designed hole repeatedly measures 9.70 mm, the observed difference is 0.30 mm;
+  whether to change the hole, the mating pin, or the assembly clearance depends
+  on the fit you need. Validate a changed design with a small coupon before
+  changing an important part.
+</p>
+<p>
+  Use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >tolerance calculator</a
+  >
+  to document the selected clearance. Compensation is profile- and orientation-
+  specific, and it does not replace calibration, correct extrusion, or a slicer
+  preview.
+</p>
 <p>
   A hole designed at 10 mm does not always print as a clean 10 mm hole.
   Extrusion width, curved perimeters, cooling, shrinkage and feature orientation

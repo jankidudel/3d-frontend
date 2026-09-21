@@ -279,14 +279,6 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
-    slug: 'why-wont-my-stl-file-slice',
-    group: GuideGroupId.Stl,
-    order: 80,
-    enabled: true,
-    publishDate: '2026-09-05',
-    checkEditorialTargets: false,
-  },
-  {
     slug: 'how-to-repair-an-stl-file',
     group: GuideGroupId.Stl,
     order: 90,

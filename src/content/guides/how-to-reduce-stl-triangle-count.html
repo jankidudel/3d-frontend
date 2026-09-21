@@ -18,6 +18,13 @@ faq:
   heavy for a slicer. One common reason is a very high triangle count: the model
   surface contains far more tiny faces than the intended print can show.
 </p>
+<h2>Check for damage after decimation</h2>
+<p>
+  Reduce gradually and compare the areas that matter: small holes, text, mating
+  faces and curved silhouettes. Triangle count and file size are related but not
+  identical, especially for ASCII versus binary STL. Preserve the original and
+  validate a reduced copy before sending it to a slicer.
+</p>
 <p>
   Reducing triangles can make an STL smaller and easier to work with. However,
   it is not a harmless compression step. Triangle reduction simplifies the

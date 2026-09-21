@@ -32,6 +32,8 @@ export interface GuideCard {
 export interface GuideIndexGroup {
   readonly id: string;
   readonly label: string;
+  readonly description?: string;
+  readonly pillar?: string;
   readonly guides: readonly GuideCard[];
 }
 

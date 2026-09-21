@@ -18,6 +18,14 @@ faq:
   surface in a 3MF is approximated by triangles, so smoother or more detailed
   models usually have a higher count.
 </p>
+<h2>Count objects and the placed build separately</h2>
+<p>
+  A 3MF can reuse one object resource in several build items. Per-object
+  triangle count describes the resource; resolved-build count describes the
+  geometry placed for the job after item selection and transforms. High count is
+  a workflow cost, not a print-quality score. Simplify only a copy, then compare
+  silhouette, critical dimensions and the final build layout before slicing.
+</p>
 <p>
   A high count is not automatically a problem. A miniature, scan or organic
   sculpture may genuinely need many triangles. But an unnecessarily dense mesh

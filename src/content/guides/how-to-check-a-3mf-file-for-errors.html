@@ -18,6 +18,13 @@ faq:
   and transforms. Before slicing, check the final resolved print build rather
   than trusting the first mesh resource or a reassuring-looking file name.
 </p>
+<h2>Check the package and geometry separately</h2>
+<p>
+  Review declared units, build items and transforms alongside mesh findings. A
+  valid resource not referenced by the build may not be part of the job, while a
+  clean mesh can still be placed at the wrong scale. Use the focused manifold,
+  watertightness and wall-thickness checks for next actions.
+</p>
 <p>
   A file opening in a slicer is not proof that every mesh inside it is healthy.
   The slicer may quietly compensate for a problem, or it may create unexpected

@@ -78,6 +78,32 @@ faq:
   with STL or 3MF Print Preflight, then confirm placement and supports in the
   slicer.
 </p>
+<h2>Use a controlled calibration order</h2>
+<p>
+  Change one variable at a time and begin with the printer's mechanical
+  condition, extruder motion and temperature baseline before tuning flow,
+  pressure behaviour, dimensional compensation or cosmetic details. A useful
+  record names the printer, nozzle, material, spool condition, profile, measured
+  result and date. Stop when an earlier fault makes the next measurement
+  unreliable: a loose belt, unstable first layer or inconsistent extrusion makes
+  a precision clearance test poor evidence.
+</p>
+<h2>Validate with the part that matters</h2>
+<p>
+  A calibration coupon is a comparison tool, not a universal setting. After a
+  repeatable result, validate it with a small version of the actual feature: a
+  hole, pin, snap, wall or mating pair. Use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >tolerance calculator</a
+  >
+  for deliberate fit dimensions and the
+  <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
+    >shrinkage guide</a
+  >
+  when the same axis error persists. Keep the slicer preview and real
+  measurement as the final checks; InspectMesh cannot certify a printer or
+  guarantee a print.
+</p>
 <p>
   <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
     ><strong>Use the flow calculator for your next material profile</strong></a

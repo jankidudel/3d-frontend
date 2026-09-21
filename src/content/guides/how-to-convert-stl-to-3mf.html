@@ -18,6 +18,15 @@ faq:
   slicers, but it does not turn a geometry-only file into a complete print
   project.
 </p>
+<h2>Choose units and verify the converted build</h2>
+<p>
+  STL coordinates have no authoritative unit, so decide the intended physical
+  size before conversion. Converting a mesh does not recover original CAD
+  features, colours, material assignments or slicer settings that were never in
+  the STL. After conversion, open the 3MF, check resolved dimensions and object
+  count, then inspect it in the intended slicer. Keep the original STL and treat
+  the converted file as a new deliverable that needs its own preflight check.
+</p>
 <h2>Why convert an STL to 3MF?</h2>
 <p>
   STL is widely supported, but it stores triangles without declaring whether

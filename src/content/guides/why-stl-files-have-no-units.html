@@ -19,6 +19,13 @@ faq:
   or inches. A coordinate span of <code>100</code> is simply
   <code>100</code> units. The printer software decides what that unit means.
 </p>
+<h2>Prevent a 25.4-times mistake</h2>
+<p>
+  STL coordinates do not declare whether a value is millimetres or inches. An
+  inch-to-millimetre assumption changes scale by 25.4, so record the intended
+  unit at export and compare a known feature after import. Use a scale tool only
+  after deciding the design's intended physical size.
+</p>
 <p class="lead">
   This is why the same STL can appear at the expected size in one program and
   25.4 times too small or too large in another. The model has not changed; the

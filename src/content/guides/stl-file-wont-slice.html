@@ -14,9 +14,14 @@ faq:
 ---
 
 <p>
-  If an STL opens in a viewer but your slicer refuses to process it, produces an
-  empty preview or creates strange layers, the problem is often the mesh rather
-  than the printer profile.
+  An STL that will not slice is usually either not the file you expected, not a
+  usable solid, the wrong size, or beyond what the selected slicer can process.
+  Start with the file and its geometry, then inspect the slicer preview. This
+  guide diagnoses an STL slicing failure; it does not replace a full
+  <a href="{{ GuideSlug.RouteHowToMakeAnStlFilePrintable }}"
+    >STL preparation workflow</a
+  >
+  or prove that a model will print successfully on a particular machine.
 </p>
 <p>
   Start by checking the model before changing nozzle temperature, infill or
@@ -28,6 +33,52 @@ faq:
   The first step is the
   <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
   checks common issues that can interfere with slicing:
+</p>
+<h2>Match the symptom to the next check</h2>
+<table>
+  <thead>
+    <tr>
+      <th>What you see</th>
+      <th>Likely cause</th>
+      <th>Useful next check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>The file will not open or is unexpectedly tiny</td>
+      <td>Wrong file, incomplete download or an incorrect unit assumption</td>
+      <td>Open a fresh copy and inspect its dimensions</td>
+    </tr>
+    <tr>
+      <td>The slicer imports nothing or only a fragment</td>
+      <td>Empty geometry, hidden shells or invalid coordinates</td>
+      <td>Run the STL Quality Checker and inspect the model in a viewer</td>
+    </tr>
+    <tr>
+      <td>Layers have gaps, extra walls or filled cavities</td>
+      <td>Open edges, overlaps, non-manifold edges or inverted faces</td>
+      <td>Check watertightness, manifoldness and orientation</td>
+    </tr>
+    <tr>
+      <td>The import stalls or slicing is extremely slow</td>
+      <td>Very dense geometry or a slicer-specific import limit</td>
+      <td>Inspect triangle count, then simplify a copy carefully</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Rule out an incorrect or empty file</h2>
+<p>
+  Confirm that the file came from the expected export or download and that its
+  size is plausible. An STL can be syntactically readable while containing no
+  useful triangles, coordinates that are not finite, or a shell positioned far
+  from the origin. A viewer is helpful here because it can reveal a model that
+  is present but zoomed far away, hidden inside another shell or effectively
+  zero-sized.
+</p>
+<p>
+  If the file cannot be opened consistently, export it again from the source CAD
+  application. Do not use a repair tool to guess missing design geometry. Keep
+  the original unchanged and diagnose or repair a copy.
 </p>
 <ul>
   <li>open edges and holes</li>
@@ -55,6 +106,20 @@ faq:
   <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
   and the
   <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>.
+</p>
+<h2>Check face direction and intersecting shells</h2>
+<p>
+  Slicers use triangle winding or normals to reason about the outside of a
+  surface. Recalculating normals can help when a closed, otherwise sound shell
+  was exported with inconsistent face direction. It cannot decide the intended
+  surface when shells overlap, a boolean operation left self-intersections, or
+  the model has both internal and exterior faces. In those cases, return to the
+  source model or use mesh software to inspect the affected region.
+</p>
+<p>
+  Use the quality result as evidence, not as a guarantee. A repaired mesh can
+  still have walls too thin for the nozzle or process, and a visually clean mesh
+  can still need different orientation or support.
 </p>
 <p>
   A watertight model has no open boundaries. A manifold model describes a
@@ -95,6 +160,27 @@ faq:
 <p>
   A slicer may still process a problematic file, so a successful “slice” button
   is not proof that the output is correct.
+</p>
+<h2>Reduce complexity only after preserving the original</h2>
+<p>
+  A high triangle count does not automatically make an STL invalid. It can,
+  however, slow import and slicing enough to expose a software or hardware
+  limit. If the model is much denser than its visible shape requires, use a
+  careful simplification workflow on a copy. Compare dimensions and critical
+  curves before and after; see
+  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
+    >how to reduce STL triangle count</a
+  >. Converting ASCII STL to binary can reduce file bytes without changing the
+  number of triangles, so it is a different remedy.
+</p>
+<h2>Separate file diagnosis from slicer-specific limits</h2>
+<p>
+  A valid STL may still fail in one slicer because of its import settings,
+  supported variation, memory limits or configured build volume. Test a clean
+  copy in the intended slicer and inspect its own warnings. If another slicer
+  handles the same file, that is a clue about the workflow, not proof that the
+  model is ready to print. The final authority is a plausible layer preview for
+  your selected printer, material and settings.
 </p>
 <h2>Return to the source when necessary</h2>
 <p>

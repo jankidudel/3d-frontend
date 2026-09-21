@@ -21,6 +21,13 @@ faq:
   combines this topology concern with size, printer-fit and sampled
   wall-thickness guidance before you slice.
 </p>
+<h2>Use closure as evidence, not a complete preflight</h2>
+<p>
+  Open edges show that a surface boundary is not closed. A watertight result can
+  support volume calculation and solid slicing, but it does not rule out thin
+  walls, overlaps, wrong scale or unsuitable orientation. Inspect the reported
+  area and re-check any repaired copy.
+</p>
 <p class="lead">
   A watertight STL describes a completely closed surface. Imagine filling the
   model with water: if the surface has no holes, the water stays inside. For a
