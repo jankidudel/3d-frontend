@@ -18,6 +18,37 @@ faq:
   contain hundreds of thousands of triangles even when the final print cannot
   show that level of surface detail.
 </p>
+<p>
+  Record the receiving application's maximum or practical limit before
+  optimizing.
+</p>
+<p>
+  Compressing an STL inside an archive may help storage or transfer, but the
+  receiving slicer usually still needs the extracted STL. Treat transport
+  compression separately from a smaller interoperable mesh file.
+</p>
+
+<h2>Compare before and after with the same checks</h2>
+<p>
+  Start with binary conversion when the source is ASCII and the receiver accepts
+  binary STL. That changes storage encoding without changing triangle count. Use
+  decimation only when fewer triangles are actually acceptable; it is a lossy
+  geometry operation even if the displayed model looks similar at one zoom
+  level.
+</p>
+<p>
+  Before replacing the original, record bytes, triangle count, dimensions,
+  watertightness and manifold status. After reduction, compare the silhouette at
+  several angles, curved surfaces, holes, thin features and mating faces, then
+  run the same measurements and mesh checks. Finally open the smaller file in
+  the receiving slicer. A file that uploads faster but shifts a hole or
+  introduces an open edge is not a successful optimization.
+</p>
+<p>
+  Keep the high-resolution source and name reduced derivatives by purpose. There
+  is no universal target byte size: choose the least destructive method that
+  satisfies the actual upload, storage or application constraint.
+</p>
 <h2>Choose lossless or lossy reduction</h2>
 <p>
   Binary STL conversion can reduce bytes without changing triangles. Decimation

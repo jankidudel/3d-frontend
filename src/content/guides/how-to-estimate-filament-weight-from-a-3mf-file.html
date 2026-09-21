@@ -27,6 +27,56 @@ faq:
   Use a slicer's material estimate for purchasing or quoting a real print, and
   use this geometry estimate to compare designs or catch an implausible result.
 </p>
+<h2>The geometry-to-mass formula</h2>
+<p>
+  For a valid closed model, estimated solid mass equals resolved volume
+  multiplied by material density. Keep units consistent: 1 cm³ equals 1,000 mm³.
+  Convert a reported mm³ volume to cm³ before applying a density stated in
+  g/cm³.
+</p>
+<h2>Worked density example</h2>
+<p>
+  Suppose the resolved build volume is 32,000 mm³. That is 32 cm³. Using an
+  illustrative density of 1.24 g/cm³ gives 32 × 1.24 = 39.68 g for a completely
+  solid object. Use the density supplied for the actual material; formulation,
+  fillers and manufacturer data can differ, so the example is not a material
+  preset.
+</p>
+<h2>Why the sliced print differs</h2>
+<ul>
+  <li>
+    Infill replaces some solid interior with a chosen pattern and percentage.
+  </li>
+  <li>
+    Perimeters, top/bottom layers and thin-wall behavior change deposited
+    volume.
+  </li>
+  <li>Supports, brims, rafts, purge towers and tool changes add material.</li>
+  <li>
+    Slicer flow settings and filament diameter affect the length estimate.
+  </li>
+</ul>
+<p>
+  Use solid mass to compare model revisions or detect an implausible volume. Use
+  the target slicer's material report for a real print and add a measured waste
+  allowance when purchasing or quoting.
+</p>
+<h2>Validity checks before calculating</h2>
+<p>
+  Confirm declared units, resolved item count and a volume-compatible closed
+  mesh. Open surfaces, self-intersections and overlapping build items can make
+  volume misleading. For multiple parts, decide whether you need each object's
+  mass or the entire resolved plate, and avoid double-counting overlapping
+  placements.
+</p>
+<h2>Use the estimate for the right decision</h2>
+<p>
+  Solid mass is useful for comparing two model revisions at the same assumed
+  density or checking whether the package scale is plausible. It is unsuitable
+  as a shipping, purchasing or customer-quote figure without sliced material,
+  waste and measured process allowances. State the density source and
+  calculation date so another person can reproduce the estimate.
+</p>
 <p>
   The starting point is model volume. A larger solid volume generally needs more
   material, but actual filament use depends on the print settings you choose.
@@ -85,4 +135,13 @@ faq:
   dimensions and produce a final slice with your intended printer profile. The
   slicer remains the best source for the actual material estimate because it
   knows the print settings that will determine how much filament is deposited.
+</p>
+<h2>Use the estimate for the right decision</h2>
+<p>
+  Solid mass is useful for comparing model revisions or checking whether package
+  scale is plausible. It is unsuitable as a shipping, purchasing or quote figure
+  without sliced material and waste allowances. For several materials, calculate
+  regions separately only when assignments are preserved reliably; otherwise
+  defer to a configured slicer. State the density source and avoid false
+  gram-level precision.
 </p>

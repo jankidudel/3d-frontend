@@ -27,6 +27,75 @@ faq:
   count, then inspect it in the intended slicer. Keep the original STL and treat
   the converted file as a new deliverable that needs its own preflight check.
 </p>
+<h2>Step-by-step conversion workflow</h2>
+<ol>
+  <li>Open the STL and confirm it contains the expected geometry.</li>
+  <li>
+    Measure a known feature and decide whether the coordinates represent
+    millimetres, inches or another design unit.
+  </li>
+  <li>
+    Run mesh checks before conversion so the new container does not hide an
+    existing fault.
+  </li>
+  <li>Convert locally and save the 3MF as a new file.</li>
+  <li>
+    Open the 3MF, confirm its declared unit, resolved dimensions and object
+    count.
+  </li>
+  <li>
+    Inspect the result in the target slicer before deleting or archiving
+    anything.
+  </li>
+</ol>
+<h2>What conversion can and cannot preserve</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Information</th>
+      <th>Outcome</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>STL triangles</td>
+      <td>Can be represented as a 3MF mesh</td>
+    </tr>
+    <tr>
+      <td>Chosen physical unit</td>
+      <td>Can be declared during the 3MF workflow</td>
+    </tr>
+    <tr>
+      <td>Original CAD features</td>
+      <td>Cannot be reconstructed from triangles</td>
+    </tr>
+    <tr>
+      <td>Colours, materials or slicer settings absent from STL</td>
+      <td>Cannot be recovered by conversion</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Validate rather than trusting the extension</h2>
+<p>
+  Compare a known dimension, not only the overall shape. Check topology and
+  watertightness again, because conversion does not repair the source mesh
+  unless a documented repair step is performed. Confirm whether the output
+  contains one object or the intended set of shells and verify the layer preview
+  in the receiving slicer.
+</p>
+<p>
+  The primary benefit is an explicit, print-oriented package for the existing
+  mesh. It does not improve geometric accuracy or guarantee application-specific
+  settings will be added correctly.
+</p>
+<h2>Stop when scale is unknown</h2>
+<p>
+  If no known feature, drawing or author information establishes the intended
+  STL unit, conversion cannot resolve the ambiguity. Keep the coordinates
+  unchanged, label the assumption, or obtain the intended dimensions before
+  publishing the 3MF. Guessing a unit merely makes the guess explicit in a newer
+  container.
+</p>
 <h2>Why convert an STL to 3MF?</h2>
 <p>
   STL is widely supported, but it stores triangles without declaring whether

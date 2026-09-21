@@ -16,6 +16,113 @@ faq:
     ><strong>Work out a starting flow value from a single-wall test</strong></a
   >
 </p>
+
+<h2>Source and further reading</h2>
+<p>
+  Prusa's official
+  <a
+    href="https://help.prusa3d.com/article/extrusion-multiplier-calibration_2257"
+    >extrusion multiplier calibration guide</a
+  >
+  documents its application-specific flow workflow and explicitly treats it as
+  material/profile fine-tuning. Follow the documentation for your own printer,
+  firmware and slicer rather than transferring one vendor's numeric setting as a
+  universal value.
+</p>
+<h2>Final decision rule</h2>
+<p>
+  Change E-steps only when repeatable commanded-versus-actual feed evidence
+  follows the machine across suitable materials. Change flow only when a stable
+  material/profile test shows a repeatable extrusion-volume difference after
+  mechanics and temperature are sound. Leave both alone when the symptom belongs
+  to speed, pressure, cooling, motion or model geometry. Reprint the original
+  control after any change and keep the smallest correction that improves the
+  intended measurement without degrading dimensions or surfaces.
+</p>
+<h2>A calibration order that avoids false fixes</h2>
+<ol>
+  <li>
+    Inspect the drive gear, filament path, nozzle and hot end for drag or
+    blockage.
+  </li>
+  <li>
+    Confirm the filament diameter and a stable temperature for the material.
+  </li>
+  <li>
+    Calibrate extruder motion only if commanded and actual filament travel
+    disagree across materials.
+  </li>
+  <li>
+    Run a material-specific flow test after the mechanical feed is repeatable.
+  </li>
+  <li>
+    Validate walls, top surfaces and dimensions with the intended slicer
+    profile.
+  </li>
+</ol>
+<p>
+  Stop if repeated measurements vary widely. Backlash, slipping filament, heat
+  creep, a partial clog or a changing spool condition makes a percentage
+  correction poor evidence. Fix the unstable cause before calculating another
+  value.
+</p>
+<h2>Use repeatable tests</h2>
+<p>
+  For extruder motion, mark a measured length of filament, command a known feed
+  at a controlled speed, and compare the remaining distance. Repeat before
+  changing firmware. For flow, use the slicer or printer manufacturer's
+  documented method for that material and profile. Measure several walls or
+  evaluate the prescribed surface rather than selecting the most convenient
+  point.
+</p>
+<p>
+  If a 100 mm command consistently moves 98 mm, the observed motion ratio is
+  100/98, approximately 1.0204. That calculation describes the observed feed
+  difference; it does not prove firmware calibration is the cause. Mechanical
+  checks and repeatability come first.
+</p>
+<h2>Common misdiagnoses</h2>
+<ul>
+  <li>Using flow to compensate for a partial clog or slipping drive gear.</li>
+  <li>
+    Changing extruder calibration because one wet or unusual filament behaves
+    differently.
+  </li>
+  <li>
+    Using either value to fix corner bulges, seams or pressure-related
+    artifacts.
+  </li>
+  <li>Expecting flow changes to correct a consistent X, Y or Z scale error.</li>
+</ul>
+<p>
+  Keep a record of the printer, extruder hardware, nozzle, material,
+  temperature, test method, original value and result. Revert when the new value
+  makes the controlled test worse.
+</p>
+<h2>Read symptoms as evidence</h2>
+<p>
+  Thin, inconsistent lines across every material can point to feed-path or
+  nozzle trouble. A consistent difference on one stable material may justify
+  flow testing. Gaps only at high speed can indicate volumetric-flow limits;
+  rough top surfaces can involve temperature, cooling, infill support or
+  excessive flow. Corner bulges and seam blobs are usually better investigated
+  through pressure, acceleration and retraction behavior than by changing
+  E-steps.
+</p>
+<p>
+  Compare like with like: same model, spool, drying condition, temperature,
+  speed, nozzle and measurement method. Make small changes and keep the old
+  value. If the result improves one symptom but creates dimension or surface
+  problems elsewhere, revert and investigate the narrower cause.
+</p>
+<h2>What the InspectMesh calculator does</h2>
+<p>
+  The flow calculator applies the measurements you provide and shows the
+  correction transparently in your browser. It cannot measure extrusion, choose
+  a test, detect a blockage or write printer firmware. Enter only repeatable
+  measurements from the appropriate test and transfer the result deliberately to
+  the material profile.
+</p>
 <p>
   Flow rate and e-steps both affect extrusion, but they are not interchangeable.
   Treating them as the same can create a profile that works for one spool and

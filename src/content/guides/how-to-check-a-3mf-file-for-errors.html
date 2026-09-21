@@ -18,6 +18,33 @@ faq:
   and transforms. Before slicing, check the final resolved print build rather
   than trusting the first mesh resource or a reassuring-looking file name.
 </p>
+
+<h2>Classify package, resource and build errors separately</h2>
+<p>
+  A package error prevents required parts or relationships from being read. A
+  resource error concerns an object, mesh or referenced property inside the
+  model. A build error occurs when placed items reference missing objects, use
+  problematic transforms or resolve to an empty or implausible build. Keeping
+  those layers separate avoids flattening a healthy package merely because one
+  mesh is damaged.
+</p>
+<p>
+  Start with the earliest failing layer. Confirm the archive and required model
+  part can be read, enumerate resources, then resolve build items and
+  transforms. Only after that should mesh checks such as open boundaries,
+  non-manifold edges or orientation be interpreted on the actual instances
+  intended for printing.
+</p>
+
+<h2>Use specialist results for the next decision</h2>
+<p>
+  A broad quality report routes work; it does not replace focused inspection.
+  Send unit or dimension anomalies to the 3MF dimension workflow, closure
+  findings to watertight review, topology findings to manifold review and
+  unexpectedly heavy geometry to triangle analysis. Re-check the complete
+  resolved build after repair or re-export so a locally fixed object is not
+  accepted with broken placement or lost resources.
+</p>
 <h2>Check the package and geometry separately</h2>
 <p>
   Review declared units, build items and transforms alongside mesh findings. A

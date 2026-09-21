@@ -18,6 +18,43 @@ faq:
   heavy for a slicer. One common reason is a very high triangle count: the model
   surface contains far more tiny faces than the intended print can show.
 </p>
+
+<h2>Protect boundaries and functional features</h2>
+<p>
+  If the simplifier supports constraints, preserve open boundaries, sharp edges,
+  material seams and selected regions around holes or mating faces. Uniform
+  reduction spends the same relative effort everywhere even though a flat panel
+  can tolerate more change than embossed text or a sealing surface.
+</p>
+<p>
+  Compare a difference view or sampled surface deviation when available. A small
+  global error can still hide one unacceptable local collapse, so combine the
+  metric with visual and dimensional checks at named critical features.
+</p>
+
+<h2>Choose a target through controlled iterations</h2>
+<p>
+  Make a copy and reduce in stages rather than jumping to an arbitrary
+  percentage. For a 600,000-triangle model, compare perhaps 450,000 and 300,000
+  versions before considering a more aggressive result. The useful stopping
+  point is where the file becomes manageable while curvature, edges and
+  functional dimensions remain acceptable; the numbers are test points, not
+  recommended universal limits.
+</p>
+<p>
+  Inspect high-curvature areas, embossed text, small holes, narrow channels and
+  mating surfaces at close range. Compare bounding dimensions and, where
+  possible, point measurements. Re-run watertight and manifold checks because
+  decimation can collapse a thin region or create degenerate faces. A slicer
+  preview should still show the intended walls and features at the planned layer
+  height.
+</p>
+<p>
+  If the goal is only smaller bytes and triangle count is already appropriate,
+  check whether the file is ASCII first. Binary conversion can reduce storage
+  without removing geometry. Return to the CAD source for tolerance-critical
+  parts when mesh simplification would make the design intent hard to verify.
+</p>
 <h2>Check for damage after decimation</h2>
 <p>
   Reduce gradually and compare the areas that matter: small holes, text, mating

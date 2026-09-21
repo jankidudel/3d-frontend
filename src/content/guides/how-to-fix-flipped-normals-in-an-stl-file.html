@@ -18,6 +18,45 @@ faq:
   solid model, neighbouring triangles follow a consistent direction around the
   surface.
 </p>
+
+<h2>Distinguish a display issue from winding data</h2>
+<p>
+  If one viewer looks dark but mesh checks and another viewer agree on
+  orientation, inspect that application's back-face culling and shading settings
+  before editing the file. Normals displayed for lighting may also differ from
+  the triangle winding a solid parser uses. Make a repair only when the geometry
+  evidence and sliced result show a real orientation problem.
+</p>
+<p>
+  For several disconnected shells, evaluate each closed component separately. A
+  global operation can correct one inside-out shell while reversing another that
+  was already valid. Save the corrected copy under a new name and record which
+  components were changed.
+</p>
+
+<h2>Use diagnostic evidence, not shading alone</h2>
+<p>
+  Viewport shading can make an inside-out region obvious, but two-sided
+  rendering can also hide it. Compare a face-orientation display with open-edge
+  and manifold results. A connected, closed component with consistently reversed
+  winding is a good candidate for flipping the whole component. A small reversed
+  island inside an otherwise correct shell calls for local selection and
+  recalculation from adjacent faces.
+</p>
+<p>
+  Recalculation cannot decide the intended outside when the mesh is open, has
+  intersecting shells, contains duplicate faces or joins several volumes through
+  non-manifold edges. Repair those structural faults first or return to the
+  source model. Blindly flipping every face merely reverses a mixed problem and
+  may turn correct regions inward.
+</p>
+<p>
+  After saving a copy, re-run orientation, watertight and manifold checks,
+  compare dimensions, and inspect the slicer preview for missing walls or
+  unexpected cavities. If repair changed the silhouette or filled an intentional
+  opening, discard that output and use a controlled manual or source-CAD
+  correction.
+</p>
 <h2>Know when recalculation is insufficient</h2>
 <p>
   Recalculating normals can help a closed shell with inconsistent winding. It

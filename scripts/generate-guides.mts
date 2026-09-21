@@ -13,7 +13,7 @@ import {
   guideGroups,
   guideRegistry,
 } from '../src/content/guides/guides.registry.ts';
-import { createGuideClusterIndex } from '../src/content/guides/guide-clusters.ts';
+import { createGuideClusterIndex } from '../src/content/guides/guide-clusters.mts';
 import { PublicRoutePathValue } from '../src/app/core/seo/public-routes.ts';
 import {
   validateGuideRegistry,

@@ -19,6 +19,32 @@ faq:
   how long the printer runs, electricity, failed prints and—if you sell
   parts—the time you spend preparing and finishing them.
 </p>
+
+<h2>Complete production-cost example</h2>
+<p>
+  A job uses 85 g from a $24 per kilogram spool, so model material is
+  <code>0.085 × $24 = $2.04</code>. Add $0.60 for purge and waste, 9 hours of
+  machine time at $0.55 per hour ($4.95), 20 minutes of hands-on labor at $24
+  per hour ($8.00), and $1.40 of consumables. Direct production cost is
+  <code>$2.04 + $0.60 + $4.95 + $8.00 + $1.40 = $16.99</code>. Showing the
+  components makes the arithmetic auditable and prevents a rounded intermediate
+  value from hiding an error.
+</p>
+<p>
+  If comparable jobs have a 90% first-pass success rate, one transparent
+  expected production cost is <code>$16.99 / 0.90 = $18.88</code>. Use observed
+  data from comparable work, not an invented universal failure percentage.
+  Taxes, selling fees, desired margin and customer value belong in the separate
+  pricing step.
+</p>
+
+<h2>Formula summary</h2>
+<p>
+  Production cost equals material plus process energy/machine allocation plus
+  hands-on labor plus consumables and packaging plus a documented risk
+  allowance. Keep units beside inputs, separate fixed setup from per-part cost,
+  and rerun the model when quantity or profile changes.
+</p>
 <h2>Use one transparent worked estimate</h2>
 <p>
   Add material, machine time, labour, consumables and a realistic failure

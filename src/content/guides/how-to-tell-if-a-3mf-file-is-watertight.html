@@ -27,6 +27,65 @@ faq:
   properly joined, or a slicer will generate the desired toolpath. Preserve the
   original package and validate repaired geometry in the target slicer.
 </p>
+<h2>Interpret open boundaries by object</h2>
+<p>
+  An edge used by one triangle is an open boundary. On an object intended as a
+  closed solid, it can indicate a missing surface, failed export or incomplete
+  boolean. On an intentionally open surface or specialist workflow it may be
+  expected. Inspect the affected object and design intent before filling
+  anything.
+</p>
+<h2>Multiple shells are a separate question</h2>
+<p>
+  A 3MF build may contain several closed objects or one object with several
+  closed shells. Each can be watertight while the overall arrangement remains
+  disconnected or overlapping. Check whether shells represent separate printable
+  parts, internal cavities, accidental islands or intersecting solids. A single
+  yes/no closure result cannot decide that.
+</p>
+<h2>Route the repair from the finding</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Finding</th>
+      <th>Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Small accidental opening with clear surrounding surface</td>
+      <td>Repair a copy, then re-check topology and dimensions</td>
+    </tr>
+    <tr>
+      <td>Large missing region or design detail</td>
+      <td>Return to source CAD</td>
+    </tr>
+    <tr>
+      <td>Several closed intended parts</td>
+      <td>Keep separate and verify build placement</td>
+    </tr>
+    <tr>
+      <td>Overlapping or ambiguous shells</td>
+      <td>Resolve the source boolean or use specialist mesh editing</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What watertightness does not prove</h2>
+<p>
+  A closed model can still have inverted regions, self-intersections, walls too
+  thin for the process, wrong units or unsuitable placement. After repair,
+  compare resolved dimensions and object count, run manifold and quality checks,
+  and inspect the target slicer's layers. Preserve the original 3MF because a
+  mesh-only repair may not retain every package property.
+</p>
+<h2>Worked shell example</h2>
+<p>
+  A package containing a closed enclosure and four separate closed feet may
+  report five watertight shells. That can be correct if they are separate
+  manufactured objects, questionable if the feet were meant to be fused, or
+  dangerous for volume totals if they overlap. Inspect structure and placement
+  before deciding that “watertight” means complete.
+</p>
 
 <p>
   3MF files can contain more than one object and can place objects repeatedly in

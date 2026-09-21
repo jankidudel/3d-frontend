@@ -18,6 +18,31 @@ faq:
   units used by its coordinates. That makes scale more explicit, but it is not a
   substitute for checking the dimensions of the final build.
 </p>
+
+<h2>Unit conversion example</h2>
+<p>
+  If a package declares inches and a resolved object spans 4 coordinate units,
+  its physical span is 4 inches, or 101.6 mm. If an importer incorrectly treats
+  the same coordinates as millimeters, the model appears 25.4 times too small.
+  Check the declared unit first, then apply build transforms and measure the
+  complete placed result. Do not scale the resource and its build item
+  separately, which would apply the correction twice.
+</p>
+<p>
+  When exporting a corrected copy, reopen it in the receiving application and
+  verify one known dimension. Preserve the original package and note whether the
+  workflow changed only unit interpretation or baked a scale into geometry.
+</p>
+
+<h2>Specification reference</h2>
+<p>
+  The <a href="https://3mf.io/spec/">3MF Consortium specification suite</a>
+  defines the core format and its unit choices. Use that reference when building
+  an importer or diagnosing a package whose declared unit is not handled as
+  expected. Application support still needs a real import test because
+  extensions and application-specific settings can travel differently from core
+  geometry.
+</p>
 <h2>Verify resolved dimensions</h2>
 <p>
   3MF declares a unit, but a practical workflow still checks the final build

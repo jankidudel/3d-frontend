@@ -19,6 +19,12 @@ faq:
   slicer. Keep the original file and work on a copy so that every change can be
   checked.
 </p>
+<p>
+  Keep the repair log with the derivative: original filename, reported fault,
+  operation applied and verification result. That small record prevents an
+  automatically reconstructed mesh from being mistaken for the untouched design
+  source later.
+</p>
 <h2>Choose the repair method by fault</h2>
 <table>
   <thead>
@@ -100,4 +106,106 @@ faq:
   <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
     >How to Fix Non-Manifold STL Geometry</a
   >
+</p>
+<h2>Fault-to-method decision table</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Fault</th>
+      <th>Conservative route</th>
+      <th>Stop condition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Degenerate or exact duplicate triangle</td>
+      <td>Remove the defective face on a copy and re-check</td>
+      <td>Nearby geometry disappears or topology worsens</td>
+    </tr>
+    <tr>
+      <td>Inconsistent orientation</td>
+      <td>Recalculate connected-shell orientation</td>
+      <td>The shell is open or inside/outside remains ambiguous</td>
+    </tr>
+    <tr>
+      <td>Small accidental opening</td>
+      <td>Fill only when the intended boundary is clear</td>
+      <td>The missing surface contains design detail</td>
+    </tr>
+    <tr>
+      <td>Non-manifold junction</td>
+      <td>Separate or remodel the conflicting surfaces</td>
+      <td>Software must guess which volume is intended</td>
+    </tr>
+    <tr>
+      <td>Overlapping shells or self-intersection</td>
+      <td>Repair the boolean/source model</td>
+      <td>Automatic union changes cavities or dimensions</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Safe cleanup versus destructive reconstruction</h2>
+<p>
+  Safe cleanup removes unambiguous invalid data or corrects orientation without
+  inventing a surface. Reconstruction creates faces, merges shells, remeshes or
+  smooths the object. Those operations can erase holes, text, clearances and
+  sharp features. Keep the original and use reconstruction only when you can
+  compare the result with design intent.
+</p>
+<h2>Choose an alternative when browser repair is insufficient</h2>
+<p>
+  Return to the native CAD model for failed booleans, missing features or
+  dimension-critical work. Use established desktop mesh software when you need
+  localized selection, manual boundary construction or visual comparison. A
+  slicer may compensate for some faults, but a successful slice is not evidence
+  that the repaired geometry matches the design.
+</p>
+<h2>Revalidate the saved copy</h2>
+<ol>
+  <li>
+    Compare overall dimensions, triangle count and visible features with the
+    original.
+  </li>
+  <li>Run quality, watertightness and manifold checks again.</li>
+  <li>Inspect cross-sections when internal shells or cavities matter.</li>
+  <li>Open the copy in the target slicer and review every affected layer.</li>
+  <li>
+    Use a small test print for a dimension-critical or load-bearing repair.
+  </li>
+</ol>
+<p>
+  InspectMesh performs supported checks and conservative operations locally in
+  the browser. It does not infer missing design intent or certify the repaired
+  model as printable.
+</p>
+<h2>Repair examples by symptom</h2>
+<p>
+  If a slicer omits one region and the checker reports an open boundary there,
+  inspect the source opening before filling it. If the preview creates an
+  unexpected solid slab and several shells overlap, fix the boolean or source
+  assembly rather than deleting arbitrary faces. If only orientation is
+  inconsistent on an otherwise closed shell, recalculation may be the narrowest
+  appropriate operation.
+</p>
+<h2>Protect dimensions and topology</h2>
+<p>
+  Record the original bounding dimensions, volume when valid, triangle count and
+  important feature measurements. After repair, unexpected movement in any of
+  those values is a reason to inspect further. Remeshing and smoothing can make
+  a file look cleaner while changing fit-critical geometry.
+</p>
+<p>
+  For downloaded models without source intent, prefer a conservative result and
+  document uncertainty. For your own model, repair the native design and export
+  again whenever possible; this preserves editable dimensions and avoids adding
+  another lossy mesh-processing step.
+</p>
+<h2>Know when no repair is the safer result</h2>
+<p>
+  A warning can be acceptable only when you understand the intended geometry and
+  the target slicer's interpretation. Do not remove an internal surface that
+  defines a deliberate cavity, close a boundary that is meant to remain open, or
+  merge components that must move separately. Document any warning you
+  intentionally retain, inspect the corresponding layers and keep the unchanged
+  file available for comparison.
 </p>

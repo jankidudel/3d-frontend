@@ -18,6 +18,18 @@ faq:
   It is common for large resin prints and can also be useful for some FDM
   models.
 </p>
+
+<h2>Source and further reading</h2>
+<p>
+  Formlabs' official
+  <a href="https://formlabs.com/support/Hollowing-models-in-PreForm/"
+    >hollowing documentation</a
+  >
+  explains its software's topology behavior and the need to plan drainage for
+  relevant resin workflows. Treat its process guidance as product-specific and
+  check the documentation and safety information for the exact printer and
+  material you use.
+</p>
 <h2>Hollowing depends on the process</h2>
 <p>
   For resin printing, hollowing can reduce material but introduces drainage,
@@ -28,6 +40,54 @@ faq:
   inspect cross- sections before exporting. Re-check the modified file for
   watertightness and use the slicer preview as the final process-specific
   validation.
+</p>
+<h2>FDM and resin need different decisions</h2>
+<p>
+  In FDM, slicer perimeters and infill usually control internal material without
+  editing the outer mesh. A manually hollowed STL can create unsupported
+  internal ceilings that are difficult to inspect or remove supports from. For
+  resin, hollowing can reduce material and peel forces, but creates a cavity
+  that must be drained, washed, vented and cured according to the resin and
+  printer workflow.
+</p>
+<h2>Plan drain and vent paths with orientation</h2>
+<p>
+  A drain opening should allow liquid to leave at the intended print and wash
+  orientations; a vent can prevent a sealed cup from trapping pressure or
+  suction. The number, diameter and placement are application-specific. Follow
+  printer, resin and slicer manufacturer guidance rather than copying a
+  universal hole size. Avoid placing openings where supports, hardware
+  interfaces or visible surfaces make them unusable.
+</p>
+<h2>Look for trapped volumes</h2>
+<p>
+  Move cross-sections through the complete model and inspect separate cavities,
+  narrow passages and low points. A visible opening into one chamber does not
+  drain another disconnected chamber. Internal lattices or accidental surfaces
+  can also block flow even when the outer shell appears correct.
+</p>
+<h2>Validate the hollowed copy</h2>
+<ol>
+  <li>Preserve the solid original and save the hollowed model separately.</li>
+  <li>Check wall thickness and transitions around openings.</li>
+  <li>Inspect cross-sections for sealed pockets and internal intersections.</li>
+  <li>
+    Re-check watertightness/manifoldness where a closed shell is intended.
+  </li>
+  <li>Review internal supports, drain paths and every layer in the slicer.</li>
+</ol>
+<p>
+  Hollowing changes structure and post-processing risk. InspectMesh can help
+  inspect geometry locally, but it cannot select safe resin handling, curing or
+  mechanical wall requirements for a particular job.
+</p>
+<h2>Do not hide an uninspectable interior</h2>
+<p>
+  Before export, keep a sectioned screenshot or source model showing wall and
+  opening placement. After mesh conversion, confirm internal faces have not
+  intersected the exterior and that openings remain connected to every intended
+  cavity. If the interior cannot be inspected confidently, a smaller solid print
+  or redesigned source model is safer evidence.
 </p>
 <p>
   The goal is to save material and reduce weight without making the shell too
@@ -97,4 +157,13 @@ faq:
   Hollowing is a design and print-preparation decision, not simply a file-size
   trick. A clean mesh, suitable wall thickness and a proper drainage plan matter
   more than removing the maximum possible material.
+</p>
+<h2>Balance savings against risk</h2>
+<p>
+  Estimate the material benefit in the slicer before accepting the added
+  interior and post-processing complexity. A small part may save little, while a
+  large sealed cavity can create substantial cleanup risk. Follow the resin
+  safety data and equipment instructions for handling uncured material; geometry
+  guidance does not replace protective equipment, ventilation, washing, curing
+  or disposal requirements.
 </p>

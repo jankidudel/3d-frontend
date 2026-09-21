@@ -19,6 +19,38 @@ faq:
   A model can be watertight, correctly scaled and still print poorly because
   part of its geometry has little or no support from the layers below.
 </p>
+
+<h2>Use a small validation model when the tradeoff matters</h2>
+<p>
+  When a long job depends on an unfamiliar angle, material or finish, print a
+  small coupon that uses the same layer height, extrusion width, cooling and
+  intended overhang direction. Label the angle convention: some tools describe
+  an angle from the vertical wall, while others describe it from the horizontal
+  build plane. A value without that reference can reverse the apparent meaning.
+</p>
+<p>
+  Review the underside, edge curl, dimensional change and the point where lines
+  stop bonding cleanly. Repeat only one changed setting at a time. A coupon does
+  not guarantee the full model because large thermal mass, long perimeters and
+  local airflow can differ, but it gives better evidence than importing a
+  generic threshold from another printer.
+</p>
+
+<h2>Plan support removal as part of orientation</h2>
+<p>
+  Support that is easy to generate may be impossible to remove from an enclosed
+  channel. Inspect access for tools, contact marks on critical faces and whether
+  detached support could remain trapped. Consider splitting the model, changing
+  orientation or redesigning the region when removal would damage a mating face
+  or leave inaccessible material.
+</p>
+<p>
+  In the final slicer preview, step through the first layer of every island,
+  support interface layers and the transition back to model material. Confirm
+  that the chosen support style is actually generated where expected and that
+  bridges are not misclassified. Save the project or profile details needed to
+  reproduce the decision.
+</p>
 <h2>Validate the angle in the slicer</h2>
 <p>
   Overhang angle is measured from a chosen reference and its practical limit
@@ -107,3 +139,37 @@ faq:
   <li>Compare a sensible rotation if flagged area is large.</li>
   <li>Choose orientation and supports in the slicer.</li>
 </ol>
+
+<h2>Separate overhangs from bridges</h2>
+<p>
+  An overhang extends outward from material in the layer below; a bridge spans
+  between two supported endpoints. The distinction matters because a bridge can
+  cross open space by stretching lines between anchors, while the same span
+  printed from only one side is an overhang. A roof over a rectangular opening
+  may therefore need bridge settings rather than support beneath every line.
+</p>
+<p>
+  Inspect the slicer preview layer by layer. For an overhang, confirm where each
+  new perimeter starts and how much it overlaps the preceding layer. For a
+  bridge, confirm that both endpoints land on established geometry and review
+  the slicer's bridge direction. Short bridges and gradual overhangs are often
+  easier than a single threshold suggests, but cooling, material, layer height,
+  extrusion width and speed all affect the outcome.
+</p>
+
+<h2>Compare orientations before adding support</h2>
+<p>
+  Suppose a bracket has one broad cosmetic face and two mounting holes. Laying
+  the cosmetic face on the bed may protect the holes from support but leave a
+  visible first-layer texture. Standing it upright may improve that face while
+  creating a tall, less stable print and moving layer lines across the loaded
+  section. Compare support volume, contact marks, bed contact, strength
+  direction and printer fit together. The best orientation is the acceptable
+  compromise, not simply the one with the smallest highlighted overhang area.
+</p>
+<p>
+  Final support placement belongs in the actual slicer profile. Use its preview
+  to check unsupported islands, bridge regions and support interfaces before
+  exporting G-code. A geometry screen cannot predict whether a particular
+  printer, material and cooling setup will reproduce an angle successfully.
+</p>

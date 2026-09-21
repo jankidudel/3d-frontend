@@ -18,6 +18,29 @@ faq:
   one closed shell around a solid object, the mesh has open edges at the
   boundary of the missing area.
 </p>
+
+<h2>Distinguish boundary types before filling</h2>
+<p>
+  A missing planar cap has one simple boundary loop and may be safely filled
+  with a flat patch. A torn curved surface needs new faces that follow the
+  surrounding shape. Several nearby loops can indicate a deleted feature, while
+  a long seam may be two surface borders that should be welded rather than
+  capped. An intentional opening, such as a drain or socket, is not damage at
+  all.
+</p>
+<p>
+  Use automatic closure only when the proposed patch is obvious and does not
+  alter function. For a mechanical face, threaded region, mating surface or
+  sculpted contour, repair in the source CAD or manually rebuild the local mesh
+  with reference geometry. Filling a loop proves only that a boundary was
+  closed; it does not prove the replacement surface has the intended shape.
+</p>
+<p>
+  Verify boundary-edge count, manifold status, normals, dimensions and the local
+  silhouette after repair. Compare the repaired area directly with the original,
+  then inspect sliced layers. Reject the repair if it bridges separate shells,
+  closes a deliberate passage or creates a thin internal sheet.
+</p>
 <h2>Match the repair to the opening</h2>
 <p>
   A small accidental boundary with clear surrounding shape may be repairable; a

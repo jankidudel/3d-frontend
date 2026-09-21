@@ -1,4 +1,5 @@
 import type { GuideCard } from '../../app/features/guides/guide-catalogue.ts';
+import { GuideContentSlug } from './guides.registry.ts';
 
 export interface GuideCluster {
   readonly id: string;
@@ -122,12 +123,12 @@ export const guideClusters: readonly GuideCluster[] = [
       'Choose a delivery format and understand the roles of mesh and CAD files.',
     pillar: 'best-file-format-for-3d-printing',
     slugs: [
-      'best-file-format-for-3d-printing',
-      '3mf-vs-stl',
-      'stl-vs-obj-for-3d-printing',
-      'stl-vs-step-for-3d-printing',
-      'what-is-an-stl-file',
-      'how-to-open-an-stl-file',
+      GuideContentSlug.BestFileFormatFor3dPrinting,
+      GuideContentSlug.ThreeMfVsStl,
+      GuideContentSlug.StlVsObjFor3dPrinting,
+      GuideContentSlug.StlVsStepFor3dPrinting,
+      GuideContentSlug.WhatIsAnStlFile,
+      GuideContentSlug.HowToOpenAnStlFile,
     ],
   },
   {

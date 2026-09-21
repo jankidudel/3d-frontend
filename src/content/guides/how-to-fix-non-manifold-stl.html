@@ -19,6 +19,61 @@ faq:
   <strong>non-manifold geometry</strong>: the mesh does not describe one clean,
   unambiguous surface with a usable inside and outside.
 </p>
+
+<h2>Preserve intentional separate parts</h2>
+<p>
+  Several closed shells are not automatically non-manifold and may represent a
+  deliberate assembly or multi-part export. Problems arise when shells overlap
+  ambiguously, touch only at an edge or vertex, or contain internal faces after
+  a failed union. Inspect component boundaries before merging everything into
+  one volume.
+</p>
+<p>
+  If the source design contains separate printable parts, export and validate
+  them separately or use a format that preserves object structure. A blanket
+  union can remove clearances and moving interfaces even when it produces a
+  technically manifold outer surface.
+</p>
+
+<h2>Map the symptom to the repair</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Topology</th>
+      <th>Likely action</th>
+      <th>When to return to CAD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One open boundary loop</td>
+      <td>Inspect and patch only if the missing surface is unambiguous</td>
+      <td>The opening is functional or lies on a controlled face</td>
+    </tr>
+    <tr>
+      <td>More than two faces on an edge</td>
+      <td>Separate, union or remove the extra sheet</td>
+      <td>The intended solid relationship is unclear</td>
+    </tr>
+    <tr>
+      <td>Shells touching at one edge or point</td>
+      <td>Create a real overlapping joint or separate parts</td>
+      <td>The joint carries load or controls fit</td>
+    </tr>
+    <tr>
+      <td>Internal faces after a boolean</td>
+      <td>Remove internal partitions and rebuild the union</td>
+      <td>The boolean result changes the external shape</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Slicer acceptance is useful evidence but not a topology definition: software
+  may silently repair, discard or reinterpret regions. Compare the repaired mesh
+  with the original, then re-check manifold edges, watertightness, orientation,
+  dimensions and sliced layers. If several automatic passes keep changing the
+  silhouette, stop compounding edits and correct the source model.
+</p>
 <h2>Identify the topology case first</h2>
 <p>
   Edges used by more than two faces, disconnected shells, T-junctions and

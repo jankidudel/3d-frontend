@@ -17,6 +17,73 @@ faq:
   STL and 3MF can both be used for 3D printing, but they are built for different
   generations of workflow.
 </p>
+
+<h2>Separate specification capability from application support</h2>
+<p>
+  Saying that 3MF can store a feature does not mean every application writes,
+  reads or preserves it. Core mesh geometry, declared units and build items are
+  different from optional extensions or vendor-specific print settings. Test the
+  exact authoring-to-receiving path with a small file containing the features
+  that matter, then inspect the imported objects rather than trusting the
+  filename extension.
+</p>
+<p>
+  STL has the opposite advantage and limitation: its narrow geometry model makes
+  the handoff easier to reason about, but missing context must be supplied
+  separately. State the expected unit and whether separate meshes are individual
+  parts. If either workflow requires later design changes, preserve the source
+  CAD or modeling project; neither delivery format restores parametric intent.
+</p>
+
+<h2>Side-by-side workflow decision</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Need</th>
+      <th>Prefer</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Send one simple mesh to an older workflow</td>
+      <td>STL</td>
+      <td>Broad, simple mesh interchange</td>
+    </tr>
+    <tr>
+      <td>Keep declared units and several placed objects</td>
+      <td>3MF</td>
+      <td>The package can describe units, resources and build placement</td>
+    </tr>
+    <tr>
+      <td>Preserve editable CAD features</td>
+      <td>Neither</td>
+      <td>Keep the source CAD file; both are delivery formats</td>
+    </tr>
+    <tr>
+      <td>Exchange application-specific print setup</td>
+      <td>Test 3MF</td>
+      <td>
+        3MF can carry richer data, but another application may not interpret
+        every extension or setting
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  For example, a single-color replacement knob sent to a proven legacy slicer
+  may gain little from 3MF. A build plate containing six named parts at
+  deliberate positions benefits more from 3MF because converting it to one STL
+  may bake the arrangement into a single mesh, while exporting six STL files
+  loses placement. The receiving application is part of the decision: test a
+  representative file before standardizing a team workflow.
+</p>
+<p>
+  Do not treat a successful import as proof that everything survived. Confirm
+  dimensions, object count, placement, colors or material assignments, and any
+  settings that matter. Keep the editable source separately and regard the
+  chosen print format as a handoff artifact.
+</p>
 <h2>Choose the format by what must survive</h2>
 <p>
   Use STL for simple, broadly compatible mesh delivery. Prefer 3MF when declared

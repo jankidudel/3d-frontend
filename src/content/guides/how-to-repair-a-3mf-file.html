@@ -29,6 +29,95 @@ faq:
   manufacture, so an object existing in a package is not by itself evidence that
   it belongs in the final build.
 </p>
+<h2>Separate package faults from mesh faults</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Failure</th>
+      <th>Likely layer</th>
+      <th>Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>The file will not open as a 3MF package</td>
+      <td>Container, relationships or required model part</td>
+      <td>
+        Re-export from the source application or inspect with a 3MF-aware tool
+      </td>
+    </tr>
+    <tr>
+      <td>An object exists but is missing from the plate</td>
+      <td>Build-item selection or transform</td>
+      <td>Inspect the resolved build and placement</td>
+    </tr>
+    <tr>
+      <td>Dimensions are unexpected</td>
+      <td>Declared unit or transform</td>
+      <td>Confirm units and resolved dimensions before editing</td>
+    </tr>
+    <tr>
+      <td>Layers contain gaps or extra regions</td>
+      <td>Mesh topology or overlapping shells</td>
+      <td>Run geometry checks and repair the source object</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Choose a preservation-aware route</h2>
+<p>
+  A package-level re-export may preserve object structure, units and supported
+  properties better than extracting and repairing a mesh. A mesh-only repair may
+  flatten build transforms or discard colours, materials and application
+  settings. Before changing the file, record the object count, plate layout,
+  dimensions and properties that the receiving workflow needs.
+</p>
+<h2>Use the least destructive repair</h2>
+<ol>
+  <li>Keep the original 3MF unchanged.</li>
+  <li>Confirm the package opens and identify the affected build item.</li>
+  <li>Fix placement or unit interpretation before editing triangles.</li>
+  <li>
+    Apply mesh cleanup only to the faulty object and only when the result is
+    unambiguous.
+  </li>
+  <li>Re-export from source CAD when geometry would need reconstruction.</li>
+</ol>
+<h2>Revalidation checklist</h2>
+<p>
+  Open the repaired package in a second 3MF-aware application when portability
+  matters. Compare resolved dimensions, object count, transforms and visual
+  placement. Re-run quality, manifold and watertight checks, then inspect the
+  slicer preview. Confirm colours, materials and settings separately because
+  support varies by application and extension.
+</p>
+<p>
+  The <a href="https://3mf.io/spec/">3MF Consortium specification</a> is the
+  primary reference for core package, resource and build behavior. A repaired
+  file still requires printer- and slicer-specific validation.
+</p>
+<h2>Examples of preservation risk</h2>
+<p>
+  Extracting one mesh for repair can omit other build items. Flattening
+  transforms can preserve appearance while changing reusable object structure.
+  Exporting through an application that supports only core geometry can discard
+  optional properties. A slicer project stored in 3MF may also contain
+  application-specific settings that another program ignores.
+</p>
+<p>
+  For each repair, state what is allowed to change. If only one object's
+  topology is faulty, preserve the remaining package and replace that object
+  through a documented workflow. If the package itself is corrupt, re-export
+  from the authoring application instead of rebuilding relationships by
+  guesswork.
+</p>
+<h2>When to stop</h2>
+<p>
+  Stop when object identity is unclear, a repair changes plate placement,
+  critical properties disappear, or several applications resolve the build
+  differently. Return to the source model and known producing application. A
+  geometry checker cannot certify vendor-specific settings or restore package
+  information that was already lost.
+</p>
 <p>
   Use the <a href="https://3mf.io/spec/">3MF Core Specification</a> for format
   details, then rerun the 3MF quality and dimensions checks. If repair requires

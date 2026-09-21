@@ -17,6 +17,25 @@ faq:
   print successfully. Nozzle size, layer height, material, orientation, cooling,
   supports and the intended use of the part all affect the final result.
 </p>
+
+<h2>Verify transformed and repeated objects</h2>
+<p>
+  A 3MF package may reuse one object resource in several build items.
+  Translation and rotation do not change its local wall thickness, but scaling
+  does. A 0.8 mm wall becomes 0.4 mm after a uniform 50% scale; non-uniform
+  scaling can change thickness differently by direction. Review the resolved
+  instance that will be printed rather than assuming the resource's
+  untransformed measurement applies to every placement.
+</p>
+<p>
+  Sampled thickness is a screen, not a promise that every point was measured.
+  Thin ribs, sharp corners, internal passages and coincident surfaces can be
+  missed or produce ambiguous rays. Rotate the view, inspect cross-sections
+  where available, and compare flagged regions with the source design. Confirm
+  the final perimeter and layer result in the slicer because extrusion width,
+  layer height and feature-generation rules determine what the machine is asked
+  to print.
+</p>
 <h2>Inspect the placed 3MF build</h2>
 <p>
   Evaluate wall thickness after build-item transforms and at the intended

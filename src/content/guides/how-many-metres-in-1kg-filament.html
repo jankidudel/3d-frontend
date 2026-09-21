@@ -18,6 +18,37 @@ faq:
   That is a useful rule of thumb, not a universal spool specification. The exact
   length depends on the filament diameter and the density of the material.
 </p>
+<p>
+  Keep grams, millimeters and cubic millimeters consistent throughout the
+  calculation.
+</p>
+
+<h2>Worked length calculation</h2>
+<p>
+  For 1.75 mm filament, cross-sectional area is
+  <code>π × (1.75 / 2)² ≈ 2.405 mm²</code>. If the material density is 1.24
+  g/cm³, convert it to 0.00124 g/mm³. One kilogram then represents about
+  <code>1000 / (2.405 × 0.00124) ≈ 335,600 mm</code>, or roughly 336 m. This is
+  an estimate based on nominal diameter and density, not a guaranteed spool
+  length.
+</p>
+<p>
+  Repeating the calculation for 2.85 mm filament gives an area of about 6.38 mm²
+  and roughly 126 m at the same density. Diameter therefore changes length
+  quadratically; do not scale a 1.75 mm reference linearly. Use the material
+  supplier's documented density when available and weigh the usable filament if
+  the remaining amount matters.
+</p>
+
+<h2>Account for spool and measurement uncertainty</h2>
+<p>
+  A scale reading that includes the reel must subtract a known empty-spool mass,
+  which varies by spool design. Filament diameter also varies around its nominal
+  value, and blends or filled materials can differ in density. Treat calculated
+  length as inventory planning. For a print decision, prefer the slicer's mass
+  or length estimate plus a sensible reserve for purge, priming and failed
+  starts.
+</p>
 <h2>State diameter and density</h2>
 <p>
   Length follows mass divided by density and filament cross-sectional area. A 1

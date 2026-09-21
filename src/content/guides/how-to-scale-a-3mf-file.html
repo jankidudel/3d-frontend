@@ -27,6 +27,51 @@ faq:
   after the change. Scaling changes wall thickness, clearances and printer fit,
   so re-run those checks and inspect the slicer preview.
 </p>
+<h2>Declared units and transforms matter</h2>
+<p>
+  Read the model unit first, then resolve item and component transforms.
+  Changing the declared unit without converting coordinates can change the
+  physical interpretation, while applying an additional scale transform changes
+  placed geometry. Record whether you are changing metadata, object coordinates
+  or build placement so the operation is reproducible.
+</p>
+<h2>Worked proportional example</h2>
+<p>
+  If a resolved part is 80 mm wide and the required width is 120 mm, the uniform
+  factor is 120/80 = 1.5, or 150%. Its other dimensions and wall thicknesses
+  also become 1.5 times larger. A 0.4 mm clearance becomes 0.6 mm, which may no
+  longer match the intended assembly; proportional scaling is unsuitable when
+  some features must stay fixed.
+</p>
+<h2>Multi-object decisions</h2>
+<p>
+  Scaling every build item around a common origin changes both part size and the
+  distance between parts. Scaling each object around its own origin preserves a
+  different layout. Decide whether the package represents one assembly, repeated
+  parts or independent components, then inspect relative placement after the
+  operation.
+</p>
+<h2>Validation workflow</h2>
+<ol>
+  <li>Keep the original and record declared units and resolved dimensions.</li>
+  <li>Choose uniform or per-axis scaling from the design requirement.</li>
+  <li>Apply the change to the intended objects/build items only.</li>
+  <li>Re-check dimensions, spacing, wall thickness and printer fit.</li>
+  <li>Inspect every part and the layer preview in the target slicer.</li>
+</ol>
+<p>
+  Do not scale a dimension-critical assembly merely to make its bounding box
+  fit. Split or redesign it when holes, hardware interfaces or clearances must
+  remain at their original sizes.
+</p>
+<h2>Per-axis scaling needs extra caution</h2>
+<p>
+  Non-uniform scaling changes angles, circles, wall thickness and clearances
+  differently on each axis. Use it only when distortion is intended or derived
+  from controlled compensation evidence. For shrinkage correction, validate X, Y
+  and Z with a representative test instead of reshaping an unknown package to
+  match one measurement.
+</p>
 <p>
   For functional parts, scaling needs care. A small percentage change can alter
   screw holes, snap fits, bearing seats and clearances enough to make a part

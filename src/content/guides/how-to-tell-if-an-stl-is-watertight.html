@@ -21,6 +21,43 @@ faq:
   combines this topology concern with size, printer-fit and sampled
   wall-thickness guidance before you slice.
 </p>
+
+<h2>Check connected components as well as edges</h2>
+<p>
+  A file can contain several individually closed shells and still report no open
+  boundaries. Determine whether they are intended separate solids, nested voids
+  or accidental duplicates. Coincident closed shells may cause ambiguous volume
+  or duplicate toolpaths even though each shell is watertight by itself.
+</p>
+<p>
+  Compare component count with the source and inspect cross-sections through
+  suspicious areas. Closure answers whether boundaries exist; it does not assign
+  material to nested regions or prove that overlapping components form a valid
+  union.
+</p>
+
+<h2>Interpret open-edge results</h2>
+<p>
+  Zero boundary edges is the usual closure signal for a shell, but it does not
+  prove a clean printable solid. A closed mesh can still self-intersect, contain
+  internal faces, use inconsistent orientation or include multiple nested shells
+  whose intended material regions are unclear. Conversely, an intentional
+  surface model may be open by design even though it is not suitable as a solid
+  print without additional thickness.
+</p>
+<p>
+  When boundaries exist, locate their loops. A small loop on a planar end may be
+  a missing cap; a long seam can indicate unwelded borders; many scattered loops
+  may point to a damaged export. Do not automatically fill a drain, socket or
+  other deliberate opening. Choose repair only after comparing the region with
+  the source design.
+</p>
+<p>
+  Re-check closure, manifold topology, face orientation and dimensions after any
+  edit, then inspect the slicer preview. Watertightness supports volume and
+  inside reasoning, but printer fit, wall thickness and toolpath generation
+  remain separate checks.
+</p>
 <h2>Use closure as evidence, not a complete preflight</h2>
 <p>
   Open edges show that a surface boundary is not closed. A watertight result can

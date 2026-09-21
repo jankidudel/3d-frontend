@@ -16,6 +16,72 @@ faq:
     ><strong>Calculate starting hole and pin dimensions</strong></a
   >
 </p>
+<h2>Measure holes and pins separately</h2>
+<p>
+  An undersized hole and an oversized pin can produce the same failed assembly.
+  Measure both features in the orientation in which they were printed. Use
+  clean, cooled parts and an appropriate gauge, pin or caliper technique;
+  forcing caliper jaws into a small rough hole can produce a misleading value.
+  Take several measurements and record the direction because X/Y and vertical
+  features can behave differently.
+</p>
+<h2>Work a compensation example</h2>
+<p>
+  Suppose a CAD hole is 10.00 mm and three controlled prints measure 9.68, 9.72
+  and 9.70 mm. Their average is 9.70 mm, an observed diameter shortfall of 0.30
+  mm. A provisional CAD test hole of 10.30 mm is reasonable for the same
+  printer, material, orientation and profile. This is not a universal offset:
+  print a coupon with nearby sizes, then select the smallest hole that provides
+  the required fit without excessive play.
+</p>
+<h2>Clearance is not compensation</h2>
+<p>
+  Compensation addresses a repeatable difference between designed and produced
+  size. Clearance is the intentional gap between mating parts. Establish machine
+  behaviour first, then choose clearance for sliding, locating, press-fit or
+  fastened parts. Do not add the same number blindly to every radius, pin and
+  slot.
+</p>
+<h2>Validate before changing the production model</h2>
+<ol>
+  <li>
+    Use the intended nozzle, material, layer height, orientation and profile.
+  </li>
+  <li>Print a compact coupon containing the relevant hole and pin range.</li>
+  <li>
+    Measure after cooling and test the real mating component where possible.
+  </li>
+  <li>Update a copy of the CAD model and inspect the exported dimensions.</li>
+  <li>Repeat after hardware, material or orientation changes.</li>
+</ol>
+<p>
+  If roundness is poor or values vary around the circumference, investigate
+  belts, motion, cooling, extrusion and seam placement before applying a scalar
+  offset.
+</p>
+<h2>Horizontal and vertical holes behave differently</h2>
+<p>
+  A vertical-axis hole is built as repeated perimeter loops; a horizontal-axis
+  hole includes overhangs and may sag or facet differently. Seam position,
+  elephant-foot effects near the bed and support contact can also make one
+  region of a hole smaller than another. Record orientation with every
+  measurement and avoid transferring one correction between orientations without
+  a test.
+</p>
+<h2>Prefer model-level evidence over one measurement</h2>
+<p>
+  Test several nominal sizes around the real feature and include the intended
+  pin, bearing or fastener. A consistent offset across sizes supports
+  compensation; a changing or irregular error suggests geometry, motion,
+  extrusion or cooling needs attention. Measure pins as well, since reducing a
+  pin may preserve more wall around a hole in some designs.
+</p>
+<p>
+  For holes near the first layer, check for bed compression before editing the
+  entire bore. For safety-critical or load-bearing assemblies, follow the
+  hardware and material design guidance and validate the finished joint
+  physically.
+</p>
 <h2>Separate a hole from a clearance decision</h2>
 <p>
   A printed hole that measures undersize and two parts that bind are related but
@@ -82,4 +148,13 @@ faq:
   <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
     ><strong>Plan a test fit before altering your CAD model</strong></a
   >
+</p>
+<h2>Keep compensation local and reversible</h2>
+<p>
+  Apply the tested change to a named model revision or parametric feature rather
+  than silently rescaling the whole part. Note the printer, profile, axis and
+  coupon result in the design. When sending the model elsewhere, provide the
+  uncompensated source or explain the baked-in correction; another machine may
+  need a different value. Re-check wall thickness around enlarged holes and edge
+  distance around fasteners before export.
 </p>

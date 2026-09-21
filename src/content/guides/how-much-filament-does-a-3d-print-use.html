@@ -18,6 +18,23 @@ faq:
   model with your real printer settings. Your slicer estimates filament weight,
   length and usually cost before you start the print.
 </p>
+
+<h2>Complete volume-to-mass example</h2>
+<p>
+  Suppose a slicer reports 18.5 cm³ of extruded model and support material. With
+  a documented density of 1.24 g/cm³, estimated mass is
+  <code>18.5 × 1.24 = 22.94 g</code>. On a 1 kg spool that is about 2.3% of
+  nominal material mass. If the slicer separately reports purge or prime
+  structures, add them rather than assuming the model volume includes every
+  extrusion.
+</p>
+<p>
+  A geometry tool's enclosed solid volume is a different quantity. The slicer
+  replaces much of that solid with perimeters, infill and process-specific
+  structures, so apply density to the slicer's extruded volume when available.
+  Re-slice after changing infill, supports, wall count, scale or orientation;
+  these can change consumption even though the source file is unchanged.
+</p>
 <h2>Prefer the slicer for a real job</h2>
 <p>
   Use the slicer's material estimate after choosing nozzle, walls, infill,

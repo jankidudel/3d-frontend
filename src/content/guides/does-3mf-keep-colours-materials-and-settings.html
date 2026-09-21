@@ -20,6 +20,11 @@ faq:
   their own project information, which may only be fully understood by that
   slicer or a compatible version.
 </p>
+<p>
+  For a repeatable handoff, name the authoring and receiving application
+  versions beside the test file. Compatibility is a property of that tested
+  path, not a permanent promise about every 3MF implementation.
+</p>
 <h2>Verify portability at the receiving application</h2>
 <table>
   <thead>
@@ -50,6 +55,82 @@ faq:
   <a href="https://3mf.io/compatibility-matrix/">3MF compatibility matrix</a>
   for self-reported support. Do not assume an imported profile is safe for a
   different printer or material.
+</p>
+<h2>Feature-preservation matrix</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>3MF can represent it?</th>
+      <th>Portability check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mesh geometry and declared units</td>
+      <td>Core format</td>
+      <td>Compare resolved dimensions and placement after import</td>
+    </tr>
+    <tr>
+      <td>Object and build structure</td>
+      <td>Core resources and build items</td>
+      <td>Check object count, transforms and plate layout</td>
+    </tr>
+    <tr>
+      <td>Colour, texture and material properties</td>
+      <td>Supported through defined properties/extensions</td>
+      <td>Confirm both applications support and map the same feature</td>
+    </tr>
+    <tr>
+      <td>Slicer or printer settings</td>
+      <td>May be application-specific or use extensions</td>
+      <td>Inspect the receiving profile; never assume it is portable</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Why valid data may still disappear</h2>
+<p>
+  An application can support the 3MF core while ignoring an optional extension,
+  private namespace or vendor-specific setting. Exporters may also flatten a
+  build, omit unused resources or translate properties into their own model. A
+  successful open operation proves only that the package was accepted, not that
+  every feature was preserved.
+</p>
+<h2>A verification workflow</h2>
+<ol>
+  <li>Keep the source file and note which properties must survive.</li>
+  <li>Export 3MF, then reopen it in the producing application.</li>
+  <li>
+    Import it into the receiving application and compare dimensions, placement
+    and appearance.
+  </li>
+  <li>
+    Inspect material assignments and every safety-critical printer setting
+    manually.
+  </li>
+  <li>
+    Use a small test job when colour/material mapping affects physical output.
+  </li>
+</ol>
+<p>
+  The <a href="https://3mf.io/spec/">3MF specification suite</a> defines the
+  format, while the
+  <a href="https://3mf.io/compatibility-matrix/">3MF compatibility matrix</a>
+  summarizes vendor-reported application support. Neither replaces verification
+  of the exact application versions and workflow you use.
+</p>
+<h2>Do not treat printer settings as universal</h2>
+<p>
+  Even when a receiving slicer recognizes a stored profile, confirm printer
+  model, nozzle, build surface, material, temperatures and motion limits.
+  Settings appropriate to the producing system may be unsafe or simply wrong
+  elsewhere. Geometry portability and machine-profile portability are separate
+  acceptance checks.
+</p>
+<p>
+  For archival exchange, document the authoring application/version and keep
+  screenshots or a human-readable summary of critical assignments. That evidence
+  helps distinguish a missing property from a different visual interpretation.
 </p>
 
 <h2>What a 3MF can retain</h2>
@@ -102,4 +183,13 @@ faq:
   <a href="{{ GuideSlug.Route3mfViewer }}"
     ><strong>Open a 3MF locally before printing</strong></a
   >
+</p>
+<h2>Use a small interoperability test</h2>
+<p>
+  Before transferring an important production package, test a small file using
+  the same colours, material regions and setting types. Export it, import it
+  into the receiver, and round-trip it if the workflow requires that. Record
+  which features remain, change or disappear. Repeat after major application
+  updates because extension and vendor-setting support can evolve independently
+  of the core format.
 </p>

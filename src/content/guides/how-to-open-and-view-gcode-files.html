@@ -19,6 +19,37 @@ faq:
   from another computer, was sliced with an unfamiliar profile or simply needs a
   quick visual review before printing.
 </p>
+
+<h2>Navigate the file without changing it</h2>
+<p>
+  Begin with the overall bounding box and layer range, then use the layer slider
+  to move from the first deposited lines through walls, infill, bridges and the
+  final layers. Toggle travel and extrusion views when the viewer supports them.
+  The goal on this page is orientation and navigation; use the deeper G-code
+  checking guide to interpret temperatures, suspicious moves and process risk.
+</p>
+<p>
+  Search plain text only when you understand the command dialect. Comments,
+  metadata and commands differ by slicer and firmware, and the same letter can
+  be interpreted with modal state established earlier in the file. Do not edit
+  an isolated line and assume the rest of the motion remains valid.
+</p>
+
+<h2>Handle large or unfamiliar files safely</h2>
+<p>
+  Large G-code can take time and memory to parse. Close unrelated heavy tabs,
+  allow the viewer to finish, and use the original slicer preview if the browser
+  cannot load the complete file. A partial preview must not be mistaken for a
+  complete toolpath. Keep the filename, slicer project and machine profile
+  together so the result can be reproduced.
+</p>
+<p>
+  Treat G-code from an untrusted source as machine instructions, not a harmless
+  3D model. View it locally, identify the intended printer and firmware, and
+  never send it directly to hardware merely because a preview opens.
+  InspectMesh's browser-based viewer does not upload the selected file, but it
+  also cannot certify that every command is safe for a particular machine.
+</p>
 <h2>Open for navigation, not a safety verdict</h2>
 <p>
   Use the viewer to move through layers and distinguish extrusion from travel.

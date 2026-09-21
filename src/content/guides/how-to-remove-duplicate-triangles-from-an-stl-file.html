@@ -19,6 +19,39 @@ faq:
   unnecessary mesh data and can make a file harder for slicers and repair tools
   to interpret.
 </p>
+<p>
+  Keep the cleanup tolerance at zero for exact-duplicate detection unless a
+  separate, reviewed welding operation is intended.
+</p>
+<p>
+  Also check whether duplicates carry opposite winding. Such pairs can cancel or
+  confuse inside/outside reasoning even though they occupy the same coordinates.
+  Remove them only after confirming that a legitimate surface remains at that
+  location.
+</p>
+
+<h2>Verify that only exact duplicates were removed</h2>
+<p>
+  Record triangle count and dimensions before cleanup. If 240 exact duplicated
+  faces are removed, the count should fall by roughly 240 without changing the
+  silhouette or bounding box. A much larger change suggests the operation merged
+  nearby vertices, deleted overlapping-but-distinct surfaces or performed other
+  repair work at the same time.
+</p>
+<p>
+  Exact duplicates use the same three positions, although vertex order may be
+  reversed. Coplanar faces with different vertices, intersecting shells and two
+  parts sharing a surface are different problems. Removing one triangle from an
+  overlap does not necessarily create a valid union, and deleting a reversed
+  pair can expose a hole. Use a boolean or source-model correction when the
+  intended ownership of the surface is unclear.
+</p>
+<p>
+  Save to a new file, then repeat duplicate, open-edge, non-manifold and
+  orientation checks. Compare cross-sections around the affected region and
+  inspect sliced layers. Stop if cleanup changes a functional boundary or makes
+  separate parts inseparable.
+</p>
 <h2>Do not confuse duplicates with overlaps</h2>
 <p>
   An exact duplicate face can often be removed conservatively. Intersecting

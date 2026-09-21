@@ -18,6 +18,47 @@ faq:
   side. Rotating it does not change its size: it changes which model dimension
   uses the printer’s X, Y and Z axes.
 </p>
+<p>
+  Save the fitting orientation in the slicer project so the verified placement
+  is not lost on re-import.
+</p>
+
+<h2>Check the rotated derivative</h2>
+<p>
+  Record the chosen rotation and compare dimensions after applying it in the
+  slicer or modeling tool. Right-angle rotations should permute the three
+  extents without changing their values; an unexpected change suggests scaling,
+  transformation order or unit conversion occurred as well. Reopen an exported
+  derivative before relying on it.
+</p>
+<p>
+  For assemblies or multiple objects, rotate around the intended shared origin
+  and verify relative placement. Rotating each part around its own center can
+  make every part fit individually while destroying the prepared arrangement.
+</p>
+
+<h2>Worked axis-permutation example</h2>
+<p>
+  A model measures 230 × 160 × 90 mm and the usable build volume is 180 × 180 ×
+  240 mm. In its current XYZ assignment it fails X. A right-angle rotation can
+  permute the dimensions to 90 × 160 × 230 mm, which fits those three nominal
+  limits. Another permutation, 160 × 230 × 90 mm, still fails Y. Testing the six
+  axis-aligned permutations is more reliable than comparing only the largest
+  model number with the printer's largest axis.
+</p>
+<p>
+  Bounding-box fit remains only a screen. Reserve room for the bed boundary,
+  brim or raft, supports, purge structures, clips and any machine-specific
+  exclusion areas. A diagonal or arbitrary-angle rotation can sometimes reduce
+  one planar span, but its new bounding box must be measured rather than
+  inferred.
+</p>
+<p>
+  Once a fitting orientation is found, reassess support, strength direction,
+  surface finish and stability. If the only fitting orientation creates an
+  unsafe or poor-quality print, split the model or revise it instead of treating
+  geometric fit as approval to print.
+</p>
 <h2>Use axis permutations as a fit check</h2>
 <p>
   A 200 x 120 x 80 mm model rotated 90 degrees can present 120 x 200 x 80 mm or

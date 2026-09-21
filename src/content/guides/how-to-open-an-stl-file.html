@@ -25,6 +25,70 @@ faq:
   before reducing a copy. Opening a model confirms that software can read it,
   not that its scale or geometry is suitable for printing.
 </p>
+<h2>Viewer, slicer or CAD/mesh editor?</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Application</th>
+      <th>Use it for</th>
+      <th>Do not infer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Viewer</td>
+      <td>Visual shape, orientation and basic inspection</td>
+      <td>That the surface is a valid printable solid</td>
+    </tr>
+    <tr>
+      <td>Slicer</td>
+      <td>Printer placement, supports and layer toolpaths</td>
+      <td>That automatic mesh handling preserved design intent</td>
+    </tr>
+    <tr>
+      <td>CAD or mesh editor</td>
+      <td>Measured editing, repair and export</td>
+      <td>That an imported triangle mesh regains its feature history</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Troubleshoot an STL that will not open</h2>
+<ol>
+  <li>Confirm the download or export completed and the file is not empty.</li>
+  <li>
+    Check whether the content is ASCII or binary STL rather than relying only on
+    the extension.
+  </li>
+  <li>
+    Try a local viewer and note whether the model is far from the origin or
+    implausibly small.
+  </li>
+  <li>
+    Re-export from source when coordinates are invalid or the file is truncated.
+  </li>
+</ol>
+<h2>Handle very large files</h2>
+<p>
+  High triangle count can exhaust memory or make navigation slow. Record the
+  original dimensions and preserve the source before simplifying. Binary
+  encoding can reduce bytes without removing triangles; decimation changes
+  geometry and must be checked around holes, text, curves and mating surfaces.
+</p>
+<h2>Checks after the file opens</h2>
+<p>
+  STL does not declare an authoritative unit, so measure a known feature before
+  scaling. Then review quality, watertightness and manifold findings as
+  relevant. Finally inspect the target slicer's layer preview. Opening
+  successfully is only the beginning of the preparation workflow, not proof of
+  printability.
+</p>
+<h2>Privacy and file handling</h2>
+<p>
+  InspectMesh opens supported STL files locally in the browser for its viewer
+  and checks. Keep an unchanged source copy, especially before repair or
+  reduction. A local workflow limits file transfer, but normal device and
+  browser security still matter for confidential designs.
+</p>
 <p>
   The important part is not only seeing the file open. You also need to confirm
   that the model is the expected size and that its mesh is healthy enough to

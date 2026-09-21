@@ -21,6 +21,55 @@ faq:
   but it cannot tell you the distance between two holes, the width of an opening
   or the length of a tab.
 </p>
+
+<h2>Measure holes and curved features carefully</h2>
+<p>
+  Selecting two visible mesh vertices on a faceted circle does not necessarily
+  measure its nominal diameter or center. The export may not place vertices at
+  opposite extrema, and coarse tessellation can make the result depend on
+  viewing angle. Fit or inspect the underlying analytic feature in CAD when
+  diameter, concentricity or center distance controls assembly.
+</p>
+<p>
+  For an approximate mesh check, take several spans, inspect a cross-section and
+  compare with a known reference. State whether the value is a bounding extent,
+  vertex distance, estimated diameter or source-CAD dimension. Those labels make
+  apparently conflicting measurements easier to reconcile.
+</p>
+
+<h2>Keep transformation state visible</h2>
+<p>
+  Measure the resolved object that will be printed. A slicer may show a
+  transformed instance while another viewer reports the unscaled resource. Note
+  any scale or rotation applied after import, reset accidental transforms before
+  comparing applications, and export a test copy only when the receiving
+  workflow requires baked geometry.
+</p>
+
+<h2>Worked measurement sequence</h2>
+<p>
+  Suppose a replacement cover must fit within a 120 × 80 × 25 mm envelope and
+  align two holes 64 mm apart. First read the axis-aligned bounding box and test
+  sensible rotations; a result of 118 × 78 × 28 mm fails height even though two
+  axes fit. Then measure hole centers point to point for the 64 mm requirement.
+  These are different questions: the bounding box cannot confirm the hole
+  spacing, and two selected points cannot prove the overall envelope.
+</p>
+<p>
+  Record the assumed unit beside every number. If an STL intended as inches
+  opens as millimeters, a 4-inch span may appear as 4 mm; applying 25.4 gives
+  101.6 mm. For 3MF, verify the declared unit and resolved transform rather than
+  applying a guessed factor. Preserve more decimal places during calculation
+  than the manufacturing process can reproduce, then round only the communicated
+  result.
+</p>
+<p>
+  Mesh vertices approximate the exported surface, so a picked point may not be a
+  true CAD center, tangent or nominal diameter. Use the original CAD model for
+  tolerance-critical inspection. Use mesh measurement to screen size, placement
+  and obvious discrepancies, and validate final fit with the actual printer and
+  process assumptions.
+</p>
 <h2>Choose the measurement type</h2>
 <p>
   A bounding box answers overall fit; point-to-point measurement answers a

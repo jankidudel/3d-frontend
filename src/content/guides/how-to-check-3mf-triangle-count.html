@@ -26,6 +26,67 @@ faq:
   a workflow cost, not a print-quality score. Simplify only a copy, then compare
   silhouette, critical dimensions and the final build layout before slicing.
 </p>
+<h2>Why three counts can differ</h2>
+<p>
+  A 3MF package may contain object resources that are never placed, components
+  that reference other objects, and several build items that reuse one resource.
+  The resource count describes stored mesh data. A per-object count helps locate
+  complex geometry. The resolved-build count describes triangles after following
+  the selected build items and reusable components; repeated placement can make
+  it larger than the number stored once in the package.
+</p>
+<h2>Interpret complexity in context</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Observation</th>
+      <th>Useful question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One object dominates the count</td>
+      <td>
+        Does that object contain fine curved detail that survives at print
+        scale?
+      </td>
+    </tr>
+    <tr>
+      <td>Many repeated items increase the build count</td>
+      <td>Is reuse expected, and can the slicer process the complete plate?</td>
+    </tr>
+    <tr>
+      <td>File size is large but count is moderate</td>
+      <td>Are textures, properties or other package parts responsible?</td>
+    </tr>
+    <tr>
+      <td>Count is high but the surface is simple</td>
+      <td>Was the mesh exported at unnecessary tessellation?</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Choose a reduction target from evidence</h2>
+<p>
+  Do not reduce triangles merely to reach a generic threshold. Preserve a copy,
+  test a modest reduction, and compare silhouette, small holes, text, mating
+  faces and dimensions. Check whether the target slicer becomes meaningfully
+  faster or more stable. If not, the geometry loss has bought little.
+</p>
+<p>
+  Triangle count is not a surface-quality score and does not predict print time
+  by itself. Layer height, toolpaths, infill, support and machine settings
+  matter later. Use the count to explain processing cost and find unusual
+  objects, then confirm the actual job in the slicer.
+</p>
+<h2>Before-and-after validation</h2>
+<p>
+  Record per-object and resolved counts before changing the package. After
+  simplification, verify the same build items remain, transforms have not
+  changed, and dimensions match. Rotate around curved and detailed surfaces at
+  the intended display size, then inspect sliced contours. Stop when holes
+  become faceted, text closes, mating faces move or the slicer gains no
+  meaningful processing improvement.
+</p>
 <p>
   A high count is not automatically a problem. A miniature, scan or organic
   sculpture may genuinely need many triangles. But an unnecessarily dense mesh

@@ -20,6 +20,62 @@ faq:
   difference is often called shrinkage, although the final result can also be
   affected by extrusion, cooling, orientation and calibration.
 </p>
+
+<h2>Build a repeatable measurement record</h2>
+<p>
+  Measure at the same points with the same instrument after a consistent cooling
+  or conditioning interval. Record nominal size, each raw reading, axis,
+  orientation, material, profile and ambient or chamber conditions that matter.
+  Average only comparable readings; a warped corner should be diagnosed rather
+  than hidden inside a mean value.
+</p>
+<p>
+  Print at least a confirming coupon after applying a factor. If the first
+  coupon is 99.2 mm, the corrected coupon is 100.1 mm and the next is 99.6 mm,
+  the process spread may matter more than another decimal place in scale. Fix
+  looseness, temperature instability, inconsistent extrusion or measurement
+  technique before tuning the factor further.
+</p>
+
+<h2>Do not apply one factor to unrelated geometry</h2>
+<p>
+  A long bar, thick block and thin ring can cool differently even in the same
+  material. Validate the correction on geometry representative of the real part,
+  particularly when X and Y differ or the part is constrained during cooling.
+  Preserve the unscaled source and apply compensation in a controlled derivative
+  or profile so the assumption can be revised.
+</p>
+<p>
+  Compensation is not a substitute for tolerance design. A mating pair still
+  needs intentional clearance, and an undersized hole may require local hole
+  compensation rather than enlarging every external dimension. Use a functional
+  test piece before committing a long or expensive job.
+</p>
+
+<h2>Worked per-axis correction</h2>
+<p>
+  A controlled coupon is designed as 100.00 × 60.00 mm but, after cooling and
+  conditioning, measures 99.20 × 59.10 mm. The observed factors are
+  <code>100 / 99.20 = 1.0081</code> for X and
+  <code>60 / 59.10 = 1.0152</code> for Y. A trial part could therefore use about
+  100.81% X and 101.52% Y scaling, while Z remains unchanged unless separately
+  measured. Print a second coupon to validate; do not infer Z or another
+  material from those two values.
+</p>
+<p>
+  Keep nozzle, profile, orientation, cooling, chamber conditions, material
+  batch, measurement temperature and measuring points fixed. Repeat the print
+  enough to see whether the correction is larger than normal process variation.
+  Record raw dimensions rather than only the chosen percentage so a future
+  profile change can be diagnosed.
+</p>
+<p>
+  Global scaling is inappropriate when outside dimensions are correct but a hole
+  is tight, when first-layer expansion affects only the base, or when a warped
+  part has no stable scale factor. Use feature compensation, first-layer
+  controls or process correction for those cases. Stop and diagnose mechanics if
+  results drift between nominally identical coupons.
+</p>
 <h2>Measure a controlled per-axis test</h2>
 <p>
   Print a known X, Y and Z test under the same material and profile, then

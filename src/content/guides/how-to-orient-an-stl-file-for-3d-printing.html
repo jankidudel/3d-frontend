@@ -52,6 +52,59 @@ faq:
   contact, cooling, seams and the intended load. A model that fits the bed may
   still be a poor orientation for strength or visible surfaces.
 </p>
+<h2>Start with the part's priority</h2>
+<p>
+  Choose which requirement is hardest to change after printing: a visible face,
+  load direction, accurate hole, stable base or build-volume constraint. There
+  is rarely one orientation that maximizes every outcome. Rank the requirements,
+  create two or three plausible candidates, and compare them in the slicer.
+</p>
+<h2>Support and surface quality</h2>
+<p>
+  Downward-facing surfaces and steep overhangs may need support, leaving contact
+  marks and extra finishing. Curved or sloped faces also show layer stepping
+  differently by orientation. Put critical cosmetic or mating faces where
+  support and stair-stepping are acceptable, then review bridge and overhang
+  behavior in the intended material profile.
+</p>
+<h2>Strength and load direction</h2>
+<p>
+  Layered processes can behave differently across and along layers. Orient
+  hooks, clips and loaded sections with the expected force in mind, but avoid
+  universal strength claims: material, temperature, geometry, perimeters and
+  process all matter. Use a representative test when failure has consequences.
+</p>
+<h2>Stability, adhesion and fit</h2>
+<p>
+  A broad, suitable contact region can improve stability, while a tall narrow
+  orientation may reduce supports but increase wobble or detachment risk.
+  Confirm the complete footprint including brim/support and compare the rotated
+  bounding box with usable printer volume. A model fitting the nominal bed does
+  not prove the toolhead or gantry will clear it.
+</p>
+<h2>Compare candidates in the slicer</h2>
+<ol>
+  <li>Check support volume and contact on critical faces.</li>
+  <li>Inspect bridges, overhangs, first-layer area and height.</li>
+  <li>Review seams and likely travel across visible surfaces.</li>
+  <li>Consider layer direction at the most important load path.</li>
+  <li>
+    Choose the best documented compromise and test a critical feature if needed.
+  </li>
+</ol>
+<p>
+  The orientation planner can compare geometry-level trade-offs locally. Final
+  support, material, adhesion and strength decisions belong in the slicer and
+  physical validation workflow.
+</p>
+<h2>Document the chosen compromise</h2>
+<p>
+  Save the final orientation with the slicer project and note why it was
+  selected. This is especially useful when the best cosmetic orientation differs
+  from the best load direction. If a critical requirement remains uncertain,
+  print a reduced section or coupon in the chosen orientation before committing
+  the whole model.
+</p>
 <p>
   The best orientation is usually a compromise between print quality, strength,
   speed and printer fit.

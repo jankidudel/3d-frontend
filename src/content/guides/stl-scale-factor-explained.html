@@ -16,6 +16,57 @@ faq:
   If the factor is <code>2</code>, the model becomes twice as large in width,
   depth, and height. If it is <code>0.5</code>, it becomes half as large.
 </p>
+<p>
+  When communicating a factor, include both the decimal and final percentage so
+  another person can reproduce the entry without interpreting “increase by” as
+  “scale to.”
+</p>
+
+<h2>More scale-factor examples</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Current</th>
+      <th>Target</th>
+      <th>Factor</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>80 mm</td>
+      <td>100 mm</td>
+      <td>100 / 80 = 1.25</td>
+      <td>125%</td>
+    </tr>
+    <tr>
+      <td>125 mm</td>
+      <td>100 mm</td>
+      <td>100 / 125 = 0.8</td>
+      <td>80%</td>
+    </tr>
+    <tr>
+      <td>4 units</td>
+      <td>101.6 mm</td>
+      <td>25.4</td>
+      <td>2540%</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A 125% result means the final size is 125% of the original, which is a 25%
+  increase. A factor of 0.8 means the final size is 80% of the original, a 20%
+  decrease. Keeping those phrases separate prevents the common mistake of typing
+  25% when the slicer expects the final percentage.
+</p>
+<p>
+  Calculate from a dependable dimension and retain extra precision until the
+  final entry. If a 37.46 mm feature must become 50.00 mm, the factor is about
+  1.3348; rounding immediately to 1.33 yields about 49.82 mm. Measurement
+  uncertainty and printer variation may exceed that difference, but premature
+  rounding should not add avoidable error. Verify another independent dimension
+  to detect a wrong unit assumption or non-uniform source distortion.
+</p>
 <h2>Work the factor before scaling</h2>
 <p>
   Scale factor equals target dimension divided by current dimension. To change

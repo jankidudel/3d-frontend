@@ -18,6 +18,61 @@ faq:
   objects, build items and optional extensions. That is useful, but it means a
   slicing failure has several possible causes.
 </p>
+<p>
+  If re-export is necessary, preserve the original and note exactly what the new
+  package drops. Confirm declared units, resolved dimensions, build-item count
+  and material or color assignments before accepting it as the replacement. A
+  file that slices after flattening may have bypassed the unsupported feature
+  rather than repaired it.
+</p>
+
+<h2>Symptom-to-check guide</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Symptom</th>
+      <th>First check</th>
+      <th>Likely route</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>File will not open</td>
+      <td>
+        Confirm it is a readable 3MF package and note the exact importer error
+      </td>
+      <td>Package or unsupported-extension diagnosis</td>
+    </tr>
+    <tr>
+      <td>Package opens but the plate is empty</td>
+      <td>Inspect build items, object references, transforms and scale</td>
+      <td>Resolved-build correction</td>
+    </tr>
+    <tr>
+      <td>Only one object disappears</td>
+      <td>Isolate that object's mesh and placement</td>
+      <td>Topology or object-reference repair</td>
+    </tr>
+    <tr>
+      <td>Preview has missing layers</td>
+      <td>Check open edges, non-manifold regions and self-intersections</td>
+      <td>Mesh diagnosis before package re-export</td>
+    </tr>
+    <tr>
+      <td>Another slicer works</td>
+      <td>Compare supported 3MF features and versions</td>
+      <td>Compatibility-safe re-export, preserving the original</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Change one variable at a time and save each test under a new name. A geometry-
+  only conversion to STL can help isolate whether failure is in mesh or package
+  interpretation, but it discards 3MF information and is not a faithful repair.
+  Once the cause is known, re-export from the source application when possible,
+  then confirm object count, units, placement and sliced layers in the target
+  slicer.
+</p>
 <h2>Separate package and build failures</h2>
 <p>
   A 3MF slicer failure can come from an unsupported extension, damaged package,

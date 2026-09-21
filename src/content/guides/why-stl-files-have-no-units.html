@@ -19,6 +19,47 @@ faq:
   or inches. A coordinate span of <code>100</code> is simply
   <code>100</code> units. The printer software decides what that unit means.
 </p>
+
+<h2>Check the whole export chain</h2>
+<p>
+  A CAD export dialog, mesh editor and slicer can each apply an assumption.
+  Write down the source document unit, export unit, import unit and observed
+  bounding size. If the factor appears once, correct it at the responsible
+  boundary rather than compensating again in every later application.
+</p>
+<p>
+  Automated workflows should carry unit metadata beside the STL or enforce one
+  documented convention. Reject a file whose dimensions fall outside a plausible
+  range instead of guessing silently. For human handoffs, provide one reference
+  dimension such as “overall width 101.6 mm” so the receiver can detect a wrong
+  assumption before slicing.
+</p>
+
+<h2>Where the ambiguity comes from</h2>
+<p>
+  STL records numeric vertex coordinates but provides no standard field
+  declaring whether one coordinate unit means a millimeter, inch or another
+  length. The exporting and importing applications therefore rely on settings or
+  convention. The coordinates are not inherently millimeters; millimeters are
+  simply common in desktop printing workflows.
+</p>
+<p>
+  A model designed as 4 inches wide contains a span of 4 if exported in inches.
+  If imported as millimeters it appears only 4 mm wide. Multiplying by 25.4
+  restores 101.6 mm. The reverse mistake makes a 100 mm part appear 2,540 mm
+  wide. A factor this recognizable is evidence of unit interpretation, not
+  material shrinkage or printer calibration.
+</p>
+
+<h2>Prevent unit mistakes at handoff</h2>
+<p>
+  Set the export unit explicitly, include it in the filename or handoff note,
+  and record an expected reference dimension. On import, verify the bounding box
+  before rotating, repairing or scaling for fit. Preserve the original and apply
+  one known conversion rather than repeated visual adjustments. For recurring
+  exchanges, standardize exporter and importer presets or use a format with
+  declared units, then still confirm the resolved dimensions.
+</p>
 <h2>Prevent a 25.4-times mistake</h2>
 <p>
   STL coordinates do not declare whether a value is millimetres or inches. An

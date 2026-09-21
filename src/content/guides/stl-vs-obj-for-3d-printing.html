@@ -17,6 +17,71 @@ faq:
   STL and OBJ can both describe 3D models, but they were designed for different
   jobs.
 </p>
+
+<h2>Verify an OBJ bundle before handoff</h2>
+<p>
+  Open the OBJ from a different folder or machine to reveal broken relative
+  paths to material or texture files. Confirm whether the receiving slicer uses
+  groups as separate objects, merges them, or ignores unsupported surface
+  attributes. Include every required companion file and avoid renaming only one
+  member of the bundle.
+</p>
+<p>
+  For a geometry-only print, compare dimensions and object count after import.
+  For a color workflow, also inspect face assignments and texture orientation.
+  If those attributes are lost, an STL conversion will not restore them; return
+  to the source or choose a tested richer handoff.
+</p>
+
+<h2>Attribute and support comparison</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Concern</th>
+      <th>STL</th>
+      <th>OBJ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Surface geometry</td>
+      <td>Triangles</td>
+      <td>Polygonal faces that applications may triangulate</td>
+    </tr>
+    <tr>
+      <td>Declared units</td>
+      <td>No standard unit field</td>
+      <td>Common workflows still require an agreed unit convention</td>
+    </tr>
+    <tr>
+      <td>Color/material references</td>
+      <td>Not part of standard STL</td>
+      <td>Can reference materials and textures through companion data</td>
+    </tr>
+    <tr>
+      <td>Single-file handoff</td>
+      <td>Usually one file</td>
+      <td>
+        Textures and material references may require several files and stable
+        paths
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Choose STL for a simple single-material mesh when the receiving printer
+  workflow is known to expect it. Choose OBJ when surface grouping, color or
+  texture data is useful and the receiver explicitly supports the complete
+  bundle. A geometry- only OBJ import does not prove that material references or
+  texture coordinates survived.
+</p>
+<p>
+  In either workflow, communicate units, verify dimensions and inspect the
+  imported object count and orientation. Keep source CAD or sculpt data
+  separately. For a modern multi-object print handoff, compare 3MF as well
+  because it packages richer print-oriented information without relying on loose
+  companion files, subject to application compatibility.
+</p>
 <h2>Choose by delivery workflow</h2>
 <p>
   STL is a simple triangle-mesh exchange format. OBJ can carry richer

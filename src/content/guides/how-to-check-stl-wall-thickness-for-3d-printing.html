@@ -21,6 +21,38 @@ faq:
   when you also need to review mesh integrity, scale and printer fit before
   investigating sampled thin areas.
 </p>
+
+<h2>Choose the threshold from the intended process</h2>
+<p>
+  Do not copy a minimum from an unrelated printer or material. Start with the
+  process documentation and planned extrusion or exposure settings, then use the
+  checker to locate geometry below that chosen screening value. A threshold is a
+  question you ask of the model, not a property the STL supplies.
+</p>
+<p>
+  Keep cosmetic details, load-bearing walls and sacrificial features separate in
+  the decision. A short embossed stroke and a long structural web can share the
+  same measured thickness but carry different consequences. Document the region
+  and requirement before editing the model globally.
+</p>
+
+<h2>Interpret a sampled result</h2>
+<p>
+  Treat a flagged sample as a location to inspect, not a complete map of the
+  model. A thin decorative rib can fall between samples, while a ray near a
+  sharp corner can cross an unintended surface. Re-run at an appropriate
+  threshold, inspect several viewing angles and use a cross-section for internal
+  passages. If the STL is open or self-intersecting, repair or return to source
+  CAD before relying on inside-to-outside thickness measurements.
+</p>
+<p>
+  For example, if a nominal 1.2 mm shell contains a flagged 0.55 mm patch, first
+  locate whether it is an intentional edge taper, export artifact or damaged
+  surface. Editing the original parametric wall is usually safer than inflating
+  the entire STL, which can close holes and shift mating faces. Export a new
+  mesh, repeat dimensions and mesh checks, then confirm generated walls in the
+  slicer preview.
+</p>
 <h2>Use the STL result as a screening step</h2>
 <p>
   STL has no authoritative unit, so confirm dimensions before interpreting any

@@ -27,6 +27,78 @@ faq:
   Use the 3MF quality report to locate the affected object, then return to
   source CAD when the intended join is unclear.
 </p>
+<h2>Recognize the main topology cases</h2>
+<ul>
+  <li>
+    <strong>Open boundary:</strong> an edge belongs to only one triangle, so a
+    closed solid may be incomplete.
+  </li>
+  <li>
+    <strong>Over-shared edge:</strong> more than two faces meet at one edge,
+    making the local volume ambiguous.
+  </li>
+  <li>
+    <strong>Vertex-only connection:</strong> shells touch at a point without a
+    printable solid connection.
+  </li>
+  <li>
+    <strong>Internal or overlapping faces:</strong> multiple surfaces compete to
+    describe inside and outside.
+  </li>
+</ul>
+<h2>Account for resources, items and transforms</h2>
+<p>
+  The same object resource can be placed more than once. Check topology on the
+  object and review the resolved build for collisions or overlaps introduced by
+  placement. A per-object manifold result does not prove that two placed objects
+  form a clean combined solid, and separate manifold shells are not
+  automatically an error when the design intentionally contains multiple parts.
+</p>
+<h2>Decide the next action</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Result</th>
+      <th>Interpretation</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One closed shell</td>
+      <td>Topology supports a conventional solid</td>
+      <td>Continue with scale, thickness and slicer checks</td>
+    </tr>
+    <tr>
+      <td>Several closed shells</td>
+      <td>May be intentional components or disconnected islands</td>
+      <td>Inspect placement and intended assembly</td>
+    </tr>
+    <tr>
+      <td>Open or over-shared edges</td>
+      <td>The affected object has ambiguous topology</td>
+      <td>Locate the region and repair or return to CAD</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Manifoldness does not establish wall thickness, clearance, structural strength
+  or printer compatibility. Use it to route the geometry problem, then validate
+  the final build in the target slicer.
+</p>
+<h2>Worked interpretation</h2>
+<p>
+  If object A is one closed shell and object B contains an edge shared by three
+  faces, the package does not have one uniform answer: A supports a solid
+  interpretation while B needs diagnosis. If A is placed twice, both build items
+  reuse the same sound object, but their placement can still overlap. Report
+  results per object and then review the resolved plate.
+</p>
+<p>
+  After correction, compare object count and transforms, repeat the manifold
+  check and inspect affected slicer layers. Do not merge intentionally separate
+  parts merely to obtain a single-shell result.
+</p>
 <p>
   A common non-manifold problem is an edge shared by more than two triangles.
   Other examples include overlapping shells, internal faces and parts that touch
@@ -77,4 +149,13 @@ faq:
   the
   <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
   before printing.
+</p>
+<h2>Limitations of the result</h2>
+<p>
+  A topology checker reports relationships between mesh elements; it does not
+  know whether two neighboring objects should be fused, whether an internal
+  shell is a cavity, or whether a thin connection can be manufactured. Use
+  object names, build structure, source CAD and cross-sections to supply that
+  context. Preserve the package before repair because flattening or exporting
+  one object can lose placement and properties unrelated to topology.
 </p>

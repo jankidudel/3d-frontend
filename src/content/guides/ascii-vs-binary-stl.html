@@ -18,6 +18,38 @@ faq:
   describe the same triangle mesh. The difference is how the data is stored, not
   how detailed the model is.
 </p>
+<p>
+  A final byte-level check is useful in automated pipelines: reject truncated
+  binary data or incomplete ASCII facets before passing the file downstream.
+  That validates encoding structure, not whether the represented surface is a
+  printable solid.
+</p>
+
+<h2>Identify and verify the encoding</h2>
+<p>
+  An ASCII STL is readable text built from words such as <code>solid</code>,
+  <code>facet</code> and <code>vertex</code>. A binary STL starts with an
+  80-byte header followed by a triangle count and fixed-size triangle records.
+  The word <code>solid</code> alone is not a reliable detector because a binary
+  header may contain arbitrary text. A parser should validate the expected
+  binary length or successfully parse the complete text structure rather than
+  guess from the first characters.
+</p>
+<p>
+  Binary records take 50 bytes per triangle plus the header and count. An ASCII
+  representation stores multiple decimal coordinate strings and labels for the
+  same triangle, so it is usually much larger, though the exact ratio depends on
+  number formatting. Converting 100,000 unchanged triangles from ASCII to binary
+  reduces encoding overhead; it does not simplify the surface or improve print
+  detail.
+</p>
+<p>
+  After conversion, compare triangle count, overall dimensions and mesh checks
+  with the original, then open the result in the intended slicer. Keep the
+  source until that verification passes. If the receiver requires ASCII for a
+  specific legacy integration, compatibility takes priority over size; otherwise
+  binary is generally the practical STL export.
+</p>
 <h2>Encoding does not change geometry</h2>
 <p>
   Binary STL is usually smaller because it stores triangles compactly; ASCII is

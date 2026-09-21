@@ -20,6 +20,39 @@ faq:
   problems, unexpected scale or thin features that lead to confusing slicing
   results. A useful preflight checks each concern separately before repair.
 </p>
+
+<h2>Interpret combinations, not isolated counts</h2>
+<p>
+  One open loop plus consistent orientation may indicate a simple missing cap.
+  Open edges combined with self-intersections and many disconnected fragments
+  suggest a more damaged export. Duplicate faces with opposite winding can
+  confuse inside/outside classification without changing the visible silhouette.
+  Use the pattern and location of findings to choose the next inspection.
+</p>
+<p>
+  Compare component count and bounding dimensions with the source before repair.
+  A tool that reports zero errors after deleting a small disconnected component
+  may have removed intended geometry. Review the before/after silhouette,
+  cross-sections and sliced layers, and keep diagnostic work separate from the
+  end-to-end print-preparation workflow.
+</p>
+
+<h2>Know when diagnosis must stop</h2>
+<p>
+  Return to source CAD when a missing functional surface, overlapping solid or
+  internal partition has no unambiguous mesh-only repair. The checker can
+  describe topology but cannot infer design intent, tolerance or load path.
+  Record the finding and affected region so the source-model correction is
+  targeted.
+</p>
+
+<p>
+  Interpret each result in context: an open boundary identifies an edge with no
+  second face, while a non-manifold edge indicates an ambiguous face sharing
+  relationship. Neither count alone tells you whether an opening was deliberate
+  or what replacement surface the designer intended. Preserve the original and
+  inspect the reported location before choosing a repair.
+</p>
 <h2>Interpret findings before repairing</h2>
 <p>
   Open edges, non-manifold edges, degenerate faces, duplicates and orientation

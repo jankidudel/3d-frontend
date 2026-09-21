@@ -18,6 +18,34 @@ faq:
   physically meaningful solid. In a printable model, software should be able to
   identify a consistent outside, inside and surface boundary.
 </p>
+<p>
+  Report the exact component and edge pattern when asking for help;
+  “non-manifold” alone covers several different topologies and does not identify
+  a safe edit.
+</p>
+
+<h2>Interpret common diagnostic patterns</h2>
+<p>
+  One boundary loop around an otherwise clean shell often points to a missing
+  cap. An edge shared by three faces can indicate an internal divider or two
+  solids joined without a proper union. Two shells touching only at a vertex
+  have no printable volume connecting them even though they appear to meet. A
+  model can also be watertight yet non-manifold if an internal sheet creates
+  over-shared edges.
+</p>
+<p>
+  Counts tell you that topology needs inspection, not what the designer
+  intended. Locate the highlighted edges, inspect cross-sections and compare the
+  region with source CAD. Do not assume every separate shell is an error:
+  disjoint closed components can be intentional, while coincident or merely
+  touching components need closer review.
+</p>
+<p>
+  This explainer helps classify the result. Use the focused non-manifold repair
+  workflow only after classification, and return to source CAD when a functional
+  joint or internal structure is ambiguous. Re-check topology and sliced layers
+  after any repair rather than treating an automatic success message as proof.
+</p>
 <h2>Diagnose before repairing</h2>
 <p>
   Non-manifold geometry can include an edge shared by too many faces, ambiguous

@@ -20,6 +20,36 @@ faq:
   items and transforms. The useful total is therefore the volume of the resolved
   print build, not merely a number from the first stored object.
 </p>
+<p>
+  Keep the unit in the result: 1,000 mm³ equals 1 cm³. A bare number copied from
+  an application is not comparable until both the declared package unit and any
+  build scale have been resolved.
+</p>
+
+<h2>Worked resolved-build example</h2>
+<p>
+  Imagine a valid 3MF object whose closed mesh encloses 12,000 mm³. If the build
+  contains two instances of that object with rigid placement transforms, the
+  resolved total is 24,000 mm³, or 24 cm³. A uniform scale of 150% changes
+  volume by the cube of the scale factor: one instance becomes
+  <code>12,000 × 1.5³ = 40,500 mm³</code>. Two such instances total 81,000 mm³.
+  This is why counting resource meshes without applying build transforms can
+  understate or overstate the placed build.
+</p>
+<p>
+  Add volumes only when the placed closed shells represent separate material
+  regions. Intersecting copies can double-count the overlap if they are summed
+  independently; open shells, reversed regions and self-intersections may not
+  define a trustworthy inside at all. InspectMesh reports what it can resolve
+  from the package, but it does not turn ambiguous geometry into a physical
+  solid.
+</p>
+<p>
+  Use the result for geometry comparison or a solid-mass estimate, then use the
+  slicer for actual filament consumption. Infill, perimeters, top and bottom
+  layers, supports, purge structures and process settings make sliced material
+  use different from the enclosed solid volume.
+</p>
 <h2>Check whether volume is meaningful</h2>
 <p>
   Volume is most useful for a closed resolved build with intended units. Sum

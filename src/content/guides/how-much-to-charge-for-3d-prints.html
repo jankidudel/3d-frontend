@@ -18,6 +18,65 @@ faq:
   customer price needs to cover the plastic, printer time, your work, the risk
   of failures and any fees or delivery that are included in the offer.
 </p>
+
+<h2>Allocate failure risk without double counting</h2>
+<p>
+  Choose one explicit method. You can multiply production cost by an observed
+  retry factor, add a fixed expected-failure allowance, or use a minimum charge
+  for jobs that consume setup time. Do not add all three without checking what
+  each covers. If nine out of ten comparable runs succeed, dividing the consumed
+  production cost by 0.9 is one transparent starting point; it is not evidence
+  for a new material or untested geometry.
+</p>
+<p>
+  Separate hands-on labor from machine time. Ten unattended print hours do not
+  equal ten labor hours, while twenty minutes of file repair, support removal
+  and packaging should not disappear inside an electricity estimate. Record
+  assumed minutes and hourly rate so repeat orders can reuse setup knowledge
+  without charging for work that was not repeated.
+</p>
+
+<h2>Check the quote after the order changes</h2>
+<p>
+  Quantity, color changes, rush delivery, customer-supplied files and tolerance
+  requirements can change the risk and work. Re-run the quote instead of scaling
+  the old total mechanically. A ten-part batch may share preparation but place
+  more value at risk on one build plate. State revision and cancellation terms
+  before starting any paid design work.
+</p>
+
+<h2>Worked quote: margin is not markup</h2>
+<p>
+  Assume calculated production cost is $18, hands-on preparation and finishing
+  adds $12, an expected-failure allowance adds $3, and packaging adds $2. The
+  pre-fee cost is $35. If the selling channel takes 10% of revenue and the
+  target profit margin is 25% of revenue, solve price as
+  <code>$35 / (1 - 0.10 - 0.25) = $53.85</code>. Rounding the quote to $54
+  leaves roughly $13.50 profit after the $5.40 fee and $35 cost.
+</p>
+<p>
+  Adding 25% to $35 would produce $43.75, which is a 25% markup on cost, not a
+  25% margin on revenue. Once the 10% fee is removed, that price leaves only
+  $4.38 profit, or about a 10% margin. State which method the quote uses so
+  later updates do not silently mix the two.
+</p>
+
+<h2>Define the quotation boundary</h2>
+<p>
+  A useful quote identifies quantity, material and color, quality or
+  layer-height assumptions, included design work, finishing, delivery, tax
+  treatment, lead time, and how revisions are handled. Separate a one-time setup
+  or modeling fee from the per-part price when that makes repeat orders clearer.
+  For uncertain jobs, say what triggers a revised quote rather than hiding the
+  uncertainty in an unexplained premium.
+</p>
+<p>
+  Recalculate when quantity or process changes: batching can reduce setup labor,
+  but a full plate can increase the value of a single failed run. The calculator
+  supplies a transparent floor and scenario model; demand, rights to
+  manufacture, service level and local competition still require business
+  judgment.
+</p>
 <h2>Quote from calculated cost, not intuition</h2>
 <p>
   Start with a documented production cost, then add payment fees, customer

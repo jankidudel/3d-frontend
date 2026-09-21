@@ -22,6 +22,67 @@ faq:
   earlier in a CAD workflow, while OBJ can suit some visual or colour-based mesh
   workflows.
 </p>
+
+<h2>Sources and format documentation</h2>
+<p>
+  Consult the <a href="https://3mf.io/spec/">3MF specification suite</a> for
+  core and extension capabilities, the Library of Congress
+  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000504.shtml"
+    >STL format description</a
+  >
+  for documented STL structure and limitations, and NIST's
+  <a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=821600"
+    >introduction to ISO 10303 STEP</a
+  >
+  for STEP's product-data role. Application compatibility still requires an
+  import/export test.
+</p>
+
+<h2>Decision matrix by handoff stage</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Handoff</th>
+      <th>Usually start with</th>
+      <th>Verify</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Editable mechanical design</td>
+      <td>Native CAD or STEP</td>
+      <td>Bodies, units, features and revision authority</td>
+    </tr>
+    <tr>
+      <td>Simple single-mesh print delivery</td>
+      <td>STL</td>
+      <td>Unit convention, dimensions and mesh health</td>
+    </tr>
+    <tr>
+      <td>Unit-aware multi-object print package</td>
+      <td>3MF</td>
+      <td>Resolved objects, placement and receiver support</td>
+    </tr>
+    <tr>
+      <td>Polygon model with surface attributes</td>
+      <td>OBJ or a tested richer format</td>
+      <td>Companion materials, textures and grouping</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The table identifies a starting point, not a universal winner. A print service
+  may request STEP because it controls tessellation; an established machine may
+  accept only STL; two applications may support different 3MF extensions. Ask
+  what the receiver actually consumes and test one representative file before
+  moving a production library.
+</p>
+<p>
+  Keep the editable master independently of the delivery format. After
+  conversion or export, compare units, overall dimensions, object count, surface
+  attributes and critical geometry. A smaller or newer format is not better if
+  the receiving workflow silently discards information the job depends on.
+</p>
 <h2>Use a decision matrix, not a universal winner</h2>
 <p>
   Choose STL for basic mesh delivery, 3MF for a print-oriented package with

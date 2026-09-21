@@ -28,6 +28,80 @@ faq:
   it adds alignment, tolerance and strength decisions that a simple bounding-box
   result cannot answer.
 </p>
+<h2>Choose a cut location</h2>
+<p>
+  Prefer a flat or easily finished region with enough material for the planned
+  joint. Keep seams away from thin details, sealing faces, high loads and
+  visible focal areas where possible. Check that every resulting piece fits the
+  printer in a sensible orientation; a convenient cut can create an unprintable
+  half.
+</p>
+<h2>Select alignment and joining features</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Useful when</th>
+      <th>Check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Flat glue joint</td>
+      <td>Large accessible surface and light alignment demand</td>
+      <td>Flatness, adhesive compatibility and clamping</td>
+    </tr>
+    <tr>
+      <td>Pins or dowels</td>
+      <td>Repeatable alignment is important</td>
+      <td>Hole/pin clearance, insertion direction and wall thickness</td>
+    </tr>
+    <tr>
+      <td>Dovetail or keyed joint</td>
+      <td>Parts need constrained assembly</td>
+      <td>Print orientation, tolerance and stress concentration</td>
+    </tr>
+    <tr>
+      <td>Screws or inserts</td>
+      <td>Serviceable assembly is required</td>
+      <td>Boss size, hardware access and material/process guidance</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Design clearance from a test</h2>
+<p>
+  Do not make a pin and hole the same nominal size and assume they will
+  assemble. Use the intended printer, material, orientation and profile to print
+  a small joint coupon. Apply measured compensation and chosen assembly
+  clearance as separate decisions, then update the production model.
+</p>
+<h2>Prepare and verify each part</h2>
+<ol>
+  <li>
+    Keep the original STL and save each split part with an unambiguous name.
+  </li>
+  <li>
+    Inspect new cut faces for holes, duplicate surfaces and non-manifold edges.
+  </li>
+  <li>
+    Check part dimensions, wall thickness around connectors and printer fit.
+  </li>
+  <li>Orient each piece for support, surface quality and joint strength.</li>
+  <li>Dry-fit or test the joint before finishing and permanent assembly.</li>
+</ol>
+<p>
+  Splitting solves a size or assembly problem but creates new tolerance and
+  structural decisions. Return to source CAD when dimension-critical connectors
+  or load paths cannot be added reliably to the mesh.
+</p>
+<h2>Post-assembly verification</h2>
+<p>
+  After a dry fit, compare the assembled overall dimensions and alignment with
+  the original model. Check seam gaps, twist and connector engagement before
+  adhesive or heat-setting. For loaded assemblies, place joints away from peak
+  stress where possible and test the assembled part under appropriate controlled
+  conditions.
+</p>
 <p>
   The aim is not simply to cut the model in half. A good split creates parts
   that are easy to print, align and join.

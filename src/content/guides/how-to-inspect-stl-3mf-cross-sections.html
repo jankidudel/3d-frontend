@@ -21,6 +21,35 @@ faq:
   through an STL or 3MF model, hiding one side so you can inspect the interior
   from different angles before you spend time slicing or printing.
 </p>
+<p>
+  Label saved screenshots with plane axis and position so another reviewer can
+  reproduce the same cut.
+</p>
+
+<h2>Examples of faults a section can reveal</h2>
+<p>
+  Move the plane through a supposedly solid wall to look for an unintended
+  internal cavity, through a boolean joint to find a trapped partition, and
+  through a narrow channel to check whether it remains open. On a nested-shell
+  model, a section can show whether the inner surface is consistently separated
+  from the outer one. Compare several nearby slices because a single plane may
+  miss a localized fault.
+</p>
+<p>
+  Sections are also useful after repair: verify that a patch did not bridge a
+  passage, that hollowing leaves a continuous wall, and that split connectors
+  have the intended engagement. Keep orientation and plane position documented
+  when comparing before and after.
+</p>
+
+<h2>What a cross-section cannot establish</h2>
+<p>
+  One two-dimensional cut cannot prove the whole mesh is watertight, manifold or
+  free from self-intersections. It does not measure every wall, identify
+  material behavior or predict a slicer's complete toolpath. Combine section
+  inspection with topology, dimensions and wall-thickness checks appropriate to
+  the question, then review sliced layers.
+</p>
 <h2>Know what a section can reveal</h2>
 <p>
   Cross-sections can expose internal voids, unexpected shells, wall changes and

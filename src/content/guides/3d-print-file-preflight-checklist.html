@@ -6,296 +6,172 @@ eyebrow: 3D print preparation guide
 heading: 3D Print File Preflight Checklist
 faq:
   - question: What should I check before slicing an STL file?
-    answer: Check the model dimensions and scale, confirm it fits your printer, inspect the mesh for geometry problems, review wall thickness where relevant, and make sure the file contains the geometry you expect before slicing.
+    answer: Check the expected geometry, dimensions and unit assumption, printer fit, mesh warnings and relevant wall thickness, then verify any changed copy before slicing.
   - question: Does passing a mesh check mean a model will print successfully?
-    answer: No. Mesh checks can identify geometry problems, but print success also depends on orientation, supports, material, slicer settings, printer capability and the design itself.
+    answer: No. File checks do not determine supports, material behaviour, slicer settings, printer calibration or whether a design is suitable for its intended load.
   - question: Should I repair every STL warning before slicing?
-    answer: Not necessarily. Some warnings are harmless for a particular model or slicer. Understand what the issue means before modifying geometry, and verify the repaired file afterwards.
-  - question: Is 3MF better than STL for preparing a 3D print?
-    answer: 3MF can preserve units and richer model information that STL does not store, but both formats can contain geometry that should be inspected before printing.
+    answer: No. Understand and locate the finding first. Preserve the original, change only what matters, and re-check the result.
+  - question: Is 3MF better than STL for preflight?
+    answer: 3MF can declare units and represent placed build items, while STL is a simpler unitless mesh. Both still need geometry and slicer checks.
 ---
 
 <p>
-  A model opening correctly in a viewer does not necessarily mean it is ready
-  for printing. Before slicing an STL or 3MF file, check the small number of
-  properties that can otherwise lead to incorrect scale, failed slicing, fragile
-  walls or unexpected geometry.
+  Use this checklist as the last file-level sweep before slicing an STL or 3MF.
+  It produces three outcomes: <strong>pass</strong> when the property is
+  understood, <strong>warn</strong> when it needs slicer or design review, and
+  <strong>fail</strong> when scale, geometry or intended content is unknown. For
+  explanations and repair routes, use the
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
+    >complete print-readiness guide</a
+  >.
 </p>
-<h2>Use pass, warn and fail outcomes</h2>
-<p>
-  Pass when the file and intended size are understood, warn when a finding needs
-  slicer review, and fail when geometry or scale is unknown. This checklist is a
-  reusable final sweep; use the readiness guide for the full explanation of each
-  check.
-</p>
-<p>
-  A useful preflight process does not predict whether a physical print will
-  succeed. It inspects the file properties that can be checked before slicing.
-</p>
-<blockquote>
-  <p>
-    <strong
-      >View → Measure → Fit → Check mesh → Check thickness → Fix if needed →
-      Verify</strong
-    >
-  </p>
-</blockquote>
 
-<h2>The short preflight checklist</h2>
-<ol>
-  <li>Does the file contain the model you expected?</li>
-  <li>Are the dimensions and units correct?</li>
-  <li>Does the model fit your printer's build volume?</li>
-  <li>Does the mesh contain obvious geometry problems?</li>
+<h2>1. File and visual sanity</h2>
+<ul>
   <li>
-    Are there unusually thin areas that may matter for the intended print?
+    <strong>Pass:</strong> the expected objects open and their visible shape is
+    plausible.
   </li>
-  <li>Is the mesh unnecessarily complex?</li>
   <li>
-    If you repair, scale or convert the file, did you verify the result
-    afterwards?
+    <strong>Warn:</strong> placement or orientation looks unusual but can be
+    checked in the slicer.
   </li>
-</ol>
+  <li>
+    <strong>Fail:</strong> objects are missing, empty, badly corrupted or
+    unexplained.
+  </li>
+</ul>
 <p>
-  These checks solve different problems. A watertight STL can still be 25.4
-  times larger than intended because STL does not record an authoritative
-  physical unit.
+  Open the copy you will actually slice. Use the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, but remember that a
+  normal-looking surface can still contain topology faults.
 </p>
 
-<h2>1. Confirm that the file contains the expected model</h2>
+<h2>2. Dimensions, units and printer fit</h2>
+<ul>
+  <li>
+    <strong>Pass:</strong> X, Y and Z match a known reference and fit the usable
+    build space.
+  </li>
+  <li>
+    <strong>Warn:</strong> a tested rotation is needed or space for a brim,
+    supports or exclusion area is tight.
+  </li>
+  <li>
+    <strong>Fail:</strong> the unit assumption is unknown or a required axis
+    exceeds the usable limit.
+  </li>
+</ul>
 <p>
-  Start with a visual sanity check. Open the file and look for missing
-  components, unexpected additional objects, obviously corrupted geometry, an
-  implausible orientation, extreme scale, or a model placed far from the
-  expected origin. This is especially useful for downloaded, exported and
-  converted files.
-</p>
-<p>
-  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Visual inspection is
-  only the first check: it does not prove that the underlying geometry is valid.
-</p>
-
-<h2>2. Check dimensions before print settings</h2>
-<p>
-  Measure the model's bounding dimensions before choosing supports or layer
-  settings. STL stores coordinates but does not define whether they mean
-  millimetres, inches or another unit. A model intended to be 50 mm wide can
-  therefore be interpreted at a very different physical size.
-</p>
-<p>
-  The
+  Check the bounding box with the
   <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  and
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
-  show X, Y and Z dimensions and support a practical size/fit review. For STL
-  unit assumptions and proportional changes, see
-  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
-    >why STL files have no units</a
-  >
-  and the <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale Tool</a>.
-</p>
-
-<h2>3. Confirm that the model fits the printer</h2>
-<p>
-  Compare the intended physical size with the usable build volume of the target
-  printer. A current bounding-box comparison is useful, but a model that does
-  not fit in one orientation may fit after a defined right-angle rotation. That
-  is different from mathematically searching every possible orientation.
-</p>
-<p>
-  Use the dimensions checkers and
+  or
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
+  >. STL does not declare a physical unit, so a 25.4-times error often indicates
+  an inch/millimeter mismatch. The
   <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
     >printer-fit guide</a
   >
-  to review size in context. Fitting inside a build volume does not settle
-  supports, bed adhesion, clearances or printer-specific restrictions; those
-  remain slicer and user decisions.
-</p>
-<p>
-  If your model contains holes, pins or mating parts, use the
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >3D Print Tolerance &amp; Clearance Calculator</a
-  >
-  before exporting the final file. It turns a chosen fit and calibration
-  measurements into editable model dimensions.
+  covers rotations and usable-volume caveats.
 </p>
 
-<h2>4. Inspect mesh integrity</h2>
+<h2>3. Mesh integrity</h2>
+<ul>
+  <li>
+    <strong>Pass:</strong> findings are understood and consistent with the
+    intended model.
+  </li>
+  <li>
+    <strong>Warn:</strong> the slicer must be checked for a localized or
+    intentional condition.
+  </li>
+  <li>
+    <strong>Fail:</strong> open, non-manifold, inverted or intersecting geometry
+    makes the intended solid ambiguous.
+  </li>
+</ul>
 <p>
-  Once scale is sensible, inspect the mesh. Useful findings include open
-  boundary edges, non-manifold edges, degenerate or duplicate triangles,
-  inconsistent orientation, and malformed geometry. These can affect how a
-  slicer interprets the surface, but not every warning requires repair.
-</p>
-<p>
-  Use the
+  Run the
   <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> or
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> for a
-  broad report. For focused topology checks, use the
-  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a> or
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a
-  >. Modern slicers can compensate for some defects; the point is to reveal the
-  geometry so you can decide deliberately.
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>.
+  Watertightness, manifold topology and face orientation answer different
+  questions. Do not repair every warning automatically: locate it, compare it
+  with the source, and decide whether it changes slicing or function.
 </p>
 
-<h2>5. Check watertightness when closed geometry matters</h2>
+<h2>4. Thickness and complexity</h2>
+<ul>
+  <li>
+    <strong>Pass:</strong> critical walls have been reviewed for the intended
+    process and detail level is useful.
+  </li>
+  <li>
+    <strong>Warn:</strong> sampled thin regions or a high triangle count need
+    closer inspection.
+  </li>
+  <li>
+    <strong>Fail:</strong> required walls disappear in preview or the file
+    cannot be handled reliably.
+  </li>
+</ul>
 <p>
-  A watertight mesh has no open boundary in its surface representation. That
-  matters when the model is intended to represent a closed solid, when volume
-  calculations are needed, or when unexpected holes may affect slicing. It is
-  not a universal rule that every useful print file must be watertight:
-  intentionally open or surface-based geometry can have specialist uses.
-</p>
-<p>
-  Use the relevant watertight or quality report to understand the warning before
-  modifying the model.
-</p>
-
-<h2>6. Review wall thickness where it matters</h2>
-<p>
-  Wall thickness is different from mesh validity. A manifold, watertight model
-  can still contain walls that are too thin for a particular process or intended
-  load. Use the
-  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
-    >STL Wall Thickness Checker</a
-  >
+  Use the relevant
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}">STL wall-thickness</a>
   or
-  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
-    >3MF Wall Thickness Checker</a
-  >
-  to identify potentially thin regions, then inspect the heatmap and intended
-  print settings.
-</p>
-<p>
-  Thickness analysis is a geometric estimate. It does not know every nozzle,
-  resin process, material property or mechanical requirement, so a thin-region
-  result is information for investigation—not a guarantee of failure. The
-  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
-    >3D Print Wall Thickness Guide</a
-  >
-  explains how to act on a warning.
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}">3MF wall-thickness</a>
+  check as a screen, then verify perimeters and layers in the slicer. Triangle
+  count is not a quality score; reduce geometry only for a demonstrated workflow
+  problem and check for lost curvature or features afterward.
 </p>
 
-<h2>7. Consider mesh complexity and volume</h2>
+<h2>5. Verify every changed copy</h2>
 <p>
-  Triangle count is not a print-quality score. A very high count can increase
-  file size and slow browser, CAD or slicer work without improving a shape that
-  does not need that resolution. A low count can be entirely appropriate for
-  simple geometry. Use the
-  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>,
-  <a href="{{ GuideSlug.Route3mfTriangleCounter }}">3MF Triangle Counter</a>,
-  and the
-  <a href="{{ GuideSlug.RouteStlTriangleCountExplained }}"
-    >triangle-count guide</a
-  >
-  to spot obvious excess rather than minimise triangles automatically.
-</p>
-<p>
-  Volume can help compare material use or reveal an unexpected geometry change,
-  but it is meaningful only when the mesh supports an enclosed-volume
-  interpretation. Substantial holes, self-intersections and other mesh problems
-  can make the number misleading. Use the
-  <a href="{{ GuideSlug.RouteStlVolumeCalculator }}">STL Volume Calculator</a>
-  or
-  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>
-  after reviewing mesh health.
+  Preserve the original. After repair, scaling, conversion or reduction, reopen
+  the saved result and repeat only the affected checks plus a visual comparison.
+  Confirm dimensions, object count, topology and triangle count where relevant.
+  A successful save message does not establish that design intent survived.
 </p>
 
-<h2>8. Repair only when you understand the change</h2>
+<h2>Stop conditions</h2>
 <p>
-  Do not automatically repair every warning. A repair operation changes
-  geometry. Inspect the reported problem, decide whether it matters, keep the
-  original, make one conservative change, then inspect the saved copy again.
+  Do not move to slicing when the intended unit is unknown, a required object is
+  missing, the model exceeds the usable build space, or a repair changed a
+  functional surface without a reliable reference. Return to the author or
+  source CAD when design intent cannot be recovered from the mesh. If the file
+  passes geometry checks but the slicer drops regions or produces unexplained
+  toolpaths, preserve the file and investigate the slicer-specific result rather
+  than repeatedly applying mesh repairs.
 </p>
 <p>
-  Use <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a> or
-  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> only for their
-  supported, explained clean-up actions. They do not reconstruct arbitrary
-  missing surfaces or guess design intent.
-</p>
-<blockquote>
-  <p><strong>Repair → verify again.</strong></p>
-</blockquote>
-
-<h2>9. Verify conversions, scaling and reduction</h2>
-<p>
-  The same rule applies after
-  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL to 3MF conversion</a>,
-  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL conversion</a>,
-  scaling, mesh reduction or repair. Compare dimensions, visual geometry, mesh
-  integrity, and triangle count where it changed. For format trade-offs, read
-  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a>.
-</p>
-<p>
-  This creates a practical workflow:
-  <strong>Inspect → change → inspect again.</strong>
-</p>
-
-<h2>A practical preflight order</h2>
-<ol>
-  <li>
-    <strong>File sanity:</strong> open the model and confirm it contains what
-    you expect.
-  </li>
-  <li><strong>Dimensions:</strong> confirm physical size and units.</li>
-  <li>
-    <strong>Printer fit:</strong> compare it with the target build volume.
-  </li>
-  <li>
-    <strong>Mesh integrity:</strong> inspect topology and geometry warnings.
-  </li>
-  <li>
-    <strong>Wall thickness:</strong> investigate thin regions where relevant.
-  </li>
-  <li>
-    <strong>Complexity and volume:</strong> review them when they affect the
-    workflow.
-  </li>
-  <li>
-    <strong>Make changes:</strong> repair, scale, convert or reduce only when
-    needed.
-  </li>
-  <li>
-    <strong>Verify again:</strong> re-run relevant checks on the modified file.
-  </li>
-</ol>
-
-<h2>What InspectMesh cannot tell you</h2>
-<p>
-  File-level analysis cannot fully determine required supports, ideal print
-  orientation, bed adhesion, nozzle/material compatibility, resin exposure,
-  structural strength under load, assembly tolerances, slicer configuration,
-  printer calibration or real-world print reliability. Those depend on the
-  process, printer, material, slicer and intended use.
-</p>
-<p>
-  The narrower purpose of preflight is to find useful properties and problems
-  before they become surprises later in the workflow.
-</p>
-
-<h2>STL versus 3MF during preflight</h2>
-<p>
-  STL is simple and widely supported, but it does not store an authoritative
-  physical unit and has limited metadata. 3MF can preserve units and richer
-  structural information, but its geometry should still be inspected. See
-  <a href="{{ GuideSlug.Route3mfVsStl }}"
-    >the dedicated STL vs 3MF comparison</a
-  >
-  for the fuller decision.
+  A warning can proceed only when its consequence is understood and the next
+  validation step is named. “The slicer accepts it” is insufficient when a
+  required feature, dimension or material region may have been discarded.
 </p>
 
 <h2>Before you slice</h2>
 <ul>
-  <li>I opened the file and visually inspected it.</li>
-  <li>I confirmed the dimensions and unit assumptions.</li>
-  <li>I confirmed the model fits my printer.</li>
-  <li>I reviewed relevant mesh warnings.</li>
-  <li>I checked wall thickness where appropriate.</li>
-  <li>I understand any repair or transformation I performed.</li>
-  <li>I inspected the modified file again.</li>
+  <li>The file contains the expected geometry.</li>
+  <li>Dimensions and unit assumptions are confirmed.</li>
+  <li>The model fits the usable printer volume with required allowances.</li>
+  <li>Mesh findings are understood rather than merely hidden.</li>
+  <li>Critical thickness and complexity concerns were reviewed.</li>
+  <li>Any modified copy was inspected again.</li>
 </ul>
 <p>
-  Run the checks with InspectMesh's browser-based STL and 3MF tools before
-  moving to your slicer.
+  Keep a small record beside important jobs: source filename and revision,
+  expected overall dimension, printer/profile, checks that produced warnings and
+  any transformation applied. This turns the checklist into a repeatable handoff
+  rather than a memory test. When another person reviews the job, they can see
+  which assumptions were verified and which remain for the slicer or printer.
+</p>
+<p>
+  Re-run preflight when the source file changes, even if the filename does not.
+  A revised mesh can restore an old scale, remove a component or change
+  topology. Do not carry a prior pass forward based only on visual similarity.
+</p>
+<p>
+  File preflight cannot guarantee a successful print. Orientation, supports,
+  adhesion, process settings, material behaviour, calibration and structural use
+  still belong in slicer and engineering review.
 </p>

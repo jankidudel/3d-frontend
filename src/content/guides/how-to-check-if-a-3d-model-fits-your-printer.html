@@ -20,6 +20,43 @@ faq:
   >
   adds mesh and sampled wall-thickness findings to this printer-fit review.
 </p>
+<p>
+  Record the printer model and usable dimensions used for the decision so the
+  result is not reused for a different machine by accident.
+</p>
+<p>
+  For a cylindrical or irregular printer volume, test the actual footprint
+  rather than only the rectangular bounding-box numbers. Corners of that box may
+  lie outside a circular bed even when X and Y spans are each below its
+  diameter. Confirm placement in the target slicer.
+</p>
+
+<h2>Worked fit and rotation example</h2>
+<p>
+  Consider a 205 × 165 × 92 mm model and a stated 180 × 180 × 220 mm build
+  volume. It fails in the current orientation because 205 exceeds the X limit. A
+  right-angle rotation can permute the bounds to 92 × 165 × 205 mm, which fits
+  the three nominal axes. A different permutation, 165 × 205 × 92 mm, still
+  fails Y. Compare each model dimension with the specific printer axis rather
+  than comparing only the two largest numbers.
+</p>
+<p>
+  The calculation assumes an axis-aligned bounding box and a rectangular usable
+  region. Clips, purge zones, toolhead clearance, non-rectangular beds and
+  firmware limits can reduce real space. Diagonal placement may help in some
+  cases, but it needs a newly measured bound and slicer confirmation. If a fit
+  requires zero margin, treat it as a warning and use the printer manufacturer's
+  documented printable area rather than the headline machine size.
+</p>
+
+<h2>Fit does not choose the print orientation</h2>
+<p>
+  A fitting rotation may create heavy support, weak layer orientation, a small
+  bed contact area or an unacceptable visible surface. Review those trade-offs
+  before slicing. If no practical orientation fits with process allowances,
+  split the model at a deliberate joint or revise the design; do not silently
+  scale a dimension-critical part merely to make the bounding box pass.
+</p>
 <h2>Use usable volume, not only nominal dimensions</h2>
 <p>
   Compare X, Y and Z with the printer's usable envelope, then consider brims,

@@ -19,6 +19,36 @@ faq:
   A CAD model can be dimensionally correct and still produce parts that do not
   fit together.
 </p>
+
+<h2>Source and further reading</h2>
+<p>
+  Formlabs publishes
+  <a href="https://formlabs.com/support/Design-Specs/"
+    >process-specific design specifications</a
+  >
+  with the printer, resin and layer assumptions attached. Use documents like
+  these as evidence for the stated system only, then validate your own machine,
+  material and orientation rather than treating one vendor's clearance as a
+  universal rule.
+</p>
+
+<h2>Worked fit example</h2>
+<p>
+  Suppose a test peg designed at 10.00 mm measures 10.12 mm and a matching test
+  hole designed at 10.40 mm measures 10.22 mm. The printed radial clearance is
+  only <code>(10.22 - 10.12) / 2 = 0.05 mm</code>, even though the CAD radial
+  clearance was 0.20 mm. If the desired measured radial clearance is 0.20 mm and
+  the peg process remains stable, the hole would need a measured target of 10.52
+  mm. Use a new local test to determine the CAD change rather than assuming the
+  observed error transfers perfectly.
+</p>
+<p>
+  Record whether values are diametral or radial. “Add 0.2 mm clearance” can mean
+  0.2 mm across the diameter or 0.2 mm on each side, which produces different
+  geometry. Keep orientation, material, profile, cooling and measurement method
+  fixed during the experiment, then validate more than one sample before
+  applying the result to a long print or critical assembly.
+</p>
 <h2>Validate with a representative fit</h2>
 <p>
   A designed 0.20 mm clearance may not produce the same result across materials,

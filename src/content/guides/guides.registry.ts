@@ -7,6 +7,15 @@ export const GuideGroupId = {
 
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
+export const GuideContentSlug = {
+  BestFileFormatFor3dPrinting: 'best-file-format-for-3d-printing',
+  ThreeMfVsStl: '3mf-vs-stl',
+  StlVsObjFor3dPrinting: 'stl-vs-obj-for-3d-printing',
+  StlVsStepFor3dPrinting: 'stl-vs-step-for-3d-printing',
+  WhatIsAnStlFile: 'what-is-an-stl-file',
+  HowToOpenAnStlFile: 'how-to-open-an-stl-file',
+} as const;
+
 export interface GuideRegistryEntry {
   readonly slug: string;
   readonly group: GuideGroupId;
@@ -119,7 +128,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
-    slug: 'best-file-format-for-3d-printing',
+    slug: GuideContentSlug.BestFileFormatFor3dPrinting,
     group: GuideGroupId.General,
     order: 3,
     enabled: true,
@@ -327,7 +336,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
-    slug: 'stl-vs-obj-for-3d-printing',
+    slug: GuideContentSlug.StlVsObjFor3dPrinting,
     group: GuideGroupId.Stl,
     order: 150,
     enabled: true,
@@ -335,7 +344,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
-    slug: 'what-is-an-stl-file',
+    slug: GuideContentSlug.WhatIsAnStlFile,
     group: GuideGroupId.Stl,
     order: 160,
     enabled: true,
@@ -343,7 +352,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
-    slug: 'how-to-open-an-stl-file',
+    slug: GuideContentSlug.HowToOpenAnStlFile,
     group: GuideGroupId.Stl,
     order: 170,
     enabled: true,
@@ -359,7 +368,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
-    slug: 'stl-vs-step-for-3d-printing',
+    slug: GuideContentSlug.StlVsStepFor3dPrinting,
     group: GuideGroupId.Stl,
     order: 190,
     enabled: true,
@@ -399,7 +408,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     checkEditorialTargets: false,
   },
   {
-    slug: '3mf-vs-stl',
+    slug: GuideContentSlug.ThreeMfVsStl,
     group: GuideGroupId.ThreeMf,
     order: 10,
     enabled: true,

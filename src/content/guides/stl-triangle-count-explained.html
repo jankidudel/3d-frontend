@@ -19,6 +19,33 @@ faq:
   can approximate curves and small details more smoothly, but they also make the
   file larger and can slow down editing, viewing and slicing.
 </p>
+<p>
+  Record count per object when several parts share one file; a total alone can
+  hide one disproportionately dense component.
+</p>
+
+<h2>Interpret count in geometric context</h2>
+<p>
+  The same count can mean very different things. Twenty thousand triangles may
+  describe a smooth small figurine adequately but be wasteful for a rectangular
+  spacer. Two hundred thousand may preserve sculpted detail or may simply repeat
+  nearly coplanar facets on flat faces. Inspect where triangles are
+  concentrated, not just the total.
+</p>
+<p>
+  Triangle count also differs from file size. Binary STL uses a fixed record per
+  triangle, while ASCII stores longer text, so two files with identical geometry
+  and count can occupy very different bytes. Converting ASCII to binary reduces
+  encoding overhead without changing surface complexity; decimation removes
+  triangles and can change geometry.
+</p>
+<p>
+  Compare count with visible faceting, application responsiveness and the detail
+  the planned print process can reproduce. If simplifying, preserve the source,
+  reduce in stages, compare dimensions and critical curvature, re-run mesh
+  checks, and inspect the sliced result. There is no count that independently
+  certifies print quality.
+</p>
 <h2>Complexity is not file size or quality</h2>
 <p>
   Triangle count describes mesh tessellation. A dense mesh can be useful for a

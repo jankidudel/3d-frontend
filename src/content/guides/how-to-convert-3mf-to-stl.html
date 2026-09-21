@@ -26,6 +26,71 @@ faq:
   files or one combined mesh, then re-check dimensions, topology and the slicer
   preview. Keep the original 3MF for future editing.
 </p>
+<h2>Resolve the build before exporting</h2>
+<p>
+  A 3MF can reuse objects and place them with transforms. Decide whether the STL
+  should contain one selected object, every placed item as separate files, or
+  one combined resolved plate. Apply the declared unit and transforms before
+  writing coordinates; otherwise size, orientation or spacing can change.
+</p>
+<h2>Information-loss table</h2>
+<table>
+  <thead>
+    <tr>
+      <th>3MF information</th>
+      <th>STL outcome</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Resolved triangle surfaces</td>
+      <td>Can be exported as triangles</td>
+    </tr>
+    <tr>
+      <td>Declared unit</td>
+      <td>Not stored authoritatively; document the chosen interpretation</td>
+    </tr>
+    <tr>
+      <td>Build items and transforms</td>
+      <td>Usually flattened into exported coordinates</td>
+    </tr>
+    <tr>
+      <td>Object identities and components</td>
+      <td>May become separate files or one merged mesh</td>
+    </tr>
+    <tr>
+      <td>Colours, materials, textures and settings</td>
+      <td>Not represented by ordinary STL geometry</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Handle multiple objects deliberately</h2>
+<p>
+  Separate STL files preserve part boundaries but can lose their original plate
+  relationship. A combined STL preserves placement but may create overlapping or
+  disconnected shells. Choose based on the receiving workflow, name separate
+  files clearly, and keep the original 3MF as the authoritative package.
+</p>
+<h2>Post-conversion checks</h2>
+<ol>
+  <li>Open every exported STL and confirm it is not empty.</li>
+  <li>Check a known dimension using the documented unit assumption.</li>
+  <li>Compare object count, orientation and relative placement.</li>
+  <li>Run quality checks and inspect the target slicer's layer preview.</li>
+</ol>
+<h2>Choose export resolution carefully</h2>
+<p>
+  If the 3MF contains parametric or extension-based geometry that must be
+  tessellated, use a resolution appropriate to printed detail without creating
+  needless triangles. Compare curves and critical dimensions with the resolved
+  3MF. When the source is already a triangle mesh, avoid an unnecessary remesh
+  that changes the surface.
+</p>
+<p>
+  An STL opening successfully does not prove that all 3MF information survived.
+  Record the unit assumption and which objects were exported, and deliver the
+  original 3MF alongside STL when recipients may need the richer package.
+</p>
 <h2>When an STL export helps</h2>
 <p>
   Some modelling, repair or legacy printing workflows accept STL more readily
@@ -73,4 +138,12 @@ faq:
     ><strong>Convert 3MF to STL locally</strong></a
   >
   · <a href="{{ GuideSlug.Route3mfViewer }}">Open a 3MF in the Viewer</a>
+</p>
+<h2>Stop when the receiving requirement is unclear</h2>
+<p>
+  Ask whether the recipient needs one plate mesh, individual printable parts or
+  editable source geometry. Those are different deliverables. Do not combine
+  objects merely because one STL is convenient, and do not describe STL as
+  preserving a 3MF project. When colours, materials, settings or assembly
+  structure matter, keep 3MF or provide another supported format.
 </p>

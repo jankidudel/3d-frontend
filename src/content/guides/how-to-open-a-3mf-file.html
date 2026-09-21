@@ -28,6 +28,62 @@ faq:
   upload or execute the package. Confirm the resolved dimensions and object
   count after any application opens it.
 </p>
+<h2>Choose the application by task</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Best opening route</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Confirm objects, placement and dimensions</td>
+      <td>A 3MF-aware viewer or InspectMesh checker</td>
+    </tr>
+    <tr>
+      <td>Prepare supports and toolpaths</td>
+      <td>The target printer's slicer</td>
+    </tr>
+    <tr>
+      <td>Edit parametric design intent</td>
+      <td>The original CAD/source application</td>
+    </tr>
+    <tr>
+      <td>Diagnose package structure or extensions</td>
+      <td>A 3MF-aware technical tool using the specification</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Common package failure causes</h2>
+<p>
+  A `.3mf` file is a structured package, not merely a renamed mesh. A truncated
+  download, invalid package relationship, missing model part, malformed XML or
+  an unsupported required extension can prevent opening. If one application
+  fails, do not repeatedly overwrite the file. Preserve it, try the producing
+  application, and re-export from the source when possible.
+</p>
+<h2>Privacy and local inspection</h2>
+<p>
+  InspectMesh performs supported 3MF inspection in the browser and does not
+  upload the selected model for analysis. That makes it useful for a first local
+  check, but browser analysis is not a substitute for the slicer or source
+  application when settings, proprietary extensions or manufacturing behavior
+  matter.
+</p>
+<h2>Verify after opening</h2>
+<ol>
+  <li>Confirm the expected number of placed objects.</li>
+  <li>Check declared units and resolved X, Y and Z dimensions.</li>
+  <li>Inspect transforms, orientation and plate placement.</li>
+  <li>Review mesh warnings and any unsupported-feature message.</li>
+  <li>Open the job in the intended slicer and inspect its preview.</li>
+</ol>
+<p>
+  If the geometry opens but the build differs between applications, compare
+  their supported 3MF features rather than assuming the package contains only
+  one mesh.
+</p>
 <h2>Open a 3MF file in your browser</h2>
 <p>
   Use the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to inspect the

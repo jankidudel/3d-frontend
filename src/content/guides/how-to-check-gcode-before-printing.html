@@ -19,6 +19,50 @@ faq:
   Once you slice a model, the STL or 3MF file is no longer the file your printer
   follows.
 </p>
+<p>
+  Preserve the reviewed file unchanged after approval; regenerate and review
+  again if the source project or profile changes.
+</p>
+
+<h2>Symptom-to-review table</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Preview symptom</th>
+      <th>Review</th>
+      <th>Do not assume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>First extrusion is far from the bed area</td>
+      <td>Origin, machine profile and starting commands</td>
+      <td>The viewer and printer share coordinates</td>
+    </tr>
+    <tr>
+      <td>Required region disappears on some layers</td>
+      <td>Feature width, slicing result and source geometry</td>
+      <td>The mesh repair alone will restore it</td>
+    </tr>
+    <tr>
+      <td>Unexpected long travel through the part</td>
+      <td>Retraction, travel path and collision context</td>
+      <td>Every non-extruding move is harmless</td>
+    </tr>
+    <tr>
+      <td>Temperature changes mid-job</td>
+      <td>Tool/material transitions and command context</td>
+      <td>The value is suitable for the loaded material</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Compare the preview with the source model and slicer project. Confirm the
+  intended printer, firmware dialect, tool count, material and work coordinate
+  assumptions before transfer. If a command or motion cannot be explained,
+  regenerate from the known project and profile rather than editing production
+  G-code by guesswork.
+</p>
 <h2>Read final toolpaths as a safety review</h2>
 <p>
   Check layer range, travel versus extrusion, temperatures, dimensions and

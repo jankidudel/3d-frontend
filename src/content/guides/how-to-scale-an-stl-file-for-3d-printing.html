@@ -20,6 +20,40 @@ faq:
   only one axis can distort the model. Measure the file first, calculate the
   required proportional scale, then check whether the result fits your printer.
 </p>
+
+<h2>Worked unit and percentage examples</h2>
+<p>
+  A model that should be 4 inches wide but opens as 4 mm needs the inch-to-
+  millimeter factor 25.4, producing 101.6 mm. That is a unit correction, not a
+  25.4% increase. A different model measuring 80 mm that should be 100 mm needs
+  <code>100 / 80 = 1.25</code>, entered as 125% when the tool asks for final
+  percentage.
+</p>
+<p>
+  For uniform scaling, all axes use the same factor and volume changes by the
+  cube of that factor. Scaling length by 1.25 makes volume about 1.953 times
+  larger, before slicing choices. Recheck printer fit and expected material use
+  rather than treating scaling as a dimension-only change.
+</p>
+
+<h2>Know when not to scale the whole mesh</h2>
+<p>
+  Do not globally scale when only one hole is tight, when shrinkage differs by
+  axis, or when a mating interface must stay fixed while another feature
+  changes. Edit the source CAD or use a justified local/process compensation.
+  Uniform scale changes holes, walls, clearances and every external dimension
+  together.
+</p>
+
+<h2>Validate against a second dimension</h2>
+<p>
+  After calculating the factor from one trusted feature, predict another size
+  before saving. If a 40 mm reference becomes 50 mm, the factor is 1.25; a
+  separate 24 mm feature should become 30 mm. If it does not, the source may
+  already be distorted or the operation may be non-uniform. Compare the final
+  bounding box and functional features, then inspect the scaled mesh and slicer
+  preview before replacing the original.
+</p>
 <h2>Verify after the scale operation</h2>
 <p>
   Set the intended target dimension from a known feature, calculate the

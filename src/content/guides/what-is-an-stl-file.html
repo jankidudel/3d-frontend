@@ -17,6 +17,59 @@ faq:
   An STL file is one of the most common formats used in 3D printing. It
   describes the outside surface of a 3D object using many small triangles.
 </p>
+
+<h2>How triangles approximate a surface</h2>
+<p>
+  Each facet is flat. A plane can be represented with very few triangles, while
+  a curved surface needs enough small facets to keep deviation and visible
+  stepping acceptable. Export settings decide that approximation before the
+  slicer receives the file. Adding triangles later does not recover the exact
+  original curve; return to the source model for a better export.
+</p>
+<p>
+  Triangle normals may accompany the vertices, but applications can recompute
+  orientation from vertex winding. Conflicting, missing or inverted orientation
+  is one reason a mesh can display yet fail solid interpretation. STL also has
+  no standard object hierarchy, so multiple shells may arrive without names or
+  assembly meaning.
+</p>
+
+<h2>When STL is an appropriate final derivative</h2>
+<p>
+  Use it when the handoff needs a stable triangulated surface, the unit
+  convention is explicit and richer attributes are unnecessary. Include a known
+  dimension in the handoff, keep the editable source, and validate the exported
+  derivative. Choose another format when unit declaration, object placement,
+  color/material resources or CAD editability must survive.
+</p>
+
+<h2>ASCII and binary structure</h2>
+<p>
+  Both common STL encodings describe facets through a normal and three vertex
+  positions. ASCII writes labeled, human-readable text; binary stores a header,
+  triangle count and fixed-size records. They can represent the same
+  triangulated surface. Binary is usually smaller, while ASCII is easier to
+  inspect manually. Encoding does not add curves, units, materials or
+  manufacturing intent.
+</p>
+
+<h2>Strengths and weaknesses in a print workflow</h2>
+<p>
+  STL's strength is a simple, widely recognized surface handoff. Its limitations
+  are equally important: curves are already faceted, units must be agreed
+  outside the file, and standard STL does not preserve object names, build
+  placement, material assignments or editable CAD features. A valid-looking STL
+  can also contain open boundaries, flipped faces, self-intersections or
+  excessive detail.
+</p>
+<p>
+  Use STL when a receiver needs a straightforward single mesh and you can verify
+  the import. Keep the original CAD or modeling file as the master. Before
+  printing, confirm the assumed unit, bounding dimensions, topology and slicer
+  preview. Use 3MF when declared units or a richer multi-object print package
+  must travel together, while still testing support in the receiving
+  application.
+</p>
 <h2>Know what STL does not carry</h2>
 <p>
   STL represents a surface as triangles, typically in ASCII or binary encoding.

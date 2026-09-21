@@ -20,6 +20,21 @@ faq:
   slice it. It may contain an open surface, overlapping triangles, an unexpected
   scale or thin features that are difficult to print reliably.
 </p>
+
+<h2>Use a verification gate before slicing</h2>
+<p>
+  A prepared STL should reopen as the intended object, retain its expected unit
+  assumption and dimensions, and have only understood topology findings. Compare
+  triangle and component counts when repair or simplification was used. Inspect
+  the changed regions rather than relying only on a whole-file success message.
+</p>
+<p>
+  Then slice with the actual printer and material profile and review every layer
+  around thin features, repaired boundaries and internal passages. If the slicer
+  silently drops required geometry, return to the relevant diagnostic step. Do
+  not keep stacking automatic repairs on the same derivative; go back to the
+  preserved source or original export.
+</p>
 <h2>Keep this workflow STL-specific</h2>
 <p>
   Confirm intended units, then diagnose mesh faults, repair only understood
