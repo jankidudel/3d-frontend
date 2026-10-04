@@ -45,6 +45,8 @@ Limits are intentionally conservative: 5 MiB input, 100,000 resolved triangles, 
 
 Actual browser results were inspected for the mixed queue, declared-inch 3MF, large-triangle fixture, changed and retriangulated comparison, spool, nozzle/wall, volumetric and finish planners, and the two real slicer exports. Mobile spool and batch pages had equal document content/viewport widths at 375 CSS pixels. Tests cover London DST gaps and repeated times, Sydney, multi-day duration, reserve and whole-copy arithmetic, invalid inputs, geometric controls, CSV formula quoting, worker cancellation, report schema/local storage, environment allowance and analytics consent.
 
+The final comparison screenshot includes screened volumes of 8,000 and 9,600 mm³ for the known widened cube. The unchanged retriangulation control displayed 8,000 mm³ on both sides and zero displayed sampled maximum/mean/over-tolerance count. The flow screenshot shows 9 mm³/s requested throughput and 133.33 mm/s at an explicitly entered 12 mm³/s limit. The finish screenshot shows a 400-minute elapsed plan in Europe/London. Every one of the six new tools has a working-result screenshot; these are local development browser observations.
+
 The in-app browser's native download observation timed out after clicking Export JSON. The report schema and CSV escaping are tested; a downloaded OS file was not captured through that browser interface. No successful file-download capture is claimed.
 
 ## Research boundary

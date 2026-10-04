@@ -29,7 +29,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -283,7 +283,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -532,7 +532,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -790,7 +790,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -884,7 +884,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -979,7 +979,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -1234,7 +1234,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -1324,7 +1324,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -1410,7 +1410,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -1667,7 +1667,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -1752,7 +1752,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -2003,7 +2003,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": ["https://formlabs.com/support/Design-Specs/"],
@@ -2092,7 +2092,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -2345,7 +2345,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -2441,7 +2441,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -2528,7 +2528,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -2781,7 +2781,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -3039,7 +3039,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3142,7 +3142,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3239,7 +3239,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3342,7 +3342,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3437,7 +3437,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3534,7 +3534,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3629,7 +3629,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3726,7 +3726,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3821,7 +3821,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -3917,7 +3917,7 @@
       "indexableProductionBuild": false,
       "sitemapIncluded": false,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -4000,7 +4000,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -4096,7 +4096,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -4212,7 +4212,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -4472,7 +4472,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -4581,7 +4581,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -4688,7 +4688,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -4796,7 +4796,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -4914,7 +4914,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -5029,7 +5029,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -5138,7 +5138,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -5243,7 +5243,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -5351,7 +5351,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -5604,7 +5604,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -5855,7 +5855,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -6103,7 +6103,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -6351,7 +6351,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -6607,7 +6607,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -6857,7 +6857,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -7105,7 +7105,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -7355,7 +7355,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -7603,7 +7603,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -7851,7 +7851,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": ["https://3mf.io/spec/"],
@@ -7940,7 +7940,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -8190,7 +8190,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -8438,7 +8438,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -8531,7 +8531,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -8780,7 +8780,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -9028,7 +9028,7 @@
       "indexableProductionBuild": false,
       "sitemapIncluded": false,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -9111,7 +9111,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -9194,7 +9194,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -9301,7 +9301,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -9396,7 +9396,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -9486,7 +9486,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -9571,7 +9571,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -9831,7 +9831,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -9928,7 +9928,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10022,7 +10022,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10114,7 +10114,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10206,7 +10206,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10299,7 +10299,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10391,7 +10391,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10481,7 +10481,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10573,7 +10573,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10664,7 +10664,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10756,7 +10756,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -10848,7 +10848,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -10938,7 +10938,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11028,7 +11028,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11118,7 +11118,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11208,7 +11208,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11300,7 +11300,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11392,7 +11392,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11484,7 +11484,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11576,7 +11576,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11668,7 +11668,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -11758,7 +11758,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -12006,7 +12006,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": false,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -12256,7 +12256,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -12343,7 +12343,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -12434,7 +12434,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -12689,7 +12689,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -12797,7 +12797,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -13050,7 +13050,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13372,7 +13372,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13458,7 +13458,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13549,7 +13549,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13640,7 +13640,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13729,7 +13729,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13818,7 +13818,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13903,7 +13903,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -13988,7 +13988,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14074,7 +14074,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14160,7 +14160,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14249,7 +14249,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14346,7 +14346,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14441,7 +14441,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14532,7 +14532,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/thin-arachne.gcode",
@@ -14621,7 +14621,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": ["https://github.com/gkjohnson/three-mesh-bvh"],
@@ -14708,7 +14708,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14795,7 +14795,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14881,7 +14881,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -14969,7 +14969,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15054,7 +15054,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15139,7 +15139,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15222,7 +15222,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15313,7 +15313,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -15400,7 +15400,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15489,7 +15489,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15580,7 +15580,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15667,7 +15667,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15750,7 +15750,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15835,7 +15835,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -15921,7 +15921,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16008,7 +16008,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16093,7 +16093,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16181,7 +16181,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16264,7 +16264,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": ["https://3mf.io/spec/"],
@@ -16348,7 +16348,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16439,7 +16439,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16526,7 +16526,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16616,7 +16616,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16706,7 +16706,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16791,7 +16791,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16876,7 +16876,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -16961,7 +16961,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -17050,7 +17050,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -17137,7 +17137,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -17226,7 +17226,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/thin-arachne.gcode",
@@ -17327,7 +17327,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": false,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -17575,7 +17575,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -17668,7 +17668,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -17922,7 +17922,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -18171,7 +18171,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/thin-arachne.gcode",
@@ -18261,7 +18261,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -18509,7 +18509,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -18757,7 +18757,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -19014,7 +19014,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -19270,7 +19270,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -19522,7 +19522,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -19608,7 +19608,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -19856,7 +19856,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -20106,7 +20106,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -20356,7 +20356,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -20604,7 +20604,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -20691,7 +20691,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -20940,7 +20940,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -21191,7 +21191,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -21439,7 +21439,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -21523,7 +21523,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -21607,7 +21607,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [
           "/examples/english-market-batch/closed-20mm-cube.stl",
@@ -21860,7 +21860,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -22109,7 +22109,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -22363,7 +22363,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [
@@ -22465,7 +22465,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -22552,7 +22552,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -22635,7 +22635,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],
@@ -22722,7 +22722,7 @@
       "indexableProductionBuild": true,
       "sitemapIncluded": true,
       "productionHttpStatus": "not reverified; production not changed",
-      "devStatus": "see deployment-verification.json after release",
+      "devStatus": "See deployment-verification.json for dated target, uploaded-file integrity and HTTP checks",
       "evidence": {
         "exampleAssets": [],
         "technicalSources": [],

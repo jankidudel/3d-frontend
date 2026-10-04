@@ -1,0 +1,369 @@
+{
+  "verifiedAt": "2026-10-04T14:05:31.572254+00:00",
+  "environment": "development",
+  "url": "https://daau2p33m8op4.cloudfront.net",
+  "branch": "codex/english-market-seo-batch",
+  "deployedSourceCommit": "5fa0510d984dbe03cc91e3962738a95ac7a9da4a",
+  "version": {
+    "version": "5fa0510d984d",
+    "builtAt": "2026-10-04T14:01:35.173Z"
+  },
+  "bucket": "three-d-infra-dev-frontendbucket5dac5524-waicqtv4ytlm",
+  "distribution": "E3MOTUGBZ6B5ZW",
+  "deployment": {
+    "script": ".github/scripts/deploy-frontend.sh",
+    "exitCode": 0,
+    "files": 294,
+    "bytes": 11525652,
+    "uploadOrder": ["immutable", "mutable", "documents"],
+    "oldHashesRetained": true,
+    "deletions": 0,
+    "invalidations": 0,
+    "infrastructureChanges": 0,
+    "firstAttempt": "Stopped in asset phase on AWS CreateOAuth2Token 429. Complete retry used standard AWS sign-in credentials in memory, then all files verified."
+  },
+  "validation": {
+    "fullVerify": "passed",
+    "applicationTestFiles": 66,
+    "applicationTests": 276,
+    "supportingTests": 16,
+    "lint": "passed",
+    "scriptTypes": "passed",
+    "formatting": "passed",
+    "internalLinks": "passed",
+    "productionPrerenderRoutes": 164,
+    "productionSitemapUniqueUrls": 160,
+    "productionSeoErrors": 0,
+    "productionSeoAdvisories": 40,
+    "publicAuditFindings": 0,
+    "newUrls": 12,
+    "changedExistingUrls": 46,
+    "guideOutcomes": 21,
+    "seedOwners": 120,
+    "briefOutcomes": 25
+  },
+  "developmentArtifact": {
+    "prerenderedRouteDocumentsNoindex": 164,
+    "additionalCsrBootstrapTemplate": 1,
+    "generatedSitemap": false,
+    "developmentOfferPresent": true,
+    "productionOfferAndBudgetControlsAbsent": true
+  },
+  "storedObjects": {
+    "everyBuildFileSizeAndMd5EtagMatches": true,
+    "verifiedFiles": 294
+  },
+  "cloudFront": {
+    "basicAuthChallengeObserved": true,
+    "unauthenticatedRoutes": [
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-print-finish-time-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/batch-stl-checker",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/brass-vs-hardened-nozzle",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/check-stl-files-before-selling",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/filament-dryer-vs-dry-box",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/filament-remaining-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-compare-stl-revisions",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/inspect-customer-supplied-print-files",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/maximum-volumetric-speed-explained",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/nozzle-layer-height-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/stl-compare",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/volumetric-flow-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-print-cost-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-print-file-preflight-checklist",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-print-flow-rate-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-print-orientation-planner",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-print-wall-thickness-guide",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printer-fit-checker",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printers",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printers/bambu-lab-a1",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printers/bambu-lab-a1-mini",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printers/bambu-lab-p1s",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printers/prusa-mk4s",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/abs",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/asa",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/nylon",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/petg",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/pla",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/polycarbonate",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/polypropylene",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-materials/tpu",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3d-printing-price-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/3mf-print-preflight",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/compare-materials/petg-vs-asa",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/compare-materials/pla-vs-petg",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/filament-length-calculator",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/gcode-preflight-checker",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/guides",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-much-filament-does-a-3d-print-use",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-much-to-charge-for-3d-prints",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-calculate-3d-printing-cost",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-check-gcode-before-printing",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-check-if-a-3d-model-fits-your-printer",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-check-if-a-3d-model-is-ready-to-print",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-check-stl-for-errors",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-check-stl-wall-thickness-for-3d-printing",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-repair-an-stl-file",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-rotate-a-3d-model-to-fit-your-printer",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/how-to-scale-an-stl-file-for-3d-printing",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/stl-dimensions-checker",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/stl-file-wont-slice",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/stl-print-preflight",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/stl-quality-checker",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/stl-wall-thickness-checker",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/tools",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/why-stl-files-have-no-units",
+        "unauthenticatedStatus": 401
+      }
+    ],
+    "publicEntryAssets": [
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/styles-YJ67LJ3R.css",
+        "contentMatchesBuild": true,
+        "bytes": 2466
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/styles-YJ67LJ3R.css",
+        "contentMatchesBuild": true,
+        "bytes": 2466
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-DFgPOoGa.js",
+        "contentMatchesBuild": true,
+        "bytes": 970
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-CZ5wUh2d.js",
+        "contentMatchesBuild": true,
+        "bytes": 263920
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-BlLs4wRr.js",
+        "contentMatchesBuild": true,
+        "bytes": 144
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/main-TNHIX47V.js",
+        "contentMatchesBuild": true,
+        "bytes": 177567
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-Bm3wwP4K.js",
+        "contentMatchesBuild": true,
+        "bytes": 20556
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-BXuB138u.js",
+        "contentMatchesBuild": true,
+        "bytes": 725987
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-DBQJMvkf.js",
+        "contentMatchesBuild": true,
+        "bytes": 2851
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-COQDHmz3.js",
+        "contentMatchesBuild": true,
+        "bytes": 47810
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk--mbK8WyV.js",
+        "contentMatchesBuild": true,
+        "bytes": 2852
+      },
+      {
+        "url": "https://daau2p33m8op4.cloudfront.net/chunk-DEnBUtET.js",
+        "contentMatchesBuild": true,
+        "bytes": 914
+      }
+    ],
+    "authenticatedPageInspection": "Not observed; existing development Basic Auth credential retrieval was rejected by automatic approval review because secret extraction was not explicitly authorized."
+  },
+  "costImpact": "Incremental S3 storage/upload requests and ordinary development CloudFront requests/data transfer only; no new recurring resources.",
+  "externalDependencies": [
+    "GSC and Keyword Planner country/demand exports",
+    "Exact measured brand-spool tare variants",
+    "Approved affiliate programme IDs and regional availability",
+    "Paid billing/account entitlements and any cloud retention promises"
+  ],
+  "limitations": [
+    "Physical prints and low-memory mobile hardware unmeasured",
+    "Browser native download capture timed out; schema/CSV tests passed",
+    "Production not deployed",
+    "Historical bucket objects, including any old sitemap, retained by existing non-deleting deployment"
+  ]
+}

@@ -2,6 +2,8 @@
 
 This implementation adds six working browser-local tools and six authored guides. Forty-five existing URLs received page-specific worked examples, interpretation and contextual workflow improvements; homepage discovery brings the changed-existing total to forty-six. Guide outcomes are twenty-one distinct pages: fifteen rebuilt and six new. No public URL was removed or redirected.
 
+Development delivery completed at [the existing protected preview](https://daau2p33m8op4.cloudfront.net), from source commit `5fa0510d984dbe03cc91e3962738a95ac7a9da4a` on `codex/english-market-seo-batch`. All 294 uploaded files match the build by size and MD5 ETag; all 58 new/changed routes returned the existing unauthenticated 401 challenge. Twelve public entry assets matched the build through CloudFront. Production was not deployed.
+
 ## Review assets
 
 - `public-page-audit.json`: all 164 rendered assets, including 160 sitemap canonical pages, two legal utilities, the existing noindex printer-review draft and the 404 page. Titles, descriptions, H1s, canonical/indexability, links, source evidence, actions and dispositions are recorded. The four assets outside the sitemap are explicitly accounted for.
@@ -9,7 +11,7 @@ This implementation adds six working browser-local tools and six authored guides
 - `topic-brief-outcomes.json`: all 25 brief decisions. The exact brand-spool tare dataset is deferred for lack of reliable measured variants; the working custom-tare calculation is complete.
 - `changed-public-urls.json`: exhaustive new/changed canonical production URL lists. These identify route ownership; the batch is delivered to development only.
 - `EVIDENCE.md`, `fixtures/`, `node-benchmarks.json`, `screenshots/`: owned controls, actual slicer exports and observed browser/numerical results.
-- `deployment-verification.json`: the actual delivery target and checks, populated after development deployment.
+- `deployment-verification.json`: the actual delivery target, source version, completed checks and precise limits.
 
 ## Available features
 
