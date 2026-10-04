@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
@@ -16,7 +17,7 @@ import {
 
 @Component({
   selector: 'app-gcode-preflight-page',
-  imports: [RouterLink],
+  imports: [ToolEvidenceComponent, RouterLink],
   templateUrl: './gcode-preflight-page.html',
   styleUrl: './gcode-preflight-page.scss',
 })
@@ -116,7 +117,24 @@ export class GcodePreflightPage {
     input.click();
   }
   async pick(event: Event): Promise<void> {
-    const file = (event.target as HTMLInputElement).files?.item(0);
+    await this.loadFile((event.target as HTMLInputElement).files?.item(0));
+  }
+  async runSlicerExample(classic = false): Promise<void> {
+    try {
+      const { ownedDemoFile, DemoAsset } =
+        await import('../repeat-workflows/demo-file');
+      await this.loadFile(
+        await ownedDemoFile(classic ? DemoAsset.Classic : DemoAsset.Arachne),
+      );
+    } catch (error: unknown) {
+      this.error.set(
+        error instanceof Error
+          ? error.message
+          : 'The example could not be loaded.',
+      );
+    }
+  }
+  async loadFile(file: File | null | undefined): Promise<void> {
     this.reset();
     if (!file) {
       return;

@@ -348,5 +348,64 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
       },
     ],
   },
+  {
+    id: 'collections-and-planning',
+    title: 'Collections and next-job planning',
+    intro:
+      'Review repeated file work, compare a revised export, then check filament, walls, throughput and finish time with explicit assumptions.',
+    exploreLinkText: 'Explore all print workflows',
+    exploreRoute: PublicRouteUrl.AllTools,
+    homeLinkText: 'View all print workflows',
+    tools: [
+      {
+        icon: '▦',
+        title: 'Batch STL and 3MF Checker',
+        description:
+          'Check a small collection locally and export independent findings, settings and sampled-check limits.',
+        route: PublicRouteUrl.BatchStlChecker,
+        cta: 'Check a collection',
+      },
+      {
+        icon: '⇄',
+        title: 'STL Revision Comparison',
+        description:
+          'Overlay before/after exports in one coordinate frame and inspect bidirectional sampled surface distances.',
+        route: PublicRouteUrl.StlCompare,
+        cta: 'Compare revisions',
+      },
+      {
+        icon: '⌇',
+        title: 'Filament Remaining Calculator',
+        description:
+          'Subtract empty-spool tare and reserve, then check a complete sliced job or number of copies.',
+        route: PublicRouteUrl.FilamentRemainingCalculator,
+        cta: 'Check spool sufficiency',
+      },
+      {
+        icon: '▤',
+        title: 'Nozzle, Layer Height and Wall Planner',
+        description:
+          'Separate diameter from actual line width and estimate nominal wall lines before slicer review.',
+        route: PublicRouteUrl.NozzleLayerHeightCalculator,
+        cta: 'Plan wall lines',
+      },
+      {
+        icon: '↗',
+        title: 'Volumetric Flow Calculator',
+        description:
+          'Calculate requested throughput without inventing a hotend limit or recommended machine speed.',
+        route: PublicRouteUrl.VolumetricFlowCalculator,
+        cta: 'Plan requested flow',
+      },
+      {
+        icon: '◷',
+        title: 'Print Finish Time Calculator',
+        description:
+          'Add elapsed slicer duration to a chosen start across dates and daylight-saving boundaries.',
+        route: PublicRouteUrl.PrintFinishTimeCalculator,
+        cta: 'Plan a finish time',
+      },
+    ],
+  },
 ];
 import { PublicRouteUrl } from '../../core/seo/public-routes';

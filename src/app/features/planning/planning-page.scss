@@ -1,0 +1,64 @@
+.planning-page {
+  max-width: 72rem;
+  margin-inline: auto;
+}
+.card {
+  padding: clamp(1rem, 3vw, 2rem);
+  margin-block: 1.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 1rem;
+  background: #fff;
+}
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+input,
+select,
+button {
+  font: inherit;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #64748b;
+  border-radius: 0.4rem;
+  max-width: 100%;
+}
+button {
+  cursor: pointer;
+  background: #173c55;
+  color: #fff;
+}
+.error {
+  color: #9f1239;
+}
+dt {
+  font-weight: 650;
+  margin-top: 0.75rem;
+}
+dd {
+  margin: 0.2rem 0;
+}
+.result {
+  font-size: 1.4rem;
+  overflow-wrap: anywhere;
+}
+:host {
+  display: block;
+}
+@media print {
+  button,
+  input[type='file'] {
+    display: none;
+  }
+  .card {
+    break-inside: avoid;
+  }
+}

@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
@@ -5,7 +6,7 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
 
 @Component({
   selector: 'app-flow-rate-calculator-page',
-  imports: [RouterLink],
+  imports: [ToolEvidenceComponent, RouterLink],
   templateUrl: './flow-rate-calculator-page.html',
   styleUrl: './flow-rate-calculator-page.scss',
 })

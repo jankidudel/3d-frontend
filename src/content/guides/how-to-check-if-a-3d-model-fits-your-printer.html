@@ -165,3 +165,28 @@ faq:
   positioning margin. Inspect the slicer preview and avoid treating an exact
   mathematical fit as a guaranteed practical fit.
 </p>
+
+<h2>Check one model against different nominal beds</h2>
+<p>
+  Illustrative rigid bounding box: 250 × 210 × 180 mm. Against an A1 Mini's
+  nominal 180 × 180 × 180 mm volume, no axis permutation can fit because at
+  least one axis exceeds 180 mm. Against an A1's nominal 256 × 256 × 256 mm box,
+  the same model fits geometrically without scaling. Those nominal dimensions
+  come from the linked printer catalogue's specification sources.
+</p>
+<p>
+  The 6 mm nominal margin on the 250 mm axis is not automatically usable for a
+  brim, purge structure or excluded bed area. A right-angle bounding-box check
+  does not find every arbitrary rotation, and it does not prove that the actual
+  footprint fits around clips or slicer reservations. The same geometry might be
+  practical after splitting even when a box fails.
+</p>
+<p>
+  <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">Try the fit checker</a>
+  with an explicit printer profile, then inspect your slicer bed. For a helmet,
+  compare wearer dimensions separately: fitting a printer does not establish fit
+  on a person's head. Use
+  <a href="{{ GuideSlug.RouteStlScaleTool }}">scale</a> only when changing
+  real-world dimensions is acceptable, or plan separate parts and joint
+  clearances.
+</p>

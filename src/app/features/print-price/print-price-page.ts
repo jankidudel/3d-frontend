@@ -1,3 +1,9 @@
+import {
+  PlannerCurrency,
+  chosenCurrency,
+  rememberCurrency,
+} from '../repeat-workflows/currency-preference';
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -6,13 +12,14 @@ import { calculatePrintPrice } from './print-price';
 
 @Component({
   selector: 'app-print-price-page',
-  imports: [RouterLink],
+  imports: [ToolEvidenceComponent, RouterLink],
   templateUrl: './print-price-page.html',
   styleUrl: './print-price-page.scss',
 })
 export class PrintPricePage {
   readonly routeUrl = PublicRouteUrl;
-  readonly currency = signal('USD');
+  readonly currency = signal<PlannerCurrency>(chosenCurrency());
+  readonly currencies = Object.values(PlannerCurrency);
   readonly materialPrice = signal(20);
   readonly materialUsed = signal(80);
   readonly waste = signal(5);
@@ -54,13 +61,21 @@ export class PrintPricePage {
       path: PublicRouteUrl.PrintPriceCalculator,
     });
   }
+  setCurrency(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value as PlannerCurrency;
+    this.currency.set(value);
+    rememberCurrency(value);
+  }
   setNumber(target: keyof PrintPricePage, event: Event): void {
     (this[target] as unknown as { set(value: number): void }).set(
       Number((event.target as HTMLInputElement).value),
     );
   }
   format(value: number): string {
-    return new Intl.NumberFormat('en-US', {
+    if (this.currency() === PlannerCurrency.Other) {
+      return `${value.toFixed(2)} (chosen currency)`;
+    }
+    return new Intl.NumberFormat(undefined, {
       style: 'currency',
       currency: this.currency(),
       maximumFractionDigits: 2,

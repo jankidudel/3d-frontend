@@ -215,3 +215,34 @@ faq:
   keeps those inputs in one place and gives you a clear material, energy and
   total-cost breakdown.
 </p>
+
+<h2>Count purge waste and reprints without hiding assumptions</h2>
+<p>
+  Consider an illustrative slicer estimate of 80 g for parts and supports plus a
+  separately reported 20 g purge tower. At 24 currency units per kilogram, the
+  100 g total material costs 2.40. Using only the 80 g figure would omit 0.48.
+  If the slicer already includes purge in its total, adding it again would
+  overstate cost.
+</p>
+<p>
+  A 4-hour run at an observed average 120 W uses 0.48 kWh. At 0.30 currency
+  units per kWh, estimated electricity is 0.144. Nameplate watts and maximum
+  machine speed are not measured average consumption or elapsed time. Record
+  where your inputs came from: slicer, power meter, invoices or explicitly
+  chosen assumptions.
+</p>
+<p>
+  Failure allowances describe a planning model, not a prediction. A 10% uplift
+  on a 5.00 cost is 5.50; an independent 10% probability of repeating full
+  attempts gives expected attempt cost 5.00 / 0.90 = 5.56. Neither model covers
+  every failure pattern. State which you use, include labour actually repeated,
+  and replace assumptions with your own history when available.
+</p>
+<p>
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">Calculate the job cost</a
+  >, check
+  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
+    >spool sufficiency</a
+  >, then use the price calculator for the customer quote. No exchange rate or
+  country-specific energy price is implied.
+</p>

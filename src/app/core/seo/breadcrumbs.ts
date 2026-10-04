@@ -51,6 +51,15 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
     return [{ label: 'Contact & feedback', href: PublicRouteUrl.Contact }];
   }
 
+  const workflow = HOME_TOOL_GROUPS.find(
+    (group) => group.id === 'collections-and-planning',
+  )?.tools.find((tool) => tool.route === normalizedPath);
+  if (workflow) {
+    return [
+      { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
+      { label: workflow.title, href: workflow.route },
+    ];
+  }
   const tool = toolBreadcrumbs.get(normalizedPath);
   if (tool) {
     return [

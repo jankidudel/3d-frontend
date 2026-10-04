@@ -1,0 +1,202 @@
+[
+  {
+    "brief": 1,
+    "topic": "Compare two STL files",
+    "owner": "https://www.inspectmesh.com/how-to-compare-stl-revisions",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 2,
+    "topic": "Check multiple STL/3MF files",
+    "owner": "https://www.inspectmesh.com/batch-stl-checker",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 3,
+    "topic": "Check models before selling STL files",
+    "owner": "https://www.inspectmesh.com/check-stl-files-before-selling",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 4,
+    "topic": "Inspect customer-supplied print files",
+    "owner": "https://www.inspectmesh.com/inspect-customer-supplied-print-files",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 5,
+    "topic": "Is there enough filament for this job?",
+    "owner": "https://www.inspectmesh.com/how-much-filament-does-a-3d-print-use",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 6,
+    "topic": "Empty-spool weight and uncertainty",
+    "owner": "https://www.inspectmesh.com/filament-remaining-calculator",
+    "outcome": "Custom-tare workflow implemented; brand-spool dataset deferred",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": "Exact brand-spool dataset requires verified variants and measurements; no invented tare presets"
+  },
+  {
+    "brief": 7,
+    "topic": "Filament dryer vs dry box",
+    "owner": "https://www.inspectmesh.com/filament-dryer-vs-dry-box",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 8,
+    "topic": "Does PETG need a dryer?",
+    "owner": "https://www.inspectmesh.com/3d-printing-materials/petg",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 9,
+    "topic": "Nylon drying during long prints",
+    "owner": "https://www.inspectmesh.com/3d-printing-materials/nylon",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 10,
+    "topic": "0.4 vs 0.6 mm nozzle",
+    "owner": "https://www.inspectmesh.com/maximum-volumetric-speed-explained",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Actual PrusaSlicer exports and explicit settings",
+    "deferral": null
+  },
+  {
+    "brief": 11,
+    "topic": "Brass vs hardened nozzle",
+    "owner": "https://www.inspectmesh.com/brass-vs-hardened-nozzle",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 12,
+    "topic": "Nozzle diameter vs line width",
+    "owner": "https://www.inspectmesh.com/nozzle-layer-height-calculator",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 13,
+    "topic": "Maximum volumetric speed",
+    "owner": "https://www.inspectmesh.com/maximum-volumetric-speed-explained",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 14,
+    "topic": "Why a larger nozzle may not print faster",
+    "owner": "https://www.inspectmesh.com/maximum-volumetric-speed-explained",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Actual PrusaSlicer exports and explicit settings",
+    "deferral": null
+  },
+  {
+    "brief": 15,
+    "topic": "Why slicer print times differ from reality",
+    "owner": "https://www.inspectmesh.com/how-to-check-gcode-before-printing",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 16,
+    "topic": "STL inches/mm size mistakes",
+    "owner": "https://www.inspectmesh.com/why-stl-files-have-no-units",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 17,
+    "topic": "Thin features missing in slicer",
+    "owner": "https://www.inspectmesh.com/stl-file-wont-slice",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Actual PrusaSlicer exports and explicit settings",
+    "deferral": null
+  },
+  {
+    "brief": 18,
+    "topic": "Scaling changes holes and clearances",
+    "owner": "https://www.inspectmesh.com/how-to-scale-an-stl-file-for-3d-printing",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 19,
+    "topic": "Prepare one model for different printer beds",
+    "owner": "https://www.inspectmesh.com/how-to-check-if-a-3d-model-fits-your-printer",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 20,
+    "topic": "Can this printer fit a helmet/cosplay part?",
+    "owner": "https://www.inspectmesh.com/how-to-check-if-a-3d-model-fits-your-printer",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Owned geometry and report controls",
+    "deferral": null
+  },
+  {
+    "brief": 21,
+    "topic": "Material choice for outdoor parts",
+    "owner": "https://www.inspectmesh.com/3d-printing-materials",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 22,
+    "topic": "PLA/PETG for brackets or holders",
+    "owner": "https://www.inspectmesh.com/compare-materials/pla-vs-petg",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 23,
+    "topic": "PETG vs ASA outdoors",
+    "owner": "https://www.inspectmesh.com/compare-materials/petg-vs-asa",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 24,
+    "topic": "Price a multi-part/batch order",
+    "owner": "https://www.inspectmesh.com/how-much-to-charge-for-3d-prints",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  },
+  {
+    "brief": 25,
+    "topic": "Purge waste and failed-print cost",
+    "owner": "https://www.inspectmesh.com/how-to-calculate-3d-printing-cost",
+    "outcome": "Implemented on distinct owner; merged variants avoid duplicate pages",
+    "originalEvidence": "Transparent illustrative arithmetic or source-backed decision framework",
+    "deferral": null
+  }
+]

@@ -4,6 +4,7 @@ export interface GuideRegistryEntry {
   readonly group: string;
   readonly order: number;
   readonly publishDate: string;
+  readonly updatedDate?: string;
   readonly checkEditorialTargets?: boolean;
 }
 
@@ -22,6 +23,7 @@ const supportedRegistryFields = new Set([
   'group',
   'order',
   'publishDate',
+  'updatedDate',
   'checkEditorialTargets',
 ]);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -110,6 +112,17 @@ function registryEntry(
       `entry "${slug}" must provide valid YYYY-MM-DD "publishDate".`,
     );
   }
+  const updatedDate = record['updatedDate'];
+  if (
+    updatedDate !== undefined &&
+    (typeof updatedDate !== 'string' ||
+      !isDateOnlyUtc(updatedDate) ||
+      updatedDate < publishDate)
+  ) {
+    throw registryError(
+      `entry "${slug}" must provide a valid updatedDate on or after publishDate.`,
+    );
+  }
   if (
     'checkEditorialTargets' in record &&
     typeof record['checkEditorialTargets'] !== 'boolean'
@@ -124,6 +137,7 @@ function registryEntry(
     group,
     order,
     publishDate,
+    updatedDate: updatedDate as string | undefined,
     checkEditorialTargets: record['checkEditorialTargets'] as
       boolean | undefined,
   };

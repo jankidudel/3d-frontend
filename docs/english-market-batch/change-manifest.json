@@ -1,0 +1,61 @@
+{
+  "existingGuideOutcomes": [
+    "how-much-filament-does-a-3d-print-use",
+    "how-to-calculate-3d-printing-cost",
+    "how-much-to-charge-for-3d-prints",
+    "why-stl-files-have-no-units",
+    "how-to-scale-an-stl-file-for-3d-printing",
+    "3d-print-wall-thickness-guide",
+    "stl-file-wont-slice",
+    "how-to-check-gcode-before-printing",
+    "how-to-check-if-a-3d-model-fits-your-printer",
+    "how-to-rotate-a-3d-model-to-fit-your-printer",
+    "3d-print-file-preflight-checklist",
+    "how-to-check-if-a-3d-model-is-ready-to-print",
+    "how-to-repair-an-stl-file",
+    "how-to-check-stl-for-errors",
+    "how-to-check-stl-wall-thickness-for-3d-printing"
+  ],
+  "newGuideOutcomes": [
+    "how-to-compare-stl-revisions",
+    "check-stl-files-before-selling",
+    "inspect-customer-supplied-print-files",
+    "filament-dryer-vs-dry-box",
+    "brass-vs-hardened-nozzle",
+    "maximum-volumetric-speed-explained"
+  ],
+  "substantialToolPages": [
+    "StlPrintPreflight",
+    "ThreeMfPrintPreflight",
+    "QualityCheck",
+    "DimensionsChecker",
+    "StlWallThicknessChecker",
+    "PrintCostCalculator",
+    "PrintPriceCalculator",
+    "FilamentLengthCalculator",
+    "FlowRateCalculator",
+    "GcodePreflightChecker",
+    "PrinterFitChecker",
+    "OrientationPlanner"
+  ],
+  "materialPages": [
+    "3d-printing-materials/pla",
+    "3d-printing-materials/petg",
+    "3d-printing-materials/abs",
+    "3d-printing-materials/asa",
+    "3d-printing-materials/tpu",
+    "3d-printing-materials/nylon",
+    "3d-printing-materials/polycarbonate",
+    "3d-printing-materials/polypropylene",
+    "compare-materials/pla-vs-petg",
+    "compare-materials/petg-vs-asa"
+  ],
+  "printerPages": [
+    "3d-printers/bambu-lab-a1-mini",
+    "3d-printers/bambu-lab-a1",
+    "3d-printers/bambu-lab-p1s",
+    "3d-printers/prusa-mk4s"
+  ],
+  "hubs": ["tools", "guides", "3d-printing-materials", "3d-printers"],
+  "additionalChangedPages": [""]
+}

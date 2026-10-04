@@ -1,3 +1,9 @@
+import {
+  ProductLinkComponent,
+  ProductRelationship,
+  RetailerRegion,
+  ProductRecord,
+} from '../repeat-workflows/product-link';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -13,6 +19,26 @@ import { compatibilityFor, materials } from '../materials/material-catalogue';
   template: `<main class="page printer-hub-page">
     <p class="eyebrow">Printer research</p>
     <h1>3D Printers</h1>
+    <section>
+      <h2>Fit the model, then research the printer</h2>
+      <p>
+        An illustrative 250 × 210 × 180 mm box fails a nominal 180 mm cube but
+        fits a nominal 256 mm cube. That explains a useful size distinction,
+        without proving usable brim clearance or choosing a printer by speed
+        claims.
+      </p>
+      <p>
+        Check
+        <a [routerLink]="routeUrl.PrinterFitChecker"
+          >your STL or 3MF against named volumes</a
+        >, then compare enclosure, exact material profiles, workspace and
+        regional purchase details. This catalogue uses specification research
+        rather than hands-on quality, reliability or noise rankings. Dated
+        indicative prices are explicit currency snapshots, not live regional
+        offers.
+      </p>
+    </section>
+
     <p class="lead">
       Specification-led printer pages with build-volume fit links. InspectMesh
       has not hands-on tested the listed printers.
@@ -43,6 +69,7 @@ import { compatibilityFor, materials } from '../materials/material-catalogue';
   </main>`,
 })
 export class PrinterHubPage {
+  readonly routeUrl = PublicRouteUrl;
   readonly filter = signal('');
   readonly filtered = computed(() => {
     const query = this.filter().trim().toLowerCase();
@@ -67,7 +94,7 @@ export class PrinterHubPage {
 
 @Component({
   selector: 'app-printer-detail-page',
-  imports: [RouterLink],
+  imports: [RouterLink, ProductLinkComponent],
   styleUrl: './printer-pages.scss',
   template: `<main class="page printer-detail-page">
     <p class="breadcrumbs">
@@ -206,9 +233,72 @@ export class PrinterHubPage {
         }
       </ul>
     </section>
+    @if (fitExample(); as example) {
+      <section>
+        <h2>A reproducible nominal-fit decision</h2>
+        <p>{{ example }}</p>
+        <p>
+          The owned example is a 250 × 210 × 180 mm rigid box. All six
+          right-angle axis permutations are tested against the catalogue's
+          nominal dimensions. A box pass leaves slicer bed exclusions, brims,
+          supports and physical assembly unresolved. Scaling a helmet to fit a
+          printer also changes wearer fit; splitting needs joint and clearance
+          planning.
+        </p>
+        <p>
+          <a
+            [routerLink]="routeUrl.PrinterFitChecker"
+            [queryParams]="{ printer: printer().id }"
+            >Check your own STL or 3MF with this profile</a
+          >
+          or
+          <a [routerLink]="routeUrl.BatchStlChecker"
+            >record nominal fit for a collection</a
+          >. No quality, noise or reliability ranking is inferred from these
+          specifications.
+        </p>
+      </section>
+      <app-product-link [product]="productReferral()" />
+    }
   </main>`,
 })
 export class PrinterDetailPage {
+  readonly fitExample = computed(() => {
+    const id = this.printer().id;
+    const examples: Record<string, string> = {
+      'bambu-lab-a1-mini':
+        'The 250 mm axis exceeds every 180 mm axis in the nominal A1 Mini cube, so no tested right-angle orientation fits. Compare a split into separate parts before changing the real-world scale.',
+      'bambu-lab-a1':
+        'The example fits the nominal 256 × 256 × 256 mm A1 box in its original axis order. The 250 mm axis leaves only 6 mm nominal total clearance, so a brim or slicer exclusion can change practicality.',
+      'bambu-lab-p1s':
+        'The example fits the nominal 256 mm cube, but that fit alone does not decide between an enclosed P1S and an open-frame printer. Match the exact material environment and job requirements separately.',
+      'prusa-mk4s':
+        'The example matches a nominal 250 × 210 × 220 mm MK4S box on two horizontal axes, leaving zero nominal XY clearance. Treat that equality as a boundary case: the real footprint, bed exclusions and brim can make the job unsuitable.',
+    };
+    return examples[id] ?? null;
+  });
+  readonly productReferral = computed<ProductRecord>(() => {
+    const printer = this.printer();
+    const usLink = printer.officialProductUrl.includes('us.store.');
+    return {
+      id: printer.id,
+      name: printer.displayName + ' manufacturer reference',
+      reason:
+        'Check exact model, bundle and regional purchase options after reviewing the nominal fit.',
+      compatibility:
+        'Specification research, not physical testing. Confirm usable build regions and the exact supplied hotend/material profile.',
+      source: printer.sources[0].url,
+      verified: printer.lastVerified,
+      relationship: ProductRelationship.Manufacturer,
+      links: usLink
+        ? {
+            [RetailerRegion.US]: printer.officialProductUrl,
+            [RetailerRegion.Worldwide]: 'https://bambulab.com/en/compare',
+          }
+        : { [RetailerRegion.Worldwide]: printer.officialProductUrl },
+    };
+  });
+
   readonly routeUrl = PublicRouteUrl;
   private readonly slug = inject(Router).url.split('/').at(-1) ?? '';
   readonly printer = computed(() => {

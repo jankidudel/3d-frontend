@@ -1,0 +1,103 @@
+---
+title: 'Check STL Files Before Selling: File Handoff | InspectMesh'
+description: 'Prepare a repeatable model-file handoff with units, geometry findings, supported checks and known limits before distributing an STL collection.'
+slug: check-stl-files-before-selling
+eyebrow: Practical print workflow
+heading: 'A Practical File-Quality Handoff for STL Model Sellers'
+faq:
+  - question: 'What should a model collection report include?'
+    answer: 'Record unit assumptions, dimensions, completed topology findings, sampled checks, skipped checks, settings and the next review action. A clean mesh screen is not a print guarantee.'
+  - question: 'Does a clean report establish permission to sell?'
+    answer: 'No. The report describes supported mesh checks only. Rights, licensing, suitability for a particular use and the actual sliced result require separate review.'
+---
+
+<p>
+  Before distributing a collection, record what each file is intended to
+  represent, its assumed dimensions and the checks actually completed. A clean
+  mesh screen is useful evidence, but it does not justify promising that every
+  customer printer or slicer will print the model successfully.
+</p>
+<h2>Use a collection report with independent outcomes</h2>
+<p>
+  Run
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}"
+    >the built-in mixed collection</a
+  >. The closed cube has known 20 mm dimensions and screened 8,000 mm³ volume;
+  the open-face cube has four boundary edges and unavailable volume; malformed
+  input fails separately. This is the behaviour a review process needs: one
+  failed file cannot be hidden by a collection-wide green badge.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Handoff field</th>
+      <th>What to record</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Dimensions</td>
+      <td>Expected size and explicit STL unit assumption</td>
+    </tr>
+    <tr>
+      <td>Geometry</td>
+      <td>
+        Boundary, non-manifold, duplicate, degenerate and winding findings
+      </td>
+    </tr>
+    <tr>
+      <td>Shells</td>
+      <td>Whether separate shells are intentional separate parts</td>
+    </tr>
+    <tr>
+      <td>Sampling</td>
+      <td>Wall threshold, sample count and unmeasured locations</td>
+    </tr>
+    <tr>
+      <td>Limitations</td>
+      <td>
+        Unchecked self intersections, slicer settings and physical behaviour
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Separate a mesh finding from a process promise</h2>
+<p>
+  An intentional open surface may be an authoring intermediate, while a
+  downloadable solid part should receive the intended solid interpretation. A
+  multi-shell model can be several legitimate pieces. State the intended task so
+  the next reviewer knows which finding requires correction. The checker cannot
+  infer that design intent.
+</p>
+<p>
+  Do not translate “no issue found in completed checks” into guaranteed
+  printability. Supports, shrinkage, nozzle profile, material formulation and
+  real-world assembly are separate decisions. If you have no physical-print
+  evidence, identify the file examples and screenshots as software
+  demonstrations.
+</p>
+<h2>Review replacement exports consistently</h2>
+<p>
+  Keep revisions separately and use
+  <a href="{{ GuideSlug.RouteStlCompare }}">surface comparison</a> after
+  cleanup. Exported triangles can change without changing shape; the unchanged
+  retriangulation control helps distinguish that case. Record any alignment and
+  tolerance rather than choosing a hidden normalisation.
+</p>
+<p>
+  Export JSON for full settings and CSV for a collection summary, then store
+  your release notes with the files. Optional browser-local report history is
+  convenient but can disappear when browser data is cleared. Export anything you
+  need to retain. This checklist concerns technical handoff and provides no
+  licensing or legal advice.
+</p>
+
+<h2>Give the next reviewer an actionable note</h2>
+<p>
+  Example handoff: “The closed cube completed topology checks at an assumed
+  millimetre scale; its dimensions are 20 mm on every axis. The open-face
+  control has four boundary edges, so its volume is unavailable. Printer fit was
+  skipped because no profile was selected.” This records what actually ran and
+  one decision still required. It is more useful than labelling every exported
+  file passed.
+</p>

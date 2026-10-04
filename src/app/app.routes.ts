@@ -1,3 +1,4 @@
+import { PlannerKind } from './features/planning/planner-kind';
 import { Routes } from '@angular/router';
 import { BreadcrumbPageLayout } from './core/components/breadcrumb-page-layout/breadcrumb-page-layout';
 import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
@@ -8,6 +9,29 @@ import { materials } from './features/materials/material-catalogue';
 import { materialComparisonPaths } from './features/materials/material-comparisons';
 
 const breadcrumbRoutes: Routes = [
+  ...[
+    [PublicRoutePath.FilamentRemainingCalculator, PlannerKind.Spool],
+    [PublicRoutePath.NozzleLayerHeightCalculator, PlannerKind.Wall],
+    [PublicRoutePath.VolumetricFlowCalculator, PlannerKind.Flow],
+    [PublicRoutePath.PrintFinishTimeCalculator, PlannerKind.Finish],
+  ].map(([path, planner]) => ({
+    path,
+    data: { planner },
+    loadComponent: () =>
+      import('./features/planning/planning-page').then((m) => m.PlanningPage),
+  })),
+  {
+    path: PublicRoutePath.BatchStlChecker,
+    loadComponent: () =>
+      import('./features/repeat-workflows/batch-page').then((m) => m.BatchPage),
+  },
+  {
+    path: PublicRoutePath.StlCompare,
+    loadComponent: () =>
+      import('./features/repeat-workflows/compare-page').then(
+        (m) => m.ComparePage,
+      ),
+  },
   {
     path: PublicRoutePath.Materials,
     loadComponent: () =>

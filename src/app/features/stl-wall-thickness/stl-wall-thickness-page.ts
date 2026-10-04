@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { SeoService } from '../../core/seo/seo.service';
@@ -20,9 +21,10 @@ import {
   selector: 'app-stl-wall-thickness-page',
   templateUrl: './stl-wall-thickness-page.html',
   styleUrl: './stl-wall-thickness-page.scss',
-  imports: [ObjectViewerComponent],
+  imports: [ToolEvidenceComponent, ObjectViewerComponent],
 })
 export class StlWallThicknessPage {
+  readonly routeUrl = PublicRouteUrl;
   readonly unit = WallThicknessUnit;
   readonly file = signal<File | null>(null);
   readonly mesh = signal<StlMesh | null>(null);
@@ -64,6 +66,19 @@ export class StlWallThicknessPage {
         'Estimate STL wall thickness locally in your browser, highlight sampled thin areas, and check whether a model needs closer print-preparation review.',
       path: PublicRouteUrl.StlWallThicknessChecker,
     });
+  }
+  async runOwnedExample(): Promise<void> {
+    try {
+      const { exampleFile, MeshExample } =
+        await import('../repeat-workflows/example-meshes');
+      await this.onFileSelected(exampleFile(MeshExample.Cube));
+    } catch (error: unknown) {
+      this.error.set(
+        error instanceof Error
+          ? error.message
+          : 'The example could not be loaded.',
+      );
+    }
   }
   async onFileSelected(file: File | null): Promise<void> {
     this.error.set('');

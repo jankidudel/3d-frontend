@@ -1,3 +1,5 @@
+import { guideRegistry } from '../src/content/guides/guides.registry.ts';
+import { editorialDates } from './editorial-dates.mts';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { canonicalPublicRoutePaths } from '../src/app/core/seo/public-routes.ts';
@@ -40,10 +42,16 @@ const sitemapPath = resolve(publicDirectory, 'sitemap.xml');
 if (!indexingEnabled) {
   await rm(sitemapPath, { force: true });
 } else {
+  const dates: Record<string, string> = { ...editorialDates };
+  for (const guide of guideRegistry) {
+    if (guide.enabled) {
+      dates[`/${guide.slug}`] = guide.updatedDate ?? guide.publishDate;
+    }
+  }
   const entries = [...canonicalPublicRoutePaths, ...guideRoutePaths]
     .map(
       (path) =>
-        `  <url><loc>${siteUrl}${path.startsWith('/') ? path : `/${path}`}</loc></url>`,
+        `  <url><loc>${siteUrl}${path.startsWith('/') ? path : `/${path}`}</loc>${dates[path.startsWith('/') ? path : `/${path}`] ? `<lastmod>${dates[path.startsWith('/') ? path : `/${path}`]}</lastmod>` : ''}</url>`,
     )
     .join('\n');
   await writeFile(

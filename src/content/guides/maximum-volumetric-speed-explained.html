@@ -1,0 +1,108 @@
+---
+title: 'Maximum Volumetric Speed: Throughput vs Calibration | InspectMesh'
+description: 'Understand requested volumetric flow, user-tested profile limits and why a computed linear speed does not establish a suitable machine speed.'
+slug: maximum-volumetric-speed-explained
+eyebrow: Practical print workflow
+heading: 'Maximum Volumetric Speed: Throughput vs Calibration'
+faq:
+  - question: 'Is calculated speed at a throughput limit a machine speed recommendation?'
+    answer: 'No. It is an approximate relationship between width, layer height and throughput. Acceleration, cooling, detail and the exact profile can require a lower speed.'
+  - question: 'What if I do not know the tested throughput limit?'
+    answer: 'Leave the capacity unknown. You can calculate requested throughput from width, height and linear speed, but a material name or nozzle diameter alone cannot establish a validated flow ceiling.'
+---
+
+<p>
+  Volumetric throughput describes the volume requested per second, in mm³/s.
+  Extrusion multiplier calibration changes how commanded extrusion maps to
+  delivered material. They are related to extrusion but answer different tasks;
+  a calibrated multiplier does not establish a hotend throughput limit.
+</p>
+<h2>Follow an editable calculation</h2>
+<p>
+  Illustrative line width 0.45 mm, layer height 0.2 mm and linear speed 100 mm/s
+  request approximately 0.45 × 0.2 × 100 = 9 mm³/s using a rectangular-section
+  approximation. If your own applicable test supports an 8 mm³/s limit, the same
+  formula gives 8 / (0.45 × 0.2) = 88.89 mm/s at that throughput.
+</p>
+<p>
+  Enter those values in
+  <a href="{{ GuideSlug.RouteVolumetricFlowCalculator }}"
+    >the volumetric-flow calculator</a
+  >. Leave throughput unknown when you have no applicable measurement. Record
+  printer, hotend, nozzle, material formulation, temperature, test method and
+  observation date with a claimed limit. A material name cannot supply that
+  context.
+</p>
+<h2>Why the computed speed is not a recommendation</h2>
+<p>
+  Short segments may never reach a requested speed, and cooling or quality
+  requirements may call for a lower one. Changing layer height or width changes
+  requested throughput, but does not remove those other constraints. The simple
+  rectangular formula also differs from a slicer's detailed extrusion model.
+</p>
+<p>
+  <a href="https://help.prusa3d.com/article/max-volumetric-speed_127176"
+    >Prusa's maximum-volumetric-speed reference</a
+  >
+  explains the slicer limiting concept. Use exact profile evidence for numerical
+  limits; no typical material range is promoted here as a safe maximum for your
+  printer.
+</p>
+<h2>Separate calibration from capacity</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Workflow</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Is commanded extrusion delivering the expected amount?</td>
+      <td>
+        Existing
+        <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
+          >flow calibration</a
+        >
+        and printer-specific calibration procedure
+      </td>
+    </tr>
+    <tr>
+      <td>How much volume does this width/height/speed request?</td>
+      <td>Volumetric calculation</td>
+    </tr>
+    <tr>
+      <td>How long will this sliced job actually take?</td>
+      <td>
+        Slicer estimate, observed comparable jobs and
+        <a href="{{ GuideSlug.Route3dPrintFinishTimeCalculator }}"
+          >finish-time planning</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Keep the basic calculation useful even when a tested limit is unavailable. A
+  zero or missing limit means unknown, not an unlimited hotend or a successful
+  capacity check.
+</p>
+
+<h2>Why changing the diameter field does not promise a speedup</h2>
+<p>
+  In an owned 20 mm cube experiment, PrusaSlicer 2.9.6 used the same 0.2 mm
+  layer height, explicit 0.45 mm extrusion width and 45 mm/s perimeter speed.
+  Changing only nozzle diameter from 0.4 to 0.6 mm produced estimates of 23
+  minutes 49 seconds and 23 minutes 45 seconds. These are slicer estimates from
+  CLI defaults, not timed physical prints. First-layer width remained a 200%
+  profile setting, so the profiles were not geometrically identical in every
+  detail.
+</p>
+<p>
+  The four-second difference does not establish a general nozzle-speed ratio. A
+  larger opening alone did not replace the explicitly held line width, layer
+  height or motion settings. Use a validated larger-nozzle profile, inspect
+  small features and cooling, and compare the whole job estimate. A volumetric
+  calculation describes requested throughput; it does not establish safe hotend
+  capacity.
+</p>

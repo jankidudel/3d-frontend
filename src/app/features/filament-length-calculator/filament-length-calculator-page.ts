@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
@@ -19,7 +20,7 @@ type ConversionMode = (typeof CONVERSION_MODE)[keyof typeof CONVERSION_MODE];
 
 @Component({
   selector: 'app-filament-length-calculator-page',
-  imports: [RouterLink],
+  imports: [ToolEvidenceComponent, RouterLink],
   templateUrl: './filament-length-calculator-page.html',
   styleUrl: './filament-length-calculator-page.scss',
 })

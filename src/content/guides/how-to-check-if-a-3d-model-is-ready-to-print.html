@@ -324,3 +324,28 @@ faq:
   understand. That makes every later printing decision easier and more
   deliberate.
 </p>
+
+<h2>A successful mesh screen is one stage of readiness</h2>
+<p>
+  The closed 20 mm cube in
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}">the example collection</a> has
+  12 triangles, no boundary edges and a screened volume of 8,000 mm³. That
+  software fixture establishes known geometry. It does not establish a printer
+  profile, support strategy, material load capability or successful physical
+  print.
+</p>
+<p>
+  Separate results into completed, sampled and skipped checks. If no printer is
+  selected, fit is skipped rather than passed. If an opposing wall ray is not
+  found, thickness is unmeasured rather than zero or automatically safe. If a
+  build contains disconnected shells, closed-solid volume interpretation can
+  remain unavailable even though individual shells look closed.
+</p>
+<p>
+  Start with <a href="{{ GuideSlug.RouteStlPrintPreflight }}">preflight</a>,
+  review the real slicer layer preview, then enter complete consumption into
+  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
+    >the spool planner</a
+  >. For several client files, export a consistent batch report and separate
+  factual findings from choices that still need confirmation.
+</p>

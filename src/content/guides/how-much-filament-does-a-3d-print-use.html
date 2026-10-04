@@ -192,3 +192,32 @@ faq:
   lets you enter slicer values or start with a volume-based estimate, then
   includes material, energy, labour and margin in one calculation.
 </p>
+
+<h2>Check a partial spool against the sliced job</h2>
+<p>
+  Illustrative inputs: a part-used spool weighs 350 g, its matching empty reel
+  weighs 200 g, and you keep a 20 g reserve. Remaining filament is 150 g and
+  usable filament is 130 g. For a complete 45 g job that includes supports and
+  purge, there is an 85 g surplus; at most two complete copies fit before
+  reserve. Three copies would need 135 g and exceed usable stock by 5 g.
+</p>
+<p>
+  Weigh the same reel type for tare. A different reel, labels or retained
+  packing can alter that figure, so an unsourced brand average is a weaker
+  input. If scale readings vary by several grams, choose a reserve reflecting
+  that uncertainty rather than interpreting a small positive surplus as
+  certainty.
+</p>
+<p>
+  The
+  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
+    >partial-spool sufficiency calculator</a
+  >
+  owns this next-job decision; the
+  <a href="{{ GuideSlug.RouteFilamentLengthCalculator }}"
+    >weight/length converter</a
+  >
+  answers a different conversion task. Re-slice if the number of copies or
+  support settings changes. A model's solid volume is not a substitute for
+  complete-job filament consumption.
+</p>

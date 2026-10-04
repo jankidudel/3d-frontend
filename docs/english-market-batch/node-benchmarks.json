@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-04",
+  "runtime": "v24.19.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "note": "Node process observations, not browser heap or a promise for every device. Disjoint owned cube array stress fixture.",
+  "records": [
+    {
+      "triangles": 1200,
+      "binaryStlBytes": 60084,
+      "checkDurationMs": 20.245084000000002,
+      "compareDurationMs": 41.65645800000001,
+      "processMemoryBefore": {
+        "rss": 53870592,
+        "heapTotal": 10715136,
+        "heapUsed": 6585800,
+        "external": 1979711,
+        "arrayBuffers": 176143
+      },
+      "processMemoryAfter": {
+        "rss": 75022336,
+        "heapTotal": 18841600,
+        "heapUsed": 11906520,
+        "external": 2193537,
+        "arrayBuffers": 329215
+      },
+      "wallSamples": 1200,
+      "maximumSampledMm": 4.547646977903643e-13
+    },
+    {
+      "triangles": 12000,
+      "binaryStlBytes": 600084,
+      "checkDurationMs": 44.822917000000004,
+      "compareDurationMs": 33.998290999999995,
+      "processMemoryBefore": {
+        "rss": 75612160,
+        "heapTotal": 18841600,
+        "heapUsed": 12858904,
+        "external": 2673537,
+        "arrayBuffers": 809215
+      },
+      "processMemoryAfter": {
+        "rss": 91963392,
+        "heapTotal": 48070656,
+        "heapUsed": 21226912,
+        "external": 3352445,
+        "arrayBuffers": 1488123
+      },
+      "wallSamples": 2000,
+      "maximumSampledMm": 3.637980650234939e-12
+    },
+    {
+      "triangles": 99996,
+      "binaryStlBytes": 4999884,
+      "checkDurationMs": 340.55554199999995,
+      "compareDurationMs": 135.20179100000007,
+      "processMemoryBefore": {
+        "rss": 105037824,
+        "heapTotal": 48332800,
+        "heapUsed": 28941672,
+        "external": 7352285,
+        "arrayBuffers": 5487963
+      },
+      "processMemoryAfter": {
+        "rss": 216170496,
+        "heapTotal": 186417152,
+        "heapUsed": 93554776,
+        "external": 18313581,
+        "arrayBuffers": 16449259
+      },
+      "wallSamples": 2000,
+      "maximumSampledMm": 2.910383089041457e-11
+    }
+  ]
+}

@@ -184,3 +184,27 @@ faq:
   for a practical first pass, then use its linked individual tools to
   investigate a specific finding.
 </p>
+
+<h2>Read independent findings rather than one printable badge</h2>
+<p>
+  In the owned cube fixtures, deleting a whole square face creates four boundary
+  edges; adding a duplicate triangle creates three edges used by more than two
+  faces; adding a triangle with a repeated vertex creates a degenerate face.
+  These are different defects and call for different review. Two disjoint closed
+  cubes have two connected shells, which may be intentional parts rather than
+  one corrupt model.
+</p>
+<p>
+  Run <a href="{{ GuideSlug.RouteBatchStlChecker }}">the mixed collection</a> to
+  see independent success and failure states. Malformed input is a failed check,
+  not a mesh with zero findings. Review units and whether fit or walls were
+  skipped before interpreting a result as complete.
+</p>
+<p>
+  A clean edge-incidence screen does not detect every self-intersection or
+  validate material strength. Export the method and settings when sending
+  findings to someone else. Use
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">single-file preflight</a> for
+  focused follow-up, then compare a revised export rather than silently
+  overwriting the original.
+</p>

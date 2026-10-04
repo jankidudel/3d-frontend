@@ -59,6 +59,7 @@ export class ObjectViewerComponent {
   readonly preserveVertexColors = input(false);
   readonly measurementUnit = input('model units');
   readonly measurementAvailable = input(true);
+  readonly chooseAnotherAvailable = input(true);
   readonly chooseAnother = output<void>();
   readonly resetView = output<void>();
   readonly rendered = output<void>();

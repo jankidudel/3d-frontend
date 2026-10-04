@@ -707,4 +707,8 @@
       · <a [routerLink]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
+  <app-tool-evidence
+    [completed]="!!rawDimensions()"
+    [page]="routeUrl.DimensionsChecker"
+  />
 </main>

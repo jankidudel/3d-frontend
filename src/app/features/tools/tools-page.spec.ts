@@ -33,6 +33,7 @@ describe('ToolsPage', () => {
       '3MF tools',
       'Planning and functional tools',
       'G-code and print workflow',
+      'Collections and next-job planning',
     ]);
     expect(
       fixture.nativeElement.querySelector('nav[aria-label="Breadcrumb"]'),

@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
@@ -27,7 +28,7 @@ import {
 
 @Component({
   selector: 'app-stl-print-preflight-page',
-  imports: [RouterLink],
+  imports: [ToolEvidenceComponent, RouterLink],
   templateUrl: './stl-print-preflight-page.html',
   styleUrl: './stl-print-preflight-page.scss',
 })
@@ -138,6 +139,19 @@ export class StlPrintPreflightPage {
     });
   }
 
+  async runOwnedExample(): Promise<void> {
+    try {
+      const { exampleFile, MeshExample } =
+        await import('../repeat-workflows/example-meshes');
+      await this.onFileSelected(exampleFile(MeshExample.Cube));
+    } catch (error: unknown) {
+      this.error.set(
+        error instanceof Error
+          ? error.message
+          : 'The example could not be loaded.',
+      );
+    }
+  }
   async onFileSelected(file: File | null): Promise<void> {
     this.reset();
     if (!file) {

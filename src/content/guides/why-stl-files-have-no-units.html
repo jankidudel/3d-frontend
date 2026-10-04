@@ -130,3 +130,26 @@ faq:
   <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> lets you inspect the
   displayed model locally.
 </p>
+
+<h2>Reproduce the 25.4 size error before changing the file</h2>
+<p>
+  A model exported with a width of 2 coordinate units can mean 2 inches in the
+  author's CAD workflow. Imported as millimetres, it measures only 2 mm;
+  intended width is 2 × 25.4 = 50.8 mm. The correction is a factor of 25.4, or
+  2,540%, not an arbitrary scale guessed from the viewer.
+</p>
+<p>
+  The built-in batch fixture is a 20-unit cube. Under a millimetre assumption
+  its width is 20 mm; under an inch assumption it is 508 mm. That software
+  demonstration changes interpretation, not the original coordinates. Compare a
+  known reference dimension, such as a hole centre distance, with the supplied
+  drawing before deciding which interpretation is correct.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">Check dimensions</a> and
+  explicitly select the assumed unit. If you need a converted STL, use
+  <a href="{{ GuideSlug.RouteStlScaleTool }}">the scale tool</a> to save a new
+  copy and verify it in the target slicer. Converting into 3MF can carry unit
+  metadata, but the source STL still cannot tell you which unit its author
+  intended.
+</p>

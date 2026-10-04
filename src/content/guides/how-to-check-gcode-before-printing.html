@@ -248,3 +248,28 @@ faq:
   Use it as the final file-level review before printing—then rely on your slicer
   profile and printer-specific knowledge for the actual print decision.
 </p>
+
+<h2>Use the embedded time estimate as an estimate</h2>
+<p>
+  The supported G-code parser reads declared slicer metadata where present; it
+  does not recreate a printer's motion planner. A sliced-file duration has more
+  job context than an STL volume, yet acceleration, firmware limits, warm-up and
+  pauses can still make real elapsed time differ.
+</p>
+<p>
+  Illustrative observation: the slicer says 5 hours and a comparable completed
+  job took 6 hours. An observed correction factor is 6 / 5 = 1.2. A later 4-hour
+  estimate becomes 4.8 hours before any separately omitted setup allowance. One
+  observation is weak evidence; track comparable jobs and avoid transferring a
+  factor from a small detailed part to a large continuous extrusion.
+</p>
+<p>
+  <a href="{{ GuideSlug.Route3dPrintFinishTimeCalculator }}"
+    >Plan the finish instant</a
+  >
+  in your chosen timezone. That tool adds elapsed duration across midnight and
+  daylight-saving boundaries, accepts supported duration metadata and leaves it
+  editable. It does not monitor the printer, send reminders or know when a job
+  actually finishes. Keep safety and running-printer decisions with the
+  printer's operating guidance.
+</p>

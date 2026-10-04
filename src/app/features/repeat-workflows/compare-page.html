@@ -1,0 +1,220 @@
+<main class="page tool-page planning-page">
+  <p class="eyebrow">Local revision inspection</p>
+  <h1>Compare Two STL Files</h1>
+  <p class="lead">
+    Inspect before and after exports in one coordinate frame, then measure
+    sampled distances to the other surface. Models are never silently scaled to
+    match.
+  </p>
+  <section class="card">
+    <h2>Choose revisions</h2>
+    <p>
+      Up to 5 MiB and 100,000 triangles per STL. Unit assumptions apply
+      independently; results are in millimetres.
+    </p>
+    <div class="fields">
+      <label
+        >Before STL<input
+          type="file"
+          accept=".stl"
+          (change)="pick(sides.Before, $event)"
+          [disabled]="busy()" /></label
+      ><label
+        >Before unit<select
+          [value]="beforeUnit()"
+          (change)="changeUnit(sides.Before, $event)"
+          [disabled]="busy()"
+        >
+          <option [value]="units.Millimetres">Millimetres</option>
+          <option [value]="units.Inches">Inches</option>
+        </select></label
+      >
+      <label
+        >After STL<input
+          type="file"
+          accept=".stl"
+          (change)="pick(sides.After, $event)"
+          [disabled]="busy()" /></label
+      ><label
+        >After unit<select
+          [value]="afterUnit()"
+          (change)="changeUnit(sides.After, $event)"
+          [disabled]="busy()"
+        >
+          <option [value]="units.Millimetres">Millimetres</option>
+          <option [value]="units.Inches">Inches</option>
+        </select></label
+      >
+      <label
+        >Alignment<select
+          [value]="alignment()"
+          (change)="changeAlignment($event)"
+          [disabled]="busy()"
+        >
+          <option [value]="alignments.Original">Original coordinates</option>
+          <option [value]="alignments.Centres">
+            Explicit bounding-box centre translation
+          </option>
+        </select></label
+      ><label
+        >Overlay opacity<input
+          type="range"
+          min="0.1"
+          max="0.9"
+          step="0.05"
+          [value]="opacity()"
+          (input)="changeOpacity($event)"
+      /></label>
+      <label
+        >Sample tolerance (mm)<input
+          type="number"
+          min="0"
+          step="any"
+          [value]="tolerance()"
+          (input)="
+            tolerance.set($any($event.target).valueAsNumber);
+            difference.set(null)
+          "
+          [disabled]="busy()"
+      /></label>
+    </div>
+    <button type="button" (click)="example()" [disabled]="busy()">
+      Compare known 20 → 24 mm change
+    </button>
+    <button type="button" (click)="example(true)" [disabled]="busy()">
+      Try unchanged retriangulation control
+    </button>
+    <button
+      type="button"
+      (click)="compare()"
+      [disabled]="busy() || !before() || !after()"
+    >
+      Measure surface samples
+    </button>
+    <button type="button" (click)="cancel()" [disabled]="!busy()">
+      Cancel comparison
+    </button>
+    <p role="status">
+      {{
+        busy()
+          ? 'Measuring surface samples...'
+          : 'Ready for revision inspection.'
+      }}
+    </p>
+    @if (error()) {
+      <p role="alert" class="error">{{ error() }}</p>
+    }
+    <p>
+      Alignment: {{ alignment() }}. Applied after translation:
+      {{ offset().join(', ') }} mm. Centre translation can hide a deliberate
+      coordinate move; no rotation or rescaling is performed.
+    </p>
+  </section>
+  @if (object(); as scene) {
+    <app-object-viewer
+      [object]="scene"
+      [extent]="extent()"
+      ariaLabel="Before and after STL overlay in one coordinate frame"
+      [preserveVertexColors]="true"
+      [chooseAnotherAvailable]="false"
+      [scrollOnRender]="false"
+      measurementUnit="mm"
+    />
+    <p>
+      Before is cyan; after is orange. Dark red dots mark sampled surface
+      locations over tolerance. Numeric findings below provide an alternative to
+      colour.
+    </p>
+  }
+  <section class="card">
+    <h2>Revision metrics</h2>
+    @for (revision of [before(), after()]; track $index) {
+      @if (revision) {
+        <h3>
+          {{ $index === 0 ? 'Before' : 'After' }}: {{ revision.file.name }}
+        </h3>
+        <p>
+          {{ revision.dimensions.width | number: '1.0-3' }} ×
+          {{ revision.dimensions.height | number: '1.0-3' }} ×
+          {{ revision.dimensions.depth | number: '1.0-3' }} mm;
+          {{ revision.mesh.indices.length / 3 }} triangles;
+          {{ revision.area | number: '1.0-2' }} mm² surface area.
+        </p>
+      }
+    }
+    <p>
+      Dimensions, triangle count and surface area alone cannot prove shape
+      equality. Use
+      <a [routerLink]="routeUrl.BatchStlChecker">the batch checker</a> for
+      screened closed-model volume; comparison does not assume a valid solid.
+    </p>
+    @if (byteEquality() !== null) {
+      <p>
+        {{
+          byteEquality()
+            ? 'The input file bytes are identical. Unit assumptions still determine physical scale.'
+            : 'File bytes differ. That alone is not proof that geometry differs.'
+        }}
+      </p>
+    }
+    @if (difference(); as result) {
+      @for (check of volumeChecks(); track $index) {
+        <p>
+          {{ $index === 0 ? 'Before' : 'After' }} screened volume:
+          @if (check.topology.volumeReliable) {
+            {{ check.topology.volume | number: '1.0-2' }} mm³.
+          } @else {
+            Unavailable: solid-validity screens did not pass.
+          }
+        </p>
+      }
+      <p>
+        Volumes require one closed, consistently wound shell without detected
+        degenerates, duplicate triangles or non-manifold edges. Self
+        intersections are not checked, so this remains a conservative mesh
+        screen.
+      </p>
+      <h3>Bidirectional sampled surface distances</h3>
+      <dl>
+        <dt>Samples</dt>
+        <dd>
+          {{ result.samplesPerDirection }} per direction ({{
+            result.samplesPerDirection * 2
+          }}
+          total)
+        </dd>
+        <dt>Maximum among sampled points</dt>
+        <dd>{{ result.maximumSampledMm | number: '1.0-5' }} mm</dd>
+        <dt>Mean sampled distance</dt>
+        <dd>{{ result.meanSampledMm | number: '1.0-5' }} mm</dd>
+        <dt>Samples over {{ result.toleranceMm }} mm tolerance</dt>
+        <dd>{{ result.samplesOverTolerance }}</dd>
+      </dl>
+      <button type="button" (click)="export()">Export revision summary</button>
+    }
+  </section>
+  <section class="card">
+    <h2>What this method can and cannot tell you</h2>
+    <p>
+      Deterministic area-distributed points are measured against a triangle
+      acceleration structure in both directions. This is a genuine surface
+      comparison, rather than nearest-vertex matching. The unchanged
+      retriangulation control should give effectively zero distance; the
+      widened-cube example has a 4 mm changed surface.
+    </p>
+    <p>
+      Finite sampling can miss small features. A result under tolerance does not
+      prove equality, and the sampled maximum is not an upper bound for the
+      whole surface. This is not CAD tolerancing, certified metrology, automatic
+      feature identification or a Boolean solid difference.
+    </p>
+    <p>
+      <a [routerLink]="routeUrl.StlPrintPreflight"
+        >Check mesh integrity before slicing</a
+      >, or
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >review a collection with consistent reports</a
+      >. Saved revision projects and cloud history are not available.
+    </p>
+  </section>
+</main>

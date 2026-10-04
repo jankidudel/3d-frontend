@@ -134,3 +134,29 @@ faq:
   differently, but it can change support needs, bed contact, print quality and
   the reliability of the print. Confirm the final orientation in your slicer.
 </p>
+
+<h2>Rotation is a size decision as well as a support decision</h2>
+<p>
+  Consider an illustrative 200 × 100 × 50 mm box and a nominal 180 × 180 × 250
+  mm printer. In the original axis order, its 200 mm horizontal width exceeds
+  the bed. Turning the 200 mm axis upright produces a 100 × 50 × 200 mm box that
+  fits the nominal dimensions. This explains why testing axis permutations is
+  useful before scaling a functional part.
+</p>
+<p>
+  That successful box orientation may increase supports, reduce bed contact or
+  change strength across layers. Fit is therefore one input to orientation
+  choice. Arbitrary diagonal rotations can sometimes help but must be checked
+  against the actual model footprint and print envelope, rather than treated as
+  a promise from the box calculation.
+</p>
+<p>
+  <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
+    >Review candidate orientations</a
+  >, compare the sliced supports and layer preview, then use
+  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
+    >spool sufficiency</a
+  >
+  with the new complete-job estimate. Keep each interpretation and source unit
+  in the report so another person can reproduce the fit decision.
+</p>

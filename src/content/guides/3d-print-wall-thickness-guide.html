@@ -354,3 +354,35 @@ faq:
   make the final printing decision with your own printer and intended use in
   mind.
 </p>
+
+<h2>Separate nozzle size, line width and nominal wall lines</h2>
+<p>
+  For illustrative inputs of a 0.4 mm nozzle, 0.45 mm extrusion width and a 1.3
+  mm CAD wall, the nearest equal-width count is three: 3 × 0.45 = 1.35 mm
+  nominal thickness. This arithmetic does not show what a variable-width engine
+  actually emits. Nozzle diameter, extrusion line width and layer height
+  describe different quantities.
+</p>
+<p>
+  A fixed-width slicer can handle a narrow region differently from a
+  variable-width perimeter engine. Before thickening every missing feature,
+  check the selected generator, thin-wall options, actual profile line widths
+  and the sliced layer preview. Do not turn a simple multiplication into a rule
+  that all CAD walls must be exact nozzle multiples.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}"
+    >Estimate nominal wall lines</a
+  >, then
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >screen sampled geometry</a
+  >. A no-hit sample is not a zero-thickness result. Small features may be
+  missed; physical strength and load direction still require separate judgement.
+</p>
+<p>
+  Technical reference:
+  <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748"
+    >Prusa layers and perimeters</a
+  >. The numerical example is illustrative, not a recorded slicer or physical
+  print test.
+</p>

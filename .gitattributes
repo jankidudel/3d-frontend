@@ -1,0 +1,3 @@
+# Preserve original slicer exports, including whitespace in their settings footer.
+docs/english-market-batch/fixtures/*.gcode -whitespace
+public/examples/english-market-batch/*.gcode -whitespace

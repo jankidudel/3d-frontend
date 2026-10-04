@@ -192,3 +192,29 @@ faq:
   to inspect model size, convert units, calculate proportional scaling and check
   printer fit.
 </p>
+
+<h2>Scaling also changes holes and clearance</h2>
+<p>
+  Suppose an illustrative hole is 5.0 mm and a mating pin is 4.8 mm: diametral
+  clearance is 0.2 mm. Scaling both models by 80% makes the hole 4.0 mm, the pin
+  3.84 mm and clearance 0.16 mm. Scaling only the hole model while retaining the
+  original pin gives a 4.0 mm hole against a 4.8 mm pin, which no longer fits
+  geometrically.
+</p>
+<p>
+  The same factor acts on walls, gaps and lettering. Reducing a 1.2 mm wall to
+  80% gives 0.96 mm, so a size-only correction can create a new thin-feature
+  problem. A uniform transform preserves proportions but does not preserve the
+  original engineering fit. A slicer's hole compensation is a separate profile
+  decision.
+</p>
+<p>
+  After <a href="{{ GuideSlug.RouteStlScaleTool }}">saving the scaled copy</a>,
+  compare the expected dimension in
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">the dimensions checker</a>
+  and review walls with
+  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}"
+    >the nozzle/wall planner</a
+  >. Print a representative fit coupon using the same orientation and process
+  before committing to a mating assembly.
+</p>

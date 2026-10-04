@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ANALYTICS_CONFIG } from './analytics-config';
-import { AnalyticsService } from './analytics.service';
+import { AnalyticsService, AnalyticsEvent } from './analytics.service';
 import { CookieConsentService } from './cookie-consent.service';
 
 describe('AnalyticsService', () => {
@@ -53,6 +53,7 @@ describe('AnalyticsService', () => {
     TestBed.flushEffects();
 
     analytics.trackUploadStarted('quality_check', 512);
+    analytics.trackWorkflow(AnalyticsEvent.BatchCompleted, 'batch', '1_to_3');
 
     expect(
       document.querySelector('script[src*="googletagmanager.com/gtag/js"]'),
@@ -86,6 +87,12 @@ describe('AnalyticsService', () => {
 
     script?.dispatchEvent(new Event('load'));
     analytics.trackUploadStarted('dimensions_checker', 5 * 1024 * 1024);
+    analytics.trackWorkflow(AnalyticsEvent.ReportExported, 'batch', 'json');
+    expect(queuedCommands(document)).toContainEqual([
+      'event',
+      'report_exported',
+      { landing_page: '/', tool: 'batch', usage_bucket: 'json' },
+    ]);
     analytics.trackUploadCompleted('dimensions_checker');
     analytics.trackAnalysisCompleted('dimensions_checker', {
       triangleCount: 12500,

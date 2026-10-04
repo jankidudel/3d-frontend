@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import {
   Component,
   computed,
@@ -40,7 +41,13 @@ type ReportRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-stl-dimensions-page',
-  imports: [RouterLink, StlFilePicker, JobProgress, FeedbackLinkComponent],
+  imports: [
+    ToolEvidenceComponent,
+    RouterLink,
+    StlFilePicker,
+    JobProgress,
+    FeedbackLinkComponent,
+  ],
   templateUrl: './stl-dimensions-page.html',
   styleUrl: './stl-dimensions-page.scss',
 })

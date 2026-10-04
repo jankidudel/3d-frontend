@@ -19,6 +19,30 @@ export interface GuideIndexCluster {
 
 export const guideClusters: readonly GuideCluster[] = [
   {
+    id: 'repeat-workflows',
+    label: 'Collections, revisions and customer files',
+    description:
+      'Keep a reproducible review when selling models or checking supplied files.',
+    pillar: '3d-print-file-preflight-checklist',
+    slugs: [
+      'how-to-compare-stl-revisions',
+      'check-stl-files-before-selling',
+      'inspect-customer-supplied-print-files',
+    ],
+  },
+  {
+    id: 'filament-nozzles',
+    label: 'Filament storage, nozzles and throughput',
+    description:
+      'Match the equipment decision to the actual material and planning task.',
+    pillar: 'maximum-volumetric-speed-explained',
+    slugs: [
+      'filament-dryer-vs-dry-box',
+      'brass-vs-hardened-nozzle',
+      'maximum-volumetric-speed-explained',
+    ],
+  },
+  {
     id: 'readiness',
     label: 'Print readiness and preflight',
     description:

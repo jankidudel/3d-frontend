@@ -162,3 +162,63 @@ faq:
   A reliable print starts with a clean mesh, suitable wall thickness and a
   realistic printer profile.
 </p>
+
+<h2>Interpret unmeasured and below-threshold samples separately</h2>
+<p>
+  A sampled wall screen casts normal-direction rays from selected triangle
+  locations. In a simple closed 20 mm cube, opposing faces give a known scale
+  for the test. In an open-face cube, some directions may have no opposing hit.
+  No hit is an unmeasured location, not evidence of a zero-width wall and not a
+  pass.
+</p>
+<p>
+  If a result reports 25 samples below a chosen 1.2 mm review threshold, it says
+  those sampled locations merit attention. It does not show that exactly 25
+  physical regions fail or that unsampled corners are thick enough. The
+  threshold is your review input, not a universal strength minimum.
+</p>
+<p>
+  For a 1.3 mm CAD wall and 0.45 mm lines,
+  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}"
+    >the wall planner</a
+  >
+  estimates three equal-width lines with nominal thickness 1.35 mm. Check your
+  actual slicer generator and layer preview; variable-width engines and overlap
+  alter the result. Changing scale alters holes and walls together, so recheck
+  the final exported copy.
+</p>
+
+<h2>Replay an actual thin-wall slicer experiment</h2>
+<p>
+  Our owned fixture has three separate 20 mm long, 10 mm high bars with widths
+  of 0.3, 0.45 and 0.9 mm. PrusaSlicer 2.9.6 was run with a 0.4 mm nozzle, 0.2
+  mm layers, 0.45 mm extrusion width, two perimeters, zero infill and thin-wall
+  detection disabled. Only the perimeter generator changed between Classic and
+  Arachne. This is a software experiment, not a physical print.
+</p>
+<p>
+  The Classic export reports 83.41 mm of filament and an estimated 3 minutes 32
+  seconds. Arachne reports 142.10 mm and 5 minutes 28 seconds. Both reported low
+  bed adhesion; Classic also warned about loose extrusions. The longer result is
+  not automatically the better print. Inspect whether the intended narrow
+  geometry has extrusion paths, then review adhesion, strength and supports
+  separately.
+</p>
+<p>
+  Download the
+  <a href="/examples/english-market-batch/thin-wall-bars.stl" download
+    >owned thin-wall STL</a
+  >
+  and the
+  <a href="/examples/english-market-batch/thin-classic.gcode" download
+    >Classic</a
+  >
+  or
+  <a href="/examples/english-market-batch/thin-arachne.gcode" download
+    >Arachne preview G-code</a
+  >. Open the exports in the
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">G-code viewer</a> to
+  compare the extrusion paths. These demonstration exports use CLI defaults
+  outside the listed settings; do not send them to a printer. Filament mass is
+  unavailable because the CLI density default was zero.
+</p>

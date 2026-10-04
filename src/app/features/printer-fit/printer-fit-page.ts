@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -35,7 +36,7 @@ type OrientationMode =
 
 @Component({
   selector: 'app-printer-fit-page',
-  imports: [RouterLink],
+  imports: [ToolEvidenceComponent, RouterLink],
   templateUrl: './printer-fit-page.html',
   styleUrl: './printer-fit-page.scss',
 })

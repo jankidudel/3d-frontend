@@ -1,0 +1,247 @@
+<main class="page tool-page planning-page">
+  <p class="eyebrow">Browser-local print planning</p>
+  <h1>{{ config.title }}</h1>
+  <p class="lead">{{ config.description }}</p>
+  <section class="card" aria-labelledby="planner-inputs">
+    <h2 id="planner-inputs">Plan your next job</h2>
+    <button type="button" (click)="example()">Load a worked example</button>
+    <p>
+      These editable example values are illustrative, not physical print
+      measurements.
+    </p>
+    <div class="fields">
+      @if (kind === kinds.Spool) {
+        <label
+          >Material density starting point<select
+            [value]="material()"
+            (change)="selectMaterial($event)"
+          >
+            @for (item of materials; track item[0]) {
+              <option [value]="item[0]">{{ item[1].label }}</option>
+            }
+          </select></label
+        >
+      }
+      @for (field of config.fields; track field.key) {
+        <label
+          >{{ field.label
+          }}<input
+            type="number"
+            step="any"
+            [min]="field.min"
+            [value]="values()[field.key]"
+            (input)="setNumber(field.key, $event)"
+            aria-describedby="planner-validation"
+        /></label>
+      }
+      @if (kind === kinds.Flow) {
+        <label
+          >Throughput source and profile context<input
+            type="text"
+            [value]="limitContext()"
+            (input)="limitContext.set($any($event.target).value)"
+        /></label>
+      }
+      @if (kind === kinds.Finish) {
+        <label
+          >Start date and time<input
+            type="datetime-local"
+            [value]="start()"
+            (input)="start.set($any($event.target).value)"
+        /></label>
+        <label
+          >Timezone<select
+            [value]="zone()"
+            (change)="zone.set($any($event.target).value)"
+          >
+            @for (item of zones; track item) {
+              <option [value]="item">{{ item }}</option>
+            }
+          </select></label
+        >
+        <label
+          >When a clock time repeats at DST end<select
+            [value]="occurrence()"
+            (change)="occurrence.set($any($event.target).value)"
+          >
+            <option [value]="occurrences.Earlier">First occurrence</option>
+            <option [value]="occurrences.Later">Second occurrence</option>
+          </select></label
+        >
+        <label
+          >Optional slicer duration from G-code<input
+            type="file"
+            accept=".gcode,.gco,.gc"
+            (change)="importGcode($event)"
+        /></label>
+      }
+    </div>
+    <button type="button" (click)="calculate()">Check these inputs</button>
+    <p id="planner-validation" [class.error]="!valid()">
+      @if (!valid()) {
+        Enter finite, valid values. Spool tare cannot exceed gross weight; job
+        usage and dimensions must be positive. Finish planning also rejects
+        nonexistent daylight-saving clock times.
+      } @else {
+        Results update as you edit.
+      }
+    </p>
+    @if (metadata()) {
+      <p>{{ metadata() }}</p>
+    }
+    @if (importError()) {
+      <p role="alert">{{ importError() }}</p>
+    }
+  </section>
+  <section class="card" aria-labelledby="planner-result" aria-live="polite">
+    <h2 id="planner-result">Your planning result</h2>
+    @if (kind === kinds.Spool) {
+      @if (spool(); as result) {
+        <dl>
+          <dt>Remaining filament</dt>
+          <dd>
+            {{ result.remaining | number: '1.0-2' }} g (about
+            {{ result.metres | number: '1.0-1' }} m)
+          </dd>
+          <dt>Usable after reserve</dt>
+          <dd>{{ result.usable | number: '1.0-2' }} g</dd>
+          <dt>Whole job / one-copy surplus</dt>
+          <dd>{{ result.surplus | number: '1.0-2' }} g</dd>
+          <dt>Complete copies</dt>
+          <dd>{{ result.copies }}</dd>
+        </dl>
+        <p>
+          {{
+            result.surplus < 0
+              ? 'The usable spool is short for this job. Reduce the job, choose another spool or plan a change according to your printer instructions.'
+              : 'The entered estimate fits within your usable filament. Reserve and slicer accuracy still matter.'
+          }}
+        </p>
+      }
+    }
+    @if (kind === kinds.Wall) {
+      @if (wall(); as result) {
+        <dl>
+          <dt>Approximate equal-width lines</dt>
+          <dd>{{ result.lines }}</dd>
+          <dt>Nominal resulting thickness</dt>
+          <dd>{{ result.nominalThickness | number: '1.0-3' }} mm</dd>
+          <dt>Difference from intended thickness</dt>
+          <dd>{{ result.difference | number: '1.0-3' }} mm</dd>
+          <dt>Layer height / nozzle diameter</dt>
+          <dd>{{ result.layerRatio * 100 | number: '1.0-1' }}%</dd>
+        </dl>
+        <p>
+          {{
+            result.reviewLayer
+              ? 'This layer exceeds the 80% starting limit in the cited Prusa guidance. Review the exact nozzle and printer profile.'
+              : 'The layer is within that starting upper limit. This does not establish a suitable minimum layer height or guarantee this profile.'
+          }}
+        </p>
+      }
+    }
+    @if (kind === kinds.Flow) {
+      @if (flow(); as result) {
+        <dl>
+          <dt>Approximate requested throughput</dt>
+          <dd>{{ result.flow | number: '1.0-2' }} mm³/s</dd>
+          <dt>Approximate speed at entered throughput</dt>
+          <dd>
+            {{
+              result.speedAtLimit === null
+                ? 'Unknown - no limit entered'
+                : (result.speedAtLimit | number: '1.0-2') + ' mm/s'
+            }}
+          </dd>
+        </dl>
+        @if (result.exceeds !== null) {
+          <p>
+            {{
+              result.exceeds
+                ? 'Requested flow exceeds the entered throughput.'
+                : 'Requested flow is at or below the entered throughput.'
+            }}
+            Source/context: {{ limitContext() }}. Verify this limit for the
+            exact hotend, nozzle, material and temperature.
+          </p>
+        }
+      }
+    }
+    @if (kind === kinds.Finish) {
+      @if (finish(); as result) {
+        <p class="result">
+          <strong>{{ finishLabel(result.finish) }}</strong>
+        </p>
+        <p>
+          Elapsed planning duration:
+          {{ result.durationMinutes | number: '1.0-1' }} minutes. Timezone:
+          {{ zone() }}.
+        </p>
+      }
+    }
+  </section>
+  <section class="card">
+    <h2>Method and interpretation</h2>
+    <p>{{ config.method }}</p>
+    <p>{{ config.caveat }}</p>
+    <p>
+      <a [href]="config.source" target="_blank" rel="noopener noreferrer"
+        >Method and reference documentation</a
+      >
+      - reference reviewed 4 October 2026. Profile-specific limits still require
+      their own evidence.
+    </p>
+  </section>
+  @if (config.product; as product) {
+    <app-product-link [product]="product" />
+  }
+  <section class="card">
+    <h2>Continue preparing your print</h2>
+    <ul>
+      @for (path of config.links; track path) {
+        <li>
+          <a [routerLink]="path">{{ linkLabel(path) }}</a>
+        </li>
+      }
+    </ul>
+  </section>
+  @if (kind === kinds.Wall) {
+    <section class="card">
+      <h2>Actual thin-wall slicer control</h2>
+      <p>
+        PrusaSlicer 2.9.6 was run on three owned bars (0.3, 0.45 and 0.9 mm
+        wide) with 0.4 mm nozzle, 0.2 mm layers, 0.45 mm line width, two
+        perimeters and no infill. Classic reported 83.41 mm filament and 3m 32s;
+        Arachne reported 142.10 mm and 5m 28s. The perimeter engine changes what
+        gets traced. These are software estimates, not physical prints or
+        recommended printer settings.
+      </p>
+      <p>
+        <a [routerLink]="routeUrl.GcodePreflightChecker"
+          >Inspect the actual toolpaths</a
+        >
+        using the
+        <a href="/examples/english-market-batch/thin-classic.gcode" download
+          >Classic</a
+        >
+        and
+        <a href="/examples/english-market-batch/thin-arachne.gcode" download
+          >Arachne preview files</a
+        >. Do not print the CLI demonstration exports.
+      </p>
+    </section>
+  }
+  @if (kind === kinds.Flow) {
+    <section class="card">
+      <h2>Actual nozzle control</h2>
+      <p>
+        The same owned 20 mm cube sliced at 0.2 mm layers, explicit 0.45 mm line
+        width and 45 mm/s perimeter speed gave estimates of 23m 49s for a 0.4 mm
+        nozzle and 23m 45s for a 0.6 mm nozzle in PrusaSlicer 2.9.6. First-layer
+        width stayed at 200%. Changing diameter alone did not give a fixed
+        speedup. Compare validated profiles and the whole sliced job; no
+        physical timing or universal hotend ceiling is claimed.
+      </p>
+    </section>
+  }
+</main>

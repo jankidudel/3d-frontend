@@ -170,6 +170,21 @@ for (const guide of catalogue.guides) {
       'Add at least two valid contextual internal links.',
     );
   for (const href of guideLinks) {
+    if (href.startsWith('/examples/')) {
+      try {
+        await access(resolve(root, 'public', href.slice(1)));
+      } catch {
+        report(
+          'ERROR',
+          source,
+          route,
+          'missing-example-asset',
+          `Example asset does not exist: ${href}.`,
+        );
+      }
+      continue;
+    }
+
     if (!knownRoutes.has(href))
       report(
         'ERROR',

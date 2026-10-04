@@ -17,6 +17,18 @@ const entry = {
 };
 
 describe('guide registry validation', () => {
+  it('preserves a real editorial update separately from first publication', () => {
+    const revised = { ...entry, updatedDate: '2026-10-04' };
+    expect(validateGuideRegistry([revised], groups, files)).toEqual([revised]);
+  });
+  it.each(['2026-09-04', '2026-02-30', 'build-time'])(
+    'rejects invalid editorial update %s',
+    (updatedDate) => {
+      expect(() =>
+        validateGuideRegistry([{ ...entry, updatedDate }], groups, files),
+      ).toThrow('updatedDate');
+    },
+  );
   it('accepts a valid registry entry', () => {
     expect(validateGuideRegistry([entry], groups, files)).toEqual([entry]);
   });

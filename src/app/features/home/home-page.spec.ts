@@ -76,6 +76,13 @@ describe('HomePage', () => {
       '/tools',
       '/gcode-preflight-checker',
       '/tools',
+      '/batch-stl-checker',
+      '/stl-compare',
+      '/filament-remaining-calculator',
+      '/nozzle-layer-height-calculator',
+      '/volumetric-flow-calculator',
+      '/3d-print-finish-time-calculator',
+      '/tools',
       '/tools',
     ]);
   });

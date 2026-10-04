@@ -41,6 +41,9 @@ export class GuidePage {
           headline: this.guide.heading,
           description: this.guide.description,
           datePublished: this.guide.publishDate,
+          ...(this.guide.updatedDate
+            ? { dateModified: this.guide.updatedDate }
+            : {}),
         },
         {
           '@type': 'FAQPage',

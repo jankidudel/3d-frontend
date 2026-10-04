@@ -2,6 +2,12 @@
   <article>
     <p class="eyebrow">{{ guide.eyebrow }}</p>
     <h1>{{ guide.heading }}</h1>
+    @if (guide.updatedDate) {
+      <p>
+        Substantially updated {{ guide.updatedDate }}. First published
+        {{ guide.publishDate }}.
+      </p>
+    }
     <div class="guide-body" [innerHTML]="guide.html"></div>
     @if (guide.faqs.length > 0) {
       <section class="guide-faq">

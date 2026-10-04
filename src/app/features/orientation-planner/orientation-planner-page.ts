@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -14,7 +15,7 @@ type ModelFormat = 'stl' | '3mf';
 
 @Component({
   selector: 'app-orientation-planner-page',
-  imports: [RouterLink],
+  imports: [ToolEvidenceComponent, RouterLink],
   templateUrl: './orientation-planner-page.html',
   styleUrl: './orientation-planner-page.scss',
 })

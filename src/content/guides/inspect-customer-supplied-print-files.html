@@ -1,0 +1,79 @@
+---
+title: 'How to Inspect Customer-Supplied 3D Print Files | InspectMesh'
+description: 'Review supplied STL and 3MF files before quoting: verify dimensions, record defects, test nominal printer fit and separate assumptions from findings.'
+slug: inspect-customer-supplied-print-files
+eyebrow: Practical print workflow
+heading: 'How to Inspect Customer-Supplied 3D Print Files'
+faq:
+  - question: 'What should I confirm before quoting a supplied STL?'
+    answer: 'Confirm the intended dimensions, assumed unit and permitted changes, then inspect geometry, printer fit and the actual sliced process before using its consumption and time in a quote.'
+  - question: 'What should I ask a customer before changing scale?'
+    answer: 'Ask for a known physical dimension and the intended use. Record the original and proposed dimensions, preserve the supplied file, and obtain agreement on a consequential size change before printing.'
+---
+
+<p>
+  For a customer-supplied file, resolve size and design intent before quoting a
+  print. Report observable findings in plain language, ask for the missing
+  reference dimension when needed, and avoid treating automatic cleanup as
+  permission to change the part.
+</p>
+<h2>First clarify units and expected size</h2>
+<p>
+  Illustrative request: a bracket is intended to be 50.8 mm wide, but an STL
+  arrives with width 2 coordinate units. A millimetre assumption gives 2 mm; an
+  inch assumption gives 50.8 mm. Ask which dimension is authoritative before
+  producing a quote. STL does not carry the answer.
+</p>
+<p>
+  A supported 3MF can declare units and build transforms. A readable package
+  still does not prove that embedded printer settings are appropriate for your
+  own machine. Use
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a> for the
+  resolved build, and explain any unsupported package features separately.
+</p>
+<h2>Example finding written for a customer</h2>
+<p>
+  “The reviewed copy has four boundary edges around a missing face. Closed-model
+  volume is unavailable. Size was interpreted as millimetres; nominal printer
+  fit was skipped pending a confirmed printer. Please provide a replacement
+  solid export or confirm the intended open surface.” That statement describes
+  evidence and a next action without claiming the model cannot ever be sliced.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}">The example collection</a>
+  reproduces that open-face finding. It also demonstrates a malformed file
+  failing independently. Export the report with settings, sampled-check status
+  and source filename; do not send private customer text or file metadata to
+  analytics.
+</p>
+<h2>Quote only the confirmed process</h2>
+<ol>
+  <li>Confirm expected dimensions and permitted modifications.</li>
+  <li>Review geometry and nominal printer fit.</li>
+  <li>Choose the actual profile and inspect the sliced layers.</li>
+  <li>
+    Read complete filament and duration estimates including supports and purge.
+  </li>
+  <li>
+    Use
+    <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
+      >the price calculator</a
+    >
+    with explicit per-item and per-order costs.
+  </li>
+</ol>
+<p>
+  One setup charge spread across five copies is different from five separate
+  setups. A fit result based on nominal volume does not include brims, clips or
+  excluded regions. If the part is too large, discuss splitting or scale changes
+  before assuming either is acceptable.
+</p>
+<h2>Retain the evidence locally</h2>
+<p>
+  Keep original and revised files separately. Use
+  <a href="{{ GuideSlug.RouteStlCompare }}">revision inspection</a> to review an
+  agreed replacement export. Browser-local history is not a cloud
+  customer-management system; exported reports remain your responsibility to
+  store appropriately. This is a practical file-review workflow, not legal or
+  contractual advice.
+</p>

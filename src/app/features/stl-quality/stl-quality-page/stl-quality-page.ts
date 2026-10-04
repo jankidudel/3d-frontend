@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../../repeat-workflows/tool-evidence';
 import {
   Component,
   DestroyRef,
@@ -25,7 +26,12 @@ import { FeedbackLinkComponent } from '../../../core/components/feedback-link/fe
 
 @Component({
   selector: 'app-stl-quality-page',
-  imports: [StlFilePicker, JobStatusComponent, FeedbackLinkComponent],
+  imports: [
+    ToolEvidenceComponent,
+    StlFilePicker,
+    JobStatusComponent,
+    FeedbackLinkComponent,
+  ],
   templateUrl: './stl-quality-page.html',
   styleUrl: './stl-quality-page.scss',
 })

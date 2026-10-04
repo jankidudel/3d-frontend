@@ -86,13 +86,15 @@
       <button class="button button-secondary" type="button" (click)="reset()">
         Reset view
       </button>
-      <button
-        class="button button-secondary"
-        type="button"
-        (click)="chooseAnother.emit()"
-      >
-        Choose another file
-      </button>
+      @if (chooseAnotherAvailable()) {
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="chooseAnother.emit()"
+        >
+          Choose another file
+        </button>
+      }
       <button
         class="button button-secondary"
         type="button"

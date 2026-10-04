@@ -32,6 +32,9 @@
     After slicing, inspect the final file with the
     <a href="/gcode-preflight-checker">G-code Preflight Checker</a>.
   </p>
+  <button type="button" (click)="runOwnedExample()" [disabled]="analysing()">
+    Run an owned model example
+  </button>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Run an STL preflight</h2>
     <div
@@ -281,4 +284,8 @@
       measurement of every point on the model.
     </p>
   </section>
+  <app-tool-evidence
+    [completed]="!!integrity()"
+    [page]="routeUrl.StlPrintPreflight"
+  />
 </main>

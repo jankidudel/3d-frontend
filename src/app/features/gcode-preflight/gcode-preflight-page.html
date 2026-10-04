@@ -6,6 +6,16 @@
     practical preflight details before printing. This G-code Preflight Checker
     only reads the file; it never uploads, runs, sends or changes G-code.
   </p>
+  <button type="button" (click)="runSlicerExample()" [disabled]="parsing()">
+    Load actual Arachne slicer example
+  </button>
+  <button type="button" (click)="runSlicerExample(true)" [disabled]="parsing()">
+    Load actual Classic slicer control
+  </button>
+  <p>
+    Owned thin-wall bars sliced with PrusaSlicer 2.9.6. Preview-only CLI
+    exports: do not send these files to a printer.
+  </p>
   <section class="card viewer-tool">
     <h2>Open a G-code file locally</h2>
     <div class="drop-zone">
@@ -407,4 +417,8 @@
       </p>
     </section>
   }
+  <app-tool-evidence
+    [completed]="!!report()"
+    [page]="routeUrl.GcodePreflightChecker"
+  />
 </main>

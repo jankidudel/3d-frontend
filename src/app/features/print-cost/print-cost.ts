@@ -3,6 +3,8 @@ export const COST_CURRENCY_OPTIONS = [
   { value: 'GBP', label: 'GBP (£)' },
   { value: 'CAD', label: 'CAD ($)' },
   { value: 'AUD', label: 'AUD ($)' },
+  { value: 'NZD', label: 'NZD ($)' },
+  { value: 'ZAR', label: 'ZAR (R)' },
   { value: 'EUR', label: 'EUR (€)' },
   { value: 'OTHER', label: 'Other' },
 ] as const;

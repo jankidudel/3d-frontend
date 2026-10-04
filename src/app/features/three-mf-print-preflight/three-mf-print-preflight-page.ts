@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -37,7 +38,7 @@ const PLA_DENSITY_GRAMS_PER_CUBIC_CENTIMETRE = 1.24;
 
 @Component({
   selector: 'app-three-mf-print-preflight-page',
-  imports: [RouterLink, ThreeMfFilePicker],
+  imports: [ToolEvidenceComponent, RouterLink, ThreeMfFilePicker],
   templateUrl: './three-mf-print-preflight-page.html',
   styleUrl: './three-mf-print-preflight-page.scss',
 })
@@ -142,6 +143,19 @@ export class ThreeMfPrintPreflightPage {
     });
   }
 
+  async runOwnedExample(): Promise<void> {
+    try {
+      const { ownedDemoFile, DemoAsset } =
+        await import('../repeat-workflows/demo-file');
+      await this.onFileSelected(await ownedDemoFile(DemoAsset.Package));
+    } catch (error: unknown) {
+      this.error.set(
+        error instanceof Error
+          ? error.message
+          : 'The example could not be loaded.',
+      );
+    }
+  }
   async onFileSelected(file: File | null): Promise<void> {
     this.reset();
     if (!file) {

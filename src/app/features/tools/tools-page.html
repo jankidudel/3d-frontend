@@ -4,6 +4,21 @@
   <p class="lead">
     InspectMesh helps you inspect, measure and prepare 3D files for printing.
   </p>
+  <section class="card">
+    <h2>Choose the next task</h2>
+    <p>
+      Inspect or repair a mesh first. Confirm size and printer fit before
+      changing scale. Use wall/nozzle planning for missing thin features; use
+      sliced consumption and duration for spool and finish planning. For client
+      collections, keep settings and skipped checks in a consistent batch
+      report.
+    </p>
+    <p>
+      A model-only volume estimate is not slicer consumption, and a completed
+      mesh screen is not a physical print guarantee. Each workflow explains its
+      input and limits before you load a private file.
+    </p>
+  </section>
   @for (group of toolGroups; track group.id) {
     <section class="tools" [attr.aria-labelledby]="group.id">
       <div class="section-intro">

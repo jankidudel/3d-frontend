@@ -1,3 +1,8 @@
+import {
+  chosenCurrency,
+  rememberCurrency,
+} from '../repeat-workflows/currency-preference';
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { DOCUMENT } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -28,7 +33,13 @@ import {
 
 @Component({
   selector: 'app-print-cost-page',
-  imports: [RouterLink, StlFilePicker, ThreeMfFilePicker, JobProgress],
+  imports: [
+    ToolEvidenceComponent,
+    RouterLink,
+    StlFilePicker,
+    ThreeMfFilePicker,
+    JobProgress,
+  ],
   templateUrl: './print-cost-page.html',
   styleUrl: './print-cost-page.scss',
 })
@@ -133,6 +144,7 @@ export class PrintCostPage {
     }),
   );
   constructor() {
+    this.currency.set(chosenCurrency());
     inject(SeoService).apply({
       title:
         '3D Print Cost Calculator: Material, Energy and Print Cost | InspectMesh',
@@ -157,6 +169,7 @@ export class PrintCostPage {
   setCurrency(event: Event): void {
     const currency = (event.target as HTMLSelectElement).value as CostCurrency;
     this.currency.set(currency);
+    rememberCurrency(currency);
   }
   setElectricityPrice(event: Event): void {
     const value = (event.target as HTMLInputElement).value.trim();

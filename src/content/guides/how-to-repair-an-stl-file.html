@@ -209,3 +209,26 @@ faq:
   intentionally retain, inspect the corresponding layers and keep the unchanged
   file available for comparison.
 </p>
+
+<h2>Verify a repair against the original revision</h2>
+<p>
+  Keep the input and output as separate files. A triangle-count reduction can
+  mean duplicate faces were removed, but it can also hide removed geometry.
+  Dimensions and screened volume are useful checks, yet neither alone proves
+  that an intentional hole, lettering or thin rib survived.
+</p>
+<p>
+  Use <a href="{{ GuideSlug.RouteStlCompare }}">revision comparison</a> in
+  original coordinates after a repair. The unchanged retriangulation control
+  demonstrates why different triangle connectivity is not necessarily a shape
+  change. The known widened-cube control demonstrates a 4 mm surface change even
+  when most of the model stays in place.
+</p>
+<p>
+  Choose a review tolerance appropriate to your own task; the sampled result is
+  not certified tolerancing. Inspect locations over tolerance, check boundary
+  and winding findings again, then slice the repaired copy. Automatic cleanup
+  does not know which disconnected shell was intentional, and an open model's
+  volume should remain unavailable until the geometry supports a solid
+  interpretation.
+</p>

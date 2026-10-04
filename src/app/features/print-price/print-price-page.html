@@ -14,13 +14,10 @@
     <div class="fields">
       <label
         ><span>Currency</span
-        ><select
-          [value]="currency()"
-          (change)="currency.set($any($event.target).value)"
-        >
-          <option value="USD">USD ($)</option>
-          <option value="GBP">GBP (£)</option>
-          <option value="EUR">EUR (€)</option>
+        ><select [value]="currency()" (change)="setCurrency($event)">
+          @for (code of currencies; track code) {
+            <option [value]="code">{{ code }}</option>
+          }
         </select></label
       >
       <label
@@ -253,4 +250,8 @@
       before quoting.
     </p>
   </section>
+  <app-tool-evidence
+    [completed]="!!result()"
+    [page]="routeUrl.PrintPriceCalculator"
+  />
 </main>

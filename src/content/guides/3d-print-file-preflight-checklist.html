@@ -175,3 +175,28 @@ faq:
   adhesion, process settings, material behaviour, calibration and structural use
   still belong in slicer and engineering review.
 </p>
+
+<h2>Turn a collection into a reproducible handoff</h2>
+<p>
+  A useful handoff records what was checked, what was assumed and what was left
+  unresolved. The
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}">built-in mixed collection</a>
+  demonstrates three outcomes: a closed 20 mm cube with screened volume of 8,000
+  mm³; an open cube with four boundary edges and unavailable volume; and
+  malformed input that fails independently. A single bad file does not erase the
+  successful results.
+</p>
+<p>
+  Export settings with findings: check schema/version, STL unit assumption or
+  3MF declared unit, selected nominal printer, wall-review threshold, sampling
+  method and unsupported checks. Explain that sample count describes coverage,
+  not accuracy. File names and customer notes belong in your own local report,
+  not analytics events.
+</p>
+<p>
+  Sort actionable findings first and name the next action: inspect size, correct
+  an export, review a thin region, or request clarification. A local saved
+  report is browser history rather than a cloud project. Keep original files
+  unchanged; repairs should generate a separate copy and receive their own
+  verification.
+</p>

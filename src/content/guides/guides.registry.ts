@@ -22,6 +22,7 @@ export interface GuideRegistryEntry {
   readonly order: number;
   readonly enabled: boolean;
   readonly publishDate: string;
+  readonly updatedDate?: string;
   readonly checkEditorialTargets: boolean;
 }
 
@@ -39,6 +40,54 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: 'how-to-compare-stl-revisions',
+    group: GuideGroupId.General,
+    order: 100,
+    enabled: true,
+    publishDate: '2026-10-04',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'check-stl-files-before-selling',
+    group: GuideGroupId.General,
+    order: 101,
+    enabled: true,
+    publishDate: '2026-10-04',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'inspect-customer-supplied-print-files',
+    group: GuideGroupId.General,
+    order: 102,
+    enabled: true,
+    publishDate: '2026-10-04',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'filament-dryer-vs-dry-box',
+    group: GuideGroupId.General,
+    order: 103,
+    enabled: true,
+    publishDate: '2026-10-04',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'brass-vs-hardened-nozzle',
+    group: GuideGroupId.General,
+    order: 104,
+    enabled: true,
+    publishDate: '2026-10-04',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'maximum-volumetric-speed-explained',
+    group: GuideGroupId.General,
+    order: 105,
+    enabled: true,
+    publishDate: '2026-10-04',
+    checkEditorialTargets: true,
+  },
   {
     slug: '3d-printer-calibration-guide',
     group: GuideGroupId.Calibration,
@@ -93,6 +142,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 8,
     enabled: true,
     publishDate: '2026-09-10',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: true,
   },
   {
@@ -141,6 +191,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 2,
     enabled: true,
     publishDate: '2026-09-09',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -149,6 +200,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 1,
     enabled: true,
     publishDate: '2026-09-08',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -157,6 +209,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 5,
     enabled: true,
     publishDate: '2026-09-08',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -165,6 +218,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -173,6 +227,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 31,
     enabled: true,
     publishDate: '2026-09-18',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -181,6 +236,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -197,6 +253,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 20,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -205,6 +262,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -213,6 +271,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -253,6 +312,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 50,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -261,6 +321,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 60,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -293,6 +354,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -333,6 +395,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 140,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {
@@ -397,6 +460,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 220,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
   },
   {

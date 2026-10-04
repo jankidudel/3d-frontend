@@ -1,0 +1,314 @@
+<main class="page tool-page planning-page">
+  <p class="eyebrow">Repeat file-review workflow</p>
+  <h1>Batch STL and 3MF Checker</h1>
+  <p class="lead">
+    Check a collection, find files needing attention, and export a consistent
+    report. Supported STL and mesh-based 3MF files stay in your browser;
+    original files remain unchanged.
+  </p>
+  <section class="card">
+    <h2>Check a collection</h2>
+    <p>
+      Free allowance: {{ limits.FreeQueue }} files per collection. Each file: up
+      to 5 MiB and 100,000 resolved triangles. 3MF expanded-package budget: 20
+      MiB. Files are checked one at a time to bound memory.
+    </p>
+    <div class="fields">
+      <label
+        >Assumed STL unit<select
+          [value]="unit()"
+          (change)="unit.set($any($event.target).value)"
+          [disabled]="busy()"
+        >
+          <option [value]="units.Millimetres">Millimetres</option>
+          <option [value]="units.Inches">Inches</option>
+        </select></label
+      >
+      <label
+        >Printer fit profile<select
+          [value]="printerId()"
+          (change)="printerId.set($any($event.target).value)"
+          [disabled]="busy()"
+        >
+          <option value="">Skip fit - no printer selected</option>
+          @for (printer of printerChoices; track printer.id) {
+            <option [value]="printer.id">
+              {{ printer.displayName }} ({{ printer.buildVolumeMm.join(' × ') }}
+              mm)
+            </option>
+          }
+        </select></label
+      >
+      <label
+        >Sampled wall review threshold (mm)<input
+          type="number"
+          min="0.01"
+          step="any"
+          [value]="threshold()"
+          (input)="threshold.set($any($event.target).valueAsNumber)"
+          [disabled]="busy()"
+      /></label>
+      <label
+        >STL / supported 3MF collection<input
+          type="file"
+          accept=".stl,.3mf"
+          multiple
+          (change)="pick($event)"
+          [disabled]="busy()"
+      /></label>
+    </div>
+    <button type="button" (click)="example()" [disabled]="busy()">
+      Run mixed example collection
+    </button>
+    <button type="button" (click)="cancel()" [disabled]="!busy()">
+      Cancel remaining checks
+    </button>
+    <button type="button" (click)="packageExample()" [disabled]="busy()">
+      Run declared-inch 3MF example
+    </button>
+    @if (developmentPreview) {
+      <button type="button" (click)="budgetExample()" [disabled]="busy()">
+        Run processing-budget benchmark
+      </button>
+    }
+    <p>
+      The 3MF example is a one-inch cube translated two inches on X by its build
+      transform. Its resolved dimensions are 25.4 mm per side, without treating
+      the STL unit choice as package metadata.
+    </p>
+    <p>
+      Example ground truth: a closed 20 mm cube (8,000 mm³), an open cube with
+      one missing face (four boundary edges, volume unavailable), and malformed
+      text. These are software fixtures, not physical print tests.
+    </p>
+    @if (error()) {
+      <p role="alert" class="error">{{ error() }}</p>
+    }
+    <p role="status">
+      {{ completed() }} / {{ rows().length }} files completed.
+      {{ busy() ? 'Processing queue...' : 'Queue idle.' }}
+    </p>
+  </section>
+  @if (rows().length) {
+    <section class="card">
+      <h2>Collection results</h2>
+      <div class="fields">
+        <label
+          >Filter<select
+            [value]="filter()"
+            (change)="filter.set($any($event.target).value)"
+          >
+            <option [value]="filters.All">All files</option>
+            <option [value]="filters.Attention">Actionable findings</option>
+            <option [value]="filters.Failed">Failed files</option>
+          </select></label
+        ><label
+          >Result ordering<select
+            [value]="sortAttention() ? 'attention' : 'original'"
+            (change)="
+              sortAttention.set($any($event.target).value === 'attention')
+            "
+          >
+            <option value="attention">Attention first</option>
+            <option value="original">Original queue order</option>
+          </select></label
+        >
+      </div>
+      <button
+        type="button"
+        (click)="export(reportFormats.Json)"
+        [disabled]="busy()"
+      >
+        Export JSON
+      </button>
+      <button
+        type="button"
+        (click)="export(reportFormats.Csv)"
+        [disabled]="busy()"
+      >
+        Export CSV
+      </button>
+      <button type="button" (click)="print()" [disabled]="busy()">
+        Print report
+      </button>
+      <button type="button" (click)="save()" [disabled]="busy()">
+        Save report in this browser
+      </button>
+      @for (row of visible(); track row.id) {
+        <article class="card">
+          <h3>{{ row.name }}</h3>
+          <p>
+            State: {{ row.state }}. Source unit:
+            {{ row.unit || 'not resolved' }}. Processing:
+            {{ row.durationMs | number: '1.0-0' }} ms.
+          </p>
+          @if (row.error) {
+            <p class="error">{{ row.error }}</p>
+          }
+          @if (row.result; as result) {
+            <dl>
+              <dt>Dimensions / triangles</dt>
+              <dd>
+                {{ result.dimensionsMm.width | number: '1.0-2' }} ×
+                {{ result.dimensionsMm.height | number: '1.0-2' }} ×
+                {{ result.dimensionsMm.depth | number: '1.0-2' }} mm /
+                {{ result.triangles }}
+              </dd>
+              <dt>Topology findings</dt>
+              <dd>
+                {{ result.topology.openEdges }} boundary edges;
+                {{ result.topology.nonManifoldEdges }} non-manifold edges;
+                {{ result.topology.degenerateTriangles }} degenerate triangles;
+                {{ result.topology.duplicateTriangles }} duplicate triangles;
+                {{ result.topology.shells }} shells;
+                {{ result.topology.orientationConflicts }} winding conflicts.
+              </dd>
+              <dt>Screened closed-model volume</dt>
+              <dd>
+                {{
+                  result.topology.volumeReliable
+                    ? (result.topology.volume | number: '1.0-2') + ' mm³'
+                    : 'Unavailable - topology, orientation or shell interpretation needs review'
+                }}
+              </dd>
+              <dt>Selected-printer fit (right-angle bounding box)</dt>
+              <dd>
+                {{
+                  result.fit === null
+                    ? 'Skipped'
+                    : result.fit
+                      ? 'At least one right-angle box orientation fits nominal volume'
+                      : 'No tested right-angle orientation fits'
+                }}
+              </dd>
+              <dt>Sampled wall screen</dt>
+              <dd>
+                @if (result.thickness; as wall) {
+                  {{ wall.samples }} samples; {{ wall.measured }} measured;
+                  {{ wall.unmeasured }} no opposing hit;
+                  {{ wall.belowThreshold }} below {{ wall.thresholdMm }} mm.
+                  Small features can be missed.
+                } @else {
+                  Skipped
+                }
+              </dd>
+            </dl>
+            <ul>
+              @for (warning of row.warnings; track warning) {
+                <li>{{ warning }}</li>
+              }
+              @for (skipped of result.skipped; track skipped) {
+                <li>{{ skipped }}</li>
+              }
+            </ul>
+            <p>
+              <a
+                [routerLink]="
+                  row.name.toLowerCase().endsWith('.3mf')
+                    ? routeUrl.ThreeMfPrintPreflight
+                    : routeUrl.StlPrintPreflight
+                "
+                >Open the detailed preflight tool</a
+              >
+              (choose the file again; files are not passed through URLs).
+              <a [routerLink]="routeUrl.StlWallThicknessChecker"
+                >Inspect sampled wall thickness</a
+              >.
+            </p>
+          }
+        </article>
+      }
+    </section>
+  }
+  <section class="card">
+    <h2>Local report history</h2>
+    <p>
+      Optional storage on this browser only. No cloud history, cross-device
+      storage or original model bytes. Clearing browser data removes reports.
+    </p>
+    <p role="status">{{ savedMessage() }}</p>
+    <ul>
+      @for (item of history(); track $index) {
+        <li>
+          {{ item.date }} - {{ item.files }} files
+          <button type="button" (click)="downloadHistory(item.report)">
+            Download saved report {{ $index + 1 }}
+          </button>
+        </li>
+      }
+    </ul>
+    @if (history().length) {
+      <button type="button" (click)="clearHistory()">
+        Clear local history
+      </button>
+    }
+  </section>
+  <section class="card">
+    <h2>Check collections and keep consistent reports</h2>
+    <p>
+      Single-file tools remain free. This workspace provides a small real
+      collection allowance, combined exports and browser-local history. Paid
+      subscriptions, cloud projects and cross-device history are not available.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Capability</th>
+          <th scope="col">Free</th>
+          <th scope="col">Development offer preview</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Files per collection</th>
+          <td>3</td>
+          <td>Up to 20, same per-file limits</td>
+        </tr>
+        <tr>
+          <th scope="row">Combined exports / local report history</th>
+          <td>Available</td>
+          <td>Available</td>
+        </tr>
+        <tr>
+          <th scope="row">Payments / cloud storage</th>
+          <td>Unavailable</td>
+          <td>Unavailable</td>
+        </tr>
+      </tbody>
+    </table>
+    @if (developmentPreview) {
+      <details (toggle)="viewOffer($event)">
+        <summary>Development-only Pro workflow preview</summary>
+        <p>
+          No payment is accepted. This switch only previews a larger local queue
+          in the development build. It is absent from the production build.
+        </p>
+        <button type="button" (click)="enablePreview()" [disabled]="busy()">
+          {{
+            preview()
+              ? 'Return to free allowance'
+              : 'Try the 20-file development queue'
+          }}
+        </button>
+      </details>
+    }
+  </section>
+  <section class="card">
+    <h2>Method and next steps</h2>
+    <p>
+      STL unit assumptions and 3MF build transforms are recorded.
+      Exact-coordinate welding precedes edge incidence, winding and
+      connected-shell checks. Sampled wall rays review triangle centroids; they
+      can miss thin features and do not replace a slicer. Fit uses nominal
+      printer boxes at right angles, without brims, clips or excluded bed
+      regions.
+    </p>
+    <p>
+      Review findings in
+      <a [routerLink]="routeUrl.StlPrintPreflight">STL preflight</a> or
+      <a [routerLink]="routeUrl.ThreeMfPrintPreflight">3MF preflight</a>. Use
+      <a [routerLink]="routeUrl.StlCompare">STL revision comparison</a> when
+      checking replacement exports.
+    </p>
+  </section>
+</main>

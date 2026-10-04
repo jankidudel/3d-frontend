@@ -1,0 +1,93 @@
+---
+title: 'Brass vs Hardened Nozzles: Check Fitment | InspectMesh'
+description: 'Choose a nozzle using abrasive-material requirements and exact printer fitment, without assuming that diameter and metal alone establish compatibility.'
+slug: brass-vs-hardened-nozzle
+eyebrow: Practical print workflow
+heading: 'Brass vs Hardened Nozzles: Material and Fitment Checklist'
+faq:
+  - question: 'Does a hardened nozzle of the right diameter automatically fit?'
+    answer: 'No. Verify the exact hotend system, part number, thread or cartridge arrangement and length. Diameter and metal do not establish compatibility.'
+  - question: 'When does a filled filament need a different nozzle material?'
+    answer: 'Read the exact formulation requirements. Abrasive fills may require wear-resistant hardware, but the family name alone does not establish the required nozzle, diameter or profile. Confirm compatibility separately.'
+---
+
+<p>
+  Choose nozzle wear resistance from the exact filament's requirements, then
+  establish hardware fit separately. A nozzle labelled hardened and 0.6 mm can
+  still be incompatible with the printer's hotend. Nozzle metal, diameter,
+  thread, length and heater arrangement are separate facts.
+</p>
+<h2>A compatibility-first checklist</h2>
+<ol>
+  <li>
+    Identify the exact printer revision, hotend and installed nozzle system.
+  </li>
+  <li>Read the filament manufacturer's abrasive-material requirements.</li>
+  <li>
+    Verify the replacement part number, thread or cartridge system and length.
+  </li>
+  <li>
+    Confirm supported nozzle diameter and the corresponding slicer profile.
+  </li>
+  <li>
+    Check the replacement and tightening procedure in the printer documentation.
+  </li>
+</ol>
+<p>
+  Use
+  <a
+    href="https://help.prusa3d.com/article/creating-profiles-for-different-nozzles_127540"
+    >Prusa's nozzle-profile guidance</a
+  >
+  as a profile reference, not as proof that a Prusa nozzle fits another machine.
+  For abrasive or filled formulations, follow the exact
+  <a href="https://help.prusa3d.com/article/filament-material-guide_2222"
+    >material requirements</a
+  >. This page does not supply an unsourced universal nozzle-lifetime or
+  temperature adjustment.
+</p>
+<h2>Illustrative purchase decision</h2>
+<p>
+  A visitor has a functional part, an unfilled PLA spool and a printer that
+  already uses the manufacturer's ordinary 0.4 mm profile. The immediate task is
+  to check line width, wall layout and the actual profile, rather than assume
+  hardened metal will improve strength or speed. A different visitor is choosing
+  a carbon-filled formulation; the first step is the formulation's
+  wear-resistant-nozzle requirement and printer-specific fitment.
+</p>
+<p>
+  Neither visitor can decide from “0.4 vs 0.6” alone. The
+  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}"
+    >nozzle/wall planner</a
+  >
+  distinguishes actual line width from diameter. For illustrative 0.45 mm lines
+  and 0.2 mm layers at 100 mm/s, requested rectangular-section throughput is
+  about 9 mm³/s. That is not a tested safe hotend limit.
+</p>
+<h2>Do not promise a speed improvement from the purchase</h2>
+<p>
+  Use
+  <a href="{{ GuideSlug.RouteVolumetricFlowCalculator }}"
+    >the volumetric planner</a
+  >
+  with an entered, contextual throughput measurement if you have one. Small
+  paths, acceleration, cooling and detail can dominate print time even after a
+  nozzle swap. A manufacturer speed claim is not the elapsed duration of your
+  job.
+</p>
+<p>
+  No affiliate programme or exact fitment is configured for these lookup links.
+  Refer to the exact manufacturer system and selected retailer region; verify
+  stock, shipping, currency and price there. No physical wear test or product
+  ranking is claimed.
+</p>
+
+<h2>Recheck features after a diameter change</h2>
+<p>
+  Use a representative model with its smallest lettering, slots and ribs. Record
+  the selected nozzle profile, actual extrusion widths and layer heights, then
+  inspect which paths the slicer creates. A nominal three-line wall at 0.45 mm
+  per line is 1.35 mm in the simple planner; it is not a promise that a
+  variable-width engine will draw exactly those lines. Confirm the supported
+  profile instead of changing only the nozzle field.
+</p>

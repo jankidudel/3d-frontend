@@ -26,6 +26,9 @@
     After slicing, inspect the final file with the
     <a href="/gcode-preflight-checker">G-code Preflight Checker</a>.
   </p>
+  <button type="button" (click)="runOwnedExample()" [disabled]="analysing()">
+    Run an owned model example
+  </button>
   <section class="card" aria-labelledby="upload-title">
     <h2 id="upload-title">Run a local 3MF preflight</h2>
     <p>Your selected file stays in this browser. It is not uploaded.</p>
@@ -287,4 +290,8 @@
       profile and layer preview.
     </p>
   </section>
+  <app-tool-evidence
+    [completed]="!!integrity()"
+    [page]="routeUrl.ThreeMfPrintPreflight"
+  />
 </main>

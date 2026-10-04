@@ -1,3 +1,8 @@
+import { materialDecisionExamples } from '../repeat-workflows/material-decision-examples';
+import {
+  ProductLinkComponent,
+  ProductRecords,
+} from '../repeat-workflows/product-link';
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -11,6 +16,7 @@ import {
   materialsBySlug,
   materialSources,
   MaterialRecord,
+  MaterialId,
 } from './material-catalogue';
 
 @Component({
@@ -31,6 +37,33 @@ import {
       >
       <a [routerLink]="routeUrl.CompareMaterials">Compare two materials</a>
     </p>
+    <section class="material-section">
+      <h2>Choose by the job and the equipment</h2>
+      <p>
+        For outdoor parts, compare sunlight, actual operating temperature and
+        sustained load separately. For brackets and holders, consider layer
+        direction, stiffness, impact and creep rather than selecting a family
+        from a single rating. Exact formulations and filled variants need their
+        own evidence.
+      </p>
+      <p>
+        Use <a [routerLink]="routeUrl.MaterialSelector">the selector</a> for
+        application requirements, then check the exact printer and nozzle
+        system. The
+        <a [routerLink]="routeUrl.FilamentRemainingCalculator"
+          >partial-spool calculator</a
+        >
+        owns next-job sufficiency; solid volume and density do not replace
+        complete slicer consumption.
+      </p>
+      <p>
+        <a routerLink="/filament-dryer-vs-dry-box"
+          >Storage versus active drying</a
+        >
+        is a separate equipment decision. No local stock or retailer
+        availability is inferred from a product-family name.
+      </p>
+    </section>
     <section class="material-section">
       <h2>Compare material families</h2>
       <div class="material-table-scroll">
@@ -91,7 +124,7 @@ export class MaterialHubPage {
 
 @Component({
   selector: 'app-material-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, ProductLinkComponent],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-detail-page">
     @if (material(); as item) {
@@ -216,9 +249,48 @@ export class MaterialHubPage {
         </ul>
       </section>
     }
+    <section class="material-section">
+      <h2>{{ decision().heading }}</h2>
+      <p>{{ decision().example }}</p>
+      <p>{{ decision().next }}</p>
+      <p>
+        Illustrative decision scenario, not a physical material test. Check
+        <a href="https://help.prusa3d.com/article/drying-filament_332086"
+          >the exact drying guidance</a
+        >
+        and product datasheet before using a numerical cycle.
+      </p>
+      <p>
+        <a [routerLink]="routeUrl.FilamentRemainingCalculator"
+          >Check your partial spool against the job</a
+        >
+        ·
+        <a [routerLink]="routeUrl.VolumetricFlowCalculator"
+          >Calculate requested throughput</a
+        >
+        ·
+        <a [routerLink]="routeUrl.MaterialSelector"
+          >Compare requirements in the selector</a
+        >
+      </p>
+    </section>
+    <app-product-link [product]="referral" />
+    @if (
+      material()?.id === materialIds.Petg ||
+      material()?.id === materialIds.Nylon
+    ) {
+      <app-product-link [product]="storageReferral" />
+    }
   </main>`,
 })
 export class MaterialDetailPage {
+  readonly decision = computed(
+    () => materialDecisionExamples[this.material()!.id],
+  );
+  readonly materialIds = MaterialId;
+  readonly referral = ProductRecords.Filament;
+  readonly storageReferral = ProductRecords.Storage;
+
   readonly routeUrl = PublicRouteUrl;
   readonly methodology =
     'The five-point ratings are editorial comparison bands for typical unfilled material families, not laboratory measurements.';
@@ -330,9 +402,35 @@ export class MaterialDetailPage {
       </p>
       <p>Reviewed {{ record.lastReviewedAt }}.</p>
     }
+    @if (decision(); as evidence) {
+      <section class="material-section">
+        <h2>{{ evidence.heading }}</h2>
+        <p>{{ evidence.example }}</p>
+        <p>{{ evidence.next }}</p>
+        <p>
+          <a [routerLink]="routeUrl.MaterialSelector"
+            >Compare application requirements</a
+          >
+          and
+          <a [routerLink]="routeUrl.NozzleLayerHeightCalculator"
+            >plan actual wall lines</a
+          >. These illustrative decisions do not establish a physical product
+          test.
+        </p>
+      </section>
+    }
   </main>`,
 })
 export class MaterialComparisonDetailPage {
+  readonly decision = computed(() => {
+    const slug = this.comparison()?.slug;
+    return slug === 'pla-vs-petg'
+      ? materialDecisionExamples['pla']
+      : slug === 'petg-vs-asa'
+        ? materialDecisionExamples['asa']
+        : null;
+  });
+
   readonly routeUrl = PublicRouteUrl;
   private readonly slug = inject(Router).url.split('/').at(-1) ?? '';
   readonly comparison = computed(() =>

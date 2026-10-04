@@ -16,6 +16,17 @@ export type AnalyticsMaterial =
   'pla' | 'petg' | 'abs' | 'tpu' | 'resin' | 'custom';
 
 export const AnalyticsEvent = {
+  WorkflowCtaClicked: 'workflow_cta_clicked',
+  ToolStarted: 'tool_started',
+  ToolCompleted: 'tool_completed',
+  ExampleLoaded: 'example_loaded',
+  BatchOpened: 'batch_opened',
+  BatchCompleted: 'batch_completed',
+  ReportExported: 'report_exported',
+  ProOfferViewed: 'pro_offer_viewed',
+  ProCtaClicked: 'pro_cta_clicked',
+  AffiliateLinkClicked: 'affiliate_link_clicked',
+  ManufacturerLinkClicked: 'manufacturer_link_clicked',
   UploadStarted: 'stl_upload_started',
   UploadCompleted: 'stl_upload_completed',
   AnalysisCompleted: 'stl_analysis_completed',
@@ -466,6 +477,18 @@ export class AnalyticsService {
 
   private cleanPath(url: string): string {
     return url.split(/[?#]/, 1)[0] || '/';
+  }
+
+  trackWorkflow(
+    event: AnalyticsEventName,
+    tool: string,
+    usageBucket = 'none',
+  ): void {
+    this.sendEvent(event, {
+      landing_page: this.currentPath,
+      tool,
+      usage_bucket: usageBucket,
+    });
   }
 
   private sendEvent(

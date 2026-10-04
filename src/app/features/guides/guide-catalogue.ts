@@ -20,6 +20,7 @@ export interface Guide extends GuideContent {
   readonly group: string;
   readonly order: number;
   readonly publishDate: string;
+  readonly updatedDate?: string;
 }
 
 export interface GuideCard {
@@ -94,6 +95,7 @@ function guideFromEntry(
     group: entry.group,
     order: entry.order,
     publishDate: entry.publishDate,
+    updatedDate: entry.updatedDate,
   };
 }
 

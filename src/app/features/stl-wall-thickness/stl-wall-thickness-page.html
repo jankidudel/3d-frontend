@@ -5,6 +5,9 @@
     Estimate wall thickness across an STL and highlight sampled areas that may
     be too thin for your 3D-printing setup.
   </p>
+  <button type="button" (click)="runOwnedExample()" [disabled]="analysing()">
+    Run an owned model example
+  </button>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL wall thickness</h2>
     <div class="drop-zone">
@@ -183,4 +186,8 @@
       </p>
     </section>
   }
+  <app-tool-evidence
+    [completed]="!!report()"
+    [page]="routeUrl.StlWallThicknessChecker"
+  />
 </main>
