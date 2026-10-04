@@ -1,5 +1,13 @@
 You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
+## Git Branch and Push Policy
+
+- Never create a new Git branch, including through a worktree or another tool.
+- Use the existing `main` branch for implementation. Preserve unrelated staged and unstaged work.
+- Never push code automatically. Push only when the user explicitly requests a push.
+- A request to implement, fix, merge, validate or deploy does not by itself authorize a Git push.
+- Do not automatically delete remote branches; remote changes require an explicit user request.
+
 ## TypeScript Best Practices
 
 - Use strict type checking
