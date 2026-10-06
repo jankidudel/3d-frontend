@@ -1,5 +1,7 @@
 # Evidence record - 4 October 2026
 
+This is retained technical research supporting InspectMesh's tools and examples. It records historical observations, not current deployment status or instructions for a new batch. Preserve the dated evidence and its companion fixtures, screenshots and benchmark data.
+
 All model fixtures are owned mathematical geometry. Inputs describing filament weights, costs, load cases and temperature exposure are illustrative. No physical prints, product performance tests or invented review author credentials are claimed.
 
 ## Geometry controls
@@ -56,3 +58,9 @@ All 120 supplied seeds have one primary owner in `keyword-ownership.json`; all 2
 A dated general search sample found LayerCalc's spool page with editable mass, tare, density, job usage and optional geometric estimation. InspectMesh's contribution is an explicit reserve and complete-copy result without unsourced brand tare presets. Meshdiff and diff.tools advertise spatial comparison; their advertised functions were not interactively verified. InspectMesh documents the finite surface sampling, unchanged retriangulation control and coordinate policy. These observations show competing intent, not easy keywords or country rankings.
 
 Sources: [LayerCalc](https://layercalc.com/filament-remaining-calculator/), [Meshdiff advertised features](https://meshdiff.com/features/), [diff.tools advertised model comparison](https://www.diff.tools/model-compare). Technical facts come from first-party documentation linked on the respective pages, including Prusa, SUNLU, Bambu and MDN. Manufacturer referral links have no configured affiliate commission. Product availability and shipping are not inferred from a locale URL.
+
+## Reproducing the retained controls
+
+From the frontend root, run `python3 docs/english-market-batch/fixtures/generate-fixtures.py` to recreate the owned model controls. The slicer commands and retained settings are documented above.
+
+For Node observations, bundle the two TypeScript modules with the existing esbuild dependency and pass their absolute output paths to `fixtures/benchmark-node.mjs`, followed by an output JSON path. Preserve the original dated report; record each new run with its own device/runtime context rather than silently replacing historical evidence.

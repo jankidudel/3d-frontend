@@ -8,6 +8,13 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - A request to implement, fix, merge, validate or deploy does not by itself authorize a Git push.
 - Do not automatically delete remote branches; remote changes require an explicit user request.
 
+## Permanent SEO and documentation policies
+
+- Before creating, removing or substantially modifying public or indexable pages, read the workspace's [authoritative SEO strategy](../docs/SEO_STRATEGY.md). Apply its duplicate-intent, unique-value, sourcing and functional/editorial acceptance gates in every relevant batch.
+- Change that strategy only when long-term policy changes, not after each execution batch.
+- When materially changing a public page, maintain its sitemap modification date: use `scripts/editorial-dates.mts` for non-guide pages and the guide registry's `updatedDate` for guides. New pages need a recorded date. Preserve dates on unchanged pages and never replace them with build time.
+- Follow the workspace's [documentation governance](../AGENTS.md#documentation-governance): keep durable documentation and research, remove clearly completed temporary batch inputs after implementation and validation, and report work in the final Codex response instead of a new Markdown report. Preserve active or uncertain files and never commit completed temporary handovers with an implementation.
+
 ## TypeScript Best Practices
 
 - Use strict type checking
