@@ -1,4 +1,29 @@
 <main class="page tool-page preflight-page">
+  @if (handoff(); as item) {
+    <section class="card" aria-label="Collection file handoff">
+      <p>
+        Selected from your collection: {{ item.file.name }}. The package
+        declares this 3MF's unit and placements; the collection's STL unit
+        assumption does not control them. The file is held in this tab's memory
+        only. Reloading requires reselection. Review this tool's settings
+        separately.
+      </p>
+      <button type="button" (click)="openHandoff()">
+        Open selected collection file
+      </button>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to retained collection</a
+      >
+    </section>
+  }
+
+  @if (fromCollection) {
+    <p>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to your retained collection</a
+      >
+    </p>
+  }
   <p class="eyebrow">3MF print preparation</p>
   <h1>3MF Print Preflight Checker</h1>
   <p class="lead">

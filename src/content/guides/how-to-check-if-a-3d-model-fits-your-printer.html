@@ -190,3 +190,57 @@ faq:
   real-world dimensions is acceptable, or plan separate parts and joint
   clearances.
 </p>
+
+<h2>Dimensions correct, but the sliced job will not fit</h2>
+<p>
+  Hypothetical rectangular bed: 220 × 220 mm. A centred 214 × 100 mm part has a
+  3 mm nominal margin at each X edge. A chosen 5 mm brim extends its X footprint
+  to 224 mm, so the complete footprint exceeds that hypothetical bed. The brim
+  width is an example input, not a universal clearance recommendation. Supports
+  or a purge structure can change the result again.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Review next</th>
+      <th scope="col">Decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bounds fit but brim exceeds bed</td>
+      <td>Actual sliced adhesion footprint</td>
+      <td>
+        Review adhesion/orientation choices; do not shrink a functional model
+        silently
+      </td>
+    </tr>
+    <tr>
+      <td>Part is inside nominal bounds but over a clip or excluded area</td>
+      <td>Documented usable bed shape and reservations</td>
+      <td>Move or rotate in the intended slicer</td>
+    </tr>
+    <tr>
+      <td>Correct spans but coordinates place the part off-bed</td>
+      <td>Origin, translation and lower Z extent</td>
+      <td>Confirm placement without confusing translation with scale</td>
+    </tr>
+    <tr>
+      <td>Fits only in a tall orientation</td>
+      <td>Contact, supports and layer direction</td>
+      <td>
+        Compare practical sliced jobs; box fit does not choose an acceptable
+        orientation
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Use
+  <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">nominal fit checking</a> as
+  the early screen, then inspect the complete sliced job with
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">G-code preflight</a> and
+  the native slicer preview. Neither verifies every firmware offset or physical
+  obstruction.
+</p>

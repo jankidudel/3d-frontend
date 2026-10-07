@@ -77,3 +77,32 @@ export function exampleFile(kind: MeshExample): File {
     type: 'model/stl',
   });
 }
+
+/** Hypothetical release kit, owned software geometry; no assembly or print test. */
+export function releaseExampleFiles(): readonly File[] {
+  return [
+    {
+      name: 'kit-base-r01.stl',
+      dimensions: [60, 40, 4],
+      kind: MeshExample.Cube,
+    },
+    {
+      name: 'kit-cover-review-r01.stl',
+      dimensions: [60, 40, 2],
+      kind: MeshExample.Open,
+    },
+    {
+      name: 'kit-spacer-r01.stl',
+      dimensions: [8, 8, 12],
+      kind: MeshExample.Cube,
+    },
+  ].map((item) => {
+    const mesh = exampleMesh(item.kind);
+    const positions = mesh.positions.map(
+      (value, index) => (value * item.dimensions[index % 3]) / 20,
+    );
+    return new File([writeBinaryStl({ ...mesh, positions })], item.name, {
+      type: 'model/stl',
+    });
+  });
+}

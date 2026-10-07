@@ -208,3 +208,48 @@ faq:
   focused follow-up, then compare a revised export rather than silently
   overwriting the original.
 </p>
+
+<h2>Choose a check from an observable symptom</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Symptom</th>
+      <th scope="col">First check</th>
+      <th scope="col">Stop condition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Open boundary highlighted</td>
+      <td>Locate missing face and verify intended solid</td>
+      <td>
+        Return to CAD if replacing it requires inventing a functional surface
+      </td>
+    </tr>
+    <tr>
+      <td>No edge findings but strange overlapping layers</td>
+      <td>Inspect intersecting triangles and internal shells</td>
+      <td>Passing edge incidence does not rule out self intersections</td>
+    </tr>
+    <tr>
+      <td>Volume missing or implausible</td>
+      <td>Check units, winding, boundaries and shell interpretation</td>
+      <td>Do not substitute zero for an unavailable result</td>
+    </tr>
+    <tr>
+      <td>Known dimension differs from import</td>
+      <td>Verify the unit assumption and source scale</td>
+      <td>Do not repair topology to fix a unit error</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Read
+  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
+    >how self intersections differ from non-manifold edges</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteStlVolumeCalculationWrong }}"
+    >why STL volume can be implausible</a
+  >. These resolve different questions from choosing a repair operation.
+</p>

@@ -19,10 +19,10 @@ describe('sitemap editorial dates', () => {
       ...sitemap.matchAll(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g),
     ]).toHaveLength(paths.length);
     expect(sitemap).toContain(
-      '<loc>https://www.inspectmesh.com/stl-viewer</loc><lastmod>2026-10-06</lastmod>',
+      '<loc>https://www.inspectmesh.com/stl-viewer</loc><lastmod>2026-10-07</lastmod>',
     );
     expect(sitemap).toContain(
-      '<loc>https://www.inspectmesh.com/</loc><lastmod>2026-10-04</lastmod>',
+      '<loc>https://www.inspectmesh.com/</loc><lastmod>2026-10-07</lastmod>',
     );
   });
 

@@ -1,3 +1,8 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
+import {
+  ReviewSession,
+  ReviewDestination,
+} from '../repeat-workflows/review-session';
 import {
   Component,
   ElementRef,
@@ -38,11 +43,20 @@ interface ModelInfo {
 }
 @Component({
   selector: 'app-stl-viewer-page',
-  imports: [ObjectViewerComponent, MeshIssueHighlightsComponent, RouterLink],
+  imports: [
+    ToolEvidenceComponent,
+    ObjectViewerComponent,
+    MeshIssueHighlightsComponent,
+    RouterLink,
+  ],
   templateUrl: './stl-viewer-page.html',
   styleUrl: '../shared/model-viewer-page.scss',
 })
 export class StlViewerPage {
+  readonly handoff = signal(
+    inject(ReviewSession).take(ReviewDestination.Viewer),
+  );
+  readonly fromCollection = this.handoff() !== null;
   readonly routeUrl = PublicRouteUrl;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
   readonly error = signal('');
@@ -60,6 +74,15 @@ export class StlViewerPage {
   private readonly stlJobs = inject(StlJobService);
   private issuePolling?: Subscription;
 
+  async openHandoff(): Promise<void> {
+    const item = this.handoff();
+    if (!item) {
+      return;
+    }
+    this.handoff.set(null);
+    this.selectedUnit.set(item.unit);
+    await this.load(item.file);
+  }
   constructor() {
     this.seo.apply({
       title:

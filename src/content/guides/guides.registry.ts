@@ -41,11 +41,37 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: '3mf-missing-objects-after-import',
+    group: GuideGroupId.ThreeMf,
+    order: 200,
+    enabled: true,
+    publishDate: '2026-10-07',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'stl-volume-calculation-wrong',
+    group: GuideGroupId.Stl,
+    order: 201,
+    enabled: true,
+    publishDate: '2026-10-07',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'self-intersecting-mesh-vs-non-manifold',
+    group: GuideGroupId.Stl,
+    order: 202,
+    enabled: true,
+    publishDate: '2026-10-07',
+    checkEditorialTargets: true,
+  },
+
+  {
     slug: 'how-to-compare-stl-revisions',
     group: GuideGroupId.General,
     order: 100,
     enabled: true,
     publishDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: true,
   },
   {
@@ -54,6 +80,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 101,
     enabled: true,
     publishDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: true,
   },
   {
@@ -62,6 +89,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 102,
     enabled: true,
     publishDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: true,
   },
   {
@@ -142,7 +170,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 8,
     enabled: true,
     publishDate: '2026-09-10',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: true,
   },
   {
@@ -227,7 +255,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 31,
     enabled: true,
     publishDate: '2026-09-18',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -262,7 +290,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -271,7 +299,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -346,6 +374,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 75,
     enabled: true,
     publishDate: '2026-09-06',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -354,7 +383,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -387,6 +416,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 130,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -395,7 +425,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 140,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -477,6 +507,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -525,6 +556,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 60,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {
@@ -557,6 +589,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 100,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
   },
   {

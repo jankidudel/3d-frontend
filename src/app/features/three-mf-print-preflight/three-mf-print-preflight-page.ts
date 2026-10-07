@@ -1,3 +1,7 @@
+import {
+  ReviewSession,
+  ReviewDestination,
+} from '../repeat-workflows/review-session';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -43,6 +47,10 @@ const PLA_DENSITY_GRAMS_PER_CUBIC_CENTIMETRE = 1.24;
   styleUrl: './three-mf-print-preflight-page.scss',
 })
 export class ThreeMfPrintPreflightPage {
+  readonly handoff = signal(
+    inject(ReviewSession).take(ReviewDestination.Preflight),
+  );
+  readonly fromCollection = this.handoff() !== null;
   readonly routeUrl = PublicRouteUrl;
   readonly wallThicknessLimitation = THREE_MF_WALL_THICKNESS_LIMITATION;
   private readonly printerProfileService = inject(PrinterProfileService);
@@ -131,6 +139,14 @@ export class ThreeMfPrintPreflightPage {
   });
   private readonly seo = inject(SeoService);
 
+  async openHandoff(): Promise<void> {
+    const item = this.handoff();
+    if (!item) {
+      return;
+    }
+    this.handoff.set(null);
+    await this.onFileSelected(item.file);
+  }
   constructor() {
     if (this.savedPrinterProfile()) {
       this.printerPreset.set('saved');

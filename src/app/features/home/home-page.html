@@ -5,6 +5,37 @@
     Free tools to check, measure and prepare 3D printing files.
   </p>
 
+  <app-workflow-paths />
+  <section class="card review-example" aria-labelledby="example-review-title">
+    <h2 id="example-review-title">What a collection review gives you</h2>
+    <p>
+      Owned software example, not a physical print test. Each file keeps its own
+      outcome:
+    </p>
+    <ul>
+      <li>
+        <strong>Closed 20 mm cube:</strong> 12 triangles, zero boundary edges,
+        8,000 mm³ screened volume. Confirm skipped printer fit before slicing.
+      </li>
+      <li>
+        <strong>Open-face cube:</strong> four boundary edges and unavailable
+        volume. Inspect the intended missing face before repair.
+      </li>
+      <li>
+        <strong>Malformed STL:</strong> failed processing. Re-export; failure
+        cannot count as zero errors.
+      </li>
+    </ul>
+    <p>
+      The report records units, settings, method limits and the next action,
+      with CSV, JSON and printing. Optional history stays in this browser
+      without original geometry.
+    </p>
+    <a class="button" [routerLink]="routeUrl.BatchStlChecker"
+      >Open the checker and run this example</a
+    >
+  </section>
+
   <section class="tools" aria-labelledby="tools-title">
     <div class="section-intro">
       <h2 id="tools-title">Choose a tool</h2>

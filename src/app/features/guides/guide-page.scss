@@ -67,3 +67,41 @@
   max-width: 100%;
   height: auto;
 }
+
+.guide-page .guide-body pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 1rem;
+  background: var(--soft);
+  border-radius: 0.5rem;
+}
+.guide-page .guide-body figure {
+  margin-inline: 0;
+}
+.guide-page .guide-body figcaption {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.guide-page .guide-body .guide-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-block: 1rem;
+}
+.guide-page .guide-body .guide-table-scroll:focus-visible {
+  outline: 3px solid #0369a1;
+  outline-offset: 3px;
+}
+.guide-page .guide-body .guide-table-scroll table {
+  display: table;
+  min-width: 36rem;
+}
+@media print {
+  .guide-page .guide-body .guide-table-scroll {
+    overflow: visible;
+  }
+  .guide-page .guide-body .guide-table-scroll table {
+    min-width: 0;
+  }
+}

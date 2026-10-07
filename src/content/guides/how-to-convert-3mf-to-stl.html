@@ -13,137 +13,109 @@ faq:
     answer: Yes. Keep it whenever you may need its declared units, metadata, colours, materials, separate build items or slicer settings later.
 ---
 
-<p class="lead">
-  Exporting a 3MF to STL can help with older or geometry-only workflows, but STL
-  is a less complete container than the source 3MF.
-</p>
-<h2>Understand the information lost on export</h2>
 <p>
-  STL is a triangle mesh delivery format. A 3MF-to-STL export normally flattens
-  the selected resolved build to mesh geometry and cannot retain the package's
-  declared units, build-item structure, colours, material properties or slicer
-  configuration in STL. Confirm whether a multi-object build becomes separate
-  files or one combined mesh, then re-check dimensions, topology and the slicer
-  preview. Keep the original 3MF for future editing.
+  Convert 3MF to STL only when the recipient needs resolved triangle geometry.
+  STL cannot keep the original package unit declaration, editable build-item
+  structure, materials or slicer project settings. Keep the source 3MF and
+  verify the receiving application after conversion.
 </p>
-<h2>Resolve the build before exporting</h2>
+<h2>Select the intended deliverable</h2>
 <p>
-  A 3MF can reuse objects and place them with transforms. Decide whether the STL
-  should contain one selected object, every placed item as separate files, or
-  one combined resolved plate. Apply the declared unit and transforms before
-  writing coordinates; otherwise size, orientation or spacing can change.
+  A stored resource is not necessarily a placed part. Decide whether the
+  recipient needs one selected object, separate parts or the entire build.
+  InspectMesh
+  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF-to-STL conversion</a>
+  resolves supported placed geometry and writes one combined binary STL. It does
+  not offer an object-selection filter or separate-part export. Select/re-export
+  a smaller build in the authoring application if required.
 </p>
-<h2>Information-loss table</h2>
 <table>
   <thead>
     <tr>
-      <th>3MF information</th>
-      <th>STL outcome</th>
+      <th scope="col">Information</th>
+      <th scope="col">This STL export</th>
+      <th scope="col">Recipient check</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Resolved triangle surfaces</td>
-      <td>Can be exported as triangles</td>
+      <td>Mesh triangles</td>
+      <td>Supported resolved surfaces</td>
+      <td>Compare visible features and counts</td>
     </tr>
     <tr>
-      <td>Declared unit</td>
-      <td>Not stored authoritatively; document the chosen interpretation</td>
+      <td>Units/transforms</td>
+      <td>
+        Normalised millimetre coordinates with placements applied; STL stores no
+        unit
+      </td>
+      <td>Import as millimetres and check a known dimension</td>
     </tr>
     <tr>
-      <td>Build items and transforms</td>
-      <td>Usually flattened into exported coordinates</td>
+      <td>Build identity</td>
+      <td>Flattened into one mesh; disconnected shells may remain</td>
+      <td>Compare intended parts and arrangement</td>
     </tr>
     <tr>
-      <td>Object identities and components</td>
-      <td>May become separate files or one merged mesh</td>
-    </tr>
-    <tr>
-      <td>Colours, materials, textures and settings</td>
-      <td>Not represented by ordinary STL geometry</td>
+      <td>Materials, colours, settings</td>
+      <td>Not retained in ordinary STL</td>
+      <td>Keep 3MF when these are required</td>
     </tr>
   </tbody>
 </table>
-<h2>Handle multiple objects deliberately</h2>
+<h2>Worked declared-inch control</h2>
 <p>
-  Separate STL files preserve part boundaries but can lose their original plate
-  relationship. A combined STL preserves placement but may create overlapping or
-  disconnected shells. Choose based on the receiving workflow, name separate
-  files clearly, and keep the original 3MF as the authoritative package.
+  Use the owned
+  <a
+    href="/examples/english-market-batch/declared-inch-transformed.3mf"
+    download
+    >declared-inch 3MF</a
+  >. It contains a one-unit cube declared in inches and translated two units on
+  X. The resolved cube is 25.4 mm per side, positioned from X = 50.8 to 76.2 mm.
+  The span remains 25.4 mm despite translation.
 </p>
-<h2>Post-conversion checks</h2>
 <ol>
-  <li>Open every exported STL and confirm it is not empty.</li>
-  <li>Check a known dimension using the documented unit assumption.</li>
-  <li>Compare object count, orientation and relative placement.</li>
-  <li>Run quality checks and inspect the target slicer's layer preview.</li>
-</ol>
-<h2>Choose export resolution carefully</h2>
-<p>
-  If the 3MF contains parametric or extension-based geometry that must be
-  tessellated, use a resolution appropriate to printed detail without creating
-  needless triangles. Compare curves and critical dimensions with the resolved
-  3MF. When the source is already a triangle mesh, avoid an unnecessary remesh
-  that changes the surface.
-</p>
-<p>
-  An STL opening successfully does not prove that all 3MF information survived.
-  Record the unit assumption and which objects were exported, and deliver the
-  original 3MF alongside STL when recipients may need the richer package.
-</p>
-<h2>When an STL export helps</h2>
-<p>
-  Some modelling, repair or legacy printing workflows accept STL more readily
-  than 3MF. The
-  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL Converter</a>
-  resolves supported build geometry in your browser and produces one binary STL.
-</p>
-<h2>Convert the resolved print build</h2>
-<ol>
-  <li>Choose one 3MF file in the converter.</li>
   <li>
-    Wait while its mesh objects, components, repeated items and transforms are
-    resolved locally.
+    Inspect the source in
+    <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a> and
+    record the resolved dimensions.
   </li>
-  <li>Download the resulting STL.</li>
+  <li>Convert the supported build and save a separately named STL.</li>
   <li>
-    Open it in the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> and
-    compare its final dimensions and triangle count with the source build.
+    Open that STL in the receiving application, explicitly using millimetres.
+  </li>
+  <li>
+    Confirm the 25.4 mm reference, placement and intended parts; inspect
+    topology and sliced layers.
   </li>
 </ol>
-<h2>Geometry preservation versus information loss</h2>
 <p>
-  The resolved triangle geometry can be exported accurately for supported
-  geometry. The limitation is completeness, not a general loss of geometric
-  accuracy: STL cannot retain declared units, colours, materials, metadata,
-  slicer or printer settings, component structure, build-item structure or
-  separate part identity.
+  The unit and transform values are generated fixture ground truth and resolver
+  checks, not a physical print experiment. A receiving importer may recenter or
+  drop a part, so compare placement as well as spans. Do not claim a working
+  import proves every package feature survived.
 </p>
-<h2>One resolved mesh</h2>
+<h2>When to stop conversion</h2>
 <p>
-  A 3MF can contain repeated, translated or rotated build items and component
-  references. This converter applies those placements and exports one resolved
-  STL mesh. It does not create separate STL files or preserve an editable
-  assembly.
-</p>
-<h2>Keep the original 3MF</h2>
-<p>
-  <strong
-    >3MF to STL is a geometry-only export. Keep the original 3MF if you need its
-    units, separate build items, colours, materials or print settings.</strong
+  If required build objects are missing, an extension is unsupported or the
+  recipient needs an editable project, return to the original application.
+  Investigate
+  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+    >missing 3MF objects</a
   >
+  before flattening the package. Conversion is not mesh repair and cannot invent
+  missing intended geometry.
 </p>
 <p>
+  The
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core Specification</a
+  >
+  describes resource, build, unit and transform semantics; reviewed 7 October
+  2026. Application support must be checked separately.
   <a href="{{ GuideSlug.Route3mfToStlConverter }}"
-    ><strong>Convert 3MF to STL locally</strong></a
+    >Convert supported geometry locally</a
   >
-  · <a href="{{ GuideSlug.Route3mfViewer }}">Open a 3MF in the Viewer</a>
-</p>
-<h2>Stop when the receiving requirement is unclear</h2>
-<p>
-  Ask whether the recipient needs one plate mesh, individual printable parts or
-  editable source geometry. Those are different deliverables. Do not combine
-  objects merely because one STL is convenient, and do not describe STL as
-  preserving a 3MF project. When colours, materials, settings or assembly
-  structure matter, keep 3MF or provide another supported format.
+  when a single geometry-only file is the agreed deliverable.
 </p>

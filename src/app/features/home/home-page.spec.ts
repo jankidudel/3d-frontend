@@ -11,7 +11,7 @@ describe('HomePage', () => {
     const fixture = TestBed.createComponent(HomePage);
     fixture.detectChanges();
     const links = Array.from(
-      fixture.nativeElement.querySelectorAll('a'),
+      fixture.nativeElement.querySelectorAll('.tools a, main > p:last-child a'),
     ) as HTMLAnchorElement[];
 
     expect(fixture.nativeElement.textContent).toContain('Choose a tool');
@@ -22,12 +22,12 @@ describe('HomePage', () => {
     expect(fixture.nativeElement.querySelector('h1')?.textContent?.trim()).toBe(
       '3D Quality Tools',
     );
-    expect(fixture.nativeElement.querySelector('h2')?.textContent?.trim()).toBe(
-      'Choose a tool',
-    );
-    expect(fixture.nativeElement.querySelector('h3')?.textContent?.trim()).toBe(
-      'STL tools',
-    );
+    expect(
+      fixture.nativeElement.querySelector('.tools h2')?.textContent?.trim(),
+    ).toBe('Choose a tool');
+    expect(
+      fixture.nativeElement.querySelector('.tools h3')?.textContent?.trim(),
+    ).toBe('STL tools');
     expect(fixture.nativeElement.textContent).toContain('STL Quality Checker');
     expect(fixture.nativeElement.textContent).toContain(
       'STL Dimensions Checker',

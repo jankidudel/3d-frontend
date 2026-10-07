@@ -159,3 +159,17 @@ h2 {
   margin-block: 1.5rem;
   padding: clamp(1.25rem, 4vw, 2rem);
 }
+
+@media print {
+  app-site-header,
+  app-site-footer,
+  app-home-newsletter-prompt,
+  app-cookie-consent-banner,
+  app-breadcrumbs {
+    display: none !important;
+  }
+  body {
+    color: #000;
+    background: #fff;
+  }
+}

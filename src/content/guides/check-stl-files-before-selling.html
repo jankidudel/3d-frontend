@@ -12,92 +12,128 @@ faq:
 ---
 
 <p>
-  Before distributing a collection, record what each file is intended to
-  represent, its assumed dimensions and the checks actually completed. A clean
-  mesh screen is useful evidence, but it does not justify promising that every
-  customer printer or slicer will print the model successfully.
+  Before releasing a model collection, verify that every intended component is
+  present, name the physical scale and keep a review record for the exact
+  delivered versions. A geometry report documents completed checks; it cannot
+  promise a successful print on every customer machine.
 </p>
-<h2>Use a collection report with independent outcomes</h2>
 <p>
-  Run
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}"
-    >the built-in mixed collection</a
-  >. The closed cube has known 20 mm dimensions and screened 8,000 mm³ volume;
-  the open-face cube has four boundary edges and unavailable volume; malformed
-  input fails separately. This is the behaviour a review process needs: one
-  failed file cannot be hidden by a collection-wide green badge.
+  Start with
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}">the mixed example collection</a
+  >, then select your own files using the same settings. The closed 20 mm cube,
+  open-face cube and malformed input demonstrate three independent outcomes.
+  These are generated software fixtures, without physical print testing.
+</p>
+<h2>Worked release checklist: a three-file enclosure kit</h2>
+<p>
+  Hypothetical delivery: base, lid and spacer, all intended in millimetres.
+  Declare the expected overall bounds and the number of separate pieces before
+  reviewing. A missing spacer is a delivery error even if the base has no
+  topology findings.
 </p>
 <table>
   <thead>
     <tr>
-      <th>Handoff field</th>
-      <th>What to record</th>
+      <th scope="col">Stage</th>
+      <th scope="col">Record</th>
+      <th scope="col">Release decision</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Dimensions</td>
-      <td>Expected size and explicit STL unit assumption</td>
+      <td>Inventory</td>
+      <td>base-r03.stl, lid-r03.stl, spacer-r02.stl; one each</td>
+      <td>Compare actual package contents with this manifest</td>
     </tr>
     <tr>
-      <td>Geometry</td>
+      <td>Scale</td>
+      <td>Base 80 × 60 × 20 mm; lid 80 × 60 × 3 mm; spacer 10 × 10 × 5 mm</td>
       <td>
-        Boundary, non-manifold, duplicate, degenerate and winding findings
+        Ask the author if the known dimension disagrees; do not guess from
+        appearance
       </td>
     </tr>
     <tr>
-      <td>Shells</td>
-      <td>Whether separate shells are intentional separate parts</td>
-    </tr>
-    <tr>
-      <td>Sampling</td>
-      <td>Wall threshold, sample count and unmeasured locations</td>
-    </tr>
-    <tr>
-      <td>Limitations</td>
+      <td>Mesh checks</td>
       <td>
-        Unchecked self intersections, slicer settings and physical behaviour
+        Completed edge/winding checks, intended shells, wall threshold, skipped
+        fit
       </td>
+      <td>
+        Review each result independently; failed and skipped are not passes
+      </td>
+    </tr>
+    <tr>
+      <td>Correction</td>
+      <td>Retain base-r02.stl and separately export base-r03.stl</td>
+      <td>
+        Compare original and corrected surfaces plus affected holes and mating
+        faces
+      </td>
+    </tr>
+    <tr>
+      <td>Slicing</td>
+      <td>Target profile, orientation and affected-layer observations</td>
+      <td>
+        Verify the receiving slicer; label any physical testing separately
+      </td>
+    </tr>
+    <tr>
+      <td>Package</td>
+      <td>
+        Three named files, manifest, report, assembly note and applicable
+        licence
+      </td>
+      <td>Reopen the delivered copies rather than only the working folder</td>
     </tr>
   </tbody>
 </table>
-<h2>Separate a mesh finding from a process promise</h2>
+<h2>Sample delivery manifest</h2>
+<pre>
+Project: example-enclosure-kit
+Release: 2026-10-07-r03
+STL coordinate assumption: millimetres
+Parts: base-r03.stl (1), lid-r03.stl (1), spacer-r02.stl (1)
+Design references: base width 80 mm; lid width 80 mm
+Review: collection-review-2 JSON + printable report
+Change: base hole corrected; compare r02 against r03
+Limitations: no physical print evidence; fit skipped without a profile
+Recipient action: verify mating features and sliced layers</pre>
 <p>
-  An intentional open surface may be an authoring intermediate, while a
-  downloadable solid part should receive the intended solid interpretation. A
-  multi-shell model can be several legitimate pieces. State the intended task so
-  the next reviewer knows which finding requires correction. The checker cannot
-  infer that design intent.
+  This manifest is a hypothetical template, not a measurement of a supplied kit.
+  Use the actual filenames, measured bounds and quantities. Keep geometry files
+  separate from the report history; browser-local reports can disappear when
+  browser data is cleared. Export the report needed for your release record.
+</p>
+<h2>Compare repaired exports before publishing</h2>
+<p>
+  <a href="{{ GuideSlug.RouteStlCompare }}">Compare STL revisions</a> in
+  original coordinates first. Triangle counts can change with retriangulation
+  while the surface remains the same; bounds can stay the same while a hole
+  changes. Record both STL unit assumptions, any centre translation and review
+  tolerance. Inspect functional details individually because surface sampling
+  can miss them.
 </p>
 <p>
-  Do not translate “no issue found in completed checks” into guaranteed
-  printability. Supports, shrinkage, nozzle profile, material formulation and
-  real-world assembly are separate decisions. If you have no physical-print
-  evidence, identify the file examples and screenshots as software
-  demonstrations.
+  Do not treat an intentional separate shell as something to delete. If the
+  intended cavity, joint or moving component is unclear, return to source CAD.
+  Recheck the exported correction and the final delivery package after changes.
 </p>
-<h2>Review replacement exports consistently</h2>
+<h2>Write customer-facing limitations</h2>
 <p>
-  Keep revisions separately and use
-  <a href="{{ GuideSlug.RouteStlCompare }}">surface comparison</a> after
-  cleanup. Exported triangles can change without changing shape; the unchanged
-  retriangulation control helps distinguish that case. Record any alignment and
-  tolerance rather than choosing a hidden normalisation.
+  Example note: “File findings were reviewed in millimetres using the attached
+  settings. Printer fit was skipped. Self intersections, supports, material
+  suitability and physical assembly are not certified by these checks. Confirm
+  the intended dimensions and review your slicer layers before printing.”
+  Replace this with what actually ran, including failures; rights to distribute
+  are a separate requirement.
 </p>
 <p>
-  Export JSON for full settings and CSV for a collection summary, then store
-  your release notes with the files. Optional browser-local report history is
-  convenient but can disappear when browser data is cleared. Export anything you
-  need to retain. This checklist concerns technical handoff and provides no
-  licensing or legal advice.
-</p>
-
-<h2>Give the next reviewer an actionable note</h2>
-<p>
-  Example handoff: “The closed cube completed topology checks at an assumed
-  millimetre scale; its dimensions are 20 mm on every axis. The open-face
-  control has four boundary edges, so its volume is unavailable. Printer fit was
-  skipped because no profile was selected.” This records what actually ran and
-  one decision still required. It is more useful than labelling every exported
-  file passed.
+  For customer-supplied work, use
+  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
+    >the intake decision workflow</a
+  >. To begin a release,
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}"
+    >run a local collection review</a
+  >, export its findings and keep version names consistent.
 </p>

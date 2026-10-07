@@ -1,4 +1,27 @@
 <main class="page tool-page planning-page">
+  @if (handoff(); as item) {
+    <section class="card" aria-label="Collection file handoff">
+      <p>
+        Selected from your collection: {{ item.file.name }}. STL assumption:
+        {{ item.unit }}. The file is held in this tab's memory only. Reloading
+        requires reselection. Review this tool's settings separately.
+      </p>
+      <button type="button" (click)="openHandoff()">
+        Open selected collection file
+      </button>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to retained collection</a
+      >
+    </section>
+  }
+
+  @if (fromCollection) {
+    <p>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to your retained collection</a
+      >
+    </p>
+  }
   <p class="eyebrow">Local revision inspection</p>
   <h1>Compare Two STL Files</h1>
   <p class="lead">
@@ -25,8 +48,18 @@
           (change)="changeUnit(sides.Before, $event)"
           [disabled]="busy()"
         >
-          <option [value]="units.Millimetres">Millimetres</option>
-          <option [value]="units.Inches">Inches</option>
+          <option
+            [value]="units.Millimetres"
+            [selected]="beforeUnit() === units.Millimetres"
+          >
+            Millimetres
+          </option>
+          <option
+            [value]="units.Inches"
+            [selected]="beforeUnit() === units.Inches"
+          >
+            Inches
+          </option>
         </select></label
       >
       <label
@@ -41,8 +74,18 @@
           (change)="changeUnit(sides.After, $event)"
           [disabled]="busy()"
         >
-          <option [value]="units.Millimetres">Millimetres</option>
-          <option [value]="units.Inches">Inches</option>
+          <option
+            [value]="units.Millimetres"
+            [selected]="afterUnit() === units.Millimetres"
+          >
+            Millimetres
+          </option>
+          <option
+            [value]="units.Inches"
+            [selected]="afterUnit() === units.Inches"
+          >
+            Inches
+          </option>
         </select></label
       >
       <label
@@ -51,8 +94,16 @@
           (change)="changeAlignment($event)"
           [disabled]="busy()"
         >
-          <option [value]="alignments.Original">Original coordinates</option>
-          <option [value]="alignments.Centres">
+          <option
+            [value]="alignments.Original"
+            [selected]="alignment() === alignments.Original"
+          >
+            Original coordinates
+          </option>
+          <option
+            [value]="alignments.Centres"
+            [selected]="alignment() === alignments.Centres"
+          >
             Explicit bounding-box centre translation
           </option>
         </select></label
@@ -215,6 +266,32 @@
       <a [routerLink]="routeUrl.BatchStlChecker"
         >review a collection with consistent reports</a
       >. Saved revision projects and cloud history are not available.
+    </p>
+  </section>
+  <section class="card">
+    <h2>Frequently asked comparison questions</h2>
+    <h3>Are unchanged dimensions enough?</h3>
+    <p>
+      No. Local holes and lettering can change while outer bounds remain.
+      <a href="/how-to-compare-stl-revisions"
+        >Interpret each comparison output</a
+      >
+      and inspect critical features.
+    </p>
+    <h3>Does centre alignment correct rotation or units?</h3>
+    <p>
+      No. It translates centres only. Confirm each source unit and any
+      intentional rotation; automatic registration and Boolean difference are
+      not implemented.
+    </p>
+    <h3>Does a low sampled maximum prove equality?</h3>
+    <p>
+      No. It describes finite sampled points, not a certified whole-surface
+      upper bound.
+      <a href="/how-to-reduce-stl-triangle-count"
+        >Compare an owned detail-reduction control</a
+      >
+      and recheck topology as well.
     </p>
   </section>
 </main>

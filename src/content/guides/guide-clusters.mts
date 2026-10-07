@@ -71,6 +71,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'how-to-fix-flipped-normals-in-an-stl-file',
       'how-to-remove-duplicate-triangles-from-an-stl-file',
       'what-is-non-manifold-geometry',
+      'self-intersecting-mesh-vs-non-manifold',
       'how-to-tell-if-an-stl-is-watertight',
     ],
   },
@@ -84,6 +85,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'how-to-scale-an-stl-file-for-3d-printing',
       'stl-scale-factor-explained',
       'why-stl-files-have-no-units',
+      'stl-volume-calculation-wrong',
       'how-to-measure-3d-model',
       'stl-triangle-count-explained',
       'how-to-reduce-stl-triangle-count',
@@ -99,6 +101,7 @@ export const guideClusters: readonly GuideCluster[] = [
     pillar: 'how-to-check-a-3mf-file-for-errors',
     slugs: [
       'how-to-open-a-3mf-file',
+      '3mf-missing-objects-after-import',
       'how-to-repair-a-3mf-file',
       'how-to-tell-if-a-3mf-file-is-watertight',
       'how-to-tell-if-a-3mf-file-is-manifold',

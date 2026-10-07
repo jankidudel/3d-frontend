@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
@@ -19,7 +20,12 @@ import {
 
 @Component({
   selector: 'app-three-mf-repair-page',
-  imports: [RouterLink, ThreeMfFilePicker, FeedbackLinkComponent],
+  imports: [
+    ToolEvidenceComponent,
+    RouterLink,
+    ThreeMfFilePicker,
+    FeedbackLinkComponent,
+  ],
   templateUrl: './threemf-repair-page.html',
   styleUrl: './threemf-repair-page.scss',
 })

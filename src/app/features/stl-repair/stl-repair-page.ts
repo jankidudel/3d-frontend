@@ -1,3 +1,4 @@
+import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import {
   Component,
   computed,
@@ -36,7 +37,13 @@ type RepairReport = {
 
 @Component({
   selector: 'app-stl-repair-page',
-  imports: [RouterLink, StlFilePicker, JobProgress, FeedbackLinkComponent],
+  imports: [
+    ToolEvidenceComponent,
+    RouterLink,
+    StlFilePicker,
+    JobProgress,
+    FeedbackLinkComponent,
+  ],
   templateUrl: './stl-repair-page.html',
   styleUrl: '../stl-quality/stl-quality-page/stl-quality-page.scss',
 })

@@ -90,3 +90,53 @@ faq:
   method details and tests are recorded with the application. These examples are
   not scanned physical parts.
 </p>
+
+<h2>Bounds cannot identify a changed hole</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Output</th>
+      <th scope="col">What it answers</th>
+      <th scope="col">What it cannot establish</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Byte equality</td>
+      <td>Whether these files have exactly the same bytes</td>
+      <td>Different encoding or face order can preserve the same surface</td>
+    </tr>
+    <tr>
+      <td>Bounding dimensions</td>
+      <td>Whether outer axis spans changed</td>
+      <td>A smaller internal hole can leave every bound unchanged</td>
+    </tr>
+    <tr>
+      <td>Surface area / screened volume</td>
+      <td>Aggregate geometry changes under supported validity checks</td>
+      <td>The location or functional importance of a change</td>
+    </tr>
+    <tr>
+      <td>Bidirectional samples</td>
+      <td>
+        Nearest-triangle distances at finitely many area-distributed points
+      </td>
+      <td>Exhaustive local-feature equivalence or a certified maximum error</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The implemented comparison does not perform automatic rotation registration, a
+  Boolean difference or a feature-by-feature CAD comparison. Translation changes
+  original-coordinate distances; explicit centre alignment can remove a
+  placement change but cannot correct a rotated export. A unit mismatch
+  multiplies every dimension. Confirm units before considering alignment and
+  keep the source revision names in the downloaded report.
+</p>
+<p>
+  Reproduce the 20-to-24 mm widened-cube control and unchanged retriangulation
+  control in <a href="{{ GuideSlug.RouteStlCompare }}">revision comparison</a>.
+  Tests verify the known 4 mm surface displacement and near-zero unchanged
+  surface. The results are software calculations, not measurements of printed
+  cubes.
+</p>

@@ -1,4 +1,27 @@
 <main class="page tool-page viewer-page">
+  @if (handoff(); as item) {
+    <section class="card" aria-label="Collection file handoff">
+      <p>
+        Selected from your collection: {{ item.file.name }}. STL assumption:
+        {{ item.unit }}. The file is held in this tab's memory only. Reloading
+        requires reselection. Review this tool's settings separately.
+      </p>
+      <button type="button" (click)="openHandoff()">
+        Open selected collection file
+      </button>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to retained collection</a
+      >
+    </section>
+  }
+
+  @if (fromCollection) {
+    <p>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to your retained collection</a
+      >
+    </p>
+  }
   <p class="eyebrow">Private browser-based STL inspection</p>
   <h1>Free STL Viewer Online</h1>
   <p>
@@ -179,7 +202,10 @@
     </p>
     <h2>FAQ</h2>
     <h3>Does my STL file get uploaded?</h3>
-    <p>No. Your file stays on your device while you view it.</p>
+    <p>
+      Viewing is local. If you explicitly request Locate mesh issues, the file
+      is uploaded for server analysis through the Quality Checker.
+    </p>
     <h3>Can I view ASCII and binary STL files?</h3>
     <p>Yes, both common STL encodings are supported.</p>
     <h3>Why do STL dimensions not specify mm or inches?</h3>
@@ -201,4 +227,5 @@
       and <a [routerLink]="routeUrl.WatertightChecker">Watertight Checker</a>.
     </p>
   </section>
+  <app-tool-evidence [page]="routeUrl.Viewer" />
 </main>

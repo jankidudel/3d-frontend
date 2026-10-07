@@ -15,6 +15,12 @@
   gap: 1rem;
   margin-block: 1rem;
 }
+.batch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
 label {
   display: flex;
   flex-direction: column;
@@ -61,4 +67,59 @@ dd {
   .card {
     break-inside: avoid;
   }
+}
+
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.table-scroll table {
+  min-width: 36rem;
+}
+article {
+  overflow-wrap: anywhere;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.table-scroll:focus-visible {
+  outline: 3px solid #0369a1;
+  outline-offset: 3px;
+}
+.print-report {
+  display: none;
+}
+.print-report.report-preview {
+  display: block;
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid var(--border);
+}
+@media print {
+  .screen-only,
+  .planning-page > .eyebrow,
+  .planning-page > h1,
+  .planning-page > .lead {
+    display: none !important;
+  }
+  .print-report {
+    display: block;
+    color: #000;
+  }
+  .print-report article {
+    break-inside: avoid;
+    border-top: 1px solid #555;
+    margin-top: 1rem;
+  }
+}
+
+figure {
+  margin-inline: 0;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+}
+figcaption {
+  font-size: 0.9rem;
 }

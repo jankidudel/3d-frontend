@@ -39,7 +39,7 @@ faq:
   <thead>
     <tr>
       <th>What you see</th>
-      <th>Likely cause</th>
+      <th>Possibility to investigate</th>
       <th>Useful next check</th>
     </tr>
   </thead>
@@ -252,4 +252,15 @@ faq:
   compare the extrusion paths. These demonstration exports use CLI defaults
   outside the listed settings; do not send them to a printer. Filament mass is
   unavailable because the CLI density default was zero.
+</p>
+
+<p>
+  If bounds appear acceptable but the sliced job exceeds the usable bed, follow
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >the fit guide with brim and placement checks</a
+  >. If topology counts look clean but layers overlap unexpectedly, investigate
+  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
+    >intersection checks and their limits</a
+  >
+  before assuming the file is sound.
 </p>

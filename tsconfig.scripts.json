@@ -7,5 +7,6 @@
     "allowImportingTsExtensions": true,
     "types": ["node"]
   },
-  "include": ["scripts/**/*.mts"]
+  "include": ["scripts/**/*.mts"],
+  "exclude": ["scripts/collection-examples.spec.mts"]
 }

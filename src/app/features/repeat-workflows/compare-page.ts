@@ -1,3 +1,4 @@
+import { ReviewSession, ReviewDestination } from './review-session';
 import { DecimalPipe } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -48,6 +49,10 @@ interface Revision {
   styleUrl: '../planning/planning-page.scss',
 })
 export class ComparePage {
+  readonly handoff = signal(
+    inject(ReviewSession).take(ReviewDestination.Compare),
+  );
+  readonly fromCollection = this.handoff() !== null;
   readonly routeUrl = PublicRouteUrl;
   readonly sides = RevisionSide;
   readonly alignments = Alignment;
@@ -93,6 +98,15 @@ export class ComparePage {
     [RevisionSide.Before]: 0,
     [RevisionSide.After]: 0,
   };
+  async openHandoff(): Promise<void> {
+    const item = this.handoff();
+    if (!item) {
+      return;
+    }
+    this.handoff.set(null);
+    this.beforeUnit.set(item.unit);
+    await this.load(RevisionSide.Before, item.file);
+  }
   constructor() {
     inject(SeoService).apply({
       title:

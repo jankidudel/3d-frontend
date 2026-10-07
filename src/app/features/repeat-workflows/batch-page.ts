@@ -1,6 +1,7 @@
+import { reportThumbnail } from './report-thumbnail';
 import { DecimalPipe } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import {
   AnalyticsEvent,
@@ -9,37 +10,37 @@ import {
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { printers } from '../printer-comparison/printer-catalogue';
-import { MeshExample, exampleFile } from './example-meshes';
+import {
+  MeshExample,
+  exampleFile,
+  releaseExampleFiles,
+} from './example-meshes';
 import {
   CheckSettings,
-  GeometryCheck,
   QueueState,
   ModelUnits,
   WorkflowLimits,
   collectionAllowance,
-  csvCell,
 } from './mesh-workflows';
 import { loadWorkflowModel } from './load-model';
 import { MeshWorkerMode, runMeshWorker } from './mesh-worker';
 
 export const ReportFormat = { Json: 'json', Csv: 'csv' } as const;
 export type ReportFormat = (typeof ReportFormat)[keyof typeof ReportFormat];
-interface QueueEntry {
-  id: number;
-  name: string;
-  state: QueueState;
-  error: string;
-  result: GeometryCheck | null;
-  unit: string;
-  warnings: readonly string[];
-  durationMs: number;
-}
-const REPORT_VERSION = 'inspectmesh-mesh-check-1';
+import {
+  QueueEntry,
+  createCollectionReport,
+  collectionCsv,
+  needsReview,
+  nextAction,
+} from './collection-report';
+import { ReviewDestination, ReviewSession } from './review-session';
 const HISTORY_KEY = 'inspectmesh-local-batch-reports-v1';
 const BatchFilter = {
   All: 'all',
   Attention: 'attention',
   Failed: 'failed',
+  Completed: 'completed',
 } as const;
 type BatchFilter = (typeof BatchFilter)[keyof typeof BatchFilter];
 @Component({
@@ -55,11 +56,29 @@ export class BatchPage {
   readonly states = QueueState;
   readonly units = ModelUnits;
   readonly filters = BatchFilter;
+  readonly reference = signal('');
+  readonly reportDate = signal('');
+  readonly destinations = ReviewDestination;
+  readonly nextAction = nextAction;
+  readonly reportModel = computed(() =>
+    createCollectionReport(
+      this.rows(),
+      this.settingsSignal(),
+      this.reportDate(),
+      this.reference(),
+    ),
+  );
+  private readonly settingsSignal = signal<CheckSettings | null>(null);
+  private files: readonly File[] = [];
+  private readonly session = inject(ReviewSession);
+  private readonly router = inject(Router);
+  private exampleRun = false;
   readonly rows = signal<readonly QueueEntry[]>([]);
   readonly busy = signal(false);
   readonly error = signal('');
   readonly unit = signal<ModelUnits>(ModelUnits.Millimetres);
   readonly printerId = signal('');
+  readonly reportPreview = signal(false);
   readonly printerChoices = printers.filter(
     (printer) => printer.published !== false,
   );
@@ -80,7 +99,9 @@ export class BatchPage {
         this.filter() === BatchFilter.All ||
         (this.filter() === BatchFilter.Failed
           ? row.state === QueueState.Failed
-          : this.needsAttention(row)),
+          : this.filter() === BatchFilter.Completed
+            ? row.state === QueueState.Complete
+            : this.needsAttention(row)),
     );
     return this.sortAttention()
       ? [...rows].sort(
@@ -104,7 +125,35 @@ export class BatchPage {
         'Check a collection of STL and supported 3MF files locally. Review units, mesh findings, printer fit and sampled walls, then export a consistent report.',
       path: PublicRouteUrl.BatchStlChecker,
     });
-    inject(DestroyRef).onDestroy(() => this.controller?.abort());
+    const retained = this.session.collection;
+    if (retained) {
+      this.files = retained.files;
+      this.rows.set(retained.rows);
+      this.settings = retained.settings;
+      this.settingsSignal.set(retained.settings);
+      this.reportDate.set(retained.date);
+      this.reference.set(retained.reference);
+      this.unit.set(retained.settings.stlUnit);
+      this.threshold.set(retained.settings.thicknessThresholdMm);
+      this.printerId.set(
+        this.printerChoices.find(
+          (printer) => printer.displayName === retained.settings.printer?.name,
+        )?.id ?? '',
+      );
+    }
+    inject(DestroyRef).onDestroy(() => {
+      this.controller?.abort();
+      this.rows.update((rows) =>
+        rows.map((row) =>
+          row.state === QueueState.Waiting ||
+          row.state === QueueState.Reading ||
+          row.state === QueueState.Checking
+            ? { ...row, state: QueueState.Cancelled }
+            : row,
+        ),
+      );
+      this.retain();
+    });
     if (typeof localStorage !== 'undefined') {
       try {
         const parsed: unknown = JSON.parse(
@@ -132,6 +181,81 @@ export class BatchPage {
   async pick(event: Event): Promise<void> {
     const files = Array.from((event.target as HTMLInputElement).files ?? []);
     await this.process(files);
+    (event.target as HTMLInputElement).value = '';
+  }
+  async drop(event: DragEvent): Promise<void> {
+    event.preventDefault();
+    await this.process(Array.from(event.dataTransfer?.files ?? []));
+  }
+  dragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+  clearSession(): void {
+    if (this.busy()) {
+      return;
+    }
+    this.files = [];
+    this.rows.set([]);
+    this.settings = null;
+    this.settingsSignal.set(null);
+    this.reference.set('');
+    this.session.clear();
+  }
+  private retain(): void {
+    if (this.settings) {
+      this.session.collection = {
+        rows: this.rows(),
+        files: this.files,
+        settings: this.settings,
+        date: this.reportDate(),
+        reference: this.reference(),
+      };
+    }
+  }
+  async handoff(id: number, destination: ReviewDestination): Promise<void> {
+    const file = this.files[id];
+    if (!file || this.busy()) {
+      return;
+    }
+    this.retain();
+    this.session.offer(
+      file,
+      this.settings?.stlUnit ?? this.unit(),
+      destination,
+    );
+    this.analytics.trackWorkflow(
+      AnalyticsEvent.FileHandoff,
+      'batch',
+      destination,
+    );
+    await this.router.navigateByUrl(
+      destination === ReviewDestination.Compare
+        ? PublicRouteUrl.StlCompare
+        : destination === ReviewDestination.Viewer
+          ? PublicRouteUrl.Viewer
+          : /\.3mf$/i.test(file.name)
+            ? PublicRouteUrl.ThreeMfPrintPreflight
+            : PublicRouteUrl.StlPrintPreflight,
+    );
+  }
+  async replaceFile(id: number, event: Event): Promise<void> {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file || this.busy()) {
+      return;
+    }
+    this.files = this.files.map((original, index) =>
+      index === id ? file : original,
+    );
+    this.update(id, { name: file.name });
+    await this.rerun(id);
+    (event.target as HTMLInputElement).value = '';
+  }
+  async rerun(id: number): Promise<void> {
+    const file = this.files[id];
+    if (!file || !this.settings || this.busy()) {
+      return;
+    }
+    await this.process([file], id);
   }
   async budgetExample(): Promise<void> {
     if (!this.developmentPreview || this.busy()) {
@@ -166,6 +290,7 @@ export class BatchPage {
     try {
       const { ownedDemoFile, DemoAsset } = await import('./demo-file');
       this.analytics.trackWorkflow(AnalyticsEvent.ExampleLoaded, 'batch_3mf');
+      this.exampleRun = true;
       await this.process([await ownedDemoFile(DemoAsset.Package)]);
     } catch (error: unknown) {
       this.error.set(
@@ -175,20 +300,30 @@ export class BatchPage {
       );
     }
   }
+  async releaseExample(): Promise<void> {
+    this.exampleRun = true;
+    await this.process(releaseExampleFiles());
+  }
   async example(): Promise<void> {
     this.analytics.trackWorkflow(AnalyticsEvent.ExampleLoaded, 'batch');
+    this.exampleRun = true;
     await this.process([
       exampleFile(MeshExample.Cube),
       exampleFile(MeshExample.Open),
       new File(['malformed'], 'malformed.stl'),
     ]);
   }
-  async process(files: readonly File[]): Promise<void> {
+  async process(files: readonly File[], rerunId?: number): Promise<void> {
     if (this.busy() || !files.length) {
       return;
     }
     this.error.set('');
     if (files.length > this.allowance()) {
+      this.analytics.trackWorkflow(
+        AnalyticsEvent.AllowanceEncountered,
+        'batch',
+        'file_count',
+      );
       this.error.set(
         `Choose up to ${this.allowance()} files. The free allowance is ${WorkflowLimits.FreeQueue}; a larger collection is available only in the isolated development preview.`,
       );
@@ -203,43 +338,78 @@ export class BatchPage {
     const printer = this.printerChoices.find(
       (item) => item.id === this.printerId(),
     );
-    this.settings = {
-      stlUnit: this.unit(),
-      thicknessThresholdMm: this.threshold(),
-      printer: printer
-        ? { name: printer.displayName, dimensions: printer.buildVolumeMm }
-        : null,
-    };
+    if (rerunId === undefined) {
+      this.settings = {
+        stlUnit: this.unit(),
+        thicknessThresholdMm: this.threshold(),
+        printer: printer
+          ? { name: printer.displayName, dimensions: printer.buildVolumeMm }
+          : null,
+      };
+      this.settingsSignal.set(this.settings);
+    }
     const settings = this.settings;
+    if (!settings) {
+      return;
+    }
+    const orderedFiles =
+      rerunId === undefined
+        ? [...files].sort((a, b) => {
+            const x = a.webkitRelativePath || a.name;
+            const y = b.webkitRelativePath || b.name;
+            return x < y ? -1 : x > y ? 1 : 0;
+          })
+        : files;
+    this.reportDate.set(new Date().toISOString());
     this.controller = new AbortController();
     const controller = this.controller;
     this.busy.set(true);
-    this.rows.set(
-      files.map((file, id) => ({
-        id,
-        name: file.name,
-        state: QueueState.Waiting,
-        error: '',
-        result: null,
-        unit: '',
-        warnings: [],
-        durationMs: 0,
-      })),
-    );
+    if (rerunId === undefined) {
+      this.files = orderedFiles;
+      this.rows.set(
+        orderedFiles.map((file, id) => ({
+          id,
+          name: file.webkitRelativePath || file.name,
+          state: QueueState.Waiting,
+          error: '',
+          result: null,
+          unit: '',
+          warnings: [],
+          durationMs: 0,
+        })),
+      );
+    }
+    const source = this.exampleRun
+      ? 'example_collection'
+      : rerunId === undefined
+        ? 'user_collection'
+        : 'file_rerun';
+    this.exampleRun = false;
     this.analytics.trackWorkflow(
       AnalyticsEvent.BatchOpened,
-      'batch',
+      source,
       files.length <= 3 ? '1_to_3' : '4_to_20',
     );
     try {
-      for (let id = 0; id < files.length; id++) {
+      for (let index = 0; index < orderedFiles.length; index++) {
+        const id = rerunId ?? index;
         if (controller.signal.aborted) {
           break;
         }
         const started = performance.now();
-        this.update(id, { state: QueueState.Reading });
+        this.update(id, {
+          state: QueueState.Reading,
+          error: '',
+          result: null,
+          warnings: [],
+          thumbnail: null,
+          unit: '',
+        });
         try {
-          const loaded = await loadWorkflowModel(files[id], settings.stlUnit);
+          const loaded = await loadWorkflowModel(
+            orderedFiles[index],
+            settings.stlUnit,
+          );
           if (controller.signal.aborted) {
             break;
           }
@@ -247,6 +417,7 @@ export class BatchPage {
             state: QueueState.Checking,
             unit: loaded.unit,
             warnings: loaded.warnings,
+            thumbnail: reportThumbnail(loaded.mesh),
           });
           const processed = await runMeshWorker(
             {
@@ -257,6 +428,11 @@ export class BatchPage {
             },
             controller.signal,
           );
+          if (!processed.check) {
+            throw new Error(
+              'No supported geometry result was returned. Re-export and rerun this file.',
+            );
+          }
           this.update(id, {
             state: QueueState.Complete,
             result: processed.check ?? null,
@@ -289,12 +465,20 @@ export class BatchPage {
       } else {
         this.analytics.trackWorkflow(
           AnalyticsEvent.BatchCompleted,
-          'batch',
+          source,
           this.completed() <= 3 ? '1_to_3' : '4_to_20',
         );
       }
     } finally {
       this.busy.set(false);
+      this.retain();
+      this.analytics.trackWorkflow(
+        AnalyticsEvent.BatchFailureCount,
+        source,
+        String(
+          this.rows().filter((row) => row.state === QueueState.Failed).length,
+        ),
+      );
     }
   }
   cancel(): void {
@@ -306,86 +490,16 @@ export class BatchPage {
     );
   }
   needsAttention(row: QueueEntry): boolean {
-    const result = row.result;
-    return (
-      row.state === QueueState.Failed ||
-      (!!result &&
-        (result.topology.openEdges > 0 ||
-          result.topology.nonManifoldEdges > 0 ||
-          result.topology.degenerateTriangles > 0 ||
-          result.topology.duplicateTriangles > 0 ||
-          result.topology.orientationConflicts > 0 ||
-          result.fit === false ||
-          (result.thickness?.belowThreshold ?? 0) > 0))
-    );
+    return needsReview(row);
   }
   report(): string {
-    return JSON.stringify(
-      {
-        schema: REPORT_VERSION,
-        generatedAt: new Date().toISOString(),
-        settings: this.settings,
-        distanceUnit: 'mm',
-        volumeUnit: 'mm³',
-        limitations:
-          'Original files are unchanged. These mesh screens do not guarantee printing. Local browser report only.',
-        files: this.rows(),
-      },
-      null,
-      2,
-    );
+    return JSON.stringify(this.reportModel(), null, 2);
   }
   export(format: ReportFormat): void {
-    const header = [
-      'file',
-      'state',
-      'declared_or_assumed_unit',
-      'triangles',
-      'width_mm',
-      'height_mm',
-      'depth_mm',
-      'open_edges',
-      'non_manifold_edges',
-      'shells',
-      'volume_valid',
-      'volume_mm3',
-      'printer_fit',
-      'wall_samples',
-      'wall_below_threshold',
-      'warnings',
-      'error',
-    ];
-    const csv = [
-      header,
-      ...this.rows().map((row) => {
-        const r = row.result;
-        return [
-          row.name,
-          row.state,
-          row.unit,
-          r?.triangles,
-          r?.dimensionsMm.width,
-          r?.dimensionsMm.height,
-          r?.dimensionsMm.depth,
-          r?.topology.openEdges,
-          r?.topology.nonManifoldEdges,
-          r?.topology.shells,
-          r?.topology.volumeReliable,
-          r?.topology.volume,
-          r?.fit === null ? 'skipped' : r?.fit,
-          r?.thickness?.samples,
-          r?.thickness?.belowThreshold,
-          [...row.warnings, ...(r?.skipped ?? [])].join('; '),
-          row.error,
-        ];
-      }),
-    ]
-      .map((row) => row.map(csvCell).join(','))
-      .join('\r\n');
     const contents =
       format === ReportFormat.Json
         ? this.report()
-        : `${['schema', REPORT_VERSION, 'settings', JSON.stringify(this.settings)].map(csvCell).join(',')}\r\n${csv}`;
+        : `\uFEFF${collectionCsv(this.reportModel())}`;
     this.download(contents, format);
     this.analytics.trackWorkflow(
       AnalyticsEvent.ReportExported,

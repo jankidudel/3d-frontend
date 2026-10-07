@@ -1,3 +1,4 @@
+import { WorkflowPathsComponent } from '../repeat-workflows/workflow-paths';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
@@ -6,7 +7,7 @@ import { HOME_TOOL_GROUPS } from '../home/home-tools';
 
 @Component({
   selector: 'app-tools-page',
-  imports: [RouterLink],
+  imports: [WorkflowPathsComponent, RouterLink],
   templateUrl: './tools-page.html',
   styleUrl: './tools-page.scss',
 })

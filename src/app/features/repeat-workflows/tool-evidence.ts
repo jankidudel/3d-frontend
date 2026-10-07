@@ -10,9 +10,48 @@ interface ToolEvidence {
   readonly interpretation: string;
   readonly next: string;
   readonly cta: string;
+  readonly guide?: string;
+  readonly guideLabel?: string;
 }
 export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
+  [PublicRouteUrl.Viewer]: {
+    heading:
+      'Visual review has a different privacy boundary from issue analysis',
+    example:
+      'A closed 20-unit cube displays 20-unit spans and 12 triangles. Choose millimetres for a 20 mm software control; choosing inches means 508 mm. A visible opening or internal shell needs further review even when the silhouette looks normal.',
+    interpretation:
+      'Ordinary viewing and point measurements run locally with a 25 MiB file limit. The optional Locate mesh issues analysis uploads your file through the Quality Checker when explicitly requested. Rendering is not topology validation or certified dimensional metrology.',
+    next: PublicRouteUrl.StlPrintPreflight,
+    cta: 'Run a local preflight before repair',
+    guide: PublicRouteUrl.MeshIntersectionsGuide,
+    guideLabel: 'Distinguish visible crossings from connectivity checks',
+  },
+  [PublicRouteUrl.StlRepair]: {
+    heading: 'Conservative cleanup uses server processing',
+    example:
+      'The owned cube plus an exact duplicate triangle has 13 faces. Removing that duplicate should restore 12 without inventing a surface. A missing whole cube face is a different problem: cleanup cannot recreate its intended design.',
+    interpretation:
+      'The STL Repair action explicitly uploads your selected file, up to the current 25 MiB guest limit, for server processing. STL has no declared unit. Review the actual removal counts and skipped reasons, download the separate copy, then reselect it for preflight and revision comparison. No unconditional printability claim is made.',
+    next: PublicRouteUrl.StlCompare,
+    cta: 'Compare input and cleaned STL surfaces',
+    guide: '/how-to-repair-an-stl-file',
+    guideLabel: 'Choose a repair and protect intentional openings',
+  },
+  [PublicRouteUrl.ThreeMfRepair]: {
+    heading:
+      'Preserve package structure while removing supported defective faces',
+    example:
+      'A repeated mesh triangle can be removed locally without filling a hole. The applied before/after counts show which supported duplicate, degenerate or invalid-index faces changed. Confirm declared units and resolved placement after saving.',
+    interpretation:
+      'Choose a supported mesh-based 3MF up to the 25 MiB guest file limit. This tool processes locally and preserves package parts around its targeted edits; it cannot reconstruct missing geometry or validate every extension. A repaired archive is not proof of equivalent sliced layers. Reselect the downloaded copy in preflight.',
+    next: PublicRouteUrl.ThreeMfPrintPreflight,
+    cta: 'Recheck the saved 3MF build',
+    guide: PublicRouteUrl.MissingThreeMfObjectsGuide,
+    guideLabel: 'Investigate a missing placed object before repair',
+  },
   [PublicRouteUrl.StlPrintPreflight]: {
+    guide: PublicRouteUrl.StlVolumeWrongGuide,
+    guideLabel: 'Investigate unavailable or implausible STL volume',
     heading: 'Known geometry before a collection review',
     example:
       'Run the mixed batch collection to reproduce a closed 20 mm cube (12 triangles, screened 8,000 mm\u00b3 volume), an open-face cube (four boundary edges, volume unavailable), and malformed input. A failed file is distinct from a completed mesh with no findings.',
@@ -22,6 +61,8 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     cta: 'Review more files consistently',
   },
   [PublicRouteUrl.ThreeMfPrintPreflight]: {
+    guide: PublicRouteUrl.MissingThreeMfObjectsGuide,
+    guideLabel: 'Trace missing 3MF parts and placements',
     heading: 'Interpret the resolved 3MF build',
     example:
       'A mesh-based 3MF can declare physical units and place build items with transforms. Review the resolved dimensions, not just one object in the archive. Missing explicit units use the format default; unsupported package behaviour must stay unresolved rather than receive a clean badge.',
@@ -31,6 +72,8 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     cta: 'Check supported 3MF collections',
   },
   [PublicRouteUrl.QualityCheck]: {
+    guide: PublicRouteUrl.MeshIntersectionsGuide,
+    guideLabel: 'Understand why edge counts do not rule out intersections',
     heading: 'Use defect fixtures to interpret a quality report',
     example:
       'Deleting a square face from a 20 mm cube creates four boundary edges. Adding one duplicate face creates three edges shared by more than two triangles. A repeated-vertex triangle is degenerate. Two separate closed cubes have two shells; their design intent still needs review.',
@@ -40,6 +83,8 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     cta: 'Open a mixed collection example',
   },
   [PublicRouteUrl.DimensionsChecker]: {
+    guide: '/how-to-check-if-a-3d-model-fits-your-printer',
+    guideLabel: 'Check brims, excluded areas and placement after nominal fit',
     heading: 'Reproduce a unit error and a fit decision',
     example:
       'A 2-unit CAD width intended as inches is 50.8 mm, not 2 mm. Confirm a known reference dimension before applying a 25.4 correction. The batch cube similarly changes from 20 mm to 508 mm under an inch interpretation, without changing its source coordinates.',
@@ -133,6 +178,11 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
         </p>
       }
       <h2>{{ item.heading }}</h2>
+      @if (item.guide) {
+        <p>
+          <a [href]="item.guide">{{ item.guideLabel }}</a>
+        </p>
+      }
       <p>{{ item.example }}</p>
       <h3>Interpret the result and choose the next step</h3>
       <p>{{ item.interpretation }}</p>

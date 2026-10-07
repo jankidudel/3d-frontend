@@ -63,31 +63,6 @@ faq:
   regenerate from the known project and profile rather than editing production
   G-code by guesswork.
 </p>
-<h2>Read final toolpaths as a safety review</h2>
-<p>
-  Check layer range, travel versus extrusion, temperatures, dimensions and
-  conspicuous moves against the intended job. The viewer does not execute
-  commands or know firmware limits, so compare its findings with the printer,
-  material profile and slicer preview before printing.
-</p>
-<p>
-  Your printer receives <strong>G-code</strong>: a text-based set of
-  instructions for movement, extrusion, temperatures and other print actions. It
-  is the final stage between a prepared model and a physical print.
-</p>
-<p>That makes G-code worth checking before you press Print.</p>
-<p>
-  A quick inspection can help you spot an unexpectedly large toolpath, missing
-  slicer metadata, a surprising temperature target or a file whose commands
-  cannot be interpreted reliably by a general-purpose viewer.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
-    >G-code Preflight Checker</a
-  >
-  to inspect a sliced file locally in your browser.
-</p>
 <h2>What G-code contains</h2>
 <p>A typical 3D-printing G-code file contains a mixture of:</p>
 <ul>
@@ -272,4 +247,64 @@ faq:
   editable. It does not monitor the printer, send reminders or know when a job
   actually finishes. Keep safety and running-printer decisions with the
   printer's operating guidance.
+</p>
+
+<h2>Worked next-step checklist</h2>
+<p>
+  Hypothetical job: a reviewed 80 mm part is sliced for a different printer
+  profile, with a 235 °C temperature target and a duration comment. Those
+  numbers are observations to investigate, not a verdict that a printer or
+  material can use them.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Check</th>
+      <th scope="col">Observation to record</th>
+      <th scope="col">Next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Profile and firmware</td>
+      <td>Printer, tool count, coordinate origin and unsupported commands</td>
+      <td>Regenerate from the intended profile if unknown or mismatched</td>
+    </tr>
+    <tr>
+      <td>Temperature</td>
+      <td>
+        235 °C target in this hypothetical file; loaded material not established
+      </td>
+      <td>
+        Compare with the exact material and machine guidance; do not guess a
+        replacement
+      </td>
+    </tr>
+    <tr>
+      <td>Build area</td>
+      <td>Extrusion footprint, travel, supports and purge location</td>
+      <td>
+        Use native slicer preview and usable bed reservations; box fit is
+        preliminary
+      </td>
+    </tr>
+    <tr>
+      <td>Layers</td>
+      <td>First layer, changed functional features and final layer</td>
+      <td>Return to geometry review if required surfaces are missing</td>
+    </tr>
+    <tr>
+      <td>Metadata</td>
+      <td>Declared duration/material and absent fields</td>
+      <td>
+        Keep unavailable values unknown; do not infer grams from model volume
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Geometry preflight reviews the source mesh; G-code review examines the sliced
+  job. Neither simulates all firmware behaviour or certifies printer safety.
+  When a relevant command cannot be interpreted, stop and use the generating
+  slicer and printer documentation.
 </p>

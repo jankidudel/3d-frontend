@@ -14,179 +14,136 @@ faq:
 ---
 
 <p>
-  A sensible 3D-print price begins with cost, but it does not stop there. A
-  customer price needs to cover the plastic, printer time, your work, the risk
-  of failures and any fees or delivery that are included in the offer.
-</p>
-
-<h2>Allocate failure risk without double counting</h2>
-<p>
-  Choose one explicit method. You can multiply production cost by an observed
-  retry factor, add a fixed expected-failure allowance, or use a minimum charge
-  for jobs that consume setup time. Do not add all three without checking what
-  each covers. If nine out of ten comparable runs succeed, dividing the consumed
-  production cost by 0.9 is one transparent starting point; it is not evidence
-  for a new material or untested geometry.
+  Build a print quote from the actual work and an explicit profit method.
+  Material, machine time, preparation, finishing, failure allowance and minimum
+  order all need visible assumptions. A calculator can expose cost and margin;
+  it cannot tell you what customers will pay.
 </p>
 <p>
-  Separate hands-on labor from machine time. Ten unattended print hours do not
-  equal ten labor hours, while twenty minutes of file repair, support removal
-  and packaging should not disappear inside an electricity estimate. Record
-  assumed minutes and hourly rate so repeat orders can reuse setup knowledge
-  without charging for work that was not repeated.
-</p>
-
-<h2>Check the quote after the order changes</h2>
-<p>
-  Quantity, color changes, rush delivery, customer-supplied files and tolerance
-  requirements can change the risk and work. Re-run the quote instead of scaling
-  the old total mechanically. A ten-part batch may share preparation but place
-  more value at risk on one build plate. State revision and cancellation terms
-  before starting any paid design work.
-</p>
-
-<h2>Worked quote: margin is not markup</h2>
-<p>
-  Assume calculated production cost is $18, hands-on preparation and finishing
-  adds $12, an expected-failure allowance adds $3, and packaging adds $2. The
-  pre-fee cost is $35. If the selling channel takes 10% of revenue and the
-  target profit margin is 25% of revenue, solve price as
-  <code>$35 / (1 - 0.10 - 0.25) = $53.85</code>. Rounding the quote to $54
-  leaves roughly $13.50 profit after the $5.40 fee and $35 cost.
-</p>
-<p>
-  Adding 25% to $35 would produce $43.75, which is a 25% markup on cost, not a
-  25% margin on revenue. Once the 10% fee is removed, that price leaves only
-  $4.38 profit, or about a 10% margin. State which method the quote uses so
-  later updates do not silently mix the two.
-</p>
-
-<h2>Define the quotation boundary</h2>
-<p>
-  A useful quote identifies quantity, material and color, quality or
-  layer-height assumptions, included design work, finishing, delivery, tax
-  treatment, lead time, and how revisions are handled. Separate a one-time setup
-  or modeling fee from the per-part price when that makes repeat orders clearer.
-  For uncertain jobs, say what triggers a revised quote rather than hiding the
-  uncertainty in an unexplained premium.
-</p>
-<p>
-  Recalculate when quantity or process changes: batching can reduce setup labor,
-  but a full plate can increase the value of a single failed run. The calculator
-  supplies a transparent floor and scenario model; demand, rights to
-  manufacture, service level and local competition still require business
-  judgment.
-</p>
-<h2>Quote from calculated cost, not intuition</h2>
-<p>
-  Start with a documented production cost, then add payment fees, customer
-  communication, finishing, risk and the intended margin. Margin is profit as a
-  share of selling price; markup is the increase over cost. State what the quote
-  includes, when it expires and what design changes trigger a revision.
-</p>
-<p>
-  The
+  Use
   <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
-    >3D Printing Price Calculator</a
+    >the editable price calculator</a
   >
-  keeps those pieces visible, so a quote is easier to explain and you can see
-  what profit remains after selling fees.
+  with your chosen currency. GBP, USD, CAD, AUD, NZD or EUR labels do not
+  convert prices or identify tax obligations. All figures below are hypothetical
+  currency units (CU), not market rates.
 </p>
-<h2>Start with direct production cost</h2>
+<h2>Worked one-part quote</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Cost input</th>
+      <th scope="col">Hypothetical assumption</th>
+      <th scope="col">CU</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Material</td>
+      <td>100 g including supports and purge, at 24 CU/kg</td>
+      <td>2.40</td>
+    </tr>
+    <tr>
+      <td>Machine time</td>
+      <td>4 hours at 2 CU/hour for your stated machine allowance</td>
+      <td>8.00</td>
+    </tr>
+    <tr>
+      <td>Preparation</td>
+      <td>20 minutes at 18 CU/hour</td>
+      <td>6.00</td>
+    </tr>
+    <tr>
+      <td>Finishing / inspection</td>
+      <td>10 minutes at 18 CU/hour</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <td>Failure allowance</td>
+      <td>Chosen fixed 2 CU, not an observed failure rate</td>
+      <td>2.00</td>
+    </tr>
+    <tr>
+      <td>Packing</td>
+      <td>One order, excludes delivery and tax</td>
+      <td>1.60</td>
+    </tr>
+    <tr>
+      <td>Total cost</td>
+      <td>Sum of these assumptions</td>
+      <td>23.00</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  Slice the part using the printer, material and settings you expect to use.
-  Copy the slicer’s filament weight and print time. These are more useful than a
-  model-volume estimate because they reflect infill, walls, supports and
-  orientation.
+  With a 30% target margin and no selling fees, price is 23 / (1 - 0.30) = 32.86
+  CU. A 30% markup gives 23 × 1.30 = 29.90 CU, with a margin of about 23.08%. If
+  the selling channel instead takes 5% of revenue, the 30% margin scenario is 23
+  / (1 - 0.30 - 0.05) = 35.38 CU. Enter the actual fee rather than treating this
+  as a provider price.
 </p>
-<p>Then add:</p>
-<ul>
-  <li>material, based on the spool price and grams used;</li>
-  <li>electricity, based on printer power, run time and your tariff;</li>
-  <li>machine wear or maintenance allowance;</li>
-  <li>labour for setup, support removal, finishing and checking.</li>
-</ul>
-<p>
-  Read
-  <a href="{{ GuideSlug.RouteHowToCalculate3dPrintingCost }}"
-    >How to Calculate 3D Printing Cost</a
-  >
-  for the underlying material and energy calculation, and use
-  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
-    >How Much Filament Does a 3D Print Use</a
-  >
-  if you need to interpret the slicer figure.
-</p>
-<h2>Add costs that are easy to miss</h2>
-<p>
-  Add magnets, screws, paint and other parts separately. Include packaging and
-  shipping only when they are included in the quoted price. A failure allowance
-  is useful for reprints and waste; apply it to the whole pre-failure cost, not
-  only the filament.
-</p>
-<p>
-  If the part is untested or geometrically risky, check it before committing to
-  a price. The
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> can
-  identify common mesh issues, though neither guarantees a successful print.
-</p>
-<h2>Account for selling fees before setting margin</h2>
-<p>
-  Marketplace and payment processors can charge a percentage, a fixed fee, or
-  both. A price that looks profitable before fees can be a loss after them.
-  Enter those fees before choosing a target margin.
-</p>
-<p>
-  Margin means profit divided by selling price. Markup means profit divided by
-  cost. For example, a £10 cost sold for £15 has £5 profit: 50% markup but about
-  33% margin. Keep the terms separate when comparing prices.
-</p>
-<h2>Create a transparent quote</h2>
+<h2>Make the inputs editable and retain the assumptions</h2>
 <ol>
-  <li>State what the printed part includes.</li>
-  <li>Say whether shipping is included.</li>
-  <li>Show sales tax separately when it applies.</li>
   <li>
-    Describe the figure as an estimate if material use, delivery or fees may
-    change.
+    Slice the agreed revision, material and orientation; copy complete material
+    and duration estimates.
+  </li>
+  <li>
+    Set your currency, actual material cost, machine allowance and hands-on
+    labour.
+  </li>
+  <li>
+    Add delivery, fees and tax treatment explicitly where relevant. Estimates
+    are not invoices or tax advice.
+  </li>
+  <li>
+    Choose margin or markup deliberately, then apply your stated minimum-order
+    policy.
+  </li>
+  <li>
+    Export the quote assumptions and retain
+    <a href="{{ GuideSlug.RouteBatchStlChecker }}">the file-review report</a>
+    alongside the approved revision.
   </li>
 </ol>
+<h2>Allocate setup once when it really happens once</h2>
 <p>
-  The calculator’s downloadable quote follows this structure. It is useful for
-  clear communication, but it is not an invoice, tax filing tool or accounting
-  system.
+  Hypothetical five-part order: production cost is 4 CU per part and one
+  setup/packing charge is 10 CU. Cost is 5 × 4 + 10 = 30 CU, or 6 CU per part. A
+  30% margin needs 42.86 CU total; a 30% markup gives 39 CU. Five separate runs
+  can repeat unloading and inspection even if preparation was shared.
 </p>
-<h2>A calculator cannot set market value</h2>
+<h2>Failure allowance and minimum order</h2>
 <p>
-  Cost and target profit help you avoid undercharging, but they cannot tell you
-  whether a customer will accept a price. Design value, local competition,
-  turnaround time, finishing quality and delivery expectations still matter.
-  Compare your quote with the market and revise it deliberately rather than
-  treating a suggested price as a guarantee.
-</p>
-
-<h2>Price a batch with one order setup cost</h2>
-<p>
-  Illustrative order: five identical parts cost 4.00 each to produce, and the
-  order needs one 10.00 setup and packing charge. Total cost is 5 × 4 + 10 =
-  30.00; allocated cost per item is 6.00. A 30% gross margin needs a quote of 30
-  / (1 - 0.30) = 42.86 for the order, or about 8.57 per part. A 30% markup
-  instead gives 39.00 and a lower margin. These are different decisions.
+  Use a fixed budget or an observed retry model and document which costs it
+  covers. Do not add an expected failure cost again if the entered machine rate
+  already includes it. With credible comparable-job data, dividing eligible
+  production cost by a success fraction is one scenario; it is not a predicted
+  failure rate for unfamiliar geometry.
 </p>
 <p>
-  Do not repeat the entire fixed setup charge for every item unless setup is
-  actually repeated. Conversely, five separate print runs can require repeated
-  unloading and inspection labour. Write down whether your input is per item,
-  per plate or per order before multiplying it by quantity. Compare one plate
-  with several plates using real sliced time and usage.
+  A minimum order can cover administration that a small part still needs. In a
+  hypothetical policy with a 15 CU minimum, a calculated 9 CU quote becomes 15
+  CU; a 32.86 CU quote remains 32.86 CU. State this policy to the customer and
+  avoid counting the same setup twice.
 </p>
+<h2>Quote only after intake questions are resolved</h2>
 <p>
-  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
-    >Build a customer-price calculation</a
+  Record quantity, exact material/colour, functional dimensions, included design
+  changes, finish, delivery date and quote expiry. A customer-supplied file with
+  unresolved units or missing features needs
+  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
+    >intake clarification</a
   >
-  with explicit currency and quantity, and keep a dated copy of the assumptions
-  with the quote. A browser-local report is not invoicing, tax calculation,
-  customer management or a cloud quote history. Shipping, marketplace fees and
-  taxes need their own actual inputs where relevant.
+  before an unconditional production quote. A clean mesh report does not price
+  support removal or establish material suitability.
+</p>
+<p>
+  Recalculate when quantity, process, revision or orientation changes. Use
+  <a href="{{ GuideSlug.RouteHowToCalculate3dPrintingCost }}"
+    >the production-cost explanation</a
+  >
+  for the underlying inputs, then
+  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}">build your quote</a>
+  using your own values.
 </p>

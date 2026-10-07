@@ -1,36 +1,33 @@
 <main class="page tool-page preflight-page">
+  @if (handoff(); as item) {
+    <section class="card" aria-label="Collection file handoff">
+      <p>
+        Selected from your collection: {{ item.file.name }}. STL assumption:
+        {{ item.unit }}. The file is held in this tab's memory only. Reloading
+        requires reselection. Review this tool's settings separately.
+      </p>
+      <button type="button" (click)="openHandoff()">
+        Open selected collection file
+      </button>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to retained collection</a
+      >
+    </section>
+  }
+
+  @if (fromCollection) {
+    <p>
+      <a [routerLink]="routeUrl.BatchStlChecker"
+        >Return to your retained collection</a
+      >
+    </p>
+  }
   <p class="eyebrow">STL print preparation</p>
   <h1>STL Print Preflight Checker</h1>
   <p class="lead">
     Check one STL locally before slicing: mesh integrity, assumed size, printer
     fit, sampled wall thickness, complexity and whether a volume estimate is
     meaningful.
-  </p>
-  <p>
-    Need the broader workflow first? Read
-    <a href="/how-to-check-if-a-3d-model-is-ready-to-print"
-      >how to check if a 3D model is ready to print</a
-    >.
-  </p>
-  <p>
-    Choosing between STL, 3MF and other formats? Read
-    <a href="/best-file-format-for-3d-printing"
-      >the best file format for 3D printing guide</a
-    >.
-  </p>
-  <p>
-    For a closer look at thin-area findings, read the
-    <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a>.
-  </p>
-  <p>
-    For a complete check, repair and verification workflow, read
-    <a href="/how-to-make-an-stl-file-printable"
-      >How to Make an STL File Printable</a
-    >.
-  </p>
-  <p>
-    After slicing, inspect the final file with the
-    <a href="/gcode-preflight-checker">G-code Preflight Checker</a>.
   </p>
   <button type="button" (click)="runOwnedExample()" [disabled]="analysing()">
     Run an owned model example
@@ -233,13 +230,40 @@
     </section>
   }
   <section class="content">
+    <p>
+      Need the broader workflow first? Read
+      <a href="/how-to-check-if-a-3d-model-is-ready-to-print"
+        >how to check if a 3D model is ready to print</a
+      >.
+    </p>
+    <p>
+      Choosing between STL, 3MF and other formats? Read
+      <a href="/best-file-format-for-3d-printing"
+        >the best file format for 3D printing guide</a
+      >.
+    </p>
+    <p>
+      For a closer look at thin-area findings, read the
+      <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a
+      >.
+    </p>
+    <p>
+      For a complete check, repair and verification workflow, read
+      <a href="/how-to-make-an-stl-file-printable"
+        >How to Make an STL File Printable</a
+      >.
+    </p>
+    <p>
+      After slicing, inspect the final file with the
+      <a href="/gcode-preflight-checker">G-code Preflight Checker</a>.
+    </p>
     <h2>How this check works</h2>
     <p>
       The report parses the STL once in your browser, counts topology findings,
-      calculates bounds and tests practical right-angle orientations against a
-      220 × 220 × 250 mm preset. It samples up to 2,000 triangle locations for
-      wall thickness, so narrow features can be missed and sampled values are
-      approximate.
+      calculates bounds and tests practical right-angle orientations against
+      your saved custom printer profile. Without a saved profile, fit is
+      skipped. It samples up to 2,000 triangle locations for wall thickness, so
+      narrow features can be missed and sampled values are approximate.
     </p>
     <p>
       STL does not declare units. Confirm whether the coordinates represent mm,

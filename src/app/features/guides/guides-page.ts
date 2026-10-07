@@ -1,3 +1,4 @@
+import { WorkflowPathsComponent } from '../repeat-workflows/workflow-paths';
 import { Component, computed, inject, signal } from '@angular/core';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -6,6 +7,7 @@ import { filterGuideGroups } from './guide-search';
 
 @Component({
   selector: 'app-guides-page',
+  imports: [WorkflowPathsComponent],
   templateUrl: './guides-page.html',
   styleUrl: './guides-page.scss',
 })
@@ -32,6 +34,14 @@ export class GuidesPage {
     });
   }
 
+  protected pillarHeading(slug: string): string {
+    return (
+      guideIndexGroups
+        .flatMap((group) => group.guides)
+        .find((guide) => guide.slug === slug)?.heading ??
+      slug.replaceAll('-', ' ')
+    );
+  }
   protected setQuery(event: Event): void {
     this.query.set((event.target as HTMLInputElement).value);
   }

@@ -6,8 +6,29 @@
     report. Supported STL and mesh-based 3MF files stay in your browser;
     original files remain unchanged.
   </p>
-  <section class="card">
+  <section class="card screen-only">
     <h2>Check a collection</h2>
+    <p>
+      New selections replace this queue. To review a revision while retaining
+      other results, replace one file in its result card. Files are ordered by
+      relative path/name before processing.
+    </p>
+    <div class="card" (drop)="drop($event)" (dragover)="dragOver($event)">
+      <p>Drop STL/3MF files here, or use the labelled file controls.</p>
+      <label
+        >Choose a folder (where supported)<input
+          type="file"
+          multiple
+          webkitdirectory
+          (change)="pick($event)"
+          [disabled]="busy()"
+      /></label>
+      <p>
+        Folder selection uses the same file count and per-file budgets,
+        including unsupported members. ZIP collections are not accepted. Use
+        ordinary file selection if your browser does not support folders.
+      </p>
+    </div>
     <p>
       Free allowance: {{ limits.FreeQueue }} files per collection. Each file: up
       to 5 MiB and 100,000 resolved triangles. 3MF expanded-package budget: 20
@@ -20,8 +41,15 @@
           (change)="unit.set($any($event.target).value)"
           [disabled]="busy()"
         >
-          <option [value]="units.Millimetres">Millimetres</option>
-          <option [value]="units.Inches">Inches</option>
+          <option
+            [value]="units.Millimetres"
+            [selected]="unit() === units.Millimetres"
+          >
+            Millimetres
+          </option>
+          <option [value]="units.Inches" [selected]="unit() === units.Inches">
+            Inches
+          </option>
         </select></label
       >
       <label
@@ -57,20 +85,34 @@
           [disabled]="busy()"
       /></label>
     </div>
-    <button type="button" (click)="example()" [disabled]="busy()">
-      Run mixed example collection
-    </button>
-    <button type="button" (click)="cancel()" [disabled]="!busy()">
-      Cancel remaining checks
-    </button>
-    <button type="button" (click)="packageExample()" [disabled]="busy()">
-      Run declared-inch 3MF example
-    </button>
-    @if (developmentPreview) {
-      <button type="button" (click)="budgetExample()" [disabled]="busy()">
-        Run processing-budget benchmark
+    <div class="batch-actions">
+      <button type="button" (click)="example()" [disabled]="busy()">
+        Run mixed example collection
       </button>
-    }
+      <button type="button" (click)="releaseExample()" [disabled]="busy()">
+        Run release-kit example
+      </button>
+    </div>
+    <p>
+      Hypothetical kit: 60 × 40 × 4 mm base (9,600 mm³), 60 × 40 × 2 mm
+      open-face cover (four boundary edges; volume unavailable), and 8 × 8 × 12
+      mm spacer (768 mm³), under a millimetre STL assumption. Intended piece
+      inventory is separate from mesh health. These original box controls are
+      not an assembly or physical print test.
+    </p>
+    <div class="batch-actions">
+      <button type="button" (click)="cancel()" [disabled]="!busy()">
+        Cancel remaining checks
+      </button>
+      <button type="button" (click)="packageExample()" [disabled]="busy()">
+        Run declared-inch 3MF example
+      </button>
+      @if (developmentPreview) {
+        <button type="button" (click)="budgetExample()" [disabled]="busy()">
+          Run processing-budget benchmark
+        </button>
+      }
+    </div>
     <p>
       The 3MF example is a one-inch cube translated two inches on X by its build
       transform. Its resolved dimensions are 25.4 mm per side, without treating
@@ -90,17 +132,50 @@
     </p>
   </section>
   @if (rows().length) {
-    <section class="card">
+    <section class="card screen-only">
       <h2>Collection results</h2>
+      <label
+        >Optional project/customer reference<input
+          type="text"
+          maxlength="200"
+          [value]="reference()"
+          (input)="reference.set($any($event.target).value)"
+      /></label>
+      <p>
+        Report date: {{ reportDate() }}. Exports include all files, regardless
+        of the visible filter. References and filenames remain local and are
+        included in exports/history only.
+      </p>
+      <button type="button" (click)="clearSession()" [disabled]="busy()">
+        Clear collection and files from this tab
+      </button>
       <div class="fields">
         <label
           >Filter<select
             [value]="filter()"
             (change)="filter.set($any($event.target).value)"
           >
-            <option [value]="filters.All">All files</option>
-            <option [value]="filters.Attention">Actionable findings</option>
-            <option [value]="filters.Failed">Failed files</option>
+            <option [value]="filters.All" [selected]="filter() === filters.All">
+              All files
+            </option>
+            <option
+              [value]="filters.Attention"
+              [selected]="filter() === filters.Attention"
+            >
+              Actionable findings
+            </option>
+            <option
+              [value]="filters.Failed"
+              [selected]="filter() === filters.Failed"
+            >
+              Failed files
+            </option>
+            <option
+              [value]="filters.Completed"
+              [selected]="filter() === filters.Completed"
+            >
+              Completed files
+            </option>
           </select></label
         ><label
           >Result ordering<select
@@ -128,6 +203,16 @@
       >
         Export CSV
       </button>
+      <button
+        type="button"
+        (click)="reportPreview.set(!reportPreview())"
+        [attr.aria-expanded]="reportPreview()"
+        aria-controls="collection-print-report"
+      >
+        {{
+          reportPreview() ? 'Hide report preview' : 'Preview complete report'
+        }}
+      </button>
       <button type="button" (click)="print()" [disabled]="busy()">
         Print report
       </button>
@@ -137,6 +222,31 @@
       @for (row of visible(); track row.id) {
         <article class="card">
           <h3>{{ row.name }}</h3>
+          @if (row.thumbnail) {
+            <figure>
+              <img
+                [src]="row.thumbnail"
+                width="256"
+                height="180"
+                alt="Sampled fixed-view mesh preview"
+              />
+              <figcaption>
+                Fixed orthographic preview, at most 750 sampled faces. Use a
+                viewer for detail; this preview is not a geometry check.
+              </figcaption>
+            </figure>
+          }
+          <p><strong>Next action:</strong> {{ nextAction(row) }}</p>
+          <button type="button" (click)="rerun(row.id)" [disabled]="busy()">
+            Rerun this file with recorded settings
+          </button>
+          <label
+            >Replace this file with a revised export<input
+              type="file"
+              accept=".stl,.3mf"
+              (change)="replaceFile(row.id, $event)"
+              [disabled]="busy()"
+          /></label>
           <p>
             State: {{ row.state }}. Source unit:
             {{ row.unit || 'not resolved' }}. Processing:
@@ -202,16 +312,38 @@
               }
             </ul>
             <p>
+              <button
+                type="button"
+                (click)="handoff(row.id, destinations.Preflight)"
+                [disabled]="busy()"
+              >
+                Review this file in detailed preflight
+              </button>
+              @if (row.name.toLowerCase().endsWith('.stl')) {
+                <button
+                  type="button"
+                  (click)="handoff(row.id, destinations.Viewer)"
+                  [disabled]="busy()"
+                >
+                  View this STL
+                </button>
+                <button
+                  type="button"
+                  (click)="handoff(row.id, destinations.Compare)"
+                  [disabled]="busy()"
+                >
+                  Use this STL as the original revision
+                </button>
+              }
+              Files pass through this tab's memory, without upload or URL
+              storage. Review destination settings separately; reselect after
+              reloading.
               <a
                 [routerLink]="
                   row.name.toLowerCase().endsWith('.3mf')
-                    ? routeUrl.ThreeMfPrintPreflight
-                    : routeUrl.StlPrintPreflight
+                    ? routeUrl.ThreeMfWallThicknessChecker
+                    : routeUrl.StlWallThicknessChecker
                 "
-                >Open the detailed preflight tool</a
-              >
-              (choose the file again; files are not passed through URLs).
-              <a [routerLink]="routeUrl.StlWallThicknessChecker"
                 >Inspect sampled wall thickness</a
               >.
             </p>
@@ -220,7 +352,7 @@
       }
     </section>
   }
-  <section class="card">
+  <section class="card screen-only">
     <h2>Local report history</h2>
     <p>
       Optional storage on this browser only. No cloud history, cross-device
@@ -243,39 +375,52 @@
       </button>
     }
   </section>
-  <section class="card">
+  <section class="card screen-only">
     <h2>Check collections and keep consistent reports</h2>
     <p>
       Single-file tools remain free. This workspace provides a small real
       collection allowance, combined exports and browser-local history. Paid
       subscriptions, cloud projects and cross-device history are not available.
     </p>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Capability</th>
-          <th scope="col">Free</th>
-          <th scope="col">Development offer preview</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">Files per collection</th>
-          <td>3</td>
-          <td>Up to 20, same per-file limits</td>
-        </tr>
-        <tr>
-          <th scope="row">Combined exports / local report history</th>
-          <td>Available</td>
-          <td>Available</td>
-        </tr>
-        <tr>
-          <th scope="row">Payments / cloud storage</th>
-          <td>Unavailable</td>
-          <td>Unavailable</td>
-        </tr>
-      </tbody>
-    </table>
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      aria-label="Collection allowance comparison, scroll horizontally"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Capability</th>
+            <th scope="col">Free</th>
+            <th scope="col">Development offer preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Files per collection</th>
+            <td>3</td>
+            <td>Up to 20, same per-file limits</td>
+          </tr>
+          <tr>
+            <th scope="row">Combined exports / local report history</th>
+            <td>Available</td>
+            <td>Available</td>
+          </tr>
+          <tr>
+            <th scope="row">Payments / cloud storage</th>
+            <td>Unavailable</td>
+            <td>Unavailable</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Paid collection access is not configured. No live price or billing cadence
+      has been approved; purchasing is unavailable. Free exports and local
+      report history remain available.
+    </p>
+    <button type="button" disabled>Paid checkout unavailable</button>
     @if (developmentPreview) {
       <details (toggle)="viewOffer($event)">
         <summary>Development-only Pro workflow preview</summary>
@@ -293,7 +438,40 @@
       </details>
     }
   </section>
-  <section class="card">
+  <section class="card screen-only">
+    <h2>Frequently asked collection questions</h2>
+    <h3>Is a skipped check a clean result?</h3>
+    <p>
+      No. Fit without a printer profile and unsupported analyses stay explicitly
+      skipped. Self intersections are not checked;
+      <a [routerLink]="routeUrl.MeshIntersectionsGuide"
+        >compare connectivity and intersection checks</a
+      >.
+    </p>
+    <h3>Why is volume unavailable?</h3>
+    <p>
+      Open boundaries, winding or multiple-shell interpretation can prevent a
+      supported solid-volume result.
+      <a [routerLink]="routeUrl.StlVolumeWrongGuide"
+        >Check units and volume validity</a
+      >
+      before substituting a number.
+    </p>
+    <h3>What happens after navigation or reload?</h3>
+    <p>
+      Internal handoffs retain the selected file and collection in this tab's
+      memory. Reloading requires reselection. Clear the collection to release
+      its original files. Saving report history is optional and stores findings
+      only.
+    </p>
+    <h3>Can I review a revised file?</h3>
+    <p>
+      Use Replace this file on its result card. The recorded collection settings
+      are retained and other completed results remain. A new ordinary collection
+      selection starts a new queue.
+    </p>
+  </section>
+  <section class="card screen-only">
     <h2>Method and next steps</h2>
     <p>
       STL unit assumptions and 3MF build transforms are recorded.
@@ -311,4 +489,76 @@
       checking replacement exports.
     </p>
   </section>
+  @if (rows().length) {
+    <section
+      id="collection-print-report"
+      class="print-report"
+      [class.report-preview]="reportPreview()"
+      aria-label="Complete printable collection report"
+    >
+      <h2>InspectMesh collection review</h2>
+      <p>
+        Reference: {{ reportModel().reference || 'Not supplied' }}. Date:
+        {{ reportModel().generatedAt }}.
+      </p>
+      <p>
+        Method/version: {{ reportModel().methodVersion }}.
+        {{ reportModel().method }}
+      </p>
+      <p>
+        STL assumption: {{ reportModel().settings?.stlUnit }}; fit profile:
+        {{ reportModel().settings?.printer?.name || 'Skipped' }}; wall
+        threshold: {{ reportModel().settings?.thicknessThresholdMm }} mm.
+      </p>
+      <p>{{ reportModel().storage }}</p>
+      @for (row of reportModel().files; track row.id) {
+        <article>
+          <h3>{{ row.name }} ({{ row.format }})</h3>
+          @if (row.thumbnail) {
+            <figure>
+              <img
+                [src]="row.thumbnail"
+                width="256"
+                height="180"
+                alt="Sampled fixed-view mesh preview"
+              />
+              <figcaption>
+                Bounded sampled preview; not an exhaustive shape check.
+              </figcaption>
+            </figure>
+          }
+          <p>
+            State: {{ row.state }}; source unit: {{ row.unit || 'Unresolved' }}.
+          </p>
+          @if (row.result; as r) {
+            <p>
+              Dimensions: {{ r.dimensionsMm.width | number: '1.0-2' }} ×
+              {{ r.dimensionsMm.height | number: '1.0-2' }} ×
+              {{ r.dimensionsMm.depth | number: '1.0-2' }} mm.
+              {{ r.triangles }} triangles. Volume:
+              {{
+                r.topology.volumeReliable
+                  ? (r.topology.volume | number: '1.0-2') + ' mm³'
+                  : 'Unavailable'
+              }}.
+            </p>
+          }
+          <ul>
+            @for (finding of row.findings; track $index) {
+              <li>
+                {{ finding.check }}: {{ finding.status }} ({{
+                  finding.severity
+                }}). {{ finding.detail }}
+              </li>
+            }
+            @for (warning of row.warnings; track $index) {
+              <li>{{ warning }}</li>
+            }
+          </ul>
+          <p>Next action: {{ row.nextAction }}</p>
+        </article>
+      }
+      <p>{{ reportModel().limitations }}</p>
+    </section>
+  }
 </main>

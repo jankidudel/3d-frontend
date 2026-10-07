@@ -1,10 +1,13 @@
 <main class="page guides-page">
   <p class="eyebrow">3D printing file guides</p>
+
   <h1>Practical 3D Printing Guides</h1>
   <p class="lead">
     Learn how to check mesh health, diagnose common STL problems and prepare a
     model before slicing.
   </p>
+  <app-workflow-paths />
+
   <section class="guide-search">
     <h2>Start with the task, then use the working tool</h2>
     <p>
@@ -78,7 +81,8 @@
         @if (group.pillar) {
           <p>
             Start with:
-            <a [href]="'/' + group.pillar">the cluster guide</a>.
+            <a [href]="'/' + group.pillar">{{ pillarHeading(group.pillar) }}</a
+            >.
           </p>
         }
       }

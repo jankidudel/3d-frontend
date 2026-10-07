@@ -1,0 +1,136 @@
+---
+title: 'STL Volume Wrong or Unavailable: Units and Topology | InspectMesh'
+description: 'Check unit scaling, signed volume, winding, open meshes and overlapping shells before trusting an STL volume, with a known-size cube control.'
+slug: stl-volume-calculation-wrong
+eyebrow: File diagnosis with owned examples
+heading: 'Why Is My STL Volume Wrong or Unavailable?'
+faq:
+  - question: 'Does unavailable volume mean zero volume?'
+    answer: 'No. It means the mesh did not pass the supported solid-volume screen, or solid interpretation is unresolved.'
+  - question: 'Why does an inch mistake change volume so much?'
+    answer: 'Volume scales with the cube of the linear scale factor. An inch-to-millimetre factor of 25.4 becomes 16387.064 for volume.'
+---
+
+<p>
+  First confirm units and whether the mesh supports a solid-volume calculation.
+  Open boundaries, inconsistent winding and ambiguous shells can make a number
+  meaningless. InspectMesh collection reports use an unavailable result for
+  failed volume screens rather than displaying zero as if a solid had been
+  measured.
+</p>
+<h2>Use a known-size cube</h2>
+<p>
+  The owned closed cube has a 20 mm span on each axis, 12 triangles and exact
+  geometric volume 20 × 20 × 20 = 8,000 mm³ = 8 cm³. Run
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}">the mixed collection</a> to
+  reproduce it. Its open-face counterpart has 10 triangles and four boundary
+  edges, so reported volume is unavailable.
+</p>
+<p>
+  The same 20-unit STL interpreted as inches spans 508 mm and its cube volume is
+  131,096,512 mm³. A linear scale factor 25.4 becomes a volume factor 25.4³ =
+  16,387.064. Changing a unit label without scaling coordinates is a different
+  operation; retain the explicit assumption in your report.
+</p>
+<h2>Signed volume and winding</h2>
+<p>
+  A triangle mesh calculation accumulates signed tetrahedron contributions
+  relative to the origin, divided by six. Reversing every face of a consistent
+  closed shell reverses the algebraic sign. That negative sign indicates
+  orientation in this calculation, not negative physical material. Inconsistent
+  local winding can cancel contributions and should be investigated instead of
+  hidden by taking an absolute value immediately.
+</p>
+<p>
+  The collection checker first screens edge incidence, degenerate/duplicate
+  triangles, winding conflicts and connected shells. It reports the magnitude
+  for a supported, consistently wound single closed shell. It does not expose a
+  negative physical-volume result. Multiple shells deliberately fail its
+  conservative solid interpretation; self intersections are not checked, so
+  passing these screens still does not certify a valid solid.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observed result</th>
+      <th scope="col">Check next</th>
+      <th scope="col">Decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Unavailable</td>
+      <td>Boundary edges, degenerates, duplicates, winding and shell count</td>
+      <td>Correct known faults; never substitute zero</td>
+    </tr>
+    <tr>
+      <td>Implausibly large/small</td>
+      <td>Known linear dimension and STL unit assumption</td>
+      <td>Correct scale only after confirming intended units</td>
+    </tr>
+    <tr>
+      <td>Negative in another application</td>
+      <td>Its signed-volume convention and global winding</td>
+      <td>
+        Inspect orientation; distinguish raw signed sum from physical volume
+      </td>
+    </tr>
+    <tr>
+      <td>Zero or tiny on a nonempty model</td>
+      <td>
+        Open surfaces, cancellation, self intersections or negligible extent
+      </td>
+      <td>Return to CAD if solid interpretation is unclear</td>
+    </tr>
+    <tr>
+      <td>Several overlapping shells</td>
+      <td>Intended union, cavities and intersecting surfaces</td>
+      <td>Do not add their volumes blindly</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Recheck after a correction</h2>
+<ol>
+  <li>
+    Keep the original; record bounds and the application/unit settings that
+    produced the number.
+  </li>
+  <li>
+    Run
+    <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
+      >topology and dimension review</a
+    >; locate the actual fault.
+  </li>
+  <li>
+    Correct the source solid or a clearly understood mesh defect on a copy.
+  </li>
+  <li>
+    <a href="{{ GuideSlug.RouteStlCompare }}">Compare revised surfaces</a> and
+    verify known dimensions, not just total volume.
+  </li>
+  <li>
+    Inspect the resulting solid and sliced layers in the intended application.
+  </li>
+</ol>
+<h2>Solid volume is not slicer material use</h2>
+<p>
+  Geometric volume assumes a solid interpretation. Slicer material includes
+  walls, infill, supports and purge, according to settings; hollow interiors may
+  use less while supports add material. Use the actual sliced consumption for a
+  quote or spool decision.
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >Read filament-use guidance</a
+  >
+  and avoid using model volume as a complete job estimate.
+</p>
+<p>
+  Method basis: the application tests verify owned closed/open cube controls and
+  inch scaling. The
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core Specification</a
+  >
+  supplies unit/mesh context when comparing with declared-unit packages; STL
+  requires its own assumption. Source review: 7 October 2026. These are software
+  and arithmetic controls, without physical measurements.
+</p>

@@ -138,6 +138,9 @@ export const PublicRoutePath = {
   ThreeMfVolumeCalculator: toolRoute('3mf-volume-calculator'),
   ThreeMfToStlConverter: toolRoute('3mf-to-stl-converter'),
   Guides: guideRoute('guides'),
+  MissingThreeMfObjectsGuide: guideRoute('3mf-missing-objects-after-import'),
+  StlVolumeWrongGuide: guideRoute('stl-volume-calculation-wrong'),
+  MeshIntersectionsGuide: guideRoute('self-intersecting-mesh-vs-non-manifold'),
   Contact: defineRoute('contact', PageType.Contact),
   RotateModelToFitPrinterGuide: guideRoute(
     'how-to-rotate-a-3d-model-to-fit-your-printer',

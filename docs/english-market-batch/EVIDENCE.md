@@ -64,3 +64,15 @@ Sources: [LayerCalc](https://layercalc.com/filament-remaining-calculator/), [Mes
 From the frontend root, run `python3 docs/english-market-batch/fixtures/generate-fixtures.py` to recreate the owned model controls. The slicer commands and retained settings are documented above.
 
 For Node observations, bundle the two TypeScript modules with the existing esbuild dependency and pass their absolute output paths to `fixtures/benchmark-node.mjs`, followed by an output JSON path. Preserve the original dated report; record each new run with its own device/runtime context rather than silently replacing historical evidence.
+
+## Additional collection controls - 7 October 2026
+
+The new controls under `public/examples/collection-review/` are original mathematical geometry, reproduced with `python3 scripts/generate-collection-examples.py`. Reproduce the two derivative coupon STLs with `node --experimental-strip-types scripts/generate-collection-reductions.mts`. They are software controls, not physical-print or assembly evidence. `npm run test:collection-examples` reads the distributed files and verifies their findings, including exact derivative bytes.
+
+- One reusable 20 mm cube resource placed once resolves to a 20 mm cube. The same resource placed twice at X=0 and X=40 resolves to 60 × 20 × 20 mm and two disjoint shells. Multiple-shell volume is unavailable in collection review.
+- Two 20 mm closed STL cubes, the second translated 10 mm on X, overlap in space while their connectivity remains separate: two shells, 30 × 20 × 20 mm bounds, zero boundary edges and zero over-shared edges. This demonstrates the limits of edge incidence. No self-intersection detector is implemented or implied.
+- The 24-triangle ridge coupon consists of a 40 × 20 × 10 mm block and a separate touching 16 × 0.6 × 0.5 mm ridge. With meshoptimizer 1.2.0, relative error 0.01 and LockBorder, a 75% target gives 18 triangles and a 50% target gives 16. Export/re-import retains 40 × 20 × 10.5 mm bounds for both. The latter has two exact duplicate triangles and one non-manifold edge. Neither output is certified as equivalent or printable. The target count is a request, not a guarantee.
+- The original declared-inch package is checked under both STL selector values: the one-inch cube still resolves to 25.4 mm per side and X=50.8 to 76.2 mm. Its package units and translation are independent of the STL assumption.
+- Report thumbnails use a fixed orthographic projection and at most 750 sampled triangle outlines on a 256 × 180 canvas. They are bounded previews, not measurements or complete geometric renderings. JSON and optional browser history can include this preview, labels and findings; original file bytes and 3D geometry arrays are not serialised.
+
+The 3MF Core Specification (resources, build items, units, transforms and mesh conditions), meshoptimizer documentation and Prusa's limited-repair documentation were consulted on 7 October 2026. No new slicer-repair experiment was performed. The automatic-repair guide explicitly distinguishes a mathematical missing-face reconstruction example from unobserved application behaviour.

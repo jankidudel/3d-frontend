@@ -74,7 +74,7 @@ const guideSchema: Options = {
     a: ['href', 'title', 'download'],
     img: ['src', 'alt', 'title', 'width', 'height'],
     details: ['open'],
-    th: ['abbr', 'colSpan', 'rowSpan'],
+    th: ['abbr', 'colSpan', 'rowSpan', 'scope'],
     td: ['colSpan', 'rowSpan'],
   },
   protocols: {
@@ -151,7 +151,12 @@ for (const fileName of contentFiles) {
       await htmlToSafeHtml.process(
         resolveInternalGuideLinks(parsed.content, filePath),
       ),
-    ),
+    )
+      .replaceAll(
+        '<table>',
+        '<div class="guide-table-scroll" tabindex="0" role="region" aria-label="Guide decision table, scroll horizontally"><table>',
+      )
+      .replaceAll('</table>', '</table></div>'),
   });
 }
 validateRegistryContentConsistency(

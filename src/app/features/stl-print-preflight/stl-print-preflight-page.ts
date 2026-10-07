@@ -1,3 +1,7 @@
+import {
+  ReviewSession,
+  ReviewDestination,
+} from '../repeat-workflows/review-session';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -33,6 +37,10 @@ import {
   styleUrl: './stl-print-preflight-page.scss',
 })
 export class StlPrintPreflightPage {
+  readonly handoff = signal(
+    inject(ReviewSession).take(ReviewDestination.Preflight),
+  );
+  readonly fromCollection = this.handoff() !== null;
   readonly routeUrl = PublicRouteUrl;
   readonly unitAmbiguityMessage = UNIT_AMBIGUITY_MESSAGE;
   readonly wallThicknessLimitationMessage = WALL_THICKNESS_LIMITATION_MESSAGE;
@@ -130,6 +138,15 @@ export class StlPrintPreflightPage {
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
 
+  async openHandoff(): Promise<void> {
+    const item = this.handoff();
+    if (!item) {
+      return;
+    }
+    this.handoff.set(null);
+    this.unit.set(item.unit);
+    await this.onFileSelected(item.file);
+  }
   constructor() {
     this.seo.apply({
       title: 'STL Print Preflight Checker - Check Before Slicing | InspectMesh',

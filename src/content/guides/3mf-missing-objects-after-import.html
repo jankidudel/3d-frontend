@@ -1,0 +1,142 @@
+---
+title: '3MF Missing Objects After Import: Trace the Build | InspectMesh'
+description: 'Trace missing 3MF parts through resources, placed build items, transforms and application support using an owned two-part control.'
+slug: 3mf-missing-objects-after-import
+eyebrow: File diagnosis with owned examples
+heading: 'Why Are Objects Missing After Importing a 3MF?'
+faq:
+  - question: 'Does one resource mean one visible part?'
+    answer: 'No. The build can place a reusable mesh more than once, or not place it at all. Compare build items and transforms with the original project.'
+  - question: 'Does conversion recover missing parts?'
+    answer: 'No. A geometry export resolves supported selected build geometry; it cannot recover missing intent or unsupported extension data.'
+---
+
+<p>
+  A 3MF can store mesh resources that are not placed in its build, reuse one
+  resource for several placed items, or position a part outside the visible
+  area. Fewer visible parts after import therefore needs a build-and-placement
+  check before mesh repair. Hidden or disabled state in the authoring
+  application is another thing to verify; it is not a universal 3MF display
+  rule.
+</p>
+<h2>Count resources and placed instances separately</h2>
+<p>
+  The Core Specification separates reusable object resources from the build
+  items selected for manufacturing. A resource count is not the expected visible
+  part count. Components can reference resources, and transforms affect final
+  positions. A successful import of some geometry does not prove the receiving
+  application supports every extension or project setting.
+</p>
+<h2>Owned two-part example</h2>
+<p>
+  Download
+  <a href="/examples/collection-review/two-placed-cubes.3mf" download
+    >the two-placed-cubes control</a
+  >. One reusable 20 mm cube resource appears twice in the build: X = 0 and X =
+  40 mm. Expected resolved bounds are 60 × 20 × 20 mm and two disjoint shells. A
+  companion
+  <a href="/examples/collection-review/one-placed-cube.3mf" download
+    >one-placed-cube control</a
+  >
+  keeps the same resource but places it once: bounds 20 × 20 × 20 mm. These are
+  mathematical software fixtures, not printed parts.
+</p>
+<figure>
+  <img
+    src="/examples/collection-review/placed-items.svg"
+    width="720"
+    height="240"
+    alt="One stored cube resource is referenced by two build items, at X zero and X forty millimetres."
+    loading="lazy"
+  />
+  <figcaption>
+    Build items select instances; resource count alone cannot predict visible
+    part count. The schematic is illustrative, not a rendered import screenshot.
+  </figcaption>
+</figure>
+<ol>
+  <li>
+    Open the untouched package in its original application and record expected
+    placed parts and visibility.
+  </li>
+  <li>
+    Run <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a> or
+    <a href="{{ GuideSlug.RouteBatchStlChecker }}"
+      >the local collection checker</a
+    >
+    on both controls. Confirm the declared unit, resolved bounds and build-item
+    warnings.
+  </li>
+  <li>
+    If the receiving application shows fewer parts, zoom to the whole scene and
+    inspect its object/plate list, selection, visibility and disabled print
+    state.
+  </li>
+  <li>
+    Compare transforms and any recentering or below-bed placement. A part can
+    exist without being visible at the current view.
+  </li>
+  <li>
+    Check supported extensions and original application version. Re-export a
+    basic mesh-based build on a copy only when required.
+  </li>
+</ol>
+<h2>Choose the next action from the observation</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Interpretation to test</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One resource, two build items</td>
+      <td>Resource reused as two instances</td>
+      <td>Check both placements; do not delete one as a duplicate</td>
+    </tr>
+    <tr>
+      <td>Resource present but absent from build</td>
+      <td>Stored geometry is not selected for this build</td>
+      <td>Ask the author whether it should be placed</td>
+    </tr>
+    <tr>
+      <td>Expected count but extreme bounds</td>
+      <td>Transform or scale moved a part</td>
+      <td>Compare original placement and known dimension</td>
+    </tr>
+    <tr>
+      <td>Unsupported extension reported</td>
+      <td>Importer may lack required geometry semantics</td>
+      <td>
+        Return to original application or use a supported export; keep the
+        source
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  InspectMesh resolves supported mesh build geometry; it does not validate every
+  application-specific hidden state or extension. Two shells do not establish
+  two valid solids, and the collection volume is intentionally unavailable for
+  multiple-shell interpretation. For general import failures, use
+  <a href="{{ GuideSlug.RouteWhyWontMy3mfFileSlice }}">3MF slicing diagnosis</a
+  >; for geometry-only delivery,
+  <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
+    >review conversion losses</a
+  >
+  first.
+</p>
+<h2>Source and next step</h2>
+<p>
+  The
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >Core Specification resources and build sections</a
+  >
+  were reviewed on 7 October 2026. The controls use core mesh semantics and no
+  optional extension. Compare intended parts with the original project before
+  accepting a re-export; when design intent is uncertain, consult its author
+  rather than reconstructing missing objects.
+</p>

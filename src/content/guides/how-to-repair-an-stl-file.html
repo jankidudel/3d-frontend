@@ -25,42 +25,6 @@ faq:
   automatically reconstructed mesh from being mistaken for the untouched design
   source later.
 </p>
-<h2>Choose the repair method by fault</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Finding</th>
-      <th>Usually safe next action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Exact duplicate or degenerate faces</td>
-      <td>Conservative cleanup, then re-check</td>
-    </tr>
-    <tr>
-      <td>Inconsistent normals on a closed shell</td>
-      <td>Recalculate orientation and inspect the result</td>
-    </tr>
-    <tr>
-      <td>Small open boundary</td>
-      <td>Repair only when the intended surface is clear</td>
-    </tr>
-    <tr>
-      <td>Overlapping shells, self-intersections or missing features</td>
-      <td>Return to source CAD or specialist mesh editing</td>
-    </tr>
-  </tbody>
-</table>
-<p>
-  Repair is not reconstruction. Keep the original, save a separately named copy,
-  make one deliberate operation, then run the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
-  inspect the slicer preview again. For a specific action, use the linked holes,
-  non-manifold, normals and duplicate-triangle guides rather than applying broad
-  automatic changes to an unfamiliar model.
-</p>
-
 <h2>Safe STL Repair in InspectMesh</h2>
 <p>
   InspectMesh can safely remove exact duplicate triangles, remove degenerate
@@ -174,9 +138,10 @@ faq:
   </li>
 </ol>
 <p>
-  InspectMesh performs supported checks and conservative operations locally in
-  the browser. It does not infer missing design intent or certify the repaired
-  model as printable.
+  InspectMesh STL Repair uploads the selected STL for server processing. Local
+  preflight, collection checks and revision comparison are separate browser
+  tools. It does not infer missing design intent or certify the repaired model
+  as printable.
 </p>
 <h2>Repair examples by symptom</h2>
 <p>
@@ -231,4 +196,51 @@ faq:
   does not know which disconnected shell was intentional, and an open model's
   volume should remain unavailable until the geometry supports a solid
   interpretation.
+</p>
+
+<h2>Can automatic slicer repair change intended geometry?</h2>
+<p>
+  Yes: operations that construct faces, union shells or remesh necessarily
+  choose a surface interpretation. An intentional open surface may be capped, or
+  two separate overlapping components may be merged. These are risks to check,
+  not observed universal results across slicers. Conservative duplicate removal
+  is a different operation.
+</p>
+<p>
+  For the owned open-face cube, the original has 10 triangles, four boundary
+  edges and no reliable closed volume. Adding the intended square face gives the
+  original closed control: 12 triangles, zero boundary edges and 8,000 mm³. That
+  is a mathematical reconstruction example, not a claim that any slicer
+  performed that repair. If the missing face was intentional, the new closed
+  solid is a changed design.
+</p>
+<ol>
+  <li>
+    Keep original and repaired exports separately with application version and
+    repair settings.
+  </li>
+  <li>
+    Compare topology, dimensions and critical openings; bounds alone can miss
+    internal changes.
+  </li>
+  <li>
+    <a href="{{ GuideSlug.RouteStlCompare }}">Compare the STL surfaces</a> with
+    explicit units and alignment.
+  </li>
+  <li>
+    Inspect affected native slicer layers. Return to CAD when the intended
+    surface cannot be inferred.
+  </li>
+</ol>
+<p>
+  Prusa documents limited automatic repair in
+  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
+    >the diagnostic context</a
+  >; its
+  <a
+    href="https://help.prusa3d.com/article/corrupted-3d-models-for-printing_2205"
+    >official repair documentation</a
+  >
+  was reviewed on 7 October 2026. Platform-specific external-repair availability
+  is not established here. No unperformed slicer repair result is claimed.
 </p>
