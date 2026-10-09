@@ -8,10 +8,45 @@
   <section class="card" aria-labelledby="price-inputs">
     <h2 id="price-inputs">Price a 3D print</h2>
     <p>
-      All calculations happen locally in your browser. Shipping and tax are not
-      included unless you add them to fixed order overhead.
+      All calculations happen locally in your browser. Tax, delivery and selling
+      fees are excluded. Currency selection relabels values without exchange
+      conversion. Enter any agreed delivery cost explicitly in extra allowances.
     </p>
     <div class="fields">
+      <label
+        >Optional quote/project reference<input
+          type="text"
+          maxlength="200"
+          [value]="reference()"
+          (input)="reference.set($any($event.target).value)"
+      /></label>
+      <label
+        >Worksheet date<input
+          type="date"
+          [value]="quoteDate()"
+          (input)="quoteDate.set($any($event.target).value)"
+      /></label>
+      <label
+        >Finishing cost per part<input
+          type="number"
+          min="0"
+          [value]="finishing()"
+          (input)="setNumber('finishing', $event)"
+      /></label>
+      <label
+        >Packaging per order<input
+          type="number"
+          min="0"
+          [value]="packaging()"
+          (input)="setNumber('packaging', $event)"
+      /></label>
+      <label
+        >Extra allowance per order<input
+          type="number"
+          min="0"
+          [value]="extra()"
+          (input)="setNumber('extra', $event)"
+      /></label>
       <label
         ><span>Currency</span
         ><select [value]="currency()" (change)="setCurrency($event)">
@@ -102,7 +137,7 @@
           (input)="setNumber('labourRate', $event)"
       /></label>
       <label
-        ><span>Fixed order overhead</span
+        ><span>Setup / fixed overhead per order</span
         ><input
           type="number"
           min="0"
@@ -150,7 +185,22 @@
     </div>
     @if (result(); as price) {
       <section class="results" aria-live="polite">
-        <h2>Recommended customer price</h2>
+        <h2>Quote worksheet</h2>
+        <p class="quote-reference">
+          {{ reference() || 'No project reference' }} - {{ quoteDate() }} -
+          {{ currency() }} - {{ quantity() }} parts
+        </p>
+        <p>
+          Cost assumptions per part: {{ materialUsed() }} g at
+          {{ materialPrice() }} / kg; waste {{ waste() }}%;
+          {{ printHours() }} print hours; {{ watts() }} W at
+          {{ electricity() }} / kWh; machine {{ machineWear() }} / hour;
+          hands-on work {{ labourHours() }} hours at {{ labourRate() }} / hour;
+          finishing {{ finishing() }}. Once per order: setup {{ overhead() }},
+          packaging {{ packaging() }}, extras {{ extra() }}. Failure allowance
+          {{ failure() }}%; target margin {{ margin() }}%; minimum order
+          {{ minimumOrder() }}.
+        </p>
         <dl>
           <div>
             <dt>Material per item</dt>
@@ -165,11 +215,11 @@
             <dd>{{ format(price.machineCostPerItem) }}</dd>
           </div>
           <div>
-            <dt>Labour per item</dt>
+            <dt>Labour and finishing per item</dt>
             <dd>{{ format(price.labourCostPerItem) }}</dd>
           </div>
           <div>
-            <dt>Overhead per item</dt>
+            <dt>Setup, packaging and extras per item</dt>
             <dd>{{ format(price.overheadPerItem) }}</dd>
           </div>
           <div>
@@ -198,20 +248,46 @@
           This is an illustrative calculation, not a promise that customers will
           accept the price.
         </p>
-        <button class="button" type="button" (click)="copyQuote()">
-          Copy quote summary</button
-        ><button
-          class="button button-secondary"
-          type="button"
-          (click)="reset()"
-        >
-          Reset defaults
-        </button>
+        <p>
+          Margin mode: cost divided by (1 - margin / 100). No markup or
+          selling-fee mode is applied. Do not enter finishing here if already
+          included in labour. Failure allowance applies to all entered costs,
+          including setup; use zero if rates already include it.
+        </p>
+        <p>
+          Full precision is retained in calculations and JSON. Display rounds
+          each value to two decimal places; rounded unit price times quantity
+          may differ from the rounded order total. Tax, delivery, selling fees
+          and unentered costs are excluded.
+        </p>
+        <p>
+          This is an estimate worksheet, not a tax-compliant invoice or
+          unconditional production acceptance. References stay in this tab
+          unless you copy, print or export them.
+        </p>
+        <div class="quote-actions">
+          <button class="button" type="button" (click)="printWorksheet()">
+            Print worksheet
+          </button>
+          <button class="button" type="button" (click)="exportWorksheet()">
+            Download worksheet JSON
+          </button>
+          <p role="status">{{ exportMessage() }}</p>
+          <button class="button" type="button" (click)="copyQuote()">
+            Copy quote summary</button
+          ><button
+            class="button button-secondary"
+            type="button"
+            (click)="reset()"
+          >
+            Reset defaults
+          </button>
+        </div>
       </section>
     } @else {
       <p class="error" role="alert">
-        Use non-negative numbers, a quantity above zero, and a target margin
-        below 100%.
+        Use non-negative numbers, a positive whole-number quantity, and a target
+        margin below 100%.
       </p>
     }
   </section>

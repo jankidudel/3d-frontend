@@ -13,6 +13,9 @@ export interface PrintPriceInputs {
   quantity: number;
   targetMarginPercent: number;
   minimumOrderCharge: number;
+  finishingCostPerItem?: number;
+  packagingPerOrder?: number;
+  extraPerOrder?: number;
 }
 
 export interface PrintPriceResult {
@@ -36,6 +39,7 @@ export function calculatePrintPrice(
     Object.values(input).some(
       (value) => !Number.isFinite(value) || value < 0,
     ) ||
+    !Number.isInteger(input.quantity) ||
     input.quantity <= 0 ||
     input.targetMarginPercent >= 100
   ) {
@@ -50,8 +54,13 @@ export function calculatePrintPrice(
     (input.printerWatts / 1000) *
     input.electricityPricePerKwh;
   const machineCostPerItem = input.printHours * input.machineWearPerHour;
-  const labourCostPerItem = input.labourHours * input.labourRate;
-  const overheadPerItem = input.fixedOrderOverhead / input.quantity;
+  const labourCostPerItem =
+    input.labourHours * input.labourRate + (input.finishingCostPerItem ?? 0);
+  const overheadPerItem =
+    (input.fixedOrderOverhead +
+      (input.packagingPerOrder ?? 0) +
+      (input.extraPerOrder ?? 0)) /
+    input.quantity;
   const beforeFailure =
     materialCostPerItem +
     electricityCostPerItem +
@@ -66,7 +75,7 @@ export function calculatePrintPrice(
     input.minimumOrderCharge / input.quantity,
   );
   const grossProfitPerItem = recommendedPricePerItem - trueCostPerItem;
-  return {
+  const result = {
     materialCostPerItem,
     electricityCostPerItem,
     machineCostPerItem,
@@ -78,5 +87,36 @@ export function calculatePrintPrice(
     orderQuote: recommendedPricePerItem * input.quantity,
     grossProfitPerItem,
     grossProfitForOrder: grossProfitPerItem * input.quantity,
+  };
+  return Object.values(result).every(Number.isFinite) ? result : null;
+}
+
+export function quoteWorksheet(
+  input: PrintPriceInputs,
+  currency: string,
+  reference: string,
+  date: string,
+) {
+  const result = calculatePrintPrice(input);
+  if (!result) {
+    return null;
+  }
+  return {
+    schema: 'inspectmesh-quote-1',
+    reference,
+    date,
+    currency,
+    inputs: input,
+    result,
+    mode: 'margin',
+    sellingFees: 'Not included; no selling-fee model is implemented.',
+    rounding:
+      'Calculate with full precision; display each monetary value to two decimal places. Displayed rounded unit price times quantity may differ from displayed order total.',
+    allowances:
+      'Setup, packaging and extras are once per order and spread over quantity. Failure allowance applies to all entered costs; set it to zero if already included in rates.',
+    exclusions:
+      'Tax, delivery, selling fees and any unentered costs. Currency selection relabels values without exchange conversion.',
+    purpose:
+      'Estimate worksheet, not a tax-compliant invoice or unconditional production acceptance.',
   };
 }

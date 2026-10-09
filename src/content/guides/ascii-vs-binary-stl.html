@@ -140,3 +140,29 @@ faq:
   caused by a damaged file or unexpected geometry, not by ASCII versus binary
   storage.
 </p>
+
+<h2>Check the byte arithmetic on a known file</h2>
+<p>
+  A standard binary record has a 12-byte normal, 36 bytes of vertex coordinates
+  and a 2-byte attribute field. With the 80-byte header and 4-byte triangle
+  count, a 12-triangle cube uses 84 + 12 × 50 = 684 bytes. At 100,000 triangles
+  the size is 5,000,084 bytes, approximately 4.77 MiB. ASCII has no fixed
+  bytes-per-triangle formula because digit precision, spacing and labels vary.
+</p>
+<p>
+  A binary header may begin with solid. That word is therefore evidence to
+  examine, not proof of ASCII. Check expected binary length and count, or
+  require a complete valid text-facet parse. A truncated binary file is not
+  rescued by treating its bytes as text.
+</p>
+<p>
+  For a practical check, download the closed cube, convert only its encoding and
+  compare count, dimensions and topology. Binary coordinates use 32-bit
+  floating-point values, so text-to-binary precision can matter for extreme
+  coordinate magnitudes. Neither encoding choice fills a hole or improves
+  tessellation.
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >Choose curve resolution at CAD export</a
+  >
+  when surface approximation is the concern.
+</p>

@@ -193,3 +193,57 @@ faq:
   updates because extension and vendor-setting support can evolve independently
   of the core format.
 </p>
+
+<h2>Model exchange or slicer project?</h2>
+<p>
+  The .3mf extension alone does not identify a portable printer project. Core
+  mesh resources, unit declarations and build placements answer geometry
+  questions. Application-specific profiles, plate state and process metadata
+  answer preparation questions, and require compatible applications. InspectMesh
+  resolves supported core mesh build data; it does not certify the stored
+  printer profile.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Recipient needs</th>
+      <th>Share</th>
+      <th>Acceptance check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Geometry with units and placements</td>
+      <td>Supported model 3MF plus revision notes</td>
+      <td>Resolved count, dimensions and transforms</td>
+    </tr>
+    <tr>
+      <td>Continue the same slicer project</td>
+      <td>Original project 3MF plus application/version</td>
+      <td>
+        Profiles, plates, supports and material assignments in that slicer
+      </td>
+    </tr>
+    <tr>
+      <td>A legacy mesh importer</td>
+      <td>STL derivative plus an explicit millimetre assumption</td>
+      <td>
+        All intended geometry and source-relative placement; retain original
+        project
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Try the declared-inch transformed example: a one-unit cube resolves to 25.4 mm
+  spans and an X interval of 50.8 to 76.2 mm. That demonstrates unit/build
+  interpretation, not profile preservation. Open the original and a converted
+  STL in the receiver, compare geometry first, then review process settings
+  separately. Stop if required project settings disappear or the receiving
+  printer differs.
+</p>
+<p>
+  Reviewed 8 October 2026 against the
+  <a href="https://3mf.io/spec/">3MF Consortium specification suite</a>.
+  Compatibility remains application/version dependent.
+</p>

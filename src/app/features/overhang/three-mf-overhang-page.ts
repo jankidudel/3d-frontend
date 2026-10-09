@@ -156,6 +156,41 @@ import {
         </p>
       </section>
     }
+    <section class="content">
+      <h2>Build transforms come before the angle check</h2>
+      <p>
+        This page resolves the supported 3MF build locally, including repeated
+        instances and component placements, before examining oriented triangle
+        normals. It uses the complete combined build rather than a selectable
+        single resource. A rotated instance can therefore produce different
+        downward-facing triangles from its unplaced mesh definition. Declared
+        units determine physical area, while uniform unit conversion does not
+        change face angles.
+      </p>
+      <p>
+        The default build direction is positive Z; downward faces have a slope
+        measured from vertical. A downward horizontal underside is 90° and a
+        vertical wall is 0°. The threshold comparison is strict: slope must
+        exceed the selected angle. Rotating the build direction changes the
+        question; it does not modify or export a new slicer project.
+      </p>
+      <p>
+        Open the declared-inch example in the viewer to confirm its 25.4 mm
+        spans and transformed placement, then inspect the same build here.
+        Translation alone must not change face slopes. A profile label is a
+        starting review aid, not verification of resin supports or a particular
+        FDM material. Unsupported or unresolved packages stop with an error;
+        colour, printer settings and private project data are not interpreted as
+        support instructions.
+      </p>
+      <p>
+        Check build-item count, winding and highlighted undersides before
+        accepting a low flagged percentage. It cannot prove adhesion, strength
+        or absence of bridging problems. Return to the actual receiving slicer
+        for support locations and layer preview, especially if the imported
+        build orientation differs.
+      </p>
+    </section>
   </main>`,
   styleUrl: '../stl-wall-thickness/stl-wall-thickness-page.scss',
 })

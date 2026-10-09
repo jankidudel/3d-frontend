@@ -316,7 +316,21 @@ export function surfaceDifference(
 export type SurfaceDifference = ReturnType<typeof surfaceDifference>;
 
 export function csvCell(value: unknown): string {
+  if (typeof value === 'number' && !Number.isFinite(value)) {
+    throw new Error(
+      'A nonfinite report value cannot be exported. Rerun the affected file.',
+    );
+  }
   const text = String(value ?? '');
-  const safe = /^[\s]*[=+\-@\t\r]/.test(text) ? `'${text}` : text;
+  // Excel/LibreOffice: prefix untrusted formula-like text with an apostrophe.
+  // Ignore leading whitespace and ASCII controls when detecting a formula.
+  // Numeric values are trusted typed numbers, not customer-controlled text.
+  const firstMeaningful = Array.from(text).find(
+    (character) => character.charCodeAt(0) > 32 && character.trim().length > 0,
+  );
+  const safe =
+    typeof value === 'string' && /^[=+\-@]/.test(firstMeaningful ?? '')
+      ? `'${text}`
+      : text;
   return `"${safe.replaceAll('"', '""')}"`;
 }

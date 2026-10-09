@@ -8,7 +8,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
-import { calculatePrintPrice } from './print-price';
+import { calculatePrintPrice, quoteWorksheet } from './print-price';
+import {
+  AnalyticsEvent,
+  AnalyticsService,
+} from '../../core/analytics/analytics.service';
 
 @Component({
   selector: 'app-print-price-page',
@@ -34,23 +38,40 @@ export class PrintPricePage {
   readonly quantity = signal(1);
   readonly margin = signal(30);
   readonly minimumOrder = signal(0);
-  readonly result = computed(() =>
-    calculatePrintPrice({
-      materialPricePerKg: this.materialPrice(),
-      materialUsedGrams: this.materialUsed(),
-      wastePercent: this.waste(),
-      printHours: this.printHours(),
-      printerWatts: this.watts(),
-      electricityPricePerKwh: this.electricity(),
-      machineWearPerHour: this.machineWear(),
-      labourHours: this.labourHours(),
-      labourRate: this.labourRate(),
-      fixedOrderOverhead: this.overhead(),
-      failurePercent: this.failure(),
-      quantity: this.quantity(),
-      targetMarginPercent: this.margin(),
-      minimumOrderCharge: this.minimumOrder(),
-    }),
+  readonly reference = signal('');
+  readonly quoteDate = signal(new Date().toISOString().slice(0, 10));
+  readonly finishing = signal(0);
+  readonly packaging = signal(0);
+  readonly extra = signal(0);
+  readonly exportMessage = signal('');
+  private readonly analytics = inject(AnalyticsService);
+  readonly inputs = computed(() => ({
+    materialPricePerKg: this.materialPrice(),
+    materialUsedGrams: this.materialUsed(),
+    wastePercent: this.waste(),
+    printHours: this.printHours(),
+    printerWatts: this.watts(),
+    electricityPricePerKwh: this.electricity(),
+    machineWearPerHour: this.machineWear(),
+    labourHours: this.labourHours(),
+    labourRate: this.labourRate(),
+    fixedOrderOverhead: this.overhead(),
+    failurePercent: this.failure(),
+    quantity: this.quantity(),
+    targetMarginPercent: this.margin(),
+    minimumOrderCharge: this.minimumOrder(),
+    finishingCostPerItem: this.finishing(),
+    packagingPerOrder: this.packaging(),
+    extraPerOrder: this.extra(),
+  }));
+  readonly result = computed(() => calculatePrintPrice(this.inputs()));
+  readonly worksheet = computed(() =>
+    quoteWorksheet(
+      this.inputs(),
+      this.currency(),
+      this.reference(),
+      this.quoteDate(),
+    ),
   );
   constructor() {
     inject(SeoService).apply({
@@ -89,7 +110,48 @@ export class PrintPricePage {
       );
     }
   }
+  printWorksheet(): void {
+    window.print();
+    this.analytics.trackWorkflow(
+      AnalyticsEvent.ReportExported,
+      'quote_worksheet',
+      'print',
+    );
+  }
+  exportWorksheet(): void {
+    const worksheet = this.worksheet();
+    if (!worksheet) {
+      return;
+    }
+    try {
+      const url = URL.createObjectURL(
+        new Blob([JSON.stringify(worksheet, null, 2)], {
+          type: 'application/json',
+        }),
+      );
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `inspectmesh-quote-${this.quoteDate() || 'undated'}.json`;
+      anchor.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      this.exportMessage.set(
+        'Worksheet download requested. Check your browser downloads.',
+      );
+      this.analytics.trackWorkflow(
+        AnalyticsEvent.ReportExported,
+        'quote_worksheet',
+        'json',
+      );
+    } catch {
+      this.exportMessage.set(
+        'Download could not start. Use Print worksheet or try again.',
+      );
+    }
+  }
   reset(): void {
+    this.finishing.set(0);
+    this.packaging.set(0);
+    this.extra.set(0);
     this.materialPrice.set(20);
     this.materialUsed.set(80);
     this.waste.set(5);

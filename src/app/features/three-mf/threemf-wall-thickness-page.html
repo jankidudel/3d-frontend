@@ -144,4 +144,47 @@
       <a href="/3mf-overhang-checker">3MF Overhang Checker</a>.
     </p>
   </section>
+  <section class="content interpretation-guide">
+    <h2>Measure the placed build, not just an unplaced resource</h2>
+    <p>
+      This local analysis resolves supported 3MF build items and component
+      transforms into a combined triangle scene, then converts the declared
+      coordinate unit. Repeated mesh resources contribute their actual placed
+      instances. It analyses the resolved build together; it does not offer an
+      individual-instance selection control on this page. Confirm that the part
+      you care about is present and oriented as intended.
+    </p>
+    <p>
+      The
+      <a
+        href="/examples/english-market-batch/declared-inch-transformed.3mf"
+        download
+        >declared-inch cube example</a
+      >
+      has one-coordinate-unit spans: its resolved size is 25.4 mm on each axis.
+      Its translation changes placement, not wall thickness. An STL unit
+      selector elsewhere must not override this package's declared unit.
+      Unsupported units or unresolved geometry produce an error rather than a
+      guessed thickness.
+    </p>
+    <h3>Interpret gaps and multiple instances carefully</h3>
+    <p>
+      Centroid normal rays provide bounded samples, with up to 2,000 selected
+      triangles. A hit in another nearby body is not necessarily the wall you
+      intended to measure. Separate parts, overlaps and assembly gaps therefore
+      require visual review. No-hit samples remain unmeasured; a result with
+      unmeasured samples is not an all-clear wall report.
+    </p>
+    <p>
+      Confirm the selected display unit and review threshold, inspect the
+      highlighted locations and compare important walls with source CAD. This
+      does not interpret application-specific slicer profiles, validate supports
+      or certify a process minimum. Stop if the build differs from the source or
+      an important instance is absent.
+      <a href="/3mf-missing-objects-after-import"
+        >Resolve missing build objects</a
+      >
+      before sampling them, and retain the original package.
+    </p>
+  </section>
 </main>

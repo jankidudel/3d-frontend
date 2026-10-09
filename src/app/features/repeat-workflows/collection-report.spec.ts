@@ -1,5 +1,8 @@
 import {
   collectionCsv,
+  collectionJson,
+  collectionProgress,
+  collectionStatus,
   createCollectionReport,
   needsReview,
   QueueEntry,
@@ -85,4 +88,96 @@ describe('customer collection reports', () => {
     expect(session.take(ReviewDestination.Viewer)).toBeNull();
     expect(session.collection).toBeNull();
   });
+});
+
+describe('collection terminal counts', () => {
+  const failed = {
+    ...entry(MeshExample.Cube, 1),
+    state: QueueState.Failed,
+    result: null,
+  };
+  it('counts mixed and all-failed inputs as processed', () => {
+    expect(
+      collectionStatus([
+        entry(MeshExample.Cube, 0),
+        entry(MeshExample.Open, 2),
+        failed,
+      ]),
+    ).toBe('3 of 3 processed - 2 completed, 1 failed.');
+    expect(collectionProgress([failed, { ...failed, id: 2 }])).toMatchObject({
+      processed: 2,
+      completed: 0,
+      failed: 2,
+    });
+  });
+  it('separates cancellation and pending work from successful results', () => {
+    expect(
+      collectionProgress([
+        failed,
+        { ...failed, state: QueueState.Cancelled },
+        { ...failed, state: QueueState.Waiting },
+      ]),
+    ).toMatchObject({ processed: 1, cancelled: 1, pending: 1, completed: 0 });
+  });
+  it('derives counts from current entries after rerun or replacement without accumulating', () => {
+    const rows = [entry(MeshExample.Cube, 0), failed];
+    const rerun = rows.map((row) =>
+      row.id === 1 ? entry(MeshExample.Open, 1) : row,
+    );
+    expect(rerun[0]).toBe(rows[0]);
+    expect(collectionProgress(rerun)).toMatchObject({
+      total: 2,
+      processed: 2,
+      completed: 2,
+      failed: 0,
+    });
+    expect(
+      collectionProgress(
+        rerun.map((row) =>
+          row.id === 1 ? { ...failed, name: 'replacement.stl' } : row,
+        ),
+      ),
+    ).toMatchObject({ total: 2, processed: 2, completed: 1, failed: 1 });
+  });
+});
+
+it('neutralizes formula prefixes after whitespace or control characters and escapes quoted multiline labels', () => {
+  for (const label of [
+    '=1+1',
+    '+SUM(1,1)',
+    '-1+1',
+    '@SUM(1)',
+    ' \t=1',
+    '\u0001\r\n@SUM(1)',
+    '\n+1',
+  ]) {
+    const report = createCollectionReport(
+      [{ ...entry(MeshExample.Cube, 0), name: label }],
+      settings,
+      '2026-10-08',
+      label,
+    );
+    const csv = collectionCsv(report);
+    expect(csv).toContain(`"'${label}"`);
+  }
+  const label = 'Part, "A"\nsecond line';
+  const csv = collectionCsv(
+    createCollectionReport(
+      [{ ...entry(MeshExample.Cube, 0), name: label }],
+      settings,
+      '2026-10-08',
+      '',
+    ),
+  );
+  expect(csv).toContain('"Part, ""A""\nsecond line"');
+});
+
+it('rejects nonfinite export values instead of silently turning them into null or spreadsheet text', () => {
+  const report = createCollectionReport(
+    [{ ...entry(MeshExample.Cube, 0), durationMs: Infinity }],
+    settings,
+    '2026-10-08',
+    '',
+  );
+  expect(() => collectionJson(report)).toThrow('nonfinite');
 });

@@ -34,6 +34,9 @@
       #picker
       class="visually-hidden"
       type="file"
+      [attr.aria-label]="
+        kind === 'stl-to-3mf' ? 'Choose STL file' : 'Choose 3MF file'
+      "
       [accept]="kind === 'stl-to-3mf' ? '.stl' : '.3mf'"
       (change)="onPicker($event)"
     />
@@ -166,6 +169,73 @@
         <a routerLink="/best-file-format-for-3d-printing"
           >Choose a print file format</a
         >
+      </p>
+    }
+  </section>
+  <section class="content interpretation-guide">
+    @if (kind === 'stl-to-3mf') {
+      <h2>A declared unit does not recreate CAD</h2>
+      <p>
+        This local converter writes triangle geometry into a basic 3MF model
+        with one build item and your chosen coordinate-unit declaration. If
+        coordinates span 20 and you choose millimetres, the package describes 20
+        mm; choosing inches describes 508 mm. It does not multiply coordinates
+        to fix a prior modelling mistake.
+      </p>
+      <p>
+        Try the 20 mm cube, select millimetres, convert and reopen the
+        downloaded package. Check 20 mm spans and the original triangle count in
+        3MF Preflight. A unit declaration adds useful context but cannot restore
+        analytic cylinders, native CAD features, source material intent, colours
+        or slicer-project profiles. Conversion is not mesh repair. Stop if the
+        source unit is unknown or the receiving application shows a changed
+        size; confirm the original design first.
+      </p>
+      <p>
+        <a href="/how-to-export-stl-from-cad"
+          >Export from an editable CAD source</a
+        >
+        when design changes are required, rather than expecting conversion to
+        recover it.
+      </p>
+    } @else {
+      <h2>Verify a geometry-only export</h2>
+      <p>
+        The converter resolves supported build geometry, applies component and
+        build transforms, converts physical coordinates to millimetres and
+        writes one binary STL. It exports the complete resolved build on this
+        page; there is no single-instance selection control. Separate placements
+        become triangles in one file rather than editable build-item records.
+      </p>
+      <ol>
+        <li>
+          Keep the original 3MF and note its declared unit and intended objects.
+        </li>
+        <li>
+          Download the declared-inch transformed example and convert it locally.
+        </li>
+        <li>
+          Open the STL with a millimetre assumption: expect 25.4 mm spans and X
+          coordinates from 50.8 to 76.2 mm.
+        </li>
+        <li>
+          Repeat with the two-placed-cubes example: inspect both cubes and the
+          60 mm total X span.
+        </li>
+        <li>
+          Compare dimensions and placement in the destination slicer before
+          printing.
+        </li>
+      </ol>
+      <p>
+        STL drops the package's unit declaration, object names, property
+        assignments and application-specific settings. It does not Boolean-union
+        overlapping shells. Unsupported build data should be resolved in the
+        producing application; stop if a required object disappears.
+        <a href="/does-3mf-keep-colours-materials-and-settings"
+          >Keep project information separately</a
+        >
+        from this mesh derivative.
       </p>
     }
   </section>

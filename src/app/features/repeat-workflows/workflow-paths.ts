@@ -7,10 +7,19 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
   imports: [RouterLink],
   template: `<section
     class="workflow-paths"
-    aria-label="Three file-review tasks"
+    aria-label="File preparation tasks"
   >
     <h2>Choose the review you need</h2>
     <div class="paths">
+      <article>
+        <h3>Export and open a file</h3>
+        <p>
+          Choose CAD bodies, units and mesh resolution, then inspect the
+          derivative.
+        </p>
+        <a [routerLink]="routes.CadExportGuide">Export STL from CAD</a> ·
+        <a [routerLink]="routes.Viewer">Open and measure a mesh</a>
+      </article>
       <article>
         <h3>Diagnose one file</h3>
         <p>
@@ -20,6 +29,17 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
         <a [routerLink]="routes.StlPrintPreflight">Check an STL locally</a> ·
         <a [routerLink]="routes.ThreeMfPrintPreflight"
           >Check a 3MF build locally</a
+        >
+      </article>
+      <article>
+        <h3>Correct, compare and verify</h3>
+        <p>
+          Choose supported cleanup, then compare original and revised surfaces
+          with explicit units, alignment and finite sampling.
+        </p>
+        <a [routerLink]="routes.StlRepair">Review STL cleanup options</a> ·
+        <a [routerLink]="routes.StlCompare"
+          >Compare revisions with example files</a
         >
       </article>
       <article>
@@ -33,13 +53,13 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
         >
       </article>
       <article>
-        <h3>Review a changed export</h3>
+        <h3>Estimate work and prepare a quote</h3>
         <p>
-          Compare original and revised surfaces with explicit units, alignment
-          and finite sampling.
+          Use agreed scope and slicer estimates, with shared setup and explicit
+          allowances.
         </p>
-        <a [routerLink]="routes.StlCompare"
-          >Compare revisions and run the cube controls</a
+        <a [routerLink]="routes.PrintPriceCalculator"
+          >Prepare a printable quote worksheet</a
         >
       </article>
     </div>

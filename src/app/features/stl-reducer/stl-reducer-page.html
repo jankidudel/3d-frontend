@@ -260,4 +260,54 @@
       · <a [routerLink]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
+  <section class="content interpretation-guide">
+    <h2>Choose encoding or geometry reduction</h2>
+    <p>
+      <a href="/stl-resolution-chord-height-explained"
+        >Understand chord deviation before reducing a curved export</a
+      >.
+    </p>
+    <p>
+      Binary encoding rewrites triangle records compactly; it does not
+      intentionally remove triangles. The binary size is 84 + 50N bytes for N
+      triangles: a 12-triangle cube is 684 bytes. ASCII size depends on decimal
+      formatting and whitespace. Re-encoding uses binary floating-point
+      coordinates, so recheck precision-sensitive data rather than treating a
+      format change as restoration of source CAD accuracy.
+    </p>
+    <p>
+      Triangle reduction changes the surface. The presets request 75%, 50% or
+      25% of the source triangles; the custom target requests a count below the
+      original. A target is a simplification request, not a feature-preservation
+      contract. Results should be judged by the actual output count, bytes,
+      bounds, mesh findings and surface deviation, rather than whether a
+      preferred percentage was reached.
+    </p>
+    <h3>Verify a smaller export</h3>
+    <ol>
+      <li>
+        Keep the original and confirm its units and functional dimensions.
+      </li>
+      <li>Try encoding first if text overhead is the problem.</li>
+      <li>
+        For geometric reduction, start with the least aggressive useful target.
+      </li>
+      <li>
+        Download, reopen, inspect contact faces and check closure and winding.
+      </li>
+      <li>Compare against the original using an explicit surface tolerance.</li>
+    </ol>
+    <p>
+      The
+      <a href="/how-to-reduce-stl-triangle-count"
+        >raised-ridge example and its reduced exports</a
+      >
+      demonstrate why unchanged bounds cannot protect small details. Use that
+      worked comparison instead of assuming a smaller file prints the same. Stop
+      when a required feature changes or a topology check regresses; return to
+      the source export settings. Processing on this page is local to the
+      browser; a failed parse or unavailable simplification result is an error,
+      not zero geometry.
+    </p>
+  </section>
 </main>

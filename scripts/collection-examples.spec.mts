@@ -97,3 +97,39 @@ describe('published owned geometry controls', () => {
     }
   });
 });
+
+it('repairs the published duplicate package and exports declared units to millimetre STL', async () => {
+  const dom = new JSDOM();
+  vi.stubGlobal('DOMParser', dom.window.DOMParser);
+  const { analyseThreeMfForRepair, repairThreeMfLocally } =
+    await import('../src/app/features/three-mf/three-mf-local-repair.ts');
+  const before = await analyseThreeMfForRepair(
+    await (await file('cad-export/duplicate-face-cube.3mf')).arrayBuffer(),
+  );
+  expect(before.counts).toMatchObject({ triangles: 13, duplicateTriangles: 1 });
+  const repaired = await repairThreeMfLocally(before, {
+    removeDuplicateTriangles: true,
+    removeDegenerateTriangles: false,
+    removeInvalidIndexTriangles: false,
+  });
+  expect(repaired.after.counts).toMatchObject({
+    triangles: 12,
+    duplicateTriangles: 0,
+    openEdges: 0,
+  });
+  const { convertThreeMfToStl } =
+    await import('../src/app/features/converters/three-mf-stl-export.ts');
+  const converted = await convertThreeMfToStl(
+    await (
+      await file('english-market-batch/declared-inch-transformed.3mf')
+    ).arrayBuffer(),
+  );
+  const mesh = await readStl(new File([converted.bytes], 'converted.stl'));
+  const check = checkGeometry(mesh, settings);
+  expect(check.dimensionsMm.width).toBeCloseTo(25.4, 4);
+  expect(check.topology.volume).toBeCloseTo(16387.064, 1);
+  const xs = Array.from(mesh.positions).filter((_, i) => i % 3 === 0);
+  expect(Math.min(...xs)).toBeCloseTo(50.8, 4);
+  expect(Math.max(...xs)).toBeCloseTo(76.2, 4);
+  dom.window.close();
+});

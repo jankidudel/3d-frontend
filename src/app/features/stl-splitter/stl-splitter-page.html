@@ -191,4 +191,38 @@
       </p>
     </section>
   </div>
+  <section class="content interpretation-guide">
+    <h2>A planar cut creates two capped exports</h2>
+    <p>
+      Choose X, Y or Z and a percentage through that axis span. The preview
+      shows the cut plane; it is not a Boolean design editor. The server clips
+      triangles, forms cut contours and caps supported contours. It validates
+      the resulting pieces before returning successful exports. Ambiguous
+      contours or a cut touching unsuitable geometry can be rejected rather than
+      filled by guesswork.
+    </p>
+    <p>
+      Use the generated 20 mm cube, choose Z at 50%, and submit explicitly. The
+      expected geometric spans are 20 × 20 × 10 coordinate units for each half.
+      Download both pieces, reopen them, check the cut surfaces, closure,
+      dimensions and retained features. This records what to verify; it is not a
+      claim that a physical assembly has been printed.
+    </p>
+    <p>
+      The splitter uploads the selected STL for server processing when you run
+      it. STL has no dependable stored unit, so keep the source unit assumption
+      with the outputs. A capped cut does not add adhesive allowance, alignment
+      pins, sockets or mating clearance. Do not scale pieces independently to
+      force them to fit.
+    </p>
+    <p>
+      Prefer source CAD when a cut must preserve a load path, avoid a hole, add
+      fasteners or define a repeatable joint. Stop when either downloaded piece
+      loses a required feature or the contour is rejected.
+      <a href="/how-to-split-an-stl-file-for-3d-printing"
+        >Choose a joint and verify the assembly plan</a
+      >
+      before orienting and slicing each part.
+    </p>
+  </section>
 </main>

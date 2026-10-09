@@ -158,6 +158,34 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
         </p>
       </section>
     }
+    <section class="content">
+      <h2>Angle convention and orientation</h2>
+      <p>
+        This browser analysis visits nondegenerate triangles and uses their
+        oriented face normals. With the default positive Z build direction,
+        gravity acts toward negative Z. Only downward-facing faces are
+        candidates: a vertical wall has 0° slope from vertical and a downward
+        horizontal underside has 90°. A face is flagged when its slope is
+        strictly greater than the selected threshold. A face exactly on the
+        threshold is not flagged.
+      </p>
+      <p>
+        For a hypothetical downward 60° slope and a 45° threshold, expect a
+        flag; a correctly wound upward-facing roof is not an overhang in this
+        convention. Reversed winding can change that classification, so check
+        topology first. The display marks triangle locations, not manufactured
+        support-contact points or a simulated extrusion path.
+      </p>
+      <p>
+        Changing the build direction asks how another orientation changes the
+        same mesh. The method does not place supports or decide whether bridging
+        works for your material. Area percentages describe analysed geometry;
+        they are not probabilities of print failure. Confirm STL units for area
+        interpretation, inspect the final slicer layers, and stop if the
+        intended underside is misclassified by winding. Material, cooling, span,
+        layer height and support settings need a separate process decision.
+      </p>
+    </section>
   </main>`,
   styleUrl: '../stl-wall-thickness/stl-wall-thickness-page.scss',
 })

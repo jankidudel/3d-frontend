@@ -1,0 +1,132 @@
+---
+title: 'STL Resolution: Chord Height and Angular Tolerance | InspectMesh'
+description: 'Understand chord deviation, angular tolerance and triangle count with a circular cross-section calculation and a practical export check.'
+slug: stl-resolution-chord-height-explained
+faq:
+  - question: 'Does a chord tolerance certify a printed dimension?'
+    answer: 'No. It describes a mesh approximation setting; physical output also depends on the process and the particular exporter.'
+  - question: 'Do equal triangle counts mean equal curve accuracy?'
+    answer: 'No. Shape, triangle distribution, radius and export constraints determine approximation error. A count alone does not bound deviation.'
+eyebrow: CAD export and mesh interpretation
+heading: 'STL Resolution: Chord Height and Angular Tolerance'
+---
+
+<p>
+  Chord height limits how far a straight mesh approximation departs from a
+  curved source. Angular tolerance limits changes in surface direction. Triangle
+  count is an outcome of those settings and the shape; it is not a universal
+  measure of dimensional accuracy.
+</p>
+<h2>A circular cross-section gives a checkable example</h2>
+<p>
+  For a circle of radius R, replacing an arc with a straight chord creates a
+  maximum inward gap, the sagitta s. If the arc spans angle θ, s = R(1 -
+  cos(θ/2)). For N equal segments around a circle, θ = 2π/N and s = R(1 -
+  cos(π/N)). This is a two-dimensional mathematical example, not the complete
+  rule of a CAD surface mesher.
+</p>
+<figure>
+  <img
+    src="/examples/cad-export/chord-height.svg"
+    width="640"
+    height="300"
+    alt="A circular arc lies outside its straight chord, with radial sagitta and central angle labelled"
+  />
+  <figcaption>
+    The gap is exaggerated for readability. Radius, arc angle and chord
+    deviation are different quantities; the diagram does not show a physical
+    measurement.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th>Radius</th>
+      <th>Segments around circle</th>
+      <th>Angle per segment</th>
+      <th>Maximum sagitta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>10 mm</td>
+      <td>24</td>
+      <td>15°</td>
+      <td>0.08555 mm</td>
+    </tr>
+    <tr>
+      <td>10 mm</td>
+      <td>72</td>
+      <td>5°</td>
+      <td>0.00952 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The same angle on a larger radius creates a larger absolute gap. To aim for s
+  ≤ 0.01 mm on this 10 mm circle, N must be at least π / arccos(1 - 0.01/10),
+  approximately 70.24; round up to 71 equal segments. A 72-segment example meets
+  that idealized cross-section condition. It does not establish a 0.01 mm
+  tolerance for an arbitrary three-dimensional export or a printed part.
+</p>
+<h2>Why the settings remain separate</h2>
+<p>
+  Chord deviation controls geometric departure; angular tolerance controls
+  direction change and can force finer segmentation even where an absolute gap
+  looks small. Exporters may also impose edge-length, minimum-facet or other
+  meshing constraints. Units and exact parameter meanings must come from the
+  particular exporter. Do not enter degrees into a field that expects radians or
+  a length into an angle field.
+</p>
+<p>
+  The current
+  <a href="https://cad.onshape.com/help/Content/File/exporting_files.htm"
+    >Onshape export documentation</a
+  >
+  lists separate custom STL chordal tolerance, angular deviation and minimum
+  facet width.
+  <a
+    href="https://help.autodesk.com/view/fusion360/ENU/?contextId=MAKE-3D-PRINT-CMD"
+    >Autodesk's mesh export help</a
+  >
+  describes surface deviation and refinement controls. Reviewed 8 October 2026;
+  installed CAD builds were not run. Check the labels and units in your exact
+  version.
+</p>
+<h2>
+  Inspect two derivatives without confusing tessellation with print resolution
+</h2>
+<ol>
+  <li>Keep a CAD cylinder with a known radius and named length.</li>
+  <li>
+    Export two mesh derivatives with recorded settings and identical unit/body
+    selection.
+  </li>
+  <li>
+    Open both at the intended physical scale and inspect the faceted
+    cross-section.
+  </li>
+  <li>
+    Compare global bounds and important source dimensions, then inspect the
+    surfaces bidirectionally.
+  </li>
+  <li>Check the intended slicer's handling and layer preview.</li>
+</ol>
+<p>
+  More triangles can reduce curve approximation error while leaving the
+  printer's process limitations unchanged. A low triangle count on six flat
+  faces can exactly describe a cube, while the same count on a curved object is
+  coarse. File size also changes with ASCII versus binary encoding without
+  changing the intended surface.
+</p>
+<p>
+  Stop refining when the required source-shape approximation is met and the file
+  remains practical for the receiver. If a tight interface depends on an
+  analytic cylinder, keep the CAD dimension as the authority.
+  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">Mesh point measurements</a>
+  cannot recover the missing exact curve. Use
+  <a href="{{ GuideSlug.RouteStlCompare }}">surface comparison</a> to inspect
+  derivatives and
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">file reduction</a> only with
+  a feature-preservation check.
+</p>

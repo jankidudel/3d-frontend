@@ -29,8 +29,10 @@ export const ReportFormat = { Json: 'json', Csv: 'csv' } as const;
 export type ReportFormat = (typeof ReportFormat)[keyof typeof ReportFormat];
 import {
   QueueEntry,
+  collectionStatus,
   createCollectionReport,
   collectionCsv,
+  collectionJson,
   needsReview,
   nextAction,
 } from './collection-report';
@@ -90,6 +92,7 @@ export class BatchPage {
   );
   readonly filter = signal<BatchFilter>(BatchFilter.All);
   readonly sortAttention = signal(true);
+  readonly status = computed(() => collectionStatus(this.rows()));
   readonly completed = computed(
     () => this.rows().filter((row) => row.state === QueueState.Complete).length,
   );
@@ -111,8 +114,11 @@ export class BatchPage {
       : rows;
   });
   readonly savedMessage = signal('');
+  readonly preparedDownload = signal<{ url: string; name: string } | null>(
+    null,
+  );
   readonly history = signal<
-    readonly { date: string; files: number; report: string }[]
+    readonly { date: string; files: number; report: string; status?: string }[]
   >([]);
   private readonly analytics = inject(AnalyticsService);
   private controller: AbortController | null = null;
@@ -143,6 +149,10 @@ export class BatchPage {
     }
     inject(DestroyRef).onDestroy(() => {
       this.controller?.abort();
+      const prepared = this.preparedDownload();
+      if (prepared) {
+        URL.revokeObjectURL(prepared.url);
+      }
       this.rows.update((rows) =>
         rows.map((row) =>
           row.state === QueueState.Waiting ||
@@ -194,6 +204,12 @@ export class BatchPage {
     if (this.busy()) {
       return;
     }
+    const prepared = this.preparedDownload();
+    if (prepared) {
+      URL.revokeObjectURL(prepared.url);
+      this.preparedDownload.set(null);
+    }
+    this.savedMessage.set('');
     this.files = [];
     this.rows.set([]);
     this.settings = null;
@@ -325,7 +341,7 @@ export class BatchPage {
         'file_count',
       );
       this.error.set(
-        `Choose up to ${this.allowance()} files. The free allowance is ${WorkflowLimits.FreeQueue}; a larger collection is available only in the isolated development preview.`,
+        `Choose up to ${this.allowance()} files. The free allowance is ${WorkflowLimits.FreeQueue}. Larger collections are not yet available.`,
       );
       return;
     }
@@ -493,14 +509,24 @@ export class BatchPage {
     return needsReview(row);
   }
   report(): string {
-    return JSON.stringify(this.reportModel(), null, 2);
+    return collectionJson(this.reportModel());
   }
   export(format: ReportFormat): void {
-    const contents =
-      format === ReportFormat.Json
-        ? this.report()
-        : `\uFEFF${collectionCsv(this.reportModel())}`;
-    this.download(contents, format);
+    try {
+      const contents =
+        format === ReportFormat.Json
+          ? this.report()
+          : `\uFEFF${collectionCsv(this.reportModel())}`;
+      this.download(contents, format);
+      this.savedMessage.set(
+        `Download requested: ${format.toUpperCase()} report with all ${this.rows().length} inputs. Check your browser downloads.`,
+      );
+    } catch {
+      this.savedMessage.set(
+        'Report download could not start. Try again or use the printable report.',
+      );
+      return;
+    }
     this.analytics.trackWorkflow(
       AnalyticsEvent.ReportExported,
       'batch',
@@ -518,9 +544,15 @@ export class BatchPage {
     );
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = `inspectmesh-batch-report.${extension}`;
+    anchor.download = `inspectmesh-batch-${this.reportDate().slice(0, 10) || 'saved'}.${extension}`;
+    const previous = this.preparedDownload();
+    if (previous) {
+      URL.revokeObjectURL(previous.url);
+    }
+    this.preparedDownload.set({ url, name: anchor.download });
+    document.body.append(anchor);
     anchor.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    anchor.remove();
   }
   print(): void {
     window.print();
@@ -536,6 +568,7 @@ export class BatchPage {
         {
           date: new Date().toISOString(),
           files: this.rows().length,
+          status: this.status(),
           report: this.report(),
         },
         ...this.history(),

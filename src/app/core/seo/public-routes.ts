@@ -141,6 +141,9 @@ export const PublicRoutePath = {
   MissingThreeMfObjectsGuide: guideRoute('3mf-missing-objects-after-import'),
   StlVolumeWrongGuide: guideRoute('stl-volume-calculation-wrong'),
   MeshIntersectionsGuide: guideRoute('self-intersecting-mesh-vs-non-manifold'),
+  CadExportGuide: guideRoute('how-to-export-stl-from-cad'),
+  StlResolutionGuide: guideRoute('stl-resolution-chord-height-explained'),
+  StlShellsGuide: guideRoute('stl-multiple-shells-disconnected-parts'),
   Contact: defineRoute('contact', PageType.Contact),
   RotateModelToFitPrinterGuide: guideRoute(
     'how-to-rotate-a-3d-model-to-fit-your-printer',

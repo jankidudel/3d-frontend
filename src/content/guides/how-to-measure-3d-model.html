@@ -169,3 +169,52 @@ faq:
   practical way to understand the file you received before material and print
   time are committed.
 </p>
+
+<h2>Use four measurements for four different decisions</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Measurement</th>
+      <th>What it answers</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Global axis-aligned bounds</td>
+      <td>
+        How far the current orientation spans X, Y and Z; not a named feature
+        size
+      </td>
+    </tr>
+    <tr>
+      <td>Two selected mesh points</td>
+      <td>
+        Direct distance between those surface locations and their axis
+        differences
+      </td>
+    </tr>
+    <tr>
+      <td>CAD dimension</td>
+      <td>The intended analytic diameter, constraint or centre spacing</td>
+    </tr>
+    <tr>
+      <td>Physical measurement</td>
+      <td>The produced part under the measuring method and conditions used</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A rotated 20 mm cube can have a larger axis-aligned span without changing its
+  edge length. A clicked point on a polygonal hole is on a facet, not
+  automatically its analytic centre. Repeat selections and inspect the camera
+  angle before interpreting a small difference as a design change.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >Tessellation deviation</a
+  >
+  is another source of uncertainty: a mesh approximates curved CAD surfaces.
+  Stop using the viewer as the acceptance authority when the tolerance depends
+  on an exact cylinder or datum. Use the source dimension and a separate
+  physical inspection plan.
+</p>

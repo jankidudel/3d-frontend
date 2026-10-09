@@ -173,3 +173,54 @@ faq:
   good orientation cannot compensate for holes, non-manifold edges or other
   geometry problems in the STL itself.
 </p>
+
+<h2>Compare competing priorities explicitly</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Hypothetical part</th>
+      <th>Candidate orientation</th>
+      <th>Trade-off to review</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Show-face plaque</td>
+      <td>Visible face upward</td>
+      <td>
+        Less support contact on the face, but lettering and layer finish still
+        need preview
+      </td>
+    </tr>
+    <tr>
+      <td>Loaded bracket</td>
+      <td>Compare load path with layer direction</td>
+      <td>
+        Support demand may rise when protecting a joint from layer separation
+      </td>
+    </tr>
+    <tr>
+      <td>Tall narrow post</td>
+      <td>Lay down or stand up</td>
+      <td>Side supports and finish versus small bed contact and stability</td>
+    </tr>
+    <tr>
+      <td>Mating enclosure</td>
+      <td>Protect the rim and locating surfaces</td>
+      <td>Support scars or first-layer effects can change the fit</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  These are decision examples, not tested strength results. Material
+  formulation, printer setup, bonding, load direction and process all matter. A
+  lower overhang area does not establish the best mechanical orientation or
+  surface finish.
+</p>
+<p>
+  Choose two plausible orientations, confirm physical units and bed allowances,
+  then inspect supports, layer paths, contact area and critical interfaces in
+  the intended slicer. Document why one wins for this part. Stop if meeting the
+  bed constraint compromises a required feature; reconsider splitting or the
+  printer rather than promising a universal orientation.
+</p>

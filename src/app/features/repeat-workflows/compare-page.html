@@ -133,7 +133,7 @@
       Compare known 20 → 24 mm change
     </button>
     <button type="button" (click)="example(true)" [disabled]="busy()">
-      Try unchanged retriangulation control
+      Try unchanged surface with different triangles
     </button>
     <button
       type="button"
@@ -289,9 +289,94 @@
       No. It describes finite sampled points, not a certified whole-surface
       upper bound.
       <a href="/how-to-reduce-stl-triangle-count"
-        >Compare an owned detail-reduction control</a
+        >Compare the raised-ridge example</a
       >
       and recheck topology as well.
+    </p>
+  </section>
+  <section class="content interpretation-guide">
+    <h2>Choose a coordinate frame before interpreting distance</h2>
+    <p>
+      Original coordinates compare where the two exports actually sit. Centre
+      alignment translates bounding-box centres only; it does not rotate,
+      rescale or register individual features. A 3 mm translation of an
+      unchanged cube is therefore visible in original coordinates and disappears
+      after centre alignment. Use original coordinates when placement is part of
+      the revision; centre alignment is useful only when translation is
+      irrelevant to your task.
+    </p>
+    <figure>
+      <svg
+        viewBox="0 0 640 220"
+        role="img"
+        aria-label="A widened cube has a real size change that centre alignment cannot undo"
+        style="max-width: 100%; height: auto"
+      >
+        <rect
+          x="1"
+          y="1"
+          width="638"
+          height="218"
+          rx="10"
+          fill="#f8fafc"
+          stroke="#64748b"
+        />
+        <path
+          d="M70 135 L170 135 L170 55 L70 55 Z M70 55 L120 20 L220 20 L170 55 M170 135 L220 100 L220 20"
+          fill="none"
+          stroke="#1e40af"
+          stroke-width="3"
+        />
+        <path
+          d="M400 135 L500 135 L500 55 L400 55 Z M400 55 L450 20 L550 20 L500 55 M500 135 L550 100 L550 20"
+          fill="none"
+          stroke="#1e40af"
+          stroke-width="3"
+        />
+        <path
+          d="M260 80 L350 80 M335 65 L350 80 L335 95"
+          stroke="#334155"
+          stroke-width="3"
+          fill="none"
+        />
+        <text x="30" y="180" font-size="26" fill="#0f172a">
+          20 mm original width
+        </text>
+        <text x="355" y="180" font-size="26" fill="#0f172a">
+          24 mm revised width
+        </text>
+      </svg>
+      <figcaption>
+        Widths are labelled mathematical examples. Translation can hide
+        placement changes but cannot undo a 4 mm width increase.
+      </figcaption>
+    </figure>
+    <h3>Read three different kinds of result</h3>
+    <p>
+      Bounds show overall spans; topology shows connectivity; sampled distances
+      compare points on each surface against triangles on the other. Equal
+      bounds can hide a removed ridge or changed hole. Equal triangle counts can
+      describe different shapes. A retriangulated planar face can have different
+      triangles yet essentially zero surface distance.
+    </p>
+    <p>
+      Run the unchanged, retriangulated and widened-cube examples. Keep the same
+      millimetre assumption on each side and original alignment first. The
+      widened export is 24 × 20 × 20 mm rather than 20 × 20 × 20 mm. In original
+      coordinates its moved outer surface is 4 mm away; the sampled maximum
+      describes only measured points, not a guaranteed upper bound everywhere.
+      Changing alignment changes the question, so record it with the tolerance
+      and sampling settings.
+    </p>
+    <p>
+      If a result looks unexpectedly perfect, inspect small lettering, holes and
+      contact faces manually. Finite area-distributed sampling can miss a tiny
+      feature even when every reported distance is under tolerance. Use source
+      CAD dimensions for design acceptance and
+      <a href="/stl-resolution-chord-height-explained"
+        >review tessellation error</a
+      >
+      when comparing a curve with its mesh approximation.
     </p>
   </section>
 </main>

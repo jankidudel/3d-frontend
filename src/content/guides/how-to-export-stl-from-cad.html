@@ -1,0 +1,127 @@
+---
+title: 'How to Export STL from CAD | InspectMesh'
+description: 'Export selected CAD geometry with explicit units and tessellation settings, then reopen and verify dimensions before slicing.'
+slug: how-to-export-stl-from-cad
+faq:
+  - question: 'Should I overwrite the CAD source with an STL?'
+    answer: 'No. Keep the editable design and treat the STL as a separately verified derivative with recorded units and export settings.'
+  - question: 'Which unit should I tell the recipient?'
+    answer: 'Tell the recipient what one STL coordinate unit represents and verify a named dimension after reopening. Choosing a currency or changing an extension does not declare a model unit.'
+eyebrow: CAD export and mesh interpretation
+heading: 'How to Export STL from CAD'
+---
+
+<p>
+  Export a selected, verified CAD body as STL, record the coordinate unit and
+  tessellation settings, then reopen the file to check dimensions and important
+  features. Keep the editable source: STL is a triangle-surface derivative, not
+  a replacement for the design.
+</p>
+<h2>A format-neutral export checklist</h2>
+<ol>
+  <li>
+    Save the intended revision in native CAD and identify the required
+    bodies/components.
+  </li>
+  <li>
+    Check that the source is a complete solid where a solid is intended. Hidden,
+    suppressed or surface-only bodies need an explicit decision.
+  </li>
+  <li>
+    Record one named dimension, such as a 20 mm cube edge, and any functional
+    interface that must survive.
+  </li>
+  <li>
+    Choose the export coordinate unit deliberately; STL does not carry a
+    dependable unit declaration.
+  </li>
+  <li>
+    Choose binary encoding for compact triangle records unless the recipient
+    needs text.
+  </li>
+  <li>
+    Set curve deviation and angular refinement for the required shape, rather
+    than maximizing triangle count.
+  </li>
+  <li>
+    Reopen the downloaded derivative, inspect all intended parts and compare
+    dimensions before slicing.
+  </li>
+</ol>
+<figure>
+  <img
+    src="/examples/cad-export/export-sequence.svg"
+    width="640"
+    height="300"
+    alt="CAD selection and units flow into mesh settings, then a reopened verification"
+  />
+  <figcaption>
+    Original workflow diagram. Export is accepted only after the derivative is
+    reopened and checked; no application screenshot or print test is implied.
+  </figcaption>
+</figure>
+<h2>Autodesk Fusion: documented desktop workflow</h2>
+<p>
+  In the Design workspace, right-click the intended body or component in the
+  Browser and choose Save As Mesh. Choose STL Binary, set Unit Type, and choose
+  One File or One Body Per File as appropriate; save the export. This selection
+  determines which bodies reach the file. Review refinement settings offered by
+  your installed version rather than assuming a preset preserves a small hole.
+</p>
+<p>
+  Source:
+  <a
+    href="https://help.autodesk.com/cloudhelp/ENU/Fusion-Mesh/files/MESH-SAVE-AS-MESH.htm"
+    >Autodesk Save As Mesh documentation</a
+  >. Reviewed 8 October 2026 for the current Fusion help workflow. An installed
+  Fusion build was not available for verification; this is a documented
+  workflow, not a claimed execution in a specific build.
+</p>
+<h2>Onshape: documented browser workflow</h2>
+<p>
+  Select the intended part or parts in a Part Studio and use Export from the
+  context menu. Choose STL, Binary or Text, export units and a resolution.
+  Custom STL resolution exposes chordal tolerance, angular deviation and minimum
+  facet width. For separate outputs, review the option to export individual
+  parts, then download and inspect the files.
+</p>
+<p>
+  Source:
+  <a href="https://cad.onshape.com/help/Content/File/exporting_files.htm"
+    >Onshape Exporting Files help</a
+  >, updated 24 September 2026 and reviewed 8 October 2026. This describes the
+  current browser help; no authenticated Onshape session or application
+  screenshot was used.
+</p>
+<h2>Reproducible size check</h2>
+<p>
+  Create a 20 mm solid cube in your CAD system, export it with millimetre
+  coordinates, then compare with the downloadable
+  <a href="{{ GuideSlug.RouteWhatIsAnStlFile }}">12-triangle cube explanation</a
+  >. Its expected spans are 20 × 20 × 20 mm and closed volume is 8,000 mm³.
+  Triangle count may differ by exporter; equal bounds do not establish identical
+  small features. If a one-inch edge is intended instead, expect 25.4 mm after
+  correct interpretation, not 1 mm.
+</p>
+<p>
+  Open the export in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">browser viewer</a>, confirm the unit,
+  then run
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">local STL Preflight</a>.
+  Inspect critical holes and contact faces in source CAD and the final slicer.
+  Stop if a body is missing, a dimension changes unexpectedly or the mesh is
+  open where a solid was intended. Re-export from CAD instead of guessing a
+  repair.
+</p>
+<h2>Choose the next step from the failure</h2>
+<p>
+  For visibly faceted curves, review
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >chord and angular tolerances</a
+  >. For too many triangles, reduce export detail deliberately and compare
+  derivatives. For several parts,
+  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+    >interpret shells before merging</a
+  >. Conversion to 3MF can add a unit declaration, but cannot recover the
+  original feature timeline or material intent.
+</p>

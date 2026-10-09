@@ -87,6 +87,7 @@ select:focus-visible,
   outline-offset: 3px;
 }
 .print-report {
+  overflow-wrap: anywhere;
   display: none;
 }
 .print-report.report-preview {

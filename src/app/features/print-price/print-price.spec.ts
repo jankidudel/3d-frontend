@@ -30,3 +30,40 @@ describe('calculatePrintPrice', () => {
     ).toBeNull();
   });
 });
+
+it('matches one and five-part hand calculations with shared setup', () => {
+  const base = {
+    ...input,
+    materialUsedGrams: 100,
+    wastePercent: 0,
+    printHours: 0,
+    labourHours: 0,
+    fixedOrderOverhead: 10,
+    failurePercent: 0,
+    targetMarginPercent: 20,
+  };
+  expect(calculatePrintPrice({ ...base, quantity: 1 })?.orderQuote).toBe(15);
+  const five = calculatePrintPrice({ ...base, quantity: 5 });
+  expect(five?.overheadPerItem).toBe(2);
+  expect(five?.recommendedPricePerItem).toBe(5);
+  expect(five?.orderQuote).toBe(25);
+});
+it('rejects fractional quantity, negative/nonfinite inputs and overflow but permits zero costs', () => {
+  for (const value of [NaN, Infinity, -1]) {
+    expect(
+      calculatePrintPrice({ ...input, materialPricePerKg: value }),
+    ).toBeNull();
+  }
+  expect(calculatePrintPrice({ ...input, quantity: 1.5 })).toBeNull();
+  expect(
+    calculatePrintPrice({
+      ...input,
+      materialUsedGrams: Number.MAX_VALUE,
+      materialPricePerKg: Number.MAX_VALUE,
+    }),
+  ).toBeNull();
+  const zero = Object.fromEntries(
+    Object.keys(input).map((key) => [key, 0]),
+  ) as typeof input;
+  expect(calculatePrintPrice({ ...zero, quantity: 1 })?.orderQuote).toBe(0);
+});

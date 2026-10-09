@@ -149,3 +149,49 @@ faq:
   Once the model is open, clean and correctly sized, save a copy of the
   validated version before starting your print setup.
 </p>
+
+<h2>Choose the opening workflow for the question</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Workflow</th>
+      <th>Useful outcome</th>
+      <th>What it does not establish</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Browser viewer</td>
+      <td>See mesh surfaces, dimensions and selected point distances</td>
+      <td>Editable CAD features or a safe print profile</td>
+    </tr>
+    <tr>
+      <td>Slicer</td>
+      <td>Review layers with your intended printer and material</td>
+      <td>Recovery of source design history</td>
+    </tr>
+    <tr>
+      <td>CAD mesh import</td>
+      <td>
+        Reference or edit triangles; attempt solid conversion if supported
+      </td>
+      <td>Automatic recovery of analytic holes or original constraints</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  For a broken input, first check that the download is actually STL rather than
+  an HTML error page renamed with .stl. Compare file size with the sender, then
+  try a known example in the same opener. If the example works but the received
+  file does not, ask for a fresh export and its source unit. If neither works,
+  check the opener's size limits and error message. A mesh that opens but has
+  holes needs geometry review, not repeated format renaming.
+</p>
+<p>
+  Stop before resizing an unexpectedly tiny model: establish whether coordinates
+  mean inches or millimetres.
+  <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}"
+    >Request a fresh CAD export with recorded units</a
+  >
+  when a damaged derivative cannot be interpreted.
+</p>

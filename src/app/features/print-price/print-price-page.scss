@@ -63,3 +63,41 @@ dd {
     margin: 0.75rem 0 0;
   }
 }
+
+.quote-reference {
+  overflow-wrap: anywhere;
+}
+@media print {
+  .price-page {
+    padding-block: 0;
+  }
+  .eyebrow,
+  .lead,
+  .fields,
+  .content,
+  app-tool-evidence,
+  .quote-actions,
+  .card > h2,
+  .card > p {
+    display: none !important;
+  }
+  .card,
+  .results {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
+  dl {
+    grid-template-columns: 1fr 1fr;
+  }
+  dl div {
+    break-inside: avoid;
+    padding: 0.3rem;
+  }
+  p {
+    overflow-wrap: anywhere;
+    orphans: 3;
+    widows: 3;
+  }
+}

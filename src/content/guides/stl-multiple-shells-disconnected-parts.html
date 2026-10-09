@@ -1,0 +1,121 @@
+---
+title: 'Multiple STL Shells and Disconnected Parts | InspectMesh'
+description: 'Distinguish intentional separate parts, touching bodies, overlaps and fragments using known cube examples and a bounded inspection workflow.'
+slug: stl-multiple-shells-disconnected-parts
+faq:
+  - question: 'Should I delete every extra shell?'
+    answer: 'No. Identify intended separate parts and fragments before removing geometry. Shell count alone does not identify mistakes.'
+  - question: 'Do touching shells form a valid Boolean union?'
+    answer: 'No. Point or edge contact does not establish a valid single solid. Inspect the intended design and use an appropriate CAD operation when a union is required.'
+eyebrow: CAD export and mesh interpretation
+heading: 'Multiple STL Shells and Disconnected Parts'
+---
+
+<p>
+  Multiple shells mean disconnected surface groups under the checker's
+  connectivity rule. They may be intentional separate parts, leftover fragments
+  or overlapping bodies. Shell count alone cannot prove corruption, completeness
+  or a valid Boolean union.
+</p>
+<h2>Two placements are not one bad part</h2>
+<p>
+  Download the
+  <a href="/examples/collection-review/two-placed-cubes.3mf" download
+    >two placed cubes</a
+  >. One 20 mm cube resource is placed twice, with the second shifted 40 mm
+  along X. The expected complete build spans 60 × 20 × 20 mm and has two
+  disconnected shells. An application opening just the resource rather than the
+  build may display only one cube; that is a build-resolution question rather
+  than proof that one cube is corrupt.
+</p>
+<p>
+  Compare it with
+  <a href="/examples/collection-review/one-placed-cube.3mf" download
+    >one placed cube</a
+  >, whose X span is 20 mm and whose screened volume is 8,000 mm³. InspectMesh's
+  local collection check withholds its single-solid volume result for multiple
+  shells. That explicit unavailable state does not mean the geometry has zero
+  volume.
+</p>
+<h2>Overlaps need another question</h2>
+<p>
+  The
+  <a href="/examples/collection-review/overlapping-cubes.stl" download
+    >overlapping cube example</a
+  >
+  contains two independently closed surfaces that cross. A connectivity check
+  can report two shells and no over-shared edges while the surfaces still
+  intersect. Summing individual enclosed volumes double-counts the overlap
+  unless a correct union is established. InspectMesh's collection check does not
+  perform a Boolean union or exhaustive self-intersection check.
+</p>
+<figure>
+  <img
+    src="/examples/collection-review/crossing-shells.svg"
+    width="640"
+    height="300"
+    alt="Independent closed cube shells overlap without sharing their edge records"
+  />
+  <figcaption>
+    Original schematic of crossing shells. Separate edge connectivity does not
+    prove that enclosed regions are disjoint.
+  </figcaption>
+</figure>
+<h2>Touching bodies and tiny fragments</h2>
+<p>
+  Two bodies touching at a point or along an edge are not automatically a
+  printable single solid or a designed assembly. Exact-coordinate welding can
+  change the connectivity result when coordinates coincide. Near-coincident
+  vertices may remain disconnected; a connectivity algorithm's result depends on
+  its welding rule.
+</p>
+<p>
+  A tiny disconnected piece could be intended text, a locating tab or an export
+  fragment. Inspect its location and compare with the design before deleting it.
+  Surface groups have no intrinsic label saying which part is a mistake. A
+  missing object can even reduce shell count while making the model less
+  complete.
+</p>
+<h2>A decision sequence</h2>
+<ol>
+  <li>
+    Record intended parts, source unit and revision before counting shells.
+  </li>
+  <li>
+    Open the complete build and inspect each visible region and its placement.
+  </li>
+  <li>
+    Check boundaries, winding and non-manifold edges independently of shell
+    count.
+  </li>
+  <li>
+    For overlaps or touching bodies, decide whether the design requires a union,
+    separation or an intentional assembly.
+  </li>
+  <li>
+    Re-export from source CAD when a geometric design operation is required,
+    then compare all intended parts and slicer layers.
+  </li>
+</ol>
+<p>
+  Stop if you cannot identify every disconnected piece or a supposed single
+  solid contains unresolved overlaps. Do not delete a shell simply to make a
+  counter read one. For related failures,
+  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+    >check build-item resolution</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
+    >distinguish intersection from edge connectivity</a
+  >.
+</p>
+<p>
+  The <a href="https://3mf.io/spec/">3MF core specification</a> is the source
+  for mesh resources, build items and transforms; reviewed 8 October 2026. The
+  examples are generated mathematical geometry with known coordinates, not
+  physical assemblies.
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}"
+    >Run the local collection checker</a
+  >
+  to keep independent findings and unsupported checks in a report.
+</p>

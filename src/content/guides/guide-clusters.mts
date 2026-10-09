@@ -19,6 +19,18 @@ export interface GuideIndexCluster {
 
 export const guideClusters: readonly GuideCluster[] = [
   {
+    id: 'cad-export',
+    label: 'CAD export and mesh interpretation',
+    description:
+      'Choose export settings and interpret the resulting surfaces and separate parts.',
+    pillar: 'how-to-export-stl-from-cad',
+    slugs: [
+      'how-to-export-stl-from-cad',
+      'stl-resolution-chord-height-explained',
+      'stl-multiple-shells-disconnected-parts',
+    ],
+  },
+  {
     id: 'repeat-workflows',
     label: 'Collections, revisions and customer files',
     description:

@@ -8,7 +8,11 @@
 
   <section class="upload card" aria-labelledby="upload-title">
     <h2 id="upload-title">Calculate your STL volume</h2>
-    <p>Upload an STL to calculate its volume and estimate material weight.</p>
+    <p>
+      Pressing Calculate volume uploads your STL to InspectMesh for server
+      processing. Choose the source coordinate unit when interpreting the
+      result.
+    </p>
     <app-stl-file-picker
       #filePicker
       [selectedFileFromParent]="selectedFile()"
@@ -340,6 +344,47 @@
       >
       ·
       <a [routerLink]="routeUrl.Tools">All STL tools</a>
+    </p>
+  </section>
+  <section class="content interpretation-guide">
+    <h2>A signed surface sum needs a solid interpretation</h2>
+    <p>
+      The server calculates volume from oriented triangles. Reversing an entire
+      closed surface changes the sign of the signed sum; mixed winding can
+      cancel contributions incorrectly. Showing a positive magnitude cannot
+      repair missing faces or establish which nested shells mean a cavity.
+      Review validation warnings before relying on the number, especially for
+      multiple shells or intersecting surfaces.
+    </p>
+    <p>
+      The generated
+      <a href="/examples/english-market-batch/closed-20mm-cube.stl" download
+        >20-coordinate-unit cube</a
+      >
+      has 12 triangles. Interpreted as millimetres, its closed volume is 20³ =
+      8,000 mm³ = 8 cm³. If the same coordinates mean inches, each length
+      becomes 508 mm and the volume grows by 25.4³. Changing the unit
+      interpretation is different from intentionally scaling a correctly
+      interpreted part.
+    </p>
+    <h3>Volume is not filament consumption</h3>
+    <p>
+      Solid volume describes the enclosed shape, not the toolpaths. Multiplying
+      it by density estimates solid mass. A simple infill percentage does not
+      include separate perimeters, top/bottom layers, supports, purge or packing
+      strategy. Use the final slicer's complete material estimate when costing
+      production. Multiple separate parts require an explicit shell
+      interpretation; overlapping shells cannot simply be added as if a Boolean
+      union had been performed.
+    </p>
+    <p>
+      Pressing Calculate volume uploads the file for server processing. The unit
+      selector interprets the returned raw geometry volume; it does not
+      re-export a resized model. If the job fails, the report is missing, or
+      validation is unreliable, stop and
+      <a href="/stl-volume-calculation-wrong"
+        >diagnose the units and solid-validity conditions</a
+      >. An unavailable result must not be treated as zero material.
     </p>
   </section>
 </main>

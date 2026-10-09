@@ -218,3 +218,25 @@ faq:
   >. Print a representative fit coupon using the same orientation and process
   before committing to a mating assembly.
 </p>
+
+<h2>Calculate an exact target span without changing the question</h2>
+<p>
+  Uniform factor = target span / current span. To change a verified 80 mm width
+  to 100 mm, multiply all coordinates by 100/80 = 1.25, or enter 125%. A 40 mm
+  height becomes 50 mm and a 6 mm hole becomes approximately 7.5 mm. The overall
+  target may be met while functional interfaces become unusable.
+</p>
+<p>
+  Unit correction answers a different question. A 1-coordinate-unit inch design
+  needs a millimetre interpretation of 25.4 mm; scaling an already correctly
+  interpreted 25.4 mm part by another 25.4 would be a second, unintended change.
+  Record the original assumption, target and resulting spans.
+</p>
+<p>
+  Nonuniform factors can turn circular holes into ellipses and change wall
+  directions. If only a bracket's outside width should change while screw holes
+  stay fixed, edit the CAD dimensions instead of stretching the STL. After
+  export, reopen with the same unit, measure the target axis, inspect mating
+  features and compare against the original. Stop when a required clearance or
+  interface moves beyond its design allowance.
+</p>

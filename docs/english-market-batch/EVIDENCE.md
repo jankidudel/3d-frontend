@@ -76,3 +76,17 @@ The new controls under `public/examples/collection-review/` are original mathema
 - Report thumbnails use a fixed orthographic projection and at most 750 sampled triangle outlines on a 256 × 180 canvas. They are bounded previews, not measurements or complete geometric renderings. JSON and optional browser history can include this preview, labels and findings; original file bytes and 3D geometry arrays are not serialised.
 
 The 3MF Core Specification (resources, build items, units, transforms and mesh conditions), meshoptimizer documentation and Prusa's limited-repair documentation were consulted on 7 October 2026. No new slicer-repair experiment was performed. The automatic-repair guide explicitly distinguishes a mathematical missing-face reconstruction example from unobserved application behaviour.
+
+## CAD export example method - 8 October 2026
+
+The assets in `public/examples/cad-export/` are original mathematical examples, not CAD screenshots or physical measurements. The reference binary STL is `public/examples/english-market-batch/closed-20mm-cube.stl`: 12 consistently oriented facets, 20 mm spans and 8,000 mm³ enclosed volume under a millimetre assumption.
+
+To reproduce `duplicate-face-cube.stl`, retain the reference header and facets, change the little-endian triangle count at byte 80 to 13, then append an exact copy of the first 50-byte facet record. Expected length: 734 bytes. For the companion 3MF, deduplicate facet coordinates into a vertex list, retain the same 13 indexed triangles, declare `millimeter`, and include one identity-transformed mesh object in the build. Use a relationship-selected model part and standard 3MF content types. ZIP timestamps and compression layout are not geometric evidence.
+
+`npm run test:collection-examples` exercises actual local 3MF cleanup: duplicate removal changes 13 triangles to 12, with zero open edges. It also checks the shared 3MF-to-STL exporter with the declared-inch transformed cube: 25.4 mm spans, X coordinates from 50.8 to 76.2 mm and approximately 16,387.064 mm³. Coordinates must resolve to physical millimetres before writing unitless STL.
+
+The circular diagram uses `s = R × (1 - cos(π/N))` for N equal circle segments. R = 10 mm gives approximately 0.08555 mm at N = 24 and 0.00952 mm at N = 72. This cross-section arithmetic is not an exporter-wide or printed tolerance. The splitting diagram describes a mid-height cut of a 20 mm cube, giving two expected 10 mm spans; supported capping and output validation still require the actual splitter.
+
+### Spreadsheet report policy
+
+CSV quotes cells, doubles embedded quotes and preserves embedded line breaks. An untrusted string whose first non-whitespace/non-ASCII-control character is `=`, `+`, `-` or `@` receives an apostrophe before the entire cell. That prefix deliberately keeps formula-like labels as data for Excel/LibreOffice import. Retain it and import labels as text rather than stripping it or evaluating the expression. Typed numeric measurements are separate from untrusted labels. Nonfinite numbers are rejected by the CSV cell serializer and collection JSON serializer. Filenames and project references are not analytics parameters.

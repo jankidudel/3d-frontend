@@ -2,3 +2,9 @@
   display: block;
   min-height: 100vh;
 }
+
+@media print {
+  :host {
+    min-height: 0;
+  }
+}

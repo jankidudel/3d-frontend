@@ -8,7 +8,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { strToU8, zipSync, unzipSync } from 'fflate';
+import { strToU8, zipSync } from 'fflate';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -205,82 +205,12 @@ export class LocalConverterPage {
 
   private async threeMfToStl(file: File) {
     this.status.set('Resolving 3MF build geometry locally…');
-    const data = await file.arrayBuffer();
-    const [{ ThreeMFLoader }, three] = await Promise.all([
-      import('three/examples/jsm/loaders/3MFLoader.js'),
-      import('three'),
-    ]);
-    const group = new ThreeMFLoader().parse(data);
-    group.updateMatrixWorld(true);
-    const bounds = new three.Box3().setFromObject(group);
-    if (bounds.isEmpty()) {
-      throw new Error('empty-3mf');
-    }
-    const dimensionsVector = bounds.getSize(new three.Vector3());
-    const facets: number[] = [];
-    group.traverse((object) => {
-      const mesh = object as import('three').Mesh;
-      if (!mesh.isMesh || !mesh.geometry) {
-        return;
-      }
-      const geometry = mesh.geometry.index
-        ? mesh.geometry.toNonIndexed()
-        : mesh.geometry.clone();
-      const positions = geometry.getAttribute('position');
-      if (!positions) {
-        return;
-      }
-      for (let index = 0; index < positions.count; index++) {
-        const point = new three.Vector3(
-          positions.getX(index),
-          positions.getY(index),
-          positions.getZ(index),
-        ).applyMatrix4(mesh.matrixWorld);
-        facets.push(point.x, point.y, point.z);
-      }
-      geometry.dispose();
-    });
-    if (facets.length === 0 || facets.length % 9 !== 0) {
-      throw new Error('empty-3mf');
-    }
-    await yieldToBrowser();
-    this.status.set('Writing one resolved binary STL locally…');
-    const triangles = facets.length / 9;
-    const buffer = new ArrayBuffer(84 + triangles * 50);
-    const view = new DataView(buffer);
-    view.setUint32(80, triangles, true);
-    for (let triangle = 0; triangle < triangles; triangle++) {
-      const offset = 84 + triangle * 50;
-      const point = triangle * 9;
-      const normal = normalFor(facets, point);
-      for (let coordinate = 0; coordinate < 3; coordinate++) {
-        view.setFloat32(offset + coordinate * 4, normal[coordinate], true);
-      }
-      for (let coordinate = 0; coordinate < 9; coordinate++) {
-        view.setFloat32(
-          offset + 12 + coordinate * 4,
-          facets[point + coordinate],
-          true,
-        );
-      }
-      view.setUint16(offset + 48, 0, true);
-      if (triangle > 0 && triangle % 10000 === 0) {
-        await yieldToBrowser();
-      }
-    }
+    const { convertThreeMfToStl } = await import('./three-mf-stl-export');
+    const converted = await convertThreeMfToStl(await file.arrayBuffer());
     return {
-      bytes: new Uint8Array(buffer),
+      ...converted,
       name: outputName(file.name, '.stl'),
       type: 'model/stl',
-      result: {
-        triangles,
-        sourceUnit: declaredUnit(data),
-        dimensions: [
-          dimensionsVector.x,
-          dimensionsVector.y,
-          dimensionsVector.z,
-        ] satisfies readonly [number, number, number],
-      } satisfies ConversionResult,
     };
   }
 
@@ -366,37 +296,7 @@ function outputName(name: string, extension: string): string {
 function number(value: number): string {
   return Number.isFinite(value) ? String(value) : '0';
 }
-function declaredUnit(data: ArrayBuffer): string {
-  try {
-    const files = unzipSync(new Uint8Array(data));
-    const model = Object.keys(files).find((path) =>
-      /^3D\/[^/]*\.model$/i.test(path),
-    );
-    const xml = model ? new TextDecoder().decode(files[model]) : '';
-    return (
-      /<model\b[^>]*\bunit\s*=\s*["']([^"']+)["']/i.exec(xml)?.[1] ??
-      'Not declared'
-    );
-  } catch {
-    return 'Not declared';
-  }
-}
-function normalFor(
-  points: readonly number[],
-  offset: number,
-): readonly [number, number, number] {
-  const ax = points[offset + 3] - points[offset],
-    ay = points[offset + 4] - points[offset + 1],
-    az = points[offset + 5] - points[offset + 2];
-  const bx = points[offset + 6] - points[offset],
-    by = points[offset + 7] - points[offset + 1],
-    bz = points[offset + 8] - points[offset + 2];
-  const x = ay * bz - az * by,
-    y = az * bx - ax * bz,
-    z = ax * by - ay * bx;
-  const length = Math.hypot(x, y, z) || 1;
-  return [x / length, y / length, z / length];
-}
+
 function yieldToBrowser(): Promise<void> {
   return new Promise((resolve) => window.setTimeout(resolve));
 }

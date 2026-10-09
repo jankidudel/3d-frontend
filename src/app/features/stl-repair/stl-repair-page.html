@@ -12,7 +12,11 @@
     issues before checking your STL again.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
-    <h2 id="upload-title">Upload an STL to clean safely</h2>
+    <h2 id="upload-title">Choose an STL to clean safely</h2>
+    <p>
+      Pressing Clean STL safely uploads your file to InspectMesh for server
+      processing. Keep an original copy.
+    </p>
     <p>
       InspectMesh safely cleans only certain STL issues. It cannot reliably fill
       holes or repair every non-manifold model automatically.
@@ -112,4 +116,96 @@
     </p>
   </section>
   <app-tool-evidence [page]="routeUrl.StlRepair" />
+  <section class="content interpretation-guide">
+    <h2>Cleanup removes redundant faces, not missing design</h2>
+    <p>
+      The supported actions remove exact duplicate triangles and degenerate
+      triangles (faces with no useful area), then attempt orientation correction
+      in closed manifold regions. Retained vertex coordinates are not smoothed
+      or resized. Removing a redundant face is different from reconstructing a
+      missing surface: holes, intersecting bodies and ambiguous internal
+      geometry need a design decision in CAD.
+    </p>
+    <figure>
+      <svg
+        viewBox="0 0 640 220"
+        role="img"
+        aria-label="Redundant triangle removed while the cube surface stays in place"
+        style="max-width: 100%; height: auto"
+      >
+        <rect
+          x="1"
+          y="1"
+          width="638"
+          height="218"
+          rx="10"
+          fill="#f8fafc"
+          stroke="#64748b"
+        />
+        <path
+          d="M70 135 L170 135 L170 55 L70 55 Z M70 55 L120 20 L220 20 L170 55 M170 135 L220 100 L220 20"
+          fill="none"
+          stroke="#1e40af"
+          stroke-width="3"
+        />
+        <path
+          d="M400 135 L500 135 L500 55 L400 55 Z M400 55 L450 20 L550 20 L500 55 M500 135 L550 100 L550 20"
+          fill="none"
+          stroke="#1e40af"
+          stroke-width="3"
+        />
+        <path
+          d="M260 80 L350 80 M335 65 L350 80 L335 95"
+          stroke="#334155"
+          stroke-width="3"
+          fill="none"
+        />
+        <text x="30" y="180" font-size="26" fill="#0f172a">
+          13: one duplicate face
+        </text>
+        <text x="355" y="180" font-size="26" fill="#0f172a">
+          12: same surface
+        </text>
+      </svg>
+      <figcaption>
+        Schematic of the downloadable duplicate-face cube. A second copy of one
+        triangle adds no intended surface.
+      </figcaption>
+    </figure>
+    <h3>Try a narrow, reproducible repair</h3>
+    <p>
+      Download the
+      <a href="/examples/cad-export/duplicate-face-cube.stl" download
+        >20 mm cube with one duplicate triangle</a
+      >. It contains 13 triangles: the 12 faces of a consistently oriented cube
+      and one repeated triangle. Select it above, then explicitly submit
+      cleanup. Check that the report removes one duplicate, preserves 20 × 20 ×
+      20 coordinate spans and produces a separate copy. Reopen that copy,
+      inspect the six surfaces, check topology and compare it with the original.
+      A smaller triangle count alone does not prove that intended features
+      survived.
+    </p>
+    <h3>Before submitting and after downloading</h3>
+    <p>
+      STL cleanup uploads the selected file to InspectMesh for server processing
+      when you press Clean STL safely. Selecting or downloading an example is
+      not permission to upload it automatically. Keep your original and avoid
+      submitting confidential designs unless this processing is appropriate for
+      you.
+    </p>
+    <p>
+      Malformed records, invalid coordinates or upload-limit failures can
+      prevent a job from running. A completed job can also report that no safe
+      change is available. Read skipped reasons instead of repeatedly submitting
+      the same file. If open boundaries remain, return to the source model or an
+      explicit mesh-editing workflow; this tool cannot infer the missing shape.
+    </p>
+    <p>
+      Stop using the cleaned derivative if dimensions, intended shells or
+      important features change unexpectedly. The output passing mesh validation
+      still does not certify strength, fit or a physical print.
+      <a href="/stl-compare">Compare the revised surfaces</a> before accepting
+      it.
+    </p>
+  </section>
 </main>

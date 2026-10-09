@@ -90,15 +90,15 @@
         Run mixed example collection
       </button>
       <button type="button" (click)="releaseExample()" [disabled]="busy()">
-        Run release-kit example
+        Try example kit
       </button>
     </div>
     <p>
       Hypothetical kit: 60 × 40 × 4 mm base (9,600 mm³), 60 × 40 × 2 mm
       open-face cover (four boundary edges; volume unavailable), and 8 × 8 × 12
       mm spacer (768 mm³), under a millimetre STL assumption. Intended piece
-      inventory is separate from mesh health. These original box controls are
-      not an assembly or physical print test.
+      inventory is separate from mesh health. These generated boxes are not an
+      assembly or physical print test.
     </p>
     <div class="batch-actions">
       <button type="button" (click)="cancel()" [disabled]="!busy()">
@@ -121,14 +121,13 @@
     <p>
       Example ground truth: a closed 20 mm cube (8,000 mm³), an open cube with
       one missing face (four boundary edges, volume unavailable), and malformed
-      text. These are software fixtures, not physical print tests.
+      text. These are generated examples, not physical print tests.
     </p>
     @if (error()) {
       <p role="alert" class="error">{{ error() }}</p>
     }
     <p role="status">
-      {{ completed() }} / {{ rows().length }} files completed.
-      {{ busy() ? 'Processing queue...' : 'Queue idle.' }}
+      {{ status() }} {{ busy() ? 'Processing queue...' : '' }}
     </p>
   </section>
   @if (rows().length) {
@@ -359,10 +358,18 @@
       storage or original model bytes. Clearing browser data removes reports.
     </p>
     <p role="status">{{ savedMessage() }}</p>
+    @if (preparedDownload(); as prepared) {
+      <p>
+        <a [href]="prepared.url" [download]="prepared.name"
+          >Download prepared report: {{ prepared.name }}</a
+        >. Use this link if the automatic download did not start.
+      </p>
+    }
     <ul>
       @for (item of history(); track $index) {
         <li>
-          {{ item.date }} - {{ item.files }} files
+          {{ item.date }} - {{ item.files }} files.
+          {{ item.status || 'Open the saved report for processing outcomes.' }}
           <button type="button" (click)="downloadHistory(item.report)">
             Download saved report {{ $index + 1 }}
           </button>
@@ -382,45 +389,11 @@
       collection allowance, combined exports and browser-local history. Paid
       subscriptions, cloud projects and cross-device history are not available.
     </p>
-    <div
-      class="table-scroll"
-      tabindex="0"
-      role="region"
-      aria-label="Collection allowance comparison, scroll horizontally"
-    >
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">Capability</th>
-            <th scope="col">Free</th>
-            <th scope="col">Development offer preview</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Files per collection</th>
-            <td>3</td>
-            <td>Up to 20, same per-file limits</td>
-          </tr>
-          <tr>
-            <th scope="row">Combined exports / local report history</th>
-            <td>Available</td>
-            <td>Available</td>
-          </tr>
-          <tr>
-            <th scope="row">Payments / cloud storage</th>
-            <td>Unavailable</td>
-            <td>Unavailable</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
     <p>
-      Paid collection access is not configured. No live price or billing cadence
-      has been approved; purchasing is unavailable. Free exports and local
-      report history remain available.
+      Free collections include up to 3 files, combined JSON and CSV downloads, a
+      printable report and optional history in this browser. Larger collections
+      are not yet available.
     </p>
-    <button type="button" disabled>Paid checkout unavailable</button>
     @if (developmentPreview) {
       <details (toggle)="viewOffer($event)">
         <summary>Development-only Pro workflow preview</summary>
@@ -474,6 +447,11 @@
   <section class="card screen-only">
     <h2>Method and next steps</h2>
     <p>
+      <a [routerLink]="routeUrl.StlShellsGuide"
+        >Interpret separate shells before deleting or merging parts</a
+      >.
+    </p>
+    <p>
       STL unit assumptions and 3MF build transforms are recorded.
       Exact-coordinate welding precedes edge incidence, winding and
       connected-shell checks. Sampled wall rays review triangle centroids; they
@@ -497,6 +475,7 @@
       aria-label="Complete printable collection report"
     >
       <h2>InspectMesh collection review</h2>
+      <p>{{ status() }}</p>
       <p>
         Reference: {{ reportModel().reference || 'Not supplied' }}. Date:
         {{ reportModel().generatedAt }}.

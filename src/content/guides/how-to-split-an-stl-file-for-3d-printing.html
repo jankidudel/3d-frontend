@@ -178,3 +178,61 @@ faq:
   Splitting can turn an impossible one-piece print into a practical project, but
   careful seam placement and alignment matter as much as the cut itself.
 </p>
+
+<h2>Choose the cut for the assembly, then for the bed</h2>
+<figure>
+  <img
+    src="/examples/cad-export/split-plane.svg"
+    width="640"
+    height="300"
+    alt="A mid-height cube cut creates two separate capped halves"
+  />
+  <figcaption>
+    Mathematical example: Z at 50% of a 20 mm cube gives two expected 10 mm
+    spans. Cap creation is checked by the server; inspect both downloaded
+    copies.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th>Cut choice</th>
+      <th>Potential benefit</th>
+      <th>Check before committing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Broad flat section</td>
+      <td>A larger assembly contact and simple bed-facing surface</td>
+      <td>Adhesive gap, cap integrity and visible seam</td>
+    </tr>
+    <tr>
+      <td>Through a thin neck</td>
+      <td>Small cut contour</td>
+      <td>Weak joint and difficult alignment; prefer a designed connector</td>
+    </tr>
+    <tr>
+      <td>Away from mounting holes</td>
+      <td>Retains interfaces in one piece</td>
+      <td>Each resulting piece still fits with support allowance</td>
+    </tr>
+    <tr>
+      <td>Across a curved show surface</td>
+      <td>May fit a smaller printer</td>
+      <td>Seam finish, support scars and lost surface continuity</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The current splitter creates two planar capped pieces for supported cuts and
+  rejects ambiguous geometry. It adds no alignment pins or assembly clearance.
+  After download, reopen each piece, check closure, dimensions and contact
+  surfaces, then orient each for the intended slicer. Keep one common scale and
+  revision. A tool-valid cap does not prove a strong joint.
+</p>
+<p>
+  If you need interlocking tabs, screw bosses or repeatable alignment, design
+  those features in source CAD. Stop if a cut crosses a required load path,
+  fails to cap or leaves no practical alignment method.
+</p>

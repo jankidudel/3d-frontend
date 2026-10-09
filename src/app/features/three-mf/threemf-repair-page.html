@@ -194,4 +194,97 @@
     </p>
   </section>
   <app-tool-evidence [page]="routeUrl.ThreeMfRepair" />
+  <section class="content interpretation-guide">
+    <h2>What changes inside the package</h2>
+    <p>
+      This browser tool removes selected duplicate, degenerate or invalid-index
+      triangle elements from the relationship-selected model XML. It keeps
+      vertex coordinates, other XML elements and the decompressed payloads of
+      other ZIP parts. It creates a new compressed package; the ZIP bytes and
+      compression layout are not identical to the original. Retaining a vendor
+      setting as a payload does not prove a receiving slicer will use it
+      correctly.
+    </p>
+    <figure>
+      <svg
+        viewBox="0 0 640 220"
+        role="img"
+        aria-label="Triangle cleanup preserves the declared build context"
+        style="max-width: 100%; height: auto"
+      >
+        <rect
+          x="1"
+          y="1"
+          width="638"
+          height="218"
+          rx="10"
+          fill="#f8fafc"
+          stroke="#64748b"
+        />
+        <path
+          d="M70 135 L170 135 L170 55 L70 55 Z M70 55 L120 20 L220 20 L170 55 M170 135 L220 100 L220 20"
+          fill="none"
+          stroke="#1e40af"
+          stroke-width="3"
+        />
+        <path
+          d="M400 135 L500 135 L500 55 L400 55 Z M400 55 L450 20 L550 20 L500 55 M500 135 L550 100 L550 20"
+          fill="none"
+          stroke="#1e40af"
+          stroke-width="3"
+        />
+        <path
+          d="M260 80 L350 80 M335 65 L350 80 L335 95"
+          stroke="#334155"
+          stroke-width="3"
+          fill="none"
+        />
+        <text x="30" y="180" font-size="26" fill="#0f172a">
+          Model + transforms
+        </text>
+        <text x="355" y="180" font-size="26" fill="#0f172a">
+          New ZIP; same build
+        </text>
+      </svg>
+      <figcaption>
+        Schematic: triangle elements change in a separate package; unit and
+        build context are retained rather than flattened into STL.
+      </figcaption>
+    </figure>
+    <h3>A duplicate-face example</h3>
+    <p>
+      Download the
+      <a href="/examples/cad-export/duplicate-face-cube.3mf" download
+        >duplicate-face cube package</a
+      >. It declares millimetres, one mesh and one build item. Expect 13 source
+      triangles and one duplicate. Leave only duplicate removal selected, run
+      the local repair and compare the before/after counts: 13 to 12 triangles,
+      with no intended dimension change. Save the repaired package and open it
+      again in 3MF Preflight and your receiving slicer. This is generated
+      mathematical geometry, not a physical print test.
+    </p>
+    <h3>Source mesh counts and placed geometry answer different questions</h3>
+    <p>
+      The removable-triangle plan examines mesh definitions in the model XML;
+      the preview resolves supported build items, component references and
+      transforms. A shared resource can have several placements without several
+      independent repair operations. Compare the declared unit, resolved build
+      count and dimensions before trusting the saved copy.
+    </p>
+    <p>
+      Unsupported or unresolved packages produce an error rather than a
+      flattened replacement. Open edges, non-manifold connectivity,
+      self-intersections and missing surfaces are not reconstructed. This local
+      plan does not correct winding. An empty plan means no supported removal is
+      selected, not that every possible issue has been checked.
+    </p>
+    <p>
+      Preserve the original project, especially where colours, textures or
+      printer profiles matter. If the receiving slicer loses an assignment, stop
+      and review the original package there;
+      <a href="/does-3mf-keep-colours-materials-and-settings"
+        >check core geometry and slicer-project information separately</a
+      >.
+    </p>
+  </section>
 </main>

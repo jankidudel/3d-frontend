@@ -36,6 +36,35 @@ export interface ReportFinding {
   readonly severity: (typeof FindingSeverity)[keyof typeof FindingSeverity];
   readonly detail: string;
 }
+/** Successful and failed results are processed; cancelled inputs remain unprocessed. */
+export function collectionProgress(rows: readonly QueueEntry[]) {
+  const completed = rows.filter(
+    (row) => row.state === QueueState.Complete,
+  ).length;
+  const failed = rows.filter((row) => row.state === QueueState.Failed).length;
+  const cancelled = rows.filter(
+    (row) => row.state === QueueState.Cancelled,
+  ).length;
+  const pending = rows.length - completed - failed - cancelled;
+  return {
+    total: rows.length,
+    processed: completed + failed,
+    completed,
+    failed,
+    cancelled,
+    pending,
+  };
+}
+export function collectionStatus(rows: readonly QueueEntry[]): string {
+  const count = collectionProgress(rows);
+  return (
+    `${count.processed} of ${count.total} processed - ${count.completed} completed, ${count.failed} failed.` +
+    (count.cancelled
+      ? ` ${count.cancelled} cancelled without a completed result.`
+      : '') +
+    (count.pending ? ` ${count.pending} pending or processing.` : '')
+  );
+}
 export function needsReview(row: QueueEntry): boolean {
   const r = row.result;
   return (
@@ -152,6 +181,8 @@ export function createCollectionReport(
     generatedAt,
     reference: reference.trim(),
     settings,
+    progress: collectionProgress(rows),
+    status: collectionStatus(rows),
     distanceUnit: 'mm',
     volumeUnit: 'mm³',
     method:
@@ -254,4 +285,20 @@ export function collectionCsv(report: CollectionReport): string {
   ]
     .map((row) => row.map(csvCell).join(','))
     .join('\r\n');
+}
+
+/** Reject invalid numeric data rather than letting JSON turn it into an ambiguous null. */
+export function collectionJson(report: CollectionReport): string {
+  return JSON.stringify(
+    report,
+    (_key, value: unknown) => {
+      if (typeof value === 'number' && !Number.isFinite(value)) {
+        throw new Error(
+          'A nonfinite report value cannot be exported. Rerun the affected file.',
+        );
+      }
+      return value;
+    },
+    2,
+  );
 }

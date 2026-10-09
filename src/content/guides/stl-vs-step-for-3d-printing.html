@@ -138,3 +138,30 @@ faq:
   a different hole size, wall thickness or overall dimension, you can edit the
   real CAD geometry instead of trying to patch an exported mesh.
 </p>
+
+<h2>InspectMesh starts at the mesh handoff</h2>
+<p>
+  InspectMesh does not parse STEP. Open or edit STEP in a compatible CAD
+  application, inspect the body structure there, then export a mesh derivative.
+  STEP exchange is not the same as retaining the complete native feature
+  timeline: what remains editable depends on the producer, exporter and
+  receiving CAD system.
+</p>
+<p>
+  For a hypothetical bracket with a named 40 mm hole spacing, verify that
+  dimension in CAD before meshing. After export, check overall bounds and
+  inspect the holes, but do not claim a pair of clicked facet points proves the
+  exact analytic centre spacing. Keep the source as the authority for a
+  dimensional revision.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}"
+    >Follow the CAD-to-STL export checklist</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >choose chord and angle settings deliberately</a
+  >
+  before accepting the mesh as the print derivative. Stop when an intended body
+  is absent, a unit differs or the recipient cannot preserve a required feature.
+</p>

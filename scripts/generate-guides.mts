@@ -140,6 +140,7 @@ for (const fileName of contentFiles) {
       `Guide validation failed: ${filePath} use front matter for the page h1; guide HTML must not contain an h1.`,
     );
   }
+  let tableNumber = 0;
   guideContent.set(fileName, {
     title: frontMatter.title,
     description: frontMatter.description,
@@ -154,7 +155,8 @@ for (const fileName of contentFiles) {
     )
       .replaceAll(
         '<table>',
-        '<div class="guide-table-scroll" tabindex="0" role="region" aria-label="Guide decision table, scroll horizontally"><table>',
+        () =>
+          `<div class="guide-table-scroll" tabindex="0" role="region" aria-label="Guide decision table ${++tableNumber}, scroll horizontally"><table>`,
       )
       .replaceAll('</table>', '</table></div>'),
   });

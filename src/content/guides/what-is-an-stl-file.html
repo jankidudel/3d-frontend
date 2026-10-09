@@ -145,3 +145,30 @@ faq:
   inspect its mesh and review the slicer preview before committing material and
   printer time.
 </p>
+
+<h2>One cube explains the surface-versus-solid distinction</h2>
+<p>
+  The downloadable 20 mm cube uses two triangles per flat face, or 12 triangles
+  altogether. STL records those facets, not a cube feature, a material or a
+  manufacturing instruction. The closed, consistently oriented surface supports
+  an enclosed-volume interpretation of 8,000 mm³ when coordinates mean
+  millimetres. Removing two triangles from one face leaves an open surface;
+  drawing it on screen does not restore the missing face or a dependable solid.
+</p>
+<p>
+  ASCII and binary encode the same kind of surface information. Neither adds a
+  dependable unit declaration. Preserve a note of units and revision with an
+  STL. For geometry with explicit units and supported build placements, consider
+  3MF; for controlled engineering edits, keep native CAD or STEP. InspectMesh's
+  mesh tools do not parse STEP.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+    >Separate shells need an interpretation</a
+  >
+  beyond whether the file extension is correct.
+  <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}"
+    >Create and verify a derivative from CAD</a
+  >
+  instead of treating an STL as the editable design master.
+</p>

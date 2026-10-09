@@ -41,6 +41,31 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-export-stl-from-cad',
+    group: GuideGroupId.Stl,
+    order: 203,
+    enabled: true,
+    publishDate: '2026-10-08',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'stl-resolution-chord-height-explained',
+    group: GuideGroupId.Stl,
+    order: 204,
+    enabled: true,
+    publishDate: '2026-10-08',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'stl-multiple-shells-disconnected-parts',
+    group: GuideGroupId.Stl,
+    order: 205,
+    enabled: true,
+    publishDate: '2026-10-08',
+    checkEditorialTargets: true,
+  },
+
+  {
     slug: '3mf-missing-objects-after-import',
     group: GuideGroupId.ThreeMf,
     order: 200,
@@ -80,7 +105,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 101,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: true,
   },
   {
@@ -89,7 +114,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 102,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: true,
   },
   {
@@ -187,6 +212,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 7,
     enabled: true,
     publishDate: '2026-09-10',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -255,7 +281,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 31,
     enabled: true,
     publishDate: '2026-09-18',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -349,7 +375,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 60,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -383,7 +409,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -442,6 +468,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 160,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -450,6 +477,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 170,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -458,6 +486,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 180,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -466,6 +495,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 190,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -474,6 +504,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 200,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -482,6 +513,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 210,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {
@@ -524,6 +556,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 25,
     enabled: true,
     publishDate: '2026-09-15',
+    updatedDate: '2026-10-08',
     checkEditorialTargets: false,
   },
   {

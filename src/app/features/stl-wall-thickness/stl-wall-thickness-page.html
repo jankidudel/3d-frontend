@@ -6,7 +6,7 @@
     be too thin for your 3D-printing setup.
   </p>
   <button type="button" (click)="runOwnedExample()" [disabled]="analysing()">
-    Run an owned model example
+    Try example files
   </button>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL wall thickness</h2>
@@ -190,4 +190,45 @@
     [completed]="!!report()"
     [page]="routeUrl.StlWallThicknessChecker"
   />
+  <section class="content interpretation-guide">
+    <h2>What the wall samples measure</h2>
+    <p>
+      This local method selects up to 2,000 triangles spread through input
+      triangle order. From each triangle centroid it casts bounded
+      normal-direction rays and records a supported opposing hit. It is not an
+      exhaustive shortest-distance measurement over every point on the model.
+      Triangle-order sampling can miss a narrow feature or oversample a region
+      with many facets.
+    </p>
+    <p>
+      Choose the source coordinate unit before analysis. The review threshold is
+      expressed in the selected unit; 0.04 inches is approximately 1.016 mm, not
+      0.04 mm. A threshold identifies samples to inspect, not a certified
+      printable minimum for a material or printer.
+    </p>
+    <h3>Known wall example and no-hit outcomes</h3>
+    <p>
+      Download the
+      <a href="/examples/english-market-batch/thin-wall-bars.stl" download
+        >generated thin-wall bars</a
+      >
+      and inspect their faces with the millimetre assumption. Compare the wall
+      directions you intended to measure with the centroid-ray locations. Angled
+      rays, adjacent bodies and irregular geometry can measure a different gap
+      from a source-CAD wall dimension. The built-in cube example is a broad
+      sanity check, not proof of sensitivity to small ribs.
+    </p>
+    <p>
+      No opposing hit or an invalid ray stays unmeasured. It is neither a
+      zero-thickness wall nor a passed sample. Review unmeasured counts, source
+      winding and open boundaries even when no measured value is below
+      threshold. Stop if the important feature has no sample or the selected
+      unit is uncertain; use source CAD section measurements and the intended
+      slicer's thin-wall preview.
+      <a href="/how-to-measure-3d-model"
+        >Compare point selection with source dimensions</a
+      >
+      before accepting a functional part.
+    </p>
+  </section>
 </main>
