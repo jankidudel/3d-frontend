@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   ReviewSession,
   ReviewDestination,
@@ -37,6 +38,7 @@ import {
   styleUrl: './stl-print-preflight-page.scss',
 })
 export class StlPrintPreflightPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Preflight),
   );

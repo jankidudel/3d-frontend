@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   chosenCurrency,
   rememberCurrency,
@@ -44,6 +45,7 @@ import {
   styleUrl: './print-cost-page.scss',
 })
 export class PrintCostPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly currencyOptions = COST_CURRENCY_OPTIONS;
   readonly jobStatus = JobStatus;

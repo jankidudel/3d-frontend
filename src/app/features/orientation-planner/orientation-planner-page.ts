@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -20,6 +21,7 @@ type ModelFormat = 'stl' | '3mf';
   styleUrl: './orientation-planner-page.scss',
 })
 export class OrientationPlannerPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly mesh = signal<IndexedTriangleGeometry | null>(null);
   readonly format = signal<ModelFormat | null>(null);

@@ -211,6 +211,17 @@ export const MaterialComparisonRoutePath = Object.fromEntries(
   ]: `${typeof PublicRouteSegment.MaterialComparisons}/${(typeof MaterialComparisonSlug)[Key]}`;
 };
 
+export const MaterialComparisonRouteUrl = Object.fromEntries(
+  Object.entries(MaterialComparisonRoutePath).map(([key, path]) => [
+    key,
+    `/${path}`,
+  ]),
+) as {
+  readonly [
+    Key in keyof typeof MaterialComparisonRoutePath
+  ]: `/${(typeof MaterialComparisonRoutePath)[Key]}`;
+};
+
 type PublicRoutePathValues = {
   readonly [
     Key in keyof typeof PublicRoutePath

@@ -59,6 +59,62 @@ export type ResearchSource = Readonly<{
 const checked = '2026-09-20';
 export const materialSources: readonly ResearchSource[] = [
   {
+    id: 'prusa-pla',
+    title: 'PLA material guidance',
+    url: 'https://help.prusa3d.com/article/pla_2062',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
+    id: 'prusa-petg',
+    title: 'PETG material guidance',
+    url: 'https://help.prusa3d.com/article/petg_2059',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
+    id: 'prusa-abs',
+    title: 'ABS material guidance',
+    url: 'https://help.prusa3d.com/article/abs_2058',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
+    id: 'prusa-asa',
+    title: 'ASA material guidance',
+    url: 'https://help.prusa3d.com/article/asa_1809',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
+    id: 'prusa-tpu',
+    title: 'TPU material guidance',
+    url: 'https://help.prusa3d.com/article/flexible-materials_2057',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
+    id: 'prusa-pa-nylon',
+    title: 'PA-NYLON material guidance',
+    url: 'https://help.prusa3d.com/article/polyamide-nylon_167188',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
+    id: 'prusa-pc',
+    title: 'PC material guidance',
+    url: 'https://help.prusa3d.com/article/polycarbonate-pc_165812',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
+    id: 'prusa-pp',
+    title: 'PP material guidance',
+    url: 'https://help.prusa3d.com/article/polypropylene-pp_167126',
+    publisher: 'Prusa Research',
+    accessedAt: '2026-10-09',
+  },
+  {
     id: 'prusa-materials',
     title: 'Material guide',
     url: 'https://help.prusa3d.com/materials',
@@ -123,7 +179,7 @@ export const materials: readonly MaterialRecord[] = [
       'Not a general outdoor or heat-resistant choice.',
       'Filled PLA needs its own profile.',
     ],
-    sourceRefs: ['prusa-materials', 'bambu-filament'],
+    sourceRefs: ['prusa-pla'],
     lastVerifiedAt: checked,
   },
   {
@@ -162,7 +218,7 @@ export const materials: readonly MaterialRecord[] = [
       'May creep under sustained load.',
       'Not a substitute for high-temperature engineering materials.',
     ],
-    sourceRefs: ['prusa-materials', 'bambu-filament'],
+    sourceRefs: ['prusa-petg'],
     lastVerifiedAt: checked,
   },
   {
@@ -200,7 +256,7 @@ export const materials: readonly MaterialRecord[] = [
       'Open-frame printing is commonly unreliable.',
       'Outdoor UV exposure can be a poor fit.',
     ],
-    sourceRefs: ['prusa-materials', 'bambu-filament'],
+    sourceRefs: ['prusa-abs'],
     lastVerifiedAt: checked,
   },
   {
@@ -238,7 +294,7 @@ export const materials: readonly MaterialRecord[] = [
       'Usually needs a controlled build environment.',
       'Not a universal food-contact or safety material.',
     ],
-    sourceRefs: ['prusa-materials', 'bambu-filament'],
+    sourceRefs: ['prusa-asa'],
     lastVerifiedAt: checked,
   },
   {
@@ -279,7 +335,7 @@ export const materials: readonly MaterialRecord[] = [
       'TPU is a family, not one hardness.',
       'Multimaterial handling varies by printer.',
     ],
-    sourceRefs: ['prusa-materials', 'bambu-filament'],
+    sourceRefs: ['prusa-tpu'],
     lastVerifiedAt: checked,
   },
   {
@@ -314,7 +370,7 @@ export const materials: readonly MaterialRecord[] = [
       'PA6, PA12 and blends behave differently.',
       'Filled variants can need an abrasion-resistant nozzle.',
     ],
-    sourceRefs: ['prusa-materials', 'matterhackers-nylon'],
+    sourceRefs: ['prusa-pa-nylon'],
     lastVerifiedAt: checked,
   },
   {
@@ -349,7 +405,7 @@ export const materials: readonly MaterialRecord[] = [
       'Many printers cannot reach every PC profile.',
       'Blends may have different requirements.',
     ],
-    sourceRefs: ['prusa-materials', 'bambu-filament'],
+    sourceRefs: ['prusa-pc'],
     lastVerifiedAt: checked,
   },
   {
@@ -394,7 +450,7 @@ export const materials: readonly MaterialRecord[] = [
       'Properties depend strongly on grade.',
       'Do not infer food-contact suitability.',
     ],
-    sourceRefs: ['prusa-materials', 'bambu-filament'],
+    sourceRefs: ['prusa-pp'],
     lastVerifiedAt: checked,
   },
 ];
@@ -422,11 +478,19 @@ export function compatibilityFor(
       cautions: ['Choose a printer to check documented hardware context.'],
     };
   }
-  const text = printer.materials.toLowerCase();
-  const named =
-    material.id === MaterialId.Nylon
-      ? text.includes('pa')
-      : text.includes(material.displayName.toLowerCase().split(' ')[0]);
+  const documented: Readonly<Record<string, readonly MaterialId[]>> = {
+    'bambu-lab-a1': [MaterialId.Pla, MaterialId.Petg, MaterialId.Tpu],
+    'bambu-lab-a1-mini': [MaterialId.Pla, MaterialId.Petg, MaterialId.Tpu],
+    'bambu-lab-p1s': [
+      MaterialId.Pla,
+      MaterialId.Petg,
+      MaterialId.Tpu,
+      MaterialId.Abs,
+      MaterialId.Asa,
+    ],
+    'bambu-lab-p1p': [MaterialId.Pla, MaterialId.Petg, MaterialId.Tpu],
+  };
+  const named = documented[printer.id]?.includes(material.id) ?? false;
   if (named) {
     return {
       verdict: CompatibilityVerdict.DocumentedSupported,
@@ -453,35 +517,16 @@ export function compatibilityFor(
       cautions: ['Temperature capability alone is not proof of compatibility.'],
     };
   }
-  if (
-    printer.maxNozzleTemperatureC < material.nozzle[0] ||
-    printer.maxBedTemperatureC < material.bed[0]
-  ) {
-    return {
-      verdict: CompatibilityVerdict.NotRecommended,
-      reasons: [
-        'Documented printer temperatures do not meet this material family’s stated starting range.',
-      ],
-      requirements: [
-        'Use hardware with documented capability for the exact spool.',
-      ],
-      cautions: [],
-    };
-  }
   return {
-    verdict:
-      material.enclosure === 'usually'
-        ? CompatibilityVerdict.Conditional
-        : CompatibilityVerdict.LikelyCapable,
+    verdict: CompatibilityVerdict.Unknown,
     reasons: [
-      'This is a hardware-based inference, not manufacturer-confirmed material support.',
+      'Exact manufacturer support for this printer, nozzle and material combination has not been verified.',
     ],
-    requirements:
-      material.enclosure === 'usually'
-        ? ['A stable enclosure and spool-specific settings are usually needed.']
-        : ['Check the exact spool manufacturer profile.'],
+    requirements: [
+      'Check the printer material table, extrusion hardware and exact filament datasheet.',
+    ],
     cautions: [
-      'Filled and abrasive variants may require different nozzle hardware.',
+      'Nozzle temperature alone cannot establish compatibility; filled variants and feed paths can require different hardware.',
     ],
   };
 }

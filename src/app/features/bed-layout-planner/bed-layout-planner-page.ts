@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -15,6 +16,7 @@ import { BedPart, planBedLayout } from './bed-layout';
   styleUrl: './bed-layout-planner-page.scss',
 })
 export class BedLayoutPlannerPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly parts = signal<readonly BedPart[]>([]);
   readonly margin = signal(5);

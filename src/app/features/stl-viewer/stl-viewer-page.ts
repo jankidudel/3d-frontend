@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import {
   ReviewSession,
@@ -53,6 +54,7 @@ interface ModelInfo {
   styleUrl: '../shared/model-viewer-page.scss',
 })
 export class StlViewerPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Viewer),
   );
@@ -185,7 +187,7 @@ export class StlViewerPage {
     }
     if (file.size > MAX_FILE_SIZE) {
       this.fail(
-        'This file is over the 25 MB limit. Choose a smaller STL file.',
+        'This file is over the 25 MiB limit. Choose a smaller STL file.',
         'too_large',
       );
       return;

@@ -7,7 +7,7 @@
   </p>
   <section class="upload card">
     <h2>Calculate 3MF volume</h2>
-    <p>Choose a non-empty .3mf file up to 25 MB.</p>
+    <p>Choose a non-empty .3mf file up to 25 MiB.</p>
     <app-three-mf-file-picker
       #filePicker
       [selectedFileFromParent]="selectedFile()"
@@ -133,13 +133,38 @@
     <p>Yes, resolved build items are aggregated.</p>
     <p>
       Estimate material, energy and print cost with the
-      <a [routerLink]="routeUrl.PrintCostCalculator"
-        >3D Print Price Calculator</a
+      <a [routerLink]="routeUrl.PrintCostCalculator">3D Print Cost Calculator</a
       >.
     </p>
     <h3>Is the file uploaded?</h3>
     <p>
       Yes, through the same secure processing flow used by the other 3MF checks.
+    </p>
+  </section>
+  <section class="content">
+    <h2>Worked build and density example</h2>
+    <p>
+      One closed 20 mm cube encloses 8 cm³. Two separate placed copies enclose
+      16 cm³ in total. At an explicitly chosen density of 1.24 g/cm³, the solid
+      estimate is 16 x 1.24 = 19.84 g. This is arithmetic for full solid
+      geometry, not sliced filament consumption.
+    </p>
+    <p>
+      Declared inches convert linearly by 25.4 to millimetres, and volume
+      converts by 25.4³. Supported transforms are applied to placed instances.
+      Overlapping shells or inconsistent orientation can make summing solid
+      volumes inappropriate; review validity warnings rather than treating an
+      unreliable number as zero.
+    </p>
+    <p>
+      The 25 MiB limit means 26,214,400 bytes. The 3MF is uploaded for server
+      processing; the optional density input is calculated locally. Compare
+      <a [href]="guideRouteUrl.RouteHowToCalculate3mfVolume">resolved volume</a>
+      with
+      <a [href]="guideRouteUrl.RouteHowToEstimateFilamentWeightFromA3mfFile"
+        >solid weight versus slicer usage</a
+      >
+      before planning a spool or quote.
     </p>
   </section>
 </main>

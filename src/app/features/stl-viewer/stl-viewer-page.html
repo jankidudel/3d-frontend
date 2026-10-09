@@ -51,7 +51,7 @@
         aria-label="Choose STL file"
         (change)="onPicker($event)"
       />
-      <p class="hint">.stl only - maximum 25 MB</p>
+      <p class="hint">.stl only - maximum 25 MiB</p>
       <p class="privacy">
         Viewed locally in your browser - your file is not uploaded.
       </p>
@@ -173,7 +173,9 @@
       Bounding dimensions describe the full model. Point-to-point measurement
       checks two selected features, such as an opening width or mounting-tab
       length. Read
-      <a [routerLink]="'/how-to-measure-3d-model'">how to measure a 3D model</a>
+      <a [routerLink]="guideRouteUrl.RouteHowToMeasure3dModel"
+        >how to measure a 3D model</a
+      >
       for a practical workflow.
     </p>
     <h2>Inspect a cross-section</h2>
@@ -182,7 +184,7 @@
       X, Y or Z cut axis, then move the cut position through the displayed
       model. It hides one side of the mesh so you can inspect internal geometry
       from different angles. Read
-      <a [routerLink]="'/how-to-inspect-stl-3mf-cross-sections'"
+      <a [routerLink]="guideRouteUrl.RouteHowToInspectStl3mfCrossSections"
         >how to inspect STL and 3MF cross-sections</a
       >
       for a careful workflow and its limits.

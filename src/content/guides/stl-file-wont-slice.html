@@ -221,46 +221,16 @@ faq:
 
 <h2>Replay an actual thin-wall slicer experiment</h2>
 <p>
-  Our owned fixture has three separate 20 mm long, 10 mm high bars with widths
-  of 0.3, 0.45 and 0.9 mm. PrusaSlicer 2.9.6 was run with a 0.4 mm nozzle, 0.2
-  mm layers, 0.45 mm extrusion width, two perimeters, zero infill and thin-wall
-  detection disabled. Only the perimeter generator changed between Classic and
-  Arachne. This is a software experiment, not a physical print.
+  In the retained PrusaSlicer 2.9.6 software experiment, changing the perimeter
+  generator changed which thin bars appeared in the second-layer preview. This
+  is evidence to investigate extrusion settings when a valid thin feature
+  disappears, rather than repeatedly repairing its mesh.
 </p>
 <p>
-  The Classic export reports 83.41 mm of filament and an estimated 3 minutes 32
-  seconds. Arachne reports 142.10 mm and 5 minutes 28 seconds. Both reported low
-  bed adhesion; Classic also warned about loose extrusions. The longer result is
-  not automatically the better print. Inspect whether the intended narrow
-  geometry has extrusion paths, then review adhesion, strength and supports
-  separately.
-</p>
-<p>
-  Download the
-  <a href="/examples/english-market-batch/thin-wall-bars.stl" download
-    >owned thin-wall STL</a
+  See the
+  <a href="{{ GuideSlug.RouteHowToCheckStlWallThicknessFor3dPrinting }}"
+    >STL wall-thickness procedure</a
   >
-  and the
-  <a href="/examples/english-market-batch/thin-classic.gcode" download
-    >Classic</a
-  >
-  or
-  <a href="/examples/english-market-batch/thin-arachne.gcode" download
-    >Arachne preview G-code</a
-  >. Open the exports in the
-  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">G-code viewer</a> to
-  compare the extrusion paths. These demonstration exports use CLI defaults
-  outside the listed settings; do not send them to a printer. Filament mass is
-  unavailable because the CLI density default was zero.
-</p>
-
-<p>
-  If bounds appear acceptable but the sliced job exceeds the usable bed, follow
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >the fit guide with brim and placement checks</a
-  >. If topology counts look clean but layers overlap unexpectedly, investigate
-  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
-    >intersection checks and their limits</a
-  >
-  before assuming the file is sound.
+  for the complete geometry, settings and downloadable exports. The observation
+  does not certify a physical print.
 </p>

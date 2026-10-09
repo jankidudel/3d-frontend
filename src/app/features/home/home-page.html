@@ -1,68 +1,191 @@
 <main class="page home-page">
-  <p class="eyebrow">3D printing file tools</p>
-  <h1>3D Quality Tools</h1>
+  <p class="eyebrow">InspectMesh</p>
+  <h1>Check and prepare STL and 3MF files for 3D printing</h1>
   <p class="lead">
-    Free tools to check, measure and prepare 3D printing files.
+    Open a model, understand a mesh finding, compare an edited export or plan
+    your next print. File inspection helps you choose the next step; it cannot
+    certify a successful print.
   </p>
-
-  <section class="card review-example" aria-labelledby="example-review-title">
-    <h2 id="example-review-title">What a collection review gives you</h2>
+  <p class="hero-actions">
+    <a class="button" [routerLink]="routeUrl.Viewer">Open an STL model</a>
+    <a class="button button-secondary" [routerLink]="routeUrl.AllTools"
+      >Browse all tools</a
+    >
+  </p>
+  <section aria-labelledby="tasks-title">
+    <h2 id="tasks-title">Start with your task</h2>
+    <div class="task-grid">
+      <article class="card">
+        <h3>Open and measure a file</h3>
+        <p>See what the file contains and confirm its intended size.</p>
+        <a [routerLink]="routeUrl.DimensionsChecker">Measure STL dimensions</a>
+        ·
+        <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+          >Measure a 3MF build</a
+        >
+      </article>
+      <article class="card">
+        <h3>Diagnose a slicing problem</h3>
+        <p>
+          Separate a missing boundary from ambiguous topology before changing
+          the surface.
+        </p>
+        <a [href]="guideRouteUrl.RouteStlFileWontSlice">STL slicing triage</a> ·
+        <a [routerLink]="routeUrl.ThreeMfPrintPreflight">Check a 3MF build</a>
+      </article>
+      <article class="card">
+        <h3>Prepare an export</h3>
+        <p>Resize or clean an export, then compare it with the original.</p>
+        <a [routerLink]="routeUrl.StlScaleTool">Scale an STL</a> ·
+        <a [routerLink]="routeUrl.StlRepair">Review supported repairs</a>
+      </article>
+      <article class="card">
+        <h3>Plan the print bed</h3>
+        <p>
+          Screen candidate orientations and arrange model footprints before
+          slicing.
+        </p>
+        <a [routerLink]="routeUrl.OrientationPlanner">Compare orientations</a> ·
+        <a [routerLink]="routeUrl.BedLayoutPlanner">Arrange parts</a>
+      </article>
+      <article class="card">
+        <h3>Prepare a job and quote</h3>
+        <p>
+          Check supplies and timing, then separate production cost from selling
+          price.
+        </p>
+        <a [routerLink]="routeUrl.FilamentRemainingCalculator"
+          >Check a partial spool</a
+        >
+        ·
+        <a [routerLink]="routeUrl.PrintFinishTimeCalculator"
+          >Plan finish time</a
+        >
+      </article>
+    </div>
+  </section>
+  <section class="tools" aria-labelledby="featured-title">
+    <h2 id="featured-title">Featured tools</h2>
     <p>
-      Owned software example, not a physical print test. Each file keeps its own
-      outcome:
+      Eight starting points for individual files, repeated work and job
+      planning.
     </p>
+    <div class="tool-grid">
+      @for (tool of featuredTools; track tool.route) {
+        <article class="tool-card card">
+          <h3>{{ tool.title }}</h3>
+          <p>{{ tool.description }}</p>
+          <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
+        </article>
+      }
+    </div>
+  </section>
+  <section class="card review-example" aria-labelledby="example-title">
+    <h2 id="example-title">
+      Example model: a missing face changes the next step
+    </h2>
+    <figure>
+      <img
+        ngSrc="/examples/home/open-boundary.svg"
+        width="640"
+        height="240"
+        alt="Closed cube beside a cube with one missing face and four highlighted boundary edges"
+      />
+      <figcaption>
+        Original InspectMesh example geometry for software checks, not a
+        physical print test.
+      </figcaption>
+    </figure>
+    <p>
+      A closed 20 mm cube has 12 triangles, zero boundary edges and 8,000 mm³
+      screened volume. Removing one square face leaves four boundary edges and
+      unavailable volume. Unavailable does not mean zero.
+    </p>
+    <p>
+      Inspect the opening first: if it is intentional, automatic filling changes
+      the design. If it is missing geometry, correct it and recheck the exported
+      file.
+    </p>
+    <p>
+      <a href="/examples/english-market-batch/closed-20mm-cube.stl" download
+        >Download the closed cube</a
+      >
+      ·
+      <a href="/examples/english-market-batch/open-face-cube.stl" download
+        >Download the open-face cube</a
+      >
+      ·
+      <a [routerLink]="routeUrl.BatchStlChecker">Run the collection example</a>
+    </p>
+  </section>
+  <section>
+    <h2>From file to slicer review</h2>
+    <ol>
+      <li>
+        <strong>Inspect:</strong> confirm size, units and the intended objects.
+      </li>
+      <li>
+        <strong>Interpret:</strong> decide whether a finding is a fault or part
+        of the design.
+      </li>
+      <li>
+        <strong>Correct:</strong> preserve the original and make the smallest
+        justified change.
+      </li>
+      <li>
+        <strong>Compare:</strong> recheck dimensions and geometry after
+        exporting.
+      </li>
+      <li>
+        <strong>Slice:</strong> review supports, excluded bed regions, material
+        settings and the machine profile.
+      </li>
+    </ol>
+    <p>
+      Geometry checks do not determine strength, machine safety or all support
+      requirements.
+    </p>
+  </section>
+  <section>
+    <h2>Guides for the next decision</h2>
     <ul>
       <li>
-        <strong>Closed 20 mm cube:</strong> 12 triangles, zero boundary edges,
-        8,000 mm³ screened volume. Confirm skipped printer fit before slicing.
+        <a [href]="guideRouteUrl.RouteWhatIsAnStlFile">What is an STL file?</a>
+        Understand the mesh and its missing unit declaration.
       </li>
       <li>
-        <strong>Open-face cube:</strong> four boundary edges and unavailable
-        volume. Inspect the intended missing face before repair.
+        <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
+          >Is this model ready to print?</a
+        >
+        Work through geometry, fit and slicer decisions.
       </li>
       <li>
-        <strong>Malformed STL:</strong> failed processing. Re-export; failure
-        cannot count as zero errors.
+        <a [href]="guideRouteUrl.RouteWhyWontMy3mfFileSlice"
+          >Why will this 3MF not slice?</a
+        >
+        Diagnose package and build issues.
+      </li>
+      <li>
+        <a [href]="guideRouteUrl.RouteHowMuchToChargeFor3dPrints"
+          >How much should I charge?</a
+        >
+        Distinguish a production estimate from a customer quote.
       </li>
     </ul>
+    <a [routerLink]="routeUrl.Guides">Browse practical guides</a>
+  </section>
+  <section>
+    <h2>Where your files are processed</h2>
     <p>
-      The report records units, settings, method limits and the next action,
-      with CSV, JSON and printing. Optional history stays in this browser
-      without original geometry.
+      Viewers, scale adjustment, collection review and several planning tools
+      run in your browser. Some quality, topology and volume checks upload the
+      selected file for server processing. Each tool explains its own processing
+      before you choose a file.
     </p>
-    <a class="button" [routerLink]="routeUrl.BatchStlChecker"
-      >Open the checker and run this example</a
-    >
+    <p>
+      <a [href]="routeUrl.Privacy">Read processing and privacy details</a>.
+      Findings describe the implemented method and its limits; they are not
+      physical print tests.
+    </p>
   </section>
-
-  <section class="tools" aria-labelledby="tools-title">
-    <div class="section-intro">
-      <h2 id="tools-title">Choose a tool</h2>
-      <p>Currently supporting STL and 3MF files.</p>
-    </div>
-
-    @for (group of toolGroups; track group.id) {
-      <section class="tool-group" [attr.aria-labelledby]="group.id">
-        <h3 [id]="group.id">{{ group.title }}</h3>
-        <div class="tool-grid">
-          @for (tool of group.tools; track tool.route) {
-            <article class="tool-card card">
-              <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
-              <h4>{{ tool.title }}</h4>
-              <p>{{ tool.description }}</p>
-              <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
-            </article>
-          }
-        </div>
-        <p>
-          <a
-            class="button button-secondary"
-            [routerLink]="group.exploreRoute"
-            >{{ group.homeLinkText }}</a
-          >
-        </p>
-      </section>
-    }
-  </section>
-  <p><a [routerLink]="routeUrl.AllTools">All tools</a></p>
 </main>

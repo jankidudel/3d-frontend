@@ -101,4 +101,30 @@
       <a [routerLink]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
+  <section class="content">
+    <h2>Use the count to investigate complexity</h2>
+    <p>
+      The original
+      <a href="/examples/english-market-batch/closed-20mm-cube.stl" download
+        >20 mm cube</a
+      >
+      needs 12 triangles for six flat faces. Scaling it leaves that count
+      unchanged. A curved surface may need many more faces to preserve its
+      intended outline; there is no universal good triangle count.
+    </p>
+    <p>
+      Binary STL uses an 84-byte header/count region plus 50 bytes per triangle,
+      so this 12-triangle control uses 684 bytes. ASCII encoding differs. Count
+      describes mesh complexity, not surface validity, visible accuracy or a
+      reliable slicing time.
+    </p>
+    <p>
+      This tool uploads the file for server counting. If complexity is
+      excessive, distinguish
+      <a [href]="guideRouteUrl.RouteAsciiVsBinaryStl">lossless encoding</a> from
+      <a [href]="guideRouteUrl.RouteHowToReduceStlTriangleCount"
+        >surface simplification</a
+      >. Compare changed details and dimensions after a reduction.
+    </p>
+  </section>
 </main>

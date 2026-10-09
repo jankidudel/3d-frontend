@@ -115,4 +115,27 @@
       <a [routerLink]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
+  <section class="content">
+    <h2>A closed boundary is the question here</h2>
+    <p>
+      Use this check when you need to find exposed triangle boundaries. In the
+      <a href="/examples/english-market-batch/open-face-cube.stl" download
+        >open-face cube</a
+      >, a missing square face leaves four open edges. The opening may be
+      intentional: inspect its location before accepting a repair that changes
+      the design.
+    </p>
+    <p>
+      The closed 20 mm control has zero detected boundaries and 8,000 mm³
+      screened volume. Volume on the open example is unavailable, not zero. Even
+      no detected open edges cannot establish a valid solid when orientation,
+      intersections or overlapping shells remain unresolved.
+    </p>
+    <p>
+      Files are uploaded for server inspection. Use the
+      <a [href]="routeUrl.ManifoldChecker">manifold checker</a> for ambiguous
+      edge connections and shell interpretation, then confirm any changed
+      export. Watertightness does not determine supports or successful printing.
+    </p>
+  </section>
 </main>

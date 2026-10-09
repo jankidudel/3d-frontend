@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import {
   Component,
@@ -48,6 +49,7 @@ type RepairReport = {
   styleUrl: '../stl-quality/stl-quality-page/stl-quality-page.scss',
 })
 export class StlRepairPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
   readonly selectedFile = signal<File | null>(null);

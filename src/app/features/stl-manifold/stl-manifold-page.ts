@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   Component,
   computed,
@@ -34,6 +35,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: '../shared/model-checker-page.scss',
 })
 export class StlManifoldPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
   readonly jobFailureMessage = jobFailureMessage;

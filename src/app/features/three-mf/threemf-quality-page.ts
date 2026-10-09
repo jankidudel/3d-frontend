@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { DOCUMENT } from '@angular/common';
 import {
   Component,
@@ -38,6 +39,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: '../shared/model-checker-page.scss',
 })
 export class ThreeMfQualityPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
   readonly jobFailureMessage = (failure: Job['failure']) =>

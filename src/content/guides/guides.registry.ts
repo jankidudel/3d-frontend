@@ -114,7 +114,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 102,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-08',
+    updatedDate: '2026-10-09',
     checkEditorialTargets: true,
   },
   {
@@ -451,7 +451,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 140,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-09',
     checkEditorialTargets: false,
   },
   {

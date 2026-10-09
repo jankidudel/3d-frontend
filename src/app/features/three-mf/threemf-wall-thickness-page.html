@@ -68,8 +68,8 @@
       <p>
         If open or ambiguous mesh geometry makes a thickness result less
         trustworthy, inspect it first with the
-        <a routerLink="/3mf-repair">3MF Repair Tool</a> where conservative
-        cleanup is available.
+        <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair Tool</a> where
+        conservative cleanup is available.
       </p>
     </section>
   }
@@ -133,15 +133,17 @@
   <section class="content">
     <p>
       Learn how to interpret a warning in the
-      <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a
+      <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
+        >3D Print Wall Thickness Guide</a
       >.
     </p>
     <p>
       Need mesh integrity, declared unit, printer fit, wall and volume guidance
       together?
-      <a routerLink="/3mf-print-preflight">Run 3MF Print Preflight</a>. Also
-      review unsupported geometry with the
-      <a href="/3mf-overhang-checker">3MF Overhang Checker</a>.
+      <a [routerLink]="routeUrl.ThreeMfPrintPreflight"
+        >Run 3MF Print Preflight</a
+      >. Also review unsupported geometry with the
+      <a [href]="routeUrl.ThreeMfOverhangChecker">3MF Overhang Checker</a>.
     </p>
   </section>
   <section class="content interpretation-guide">
@@ -181,7 +183,7 @@
       does not interpret application-specific slicer profiles, validate supports
       or certify a process minimum. Stop if the build differs from the source or
       an important instance is absent.
-      <a href="/3mf-missing-objects-after-import"
+      <a [href]="routeUrl.MissingThreeMfObjectsGuide"
         >Resolve missing build objects</a
       >
       before sampling them, and retain the original package.

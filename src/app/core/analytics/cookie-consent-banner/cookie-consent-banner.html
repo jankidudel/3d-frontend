@@ -10,7 +10,7 @@
         We use optional analytics cookies to understand how the tool is used and
         improve it.
       </p>
-      <a routerLink="/cookies">Cookie settings</a>
+      <a [routerLink]="routeUrl.Cookies">Cookie settings</a>
     </div>
     <div class="actions">
       <button class="choice-button" type="button" (click)="consent.accept()">

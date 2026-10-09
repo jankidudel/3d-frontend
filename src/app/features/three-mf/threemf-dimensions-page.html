@@ -11,7 +11,7 @@
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
-    <p class="hint">.3mf only - maximum 25 MB</p>
+    <p class="hint">.3mf only - maximum 25 MiB</p>
     <button
       class="button submit"
       type="button"
@@ -315,11 +315,14 @@
   <section class="content">
     <p>
       Need to change the build size? Read
-      <a href="/how-to-scale-a-3mf-file">How to Scale a 3MF File</a>,
+      <a [href]="guideRouteUrl.RouteHowToScaleA3mfFile"
+        >How to Scale a 3MF File</a
+      >,
       <a [routerLink]="routeUrl.RotateModelToFitPrinterGuide"
         >How to Rotate a 3D Model to Fit Your Printer</a
       >
-      and <a href="/3mf-units-explained">3MF Units Explained</a>.
+      and
+      <a [href]="guideRouteUrl.Route3mfUnitsExplained">3MF Units Explained</a>.
     </p>
     <h2>How to measure a 3MF file</h2>
     <ol>

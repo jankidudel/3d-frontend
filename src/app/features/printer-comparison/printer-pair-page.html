@@ -46,14 +46,15 @@
       Status: {{ right().status }}.
     </p>
     <p>
-      Prices are indicative, region- and bundle-sensitive, and last checked
+      Prices are historical USD snapshots, region- and bundle-sensitive,
+      recorded
       {{ left().lastVerified }}. Compare like-for-like base printers, combos and
       accessories before deciding.
     </p>
   </section>
   <section>
     <h2>Key differences</h2>
-    <table>
+    <table tabindex="0" aria-label="Key printer differences">
       <thead>
         <tr>
           <th scope="col">Feature</th>
@@ -74,8 +75,8 @@
         </tr>
         <tr>
           <th scope="row">Maximum bed temperature</th>
-          <td>{{ left().maxBedTemperatureC }} C</td>
-          <td>{{ right().maxBedTemperatureC }} C</td>
+          <td>{{ formatNumber(left().maxBedTemperatureC, 'C') }}</td>
+          <td>{{ formatNumber(right().maxBedTemperatureC, 'C') }}</td>
         </tr>
         <tr>
           <th scope="row">Multicolour</th>
@@ -93,7 +94,9 @@
   </section>
   <section>
     <h2>Full specifications</h2>
-    <table>
+    <p>{{ left().dimensionsNote }}</p>
+    <p>{{ right().dimensionsNote }}</p>
+    <table tabindex="0" aria-label="Full printer specifications">
       <thead>
         <tr>
           <th scope="col">Specification</th>
@@ -103,19 +106,19 @@
       </thead>
       <tbody>
         <tr>
-          <th scope="row">Machine dimensions</th>
+          <th scope="row">Physical machine dimensions (not shipping size)</th>
           <td>{{ formatDimensions(left().machineDimensionsMm) }}</td>
           <td>{{ formatDimensions(right().machineDimensionsMm) }}</td>
         </tr>
         <tr>
           <th scope="row">Maximum nozzle temperature</th>
-          <td>{{ left().maxNozzleTemperatureC }} C</td>
-          <td>{{ right().maxNozzleTemperatureC }} C</td>
+          <td>{{ formatNumber(left().maxNozzleTemperatureC, 'C') }}</td>
+          <td>{{ formatNumber(right().maxNozzleTemperatureC, 'C') }}</td>
         </tr>
         <tr>
           <th scope="row">Maximum claimed speed</th>
-          <td>{{ left().maxClaimedSpeedMmS }} mm/s</td>
-          <td>{{ right().maxClaimedSpeedMmS }} mm/s</td>
+          <td>{{ formatNumber(left().maxClaimedSpeedMmS, 'mm/s') }}</td>
+          <td>{{ formatNumber(right().maxClaimedSpeedMmS, 'mm/s') }}</td>
         </tr>
         <tr>
           <th scope="row">Camera</th>
@@ -154,7 +157,11 @@
       has not hands-on tested these printers for this page. Maximum speeds are
       manufacturer claims, material results vary, and prices are time-sensitive.
     </p>
-    <p>Specifications last checked: {{ left().lastVerified }}.</p>
+    <p>
+      Source dates: {{ left().displayName }} {{ left().lastVerified }};
+      {{ right().displayName }} {{ right().lastVerified }}. Unverified fields
+      are explicitly marked.
+    </p>
   </section>
   <section>
     <h2>Sources</h2>

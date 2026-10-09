@@ -1,11 +1,17 @@
+import { MaterialComparisonRouteUrl } from '../../core/seo/public-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { printers } from '../printer-comparison/printer-catalogue';
-import { compatibilityFor, MaterialId, materials } from './material-catalogue';
+import {
+  compatibilityFor,
+  MaterialId,
+  materials,
+  materialSources,
+} from './material-catalogue';
 
-const UseCase = {
+export const UseCase = {
   Visual: 'visual',
   Functional: 'functional',
   Outdoor: 'outdoor',
@@ -21,7 +27,7 @@ type Score = Readonly<{
   blockers: readonly string[];
   tradeoffs: readonly string[];
 }>;
-function scoreMaterial(
+export function scoreMaterial(
   material: (typeof materials)[number],
   useCase: UseCase,
   enclosure: boolean,
@@ -52,6 +58,12 @@ function scoreMaterial(
     blockers.push('This material usually needs a controlled enclosure.');
     total -= 20;
   }
+  if (useCase === UseCase.Flexible && material.ratings.flexibility < 4) {
+    blockers.push(
+      'This family does not meet the flexible-part priority; a thin rigid geometry is not an elastic material substitute.',
+    );
+    total -= 20;
+  }
   if (material.drying === 'high') {
     tradeoffs.push('Drying and careful storage are typically important.');
   }
@@ -70,8 +82,9 @@ function scoreMaterial(
     </p>
     <section class="card material-form-card">
       <fieldset>
-        <legend>What is the primary need?</legend>
+        <legend id="material-need-label">What is the primary need?</legend>
         <select
+          aria-labelledby="material-need-label"
           [value]="useCase()"
           (change)="useCase.set($any($event.target).value)"
         >
@@ -139,6 +152,33 @@ function scoreMaterial(
       </div>
     </section>
     <section>
+      <h2>Trace the ranking to its basis</h2>
+      <p>
+        The score is ease plus three times the selected property band, minus 20
+        for each unmet enclosure or flexibility requirement. Bands are editorial
+        ordinal choices for typical unfilled families; the spacing is not a
+        measured physical scale. Heat ranking does not enter an operating
+        temperature and cannot qualify a heated part. Outdoor ranking does not
+        test sealing or UV lifetime.
+      </p>
+      <p>
+        For a flexible bumper with no enclosure, TPU can match the flexibility
+        priority while rigid PLA and PETG are flagged. For an outdoor cover
+        without a suitable enclosure, ASA's exposure rationale does not remove
+        its print-environment blocker. For a rigid locator, use functional
+        requirements and inspect deformation rather than choosing the flexible
+        ranking.
+      </p>
+      <ul>
+        @for (source of materialSources; track source.id) {
+          <li>
+            <a [href]="source.url">{{ source.title }}</a
+            >: {{ source.publisher }}, checked {{ source.accessedAt }}.
+          </li>
+        }
+      </ul>
+    </section>
+    <section>
       <h2>Why formulations and hardware matter</h2>
       <p>
         Base polymer names do not define every spool. Check the manufacturer
@@ -150,6 +190,7 @@ function scoreMaterial(
 })
 export class MaterialSelectorPage {
   readonly routeUrl = PublicRouteUrl;
+  readonly materialSources = materialSources;
   readonly choices = [
     { value: UseCase.Visual, label: 'Visual prototype' },
     { value: UseCase.Functional, label: 'Everyday functional part' },
@@ -202,9 +243,30 @@ export class MaterialSelectorPage {
     <p class="eyebrow">Interactive material comparison</p>
     <h1>Compare 3D Printing Materials</h1>
     <p class="lead">
-      Compare two published material families. Query choices are local UI state;
-      the clean route remains canonical.
+      Compare setup and family characteristics, then use a dedicated pair guide
+      for the requirements and tradeoffs that determine your part.
     </p>
+    <section>
+      <h2>Compare the requirement, then the family</h2>
+      <p>
+        Select two families to inspect their setup expectations. The numerical
+        bands are editorial candidate-ordering aids, not tested temperatures,
+        loads or universal performance scores. For a 40 mm locating plate versus
+        a flexible bumper, rigidity and loaded deformation answer different
+        questions: compare PLA/TPU rather than treating a higher band as better
+        overall.
+      </p>
+      <p>
+        For heat, moisture, chemical or outdoor use, obtain the exact
+        formulation datasheet and actual exposure conditions. This comparison
+        runs locally and does not upload a model.
+        <a [href]="materialComparisonUrl.PlaVsTpu"
+          >Read the rigid-versus-flexible decision</a
+        >
+        or
+        <a [href]="materialComparisonUrl.PetgVsAsa">review an outdoor cover</a>.
+      </p>
+    </section>
     <section class="card material-form-card material-compare-form">
       <label
         >First material
@@ -230,37 +292,60 @@ export class MaterialSelectorPage {
     </section>
     <section>
       <h2>{{ left().displayName }} and {{ right().displayName }}</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Property</th>
-            <th>{{ left().displayName }}</th>
-            <th>{{ right().displayName }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Difficulty</th>
-            <td>{{ left().difficulty }}</td>
-            <td>{{ right().difficulty }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Nozzle starting range</th>
-            <td>{{ left().nozzle[0] }}-{{ left().nozzle[1] }} C</td>
-            <td>{{ right().nozzle[0] }}-{{ right().nozzle[1] }} C</td>
-          </tr>
-          <tr>
-            <th scope="row">Flexibility</th>
-            <td>{{ left().ratings.flexibility }}/5</td>
-            <td>{{ right().ratings.flexibility }}/5</td>
-          </tr>
-          <tr>
-            <th scope="row">Heat</th>
-            <td>{{ left().ratings.heat }}/5</td>
-            <td>{{ right().ratings.heat }}/5</td>
-          </tr>
-        </tbody>
-      </table>
+      <div
+        class="material-table-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Material comparison table"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>{{ left().displayName }}</th>
+              <th>{{ right().displayName }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Difficulty</th>
+              <td>{{ left().difficulty }}</td>
+              <td>{{ right().difficulty }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Print environment</th>
+              <td>
+                Enclosure: {{ left().enclosure }}; drying: {{ left().drying }}
+              </td>
+              <td>
+                Enclosure: {{ right().enclosure }}; drying: {{ right().drying }}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Flexibility</th>
+              <td>
+                {{
+                  left().id === materialIds.Tpu
+                    ? 'Flexible; verify hardness'
+                    : 'Check loaded deformation'
+                }}
+              </td>
+              <td>
+                {{
+                  right().id === materialIds.Tpu
+                    ? 'Flexible; verify hardness'
+                    : 'Check loaded deformation'
+                }}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Heat</th>
+              <td>Grade-specific service data required</td>
+              <td>Grade-specific service data required</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p>
         <a [routerLink]="['/3d-printing-materials', left().slug]"
           >{{ left().displayName }} guide</a
@@ -274,6 +359,8 @@ export class MaterialSelectorPage {
   </main>`,
 })
 export class MaterialComparisonPage {
+  readonly materialComparisonUrl = MaterialComparisonRouteUrl;
+  readonly materialIds = MaterialId;
   readonly materialList = materials;
   readonly leftId = signal<MaterialId>(MaterialId.Pla);
   readonly rightId = signal<MaterialId>(MaterialId.Petg);

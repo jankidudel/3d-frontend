@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -27,6 +28,8 @@ import {
   styleUrl: './threemf-wall-thickness-page.scss',
 })
 export class ThreeMfWallThicknessPage {
+  readonly routeUrl = PublicRouteUrl;
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly file = signal<File | null>(null);
   readonly resolved = signal<ResolvedThreeMfGeometry | null>(null);
   readonly threshold = signal(1.2);

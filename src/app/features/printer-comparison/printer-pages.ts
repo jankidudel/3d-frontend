@@ -1,4 +1,8 @@
 import {
+  formatPrinterDimensions,
+  formatPrinterNumber,
+} from './printer-spec-format';
+import {
   ProductLinkComponent,
   ProductRelationship,
   RetailerRegion,
@@ -136,19 +140,23 @@ export class PrinterHubPage {
             <td>{{ printer().buildVolumeMm.join(' x ') }} mm</td>
           </tr>
           <tr>
+            <th scope="row">Physical machine dimensions</th>
+            <td>{{ formatDimensions(printer().machineDimensionsMm) }}</td>
+          </tr>
+          <tr>
             <th scope="row">Enclosure</th>
             <td>{{ printer().enclosed ? 'Enclosed' : 'Open frame' }}</td>
           </tr>
           <tr>
             <th scope="row">Maximum nozzle temperature</th>
-            <td>{{ printer().maxNozzleTemperatureC }} C</td>
+            <td>{{ formatNumber(printer().maxNozzleTemperatureC, 'C') }}</td>
           </tr>
           <tr>
             <th scope="row">Maximum bed temperature</th>
-            <td>{{ printer().maxBedTemperatureC }} C</td>
+            <td>{{ formatNumber(printer().maxBedTemperatureC, 'C') }}</td>
           </tr>
           <tr>
-            <th scope="row">Indicative US price</th>
+            <th scope="row">Historical USD price snapshot</th>
             <td>
               {{
                 printer().indicativeUsdPrice
@@ -167,6 +175,7 @@ export class PrinterHubPage {
     </section>
     <section>
       <h2>Build-volume fit</h2>
+      <p>{{ printer().dimensionsNote }}</p>
       <p>
         Use this printer's nominal build volume in the local fit checker.
         Confirm reduced usable regions and slicer-specific restrictions before
@@ -219,9 +228,9 @@ export class PrinterHubPage {
     <section>
       <h2>Sources and methodology</h2>
       <p>
-        Last verified: {{ printer().lastVerified }}. InspectMesh summarises
-        attributable specification sources and has not physically tested this
-        unit.
+        Catalogue baseline: {{ printer().lastVerified }}. Individual source
+        checks are dated below. InspectMesh summarises attributable
+        specification sources and has not physically tested this unit.
       </p>
       <ul>
         @for (source of printer().sources; track source.url) {
@@ -238,7 +247,7 @@ export class PrinterHubPage {
         <h2>A reproducible nominal-fit decision</h2>
         <p>{{ example }}</p>
         <p>
-          The owned example is a 250 × 210 × 180 mm rigid box. All six
+          The example model is a 250 × 210 × 180 mm rigid box. All six
           right-angle axis permutations are tested against the catalogue's
           nominal dimensions. A box pass leaves slicer bed exclusions, brims,
           supports and physical assembly unresolved. Scaling a helmet to fit a
@@ -263,6 +272,8 @@ export class PrinterHubPage {
   </main>`,
 })
 export class PrinterDetailPage {
+  readonly formatDimensions = formatPrinterDimensions;
+  readonly formatNumber = formatPrinterNumber;
   readonly fitExample = computed(() => {
     const id = this.printer().id;
     const examples: Record<string, string> = {
@@ -272,6 +283,18 @@ export class PrinterDetailPage {
         'The example fits the nominal 256 × 256 × 256 mm A1 box in its original axis order. The 250 mm axis leaves only 6 mm nominal total clearance, so a brim or slicer exclusion can change practicality.',
       'bambu-lab-p1s':
         'The example fits the nominal 256 mm cube, but that fit alone does not decide between an enclosed P1S and an open-frame printer. Match the exact material environment and job requirements separately.',
+      'bambu-lab-p2s':
+        'The 250 x 210 x 180 mm example fits the P2S nominal cube with 6 mm total clearance on the longest axis. Changing from a P1S does not increase this capacity; compare nozzle handling and monitoring needs instead.',
+      'bambu-lab-x1-carbon':
+        'The example fits the X1 Carbon nominal cube, just as on the P-series 256 mm platforms. Sensors and accessories cannot make a larger footprint fit; assess those features separately from geometric capacity.',
+      'prusa-core-one':
+        'Place the 210 mm side across the CORE One 220 mm depth and the 250 mm side along its 250 mm width. This leaves zero total width allowance. A 260 mm-tall narrow part illustrates the different tradeoff: it is below the 270 mm nominal height but above a 256 mm cube.',
+      'creality-k1c':
+        'The example exceeds the K1C 220 mm horizontal axes in its original order. A right-angle turn placing the 250 mm side vertically reaches its 250 mm height exactly, with no height allowance. Confirm orientation and supports before treating this boundary as usable.',
+      'elegoo-neptune-4-plus':
+        'The example fits the Neptune 4 Plus nominal 320 x 320 x 385 mm box with 70 mm width and 110 mm depth allowance. A 300 x 280 mm panel illustrates why the larger bed can matter, but its flatness and bed-motion workspace need separate review.',
+      'sovol-sv06-ace':
+        'The 250 mm axis cannot lie across either 220 mm horizontal dimension. Turning it vertically reaches the 250 mm nominal height exactly. For a flat 230 x 200 mm panel, try the fit checker before assuming an axis-aligned layout will work.',
       'prusa-mk4s':
         'The example matches a nominal 250 × 210 × 220 mm MK4S box on two horizontal axes, leaving zero nominal XY clearance. Treat that equality as a boundary case: the real footprint, bed exclusions and brim can make the job unsuitable.',
     };

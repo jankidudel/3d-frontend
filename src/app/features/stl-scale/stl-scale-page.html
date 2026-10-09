@@ -215,12 +215,39 @@
         <p class="safety-note">
           Scaling changes size only. It does not repair holes, non-manifold
           edges, wall thickness, or orientation problems. Check the
-          <a href="/stl-quality-checker">STL Quality Checker</a>,
-          <a href="/stl-repair">STL Repair Tool</a>,
-          <a href="/stl-dimensions-checker">STL Dimensions Checker</a>, or
-          <a href="/stl-splitter">STL Splitter</a> before printing.
+          <a [href]="routeUrl.QualityCheck">STL Quality Checker</a>,
+          <a [href]="routeUrl.StlRepair">STL Repair Tool</a>,
+          <a [href]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>, or
+          <a [href]="routeUrl.StlSplitter">STL Splitter</a> before printing.
         </p>
       </section>
     }
   }
+  <section class="content">
+    <h2>Choose percentage, target size or coordinate conversion</h2>
+    <p>
+      To change a 20 mm width to 30 mm, use 30 / 20 = 1.5, or 150%. Target
+      dimension applies the same factor to every axis: a 20 mm cube becomes 30 x
+      30 x 30 mm. Its enclosed volume grows by 1.5³ = 3.375, from 8,000 to
+      27,000 mm³ if it remains valid.
+    </p>
+    <p>
+      STL does not declare units. Interpreting 20 coordinates as inches
+      describes 508 mm; it does not add unit metadata. This tool's conversion
+      rescales coordinates for the chosen target convention. Confirm what the
+      receiving slicer assumes before exporting.
+    </p>
+    <p>
+      Keep the original. Download the changed STL, reopen it in the
+      <a [href]="routeUrl.DimensionsChecker">dimensions checker</a> and confirm
+      the intended physical size. Scaling also changes hole sizes, wall
+      thickness and mating clearances; it does not repair topology. ASCII/binary
+      files up to 25 MiB are processed locally.
+    </p>
+    <p>
+      <a href="/examples/english-market-batch/closed-20mm-cube.stl" download
+        >Try the known 20 mm cube</a
+      >. This is original example geometry, not a print test.
+    </p>
+  </section>
 </main>

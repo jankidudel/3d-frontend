@@ -7,7 +7,7 @@
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your 3MF</h2>
-    <p>.3mf only - maximum 25 MB</p>
+    <p>.3mf only - maximum 25 MiB</p>
     <app-three-mf-file-picker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
@@ -138,6 +138,31 @@
     <p>
       No. Use the full quality report and confirm the final setup in your
       slicer.
+    </p>
+  </section>
+  <section class="content">
+    <h2>Inspect topology in the placed build</h2>
+    <p>
+      3MF resources can be referenced more than once. This check resolves
+      supported components, placements and transforms rather than treating every
+      stored object as a printed part. Units are normalised before geometric
+      inspection; unsupported package features can still need the originating
+      application.
+    </p>
+    <p>
+      One incident face means an open boundary, while more than two means
+      ambiguous edge sharing. An open-face cube placed twice contributes
+      boundaries from both copies. Translation does not close a missing face.
+      Separate placed shells can be intended, so review build items before
+      joining them.
+    </p>
+    <p>
+      The file is uploaded for analysis. Edge/orientation findings do not
+      establish every vertex or self-intersection property. Use
+      <a [href]="guideRouteUrl.RouteWhatIsNonManifoldGeometry"
+        >the topology guide</a
+      >
+      to interpret the finding and recheck the exported 3MF after correction.
     </p>
   </section>
 </main>

@@ -80,66 +80,102 @@
       }
     </section>
   }
-  @if (plan(); as layout) {
-    <section class="card">
-      <h2>Suggested first batch</h2>
-      <div class="layout-summary" role="status">
-        <strong
-          >{{ layout.placed.length }} of {{ parts().length }} parts in this
-          batch</strong
-        >
-        <span
-          >{{ format(bedUse().percentage) }}% of the bed footprint used</span
-        >
-      </div>
-      <div class="bed" [style.aspect-ratio]="bed().width + ' / ' + bed().depth">
-        @for (part of layout.placed; track part.name) {
-          <div
-            class="part"
-            [style.left.%]="(part.x / bed().width) * 100"
-            [style.top.%]="(part.y / bed().depth) * 100"
-            [style.width.%]="(part.width / bed().width) * 100"
-            [style.height.%]="(part.depth / bed().depth) * 100"
+  @if (parts().length > 0 && !loading() && !error()) {
+    @if (plan(); as layout) {
+      <section class="card">
+        <h2>Suggested first batch</h2>
+        <div class="layout-summary" role="status">
+          <strong
+            >{{ layout.placed.length }} of {{ parts().length }} parts in this
+            batch</strong
           >
-            {{ part.name }}
-          </div>
-        }
-      </div>
-      <h3>Placed parts</h3>
-      <ul class="placed-parts">
-        @for (part of layout.placed; track part.name) {
-          <li>
-            <strong>{{ part.name }}</strong
-            >: {{ format(part.width) }} × {{ format(part.depth) }} mm{{
-              part.rotated ? ' (rotated 90°)' : ''
-            }}
-          </li>
-        }
-      </ul>
-      <p>
-        {{ layout.placed.length }} part(s) fit this simple rectangular-footprint
-        layout.
-        {{
-          layout.remaining.length
-            ? layout.remaining.length + ' part(s) need another batch.'
-            : 'All selected parts fit this suggested batch.'
-        }}
-      </p>
-      <p>
-        Rotate marks a 90° bed turn only. This is not a collision test, slicer
-        arrangement, support plan or print guarantee; confirm the final layout
-        in your slicer.
-      </p>
-    </section>
+          <span
+            >{{ format(bedUse().percentage) }}% of the bed footprint used</span
+          >
+        </div>
+        <div
+          class="bed"
+          [style.aspect-ratio]="bed().width + ' / ' + bed().depth"
+        >
+          @for (part of layout.placed; track part.name) {
+            <div
+              class="part"
+              [style.left.%]="(part.x / bed().width) * 100"
+              [style.top.%]="(part.y / bed().depth) * 100"
+              [style.width.%]="(part.width / bed().width) * 100"
+              [style.height.%]="(part.depth / bed().depth) * 100"
+            >
+              {{ part.name }}
+            </div>
+          }
+        </div>
+        <h3>Placed parts</h3>
+        <ul class="placed-parts">
+          @for (part of layout.placed; track part.name) {
+            <li>
+              <strong>{{ part.name }}</strong
+              >: {{ format(part.width) }} × {{ format(part.depth) }} mm{{
+                part.rotated ? ' (rotated 90°)' : ''
+              }}
+            </li>
+          }
+        </ul>
+        <p>
+          {{ layout.placed.length }} part(s) fit this simple
+          rectangular-footprint layout.
+          {{
+            layout.remaining.length
+              ? layout.remaining.length + ' part(s) need another batch.'
+              : 'All selected parts fit this suggested batch.'
+          }}
+        </p>
+        <p>
+          Rotate marks a 90° bed turn only. This is not a collision test, slicer
+          arrangement, support plan or print guarantee; confirm the final layout
+          in your slicer.
+        </p>
+      </section>
+    }
+  } @else {
+    <p role="status">
+      Choose models to plan a layout. Fit conclusions appear after successful
+      processing.
+    </p>
   }
   <section class="card">
     <h2>Plan print batches conservatively</h2>
     <p>
       Use the
-      <a [routerLink]="'/how-to-arrange-multiple-parts-on-a-3d-printer-bed'"
+      <a
+        [routerLink]="
+          guideRouteUrl.RouteHowToArrangeMultiplePartsOnA3dPrinterBed
+        "
         >bed layout guide</a
       >
       for spacing, brims and stability considerations.
+    </p>
+  </section>
+  <section class="content">
+    <h2>Footprints, spacing and rejected placements</h2>
+    <p>
+      This browser-local planner packs axis-aligned rectangular XY footprints,
+      with optional 90-degree turns, using a conservative shelf arrangement. STL
+      coordinates are treated as millimetres; 3MF units and supported build
+      transforms are resolved. It does not nest arbitrary outlines or search
+      every packing arrangement.
+    </p>
+    <p>
+      For a 220 x 220 mm bed and 5 mm margin, two 100 x 80 mm footprints can
+      occupy x = 5 and x = 110, with y = 5. The second ends at x = 210, leaving
+      10 mm to the right edge. A 10 mm-wide brim on each part exceeds the 5 mm
+      inter-part gap; reserve more space and verify the sliced footprints.
+    </p>
+    <p>
+      Rejected placements need another batch or a different layout. A suggested
+      fit does not certify sequential printing: toolhead clearance, gantry
+      collisions, supports, exclusions and Z heights belong in the
+      slicer/printer review. Failed file processing is separate from an empty
+      selection.
     </p>
   </section>
 </main>

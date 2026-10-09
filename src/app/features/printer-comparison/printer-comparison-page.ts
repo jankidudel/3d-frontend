@@ -1,3 +1,7 @@
+import {
+  formatPrinterDimensions,
+  formatPrinterNumber,
+} from './printer-spec-format';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -86,9 +90,8 @@ export class PrinterComparisonPage {
     return `${PublicRouteUrl.Compare}/${slug}`;
   }
 
-  formatDimensions(value: readonly number[]): string {
-    return `${value.join(' x ')} mm`;
-  }
+  readonly formatDimensions = formatPrinterDimensions;
+  readonly formatNumber = formatPrinterNumber;
 
   formatPrice(printer: PrinterRecord): string {
     if (printer.indicativeUsdPrice === undefined) {
@@ -129,23 +132,23 @@ export class PrinterComparisonPage {
       },
       {
         label: 'Maximum nozzle temperature',
-        left: `${left.maxNozzleTemperatureC} C`,
-        right: `${right.maxNozzleTemperatureC} C`,
+        left: this.formatNumber(left.maxNozzleTemperatureC, 'C'),
+        right: this.formatNumber(right.maxNozzleTemperatureC, 'C'),
       },
       {
         label: 'Maximum bed temperature',
-        left: `${left.maxBedTemperatureC} C`,
-        right: `${right.maxBedTemperatureC} C`,
+        left: this.formatNumber(left.maxBedTemperatureC, 'C'),
+        right: this.formatNumber(right.maxBedTemperatureC, 'C'),
       },
       {
         label: 'Maximum claimed speed',
-        left: `${left.maxClaimedSpeedMmS} mm/s`,
-        right: `${right.maxClaimedSpeedMmS} mm/s`,
+        left: this.formatNumber(left.maxClaimedSpeedMmS, 'mm/s'),
+        right: this.formatNumber(right.maxClaimedSpeedMmS, 'mm/s'),
       },
       {
         label: 'Maximum claimed acceleration',
-        left: `${left.maxClaimedAccelerationMmS2.toLocaleString()} mm/s²`,
-        right: `${right.maxClaimedAccelerationMmS2.toLocaleString()} mm/s²`,
+        left: this.formatNumber(left.maxClaimedAccelerationMmS2, 'mm/s²'),
+        right: this.formatNumber(right.maxClaimedAccelerationMmS2, 'mm/s²'),
       },
       { label: 'Camera', left: left.camera, right: right.camera },
       {

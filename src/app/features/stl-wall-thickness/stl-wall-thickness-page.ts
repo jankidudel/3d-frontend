@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -24,6 +25,7 @@ import {
   imports: [ToolEvidenceComponent, ObjectViewerComponent],
 })
 export class StlWallThicknessPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly unit = WallThicknessUnit;
   readonly file = signal<File | null>(null);

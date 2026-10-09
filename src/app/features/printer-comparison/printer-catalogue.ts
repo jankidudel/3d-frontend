@@ -27,12 +27,13 @@ export interface PrinterRecord {
   readonly status: PrinterStatus;
   readonly bestFor: string;
   readonly buildVolumeMm: readonly [number, number, number];
-  readonly machineDimensionsMm: readonly [number, number, number];
+  readonly machineDimensionsMm: readonly [number, number, number] | null;
+  readonly dimensionsNote?: string;
   readonly enclosed: boolean;
-  readonly maxNozzleTemperatureC: number;
-  readonly maxBedTemperatureC: number;
-  readonly maxClaimedSpeedMmS: number;
-  readonly maxClaimedAccelerationMmS2: number;
+  readonly maxNozzleTemperatureC: number | null;
+  readonly maxBedTemperatureC: number | null;
+  readonly maxClaimedSpeedMmS: number | null;
+  readonly maxClaimedAccelerationMmS2: number | null;
   readonly camera: string;
   readonly multicolour: string;
   readonly materials: string;
@@ -59,6 +60,107 @@ const a1Source: SourceReference = {
   label: 'Bambu Lab A1 technical specifications',
   url: `${bambuStore}/products/a1`,
   lastVerified: verified,
+};
+
+const verifiedFieldUpdates: Readonly<Record<string, Partial<PrinterRecord>>> = {
+  'prusa-core-one': {
+    machineDimensionsMm: [415, 470, 555],
+    dimensionsNote:
+      'CORE One: closed door with display; depth is 444 mm without display and 690 mm with door fully open. Allow right-side spool access. Shipping dimensions are not recorded.',
+    strengths: [
+      '270 mm nominal height can suit a narrow tall part that exceeds a 256 mm cube',
+      'Enclosed CoreXY platform with documented Prusa service procedures',
+    ],
+    limitations: [
+      '220 mm nominal depth is narrower than a 256 mm square bed',
+      'Original CORE One and CORE One+ are distinct revisions; verify installed hardware and accessory support',
+    ],
+    sources: [
+      {
+        label: 'Prusa FAQ: CORE One physical and build dimensions',
+        url: 'https://help.prusa3d.com/article/faq-frequently-asked-questions_1932',
+        lastVerified: '2026-10-09',
+      },
+    ],
+  },
+  'prusa-mk4s': {
+    machineDimensionsMm: [500, 550, 400],
+    dimensionsNote:
+      'Prusa FAQ dimensions for MK4/S; leave additional motion, spool and MMU space. These are machine dimensions, not shipping size.',
+    sources: [
+      {
+        label: 'Prusa FAQ: MK4/S physical and build dimensions',
+        url: 'https://help.prusa3d.com/article/faq-frequently-asked-questions_1932',
+        lastVerified: '2026-10-09',
+      },
+    ],
+  },
+  'creality-k1c': {
+    maxNozzleTemperatureC: 300,
+    maxBedTemperatureC: 100,
+    maxClaimedSpeedMmS: 600,
+    maxClaimedAccelerationMmS2: 20000,
+    camera: 'Manufacturer lists a 1080p camera on the K1C.',
+    dimensionsNote:
+      'Creality sources disagree between 480 and 482 mm physical height. Physical size remains unverified pending exact revision/manual confirmation; 220 x 220 x 250 mm is build volume only.',
+    strengths: [
+      'Enclosed 220 x 220 x 250 mm build suits smaller footprints',
+      'Manufacturer identifies a steel-tipped nozzle integrated with the heatbreak',
+    ],
+    limitations: [
+      '220 mm horizontal axes can exclude wider flat housings',
+      'Confirm exact K1C revision and the specific abrasive-filament profile; maximum speed is a claim, not job throughput',
+    ],
+    sources: [
+      {
+        label:
+          'Creality K1 series table: K1C thermal limits, motion claims and hardware',
+        url: 'https://www.creality.com/compare/compare-k1-flagship-series',
+        lastVerified: '2026-10-09',
+      },
+    ],
+  },
+  'elegoo-neptune-4-plus': {
+    maxNozzleTemperatureC: 300,
+    maxClaimedSpeedMmS: 500,
+    maxClaimedAccelerationMmS2: 12000,
+    strengths: [
+      '320 x 320 mm bed can keep a large panel in one part',
+      'Manufacturer documents Klipper with input shaping and pressure advance',
+    ],
+    limitations: [
+      'Open frame still needs the documented environment for ABS/ASA',
+      'Current listing distinguishes Type-C and ribbon-cable variants; verify accessory fit and bed-motion space',
+    ],
+    sources: [
+      {
+        label:
+          'Elegoo Neptune 4 Plus current listing: build, motion claims and variant notes',
+        url: 'https://us.elegoo.com/products/neptune-4-plus-fdm-3d-printer',
+        lastVerified: '2026-10-09',
+      },
+    ],
+  },
+  'bambu-lab-x1-carbon': {
+    strengths: [
+      '256 mm nominal cube suits the same size class as the P-series platforms',
+      'Enclosed platform; compare the exact sensor and accessory configuration',
+    ],
+    limitations: [
+      'Premium features do not increase the 256 mm envelope',
+      'Current bundle, physical dimensions and thermal limits have not been refreshed in this catalogue',
+    ],
+  },
+  'sovol-sv06-ace': {
+    strengths: [
+      '220 x 220 mm nominal footprint for smaller functional projects',
+      'Open frame permits direct access to the work area',
+    ],
+    limitations: [
+      '250 mm nominal height leaves no allowance for the rotated example box',
+      'Exact hardware temperatures, speed, physical dimensions and accessory support remain unverified',
+    ],
+  },
 };
 
 export const printers: readonly PrinterRecord[] = [
@@ -265,7 +367,7 @@ export const printers: readonly PrinterRecord[] = [
       true,
       1199,
       'Enclosed CoreXY printer from Prusa with a distinctive 250 x 220 x 270 mm build volume.',
-      'https://www.prusa3d.com/product/original-prusa-core-one/',
+      'https://help.prusa3d.com/product/core-one',
       'For makers who prefer Prusa hardware, serviceability and an enclosed CoreXY layout.',
     ],
     [
@@ -287,7 +389,7 @@ export const printers: readonly PrinterRecord[] = [
       true,
       549,
       'Enclosed Creality CoreXY model with a 220 x 220 x 250 mm stated build volume.',
-      'https://store.creality.com/products/creality-k1c-3d-printer',
+      'https://www.creality.com/products/k1c-carbon-3d-printer',
       'For a compact enclosed CoreXY option where its material guidance fits the job.',
     ],
     [
@@ -313,42 +415,28 @@ export const printers: readonly PrinterRecord[] = [
       'For cost-conscious common-material printing with a conventional build size.',
     ],
   ].map(
-    ([
-      id,
-      slug,
-      displayName,
-      volume,
-      enclosed,
-      price,
-      summary,
-      url,
-      bestFor,
-    ]) => ({
+    ([id, slug, displayName, volume, enclosed, , summary, url, bestFor]) => ({
       id: id as string,
       slug: slug as string,
       displayName: displayName as string,
       status: PrinterStatus.Current,
       bestFor: bestFor as string,
       buildVolumeMm: volume as unknown as readonly [number, number, number],
-      machineDimensionsMm: volume as unknown as readonly [
-        number,
-        number,
-        number,
-      ],
+      machineDimensionsMm: null,
       enclosed: enclosed as boolean,
-      maxNozzleTemperatureC: 300,
-      maxBedTemperatureC: 100,
-      maxClaimedSpeedMmS: 0,
-      maxClaimedAccelerationMmS2: 0,
+      maxNozzleTemperatureC: null,
+      maxBedTemperatureC: null,
+      maxClaimedSpeedMmS: null,
+      maxClaimedAccelerationMmS2: null,
       camera:
         'See the manufacturer documentation for the current configuration.',
       multicolour:
         'See the manufacturer documentation for compatible accessories.',
       materials:
         'Follow the printer and filament manufacturer guidance for the selected material and enclosure conditions.',
-      indicativeUsdPrice: price as number,
+      indicativeUsdPrice: undefined,
       priceDescription:
-        'Indicative manufacturer-listing price observed; configurations and tax can vary.',
+        'Current regional price and bundle not verified. Use the manufacturer reference.',
       officialProductUrl: url as string,
       sources: [
         {
@@ -362,13 +450,16 @@ export const printers: readonly PrinterRecord[] = [
       editorialState: PrinterEditorialState.SpecResearch,
       summary: summary as string,
       strengths: [
-        'Published build-volume information',
-        'Official specification source recorded',
+        `${(volume as number[])[0]} x ${(volume as number[])[1]} mm nominal bed for the intended footprint`,
+        enclosed
+          ? 'Enclosed build environment; check the exact chamber and filament requirements'
+          : 'Open frame gives direct access; workspace must allow bed motion',
       ],
       limitations: [
         'Maximum performance figures are not InspectMesh test results',
         'Confirm bundle contents and current availability with the manufacturer',
       ],
+      ...verifiedFieldUpdates[id as string],
     }),
   ),
 ];

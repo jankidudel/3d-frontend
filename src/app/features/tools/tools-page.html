@@ -6,6 +6,21 @@
     InspectMesh helps you inspect, measure and prepare 3D files for printing.
   </p>
 
+  <section>
+    <h2>Choose the result you need</h2>
+    <p>
+      Start with a viewer for display, preflight for a broad diagnostic, or a
+      specialist check for one finding. STL checks require an assumed unit; 3MF
+      checks resolve declared units and build instances. A repair tool changes
+      geometry, while a checker explains it. Use the guide linked from a tool
+      when the next action is uncertain.
+    </p>
+    <p>
+      Cost estimates describe production inputs. Price planning adds quantity
+      and margin to prepare a quote. Start with complete slicer values when
+      estimating filament or time.
+    </p>
+  </section>
   @for (group of toolGroups; track group.id) {
     <section class="tools" [attr.aria-labelledby]="group.id">
       <div class="section-intro">

@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   ReviewSession,
   ReviewDestination,
@@ -47,6 +48,7 @@ const PLA_DENSITY_GRAMS_PER_CUBIC_CENTIMETRE = 1.24;
   styleUrl: './three-mf-print-preflight-page.scss',
 })
 export class ThreeMfPrintPreflightPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Preflight),
   );

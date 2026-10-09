@@ -1,3 +1,7 @@
+import {
+  formatPrinterDimensions,
+  formatPrinterNumber,
+} from './printer-spec-format';
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -56,9 +60,8 @@ export class PrinterPairPage {
     return `${PublicRouteUrl.Compare}/${slug}`;
   }
 
-  formatDimensions(value: readonly number[]): string {
-    return `${value.join(' x ')} mm`;
-  }
+  readonly formatDimensions = formatPrinterDimensions;
+  readonly formatNumber = formatPrinterNumber;
 
   price(printer: PrinterRecord): string {
     return printer.indicativeUsdPrice === undefined

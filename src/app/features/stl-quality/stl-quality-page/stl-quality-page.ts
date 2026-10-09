@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../../repeat-workflows/tool-evidence';
 import {
   Component,
@@ -36,6 +37,7 @@ import { FeedbackLinkComponent } from '../../../core/components/feedback-link/fe
   styleUrl: './stl-quality-page.scss',
 })
 export class StlQualityPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   private readonly jobsService = inject(JobsService);
   private readonly stlJobs = inject(StlJobService);

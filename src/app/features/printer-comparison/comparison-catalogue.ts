@@ -20,7 +20,165 @@ export interface CuratedComparison {
   }[];
 }
 
-const create = (comparison: CuratedComparison) => comparison;
+const pairDecisions: Readonly<
+  Record<string, Pick<CuratedComparison, 'verdict' | 'analysis' | 'faq'>>
+> = {
+  [PrinterComparisonSlug.BambuLabP1SVsP2S]: {
+    verdict:
+      'The P2S changes nozzle handling and monitoring, not the 256 mm build envelope. Compare the actual bundle cost with how often those workflow changes help your jobs.',
+    analysis: [
+      'A 250 x 210 x 180 mm model fits both nominal cubes with only 6 mm total allowance on its longest axis. The P2S cannot rescue a footprint that exceeds the P1S envelope.',
+      'Bambu describes the P2S quick-swap hotend, five-inch interface and 1080p monitoring in its launch account. Compare those features with your maintenance routine; automatic detection is not a measured failure-rate improvement here.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.BambuLabA1VsP2S]: {
+    verdict:
+      'The A1 and P2S share nominal capacity. Choose by supported material environment, filament-handling system and access needs rather than treating an enclosure as extra build space.',
+    analysis: [
+      'A 250 x 210 x 180 mm model fits both boxes, but a wide brim can consume the remaining 6 mm along the longest axis. A near-limit part still needs slicer review on either printer.',
+      'The A1 uses AMS lite; the P2S Combo is described with AMS 2 Pro. Confirm the exact spool compatibility and bundle. A soft flexible spool and an automatic multi-filament workflow are separate compatibility questions.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.BambuLabA1VsA1Mini]: {
+    verdict:
+      'Choose the A1 when the intended parts exceed the Mini envelope. Choose the Mini when the smaller build and workspace suit the actual projects, after allowing for spool handling and bed motion.',
+    analysis: [
+      'The 250 x 210 x 180 mm control exceeds every Mini axis in any right-angle placement but fits the A1 nominal cube. A 160 mm cube fits either nominally and changes the decision to workspace and configuration.',
+      'Both are open-frame models using AMS lite. A larger build is useful only if the intended material and job can use it; neither is an enclosure substitute. Compare the physical printer and accessory space separately from build volume.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.BambuLabP1SVsA1]: {
+    verdict:
+      'Equal 256 mm capacity makes this a material-environment and accessory decision. An enclosed P1S can address a documented enclosure need; an A1 may suit a common-material workflow with direct access.',
+    analysis: [
+      'A 250 mm-long part leaves 6 mm nominal allowance on either platform. That equality does not account for bed exclusions or supports, and a 260 mm axis exceeds both when kept in that axis order.',
+      'Compare supported P-series AMS hardware with A1 AMS lite. Do not enclose the A1 as an assumed equivalent: follow its manufacturer guidance. For abrasive variants, check the installed nozzle and extrusion hardware even on the enclosed printer.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.BambuLabP1PVsP1S]: {
+    verdict:
+      'An existing P1P owner is deciding whether a supported enclosure upgrade is worth its full cost. A buyer comparing used P1P stock with a P1S must also account for condition and the dated end-of-sale notice.',
+    analysis: [
+      'The same 250 x 210 x 180 mm control fits both nominal 256 mm cubes. Adding an enclosure changes the environment and external space, not the geometric capacity.',
+      'The P1P end-of-sale announcement is historical evidence, not a live stock report. Obtain the current kit list, firmware instructions and total regional price before assuming a used machine plus upgrade matches a factory P1S.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.BambuLabX1CarbonVsP2S]: {
+    verdict:
+      'These models share nominal capacity. Compare the X1 Carbon sensor workflow with the newer P2S hotend and monitoring workflow only where those features solve a defined task.',
+    analysis: [
+      'The 250 x 210 x 180 mm control fits both nominal cubes. Premium sensors cannot expand the envelope; a larger functional housing may require splitting or a different machine instead.',
+      'Bambu\u2019s P2S launch describes its quick-swap hotend and camera updates and identifies lidar in the X1 family. These are manufacturer feature descriptions, not proof of superior first layers or reliability. Verify the exact X1 Carbon and P2S accessory bundles.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.PrusaCoreOneVsBambuLabP1S]: {
+    verdict:
+      'The CORE One is narrower in nominal depth but taller: 250 x 220 x 270 mm versus a 256 mm cube. Choose based on the actual axis constraints, then compare service documentation and accessory requirements.',
+    analysis: [
+      'A 240 x 230 x 100 mm box exceeds CORE One depth in that placement but fits the P1S box. A 200 x 200 x 260 mm tower fits CORE One height but exceeds P1S height. Test other orientations before calling either a final fit.',
+      'The linked Prusa documentation refers to the original CORE One; CORE One+ and later upgrades are different configurations. Verify the installed revision and multicolour compatibility. Compare Prusa service procedures with the exact P1S AMS bundle, without inferring a reliability winner.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.PrusaMk4SVsBambuLabA1]: {
+    verdict:
+      'The MK4S 250 x 210 x 220 mm envelope and A1 256 mm cube differ in depth and height. Match model size and the documented service/accessory workflow before comparing regional kit and assembled prices.',
+    analysis: [
+      'The 250 x 210 x 180 mm control touches both nominal MK4S horizontal boundaries. It fits the A1 with 6 mm width and 46 mm depth allowance; brim and excluded-region checks still apply.',
+      'Both are open-frame printers. A Prusa kit entails assembly decisions that an assembled price does not capture. For multicolour compare exact MMU and AMS lite configurations and supported filaments; maximum temperatures do not establish equal spool support.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.CrealityK1CVsBambuLabP1S]: {
+    verdict:
+      'The K1C 220 x 220 x 250 mm envelope is smaller than the P1S 256 mm cube. It is a candidate when that capacity is sufficient; a larger flat footprint can make the P1S relevant before any speed comparison.',
+    analysis: [
+      'A 240 x 230 x 80 mm housing exceeds both horizontal K1C axes in that placement but fits the P1S box. Turning it vertically changes support and load direction; the fitting orientation may not be the intended print.',
+      'The K1C manufacturer page distinguishes carbon-filament hardware. Confirm exact K1C revision and nozzle, and check the P1S installed hardware before comparing abrasive materials. AMS support on P1S is an accessory decision, not a consequence of enclosure alone.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+  [PrinterComparisonSlug.ElegooNeptune4PlusVsBambuLabA1]: {
+    verdict:
+      'A 320 x 320 x 385 mm Neptune 4 Plus envelope can accommodate larger parts than the 256 mm A1 cube. The extra bed capacity needs a matching workspace and a material/process reason.',
+    analysis: [
+      'A 300 x 280 x 100 mm panel fits the Neptune nominal box in its original order but exceeds both A1 horizontal dimensions. Splitting the panel changes joints and assembly; shrinking it changes the product size.',
+      'Both are open-frame platforms. Reserve bed-motion and service access space rather than treating the build dimensions as machine footprint. If the larger envelope is unnecessary, compare the documented setup and multicolour workflow without assuming quality from size.',
+    ],
+    faq: [
+      {
+        question: 'What must be checked before using this nominal fit?',
+        answer:
+          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+      },
+    ],
+  },
+};
+
+const create = (comparison: CuratedComparison): CuratedComparison => ({
+  ...comparison,
+  ...pairDecisions[comparison.slug],
+});
 
 export const curatedComparisons: readonly CuratedComparison[] = [
   create({

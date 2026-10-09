@@ -51,7 +51,7 @@
         aria-label="Choose STL file"
         (change)="onPicker($event)"
       />
-      <p class="hint">.stl only - maximum 25 MB</p>
+      <p class="hint">.stl only - maximum 25 MiB</p>
       <p class="privacy">
         Analysed locally in your browser - your file is not uploaded.
       </p>
@@ -232,30 +232,31 @@
   <section class="content">
     <p>
       Need the broader workflow first? Read
-      <a href="/how-to-check-if-a-3d-model-is-ready-to-print"
+      <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
         >how to check if a 3D model is ready to print</a
       >.
     </p>
     <p>
       Choosing between STL, 3MF and other formats? Read
-      <a href="/best-file-format-for-3d-printing"
+      <a [href]="guideRouteUrl.RouteBestFileFormatFor3dPrinting"
         >the best file format for 3D printing guide</a
       >.
     </p>
     <p>
       For a closer look at thin-area findings, read the
-      <a href="/3d-print-wall-thickness-guide">3D Print Wall Thickness Guide</a
+      <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
+        >3D Print Wall Thickness Guide</a
       >.
     </p>
     <p>
       For a complete check, repair and verification workflow, read
-      <a href="/how-to-make-an-stl-file-printable"
+      <a [href]="guideRouteUrl.RouteHowToMakeAnStlFilePrintable"
         >How to Make an STL File Printable</a
       >.
     </p>
     <p>
       After slicing, inspect the final file with the
-      <a href="/gcode-preflight-checker">G-code Preflight Checker</a>.
+      <a [href]="routeUrl.GcodePreflightChecker">G-code Preflight Checker</a>.
     </p>
     <h2>How this check works</h2>
     <p>

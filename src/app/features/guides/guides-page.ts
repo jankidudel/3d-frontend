@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -10,6 +11,7 @@ import { filterGuideGroups } from './guide-search';
   styleUrl: './guides-page.scss',
 })
 export class GuidesPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   protected readonly query = signal('');
   protected readonly guideGroups = computed(() =>
     filterGuideGroups(guideIndexGroups, this.query()),

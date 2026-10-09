@@ -421,4 +421,38 @@
     [completed]="!!report()"
     [page]="routeUrl.GcodePreflightChecker"
   />
+  <section class="content">
+    <h2>Parsed paths are only part of the machine instructions</h2>
+    <p>
+      This browser-local review supports common linear moves and
+      coordinate/extrusion mode changes. G2/G3 arcs are not included in preview
+      extents. Unsupported or malformed commands are disclosed; macros, tool
+      changes and firmware dialect behaviour need the exact machine
+      documentation.
+    </p>
+    <p>
+      With absolute millimetre coordinates and absolute extrusion, G1 X20 E1
+      followed by G1 X40 E1 has a move with extrusion, then a move without
+      additional extrusion. Under relative extrusion the same E1 fields mean
+      something different. Confirm mode commands before interpreting paths.
+    </p>
+    <p>
+      The retained
+      <a href="/examples/english-market-batch/thin-classic.gcode" download
+        >Classic example export</a
+      >
+      was generated with PrusaSlicer 2.9.6 for software inspection. It is not a
+      qualified machine profile and should not be executed on a printer. Preview
+      does not certify temperatures, start/end routines, homing, usable motion
+      limits or machine safety.
+    </p>
+    <p>
+      Use
+      <a [href]="guideRouteUrl.RouteHowToCheckGcodeBeforePrinting"
+        >the G-code review procedure</a
+      >, the original slicer and your exact printer profile for the final
+      decision. Parsed layer counts and duration comments are observations, not
+      measured print time.
+    </p>
+  </section>
 </main>

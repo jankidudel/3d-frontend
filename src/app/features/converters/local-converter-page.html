@@ -145,7 +145,7 @@
       <p>
         <a [routerLink]="guideUrl">Read how to convert STL to 3MF</a> ·
         <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a> ·
-        <a routerLink="/best-file-format-for-3d-printing"
+        <a [routerLink]="guideRouteUrl.RouteBestFileFormatFor3dPrinting"
           >Choose a print file format</a
         >
       </p>
@@ -166,7 +166,7 @@
       <p>
         <a [routerLink]="guideUrl">Read how to convert 3MF to STL</a> ·
         <a [routerLink]="viewerUrl">Open a 3MF in the Viewer</a> ·
-        <a routerLink="/best-file-format-for-3d-printing"
+        <a [routerLink]="guideRouteUrl.RouteBestFileFormatFor3dPrinting"
           >Choose a print file format</a
         >
       </p>
@@ -192,7 +192,7 @@
         size; confirm the original design first.
       </p>
       <p>
-        <a href="/how-to-export-stl-from-cad"
+        <a [href]="routeUrl.CadExportGuide"
           >Export from an editable CAD source</a
         >
         when design changes are required, rather than expecting conversion to
@@ -232,7 +232,7 @@
         assignments and application-specific settings. It does not Boolean-union
         overlapping shells. Unsupported build data should be resolved in the
         producing application; stop if a required object disappears.
-        <a href="/does-3mf-keep-colours-materials-and-settings"
+        <a [href]="guideRouteUrl.RouteDoes3mfKeepColoursMaterialsAndSettings"
           >Keep project information separately</a
         >
         from this mesh derivative.

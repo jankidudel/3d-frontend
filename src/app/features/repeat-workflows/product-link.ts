@@ -81,7 +81,7 @@ const REGION_KEY = 'inspectmesh-retailer-region';
 
 @Component({
   selector: 'app-product-link',
-  template: `<aside class="product-card">
+  template: `<aside class="product-card" [attr.aria-label]="product().name">
     <h2>{{ product().name }}</h2>
     <p>{{ product().reason }}</p>
     <label

@@ -273,7 +273,7 @@
     <h3>Are unchanged dimensions enough?</h3>
     <p>
       No. Local holes and lettering can change while outer bounds remain.
-      <a href="/how-to-compare-stl-revisions"
+      <a [href]="guideRouteUrl.RouteHowToCompareStlRevisions"
         >Interpret each comparison output</a
       >
       and inspect critical features.
@@ -288,7 +288,7 @@
     <p>
       No. It describes finite sampled points, not a certified whole-surface
       upper bound.
-      <a href="/how-to-reduce-stl-triangle-count"
+      <a [href]="guideRouteUrl.RouteHowToReduceStlTriangleCount"
         >Compare the raised-ridge example</a
       >
       and recheck topology as well.
@@ -373,9 +373,7 @@
       contact faces manually. Finite area-distributed sampling can miss a tiny
       feature even when every reported distance is under tolerance. Use source
       CAD dimensions for design acceptance and
-      <a href="/stl-resolution-chord-height-explained"
-        >review tessellation error</a
-      >
+      <a [href]="routeUrl.StlResolutionGuide">review tessellation error</a>
       when comparing a curve with its mesh approximation.
     </p>
   </section>

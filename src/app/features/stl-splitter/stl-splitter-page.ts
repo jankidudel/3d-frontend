@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { DOCUMENT } from '@angular/common';
 import {
   Component,
@@ -55,6 +56,7 @@ interface StlSplitReport {
   styleUrl: './stl-splitter-page.scss',
 })
 export class StlSplitterPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
   readonly file = signal<File | null>(null);

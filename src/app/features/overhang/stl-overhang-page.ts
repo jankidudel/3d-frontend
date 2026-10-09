@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -147,12 +148,14 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
           results.
         </p>
         <p>
-          <a href="/stl-print-preflight">STL Print Preflight</a> ·
-          <a href="/stl-quality-checker">STL Quality Checker</a> ·
-          <a href="/stl-wall-thickness-checker">STL Wall Thickness Checker</a> ·
-          <a href="/stl-dimensions-checker">STL Dimensions Checker</a> ·
-          <a href="/stl-splitter">STL Splitter</a> ·
-          <a href="/3d-print-overhangs-and-supports-guide"
+          <a [href]="routeUrl.StlPrintPreflight">STL Print Preflight</a> ·
+          <a [href]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+          <a [href]="routeUrl.StlWallThicknessChecker"
+            >STL Wall Thickness Checker</a
+          >
+          · <a [href]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
+          <a [href]="routeUrl.StlSplitter">STL Splitter</a> ·
+          <a [href]="guideRouteUrl.Route3dPrintOverhangsAndSupportsGuide"
             >Overhangs and Supports Guide</a
           >
         </p>
@@ -190,6 +193,8 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
   styleUrl: '../stl-wall-thickness/stl-wall-thickness-page.scss',
 })
 export class StlOverhangPage {
+  readonly routeUrl = PublicRouteUrl;
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly mesh = signal<StlMesh | null>(null);
   readonly error = signal('');
   readonly threshold = signal(45);

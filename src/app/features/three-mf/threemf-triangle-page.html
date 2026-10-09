@@ -7,7 +7,7 @@
   </p>
   <section class="checker card">
     <h2>Count 3MF triangles</h2>
-    <p>Choose a non-empty .3mf file up to 25 MB.</p>
+    <p>Choose a non-empty .3mf file up to 25 MiB.</p>
     <app-three-mf-file-picker
       #filePicker
       [selectedFileFromParent]="selectedFile()"
@@ -92,8 +92,11 @@
     <p>Yes. Multiple build items are supported.</p>
     <h3>Does more always mean better?</h3>
     <p>No. Triangle count is not a quality check.</p>
-    <h3>Is triangle count a quality check?</h3>
-    <p>No; use the related mesh checks too.</p>
+    <h3>Are unused stored resources counted as print instances?</h3>
+    <p>
+      The result counts the resolved placed build, not every unused resource in
+      the package.
+    </p>
     <p>
       <a [routerLink]="routeUrl.ThreeMfViewer">Inspect geometry locally</a> ·
       <a [routerLink]="routeUrl.ThreeMfQualityCheck">3MF Quality Checker</a> ·
@@ -104,6 +107,31 @@
       <a [routerLink]="routeUrl.ThreeMfVolumeCalculator"
         >3MF Volume Calculator</a
       >
+    </p>
+  </section>
+  <section class="content">
+    <h2>Stored resources are different from placed triangles</h2>
+    <p>
+      A resource with 12 triangles placed twice contributes 24 triangles to the
+      resolved build. A stored resource with no build reference is not
+      automatically an extra print. Translation changes location, while uniform
+      scale changes size; neither creates new faces in this example.
+    </p>
+    <p>
+      <a href="/examples/collection-review/two-placed-cubes.3mf" download
+        >Download the two-placed-cube example</a
+      >
+      and compare it with
+      <a href="/examples/collection-review/one-placed-cube.3mf" download
+        >one placed cube</a
+      >. These original files demonstrate instancing, not measured slicing
+      performance.
+    </p>
+    <p>
+      The server counts supported resolved geometry. The displayed complexity
+      bands are navigation guidance, not quality thresholds; inspect curves at
+      the intended size before reducing triangles. A small file can still
+      describe a large repeated build.
     </p>
   </section>
 </main>

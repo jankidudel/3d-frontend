@@ -181,4 +181,31 @@
       <a [routerLink]="routeUrl.Tools">All STL tools</a>
     </p>
   </section>
+  <section class="content">
+    <h2>Read edge incidence and orientation separately</h2>
+    <p>
+      One face incident on an edge identifies a boundary; more than two
+      identifies a non-manifold edge. Inconsistent face direction is a separate
+      finding. Several connected shells can be intentional, such as two separate
+      parts, so a shell count alone is not a repair instruction.
+    </p>
+    <p>
+      The original closed 20 mm cube has 12 triangles and no open edges. The
+      <a href="/examples/english-market-batch/open-face-cube.stl" download
+        >open-face example</a
+      >
+      has 10 triangles and four boundaries. Inspect the missing face before
+      filling it. A zero count does not establish every vertex property or rule
+      out self-intersections.
+    </p>
+    <p>
+      This checker uploads the chosen STL for server analysis. Results describe
+      detected edge relationships; use the
+      <a [href]="guideRouteUrl.RouteWhatIsNonManifoldGeometry"
+        >topology explanation</a
+      >
+      to choose a correction, then export and recheck. A successful result is
+      not a printability certificate.
+    </p>
+  </section>
 </main>

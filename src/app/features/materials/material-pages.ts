@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { materialDecisionExamples } from '../repeat-workflows/material-decision-examples';
 import {
   ProductLinkComponent,
@@ -57,7 +58,7 @@ import {
         complete slicer consumption.
       </p>
       <p>
-        <a routerLink="/filament-dryer-vs-dry-box"
+        <a [routerLink]="guideRouteUrl.RouteFilamentDryerVsDryBox"
           >Storage versus active drying</a
         >
         is a separate equipment decision. No local stock or retailer
@@ -66,7 +67,12 @@ import {
     </section>
     <section class="material-section">
       <h2>Compare material families</h2>
-      <div class="material-table-scroll">
+      <div
+        class="material-table-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Material reference table"
+      >
         <table>
           <thead>
             <tr>
@@ -86,9 +92,21 @@ import {
                   }}</a>
                 </th>
                 <td>{{ material.difficulty }}</td>
-                <td>{{ material.ratings.flexibility }}/5</td>
-                <td>{{ material.ratings.heat }}/5</td>
-                <td>{{ material.ratings.weather }}/5</td>
+                <td>
+                  {{
+                    material.id === materialIds.Tpu
+                      ? 'Flexible; grade-dependent'
+                      : 'Check deformation for the intended geometry'
+                  }}
+                </td>
+                <td>Exact grade service data required</td>
+                <td>
+                  {{
+                    material.id === materialIds.Asa
+                      ? 'UV-resistant family; verify grade'
+                      : 'Exposure evidence required'
+                  }}
+                </td>
               </tr>
             }
           </tbody>
@@ -109,6 +127,8 @@ import {
   </main>`,
 })
 export class MaterialHubPage {
+  readonly guideRouteUrl = GuideRouteUrl;
+  readonly materialIds = MaterialId;
   readonly routeUrl = PublicRouteUrl;
   readonly materialList = materials;
   constructor() {
@@ -160,27 +180,23 @@ export class MaterialHubPage {
         </ul>
       </section>
       <section>
-        <h2>Starting setup range</h2>
+        <h2>Preparation for the exact spool</h2>
+        <p><strong>Printing difficulty:</strong> {{ item.difficulty }}.</p>
         <p>
-          <strong>Printing difficulty:</strong> {{ item.difficulty }}.
-          <strong>Nozzle:</strong> {{ item.nozzle[0] }}-{{ item.nozzle[1] }} C.
-          <strong>Bed:</strong> {{ item.bed[0] }}-{{ item.bed[1] }} C.
-        </p>
-        <p>
-          These are generic starting ranges, not a universal profile. Check the
-          exact spool manufacturer guidance. Enclosure expectation:
+          Set nozzle and bed temperatures from the exact spool manufacturer
+          profile rather than a family-wide range. Check the linked family
+          source for preparation context. Enclosure expectation:
           {{ item.enclosure }}. Drying importance: {{ item.drying }}.
         </p>
       </section>
       <section>
-        <h2>Property profile</h2>
-        <p>{{ methodology }}</p>
+        <h2>Formulation and property evidence</h2>
         <p>
-          Stiffness {{ item.ratings.stiffness }}/5 · Toughness
-          {{ item.ratings.toughness }}/5 · Flexibility
-          {{ item.ratings.flexibility }}/5 · Heat resistance
-          {{ item.ratings.heat }}/5 · Weather resistance
-          {{ item.ratings.weather }}/5 · Ease {{ item.ratings.ease }}/5.
+          Unfilled polymers, blends and fibre-filled versions can differ. Use
+          the linked material source for family context and the exact spool
+          datasheet for mechanical, thermal and exposure data. The selector uses
+          editorial bands to order candidates; they are not measured service
+          limits.
         </p>
       </section>
       <section>
@@ -353,41 +369,66 @@ export class MaterialDetailPage {
         </ul>
       </section>
       <section>
-        <h2>Side-by-side context</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Property</th>
-              <th>{{ left().displayName }}</th>
-              <th>{{ right().displayName }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Difficulty</th>
-              <td>{{ left().difficulty }}</td>
-              <td>{{ right().difficulty }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Nozzle starting range</th>
-              <td>{{ left().nozzle[0] }}-{{ left().nozzle[1] }} C</td>
-              <td>{{ right().nozzle[0] }}-{{ right().nozzle[1] }} C</td>
-            </tr>
-            <tr>
-              <th scope="row">Heat band</th>
-              <td>{{ left().ratings.heat }}/5</td>
-              <td>{{ right().ratings.heat }}/5</td>
-            </tr>
-            <tr>
-              <th scope="row">Flexibility band</th>
-              <td>{{ left().ratings.flexibility }}/5</td>
-              <td>{{ right().ratings.flexibility }}/5</td>
-            </tr>
-          </tbody>
-        </table>
+        <h2>Requirements that decide this pair</h2>
+        <div
+          class="material-table-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Material reference table"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Requirement</th>
+                <th scope="col">What to check</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of record.requirements; track row.label) {
+                <tr>
+                  <th scope="row">{{ row.label }}</th>
+                  <td>{{ row.check }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section>
+        <h2>{{ record.scenarioTitle }}</h2>
+        <p>{{ record.scenario }}</p>
         <p>
-          Ranges and bands are a starting point. Formulations, drying, build
-          surface and printer environment can change the result.
+          Hypothetical application, not an InspectMesh physical material test.
+        </p>
+      </section>
+      <section>
+        <h2>When the initial choice changes</h2>
+        <p>{{ record.reversals }}</p>
+      </section>
+      <section>
+        <h2>Prepare the exact formulation</h2>
+        <p>{{ record.preparation }}</p>
+        <p>
+          Use the spool maker's settings and datasheet; a family-wide nozzle
+          range is not a qualified profile.
+        </p>
+      </section>
+      <section>
+        <h2>Sources for this decision</h2>
+        <ul>
+          @for (source of pairSources(); track source.id) {
+            <li>
+              <a [href]="source.url"
+                >{{ source.publisher }}: {{ source.title }}</a
+              >
+              (checked {{ source.accessedAt }})
+            </li>
+          }
+        </ul>
+        <p>
+          Sources describe the material families and printing preparation.
+          Application dimensions and qualification steps above are illustrative
+          design decisions.
         </p>
       </section>
       <p>
@@ -402,34 +443,16 @@ export class MaterialDetailPage {
       </p>
       <p>Reviewed {{ record.lastReviewedAt }}.</p>
     }
-    @if (decision(); as evidence) {
-      <section class="material-section">
-        <h2>{{ evidence.heading }}</h2>
-        <p>{{ evidence.example }}</p>
-        <p>{{ evidence.next }}</p>
-        <p>
-          <a [routerLink]="routeUrl.MaterialSelector"
-            >Compare application requirements</a
-          >
-          and
-          <a [routerLink]="routeUrl.NozzleLayerHeightCalculator"
-            >plan actual wall lines</a
-          >. These illustrative decisions do not establish a physical product
-          test.
-        </p>
-      </section>
-    }
   </main>`,
 })
 export class MaterialComparisonDetailPage {
-  readonly decision = computed(() => {
-    const slug = this.comparison()?.slug;
-    return slug === 'pla-vs-petg'
-      ? materialDecisionExamples['pla']
-      : slug === 'petg-vs-asa'
-        ? materialDecisionExamples['asa']
-        : null;
-  });
+  readonly pairSources = computed(() =>
+    materialSources.filter(
+      (source) =>
+        this.left().sourceRefs.includes(source.id) ||
+        this.right().sourceRefs.includes(source.id),
+    ),
+  );
 
   readonly routeUrl = PublicRouteUrl;
   private readonly slug = inject(Router).url.split('/').at(-1) ?? '';

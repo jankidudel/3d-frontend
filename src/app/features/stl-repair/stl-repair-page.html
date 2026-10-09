@@ -104,10 +104,10 @@
   <section class="content">
     <p>
       Read
-      <a href="/how-to-repair-an-stl-file"
+      <a [href]="guideRouteUrl.RouteHowToRepairAnStlFile"
         >How to Repair an STL File for 3D Printing</a
       >,
-      <a href="/how-to-make-an-stl-file-printable"
+      <a [href]="guideRouteUrl.RouteHowToMakeAnStlFilePrintable"
         >How to Make an STL File Printable</a
       >,
       <a [routerLink]="routeUrl.ManifoldChecker">check non-manifold geometry</a
@@ -204,8 +204,8 @@
       Stop using the cleaned derivative if dimensions, intended shells or
       important features change unexpectedly. The output passing mesh validation
       still does not certify strength, fit or a physical print.
-      <a href="/stl-compare">Compare the revised surfaces</a> before accepting
-      it.
+      <a [href]="routeUrl.StlCompare">Compare the revised surfaces</a> before
+      accepting it.
     </p>
   </section>
 </main>

@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   Component,
   computed,
@@ -48,6 +49,7 @@ const MILLIMETRES_PER_3MF_UNIT: Readonly<Record<string, number>> = {
   styleUrl: './threemf-dimensions-page.scss',
 })
 export class ThreeMfDimensionsPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   private readonly printerProfile = inject(PrinterProfileService);
   private readonly printerFitControls = new PrinterFitControls(
     this.printerProfile,

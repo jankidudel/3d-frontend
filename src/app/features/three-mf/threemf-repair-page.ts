@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -30,6 +31,7 @@ import {
   styleUrl: './threemf-repair-page.scss',
 })
 export class ThreeMfRepairPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly file = signal<File | null>(null);
   readonly analysis = signal<ThreeMfRepairAnalysis | null>(null);

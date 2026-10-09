@@ -165,22 +165,22 @@
       }
       <p>
         Learn how to interpret a warning in the
-        <a href="/3d-print-wall-thickness-guide"
+        <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
           >3D Print Wall Thickness Guide</a
         >.
       </p>
       <p>
-        <a href="/stl-print-preflight">STL Print Preflight Checker</a> ·
-        <a href="/stl-overhang-checker">STL Overhang Checker</a> ·
-        <a href="/stl-quality-checker">STL Quality Checker</a> ·
-        <a href="/stl-repair">STL Repair Tool</a> ·
-        <a href="/stl-dimensions-checker">STL Dimensions Checker</a> ·
-        <a href="/stl-scale-tool">STL Scale Tool</a> ·
-        <a href="/3d-print-tolerance-calculator"
+        <a [href]="routeUrl.StlPrintPreflight">STL Print Preflight Checker</a> ·
+        <a [href]="routeUrl.StlOverhangChecker">STL Overhang Checker</a> ·
+        <a [href]="routeUrl.QualityCheck">STL Quality Checker</a> ·
+        <a [href]="routeUrl.StlRepair">STL Repair Tool</a> ·
+        <a [href]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
+        <a [href]="routeUrl.StlScaleTool">STL Scale Tool</a> ·
+        <a [href]="routeUrl.ToleranceCalculator"
           >Tolerance &amp; Clearance Calculator</a
         >
-        · <a href="/stl-splitter">STL Splitter</a> ·
-        <a href="/how-to-make-an-stl-file-printable"
+        · <a [href]="routeUrl.StlSplitter">STL Splitter</a> ·
+        <a [href]="guideRouteUrl.RouteHowToMakeAnStlFilePrintable"
           >How to Make an STL File Printable</a
         >
       </p>
@@ -225,7 +225,7 @@
       threshold. Stop if the important feature has no sample or the selected
       unit is uncertain; use source CAD section measurements and the intended
       slicer's thin-wall preview.
-      <a href="/how-to-measure-3d-model"
+      <a [href]="guideRouteUrl.RouteHowToMeasure3dModel"
         >Compare point selection with source dimensions</a
       >
       before accepting a functional part.

@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -146,11 +147,17 @@ import {
           results.
         </p>
         <p>
-          <a href="/3mf-print-preflight">3MF Print Preflight</a> ·
-          <a href="/3mf-quality-checker">3MF Quality Checker</a> ·
-          <a href="/3mf-wall-thickness-checker">3MF Wall Thickness Checker</a> ·
-          <a href="/3mf-dimensions-checker">3MF Dimensions Checker</a> ·
-          <a href="/3d-print-overhangs-and-supports-guide"
+          <a [href]="routeUrl.ThreeMfPrintPreflight">3MF Print Preflight</a> ·
+          <a [href]="routeUrl.ThreeMfQualityCheck">3MF Quality Checker</a> ·
+          <a [href]="routeUrl.ThreeMfWallThicknessChecker"
+            >3MF Wall Thickness Checker</a
+          >
+          ·
+          <a [href]="routeUrl.ThreeMfDimensionsChecker"
+            >3MF Dimensions Checker</a
+          >
+          ·
+          <a [href]="guideRouteUrl.Route3dPrintOverhangsAndSupportsGuide"
             >Overhangs and Supports Guide</a
           >
         </p>
@@ -195,6 +202,8 @@ import {
   styleUrl: '../stl-wall-thickness/stl-wall-thickness-page.scss',
 })
 export class ThreeMfOverhangPage {
+  readonly routeUrl = PublicRouteUrl;
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly resolved = signal<ResolvedThreeMfGeometry | null>(null);
   readonly error = signal('');
   readonly threshold = signal(45);

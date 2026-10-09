@@ -182,10 +182,10 @@
         <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>,
         <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a>,
         <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>,
-        <a href="/how-to-check-if-a-3d-model-fits-your-printer"
+        <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter"
           >printer fit guidance</a
         >, and
-        <a href="/how-to-orient-an-stl-file-for-3d-printing"
+        <a [href]="guideRouteUrl.RouteHowToOrientAnStlFileFor3dPrinting"
           >orientation guidance</a
         >.
       </p>
@@ -219,7 +219,7 @@
       Prefer source CAD when a cut must preserve a load path, avoid a hole, add
       fasteners or define a repeatable joint. Stop when either downloaded piece
       loses a required feature or the contour is rejected.
-      <a href="/how-to-split-an-stl-file-for-3d-printing"
+      <a [href]="guideRouteUrl.RouteHowToSplitAnStlFileFor3dPrinting"
         >Choose a joint and verify the assembly plan</a
       >
       before orienting and slicing each part.

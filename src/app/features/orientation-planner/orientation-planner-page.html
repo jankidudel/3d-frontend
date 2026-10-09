@@ -187,4 +187,29 @@
     [completed]="!!recommended()"
     [page]="routeUrl.OrientationPlanner"
   />
+  <section class="content">
+    <h2>Compare six candidates, then choose for the actual job</h2>
+    <p>
+      The local planner compares six axis directions, nominal bounding-box fit,
+      downward-facing geometry and estimated bed contact. It does not search
+      every arbitrary rotation, generate supports or calculate material
+      strength. STL uses your unit assumption; supported 3MF build geometry is
+      resolved before analysis.
+    </p>
+    <p>
+      For a hypothetical 100 x 60 x 20 mm box on an 80 x 80 x 120 mm envelope,
+      the original direction exceeds width. Placing the 100 mm axis vertically
+      gives a 60 x 20 mm footprint and nominal fit. That geometric advantage can
+      reduce bed contact and change load direction or support needs.
+    </p>
+    <p>
+      Keep intended strength, surface finish and support removal as separate
+      decisions. Review the candidate in your slicer, include brim/support
+      allowances and compare the exported orientation with the original. See
+      <a [href]="guideRouteUrl.RouteHowToOrientAnStlFileFor3dPrinting"
+        >the orientation procedure</a
+      >
+      for those tradeoffs.
+    </p>
+  </section>
 </main>

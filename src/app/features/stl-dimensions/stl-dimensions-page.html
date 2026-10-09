@@ -45,7 +45,7 @@
     </p>
     <p>
       Designing holes, pins or mating parts? Use the
-      <a href="/3d-print-tolerance-calculator"
+      <a [href]="routeUrl.ToleranceCalculator"
         >3D Print Tolerance &amp; Clearance Calculator</a
       >
       before exporting the final STL.
@@ -701,7 +701,7 @@
         >STL Print Preflight Checker</a
       >
       ·
-      <a href="/how-to-make-an-stl-file-printable"
+      <a [href]="guideRouteUrl.RouteHowToMakeAnStlFilePrintable"
         >How to Make an STL File Printable</a
       >
       · <a [routerLink]="routeUrl.Tools">All STL tools</a>

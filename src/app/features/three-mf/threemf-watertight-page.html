@@ -6,7 +6,7 @@
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your 3MF</h2>
-    <p>.3mf only - maximum 25 MB</p>
+    <p>.3mf only - maximum 25 MiB</p>
     <app-three-mf-file-picker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
@@ -129,5 +129,28 @@
     <p>Yes. Multiple separate closed parts can be intentional.</p>
     <h3>Does watertight mean it will print?</h3>
     <p>No. It checks surface closure, not every printing condition.</p>
+  </section>
+  <section class="content">
+    <h2>Check boundaries after resolving placements</h2>
+    <p>
+      A closed resource and an open resource can coexist in one 3MF build.
+      Inspect the resolved build rather than assuming the package extension
+      implies closed solids. Supported object transforms and repeated build
+      placements contribute to the inspected geometry.
+    </p>
+    <p>
+      A cube missing one square face has four boundary edges. Placing two
+      separate copies gives eight boundary edges; it does not repair the
+      resource. Decide whether the openings belong to the design before changing
+      either copy. These counts are a mathematical example, not a physical print
+      observation.
+    </p>
+    <p>
+      This server check uploads your 3MF. No detected boundaries is a bounded
+      result, not proof against intersections or contradictory shell
+      orientation. Treat unreliable volume as unavailable evidence and use
+      <a [href]="routeUrl.ThreeMfManifoldChecker">3MF topology inspection</a>
+      for edge-sharing and shell questions.
+    </p>
   </section>
 </main>

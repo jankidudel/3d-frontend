@@ -1,3 +1,4 @@
+import { PublicRouteUrl } from '../../seo/public-routes';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CookieConsentService } from '../cookie-consent.service';
@@ -9,5 +10,6 @@ import { CookieConsentService } from '../cookie-consent.service';
   styleUrl: './cookie-consent-banner.scss',
 })
 export class CookieConsentBannerComponent {
+  readonly routeUrl = PublicRouteUrl;
   readonly consent = inject(CookieConsentService);
 }

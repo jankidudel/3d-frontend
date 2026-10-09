@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import {
   Component,
@@ -52,6 +53,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: './stl-dimensions-page.scss',
 })
 export class StlDimensionsPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobFailureMessage = jobFailureMessage;
   readonly jobStatus = JobStatus;

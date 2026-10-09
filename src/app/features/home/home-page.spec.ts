@@ -1,89 +1,40 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { HomePage } from './home-page';
-
+import { HOME_TOOL_GROUPS } from './home-tools';
 describe('HomePage', () => {
-  it('presents links to all public tools in the intended order', () => {
+  it('keeps a deliberate featured selection while the directory registry stays complete', () => {
     TestBed.configureTestingModule({
       imports: [HomePage],
       providers: [provideRouter([])],
     });
     const fixture = TestBed.createComponent(HomePage);
     fixture.detectChanges();
-    const links = Array.from(
-      fixture.nativeElement.querySelectorAll('.tools a, main > p:last-child a'),
-    ) as HTMLAnchorElement[];
-
-    expect(fixture.nativeElement.textContent).toContain('Choose a tool');
-    expect(fixture.nativeElement.textContent).toContain(
-      'Currently supporting STL and 3MF files.',
+    const element = fixture.nativeElement as HTMLElement;
+    const featured = [...element.querySelectorAll('.tools a')].map((link) =>
+      link.getAttribute('href'),
     );
-    expect(fixture.nativeElement.textContent).toContain('STL tools');
-    expect(fixture.nativeElement.querySelector('h1')?.textContent?.trim()).toBe(
-      '3D Quality Tools',
-    );
-    expect(
-      fixture.nativeElement.querySelector('.tools h2')?.textContent?.trim(),
-    ).toBe('Choose a tool');
-    expect(
-      fixture.nativeElement.querySelector('.tools h3')?.textContent?.trim(),
-    ).toBe('STL tools');
-    expect(fixture.nativeElement.textContent).toContain('STL Quality Checker');
-    expect(fixture.nativeElement.textContent).toContain(
-      'STL Dimensions Checker',
-    );
-    expect(fixture.nativeElement.textContent).toContain(
-      'STL Volume Calculator',
-    );
-    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+    expect(featured).toEqual([
       '/stl-viewer',
-      '/stl-quality-checker',
-      '/stl-print-preflight',
-      '/stl-repair',
-      '/stl-watertight-checker',
-      '/stl-manifold-checker',
-      '/stl-dimensions-checker',
-      '/stl-scale-tool',
-      '/stl-wall-thickness-checker',
-      '/stl-overhang-checker',
-      '/stl-splitter',
-      '/stl-volume-calculator',
-      '/stl-triangle-counter',
-      '/stl-file-size-reducer',
-      '/stl-to-3mf-converter',
-      '/stl-tools',
       '/3mf-viewer',
-      '/3mf-quality-checker',
-      '/3mf-print-preflight',
-      '/3mf-repair',
-      '/3mf-watertight-checker',
-      '/3mf-manifold-checker',
-      '/3mf-dimensions-checker',
-      '/3mf-volume-calculator',
-      '/3mf-wall-thickness-checker',
-      '/3mf-overhang-checker',
-      '/3mf-triangle-counter',
-      '/3mf-to-stl-converter',
-      '/3mf-tools',
+      '/stl-print-preflight',
       '/3d-printer-fit-checker',
-      '/3d-print-orientation-planner',
-      '/3d-print-bed-layout-planner',
-      '/3d-print-tolerance-calculator',
-      '/3d-print-shrinkage-calculator',
+      '/stl-compare',
+      '/batch-stl-checker',
       '/3d-print-cost-calculator',
       '/3d-printing-price-calculator',
-      '/filament-length-calculator',
-      '/tools',
-      '/gcode-preflight-checker',
-      '/tools',
-      '/batch-stl-checker',
-      '/stl-compare',
-      '/filament-remaining-calculator',
-      '/nozzle-layer-height-calculator',
-      '/volumetric-flow-calculator',
-      '/3d-print-finish-time-calculator',
-      '/tools',
-      '/tools',
     ]);
+    expect(featured.length).toBeLessThan(
+      HOME_TOOL_GROUPS.flatMap((group) => group.tools).length,
+    );
+    expect(
+      element
+        .querySelector('.hero-actions a:nth-child(2)')
+        ?.getAttribute('href'),
+    ).toBe('/tools');
+    expect(element.querySelectorAll('h1')).toHaveLength(1);
+    expect(element.textContent).toContain(
+      'Some quality, topology and volume checks upload',
+    );
   });
 });

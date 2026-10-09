@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
@@ -47,6 +48,7 @@ interface ModelInfo {
   styleUrl: './threemf-viewer-page.scss',
 })
 export class ThreeMfViewerPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
   readonly error = signal('');
@@ -178,7 +180,7 @@ export class ThreeMfViewerPage {
     }
     if (file.size > MAX_FILE_SIZE) {
       this.error.set(
-        'This file is over the 25 MB limit. Choose a smaller 3MF file.',
+        'This file is over the 25 MiB limit. Choose a smaller 3MF file.',
       );
       return;
     }

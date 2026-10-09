@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
@@ -39,6 +40,7 @@ interface PreviewModel {
   styleUrl: './stl-reducer-page.scss',
 })
 export class StlReducerPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly previewVersion = PreviewVersion;
   readonly file = signal<File | null>(null);

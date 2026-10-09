@@ -24,7 +24,7 @@
         aria-label="Choose 3MF file"
         (change)="onPicker($event)"
       />
-      <p class="hint">.3mf only - maximum 25 MB</p>
+      <p class="hint">.3mf only - maximum 25 MiB</p>
       <p class="privacy">
         Viewed locally in your browser - your file is not uploaded.
       </p>
@@ -159,7 +159,9 @@
     <p>
       Overall dimensions describe the resolved build bounds. Point-to-point
       measurement checks a specific feature. See
-      <a [routerLink]="'/how-to-measure-3d-model'">how to measure a 3D model</a>
+      <a [routerLink]="guideRouteUrl.RouteHowToMeasure3dModel"
+        >how to measure a 3D model</a
+      >
       for guidance and limitations.
     </p>
     <h2>Inspect a cross-section</h2>
@@ -168,7 +170,7 @@
       X, Y or Z cut axis, then move the cut through the displayed build. The
       viewer hides one side of the mesh for visual inspection; it does not
       repair, cap or validate the model. Read
-      <a [routerLink]="'/how-to-inspect-stl-3mf-cross-sections'"
+      <a [routerLink]="guideRouteUrl.RouteHowToInspectStl3mfCrossSections"
         >how to inspect STL and 3MF cross-sections</a
       >
       for the recommended workflow.

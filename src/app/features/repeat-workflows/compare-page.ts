@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ReviewSession, ReviewDestination } from './review-session';
 import { DecimalPipe } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
@@ -49,6 +50,7 @@ interface Revision {
   styleUrl: '../planning/planning-page.scss',
 })
 export class ComparePage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Compare),
   );

@@ -1,3 +1,4 @@
+import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Component, inject } from '@angular/core';
 import { CookieConsentService } from '../../core/analytics/cookie-consent.service';
 import { SeoService } from '../../core/seo/seo.service';
@@ -32,7 +33,7 @@ export class CookiesPage {
     this.seo.apply({
       title: 'Cookie Settings - 3D Quality Tools',
       description: 'Manage optional analytics cookies for 3D Quality Tools.',
-      path: '/cookies',
+      path: PublicRouteUrl.Cookies,
     });
   }
 

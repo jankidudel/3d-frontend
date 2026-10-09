@@ -21,6 +21,6 @@ export function getFileSelectionHint(extension: string): string {
   return `Select a non-empty ${extension} file, up to ${getMaxFileUploadSizeLimitMiB()} MiB.`;
 }
 
-export const FILE_TOO_LARGE_MESSAGE = `Files must be ${GUEST_USER_MAX_FILE_UPLOAD_SIZE_MIB} MB or smaller.`;
+export const FILE_TOO_LARGE_MESSAGE = `Files must be ${GUEST_USER_MAX_FILE_UPLOAD_SIZE_MIB} MiB or smaller.`;
 export const FILE_PICKER_TOO_LARGE_MESSAGE =
   getFilePickerTooLargeMessage('STL');

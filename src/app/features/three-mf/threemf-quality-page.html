@@ -7,7 +7,7 @@
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose your 3MF file</h2>
-    <p>Upload a 3MF file up to 25 MB.</p>
+    <p>Upload a 3MF file up to 25 MiB.</p>
     <app-three-mf-file-picker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
@@ -234,8 +234,11 @@
     </p>
     <p>
       Having trouble slicing? Read
-      <a href="/why-wont-my-3mf-file-slice">Why Won’t My 3MF File Slice?</a> and
-      <a href="/3mf-units-explained">3MF Units Explained</a>.
+      <a [href]="guideRouteUrl.RouteWhyWontMy3mfFileSlice"
+        >Why Won’t My 3MF File Slice?</a
+      >
+      and
+      <a [href]="guideRouteUrl.Route3mfUnitsExplained">3MF Units Explained</a>.
     </p>
     <p>
       Need a focused closed-surface check?

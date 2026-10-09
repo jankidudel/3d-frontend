@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
@@ -37,6 +38,7 @@ const UNIT_LABELS: Readonly<Record<OutputUnit, string>> = {
   styleUrl: './local-converter-page.scss',
 })
 export class LocalConverterPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
   readonly routeUrl = PublicRouteUrl;
   readonly file = signal<File | null>(null);
