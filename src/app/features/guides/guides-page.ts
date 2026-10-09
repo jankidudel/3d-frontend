@@ -1,4 +1,3 @@
-import { WorkflowPathsComponent } from '../repeat-workflows/workflow-paths';
 import { Component, computed, inject, signal } from '@angular/core';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
@@ -7,7 +6,6 @@ import { filterGuideGroups } from './guide-search';
 
 @Component({
   selector: 'app-guides-page',
-  imports: [WorkflowPathsComponent],
   templateUrl: './guides-page.html',
   styleUrl: './guides-page.scss',
 })

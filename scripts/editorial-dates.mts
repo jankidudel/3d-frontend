@@ -11,9 +11,9 @@ import {
 const legacyLastModifiedDate = '2026-10-06';
 /** Recorded editorial dates and the explicit legacy baseline, never build time. */
 export const editorialDates: Readonly<Record<string, string>> = {
-  [PublicRouteUrl.Home]: '2026-10-08',
-  [PublicRouteUrl.AllTools]: '2026-10-08',
-  [PublicRouteUrl.Guides]: '2026-10-08',
+  [PublicRouteUrl.Home]: '2026-10-09',
+  [PublicRouteUrl.AllTools]: '2026-10-09',
+  [PublicRouteUrl.Guides]: '2026-10-09',
   [`/${MaterialRoutePath.Pla}`]: '2026-10-04',
   [`/${MaterialRoutePath.Petg}`]: '2026-10-04',
   [`/${MaterialRoutePath.Abs}`]: '2026-10-04',
