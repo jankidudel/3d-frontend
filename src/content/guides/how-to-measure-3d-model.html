@@ -10,7 +10,7 @@ faq:
   - question: Are STL measurements automatically in millimetres?
     answer: No. STL files usually store triangle coordinates without reliable unit metadata. You need to know or choose whether the original coordinates should be interpreted as millimetres, inches or another unit.
   - question: What is the difference between model dimensions and point-to-point measurement?
-    answer: Overall dimensions describe the model’s full width, height and depth. Point-to-point measurement checks the distance between two selected features, such as hole centres, an opening width or the length of a tab.
+    answer: Overall dimensions describe the model’s full width, height and depth. Point-to-point measurement checks the distance between two selected features, such as an opening span or the length of a tab; surface picks do not establish analytic hole centres.
   - question: Is measuring an STL viewer accurate enough for functional parts?
     answer: It is useful for inspecting the mesh and checking intended dimensions. Accuracy still depends on the source mesh resolution, selected points and unit interpretation; use CAD or calibrated physical measurement for tighter requirements.
 ---
@@ -37,6 +37,24 @@ faq:
   apparently conflicting measurements easier to reconcile.
 </p>
 
+<h2>Separate intent, exported geometry and the physical part</h2>
+<p>
+  Source CAD owns nominal analytic diameter, centre spacing and datums. The
+  tessellated export owns faceted surfaces and resolved transforms. Physical
+  measurement owns the produced dimension under the recorded instrument/method
+  and conditioning. A file span cannot establish a printed bore diameter, and a
+  physical reading cannot identify whether its cause is CAD, export or process
+  without comparison.
+</p>
+<p>
+  After checking the file, record comparable produced dimensions and exclusions
+  in the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a> or
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}">axis worksheet</a>.
+  Use direction- and height-labelled sets for bores; do not click two arbitrary
+  points and report them as fitted analytic centres.
+</p>
+
 <h2>Keep transformation state visible</h2>
 <p>
   Measure the resolved object that will be printed. A slicer may show a
@@ -51,9 +69,10 @@ faq:
   Suppose a replacement cover must fit within a 120 × 80 × 25 mm envelope and
   align two holes 64 mm apart. First read the axis-aligned bounding box and test
   sensible rotations; a result of 118 × 78 × 28 mm fails height even though two
-  axes fit. Then measure hole centers point to point for the 64 mm requirement.
-  These are different questions: the bounding box cannot confirm the hole
-  spacing, and two selected points cannot prove the overall envelope.
+  axes fit. Confirm the 64 mm analytic hole-centre spacing in source CAD;
+  surface picks in the mesh viewer cannot establish those centres. These are
+  different questions: the bounding box cannot confirm the hole spacing, and two
+  selected points cannot prove the overall envelope.
 </p>
 <p>
   Record the assumed unit beside every number. If an STL intended as inches
@@ -106,10 +125,11 @@ faq:
 </p>
 <h2>Use point-to-point measurement for specific features</h2>
 <p>
-  Point-to-point measurement helps with a slot width, mounting tab, visible
-  hole-centre distance, lip, flange or protruding feature. In the Viewer,
-  activate <strong>Measure distance</strong>, then select two visible points on
-  the mesh.
+  Point-to-point measurement helps with a slot width, mounting tab, lip, flange
+  or protruding feature. Analytic hole-centre spacing belongs in source CAD,
+  because selecting two mesh surface points does not locate those centres. In
+  the Viewer, activate <strong>Measure distance</strong>, then select two
+  visible points on the mesh.
 </p>
 <p>
   The result shows the direct distance and the difference along the X, Y and Z

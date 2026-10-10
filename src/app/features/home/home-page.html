@@ -1,10 +1,9 @@
 <main class="page home-page">
   <p class="eyebrow">InspectMesh</p>
-  <h1>Check and prepare STL and 3MF files for 3D printing</h1>
+  <h1>Practical tools and guides for 3D printing</h1>
   <p class="lead">
-    Open a model, understand a mesh finding, compare an edited export or plan
-    your next print. File inspection helps you choose the next step; it cannot
-    certify a successful print.
+    Inspect models, plan prints and understand your options with useful tools
+    and clear, practical guides.
   </p>
   <p class="hero-actions">
     <a class="button" [routerLink]="routeUrl.Viewer">Open an STL model</a>
@@ -185,6 +184,10 @@
       run in your browser. Some quality, topology and volume checks upload the
       selected file for server processing. Each tool explains its own processing
       before you choose a file.
+    </p>
+    <p>
+      <a [routerLink]="routeUrl.Methods">How InspectMesh checks files</a>
+      explains the checks, their limits and where processing happens.
     </p>
     <p>
       <a [href]="routeUrl.Privacy">Read processing and privacy details</a>.

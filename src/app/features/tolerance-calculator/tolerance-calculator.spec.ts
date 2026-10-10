@@ -3,12 +3,14 @@ import {
   calculateCalibrationErrors,
   calculateTolerance,
   FitIntent,
+  MatingMode,
   FIT_PRESETS,
   toleranceSummary,
 } from './tolerance-calculator';
 
 describe('tolerance calculator calculations', () => {
   const input = {
+    matingMode: MatingMode.PrintedPair,
     nominalMatingDiameter: 10,
     desiredPrintedPinDiameter: 10,
     desiredClearance: 0.3,
@@ -25,12 +27,58 @@ describe('tolerance calculator calculations', () => {
     });
   });
 
+  it('uses the selected counterpart and rejects inactive-field interference', () => {
+    const changedPin = {
+      ...input,
+      nominalMatingDiameter: 30,
+      desiredPrintedPinDiameter: 10,
+      desiredClearance: 0.2,
+      holeError: -0.3,
+      outsideError: 0.1,
+    };
+    const pair = calculateTolerance({
+      ...changedPin,
+      matingMode: MatingMode.PrintedPair,
+    });
+    expect(pair?.targetPrintedHoleDiameter).toBeCloseTo(10.2);
+    expect(pair?.modelledHoleDiameter).toBeCloseTo(10.5);
+    expect(pair?.modelledPinDiameter).toBeCloseTo(9.9);
+    const fixed = calculateTolerance({
+      ...changedPin,
+      matingMode: MatingMode.Fixed,
+      desiredPrintedPinDiameter: NaN,
+      outsideError: Infinity,
+    });
+    expect(fixed?.targetPrintedHoleDiameter).toBeCloseTo(30.2);
+    expect(fixed?.modelledPinDiameter).toBeNull();
+    expect(
+      calculateTolerance({
+        ...changedPin,
+        matingMode: MatingMode.PrintedPair,
+        nominalMatingDiameter: NaN,
+      })?.targetPrintedHoleDiameter,
+    ).toBeCloseTo(10.2);
+  });
+  it('handles zero contact, finite signed errors and corrected dimensions', () => {
+    expect(
+      calculateTolerance({ ...input, desiredClearance: 0 })?.radialClearance,
+    ).toBe(0);
+    expect(calculateTolerance({ ...input, holeError: Infinity })).toBeNull();
+    expect(calculateTolerance({ ...input, outsideError: NaN })).toBeNull();
+    expect(calculateTolerance({ ...input, holeError: 20 })).toBeNull();
+    expect(calculateTolerance({ ...input, outsideError: 20 })).toBeNull();
+  });
+
   it('supports interference and rejects impossible dimensions', () => {
     expect(
       calculateTolerance({ ...input, desiredClearance: -0.2 })?.radialClearance,
     ).toBe(-0.1);
     expect(
-      calculateTolerance({ ...input, nominalMatingDiameter: 0 }),
+      calculateTolerance({
+        ...input,
+        matingMode: MatingMode.Fixed,
+        nominalMatingDiameter: 0,
+      }),
     ).toBeNull();
     expect(calculateTolerance({ ...input, desiredClearance: -11 })).toBeNull();
   });

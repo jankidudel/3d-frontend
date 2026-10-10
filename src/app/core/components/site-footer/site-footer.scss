@@ -37,18 +37,7 @@
   color: var(--primary);
 }
 
-.footer-links button {
-  padding: 0;
-  border: 0;
-  color: var(--primary);
-  background: transparent;
-  font: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.footer-links a:focus-visible,
-.footer-links button:focus-visible {
+.footer-links a:focus-visible {
   outline: 3px solid var(--primary);
   outline-offset: 3px;
   border-radius: 0.25rem;

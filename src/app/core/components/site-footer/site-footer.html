@@ -13,16 +13,12 @@
     <p>Simple, browser-friendly tools for better 3D prints.</p>
     <nav class="footer-links" aria-label="Site and legal links">
       <a [routerLink]="['/', routePath.Examples]">Examples</a>
-      <a [routerLink]="['/', routePath.Methods]">Methods and processing</a>
       <a [routerLink]="['/', routePath.Privacy]" routerLinkActive="active"
         >Privacy</a
       >
       <a [routerLink]="['/', routePath.Cookies]" routerLinkActive="active"
         >Cookies</a
       >
-      <button type="button" (click)="consent.changeChoice()">
-        Cookie settings
-      </button>
       <a [routerLink]="['/', routePath.Contact]" routerLinkActive="active"
         >Contact</a
       >

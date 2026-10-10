@@ -33,7 +33,14 @@ export const FIT_PRESETS: readonly FitPreset[] = [
   { intent: FitIntent.Custom, label: 'Custom', clearance: 0 },
 ];
 
+export const MatingMode = {
+  Fixed: 'fixed',
+  PrintedPair: 'printed-pair',
+} as const;
+export type MatingMode = (typeof MatingMode)[keyof typeof MatingMode];
+
 export interface ToleranceInputs {
+  readonly matingMode: MatingMode;
   readonly desiredClearance: number;
   readonly desiredPrintedPinDiameter: number;
   readonly holeError: number | null;
@@ -43,7 +50,7 @@ export interface ToleranceInputs {
 
 export interface ToleranceResult {
   readonly modelledHoleDiameter: number;
-  readonly modelledPinDiameter: number;
+  readonly modelledPinDiameter: number | null;
   readonly radialClearance: number;
   readonly targetPrintedHoleDiameter: number;
 }
@@ -68,22 +75,35 @@ export function calculateTolerance(
   input: ToleranceInputs,
 ): ToleranceResult | null {
   if (
-    !positive(input.nominalMatingDiameter) ||
-    !positive(input.desiredPrintedPinDiameter) ||
-    !Number.isFinite(input.desiredClearance)
+    !positive(
+      input.matingMode === MatingMode.PrintedPair
+        ? input.desiredPrintedPinDiameter
+        : input.nominalMatingDiameter,
+    ) ||
+    (input.matingMode !== MatingMode.Fixed &&
+      !positive(input.desiredPrintedPinDiameter)) ||
+    !Number.isFinite(input.desiredClearance) ||
+    (input.holeError !== null && !Number.isFinite(input.holeError)) ||
+    (input.matingMode !== MatingMode.Fixed &&
+      input.outsideError !== null &&
+      !Number.isFinite(input.outsideError))
   ) {
     return null;
   }
   const targetPrintedHoleDiameter =
-    input.nominalMatingDiameter + input.desiredClearance;
+    (input.matingMode === MatingMode.PrintedPair
+      ? input.desiredPrintedPinDiameter
+      : input.nominalMatingDiameter) + input.desiredClearance;
   const modelledHoleDiameter =
     targetPrintedHoleDiameter - (input.holeError ?? 0);
   const modelledPinDiameter =
-    input.desiredPrintedPinDiameter - (input.outsideError ?? 0);
+    input.matingMode === MatingMode.Fixed
+      ? null
+      : input.desiredPrintedPinDiameter - (input.outsideError ?? 0);
   if (
     !positive(targetPrintedHoleDiameter) ||
     !positive(modelledHoleDiameter) ||
-    !positive(modelledPinDiameter)
+    (modelledPinDiameter !== null && !positive(modelledPinDiameter))
   ) {
     return null;
   }
@@ -125,15 +145,17 @@ export function toleranceSummary(
     value === null ? 'not entered' : `${value.toFixed(3)} mm`;
   return [
     'InspectMesh 3D Print Tolerance & Clearance Calculator',
-    `Nominal mating-part diameter: ${input.nominalMatingDiameter.toFixed(3)} mm`,
-    `Desired printed pin diameter: ${input.desiredPrintedPinDiameter.toFixed(3)} mm`,
+    `Mating mode: ${input.matingMode === MatingMode.Fixed ? 'Fixed external component' : 'Both parts printed'}`,
+    input.matingMode === MatingMode.Fixed
+      ? `Fixed counterpart outside diameter: ${input.nominalMatingDiameter.toFixed(3)} mm`
+      : `Target produced pin diameter: ${input.desiredPrintedPinDiameter.toFixed(3)} mm`,
     `Fit intent: ${intentLabel}`,
     `Desired diametral clearance: ${input.desiredClearance.toFixed(3)} mm`,
     `Radial clearance: ${result.radialClearance.toFixed(3)} mm`,
     `Target printed hole diameter: ${result.targetPrintedHoleDiameter.toFixed(3)} mm`,
     `Modelled hole diameter: ${result.modelledHoleDiameter.toFixed(3)} mm`,
-    `Modelled pin/shaft diameter: ${result.modelledPinDiameter.toFixed(3)} mm`,
-    `Measured outside error: ${error(input.outsideError)}`,
+    `Modelled pin/shaft diameter: ${result.modelledPinDiameter === null ? 'fixed counterpart - not printed' : result.modelledPinDiameter.toFixed(3) + ' mm'}`,
+    `Measured outside error: ${input.matingMode === MatingMode.Fixed ? 'not applied to fixed counterpart' : error(input.outsideError)}`,
     `Measured hole error: ${error(input.holeError)}`,
     'Assumption: measured calibration errors are representative of this printer, material, orientation and settings. Confirm an important fit with a small test print.',
   ].join('\n');

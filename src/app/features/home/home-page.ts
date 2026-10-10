@@ -33,9 +33,9 @@ export class HomePage {
 
   constructor() {
     this.seo.apply({
-      title: 'InspectMesh - Check and Prepare STL and 3MF Files',
+      title: 'InspectMesh - 3D Printing Tools and Practical Guides',
       description:
-        'Choose a workflow to inspect STL and 3MF files, diagnose mesh findings, compare exports, check nominal printer fit and plan print costs.',
+        'Inspect and prepare 3D-print models, understand file checks, plan dimensions and print costs, and choose your next step with practical tools and guides.',
       path: PublicRouteUrl.Home,
     });
   }

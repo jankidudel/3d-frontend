@@ -49,25 +49,45 @@
       </p>
     }
 
+    <label class="field"
+      ><span>Mating component</span
+      ><select
+        [value]="matingMode()"
+        (change)="matingMode.set($any($event.target).value)"
+      >
+        <option [value]="matingModes.Fixed">
+          Fixed external pin / hardware
+        </option>
+        <option [value]="matingModes.PrintedPair">Both parts printed</option>
+      </select></label
+    >
+    <p>
+      The target produced hole equals the selected counterpart diameter plus
+      diametral clearance. Fixed hardware uses its measured/selected outside
+      diameter; a printed pair uses your target produced pin diameter.
+    </p>
     <div class="fields">
-      <label class="field"
-        ><span>Nominal mating-part diameter (mm)</span
-        ><input
-          type="number"
-          min="0.001"
-          step="any"
-          [value]="nominalMatingDiameter()"
-          (input)="setNumber('nominalMatingDiameter', $event)"
-      /></label>
-      <label class="field"
-        ><span>Desired printed pin/shaft diameter (mm)</span
-        ><input
-          type="number"
-          min="0.001"
-          step="any"
-          [value]="desiredPrintedPinDiameter()"
-          (input)="setNumber('desiredPrintedPinDiameter', $event)"
-      /></label>
+      @if (matingMode() === matingModes.Fixed) {
+        <label class="field"
+          ><span>Fixed counterpart outside diameter (mm)</span
+          ><input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="nominalMatingDiameter()"
+            (input)="setNumber('nominalMatingDiameter', $event)"
+        /></label>
+      } @else {
+        <label class="field"
+          ><span>Target produced pin diameter (mm)</span
+          ><input
+            type="number"
+            min="0.001"
+            step="any"
+            [value]="desiredPrintedPinDiameter()"
+            (input)="setNumber('desiredPrintedPinDiameter', $event)"
+        /></label>
+      }
       <label class="field"
         ><span>Starting point preset</span
         ><select
@@ -107,8 +127,10 @@
     >
       <summary>Use measurements from your own calibration print</summary>
       <p>
-        Enter complete positive measurements only. Nothing is saved or sent to
-        analytics.
+        Enter complete positive measurements only. Nothing is saved
+        automatically or sent to analytics. Add repeats only for comparable
+        features. Apply deliberately; editing readings does not silently change
+        an applied error.
       </p>
       <div class="fields">
         <label class="field"
@@ -120,15 +142,11 @@
             [value]="intendedOutside() ?? ''"
             (input)="setNumber('intendedOutside', $event)"
         /></label>
-        <label class="field"
-          ><span>Measured outside diameter (mm)</span
-          ><input
-            type="number"
-            min="0.001"
-            step="any"
-            [value]="measuredOutside() ?? ''"
-            (input)="setNumber('measuredOutside', $event)"
-        /></label>
+        <app-repeat-readings
+          label="Measured outside diameter"
+          [readings]="outsideReadings()"
+          (readingsChange)="outsideReadings.set($event)"
+        />
         <label class="field"
           ><span>Intended hole diameter (mm)</span
           ><input
@@ -138,16 +156,17 @@
             [value]="intendedHole() ?? ''"
             (input)="setNumber('intendedHole', $event)"
         /></label>
-        <label class="field"
-          ><span>Measured hole diameter (mm)</span
-          ><input
-            type="number"
-            min="0.001"
-            step="any"
-            [value]="measuredHole() ?? ''"
-            (input)="setNumber('measuredHole', $event)"
-        /></label>
+        <app-repeat-readings
+          label="Measured hole diameter"
+          [readings]="holeReadings()"
+          (readingsChange)="holeReadings.set($event)"
+        />
       </div>
+      <p>
+        Outside error applies only to a printed pin. In fixed-component mode
+        only the hole error changes a model dimension. Complete any started set
+        before applying; an untouched set remains unmeasured.
+      </p>
       <p class="calibration-result">
         Outside error:
         <strong>{{ number(calibrationErrors().outsideError) }}</strong> · Hole
@@ -157,10 +176,7 @@
         class="button button-secondary"
         type="button"
         (click)="applyCalibration()"
-        [disabled]="
-          calibrationErrors().outsideError === null &&
-          calibrationErrors().holeError === null
-        "
+        [disabled]="!calibrationReady()"
       >
         Apply these errors to the fit calculation
       </button>
@@ -195,16 +211,19 @@
           <dt>Modelled hole diameter</dt>
           <dd>{{ number(calculation.modelledHoleDiameter) }}</dd>
         </div>
-        <div>
-          <dt>Modelled pin/shaft diameter</dt>
-          <dd>{{ number(calculation.modelledPinDiameter) }}</dd>
-        </div>
+        @if (calculation.modelledPinDiameter !== null) {
+          <div>
+            <dt>Modelled pin/shaft diameter</dt>
+            <dd>{{ number(calculation.modelledPinDiameter) }}</dd>
+          </div>
+        }
       </dl>
       <p class="formula">
-        <strong>Formula:</strong> target printed hole = nominal mating-part
+        <strong>Formula:</strong> target printed hole = selected counterpart
         diameter + desired diametral clearance. Modelled hole = target printed
-        hole - measured hole error. Modelled pin = desired printed pin -
-        measured outside error.
+        hole - measured hole error. Modelled pin = target produced pin -
+        measured outside error (printed pair only). Radial clearance = C/2 for
+        ideal concentric circular features.
       </p>
       <p class="assumption">
         Assumption: calibration errors are representative of this printer,
@@ -219,13 +238,7 @@
           type="button"
           (click)="printSummary()"
         >
-          Print summary</button
-        ><button
-          class="button button-secondary"
-          type="button"
-          (click)="reset()"
-        >
-          Reset
+          Print summary
         </button>
       </div>
       @if (copyStatus()) {
@@ -237,7 +250,16 @@
         calculated dimensions remain positive.
       </p>
     }
+    <button class="button button-secondary" type="button" (click)="reset()">
+      Reset worksheet and fit inputs
+    </button>
   </section>
+
+  <app-measurement-worksheet
+    [calculation]="worksheet()"
+    [notes]="notes()"
+    (notesChange)="notes.set($event)"
+  />
 
   <section class="next-steps" aria-labelledby="next-title">
     <h2 id="next-title">Next steps</h2>

@@ -1,0 +1,167 @@
+---
+title: 'Heat-Set Insert Hole Sizing for 3D Prints | InspectMesh'
+description: 'Read exact insert dimensions for the pilot hole, depth and boss; inspect the exported geometry and plan a representative assembly test.'
+slug: 3d-print-heat-set-insert-hole-sizing
+eyebrow: Functional fit and calibration
+heading: 'Heat-Set Insert Hole Sizing for 3D Prints'
+faq:
+  - question: 'Does M3 specify the required heat-set insert hole?'
+    answer: 'No. Obtain the exact series and length drawing for the pilot hole, depth, taper and surrounding geometry. Catalogue guidance is not certified FDM assembly performance.'
+  - question: 'Does a clean mesh prove insert retention?'
+    answer: 'No. Mesh screening cannot establish installation quality or pull-out resistance. Follow the exact supplier and material guidance and validate the representative assembly with adequate evidence.'
+---
+
+<p>
+  An M3 thread designation describes the internal thread; it does not specify
+  the insert’s outer knurl, length, taper or required pilot hole. Begin with an
+  exact series and length, then retain its drawing with your design. This page
+  owns insert-specific inputs, while
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >hole compensation</a
+  >
+  owns a measured local correction.
+</p>
+<figure>
+  <img
+    src="/examples/functional-fit/insert-boss.svg"
+    width="720"
+    height="340"
+    alt="Section of an insert in a boss showing length, pilot-hole diameter, separate depth, optional counterbore and surrounding material."
+  />
+  <figcaption>
+    Original labelled schematic, not a supplier drawing. The optional
+    counterbore is not required for every insert.
+  </figcaption>
+</figure>
+<h2>Read a real series without confusing its dimensions</h2>
+<p>
+  The
+  <a
+    href="https://www.spirol.com/assets/files/ins-threaded-inserts-design-guide-us.pdf"
+    >SPIROL Threaded Inserts for Plastics design guide, printed page 8 (PDF page
+    10)</a
+  >
+  lists Series 19 short M3 × 0.5 with reference overknurl A = 4.62 mm, pilot P =
+  3.91 ±0.08 mm, length L = 3.56 ±0.13 mm, and recommended hole D = 3.99 mm with
+  +0.08 mm tolerance. The same row’s long version has A = 4.75 mm and L = 5.74
+  mm. These are catalogue dimension-reading examples, not universal FDM
+  dimensions (checked 10 October 2026).
+</p>
+<p>
+  For the short version, choose the recommended hole column rather than copying
+  the pilot or overknurl dimension. Record the actual ordered material/finish
+  and drawing revision before modelling. Supplier recommendations concern the
+  specified insert and plastic installation application; a printed boss needs
+  process-specific confirmation. A nominal 3.99 mm CAD hole is not evidence that
+  a printed hole meets the supplier’s requirement.
+</p>
+<h2>Keep hole depth and boss requirements separate</h2>
+<p>
+  The same series diagram specifies depth as L + two thread pitches. For this
+  short M3 × 0.5 example, that arithmetic is 3.56 + 2 × 0.5 = 4.56 mm before
+  resolving drawing tolerances and your application. Obtain the complete
+  supplier drawing for taper, boss and any headed variant or counterbore. Do not
+  borrow those features from another series or infer them from thread size. No
+  FDM boss diameter or installation-temperature recommendation is supplied by
+  this worked example.
+</p>
+<p>
+  SPIROL’s
+  <a
+    href="https://www.spirol.com/assets/files/ins-wp-how-to-design-the-proper-hole-for-heat-ultrasonic-inserts-us.pdf"
+    >hole-design white paper</a
+  >
+  ties the hole to plastic composition, selected insert and installation method
+  (checked 10 October 2026). Review its applicability alongside the exact
+  drawing; material fillers and the manufacturing process are not
+  interchangeable inputs.
+</p>
+<h2>Build an input record before modelling</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Required input</th>
+      <th scope="col">Source / check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Series, thread, short/long, material/finish</td>
+      <td>Exact order designation and current supplier drawing</td>
+    </tr>
+    <tr>
+      <td>Hole diameter, taper and depth</td>
+      <td>Recommended geometry and applicability notes, not just insert OD</td>
+    </tr>
+    <tr>
+      <td>Head and counterbore if applicable</td>
+      <td>Exact headed variant; keep unknowns unresolved</td>
+    </tr>
+    <tr>
+      <td>Boss, edge distance and screw reach</td>
+      <td>Assembly drawing, supplier guidance and local geometry</td>
+    </tr>
+    <tr>
+      <td>Plastic grade and print process</td>
+      <td>Material suitability and representative manufacturing conditions</td>
+    </tr>
+    <tr>
+      <td>Installation and service requirements</td>
+      <td>Supplier/material procedure and adequate assembly evidence</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Model, inspect and test the representative boss</h2>
+<ol>
+  <li>
+    Obtain the drawing and confirm suitability for the material/process with
+    supplier guidance. SPIROL describes its heat/ultrasonic inserts as post-mold
+    installation in thermoplastics on its
+    <a
+      href="https://www.spirol.com/product/threaded-inserts-for-plastics/heat-ultrasonic-inserts/"
+      >series page</a
+    >
+    (checked 10 October 2026); that is not certified FDM performance.
+  </li>
+  <li>
+    Model the specified hole and boss in source CAD, retaining dimensions and
+    unresolved notes. Preserve screw access and the intended load path.
+  </li>
+  <li>
+    Verify the exported units and section.
+    <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">Mesh spans</a> screen the
+    export; CAD remains the authority for analytic dimensions.
+    <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+      >Review local walls</a
+    >
+    around the enlarged hole and at boss roots.
+  </li>
+  <li>
+    Choose the
+    <a href="{{ GuideSlug.RouteHowToOrientAnStlFileFor3dPrinting }}"
+      >orientation</a
+    >
+    and inspect support contact and layer paths. Print a test with the same
+    local walls, infill/profile and hole axis as the real boss.
+  </li>
+  <li>
+    Measure the produced hole with a suitable method, record conditioning and
+    follow the exact supplier/material installation guidance and equipment
+    requirements. No universal soldering-iron temperature follows from M3.
+  </li>
+  <li>
+    Record seating, alignment, damage and assembly outcome. Validate service
+    loads with adequate evidence; a seated insert or clean mesh does not prove
+    pull-out resistance.
+  </li>
+</ol>
+<p>
+  Use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">worksheet</a> for
+  comparable hole readings and local error only. A heat-set insert is not an
+  ordinary rigid pin with a generic clearance gap: the supplier geometry and
+  installation requirements control the target. Agree prototype, installation
+  and validation labour in the
+  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}">quote scope</a>
+  before production.
+</p>

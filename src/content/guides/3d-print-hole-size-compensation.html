@@ -27,12 +27,12 @@ faq:
 </p>
 <h2>Work a compensation example</h2>
 <p>
-  Suppose a CAD hole is 10.00 mm and three controlled prints measure 9.68, 9.72
-  and 9.70 mm. Their average is 9.70 mm, an observed diameter shortfall of 0.30
-  mm. A provisional CAD test hole of 10.30 mm is reasonable for the same
-  printer, material, orientation and profile. This is not a universal offset:
-  print a coupon with nearby sizes, then select the smallest hole that provides
-  the required fit without excessive play.
+  In an illustrative example, a CAD hole is 10.00 mm and three controlled prints
+  measure 9.68, 9.72 and 9.70 mm. Their average is 9.70 mm, an observed diameter
+  shortfall of 0.30 mm. A provisional CAD test hole of 10.30 mm is reasonable
+  for the same printer, material, orientation and profile. This is not a
+  universal offset: print a coupon with nearby sizes, then select the smallest
+  hole that provides the required fit without excessive play.
 </p>
 <h2>Clearance is not compensation</h2>
 <p>
@@ -42,6 +42,42 @@ faq:
   fastened parts. Do not add the same number blindly to every radius, pin and
   slot.
 </p>
+
+<h2>Choose CAD edit, slicer offset or whole-part scale</h2>
+<figure>
+  <img
+    src="/examples/functional-fit/scale-offset.svg"
+    width="720"
+    height="340"
+    alt="Original block and bore compared with all dimensions scaled and only the local hole enlarged."
+  />
+  <figcaption>
+    Local hole editing preserves unrelated outside dimensions while consuming
+    nearby wall material; global scale changes every dimension.
+  </figcaption>
+</figure>
+<p>
+  A parametric CAD edit changes the selected source feature and is visible in
+  the exported geometry. A slicer offset changes the documented contours during
+  toolpath generation and may not appear in an unchanged exported STL. A
+  whole-part scale changes outer spans, hole diameters, centre spacing and walls
+  together. Use
+  <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
+    >whole-part scale</a
+  >
+  only when representative axis measurements support that different task.
+</p>
+<p>
+  For a slicer control, check current official documentation for your exact
+  version, sign, contour scope and radius-versus-diameter convention. This guide
+  deliberately gives no numerical slicer-offset conversion. Record the source
+  revision and active profile so a baked CAD correction is not applied again in
+  the slicer. Keep eH = mean produced hole - designed hole, then model hole =
+  target produced hole - eH in the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">worksheet</a>. The
+  empirical offset does not transfer automatically across sizes or orientations.
+</p>
+
 <h2>Validate before changing the production model</h2>
 <ol>
   <li>
@@ -59,14 +95,18 @@ faq:
   belts, motion, cooling, extrusion and seam placement before applying a scalar
   offset.
 </p>
-<h2>Horizontal and vertical holes behave differently</h2>
+<h2>Localise the restriction before correcting size</h2>
 <p>
-  A vertical-axis hole is built as repeated perimeter loops; a horizontal-axis
-  hole includes overhangs and may sag or facet differently. Seam position,
-  elephant-foot effects near the bed and support contact can also make one
-  region of a hole smaller than another. Record orientation with every
-  measurement and avoid transferring one correction between orientations without
-  a test.
+  Record bore-axis orientation and the height/direction of each reading. Use
+  <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+    >the orientation diagnosis</a
+  >
+  for directional restrictions and
+  <a href="{{ GuideSlug.Route3dPrintElephantsFootAndPartFit }}"
+    >the base-flare guide</a
+  >
+  for bed-facing interference. Their procedures should precede a scalar hole
+  offset.
 </p>
 <h2>Prefer model-level evidence over one measurement</h2>
 <p>
@@ -81,52 +121,6 @@ faq:
   entire bore. For safety-critical or load-bearing assemblies, follow the
   hardware and material design guidance and validate the finished joint
   physically.
-</p>
-<h2>Separate a hole from a clearance decision</h2>
-<p>
-  A printed hole that measures undersize and two parts that bind are related but
-  different problems. Measure the printed feature with suitable calipers,
-  compare it with the CAD dimension, and test the intended pin or fastener
-  rather than assuming a nominal diameter is enough. For example, if a 10.00 mm
-  designed hole repeatedly measures 9.70 mm, the observed difference is 0.30 mm;
-  whether to change the hole, the mating pin, or the assembly clearance depends
-  on the fit you need. Validate a changed design with a small coupon before
-  changing an important part.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >tolerance calculator</a
-  >
-  to document the selected clearance. Compensation is profile- and orientation-
-  specific, and it does not replace calibration, correct extrusion, or a slicer
-  preview.
-</p>
-<p>
-  A hole designed at 10 mm does not always print as a clean 10 mm hole.
-  Extrusion width, curved perimeters, cooling, shrinkage and feature orientation
-  can all reduce a printed diameter. Scaling the whole model is usually not the
-  answer.
-</p>
-<h2>Start with the fit you need</h2>
-<p>
-  Loose clearance, sliding motion, a snug lid and a press fit need different
-  gaps. Decide whether the hole passes a bolt, guides a pin or grips a part
-  permanently, then model dimensions for that intent. The
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >Tolerance &amp; Clearance Calculator</a
-  >
-  provides a starting CAD dimension from your own test print.
-</p>
-<h2>Measure a simple test</h2>
-<p>
-  Print several holes and pins near the sizes you use, with the final printer,
-  material, nozzle, layer height and orientation. Measure with calipers and note
-  whether holes are undersized, pins oversized or both. Consistent whole-model
-  error belongs in the
-  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
-    >Shrinkage Calculator</a
-  >; feature-specific error belongs in clearance or hole compensation.
 </p>
 <h2>Check surrounding geometry</h2>
 <p>

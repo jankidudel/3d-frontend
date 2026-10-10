@@ -1,0 +1,161 @@
+---
+title: "3D Print Elephant's Foot and Part Fit | InspectMesh"
+description: 'Locate base-only interference using height-labelled readings and compare first-layer compensation with global scale and feature edits.'
+slug: 3d-print-elephants-foot-and-part-fit
+eyebrow: Functional fit and calibration
+heading: "3D Print Elephant's Foot and Part Fit"
+faq:
+  - question: 'Should I scale the whole part to fix base interference?'
+    answer: 'First measure the base, middle and upper regions separately. Whole-part scaling also changes regions that may already be correct; diagnose first-layer expansion and verify the actual printer and slicer profile.'
+  - question: 'Does the slicer preview prove the base will fit?'
+    answer: 'No. Inspect the control and thin-feature or brim effects in the actual profile, then compare conditioned base, middle and upper measurements on a representative print.'
+---
+
+<p>
+  If a part fits above the bed-facing edge but binds at its base, first localise
+  the error. An all-height size correction can spoil the portion that already
+  measures correctly. This guide diagnoses base interference;
+  <a href="{{ GuideSlug.Route3dPrinterCalibrationGuide }}">calibration</a> owns
+  the wider setup sequence.
+</p>
+<figure>
+  <img
+    src="/examples/functional-fit/base-flare.svg"
+    width="720"
+    height="340"
+    alt="Side section with a wide base and separate base, middle and upper measurement lines."
+  />
+  <figcaption>
+    Illustrative local flare, exaggerated for readability. The dimensions are
+    hypothetical and are not InspectMesh print results.
+  </figcaption>
+</figure>
+<h2>Measure by height before selecting a control</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Position</th>
+      <th scope="col">Designed width</th>
+      <th scope="col">Hypothetical reading</th>
+      <th scope="col">Interpretation to investigate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Base</td>
+      <td>20.00 mm</td>
+      <td>20.30 mm</td>
+      <td>Local interference at bed-facing edge</td>
+    </tr>
+    <tr>
+      <td>Middle</td>
+      <td>20.00 mm</td>
+      <td>20.00 mm</td>
+      <td>No adjustment shown here</td>
+    </tr>
+    <tr>
+      <td>Upper</td>
+      <td>20.00 mm</td>
+      <td>20.01 mm</td>
+      <td>Assess method and repeated spread</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Keep base, middle and upper readings in separate sets with the same datum and
+  direction. An average across those heights would conceal the symptom. Remove
+  loose debris according to the agreed finishing procedure, distinguish an
+  intentional chamfer or brim from the part, and inspect the source section
+  before assuming the flare was created during printing. If all heights disagree
+  similarly, use
+  <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
+    >whole-part diagnosis</a
+  >
+  instead.
+</p>
+<h2>Which operation changes which region?</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Operation</th>
+      <th scope="col">Intended scope</th>
+      <th scope="col">Check before using it</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>First-layer compensation</td>
+      <td>Bed-facing layer contours</td>
+      <td>Thin features, holes and brim contact in the actual profile</td>
+    </tr>
+    <tr>
+      <td>Global XY scaling</td>
+      <td>XY dimensions throughout the part</td>
+      <td>Dimensions above the base and all mating features</td>
+    </tr>
+    <tr>
+      <td>Local source feature edit</td>
+      <td>Selected CAD geometry</td>
+      <td>Remaining walls, lead-in and interface requirements</td>
+    </tr>
+    <tr>
+      <td>Slicer feature offset</td>
+      <td>The contours documented by that control</td>
+      <td>
+        Sign and radius/diameter convention; do not substitute another slicer’s
+        value
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Prusa documents
+  <a href="https://help.prusa3d.com/article/elephant-foot-compensation_114487"
+    >Elephant foot compensation</a
+  >
+  under Print settings - Advanced in Advanced or Expert mode, with adaptive
+  thin-line handling and possible effects on brim connection and thin-feature
+  previews (checked 10 October 2026; the page is categorised under PrusaSlicer
+  2.9 Legacy). Verify your installed version and selected profile. No numerical
+  setting is prescribed here; a preview is not the final squished footprint.
+</p>
+<h2>Conservative confirmation sequence</h2>
+<ol>
+  <li>
+    Save the source, slicer version/profile, existing compensation and
+    build-surface condition. Identify whether the symptom is already modelled.
+  </li>
+  <li>
+    Follow the printer manufacturer’s first-layer and surface procedure. Review
+    the actual nozzle offset and temperature configuration; neither has a
+    universal corrective value.
+  </li>
+  <li>
+    Use a representative coupon containing the base interface and nearby small
+    features. Record height-specific measurements and how the real mating part
+    contacts it.
+  </li>
+  <li>
+    Change one justified variable, preserve its before/after value and compare
+    another coupon under comparable conditions.
+  </li>
+  <li>
+    Check adhesion, brim separation, small features and the above-base fit. Stop
+    if the change compromises any required condition.
+  </li>
+  <li>
+    Record the proposed adjustment and outcome in the
+    <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a>;
+    confirm the whole assembly before acceptance.
+  </li>
+</ol>
+<p>
+  When restriction persists along a bore away from the base, consult
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >local hole compensation</a
+  >
+  or
+  <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+    >orientation diagnosis</a
+  >. Adding a clearance value cannot identify or repair an unstable first layer.
+</p>

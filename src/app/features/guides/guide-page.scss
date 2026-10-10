@@ -105,3 +105,24 @@
     min-width: 0;
   }
 }
+
+.guide-page .guide-body .guide-diagram-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-bottom: 0.5rem;
+}
+.guide-page .guide-body .guide-diagram-scroll img {
+  min-width: 40rem;
+}
+.guide-page .guide-body .guide-diagram-scroll:focus-visible {
+  outline: 3px solid #0369a1;
+  outline-offset: 3px;
+}
+@media print {
+  .guide-page .guide-body .guide-diagram-scroll {
+    overflow: visible;
+  }
+  .guide-page .guide-body .guide-diagram-scroll img {
+    min-width: 0;
+  }
+}

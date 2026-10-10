@@ -52,10 +52,37 @@ faq:
   test piece before committing a long or expensive job.
 </p>
 
+<h2>A tight hole does not establish global shrinkage</h2>
+<p>
+  Illustrative coupon: the 100.00 mm outer span has readings 99.98, 100.00 and
+  100.02 mm (mean 100.00; range 0.04), while a 10.00 mm hole has readings 9.68,
+  9.72 and 9.70 mm (mean 9.70; range 0.04). The outer factor is 100/100 = 1.
+  Applying 10/9.70 globally would enlarge the already correct outer span to
+  about 103.09 mm. The hole requires
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >local diagnosis and compensation</a
+  >, not an inferred whole-part factor.
+</p>
+<p>
+  Use separate sets in the
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+    >per-axis worksheet</a
+  >
+  and
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >hole/pin worksheet</a
+  >. Per-axis aggregation is designed dimension divided by the mean of
+  comparable included readings; it is not an average of unrelated ratios. Leave
+  missing axes unmeasured. When spread approaches the intended adjustment,
+  investigate the measuring method and process stability rather than treating a
+  precise factor as reliable.
+</p>
+
 <h2>Worked per-axis correction</h2>
 <p>
-  A controlled coupon is designed as 100.00 × 60.00 mm but, after cooling and
-  conditioning, measures 99.20 × 59.10 mm. The observed factors are
+  In an illustrative calculation, a coupon is designed as 100.00 × 60.00 mm and
+  is assumed to measure 99.20 × 59.10 mm after cooling and conditioning. The
+  observed factors are
   <code>100 / 99.20 = 1.0081</code> for X and
   <code>60 / 59.10 = 1.0152</code> for Y. A trial part could therefore use about
   100.81% X and 101.52% Y scaling, while Z remains unchanged unless separately

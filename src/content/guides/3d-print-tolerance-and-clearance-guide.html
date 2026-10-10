@@ -182,6 +182,59 @@ faq:
   discussion should be treated as a starting point rather than a promise.
 </p>
 
+<h2>Record which component sets the target</h2>
+<figure>
+  <img
+    src="/examples/functional-fit/clearance.svg"
+    width="720"
+    height="340"
+    alt="Concentric hole and pin labelled with 0.20 mm diametral and 0.10 mm radial clearance."
+  />
+  <figcaption>
+    Original ideal circular example. Positive clearance is a gap, zero nominal
+    contact and negative clearance nominal interference; no physical fit is
+    claimed.
+  </figcaption>
+</figure>
+<p>
+  With fixed hardware, use its measured/selected outside diameter D: target
+  produced hole H = D + C. With both parts printed, choose target produced pin
+  P: H = P + C. C is diametral; C/2 is radial only for ideal concentric circles.
+  The nominal external hardware field must not override P in a printed pair.
+</p>
+<p>
+  Illustrative recorded arithmetic: a designed 10.00 mm hole has comparable
+  readings 9.68, 9.72 and 9.70 mm. Mean = 9.70 mm; min = 9.68; max = 9.72; range
+  = 0.04 mm; hole error eH = -0.30 mm. A designed 10.00 mm pin measuring 10.10
+  mm gives eP = +0.10 mm. For desired produced P = 10.00 and C = 0.20, H =
+  10.20; model hole = H - eH = 10.50; model pin = P - eP = 9.90 mm. These are
+  assumed repeatable local errors, not InspectMesh physical test results.
+</p>
+<p>
+  Retain raw readings, instrument, measurement direction,
+  printer/material/profile and cooling conditions in the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >measurement worksheet</a
+  >. One reading works but cannot show between-reading spread. Exclusions retain
+  a value and reason; never pool different nominal sizes or orientations.
+  Validate with a representative coupon and the actual counterpart after
+  intended post-processing. Range is recorded spread, not instrument uncertainty
+  or total manufacturing tolerance.
+</p>
+<p>
+  For more focused decisions, see
+  <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+    >bore orientation</a
+  >,
+  <a href="{{ GuideSlug.Route3dPrintHeatSetInsertHoleSizing }}"
+    >insert-specific geometry</a
+  >
+  and
+  <a href="{{ GuideSlug.Route3dPrintSnapFitClearance }}"
+    >snap engagement and deflection</a
+  >. Those checks have requirements beyond a clearance calculation.
+</p>
+
 <h2>Design holes and pins with the whole feature in mind</h2>
 <p>
   A hole is not just a number in CAD. Consider its orientation during printing,

@@ -11,9 +11,9 @@ export interface ShrinkageAxisResult {
 }
 
 export interface ShrinkageCalculation {
-  readonly x: ShrinkageAxisResult;
-  readonly y: ShrinkageAxisResult;
-  readonly z: ShrinkageAxisResult;
+  readonly x: ShrinkageAxisResult | null;
+  readonly y: ShrinkageAxisResult | null;
+  readonly z: ShrinkageAxisResult | null;
 }
 
 export function calculateShrinkageAxis(
@@ -42,11 +42,9 @@ export function calculateShrinkage(
   x: AxisMeasurement,
   y: AxisMeasurement,
   z: AxisMeasurement,
-): ShrinkageCalculation | null {
+): ShrinkageCalculation {
   const xResult = calculateShrinkageAxis(x);
   const yResult = calculateShrinkageAxis(y);
   const zResult = calculateShrinkageAxis(z);
-  return xResult && yResult && zResult
-    ? { x: xResult, y: yResult, z: zResult }
-    : null;
+  return { x: xResult, y: yResult, z: zResult };
 }

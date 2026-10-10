@@ -158,7 +158,12 @@ for (const fileName of contentFiles) {
         () =>
           `<div class="guide-table-scroll" tabindex="0" role="region" aria-label="Guide decision table ${++tableNumber}, scroll horizontally"><table>`,
       )
-      .replaceAll('</table>', '</table></div>'),
+      .replaceAll('</table>', '</table></div>')
+      .replace(
+        /<img src="\/examples\/functional-fit\/[^"]+"[^>]*>/g,
+        (image) =>
+          `<div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original functional-fit diagram, scroll horizontally on small screens">${image}</div>`,
+      ),
   });
 }
 validateRegistryContentConsistency(

@@ -24,13 +24,17 @@ describe('calculateShrinkageAxis', () => {
 });
 
 describe('calculateShrinkage', () => {
-  it('requires a valid measurement for every axis', () => {
+  it('keeps valid axes independent of an invalid or missing axis', () => {
     expect(
       calculateShrinkage(
         { designed: 20, measured: 20, target: 30 },
         { designed: 20, measured: 20, target: 30 },
         { designed: 20, measured: -1, target: 30 },
       ),
-    ).toBeNull();
+    ).toMatchObject({
+      x: { scalePercent: 100 },
+      y: { scalePercent: 100 },
+      z: null,
+    });
   });
 });

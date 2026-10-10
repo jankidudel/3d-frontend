@@ -188,7 +188,7 @@ export const guideClusters: readonly GuideCluster[] = [
   },
   {
     id: 'calibration',
-    label: 'Calibration, tolerance and accuracy',
+    label: 'Functional fit and calibration',
     description:
       'Calibrate a printer and validate dimensional results with controlled tests.',
     pillar: '3d-printer-calibration-guide',
@@ -196,6 +196,11 @@ export const guideClusters: readonly GuideCluster[] = [
       '3d-printer-calibration-guide',
       '3d-print-flow-rate-vs-e-steps',
       '3d-print-hole-size-compensation',
+      '3d-print-hole-orientation-and-accuracy',
+      '3d-print-elephants-foot-and-part-fit',
+      '3d-print-heat-set-insert-hole-sizing',
+      '3d-print-snap-fit-clearance',
+
       'how-to-compensate-for-3d-print-shrinkage',
       '3d-print-tolerance-and-clearance-guide',
       '3d-print-overhangs-and-supports-guide',

@@ -58,6 +58,63 @@ faq:
     feature before a long production job.
   </li>
 </ol>
+
+<h2>Route the dimensional symptom to its owner</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Symptom</th>
+      <th scope="col">First distinction</th>
+      <th scope="col">Focused next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Whole-part axis error</td>
+      <td>Comparable repeats and sizes support a scale question</td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
+          >Shrinkage guide</a
+        >
+        and
+        <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+          >axis worksheet</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>First-layer flare</td>
+      <td>Base differs from middle/upper readings</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintElephantsFootAndPartFit }}"
+          >Local base diagnosis</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Orientation-dependent bore</td>
+      <td>Axis, upper arc, seam or support contact changes restriction</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+          >Bore orientation diagnosis</a
+        >
+        then
+        <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+          >fit worksheet</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Inconsistent repeats</td>
+      <td>Instrument, conditioning or process varies</td>
+      <td>
+        Return to upstream checks and preserve raw readings; do not infer a
+        stable factor
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <h2>Stop conditions</h2>
 <p>
   Stop when consecutive tests disagree more than the change you are trying to

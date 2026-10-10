@@ -1,0 +1,156 @@
+---
+title: '3D Print Hole Orientation and Accuracy | InspectMesh'
+description: 'Diagnose a bore by its axis, mesh resolution, layer preview and physical measurement direction before selecting local compensation.'
+slug: 3d-print-hole-orientation-and-accuracy
+eyebrow: Functional fit and calibration
+heading: '3D Print Hole Orientation and Accuracy'
+faq:
+  - question: 'Does rotating a bore change its source diameter?'
+    answer: 'A rigid rotation preserves the source diameter, but changes the bore axis relative to build direction. Compare mesh resolution, layer preview and direction-labelled physical readings before selecting local compensation.'
+  - question: 'Can I use one correction for both bore orientations?'
+    answer: 'Do not transfer an offset without a controlled comparison. Keep axis, measuring direction, nominal size and process conditions with separate repeat sets, then validate a representative coupon.'
+---
+
+<p>
+  A bore can have the correct source diameter yet restrict a pin differently
+  after printing in another orientation. Start by locating the restriction,
+  rather than enlarging the entire bore. This guide owns orientation diagnosis;
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >local hole compensation</a
+  >
+  owns the size-correction procedure.
+</p>
+<h2>Define orientation by the bore axis</h2>
+<p>
+  Here, a vertical-axis bore has its axis parallel to build Z. A horizontal-axis
+  bore has its axis perpendicular to build Z, regardless of which face looks
+  upright on screen. For an angled bore, record the angle and direction rather
+  than forcing it into either category.
+</p>
+<figure>
+  <img
+    src="/examples/functional-fit/bore-orientation.svg"
+    width="720"
+    height="340"
+    alt="Two sections of one ideal bore: a vertical-axis opening with repeated loops and a horizontal-axis opening with an upper overhang arc."
+  />
+  <figcaption>
+    Controlled digital comparison: the same ideal 10 mm diameter, 20 mm long
+    cylinder is rotated 90 degrees. These schematic sections show geometry and
+    build direction, not sliced paths or printed roundness.
+  </figcaption>
+</figure>
+<h2>What the digital comparison establishes</h2>
+<p>
+  The bore is defined by x² + y² = 25 mm² over z = 0 to 20 mm. A rigid rotation
+  maps (x, y, z) to (z, y, -x): length and every radial distance are preserved.
+  In its own normal plane, the bore stays 10 mm across. Relative to the bed, the
+  second orientation requires layers to form the top of a side-facing opening.
+  No native slicer experiment or physical print was run for this comparison.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >Tessellation</a
+  >
+  is a separate question. The smooth ideal cylinder does not establish how
+  finely a particular exported STL approximates it. Inspect the actual mesh and
+  units, then the intended slicer preview.
+  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">Two surface selections</a>
+  establish a span, not an analytic diameter or hole centre.
+</p>
+<h2>Separate influences before correcting size</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation to inspect</th>
+      <th scope="col">Question</th>
+      <th scope="col">Evidence to retain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Facets already visible in the mesh</td>
+      <td>Does the exported curve match CAD intent?</td>
+      <td>Source diameter, export resolution and a section</td>
+    </tr>
+    <tr>
+      <td>Upper arc of a horizontal-axis bore</td>
+      <td>What paths bridge or overhang in this profile?</td>
+      <td>Slicer version, layer preview and support settings</td>
+    </tr>
+    <tr>
+      <td>One local obstruction</td>
+      <td>Is it at a seam or support contact?</td>
+      <td>Location, photograph and measurement direction</td>
+    </tr>
+    <tr>
+      <td>Different transverse readings</td>
+      <td>Is the restriction directional rather than a uniform offset?</td>
+      <td>Separate direction-labelled sets, never a pooled correction</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Controlled physical comparison plan</h2>
+<ol>
+  <li>
+    Confirm the source diameter and bore length; preserve the original CAD and
+    export.
+  </li>
+  <li>
+    Inspect units, mesh resolution, layers, seam and support contact in each
+    proposed orientation.
+  </li>
+  <li>
+    Use representative wall and boss geometry. Print both orientations with the
+    same identified material and profile; record any support changes that
+    orientation requires.
+  </li>
+  <li>
+    After comparable conditioning and finishing, measure at entrance, middle and
+    exit where accessible. Record two transverse directions separately using an
+    instrument suited to the bore. Check the real counterpart without forcing
+    it.
+  </li>
+  <li>
+    Repeat comparable tests. Do not combine sizes, heights or directions into
+    one mean that hides the obstruction.
+  </li>
+  <li>
+    Select the next action and validate a fresh coupon before changing the full
+    part.
+  </li>
+</ol>
+<h2>Choose the action from the restriction</h2>
+<p>
+  Source redesign may improve access or avoid the unsupported arc but can alter
+  interfaces. Rotation may protect the bore while increasing supports elsewhere
+  or changing load direction. Support removal or planned post-processing can
+  change finish, time and local walls. A repeatable local size error may justify
+  compensation; a directional or varying restriction needs diagnosis first. No
+  universal teardrop angle, oversize offset or drilling tolerance follows from
+  this diagram.
+</p>
+<p>
+  Record comparable readings in the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >tolerance worksheet</a
+  >, then
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+    >check the revised export</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}">screen nearby walls</a
+  >. Keep physical acceptance separate from mesh screening.
+</p>
+<h2>Source and scope</h2>
+<p>
+  Prusa explains support contact, faceted circles and the dependence of fit on
+  orientation in its
+  <a
+    href="https://help.prusa3d.com/article/modeling-with-3d-printing-in-mind_164135"
+    >FFF modelling guidance</a
+  >
+  (checked 10 October 2026). Those qualitative cautions support the inspection
+  questions here; they do not establish accuracy for another printer/profile.
+  All numerical geometry above is an original mathematical control.
+</p>

@@ -30,17 +30,13 @@
               min="0.001"
               step="any"
               [value]="designed[axis]()"
-              (input)="setValue('designed', axis, $event)"
+              (input)="setValue(inputGroup.Designed, axis, $event)"
           /></label>
-          <label
-            ><span>Measured print dimension (mm)</span
-            ><input
-              type="number"
-              min="0.001"
-              step="any"
-              [value]="measured[axis]()"
-              (input)="setValue('measured', axis, $event)"
-          /></label>
+          <app-repeat-readings
+            [label]="axis.toUpperCase() + ' measured print dimension'"
+            [readings]="readings[axis]()"
+            (readingsChange)="readings[axis].set($event)"
+          />
           <label
             ><span>Desired final dimension (mm)</span
             ><input
@@ -48,7 +44,7 @@
               min="0.001"
               step="any"
               [value]="target[axis]()"
-              (input)="setValue('target', axis, $event)"
+              (input)="setValue(inputGroup.Target, axis, $event)"
           /></label>
         </section>
       }
@@ -66,28 +62,42 @@
         @for (axis of axes; track axis) {
           <section>
             <h3>{{ axis.toUpperCase() }} axis</h3>
-            <dl>
-              <div>
-                <dt>Measured shrinkage</dt>
-                <dd>{{ format(calculation[axis].shrinkagePercent) }}%</dd>
-              </div>
-              <div>
-                <dt>Scale factor</dt>
-                <dd>{{ format(calculation[axis].scalePercent) }}%</dd>
-              </div>
-              <div>
-                <dt>Model for target size</dt>
-                <dd>
-                  {{ format(calculation[axis].compensatedModelDimension) }} mm
-                </dd>
-              </div>
-            </dl>
+            @if (calculation[axis]; as axisResult) {
+              <dl>
+                <div>
+                  <dt>Measured shrinkage</dt>
+                  <dd>{{ format(axisResult.shrinkagePercent) }}%</dd>
+                </div>
+                <div>
+                  <dt>Scale factor</dt>
+                  <dd>{{ format(axisResult.scalePercent) }}%</dd>
+                </div>
+                <div>
+                  <dt>Model for target size</dt>
+                  <dd>{{ format(axisResult.compensatedModelDimension) }} mm</dd>
+                </div>
+              </dl>
+              @if (spreadCaution(axis)) {
+                <p class="assumption">
+                  Recorded range is at least as large as the mean dimensional
+                  adjustment. Check the measuring method and comparable repeat
+                  conditions before choosing a factor; this is a comparison, not
+                  a reliability cutoff.
+                </p>
+              }
+            } @else {
+              <p class="error" role="status">
+                Unmeasured or incomplete axis. Enter positive nominal, target
+                and readings. No factor is inherited from another axis.
+              </p>
+            }
           </section>
         }
       </div>
       <p class="formula">
-        <strong>Formula:</strong> scale factor = designed test dimension ÷
-        measured print dimension. Compensated model dimension = desired final
+        <strong>Formula:</strong> scale factor = designed test dimension ÷ mean
+        included measured print dimension. The factor is not an average of
+        unrelated scale factors. Compensated model dimension = desired final
         dimension × scale factor.
       </p>
       <p class="assumption">
@@ -97,15 +107,16 @@
         final dimensions.
       </p>
       <button class="button button-secondary" type="button" (click)="reset()">
-        Reset example values
+        Reset worksheet and readings
       </button>
-    } @else {
-      <p class="error" role="alert">
-        Enter a positive designed, measured and target dimension for every axis.
-      </p>
     }
   </section>
 
+  <app-measurement-worksheet
+    [calculation]="worksheet()"
+    [notes]="notes()"
+    (notesChange)="notes.set($event)"
+  />
   <section class="card next-steps">
     <h2>Use compensation carefully</h2>
     <ul>
