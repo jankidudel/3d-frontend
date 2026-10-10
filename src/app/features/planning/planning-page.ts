@@ -295,6 +295,7 @@ export class PlanningPage implements OnDestroy {
     }
   }
   ngOnDestroy(): void {
+    this.importRequest++;
     this.session.plannerDrafts[this.kind] = {
       values: this.values(),
       start: this.start(),
@@ -367,7 +368,11 @@ export class PlanningPage implements OnDestroy {
   linkLabel(path: string): string {
     return path.slice(1).split('-').join(' ');
   }
+  private importRequest = 0;
   async importGcode(event: Event): Promise<void> {
+    const request = ++this.importRequest;
+    this.pending.set(null);
+    this.timingConfirmed.set(false);
     this.importError.set('');
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) {
@@ -381,30 +386,31 @@ export class PlanningPage implements OnDestroy {
     }
     try {
       const { parseGcode } = await import('../gcode-preflight/gcode-parser');
-      const time = parseGcode(await file.text()).metadata.printTime;
-      this.metadata.set(
-        time
-          ? `Slicer metadata: ${time}`
-          : 'No supported slicer duration metadata found. Enter it manually.',
-      );
-      if (time) {
-        const hours = /([\d.]+)h/i.exec(time);
-        const minutes = /([\d.]+)m/i.exec(time);
-        const seconds = /([\d.]+)s/i.exec(time);
-        const totalMinutes = /^\d+(?:\.\d+)?$/.test(time)
-          ? Number(time) / 60
-          : (hours ? Number(hours[1]) * 60 : 0) +
-            (minutes ? Number(minutes[1]) : 0) +
-            (seconds ? Number(seconds[1]) / 60 : 0);
-        if (totalMinutes > 0) {
-          this.values.update((v) => ({
-            ...v,
-            [Field.Hours]: Math.floor(totalMinutes / 60),
-            [Field.Minutes]: totalMinutes % 60,
-          }));
-        }
+      const text = await file.text();
+      if (request !== this.importRequest) {
+        return;
       }
+      const report = parseGcode(text);
+      const estimate = report.duration;
+      this.metadata.set(
+        estimate
+          ? `Declared estimate: ${estimate.value} hours, ${estimate.scope}. Line ${estimate.line}: ${estimate.source}. Review and apply above; existing inputs remain editable.`
+          : 'No supported unambiguous slicer duration declaration found. Enter it manually.',
+      );
+      this.timingConfirmed.set(false);
+      this.pending.set(
+        estimate
+          ? {
+              destination: PlanningDestination.Finish,
+              value: estimate.value,
+              basis: `G-code normal-mode duration declaration, ${report.metadata.slicer ?? 'unknown'} (unverified label). Source line ${estimate.line}: ${estimate.source}; ${estimate.scope}. No implicit warm-up or correction.`,
+            }
+          : null,
+      );
     } catch {
+      if (request !== this.importRequest) {
+        return;
+      }
       this.importError.set(
         'Unsupported or malformed text G-code. Enter the slicer estimate manually.',
       );

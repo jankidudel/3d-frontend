@@ -40,6 +40,7 @@ export class JobCostEditor {
   readonly maxPlates = MAX_JOB_PLATES;
   readonly maxMaterials = MAX_PLATE_MATERIALS;
   readonly input = signal(this.session.jobDraft ?? blankJob());
+  readonly slicedConfirmed = signal(false);
   readonly pending = signal(this.session.peek(PlanningDestination.Cost));
   readonly result = computed(() => calculateJobCost(this.input()));
   readonly record = computed(() => jobRecord(this.input()));
@@ -134,6 +135,30 @@ export class JobCostEditor {
     this.compatible.set(false);
     this.sequentialConfirmed.set(false);
     this.save();
+  }
+  applySliced(): void {
+    const offer = this.pending();
+    if (
+      !offer?.sliced ||
+      !this.slicedConfirmed() ||
+      this.input().plates.length >= MAX_JOB_PLATES
+    ) {
+      return;
+    }
+    this.addPlate();
+    const index = this.input().plates.length - 1;
+    this.plate(index, 'source', offer.basis);
+    if (offer.sliced.hours !== null) {
+      this.plate(index, 'hours', offer.sliced.hours);
+    }
+    if (offer.sliced.grams !== null) {
+      this.material(index, 0, 'grams', offer.sliced.grams);
+      this.material(index, 0, 'label', 'Reviewed single-filament sliced run');
+    }
+    this.dismissLayout();
+    this.message.set(
+      'Added one reviewed sliced plate. Confirm units per run, repeats, material identity and spool price. Other job rows were preserved.',
+    );
   }
   applyLayout(): void {
     const offer = this.pending();

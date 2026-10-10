@@ -2126,5 +2126,35 @@
       "adjacentExistingOwner": "https://www.inspectmesh.com/3d-print-tolerance-and-clearance-guide",
       "ownershipRationale": "Separate entry gap from catch engagement, deflection and reuse evidence. The adjacent owner retains its general correction, calibration or clearance procedure; a short cross-link cannot supply this specialist workflow."
     }
+  ],
+  "slicedFileIntentOwners": [
+    {
+      "intent": "Why a small parsed path is outside reviewed coordinate bounds",
+      "primaryOwner": "https://www.inspectmesh.com/gcode-outside-print-bed",
+      "reviewDate": "2026-10-10",
+      "demandStatus": "unknown, not zero",
+      "relationship": "Owns coordinate location and travel; model fit stays with the existing fit guide."
+    },
+    {
+      "intent": "Review supplied pre-sliced file provenance and exact-machine compatibility evidence",
+      "primaryOwner": "https://www.inspectmesh.com/can-you-use-gcode-from-another-printer",
+      "reviewDate": "2026-10-10",
+      "demandStatus": "unknown, not zero",
+      "relationship": "Owns G-code provenance worksheet; customer file inspection remains the general intake owner."
+    },
+    {
+      "intent": "Identify unsupported effects, bounded preview rendering and unreadable imports",
+      "primaryOwner": "https://www.inspectmesh.com/gcode-preview-incomplete",
+      "reviewDate": "2026-10-10",
+      "demandStatus": "unknown, not zero",
+      "relationship": "Owns incomplete-result fallback; opening files remains with the existing G-code opening guide."
+    },
+    {
+      "intent": "Distinguish sequential head/gantry clearance from footprint layout",
+      "primaryOwner": "https://www.inspectmesh.com/sequential-3d-printing-clearance",
+      "reviewDate": "2026-10-10",
+      "demandStatus": "unknown, not zero",
+      "relationship": "Owns heights and order review; model arrangement stays with the existing arrangement guide."
+    }
   ]
 }

@@ -1,0 +1,147 @@
+---
+title: 'G-code Outside the Bed: Origin and Travel | InspectMesh'
+description: 'Understand why a small path can lie outside entered coordinate bounds, and review extrusion and travel separately.'
+slug: gcode-outside-print-bed
+eyebrow: Sliced-file review
+heading: 'G-code Outside the Print Bed: Size, Origin and Travel'
+faq:
+  - question: Does a small width prove the path fits?
+    answer: No. Compare minima and maxima in an explicitly reviewed coordinate frame; travel and unsupported effects also matter.
+  - question: 'Does travel outside entered bounds mean a collision?'
+    answer: 'No. The record describes observed logical coordinates. Homing, offsets, mechanical reach and usable print area require exact machine interpretation.'
+---
+
+<p>
+  A small path can lie outside a print bed because its location, the coordinate
+  origin and travel moves matter as well as its width. Compare explicit minimum
+  and maximum coordinates in a reviewed frame. An observed out-of-bounds path
+  asks a machine-specific question; it does not establish a collision.
+</p>
+<h2>Ten millimetres wide, outside the entered frame</h2>
+<p>
+  In the analytical shifted-location control, a travel reaches X=230 and the
+  following positive-extrusion path ends at X=240. Its extrusion width is only
+  10 mm. Against explicitly entered X=0..220, that entire extrusion segment is
+  outside. Comparing 10 with 220 would miss the location problem. The initial
+  model state is logical XYZ=0, millimetres and absolute XYZ/E after the mode
+  commands. This is hypothetical geometry, not a manufacturer's usable area.
+</p>
+<figure>
+  <img
+    src="/examples/gcode-evidence/bounds.svg"
+    width="720"
+    height="260"
+    alt="A 10 mm wide path at X230 to 240 lies beyond entered X0 to 220"
+  />
+  <figcaption>
+    Original schematic in millimetres; no software screenshot or physical print.
+  </figcaption>
+</figure>
+<h2>Separate extrusion from travel</h2>
+<p>
+  The second control extrudes from X=10..110, Y=20..120 and Z=0.2..20, then
+  travels to X=230. In a reviewed X/Y=0..220 and Z=0..200 frame, positive
+  extrusion is inside while all parsed motion extends outside. Both observations
+  belong in the record. Prime/purge paths may also extrude outside the intended
+  object envelope, and travel includes start/end moves and Z hops.
+</p>
+<figure>
+  <img
+    src="/examples/gcode-evidence/scopes.svg"
+    width="720"
+    height="260"
+    alt="Solid extrusion inside the entered bounds and dashed travel reaching X230"
+  />
+  <figcaption>
+    Hypothetical scopes. Neither envelope is automatically the source model's
+    dimensions.
+  </figcaption>
+</figure>
+<h2>Choose the next review</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Observed path</th>
+      <th>Available evidence</th>
+      <th>Machine-specific question</th>
+      <th>Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Small shifted extrusion</td>
+      <td>Positive-extrusion minima/maxima</td>
+      <td>Is the logical origin correct for this profile?</td>
+      <td>Compare source placement and exact machine coordinates</td>
+    </tr>
+    <tr>
+      <td>Travel outside, extrusion inside</td>
+      <td>Separate scope extents and line excerpts</td>
+      <td>Is this a documented start/end move within mechanical reach?</td>
+      <td>
+        Inspect that routine in the native preview and printer instructions
+      </td>
+    </tr>
+    <tr>
+      <td>Unsupported offset, arc or macro</td>
+      <td>Incomplete coverage plus source lines</td>
+      <td>Which state or motion does it change?</td>
+      <td>Use the exact firmware configuration; do not infer complete fit</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Enter a frame deliberately</h2>
+<ol>
+  <li>
+    Open the file in the existing viewer and read coverage before geometry.
+  </li>
+  <li>
+    Enter reviewed minima and maxima for X/Y/Z. A dimensions-only saved printer
+    profile supplies no origin or bed shape.
+  </li>
+  <li>Inspect both scopes and any unsupported effects.</li>
+  <li>
+    Keep the review record with its assumptions, then verify placement and
+    machine-specific moves in the native slicer.
+  </li>
+</ol>
+<p>
+  G92 can set logical position without an ordinary move; firmware documentation
+  is needed to relate logical values to physical position. InspectMesh marks XYZ
+  resets as incomplete machine-space coverage. G2/G3 arcs are omitted from its
+  linear extents.
+</p>
+<h2>Use the existing review tools</h2>
+<p>
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >Open the read-only G-code viewer</a
+  >,
+  <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
+    >follow the general G-code review procedure</a
+  >, and
+  <a href="{{ GuideSlug.RouteExamples }}"
+    >download the owned analytical controls</a
+  >. Source geometry fit remains in
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >the model-fit guide</a
+  >; arrangement remains in
+  <a href="{{ GuideSlug.RouteHowToArrangeMultiplePartsOnA3dPrinterBed }}"
+    >the existing layout guide</a
+  >.
+</p>
+<h2>Sources and evidence boundary</h2>
+<p>
+  Official sources reviewed 10 October 2026:
+  <a href="https://help.prusa3d.com/article/prusaslicer-g-code-viewer_193152"
+    >PrusaSlicer G-code viewer</a
+  >,
+  <a href="https://help.prusa3d.com/article/binary-g-code_646763"
+    >Prusa binary G-code</a
+  >, <a href="https://marlinfw.org/docs/gcode/G092.html">Marlin G92</a>,
+  <a href="https://marlinfw.org/docs/gcode/M082.html">Marlin M82</a>,
+  <a href="https://www.klipper3d.org/G-Codes.html">Klipper commands</a>, and
+  <a href="https://help.prusa3d.com/article/sequential-printing_124589"
+    >Prusa sequential printing</a
+  >. InspectMesh's declarations are bounded file observations; diagrams and
+  snippets are original analytical examples, not machine approval.
+</p>

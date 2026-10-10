@@ -40,7 +40,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.PrintPriceCalculator]: '2026-10-10',
   [PublicRouteUrl.FilamentLengthCalculator]: '2026-10-04',
   [PublicRouteUrl.FlowRateCalculator]: '2026-10-04',
-  [PublicRouteUrl.GcodePreflightChecker]: '2026-10-09',
+  [PublicRouteUrl.GcodePreflightChecker]: '2026-10-10',
   [PublicRouteUrl.PrinterFitChecker]: '2026-10-04',
   [PublicRouteUrl.OrientationPlanner]: '2026-10-09',
   [PublicRouteUrl.BatchStlChecker]: '2026-10-07',

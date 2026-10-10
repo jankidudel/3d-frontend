@@ -205,4 +205,19 @@
       unsliced plate. Existing job rows are preserved.
     </p>
   </section>
+  <section class="card">
+    <h2>Model placement versus sliced motion</h2>
+    <p>
+      This tool screens rectangular model footprints. Sliced positive-extrusion
+      and travel extents can include purge/prime moves, start/end routines and Z
+      hops. Review their explicit coordinate minima/maxima in the
+      <a [href]="routeUrl.GcodePreflightChecker">G-code viewer</a> and
+      <a [href]="guideRouteUrl.RouteGcodeOutsidePrintBed"
+        >coordinate-scope guide</a
+      >. For sequential printing use
+      <a [href]="guideRouteUrl.RouteSequential3dPrintingClearance"
+        >native head/gantry clearance review</a
+      >; a fitted footprint is insufficient.
+    </p>
+  </section>
 </main>

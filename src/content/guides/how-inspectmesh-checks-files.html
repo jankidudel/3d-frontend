@@ -243,3 +243,56 @@ faq:
   certifies the whole application and no expert reviewer credentials are
   claimed.
 </p>
+
+<h2>G-code evidence and per-metric coverage</h2>
+<p>
+  The browser worker reviews a conservative linear model: G0/G1, G20/G21,
+  G90/G91, G92, M82/M83 and temperature targets M104/M109/M140/M190. It starts
+  logical XYZ/E at zero with millimetres and absolute modes until declared
+  otherwise. These are disclosed model assumptions, not measured machine state.
+  G92 E resets logical extrusion; G92 XYZ makes machine-frame extents
+  incomplete. G90/G91 after explicit E modes, and M82 under relative XYZ, are
+  marked firmware-dependent, as
+  <a href="https://marlinfw.org/docs/gcode/M082.html">Marlin M82</a> and
+  <a href="https://www.klipper3d.org/G-Codes.html">Klipper commands</a> describe
+  different interactions.
+</p>
+<p>
+  Recognised auxiliary fan/display/query/wait actions are outside geometry
+  rather than automatically classified as bad paths. Unknown commands, arcs,
+  macros and tool behaviours are not executed; unsupported state effects make
+  subsequent linear/extrusion extents incomplete. The original line, escaped
+  text excerpt, interpretation and next action remain inspectable. Evidence
+  retains at most 100 groups with up to three 240-character samples each;
+  temperature targets retain a bounded sample. Counts and first/last lines
+  distinguish repeated findings from one event.
+</p>
+<p>
+  At most 200,000 source lines are reviewed; a source line over 4,096 characters
+  produces an explicit unavailable import to bound parameter processing. The
+  preview retains the first 50,000 moves; extents use all reviewed linear moves
+  and disclose source truncation separately. New file loads terminate previous
+  workers and invalidate stale findings/offers through request identity. No raw
+  file is saved automatically. Report version 2 records metadata declarations,
+  byte size/hash when available, coordinate assumptions, manual inputs and
+  limitations; JSON/copy/print/PDF share one record without full source or path
+  arrays.
+</p>
+<p>
+  PrusaSlicer 2.9.6 normal-mode elapsed duration and unambiguous single-filament
+  grams declarations use the official
+  <a
+    href="https://github.com/prusa3d/PrusaSlicer/blob/version_2.9.6/src/libslic3r/GCode/GCodeProcessor.cpp"
+    >processor time-comment implementation</a
+  >
+  and
+  <a
+    href="https://github.com/prusa3d/PrusaSlicer/blob/version_2.9.6/src/libslic3r/GCode.cpp"
+    >per-filament statistics implementation</a
+  >, reviewed 10 October 2026. Comma-separated tool consumption is not
+  collapsed. Length-only declarations are not automatically converted without
+  verified diameter/density and scope. A slicer label is an unverified file
+  declaration; a supported value is neither physical measurement nor
+  authenticated provenance. Path uncertainty and declaration availability are
+  separate metrics.
+</p>

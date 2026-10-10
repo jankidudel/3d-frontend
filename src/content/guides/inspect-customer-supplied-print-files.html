@@ -201,3 +201,50 @@ Approval needed: dimension, orientation and quote assumptions</pre>
   to distinguish machine completion, ready-to-dispatch and requested arrival. A
   clean file report alone cannot commit any of those outcomes.
 </p>
+
+<h2>Record whether only sliced instructions were supplied</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Received-file record</th>
+      <th>Evidence or unknown to retain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Revision identity</td>
+      <td>
+        Supplier revision, received date and exact-byte hash when available;
+        filenames can be reused
+      </td>
+    </tr>
+    <tr>
+      <td>Source project/profile availability</td>
+      <td>
+        Original geometry, slicer project, application/version and generating
+        configuration, or explicitly unavailable
+      </td>
+    </tr>
+    <tr>
+      <td>Intended machine</td>
+      <td>
+        Exact printer, firmware/configuration, nozzle, tool/material mapping and
+        modifications
+      </td>
+    </tr>
+    <tr>
+      <td>Only G-code supplied?</td>
+      <td>Explicit yes/no and unresolved project/profile requests</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Matching bed dimensions or a printer comment does not establish compatibility.
+  Use
+  <a href="{{ GuideSlug.RouteCanYouUseGcodeFromAnotherPrinter }}"
+    >the supplied G-code worksheet</a
+  >; prefer source geometry/project and a known exact re-slice when provenance
+  is uncertain. A local hash matches bytes, not the author's identity. Record
+  supported declarations as one-run estimates with limitations, never as
+  measured consumption or approved production.
+</p>

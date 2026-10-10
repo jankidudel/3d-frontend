@@ -41,6 +41,39 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'gcode-outside-print-bed',
+    group: GuideGroupId.General,
+    order: 270,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'can-you-use-gcode-from-another-printer',
+    group: GuideGroupId.General,
+    order: 271,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'gcode-preview-incomplete',
+    group: GuideGroupId.General,
+    order: 272,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'sequential-3d-printing-clearance',
+    group: GuideGroupId.General,
+    order: 273,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+
+  {
     slug: '3d-print-batch-cost-per-part',
     group: GuideGroupId.General,
     order: 260,
@@ -108,6 +141,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
 
   {
     slug: 'how-inspectmesh-checks-files',
+    updatedDate: '2026-10-10',
     group: GuideGroupId.General,
     order: 250,
     enabled: true,
@@ -187,10 +221,10 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'inspect-customer-supplied-print-files',
+    updatedDate: '2026-10-10',
     group: GuideGroupId.General,
     order: 102,
     enabled: true,
-    updatedDate: '2026-10-10',
     publishDate: '2026-10-04',
     checkEditorialTargets: true,
   },
@@ -255,15 +289,16 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-arrange-multiple-parts-on-a-3d-printer-bed',
+    updatedDate: '2026-10-10',
     group: GuideGroupId.General,
     order: 11,
     enabled: true,
     publishDate: '2026-09-13',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-open-and-view-gcode-files',
+    updatedDate: '2026-10-10',
     group: GuideGroupId.General,
     order: 13,
     enabled: true,
@@ -272,11 +307,11 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-check-gcode-before-printing',
+    updatedDate: '2026-10-10',
     group: GuideGroupId.General,
     order: 8,
     enabled: true,
     publishDate: '2026-09-10',
-    updatedDate: '2026-10-07',
     checkEditorialTargets: true,
   },
   {

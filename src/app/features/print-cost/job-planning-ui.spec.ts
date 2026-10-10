@@ -210,3 +210,31 @@ it('shows the selected calculation basis and pricing method on first render', ()
     )?.value,
   ).toBe('margin');
 });
+
+it('adds one reviewed sliced plate after confirmation without changing existing job scope or repeats', () => {
+  const session = configure();
+  session.jobDraft = workedJob();
+  session.offer({
+    destination: PlanningDestination.Cost,
+    value: 1.5,
+    basis: 'Declared single run, edited duration, line 3',
+    sliced: { hours: 1.5, grams: 12.5 },
+  });
+  const page = TestBed.createComponent(JobCostEditor).componentInstance;
+  const before = structuredClone(page.input());
+  page.applySliced();
+  expect(page.input()).toEqual(before);
+  page.slicedConfirmed.set(true);
+  page.applySliced();
+  expect(page.input().plates.slice(0, before.plates.length)).toEqual(
+    before.plates,
+  );
+  expect(page.input().requestedQuantity).toBe(before.requestedQuantity);
+  const added = page.input().plates.at(-1)!;
+  expect(added.hours).toBe(1.5);
+  expect(added.materials[0].grams).toBe(12.5);
+  expect(added.repeats).toBe(1);
+  expect(added.unitsPerRun).toBe(1);
+  expect(added.source).toContain('line 3');
+  expect(page.pending()).toBeNull();
+});

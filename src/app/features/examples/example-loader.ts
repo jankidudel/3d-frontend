@@ -17,7 +17,12 @@ export async function fetchPublicExample(
     throw new Error('Choose a listed public example.');
   }
   const selected = example.files[index];
-  const extension = tool.startsWith('/3mf') ? '.3mf' : '.stl';
+  const extension =
+    tool === '/gcode-preflight-checker'
+      ? '.gcode'
+      : tool.startsWith('/3mf')
+        ? '.3mf'
+        : '.stl';
   if (!selected || !selected.name.endsWith(extension)) {
     throw new Error('Choose a supported example file.');
   }
@@ -180,7 +185,13 @@ export class ExampleLoader {
   readonly status = signal('');
   readonly error = signal('');
   supported(name: string): boolean {
-    return name.endsWith(this.tool().startsWith('/3mf') ? '.3mf' : '.stl');
+    return name.endsWith(
+      this.tool() === '/gcode-preflight-checker'
+        ? '.gcode'
+        : this.tool().startsWith('/3mf')
+          ? '.3mf'
+          : '.stl',
+    );
   }
   choose(event: Event): void {
     this.selectedId.set((event.target as HTMLSelectElement).value);

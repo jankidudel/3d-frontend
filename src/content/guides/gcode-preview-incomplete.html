@@ -1,0 +1,170 @@
+---
+title: 'Why a G-code Preview Is Incomplete | InspectMesh'
+description: 'Distinguish unsupported state effects, bounded rendering, binary input and malformed text before choosing a native-viewer fallback.'
+slug: gcode-preview-incomplete
+eyebrow: Sliced-file review
+heading: 'Why a G-code Preview Is Incomplete: Arcs, Macros and Formats'
+faq:
+  - question: Does an incomplete preview make every metric unavailable?
+    answer: No. A supported duration declaration can remain usable while unsupported path effects make extents incomplete. Review per-metric coverage.
+  - question: 'Can I fix binary input by changing the extension?'
+    answer: 'No. Renaming a binary or vendor container does not decode it. Use the generating application or a native supported export.'
+---
+
+<p>
+  An incomplete preview can come from unsupported motion or state changes, a
+  bounded renderer, unreadable input or malformed text. Those cases need
+  different next actions. Read each metric's coverage instead of treating the
+  picture or number of recognised lines as a machine compatibility score.
+</p>
+<h2>Follow a finding to its source</h2>
+<figure>
+  <img
+    src="/examples/gcode-evidence/evidence.svg"
+    width="720"
+    height="260"
+    alt="Original arc source line leads to incomplete extents and a native preview action"
+  />
+  <figcaption>
+    Conceptual source-to-finding navigation. Uploaded excerpts render as text,
+    never instructions.
+  </figcaption>
+</figure>
+<p>
+  The owned unsupported-arc control first uses common linear commands, then G2
+  and a custom macro. InspectMesh groups the unsupported findings, retains
+  original first/last line references and up to three bounded samples, and
+  labels subsequent path coverage incomplete. Selecting an excerpt focuses its
+  read-only panel. Only a retained motion line with a reliable mapping selects a
+  preview layer; metadata and commands outside a parsed path have no exact layer
+  association.
+</p>
+<h2>Identify the cause before changing the file</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>Result meaning</th>
+      <th>Useful next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>G2/G3 arc, offset, unsupported macro/tool</td>
+      <td>
+        Linear/extents review incomplete; unsupported effects may change later
+        state
+      </td>
+      <td>Inspect the original native preview and exact firmware/profile</td>
+    </tr>
+    <tr>
+      <td>Preview path limit</td>
+      <td>
+        First 50,000 moves retained; extents use all reviewed linear moves
+      </td>
+      <td>Use native rendering for the complete picture</td>
+    </tr>
+    <tr>
+      <td>Source-line limit</td>
+      <td>
+        First 200,000 lines reviewed; later paths and metadata may be absent
+      </td>
+      <td>Use native analysis; retain the partial-status warning</td>
+    </tr>
+    <tr>
+      <td>Binary/vendor container</td>
+      <td>Unavailable here: plain-text .gcode, .gco and .gc only</td>
+      <td>
+        Use the generating application or a supported native viewer/export
+      </td>
+    </tr>
+    <tr>
+      <td>Malformed/nonfinite numeric field</td>
+      <td>Import fails at an original source line</td>
+      <td>
+        Check the original export and re-export; do not guess a replacement
+      </td>
+    </tr>
+    <tr>
+      <td>Empty/comments-only input</td>
+      <td>No readable G0/G1 motion; unavailable path review</td>
+      <td>Check that the intended sliced file was supplied</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Text recognition is not extension recognition</h2>
+<p>
+  Renaming a binary container to .gcode does not make it plain text. Prusa
+  documents a binary G-code format and native conversion/viewing support;
+  InspectMesh does not decode that format or vendor containers. Import rejects
+  undecodable bytes and control characters. A readable extension still needs
+  successfully parsed instructions. Files are limited to 25 MiB; source lines
+  over 4,096 characters are unavailable to keep parameter processing bounded.
+</p>
+<h2>Which metrics can remain useful?</h2>
+<p>
+  A supported PrusaSlicer 2.9.6 normal-mode duration comment can remain a
+  recognised declaration when an arc makes extents incomplete. It is neither
+  measured elapsed time nor proof that every path was inspected. A missing or
+  ambiguous consumption field remains unavailable, never zero. Multiple tools
+  cannot be silently collapsed into a single spool; unsupported length metadata
+  needs manual interpretation and confirmed diameter/density before mass
+  conversion.
+</p>
+<p>
+  Mode assumptions also matter. G90/G91 after M82/M83 is disclosed as
+  firmware-dependent extrusion classification in the conservative model. G92 E
+  resets logical extrusion without ordinary XYZ movement; G92 XYZ changes the
+  frame and does not prove machine-space bounds.
+</p>
+<h2>Reproduce the distinction</h2>
+<ol>
+  <li>
+    Load the unsupported-arc, ambiguous-metadata, malformed-number and
+    comments-only analytical controls from Examples.
+  </li>
+  <li>Compare coverage, unavailable offers and original line evidence.</li>
+  <li>
+    Keep JSON/copy/print with their limitations, then open the original job in
+    the appropriate native viewer.
+  </li>
+</ol>
+<p>
+  All snippets are hand-authored parser controls, incomplete and unsafe to
+  execute on a printer. No native software screenshots or physical print results
+  are claimed.
+</p>
+<h2>Use the existing review tools</h2>
+<p>
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >Open the read-only G-code viewer</a
+  >,
+  <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
+    >follow the general G-code review procedure</a
+  >, and
+  <a href="{{ GuideSlug.RouteExamples }}"
+    >download the owned analytical controls</a
+  >. Source geometry fit remains in
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >the model-fit guide</a
+  >; arrangement remains in
+  <a href="{{ GuideSlug.RouteHowToArrangeMultiplePartsOnA3dPrinterBed }}"
+    >the existing layout guide</a
+  >.
+</p>
+<h2>Sources and evidence boundary</h2>
+<p>
+  Official sources reviewed 10 October 2026:
+  <a href="https://help.prusa3d.com/article/prusaslicer-g-code-viewer_193152"
+    >PrusaSlicer G-code viewer</a
+  >,
+  <a href="https://help.prusa3d.com/article/binary-g-code_646763"
+    >Prusa binary G-code</a
+  >, <a href="https://marlinfw.org/docs/gcode/G092.html">Marlin G92</a>,
+  <a href="https://marlinfw.org/docs/gcode/M082.html">Marlin M82</a>,
+  <a href="https://www.klipper3d.org/G-Codes.html">Klipper commands</a>, and
+  <a href="https://help.prusa3d.com/article/sequential-printing_124589"
+    >Prusa sequential printing</a
+  >. InspectMesh's declarations are bounded file observations; diagrams and
+  snippets are original analytical examples, not machine approval.
+</p>

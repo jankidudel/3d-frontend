@@ -11,18 +11,19 @@ import { publicExamples } from './example-registry';
   template: `
     <main class="page examples-page">
       <p class="eyebrow">Known geometry, reproducible questions</p>
-      <h1>Explore STL and 3MF example models</h1>
+      <h1>Explore model and G-code evidence controls</h1>
       <p class="lead">
-        Recognise a finding, download a small known control and try it in the
-        tool. Each example separates generated geometry from observed software
-        output and the decision you still need to make.
+        Recognise a finding, download a small owned analytical control and try
+        it in the tool. Each example separates generated geometry from observed
+        software output and the decision you still need to make.
       </p>
       <p>
-        All models here are original InspectMesh mathematical geometry,
-        available to download, modify and redistribute with attribution to
-        InspectMesh. They contain no customer data. Slicer exports are
-        preview-only records, never instructions to run a printer. No physical
-        print success is claimed.
+        Models are original InspectMesh mathematical geometry. G-code parser
+        snippets are hand-authored analytical controls, incomplete and never for
+        printer execution. All controls are available to download, modify and
+        redistribute with attribution to InspectMesh. They contain no customer
+        data. Slicer exports are preview-only records, never instructions to run
+        a printer. No physical print success is claimed.
       </p>
       <p>
         <a [routerLink]="routeUrl.Methods">Read methods and processing</a>
@@ -164,7 +165,8 @@ export class ExamplesPage {
   ];
   constructor() {
     inject(SeoService).apply({
-      title: 'STL and 3MF Example Models - Visual Diagnosis | InspectMesh',
+      title:
+        'Model and G-code Evidence Controls - Visual Diagnosis | InspectMesh',
       description:
         'Download original known-geometry controls to explore units, open edges, winding, thin features, simplification, 3MF placements and nominal printer fit.',
       path: '/examples',

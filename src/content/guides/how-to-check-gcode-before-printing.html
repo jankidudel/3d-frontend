@@ -308,3 +308,37 @@ faq:
   When a relevant command cannot be interpreted, stop and use the generating
   slicer and printer documentation.
 </p>
+
+<h2>Use source evidence to choose the next action</h2>
+<p>
+  Read the viewer's linear, extrusion, duration and material coverage before
+  interpreting extents. Expand Source-line evidence, select the finding's
+  original line and inspect the read-only excerpt. Repeated events include
+  first/last references and a total; a bounded sample is not the entire source.
+  Only a mapped retained motion line selects a preview layer. Mode, temperature
+  and metadata lines should not be assigned an invented layer.
+</p>
+<figure>
+  <img
+    src="/examples/gcode-evidence/evidence.svg"
+    width="720"
+    height="260"
+    alt="Source line to unsupported finding to native preview action"
+  />
+  <figcaption>
+    Original conceptual evidence navigation, not a software screenshot.
+  </figcaption>
+</figure>
+<p>
+  An arc or macro points to
+  <a href="{{ GuideSlug.RouteGcodePreviewIncomplete }}"
+    >incomplete preview review</a
+  >; unexpected coordinate location points to
+  <a href="{{ GuideSlug.RouteGcodeOutsidePrintBed }}"
+    >min/max and travel review</a
+  >. For a supported estimate, review its source, units, one-run scope and any
+  manual edit before offering it. The destination asks before applying, and cost
+  adds a new selected run rather than multiplying every plate. Copy, JSON, PDF
+  and print keep the same assumptions and warnings. A local byte hash identifies
+  exact bytes, not the slicer author.
+</p>

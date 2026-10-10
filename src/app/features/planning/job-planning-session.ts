@@ -13,6 +13,8 @@ export interface PlanningOffer {
   value: number;
   basis: string;
   currency?: string;
+  gcodeSource?: boolean;
+  sliced?: { hours: number | null; grams: number | null };
   record?: NonNullable<ReturnType<typeof jobRecord>>;
 }
 /** Explicit offers and drafts live in tab memory only, never URLs or storage. */
@@ -34,6 +36,11 @@ export class JobPlanningSession {
   private pending: PlanningOffer | null = null;
   offer(offer: PlanningOffer): void {
     this.pending = structuredClone(offer);
+  }
+  invalidateGcodeOffers(): void {
+    if (this.pending?.gcodeSource) {
+      this.pending = null;
+    }
   }
   hasOffer(destination: PlanningDestination): boolean {
     return this.pending?.destination === destination;

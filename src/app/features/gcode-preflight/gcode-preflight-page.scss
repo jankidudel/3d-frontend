@@ -85,3 +85,46 @@ path.travel {
     flex-direction: column;
   }
 }
+
+pre,
+code {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#source-evidence:focus {
+  outline: 3px solid #165675;
+  outline-offset: 4px;
+}
+@media print {
+  .gcode-page > * {
+    display: none !important;
+  }
+  .gcode-page > h1,
+  .gcode-page > .export-record {
+    display: block !important;
+  }
+  .export-record {
+    font: 9pt monospace;
+    white-space: pre-wrap;
+  }
+}
+.gcode-page p,
+.gcode-page dd,
+.gcode-page li {
+  overflow-wrap: anywhere;
+}
+
+path.selected {
+  stroke: #a74c25;
+  stroke-width: 6;
+}
+@media print {
+  @page {
+    margin: 16mm;
+  }
+  .gcode-page {
+    padding: 0;
+    background: white;
+  }
+}

@@ -155,9 +155,13 @@ import { scaleMesh } from '../src/app/features/stl-scale/stl-scale.ts';
 import { assessPrinterOrientations } from '../src/app/shared/model-dimensions.ts';
 
 describe('visual diagnosis teaching controls', () => {
-  it('keeps eight unique scenarios, bounded bytes and allowlisted IDs', async () => {
-    expect(publicExamples).toHaveLength(8);
-    expect(new Set(publicExamples.map((example) => example.id)).size).toBe(8);
+  it('keeps unique registered scenarios, bounded bytes and allowlisted IDs', async () => {
+    expect(
+      publicExamples.filter((example) => example.group !== 'G-code evidence'),
+    ).toHaveLength(8);
+    expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
+      publicExamples.length,
+    );
     expect(
       findPublicExample('https://customer.invalid/private.stl', '/stl-viewer'),
     ).toBeUndefined();
@@ -311,5 +315,42 @@ describe('visual diagnosis teaching controls', () => {
     ).toBe(false);
     expect(10 * (1 - Math.cos(Math.PI / 24))).toBeCloseTo(0.08555, 5);
     expect(10 * (1 - Math.cos(Math.PI / 72))).toBeCloseTo(0.00952, 5);
+  });
+});
+
+import { parseGcode } from '../src/app/features/gcode-preflight/gcode-parser.ts';
+describe('distributed analytical G-code controls', () => {
+  it('executes distributed byte fixtures with independent expected observations', async () => {
+    const load = async (name: string) =>
+      (
+        await readFile(resolve(root, 'gcode-evidence', name + '.gcode'))
+      ).toString();
+    expect(parseGcode(await load('absolute-extrusion')).extrusionMoves).toBe(2);
+    expect(parseGcode(await load('relative-extrusion')).extrusionMoves).toBe(3);
+    expect(
+      parseGcode(await load('shifted-location')).extrusionExtents?.min.x,
+    ).toBe(230);
+    const scopes = parseGcode(await load('travel-outside'));
+    expect(scopes.extrusionExtents?.max.x).toBe(110);
+    expect(scopes.extents?.max.x).toBe(230);
+    expect(parseGcode(await load('unsupported-arc')).coverage.linear).toBe(
+      'incomplete',
+    );
+    expect(parseGcode(await load('ambiguous-metadata')).material).toBeNull();
+    expect(() => parseGcode('; analytical\nG21\nG1 XNaN')).toThrow('Line 3');
+    expect(() => parseGcode('; comments only')).toThrow('No readable');
+    const declared = parseGcode(await load('reviewed-estimates'));
+    expect(declared.duration?.value).toBe(1.5);
+    expect(declared.material?.value).toBe(12.5);
+    for (const name of ['malformed-number', 'comments-only']) {
+      const text = await load(name);
+      expect(() => parseGcode(text)).toThrow();
+    }
+    for (const example of publicExamples.filter(
+      (item) => item.group === 'G-code evidence',
+    )) {
+      expect(example.provenance).toContain('hand-authored');
+      expect(example.limitations).toContain('Never execute');
+    }
   });
 });

@@ -156,3 +156,51 @@ faq:
   machine condition, material, calibration, bed preparation and physical
   environment remain part of the real print outcome.
 </p>
+
+<h2>Recognise text and failed imports</h2>
+<p>
+  InspectMesh accepts plain UTF-8 text in .gcode, .gco or .gc files up to 25
+  MiB. An extension does not establish readable content. Binary G-code and
+  vendor containers are unavailable here; renaming them does not convert them.
+  Prusa's
+  <a href="https://help.prusa3d.com/article/binary-g-code_646763"
+    >binary G-code documentation</a
+  >
+  describes the native format and conversion workflow, reviewed 10 October 2026.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Import result</th>
+      <th>Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Undecodable or binary input</td>
+      <td>
+        Use the generating application's supported native viewer/text export
+      </td>
+    </tr>
+    <tr>
+      <td>Malformed numeric field with a line number</td>
+      <td>
+        Check the original export and re-export; do not guess a firmware command
+      </td>
+    </tr>
+    <tr>
+      <td>No readable G0/G1 motion</td>
+      <td>Check for an empty, comments-only or wrong supplied file</td>
+    </tr>
+    <tr>
+      <td>Readable paths with incomplete coverage</td>
+      <td>
+        Use
+        <a href="{{ GuideSlug.RouteGcodePreviewIncomplete }}"
+          >the cause/fallback table</a
+        >
+        before interpreting the picture
+      </td>
+    </tr>
+  </tbody>
+</table>

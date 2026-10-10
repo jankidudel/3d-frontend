@@ -7,15 +7,35 @@
   </p>
   @if (pending(); as offer) {
     <section class="notice">
-      <p>{{ offer.basis }} - {{ offer.value }} planned units.</p>
-      <button
-        class="button"
-        type="button"
-        (click)="applyLayout()"
-        [disabled]="input().plates.length >= maxPlates"
-      >
-        Add as an unsliced plate (preserve current job)</button
-      ><button class="button" type="button" (click)="dismissLayout()">
+      <p>{{ offer.basis }}</p>
+      @if (offer.sliced) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="slicedConfirmed()"
+            (change)="slicedConfirmed.set($any($event.target).checked)"
+          />I confirm this is one sliced run and will review material identity,
+          price, parts and repeats.</label
+        >
+        <button
+          type="button"
+          (click)="applySliced()"
+          [disabled]="!slicedConfirmed() || input().plates.length >= maxPlates"
+        >
+          Add reviewed estimates as a new plate (preserve current job)
+        </button>
+      } @else {
+        <p>{{ offer.value }} planned units.</p>
+        <button
+          class="button"
+          type="button"
+          (click)="applyLayout()"
+          [disabled]="input().plates.length >= maxPlates"
+        >
+          Add as an unsliced plate (preserve current job)
+        </button>
+      }
+      <button class="button" type="button" (click)="dismissLayout()">
         Dismiss
       </button>
     </section>

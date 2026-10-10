@@ -4,7 +4,7 @@
   <p class="lead">{{ config.description }}</p>
   @if (pending(); as offer) {
     <section class="card offer">
-      <h2>Job input offered from cost calculator</h2>
+      <h2>Reviewed planning input offered</h2>
       <p>
         {{ offer.value }} {{ kind === kinds.Spool ? 'g' : 'hours' }}.
         {{ offer.basis }}

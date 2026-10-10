@@ -1,0 +1,6 @@
+; ANALYTICAL ONLY - hand-authored InspectMesh control. NEVER EXECUTE ON A PRINTER.
+G21
+G90
+M82
+G0 X230 Y20 Z0.2
+G1 X240 Y20 E1

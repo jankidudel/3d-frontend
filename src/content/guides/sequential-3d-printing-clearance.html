@@ -1,0 +1,155 @@
+---
+title: 'Sequential Printing Clearance Versus Bed Placement | InspectMesh'
+description: 'Understand why non-overlapping footprints do not establish toolhead and gantry clearance when printing objects one at a time.'
+slug: sequential-3d-printing-clearance
+eyebrow: Sliced-file review
+heading: 'Sequential Printing Clearance Versus Bed Placement'
+faq:
+  - question: Does a bed layout establish sequential clearance?
+    answer: No. The exact head and gantry geometry, completed object heights and print order require native slicer/profile checks.
+  - question: 'Can I enter a generic clearance radius in the bed planner?'
+    answer: 'The bed planner screens rectangular model footprints. It does not model a toolhead or gantry; use exact native profile checks.'
+---
+
+<p>
+  Fitting object footprints on a bed does not establish clearance for sequential
+  printing. While the next object is being built, an already completed object
+  can occupy space needed by the moving head, gantry, rods or cables. Review the
+  exact native slicer/profile, object heights and print order.
+</p>
+<h2>Plan and side views answer different questions</h2>
+<figure>
+  <img
+    src="/examples/gcode-evidence/sequential.svg"
+    width="720"
+    height="260"
+    alt="Plan view shows separated footprints and a larger head envelope; side view shows height intersecting a gantry"
+  />
+  <figcaption>
+    Original conceptual plan/side diagram, not a computed collision result or
+    universal clearance geometry.
+  </figcaption>
+</figure>
+<p>
+  The bed planner screens rectangular XY footprints. It does not have a verified
+  machine head shape, gantry height, cable motion or firmware routine. Its
+  confirmed count can help cost a planned plate, but that count does not approve
+  a sequential machine job.
+</p>
+<h2>A hypothetical order review</h2>
+<p>
+  Two objects have separated 30 × 30 mm footprints. One is 20 mm tall and the
+  other 90 mm tall. Both footprints fit the entered bed. If the tall object
+  finishes first, the later head/gantry route may pass beside or above it.
+  Reversing order changes which completed object is present, but does not by
+  itself prove clearance. The exact machine geometry and native profile checks
+  are needed for either order. These example heights are not recommended
+  clearance limits.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Review question</th>
+      <th>Evidence needed</th>
+      <th>Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Do footprints overlap?</td>
+      <td>
+        Placed model footprints, brim/support allowance and usable XY area
+      </td>
+      <td>Review layout in the model arrangement owner</td>
+    </tr>
+    <tr>
+      <td>Can the head pass a completed object?</td>
+      <td>Exact head envelope and machine/profile limits</td>
+      <td>Use the native sequential collision review</td>
+    </tr>
+    <tr>
+      <td>Does a tall object obstruct the gantry?</td>
+      <td>Object height, rods/cables and machine-specific geometry</td>
+      <td>Compare the side view and printer instructions</td>
+    </tr>
+    <tr>
+      <td>Which object finishes first?</td>
+      <td>Native object sequence and inter-object movements</td>
+      <td>
+        Inspect the actual order and preview rather than assuming list/placement
+        order
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Where native checks belong</h2>
+<p>
+  Prusa's sequential-printing documentation describes Complete individual
+  objects and order review. It distinguishes advanced collision handling for
+  supported Prusa profiles from generic clearance settings for other printers.
+  Generic radius/height settings represent a simplified shape, not universal
+  hardware dimensions. Use the current exact profile and printer instructions;
+  the documentation also states that an identified collision error need not
+  block G-code export. A downloadable file is not evidence that the warning was
+  resolved.
+</p>
+<p>
+  This source was reviewed on 10 October 2026. Feature availability and native
+  behaviour depend on software/version/profile; no new native sequential
+  experiment or physical print was performed for this guide. The diagram and
+  worked order example are explanatory controls.
+</p>
+<h2>Make the review reproducible</h2>
+<ol>
+  <li>
+    Keep the original project and record application/version, machine/profile
+    and object revisions.
+  </li>
+  <li>Check XY placement and allowances in the native slicer.</li>
+  <li>
+    Enable the intended sequential mode deliberately; inspect order, heights and
+    native clearance findings.
+  </li>
+  <li>
+    Recheck after changing order or placement. Retain unresolved warnings and
+    obtain printer-specific guidance rather than entering guessed radii.
+  </li>
+  <li>
+    Use G-code evidence only for the supported paths and declarations it
+    actually recognises.
+  </li>
+</ol>
+<h2>Use the existing review tools</h2>
+<p>
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >Open the read-only G-code viewer</a
+  >,
+  <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
+    >follow the general G-code review procedure</a
+  >, and
+  <a href="{{ GuideSlug.RouteExamples }}"
+    >download the owned analytical controls</a
+  >. Source geometry fit remains in
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >the model-fit guide</a
+  >; arrangement remains in
+  <a href="{{ GuideSlug.RouteHowToArrangeMultiplePartsOnA3dPrinterBed }}"
+    >the existing layout guide</a
+  >.
+</p>
+<h2>Sources and evidence boundary</h2>
+<p>
+  Official sources reviewed 10 October 2026:
+  <a href="https://help.prusa3d.com/article/prusaslicer-g-code-viewer_193152"
+    >PrusaSlicer G-code viewer</a
+  >,
+  <a href="https://help.prusa3d.com/article/binary-g-code_646763"
+    >Prusa binary G-code</a
+  >, <a href="https://marlinfw.org/docs/gcode/G092.html">Marlin G92</a>,
+  <a href="https://marlinfw.org/docs/gcode/M082.html">Marlin M82</a>,
+  <a href="https://www.klipper3d.org/G-Codes.html">Klipper commands</a>, and
+  <a href="https://help.prusa3d.com/article/sequential-printing_124589"
+    >Prusa sequential printing</a
+  >. InspectMesh's declarations are bounded file observations; diagrams and
+  snippets are original analytical examples, not machine approval.
+</p>

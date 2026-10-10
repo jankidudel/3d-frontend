@@ -6,6 +6,12 @@
     practical preflight details before printing. This G-code Preflight Checker
     only reads the file; it never uploads, runs, sends or changes G-code.
   </p>
+  @if (file()) {
+    <p>
+      Loading a slicer example replaces the current file and result. Preserve
+      unsaved exports first.
+    </p>
+  }
   <button type="button" (click)="runSlicerExample()" [disabled]="parsing()">
     Load actual Arachne slicer example
   </button>
@@ -16,10 +22,20 @@
     Owned thin-wall bars sliced with PrusaSlicer 2.9.6. Preview-only CLI
     exports: do not send these files to a printer.
   </p>
+  <app-example-loader
+    [tool]="routeUrl.GcodePreflightChecker"
+    [active]="!!file()"
+    [current]="file()"
+    [busy]="parsing()"
+    [load]="loadExample"
+  />
   <section class="card viewer-tool">
     <h2>Open a G-code file locally</h2>
     <div class="drop-zone">
-      <p>Choose a .gcode, .gco or .gc file.</p>
+      <p>
+        Choose a plain-text .gcode, .gco or .gc file up to 25 MiB. A source line
+        over 4,096 characters is unavailable.
+      </p>
       <button class="button" type="button" (click)="openPicker(picker)">
         Choose G-code file
       </button>
@@ -36,6 +52,7 @@
     </div>
     @if (parsing()) {
       <p role="status">Reading G-code locally…</p>
+      <button type="button" (click)="cancel()">Cancel review</button>
     }
     @if (error()) {
       <p class="error" role="alert">{{ error() }}</p>
@@ -51,6 +68,34 @@
         Readable linear print-path data was found. Review the slicer preview and
         printer-specific workflow before printing.
       </p>
+      <p>
+        Linear coverage: {{ result.coverage.linear }}. Extrusion classification:
+        {{ result.coverage.extrusion }}. Duration declaration:
+        {{ result.coverage.duration }}. Material declaration:
+        {{ result.coverage.material }}.
+      </p>
+      <p>
+        {{ result.counts.supported }} supported commands;
+        {{ result.counts.auxiliary }} auxiliary commands outside geometry;
+        {{ result.counts.unsupported }} commands with unsupported effects.
+        {{ result.counts.reviewedLines }} of
+        {{ result.counts.totalLines }} source lines reviewed. This is not a
+        firmware compatibility percentage.
+      </p>
+      @if (result.previewTruncated) {
+        <p>
+          Preview is truncated to the first retained moves. Extents use all
+          reviewed linear moves.
+        </p>
+      }
+      <details>
+        <summary>Model assumptions and limits</summary>
+        <ul>
+          @for (assumption of result.assumptions; track assumption) {
+            <li>{{ assumption }}</li>
+          }
+        </ul>
+      </details>
       <dl class="metrics">
         <div>
           <dt>File</dt>
@@ -123,7 +168,20 @@
       </dl>
     </section>
     <section class="card">
-      <h2>Parsed toolpath geometry</h2>
+      <h2>All parsed linear-motion extents, including travel</h2>
+      <p>
+        Logical coordinates, including start/end travel and Z hops. These are
+        not model dimensions.
+      </p>
+      @if (result.extrusionExtents; as extrusion) {
+        <h3>Supported positive-extrusion path envelope</h3>
+        <p>
+          X {{ format(extrusion.min.x) }} to {{ format(extrusion.max.x) }}; Y
+          {{ format(extrusion.min.y) }} to {{ format(extrusion.max.y) }}; Z
+          {{ format(extrusion.min.z) }} to {{ format(extrusion.max.z) }} mm.
+          Includes purge/prime paths. Coverage: {{ result.coverage.extrusion }}.
+        </p>
+      }
       @if (result.extents; as extents) {
         <dl class="metrics">
           <div>
@@ -242,15 +300,22 @@
           {{ selectedLayerMoves().travel }} travel
           {{ selectedLayerMoves().travel === 1 ? 'move' : 'moves' }} parsed.
         </p>
+        @if (layer.paths.length > 2000) {
+          <p>
+            Rendering shows the first 2,000 retained paths on this layer. Counts
+            and reviewed extents include more paths.
+          </p>
+        }
         <svg
           viewBox="0 0 1000 600"
           role="img"
           aria-label="Parsed layer toolpath preview"
         >
-          @for (path of layer.paths; track $index) {
+          @for (path of layer.paths.slice(0, 2000); track $index) {
             @if (path.extrusion || showTravel()) {
               <path
                 [class.travel]="!path.extrusion"
+                [class.selected]="evidence()?.line === path.line"
                 [attr.d]="previewPath(path)"
               />
             }
@@ -260,6 +325,12 @@
     </section>
     <section class="card">
       <h2>Temperatures and modes</h2>
+      <p>
+        Targets are bounded samples (up to 100 per heater), retaining the
+        maximum reviewed target when the sample limit is reached. Findings
+        include first/last occurrence references. Unsupported temperature-unit
+        changes remain outside the model.
+      </p>
       <dl class="metrics">
         <div>
           <dt>Hotend targets</dt>
@@ -288,6 +359,19 @@
           <dd>{{ result.extrusionMode }}</dd>
         </div>
       </dl>
+      <details>
+        <summary>Inspect heater target source lines</summary>
+        @for (target of result.hotendTargets; track target.line) {
+          <button type="button" (click)="focusEvidence(target)">
+            Hotend {{ target.value }} °C, line {{ target.line }}
+          </button>
+        }
+        @for (target of result.bedTargets; track target.line) {
+          <button type="button" (click)="focusEvidence(target)">
+            Bed {{ target.value }} °C, line {{ target.line }}
+          </button>
+        }
+      </details>
       <p>
         Optionally enter the maximum temperatures you allow for this
         printer/material workflow. These are your review limits, not generic
@@ -318,51 +402,274 @@
       }
     </section>
     <section class="card">
-      <h2>Build-volume comparison</h2>
+      <h2>Coordinate-bound review</h2>
       @if (printerProfile(); as profile) {
         <p>
           Using your saved printer profile: {{ format(profile.width) }} ×
           {{ format(profile.depth) }} × {{ format(profile.height) }}
           {{ profile.unit }}.
         </p>
-        @if (savedProfileVolumeMessage()) {
-          <p class="status">{{ savedProfileVolumeMessage() }}</p>
-        }
+        <p>
+          The saved profile supplies dimensions only. Enter coordinate
+          maxima/minima below using your verified origin. No origin, bed shape
+          or offset is inferred from its name.
+        </p>
       }
-      <p>Compare parsed motion extents only.</p>
+      <p>
+        Enter minimum and maximum logical coordinates in mm. Initial minima of
+        zero are an assumption you must review, not a manufacturer limit. Blank
+        or reversed bounds do not produce an observation.
+      </p>
       <label
-        >X
+        >Minimum X
+        <input
+          type="number"
+          [value]="minX()"
+          (input)="
+            minX.set(
+              $any($event.target).value === ''
+                ? NaNValue
+                : +$any($event.target).value
+            )
+          "
+      /></label>
+      <label
+        >Minimum Y
+        <input
+          type="number"
+          [value]="minY()"
+          (input)="
+            minY.set(
+              $any($event.target).value === ''
+                ? NaNValue
+                : +$any($event.target).value
+            )
+          "
+      /></label>
+      <label
+        >Minimum Z
+        <input
+          type="number"
+          [value]="minZ()"
+          (input)="
+            minZ.set(
+              $any($event.target).value === ''
+                ? NaNValue
+                : +$any($event.target).value
+            )
+          "
+      /></label>
+      <label
+        >Maximum X
         <input
           type="number"
           min="0"
-          (input)="buildX.set(+$any($event.target).value); compareVolume()"
+          (input)="
+            buildX.set(
+              $any($event.target).value === ''
+                ? null
+                : +$any($event.target).value
+            );
+            compareVolume()
+          "
         />
         mm</label
       ><label
-        >Y
+        >Maximum Y
         <input
           type="number"
           min="0"
-          (input)="buildY.set(+$any($event.target).value); compareVolume()"
+          (input)="
+            buildY.set(
+              $any($event.target).value === ''
+                ? null
+                : +$any($event.target).value
+            );
+            compareVolume()
+          "
         />
         mm</label
       ><label
-        >Z
+        >Maximum Z
         <input
           type="number"
           min="0"
-          (input)="buildZ.set(+$any($event.target).value); compareVolume()"
+          (input)="
+            buildZ.set(
+              $any($event.target).value === ''
+                ? null
+                : +$any($event.target).value
+            );
+            compareVolume()
+          "
         />
         mm</label
       >
       @if (volumeMessage()) {
-        <p class="status">{{ volumeMessage() }}</p>
+        <p class="status">All linear motion: {{ volumeMessage() }}</p>
+        <p class="status">
+          Positive extrusion: {{ extrusionMessage() ?? 'Unavailable' }}
+        </p>
       }
       <p>
         Coordinate origins, offsets and printer-specific start G-code can affect
         how this comparison should be interpreted.
       </p>
     </section>
+    <section class="card">
+      <h2>Source-line evidence</h2>
+      <p>
+        Read-only excerpts retain original numbering across comments and blank
+        lines. Repeated events show first/last lines, a total and up to three
+        samples; at most 100 finding groups are retained. Source text is never
+        executed.
+      </p>
+      <details>
+        <summary>Inspect findings and source samples</summary>
+        @for (finding of result.findings; track finding.command) {
+          <h3>
+            {{ finding.command }}: {{ finding.count }} occurrence(s), lines
+            {{ finding.firstLine }} to {{ finding.lastLine }}
+          </h3>
+          <p>{{ finding.interpretation }} {{ finding.action }}</p>
+          @for (sample of finding.samples; track sample.line) {
+            <button type="button" (click)="focusEvidence(sample)">
+              Inspect line {{ sample.line }}
+            </button>
+          }
+        }
+      </details>
+      @if (evidence(); as item) {
+        <div
+          id="source-evidence"
+          tabindex="-1"
+          aria-label="Selected source excerpt"
+        >
+          <p>
+            Original line {{ item.line }}. A preview layer is selected only when
+            this retained move has a reliable line mapping.
+            Mode/metadata/unsupported findings have no exact path association.
+          </p>
+          <pre>{{ item.excerpt }}</pre>
+          <button type="button" (click)="copyEvidence()">
+            Copy this excerpt
+          </button>
+        </div>
+      }
+    </section>
+    <section class="card">
+      <h2>Review declared estimates for one sliced run</h2>
+      <p>
+        Supported offers currently recognise unambiguous PrusaSlicer 2.9.6
+        normal-mode duration and single-filament grams comments. Slicer labels
+        are unverified declarations. No timing simulation or net-E material
+        total is calculated.
+      </p>
+      @if (result.duration; as duration) {
+        <p>
+          Duration: {{ duration.value }} hours; {{ duration.scope }}.
+          {{ duration.basis }} Line {{ duration.line }}:
+          <code>{{ duration.source }}</code>
+        </p>
+        <label
+          >Reviewed hours
+          <input
+            type="number"
+            min="0"
+            [value]="reviewedHours()"
+            (input)="setEstimate(reviewedHours, $event)"
+        /></label>
+      } @else {
+        <p>
+          Supported duration unavailable. Enter the original slicer estimate
+          manually in the finish/cost tool.
+        </p>
+      }
+      @if (result.material; as material) {
+        <p>
+          Material: {{ material.value }} g; {{ material.scope }}.
+          {{ material.basis }} Line {{ material.line }}:
+          <code>{{ material.source }}</code>
+        </p>
+        <label
+          >Reviewed grams
+          <input
+            type="number"
+            min="0"
+            [value]="reviewedGrams()"
+            (input)="setEstimate(reviewedGrams, $event)"
+        /></label>
+      } @else {
+        <p>
+          Supported material unavailable. Per-tool totals, length without
+          confirmed diameter/density and ambiguous formats remain manual inputs.
+          Do not combine different spools.
+        </p>
+      }
+      <label
+        ><input
+          type="checkbox"
+          [checked]="reviewed()"
+          (change)="reviewed.set($any($event.target).checked)"
+        />I reviewed the source, one-run scope and any manual edits. The
+        destination will ask before applying.</label
+      >
+      <button
+        type="button"
+        (click)="offer(destinations.Finish)"
+        [disabled]="!reviewed() || !result.duration || !reviewedHours()"
+      >
+        Review duration in finish planner
+      </button>
+      <button
+        type="button"
+        (click)="offer(destinations.Cost)"
+        [disabled]="!reviewed() || (!result.duration && !result.material)"
+      >
+        Review new plate in cost calculator
+      </button>
+      <button
+        type="button"
+        (click)="offer(destinations.Spool)"
+        [disabled]="!reviewed() || !result.material || !reviewedGrams()"
+      >
+        Review compatible spool consumption
+      </button>
+      <p>
+        <a [routerLink]="routeUrl.PrintFinishTimeCalculator"
+          >Manual finish planning</a
+        >
+        ·
+        <a [routerLink]="routeUrl.PrintCostCalculator">Manual plate costing</a>
+        ·
+        <a [routerLink]="routeUrl.FilamentRemainingCalculator"
+          >Manual spool review</a
+        >
+      </p>
+    </section>
+    <section class="card export-controls">
+      <h2>Keep a consistent review record</h2>
+      <p>
+        JSON, copy, PDF and print share the same bounded record, coordinate
+        assumptions, manual inputs, findings and limitations. Full raw G-code is
+        omitted and nothing is saved automatically.
+      </p>
+      <p>
+        SHA-256:
+        {{ hash() ?? 'Unavailable or calculating - review remains usable' }}.
+        Matches exact bytes; whitespace changes the hash. A matching hash does
+        not authenticate the author or printer compatibility.
+      </p>
+      <button type="button" (click)="downloadJson()">
+        Download review JSON
+      </button>
+      <button type="button" (click)="copyReport()">Copy review record</button>
+      <button type="button" (click)="pdf()">Download review PDF</button>
+      <button type="button" (click)="print()">Print review record</button>
+    </section>
+    @if (exportText()) {
+      <pre class="export-record">{{ recordSummary() }}</pre>
+    }
     <section class="card">
       <h2>Limitations and next steps</h2>
       @if (result.limitations.length) {
@@ -417,6 +724,7 @@
       </p>
     </section>
   }
+  <p role="status">{{ message() }}</p>
   <app-tool-evidence
     [completed]="!!report()"
     [page]="routeUrl.GcodePreflightChecker"
