@@ -91,29 +91,66 @@ import { publicExamples } from './example-registry';
     nav {
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.5rem;
+      margin-block: 1.5rem;
+    }
+    nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: var(--surface);
     }
     .example-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 28rem), 1fr));
+      align-items: start;
       gap: 1.25rem;
     }
+    article {
+      min-width: 0;
+      padding: clamp(1rem, 3vw, 1.5rem);
+      scroll-margin-top: 6rem;
+    }
+    h3 {
+      margin: 0 0 1rem;
+      font-size: 1.2rem;
+      line-height: 1.3;
+    }
     figure {
-      margin: 0;
+      margin: 0 0 1.25rem;
     }
     img {
+      display: block;
       width: 100%;
       height: auto;
+      border-radius: 0.75rem;
     }
     figcaption {
+      margin-top: 0.65rem;
+      color: var(--muted);
       font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    article p {
+      margin-block: 1rem;
+      line-height: 1.6;
+    }
+    article p:last-child {
+      margin-bottom: 0;
+    }
+    ul {
+      padding-left: 1.25rem;
+    }
+    li {
+      margin-block: 0.5rem;
+      line-height: 1.5;
     }
     li,
     p {
       overflow-wrap: anywhere;
-    }
-    article {
-      scroll-margin-top: 6rem;
     }
     section {
       margin-top: 2rem;
