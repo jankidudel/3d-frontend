@@ -138,14 +138,24 @@ Recipient action: verify mating features and sliced layers</pre>
   >, export its findings and keep version names consistent.
 </p>
 
-<h2>Prepare a local quote worksheet</h2>
+<h2>File handoff versus physical production quote</h2>
 <p>
-  After checking the intended files and scope, use the
-  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
-    >price calculator and printable quote worksheet</a
+  A model-file handoff includes the named revisions, units, manifest, licence
+  scope and bounded geometry evidence. It does not include physical parts,
+  sliced material, machine availability, finishing or a guaranteed delivery date
+  unless those are separately agreed and evidenced.
+</p>
+<p>
+  For physical production, resolve
+  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
+    >customer intake</a
   >
-  to record quantity, currency, per-part work and once-per-order setup. Keep
-  failure allowance separate from rates that already include it. The worksheet
-  is an estimate, not an invoice or production acceptance; references stay local
-  until deliberately exported.
+  first, record
+  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}"
+    >the plate/order production scope</a
+  >, then use
+  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}"
+    >the pricing workflow</a
+  >. Keep these records distinct from the digital file-release manifest; do not
+  attach a per-part production price to file quality alone.
 </p>

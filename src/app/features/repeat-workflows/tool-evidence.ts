@@ -112,9 +112,9 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     cta: 'Check the remaining spool against this job',
   },
   [PublicRouteUrl.PrintPriceCalculator]: {
-    heading: 'Spread order setup once across a batch',
+    heading: 'Carry the production job total into the quote',
     example:
-      'Illustrative five-part order: production costs 4.00 per part and one setup/packing charge is 10.00. Total cost is 30.00, or 6.00 allocated per part. A 30% margin calls for 30 / 0.70 = 42.86 for the order; a 30% markup gives 39.00 and a lower margin.',
+      'Fictional five-part, two-plate job: production cost is 39.192 currency units, including shared order work once. At a 30% margin the order price is 55.99 without fees. Adding a 5% fee on the full selling price gives 39.192 / (1 - 0.30 - 0.05) = 60.30. No fixed fee, minimum, tax or shipping is included.',
     interpretation:
       'Distinguish per-item, per-plate and per-order labour. Five separate runs can repeat unloading even if the customer ordered once. Enter explicit currency, shipping and tax assumptions, then retain the quote inputs with the supplied file review. Browser-local calculations are not invoices or cloud customer records.',
     next: PublicRouteUrl.BatchStlChecker,

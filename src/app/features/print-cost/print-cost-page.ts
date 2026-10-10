@@ -1,3 +1,8 @@
+import {
+  JobPlanningSession,
+  PlanningDestination,
+} from '../planning/job-planning-session';
+import { JobCostEditor } from './job-cost-editor';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   chosenCurrency,
@@ -36,6 +41,7 @@ import {
   selector: 'app-print-cost-page',
   imports: [
     ToolEvidenceComponent,
+    JobCostEditor,
     RouterLink,
     StlFilePicker,
     ThreeMfFilePicker,
@@ -45,6 +51,9 @@ import {
   styleUrl: './print-cost-page.scss',
 })
 export class PrintCostPage {
+  readonly jobMode = signal(
+    inject(JobPlanningSession).hasOffer(PlanningDestination.Cost),
+  );
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly currencyOptions = COST_CURRENCY_OPTIONS;
@@ -151,7 +160,7 @@ export class PrintCostPage {
       title:
         '3D Print Cost Calculator: Material, Energy and Print Cost | InspectMesh',
       description:
-        'Estimate 3D printing production cost from slicer values or a model estimate. Include material, electricity, machine wear, labour and failure allowance.',
+        'Cost a single print or several sliced plates with complete material, run work, shared preparation and order costs. Export a local job estimate.',
       path: PublicRouteUrl.PrintCostCalculator,
     });
   }
@@ -252,7 +261,7 @@ export class PrintCostPage {
         null,
         2,
       ),
-      '3d-print-price-report.json',
+      '3d-print-cost-report.json',
       'application/json',
     );
     this.analytics.trackReportDownloaded('volume_calculator', 'json');
@@ -263,27 +272,30 @@ export class PrintCostPage {
       return;
     }
     const pdf = await createPdf();
-    pdf.text('InspectMesh 3D Print Quote', 14, 18);
-    pdf.text(`Generated: ${new Date().toLocaleString()}`, 14, 28);
-    pdf.text(`Item: ${this.quoteItem() || '3D printed part'}`, 14, 36);
-    pdf.text(
-      `Quoted price: ${this.format(result.customerQuotedPrice)}`,
-      14,
-      46,
-    );
-    pdf.text(`Includes shipping: ${this.format(result.shippingCost)}`, 14, 56);
-    pdf.text(
-      `Sales tax shown separately: ${this.format(result.salesTax)}`,
-      14,
-      66,
-    );
-    pdf.text(
-      'This is an estimate. Actual material use, fees, tax and delivery costs can vary.',
-      14,
-      78,
-      { maxWidth: 180 },
-    );
-    pdf.save('3d-print-quote.pdf');
+    pdf.setFontSize(10);
+    const text = [
+      'InspectMesh single-print production estimate',
+      `Item: ${this.quoteItem() || '3D printed part'}`,
+      `Source: ${this.source()}; currency: ${this.currency()}`,
+      `Material ${this.activeWeight()} g from ${this.spoolWeight()} g spool at ${this.spoolPrice()}`,
+      `Duration ${this.printHours()} h; average power ${this.printerWatts()} W; electricity ${this.electricityPrice()}/kWh`,
+      `Machine allowance ${this.machineCost()}/h; active labour ${this.labourHours()} h at ${this.labourCost()}/h`,
+      `Extras ${this.extras()}; packaging ${this.packaging()}; shipping ${this.shipping()}; failure uplift ${this.failure()}%`,
+      `Material cost ${this.format(result.materialCost)}; energy ${this.format(result.electricityCost)}; machine ${this.format(result.machineCost)}; labour ${this.format(result.labourCost)}`,
+      `Total production cost: ${this.format(result.totalCost)}`,
+      'Estimate only. Model solid mass is not complete slicer consumption. Supports/purge already included must not be added again. No tax or selling-fee price is quoted here.',
+    ].join('\n');
+    const lines: string[] = pdf.splitTextToSize(text, 180);
+    let y = 18;
+    for (const line of lines) {
+      if (y > 280) {
+        pdf.addPage();
+        y = 18;
+      }
+      pdf.text(line, 14, y);
+      y += 5;
+    }
+    pdf.save('3d-print-cost-report.pdf');
     this.analytics.trackReportDownloaded('volume_calculator', 'pdf');
   }
   private inputs(): object {
@@ -296,6 +308,11 @@ export class PrintCostPage {
       spoolPrice: this.spoolPrice(),
       spoolWeight: this.spoolWeight(),
       printerWatts: this.printerWatts(),
+      machineHourlyCost: this.machineCost(),
+      labourHourlyCost: this.labourCost(),
+      labourHours: this.labourHours(),
+      extraPartsCost: this.extras(),
+      failureAllowancePercent: this.failure(),
       electricityPrice: this.electricityPrice(),
       packagingCost: this.packaging(),
       shippingCost: this.shipping(),

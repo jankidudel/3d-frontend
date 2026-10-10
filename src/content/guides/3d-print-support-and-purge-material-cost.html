@@ -1,0 +1,149 @@
+---
+title: '3D Print Support and Purge Material Cost | InspectMesh'
+description: 'Reconcile complete slicer consumption with separately reported supports and purge, then price each material using its actual spool basis.'
+slug: 3d-print-support-and-purge-material-cost
+eyebrow: Practical job planning
+heading: '3D Print Support and Purge Material Cost'
+faq:
+  - question: 'Should I always add a waste percentage?'
+    answer: 'No. Complete consumption already including supports and purge needs no mandatory uplift. Add only identified material absent from that total.'
+  - question: 'Can I average different filament prices?'
+    answer: 'Retain each material weight and spool price basis and sum their costs. An unlabelled average loses the evidence for the weighted total.'
+---
+
+<p>
+  Price complete consumption once. Before adding support, brim or purge figures,
+  determine whether they are components of a total or additional material absent
+  from it. A model-only number and a complete job total answer different
+  questions.
+</p>
+<figure>
+  <img
+    src="/images/job-planning/material-inclusion.svg"
+    alt="Check before adding purge: Subtotal: 80 g parts + supports - Purge absent: add separately reported 20 g; Complete estimate: 100 g - Already includes that same 20 g purge; Both represent 100 g consumption - Adding purge again would charge 120 g"
+    width="360"
+    height="278"
+  />
+  <figcaption>
+    Original planning diagram; hypothetical inputs, not observed production.
+  </figcaption>
+</figure>
+<h2>Two hypothetical reconciliations</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Reported inputs</th>
+      <th scope="col">Inclusion check</th>
+      <th scope="col">Consumption and cost at 24 CU/kg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>80 g parts/support + 20 g purge</td>
+      <td>Purge absent from the 80 g subtotal</td>
+      <td>100 g; 2.40 CU</td>
+    </tr>
+    <tr>
+      <td>100 g complete total + 20 g purge category</td>
+      <td>Purge already inside the 100 g total</td>
+      <td>100 g; 2.40 CU, not 120 g / 2.88 CU</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  These are original arithmetic examples. No particular slicer screen was
+  reproduced for this guide. Category labels and reporting scope must be checked
+  in the installed software and exported project. If inclusion is unknown,
+  record that uncertainty and resolve it before treating the figure as complete.
+</p>
+<h2>What belongs in the consumption record?</h2>
+<ul>
+  <li>Model perimeters, infill and top/bottom layers.</li>
+  <li>
+    Supports, interfaces, brim, raft or other planned structures where used.
+  </li>
+  <li>
+    Purge, prime and wipe structures according to the exact profile and tool
+    changes.
+  </li>
+  <li>
+    Additional material absent from the reported total, such as a separately
+    budgeted loading loss, with its source stated.
+  </li>
+</ul>
+<p>
+  Mesh volume contains none of those process decisions. The
+  <a href="{{ GuideSlug.RouteHowToEstimateFilamentWeightFromA3mfFile }}"
+    >solid-model weight explanation</a
+  >
+  owns geometry-to-mass estimates; it cannot guarantee job consumption. A
+  financial failure uplift is a cost budget, not an automatic number of grams or
+  guaranteed rerun count.
+</p>
+<h2>Check the slicer and profile before changing purge</h2>
+<p>
+  Prusa documents a single smart wipe tower shared by objects, with its size
+  related to colour changes rather than simply object size. Its current MMU
+  documentation distinguishes configuration-derived purge settings from a custom
+  project transition matrix. These are PrusaSlicer/MMU vendor descriptions,
+  reviewed 10 October 2026; menu location and applicable settings depend on your
+  installed version and profile. This guide does not assert an observed UI
+  result.
+</p>
+<p>
+  Read the primary
+  <a href="https://help.prusa3d.com/article/wipe-tower_125010"
+    >wipe-tower documentation</a
+  >
+  and
+  <a href="https://help.prusa3d.com/article/purging-volumes-mmu_125097"
+    >MMU purging-volume documentation</a
+  >. A tower preview or calculated purge volume is not evidence of reliable
+  printing. Do not reduce purge merely to reach a cost target; the actual
+  process requirements and supplier instructions govern it.
+</p>
+<h2>Different spools need separate cost bases</h2>
+<p>
+  Hypothetical plate: 60 g from a 1,000 g spool priced at 24 CU costs 1.44 CU;
+  40 g from a 500 g spool priced at 20 CU costs 1.60 CU. Total is 100 g costing
+  3.04 CU. An unlabelled average price would hide which grams used which basis.
+  Repeat those entries for each unchanged run and preserve the source amounts in
+  the report.
+</p>
+<p>
+  Keep colour/material/spool scopes distinct where compatibility differs, even
+  if prices match. The spool sufficiency tool checks one compatible scope
+  against a weighed reel. A 100 g total across two incompatible materials cannot
+  prove that one 100 g remainder is sufficient.
+</p>
+<h2>Practical reconciliation before quoting</h2>
+<ol>
+  <li>
+    Slice the agreed revision using the intended machine, materials and profile.
+  </li>
+  <li>
+    Record software version, source units and whether each figure is model-only,
+    subtotal or complete consumption.
+  </li>
+  <li>
+    Compare component sums with the displayed total without adding nested
+    categories twice.
+  </li>
+  <li>
+    Separate each material price basis and any explicitly unreported material.
+  </li>
+  <li>
+    Use
+    <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">the job cost rows</a>;
+    leave additional grams at zero for a complete total.
+  </li>
+</ol>
+<p>
+  For the broader workflow,
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >estimate filament consumption</a
+  >, then check
+  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
+    >one compatible remaining spool</a
+  >. Reserve remains an editable decision separate from the entered consumption.
+</p>

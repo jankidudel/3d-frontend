@@ -1,329 +1,416 @@
 <main class="page tool-page price-page">
-  <p class="eyebrow">3D printing business calculator</p>
+  <p class="eyebrow">Browser-local quote planning</p>
   <h1>3D Printing Price Calculator</h1>
   <p class="lead">
-    Calculate a clear customer price from your real production costs, quantity
-    and target profit margin.
+    Choose margin or markup on an explicit production cost, then apply entered
+    selling fees and a minimum order price.
   </p>
-  <section class="card" aria-labelledby="price-inputs">
-    <h2 id="price-inputs">Price a 3D print</h2>
+  <section class="card">
+    <h2>Price a job or identical parts</h2>
     <p>
-      All calculations happen locally in your browser. Tax, delivery and selling
-      fees are excluded. Currency selection relabels values without exchange
-      conversion. Enter any agreed delivery cost explicitly in extra allowances.
+      Currency selection relabels values, without conversion. Tax and unentered
+      costs are excluded. These are estimates, not invoices or production
+      acceptance.
     </p>
+    @if (pending(); as offer) {
+      <section class="offer">
+        <h3>Production cost offered from your job</h3>
+        <p>{{ offer.value }} {{ offer.currency }}. {{ offer.basis }}</p>
+        <button type="button" (click)="applyJob()">
+          Apply job total and its currency</button
+        ><button type="button" (click)="pending.set(null)">
+          Dismiss offer
+        </button>
+      </section>
+    }
     <div class="fields">
       <label
         >Optional quote/project reference<input
-          type="text"
           maxlength="200"
           [value]="reference()"
-          (input)="reference.set($any($event.target).value)"
-      /></label>
-      <label
+          (input)="reference.set($any($event.target).value)" /></label
+      ><label
         >Worksheet date<input
           type="date"
           [value]="quoteDate()"
           (input)="quoteDate.set($any($event.target).value)"
       /></label>
       <label
-        >Finishing cost per part<input
-          type="number"
-          min="0"
-          [value]="finishing()"
-          (input)="setNumber('finishing', $event)"
-      /></label>
-      <label
-        >Packaging per order<input
-          type="number"
-          min="0"
-          [value]="packaging()"
-          (input)="setNumber('packaging', $event)"
-      /></label>
-      <label
-        >Extra allowance per order<input
-          type="number"
-          min="0"
-          [value]="extra()"
-          (input)="setNumber('extra', $event)"
-      /></label>
-      <label
         ><span>Currency</span
         ><select [value]="currency()" (change)="setCurrency($event)">
           @for (code of currencies; track code) {
-            <option [value]="code">{{ code }}</option>
+            <option [value]="code" [selected]="currency() === code">
+              {{ code }}
+            </option>
           }
         </select></label
       >
       <label
-        ><span>Material price per kg</span
-        ><input
+        >Production cost basis<select
+          [value]="productionBasis()"
+          (change)="productionBasis.set($any($event.target).value)"
+        >
+          <option
+            [value]="bases.PerItem"
+            [selected]="productionBasis() === bases.PerItem"
+          >
+            Per-item costs for identical parts
+          </option>
+          <option
+            [value]="bases.JobTotal"
+            [selected]="productionBasis() === bases.JobTotal"
+          >
+            Complete production / order cost K
+          </option>
+        </select></label
+      >
+    </div>
+    @if (productionBasis() === bases.PerItem) {
+      <div class="fields">
+        <label
+          >Finishing cost per part<input
+            type="number"
+            min="0"
+            [value]="finishing()"
+            (input)="setNumber('finishing', $event)"
+        /></label>
+        <label
+          >Packaging per order<input
+            type="number"
+            min="0"
+            [value]="packaging()"
+            (input)="setNumber('packaging', $event)"
+        /></label>
+        <label
+          >Extra allowance per order<input
+            type="number"
+            min="0"
+            [value]="extra()"
+            (input)="setNumber('extra', $event)"
+        /></label>
+        <label
+          ><span>Material price per kg</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="materialPrice()"
+            (input)="setNumber('materialPrice', $event)"
+        /></label>
+        <label
+          ><span>Material used per item (g)</span
+          ><input
+            type="number"
+            min="0"
+            step="0.1"
+            [value]="materialUsed()"
+            (input)="setNumber('materialUsed', $event)"
+        /></label>
+        <label
+          ><span
+            >Additional unreported material (%) - zero for complete total</span
+          ><input
+            type="number"
+            min="0"
+            step="0.1"
+            [value]="waste()"
+            (input)="setNumber('waste', $event)"
+        /></label>
+        <label
+          ><span>Print time per item (hours)</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="printHours()"
+            (input)="setNumber('printHours', $event)"
+        /></label>
+        <label
+          ><span>Average printer power (W)</span
+          ><input
+            type="number"
+            min="0"
+            step="1"
+            [value]="watts()"
+            (input)="setNumber('watts', $event)"
+        /></label>
+        <label
+          ><span>Electricity price per kWh</span
+          ><input
+            type="number"
+            min="0"
+            step="0.001"
+            [value]="electricity()"
+            (input)="setNumber('electricity', $event)"
+        /></label>
+        <label
+          ><span>Machine wear per print hour</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="machineWear()"
+            (input)="setNumber('machineWear', $event)"
+        /></label>
+        <label
+          ><span>Labour and post-processing (hours)</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="labourHours()"
+            (input)="setNumber('labourHours', $event)"
+        /></label>
+        <label
+          ><span>Labour rate per hour</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="labourRate()"
+            (input)="setNumber('labourRate', $event)"
+        /></label>
+        <label
+          ><span>Setup / fixed overhead per order</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="overhead()"
+            (input)="setNumber('overhead', $event)"
+        /></label>
+        <label
+          ><span>Failure allowance (%)</span
+          ><input
+            type="number"
+            min="0"
+            step="0.1"
+            [value]="failure()"
+            (input)="setNumber('failure', $event)"
+        /></label>
+      </div>
+      <p>
+        Per-item machine and labour hours multiply by quantity. Setup, packaging
+        and extras are once per order. Use complete material totals and zero
+        additional uplift if supports/purge are already included. Machine rate
+        excludes separately charged energy: enter zero power if your rate
+        already includes it.
+      </p>
+    } @else {
+      <div class="fields">
+        <label
+          >Complete production / order cost K (not multiplied by quantity)<input
+            type="number"
+            min="0"
+            step="any"
+            [value]="jobProductionCost()"
+            (input)="setNumber('jobProductionCost', $event)"
+        /></label>
+      </div>
+      <p>
+        K already includes the selected material, run costs, preparation,
+        finishing, order costs and failure budget. No other production inputs or
+        additional failure uplift apply in this mode. Keep mixed parts at order
+        level; quantity does not establish allocation or delivered outcomes.
+      </p>
+    }
+    <div class="fields">
+      <label
+        >Planned quantity (positive whole number)<input
           type="number"
           min="0"
-          step="0.01"
-          [value]="materialPrice()"
-          (input)="setNumber('materialPrice', $event)"
-      /></label>
-      <label
-        ><span>Material used per item (g)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.1"
-          [value]="materialUsed()"
-          (input)="setNumber('materialUsed', $event)"
-      /></label>
-      <label
-        ><span>Waste or supports (%)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.1"
-          [value]="waste()"
-          (input)="setNumber('waste', $event)"
-      /></label>
-      <label
-        ><span>Print time per item (hours)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="printHours()"
-          (input)="setNumber('printHours', $event)"
-      /></label>
-      <label
-        ><span>Average printer power (W)</span
-        ><input
-          type="number"
-          min="0"
-          step="1"
-          [value]="watts()"
-          (input)="setNumber('watts', $event)"
-      /></label>
-      <label
-        ><span>Electricity price per kWh</span
-        ><input
-          type="number"
-          min="0"
-          step="0.001"
-          [value]="electricity()"
-          (input)="setNumber('electricity', $event)"
-      /></label>
-      <label
-        ><span>Machine wear per print hour</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="machineWear()"
-          (input)="setNumber('machineWear', $event)"
-      /></label>
-      <label
-        ><span>Labour and post-processing (hours)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="labourHours()"
-          (input)="setNumber('labourHours', $event)"
-      /></label>
-      <label
-        ><span>Labour rate per hour</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="labourRate()"
-          (input)="setNumber('labourRate', $event)"
-      /></label>
-      <label
-        ><span>Setup / fixed overhead per order</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="overhead()"
-          (input)="setNumber('overhead', $event)"
-      /></label>
-      <label
-        ><span>Failure allowance (%)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.1"
-          [value]="failure()"
-          (input)="setNumber('failure', $event)"
-      /></label>
-      <label
-        ><span>Quantity</span
-        ><input
-          type="number"
-          min="1"
-          step="1"
+          step="any"
           [value]="quantity()"
-          (input)="setNumber('quantity', $event)"
-      /></label>
+          (input)="setNumber('quantity', $event)" /></label
+      ><label
+        >Pricing method<select
+          [value]="pricingMethod()"
+          (change)="pricingMethod.set($any($event.target).value)"
+        >
+          <option
+            [value]="methods.Margin"
+            [selected]="pricingMethod() === methods.Margin"
+          >
+            Target margin on selling price
+          </option>
+          <option
+            [value]="methods.Markup"
+            [selected]="pricingMethod() === methods.Markup"
+          >
+            Target markup profit on K after fees
+          </option>
+        </select></label
+      >
       <label
-        ><span>Target profit margin (%)</span
-        ><input
+        >Target percentage: margin m or markup u (%)<input
           type="number"
           min="0"
-          max="99.9"
-          step="0.1"
+          step="any"
           [value]="margin()"
-          (input)="setNumber('margin', $event)"
-      /></label>
-      <label
-        ><span>Minimum order charge (optional)</span
-        ><input
+          (input)="setNumber('margin', $event)" /></label
+      ><label
+        >Percentage selling fee f (% of this selling price P)<input
           type="number"
           min="0"
-          step="0.01"
+          step="any"
+          [value]="sellingFee()"
+          (input)="setNumber('sellingFee', $event)" /></label
+      ><label
+        >Fixed selling fee F once per order<input
+          type="number"
+          min="0"
+          step="any"
+          [value]="fixedFee()"
+          (input)="setNumber('fixedFee', $event)" /></label
+      ><label
+        >Minimum order price (applied last)<input
+          type="number"
+          min="0"
+          step="any"
           [value]="minimumOrder()"
           (input)="setNumber('minimumOrder', $event)"
       /></label>
     </div>
+    <label class="check"
+      ><input
+        type="checkbox"
+        [checked]="feesInCost()"
+        (change)="feesInCost.set($any($event.target).checked)"
+      />Selling fees are already in K (separate fee inputs must be zero)</label
+    >
+    <p>
+      {{ formula() }}. Percentages become fractions. Fees are modelled on P
+      only, with F once per order. Actual channels may use other tax/shipping
+      bases; enter your assumptions deliberately. Margin requires m + f &lt;
+      100%; markup requires f &lt; 100%.
+    </p>
     @if (result(); as price) {
       <section class="results" aria-live="polite">
         <h2>Quote worksheet</h2>
         <p class="quote-reference">
-          {{ reference() || 'No project reference' }} - {{ quoteDate() }} -
-          {{ currency() }} - {{ quantity() }} parts
+          {{ reference() || 'No reference' }} - {{ quoteDate() }} -
+          {{ currency() }}
         </p>
         <p>
-          Cost assumptions per part: {{ materialUsed() }} g at
-          {{ materialPrice() }} / kg; waste {{ waste() }}%;
-          {{ printHours() }} print hours; {{ watts() }} W at
-          {{ electricity() }} / kWh; machine {{ machineWear() }} / hour;
-          hands-on work {{ labourHours() }} hours at {{ labourRate() }} / hour;
-          finishing {{ finishing() }}. Once per order: setup {{ overhead() }},
-          packaging {{ packaging() }}, extras {{ extra() }}. Failure allowance
-          {{ failure() }}%; target margin {{ margin() }}%; minimum order
-          {{ minimumOrder() }}.
+          Production basis: {{ productionBasis() }}; planned quantity
+          {{ quantity() }}. Method {{ pricingMethod() }}, target
+          {{ margin() }}%; fee {{ sellingFee() }}% of P + {{ fixedFee() }} once;
+          fees included in K: {{ feesInCost() }}; minimum {{ minimumOrder() }}.
         </p>
+        <p>
+          {{ formula() }}. Full precision is retained; rounded unit values may
+          not multiply to the rounded order total.
+        </p>
+        @if (productionBasis() === bases.PerItem) {
+          <p>
+            Per item: {{ materialUsed() }} g at {{ materialPrice() }}/kg;
+            additional material {{ waste() }}%; {{ printHours() }} h;
+            {{ watts() }} W at {{ electricity() }}/kWh; machine
+            {{ machineWear() }}/h; hands-on {{ labourHours() }} h at
+            {{ labourRate() }}/h; finishing {{ finishing() }}. Once per order:
+            setup {{ overhead() }}, packaging {{ packaging() }}, extras
+            {{ extra() }}. Failure uplift {{ failure() }}% on all costs.
+          </p>
+        }
         <dl>
           <div>
-            <dt>Material per item</dt>
-            <dd>{{ format(price.materialCostPerItem) }}</dd>
+            <dt>Production cost K for order</dt>
+            <dd>{{ format(price.productionCostForOrder) }}</dd>
           </div>
           <div>
-            <dt>Electricity per item</dt>
-            <dd>{{ format(price.electricityCostPerItem) }}</dd>
+            <dt>Selected price before minimum</dt>
+            <dd>{{ format(price.priceBeforeMinimum) }}</dd>
           </div>
           <div>
-            <dt>Machine wear per item</dt>
-            <dd>{{ format(price.machineCostPerItem) }}</dd>
-          </div>
-          <div>
-            <dt>Labour and finishing per item</dt>
-            <dd>{{ format(price.labourCostPerItem) }}</dd>
-          </div>
-          <div>
-            <dt>Setup, packaging and extras per item</dt>
-            <dd>{{ format(price.overheadPerItem) }}</dd>
-          </div>
-          <div>
-            <dt>Failure allowance per item</dt>
-            <dd>{{ format(price.failureAllowancePerItem) }}</dd>
-          </div>
-          <div>
-            <dt>True cost per item</dt>
-            <dd>{{ format(price.trueCostPerItem) }}</dd>
+            <dt>Modelled selling fees</dt>
+            <dd>{{ format(price.sellingFeesForOrder) }}</dd>
           </div>
           <div class="price">
-            <dt>Recommended price per item</dt>
-            <dd>{{ format(price.recommendedPricePerItem) }}</dd>
-          </div>
-          <div class="price">
-            <dt>Quote for {{ quantity() }} items</dt>
+            <dt>Order quote</dt>
             <dd>{{ format(price.orderQuote) }}</dd>
           </div>
           <div>
-            <dt>Expected gross profit for order</dt>
+            <dt>Gross profit after entered fees</dt>
             <dd>{{ format(price.grossProfitForOrder) }}</dd>
           </div>
+          <div>
+            <dt>Realised margin after minimum and fees</dt>
+            <dd>{{ price.realisedMarginPercent.toFixed(2) }}%</dd>
+          </div>
+          @if (productionBasis() === bases.PerItem) {
+            <div>
+              <dt>Allocated production cost per identical item</dt>
+              <dd>{{ format(price.trueCostPerItem) }}</dd>
+            </div>
+            <div>
+              <dt>Allocated quote per identical item</dt>
+              <dd>{{ format(price.recommendedPricePerItem) }}</dd>
+            </div>
+          }
         </dl>
+        @if (
+          productionBasis() === bases.JobTotal && sourceRecord();
+          as source
+        ) {
+          <section class="source-job">
+            <h3>
+              Transferred source job assumptions (cost may have been edited)
+            </h3>
+            <pre>{{ sourceSummary() }}</pre>
+          </section>
+        }
         <p>
-          Margin is profit as a share of selling price, not a markup on cost.
-          This is an illustrative calculation, not a promise that customers will
-          accept the price.
-        </p>
-        <p>
-          Margin mode: cost divided by (1 - margin / 100). No markup or
-          selling-fee mode is applied. Do not enter finishing here if already
-          included in labour. Failure allowance applies to all entered costs,
-          including setup; use zero if rates already include it.
-        </p>
-        <p>
-          Full precision is retained in calculations and JSON. Display rounds
-          each value to two decimal places; rounded unit price times quantity
-          may differ from the rounded order total. Tax, delivery, selling fees
-          and unentered costs are excluded.
-        </p>
-        <p>
-          This is an estimate worksheet, not a tax-compliant invoice or
-          unconditional production acceptance. References stay in this tab
-          unless you copy, print or export them.
+          This worksheet does not establish physical success, delivery, tax
+          treatment or customer acceptance. References and source assumptions
+          stay in this tab unless deliberately copied, printed or downloaded.
         </p>
         <div class="quote-actions">
+          <button class="button" type="button" (click)="downloadPdf()">
+            Download quote PDF
+          </button>
           <button class="button" type="button" (click)="printWorksheet()">
-            Print worksheet
-          </button>
-          <button class="button" type="button" (click)="exportWorksheet()">
-            Download worksheet JSON
-          </button>
-          <p role="status">{{ exportMessage() }}</p>
-          <button class="button" type="button" (click)="copyQuote()">
-            Copy quote summary</button
-          ><button
-            class="button button-secondary"
-            type="button"
-            (click)="reset()"
-          >
-            Reset defaults
+            Print worksheet</button
+          ><button class="button" type="button" (click)="exportWorksheet()">
+            Download worksheet JSON</button
+          ><button class="button" type="button" (click)="copyQuote()">
+            Copy quote summary
           </button>
         </div>
       </section>
     } @else {
-      <p class="error" role="alert">
-        Use non-negative numbers, a positive whole-number quantity, and a target
-        margin below 100%.
+      <p role="alert" class="error">
+        Use finite non-negative costs, positive whole quantity, and a valid fee
+        denominator. Fees already in K require zero separate fees. Margin + fee
+        must be below 100%; markup fee must be below 100%.
       </p>
     }
+    <p role="status">{{ exportMessage() }}</p>
+    @if (copyFallback()) {
+      <label
+        >Copyable quote summary<textarea
+          readonly
+          rows="6"
+          [value]="copyFallback()"
+        ></textarea>
+      </label>
+    }
+    <button type="button" class="button" (click)="reset()">
+      Reset calculator defaults
+    </button>
   </section>
   <section class="content">
-    <h2>How to calculate a 3D printing price</h2>
+    <h2>Production cost and customer price</h2>
     <p>
-      Add material, power, machine wear, labour, order overhead and a realistic
-      failure allowance before applying a margin. The worked defaults are
-      illustrative only.
-    </p>
-    <h2>Cost vs price vs profit margin</h2>
-    <p>
-      Cost is what producing the item consumes. Price is what the customer pays.
-      Profit margin is profit divided by price, after the costs entered here.
-    </p>
-    <h2>Frequently asked questions</h2>
-    <h3>How much should I charge for a 3D print?</h3>
-    <p>
-      Use your real costs and choose a margin that fits your work and market; a
-      calculator cannot determine market demand.
-    </p>
-    <h3>Does this include electricity and failed prints?</h3>
-    <p>Yes, when you enter electricity and failure allowance values.</p>
-    <h3>Does the price include shipping and tax?</h3>
-    <p>
-      No. Add only costs you intend to include in the fixed order overhead, and
-      handle tax separately where required.
+      Record the agreed revision, quantity, material, finish, included
+      iterations and delivery scope before quoting. A calculator makes
+      assumptions visible; it cannot establish what customers will pay.
     </p>
     <p>
-      Need production costs only? Use the
-      <a [routerLink]="routeUrl.PrintCostCalculator">3D Print Cost Calculator</a
-      >. Check a model with the
-      <a [routerLink]="routeUrl.StlPrintPreflight"
-        >STL Print Preflight Checker</a
-      >
-      before quoting.
+      Need a multi-plate production estimate? Use the
+      <a [routerLink]="routeUrl.PrintCostCalculator">cost calculator</a>. Read
+      the
+      <a [routerLink]="guides.RouteHowMuchToChargeFor3dPrints">pricing guide</a>
+      for worked margin, markup, fee and minimum-charge scenarios.
     </p>
   </section>
   <app-tool-evidence

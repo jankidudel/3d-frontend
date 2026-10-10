@@ -4,11 +4,24 @@ import {
   rememberCurrency,
 } from '../repeat-workflows/currency-preference';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
-import { calculatePrintPrice, quoteWorksheet } from './print-price';
+import { createPdf } from '../../shared/pdf-engine';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
+import { jobRecordLines } from '../print-cost/job-cost';
+import {
+  JobPlanningSession,
+  PlanningDestination,
+} from '../planning/job-planning-session';
+import {
+  PricingMethod,
+  ProductionBasis,
+  calculatePrintPrice,
+  quoteWorksheet,
+  quoteWorksheetLines,
+} from './print-price';
 import {
   AnalyticsEvent,
   AnalyticsService,
@@ -20,13 +33,35 @@ import {
   templateUrl: './print-price-page.html',
   styleUrl: './print-price-page.scss',
 })
-export class PrintPricePage {
+export class PrintPricePage implements OnDestroy {
+  private readonly session = inject(JobPlanningSession);
+  readonly guides = GuideRouteUrl;
+  readonly sourceSummary = computed(() => {
+    const record = this.sourceRecord();
+    return record ? jobRecordLines(record).join('\n') : '';
+  });
+  readonly methods = PricingMethod;
+  readonly bases = ProductionBasis;
+  readonly productionBasis = signal<ProductionBasis>(ProductionBasis.PerItem);
+  readonly pricingMethod = signal<PricingMethod>(PricingMethod.Margin);
+  readonly jobProductionCost = signal(0);
+  readonly sellingFee = signal(0);
+  readonly fixedFee = signal(0);
+  readonly feesInCost = signal(false);
+  readonly pending = signal(this.session.take(PlanningDestination.Price));
+  readonly sourceRecord = signal(this.session.priceSource ?? null);
+  readonly copyFallback = signal('');
+  readonly formula = computed(() =>
+    this.pricingMethod() === PricingMethod.Margin
+      ? 'P = (K + F) / (1 - m - f)'
+      : 'P = (K × (1 + u) + F) / (1 - f); target profit is u × K after fees',
+  );
   readonly routeUrl = PublicRouteUrl;
   readonly currency = signal<PlannerCurrency>(chosenCurrency());
   readonly currencies = Object.values(PlannerCurrency);
   readonly materialPrice = signal(20);
   readonly materialUsed = signal(80);
-  readonly waste = signal(5);
+  readonly waste = signal(0);
   readonly printHours = signal(4);
   readonly watts = signal(120);
   readonly electricity = signal(0.16);
@@ -46,6 +81,12 @@ export class PrintPricePage {
   readonly exportMessage = signal('');
   private readonly analytics = inject(AnalyticsService);
   readonly inputs = computed(() => ({
+    productionBasis: this.productionBasis(),
+    jobProductionCost: this.jobProductionCost(),
+    pricingMethod: this.pricingMethod(),
+    sellingFeePercent: this.sellingFee(),
+    fixedSellingFee: this.fixedFee(),
+    feesAlreadyInCost: this.feesInCost(),
     materialPricePerKg: this.materialPrice(),
     materialUsedGrams: this.materialUsed(),
     wastePercent: this.waste(),
@@ -65,22 +106,79 @@ export class PrintPricePage {
     extraPerOrder: this.extra(),
   }));
   readonly result = computed(() => calculatePrintPrice(this.inputs()));
-  readonly worksheet = computed(() =>
-    quoteWorksheet(
+  readonly worksheet = computed(() => {
+    const worksheet = quoteWorksheet(
       this.inputs(),
       this.currency(),
       this.reference(),
       this.quoteDate(),
-    ),
-  );
+    );
+    return worksheet
+      ? {
+          ...worksheet,
+          sourceJob:
+            this.productionBasis() === ProductionBasis.JobTotal
+              ? this.sourceRecord()
+              : null,
+        }
+      : null;
+  });
   constructor() {
+    const draft = this.session.priceDraft;
+    if (draft) {
+      const fields = {
+        materialPrice: 'materialPricePerKg',
+        materialUsed: 'materialUsedGrams',
+        waste: 'wastePercent',
+        printHours: 'printHours',
+        watts: 'printerWatts',
+        electricity: 'electricityPricePerKwh',
+        machineWear: 'machineWearPerHour',
+        labourHours: 'labourHours',
+        labourRate: 'labourRate',
+        overhead: 'fixedOrderOverhead',
+        failure: 'failurePercent',
+        quantity: 'quantity',
+        margin: 'targetMarginPercent',
+        minimumOrder: 'minimumOrderCharge',
+        finishing: 'finishingCostPerItem',
+        packaging: 'packagingPerOrder',
+        extra: 'extraPerOrder',
+        jobProductionCost: 'jobProductionCost',
+        sellingFee: 'sellingFeePercent',
+        fixedFee: 'fixedSellingFee',
+      } as const;
+      for (const [field, key] of Object.entries(fields)) {
+        const value = draft[key];
+        if (typeof value === 'number') {
+          (
+            this[field as keyof typeof fields] as { set(value: number): void }
+          ).set(value);
+        }
+      }
+      this.productionBasis.set(draft['productionBasis'] as ProductionBasis);
+      this.pricingMethod.set(draft['pricingMethod'] as PricingMethod);
+      this.feesInCost.set(draft['feesAlreadyInCost'] === true);
+      this.reference.set(String(draft['reference'] ?? ''));
+      this.quoteDate.set(String(draft['quoteDate'] ?? ''));
+      this.currency.set(draft['currency'] as PlannerCurrency);
+    }
     inject(SeoService).apply({
       title:
         '3D Printing Price Calculator - Calculate What to Charge | InspectMesh',
       description:
-        'Calculate a fair 3D printing price from material, print time, electricity, labor, overhead, failure allowance, quantity and target profit margin.',
+        'Price an entered job production total or identical parts with explicit margin or markup, user-entered selling fees and a minimum order price.',
       path: PublicRouteUrl.PrintPriceCalculator,
     });
+  }
+  ngOnDestroy(): void {
+    this.session.priceSource = this.sourceRecord();
+    this.session.priceDraft = {
+      ...this.inputs(),
+      reference: this.reference(),
+      quoteDate: this.quoteDate(),
+      currency: this.currency(),
+    };
   }
   setCurrency(event: Event): void {
     const value = (event.target as HTMLSelectElement).value as PlannerCurrency;
@@ -89,7 +187,9 @@ export class PrintPricePage {
   }
   setNumber(target: keyof PrintPricePage, event: Event): void {
     (this[target] as unknown as { set(value: number): void }).set(
-      Number((event.target as HTMLInputElement).value),
+      (event.target as HTMLInputElement).value === ''
+        ? NaN
+        : Number((event.target as HTMLInputElement).value),
     );
   }
   format(value: number): string {
@@ -102,13 +202,64 @@ export class PrintPricePage {
       maximumFractionDigits: 2,
     }).format(value);
   }
-  copyQuote(): void {
-    const result = this.result();
-    if (result) {
-      navigator.clipboard?.writeText(
-        `Quote: ${this.quantity()} parts at ${this.format(result.recommendedPricePerItem)} each; total ${this.format(result.orderQuote)}.`,
-      );
+  applyJob(): void {
+    const offer = this.pending();
+    if (!offer) {
+      return;
     }
+    this.jobProductionCost.set(offer.value);
+    this.productionBasis.set(ProductionBasis.JobTotal);
+    if (
+      offer.currency &&
+      this.currencies.includes(offer.currency as PlannerCurrency)
+    ) {
+      this.currency.set(offer.currency as PlannerCurrency);
+    }
+    this.sourceRecord.set(offer.record ?? null);
+    this.pending.set(null);
+    this.exportMessage.set(
+      'Applied job production total. Current reference, quantity and pricing choices are preserved. Quantity does not multiply K.',
+    );
+  }
+  async copyQuote(): Promise<void> {
+    const result = this.result();
+    if (!result) {
+      return;
+    }
+    const summary = `Order estimate ${this.reference()}: production ${this.format(result.productionCostForOrder)}; ${this.pricingMethod()} target ${this.margin()}%; selling fees ${this.sellingFee()}% of price + ${this.fixedFee()} per order; price ${this.format(result.orderQuote)}; realised margin ${result.realisedMarginPercent.toFixed(2)}%. Quantity ${this.quantity()} is planned, not delivered. Tax and unentered costs excluded.`;
+    try {
+      await navigator.clipboard.writeText(summary);
+      this.exportMessage.set('Quote summary copied.');
+    } catch {
+      this.copyFallback.set(summary);
+      this.exportMessage.set('Select and copy the summary below.');
+    }
+  }
+  async downloadPdf(): Promise<void> {
+    const worksheet = this.worksheet();
+    if (!worksheet) {
+      return;
+    }
+    const pdf = await createPdf();
+    pdf.setFontSize(10);
+    const source = worksheet.sourceJob
+      ? jobRecordLines(worksheet.sourceJob)
+      : [];
+    const lines: string[] = pdf.splitTextToSize(
+      [...quoteWorksheetLines(worksheet), ...source].join('\n'),
+      180,
+    );
+    let y = 18;
+    for (const line of lines) {
+      if (y > 280) {
+        pdf.addPage();
+        y = 18;
+      }
+      pdf.text(line, 14, y);
+      y += 5;
+    }
+    pdf.save('inspectmesh-quote.pdf');
+    this.exportMessage.set('Printable quote PDF download requested.');
   }
   printWorksheet(): void {
     window.print();
@@ -149,12 +300,18 @@ export class PrintPricePage {
     }
   }
   reset(): void {
+    this.productionBasis.set(ProductionBasis.PerItem);
+    this.pricingMethod.set(PricingMethod.Margin);
+    this.sellingFee.set(0);
+    this.fixedFee.set(0);
+    this.feesInCost.set(false);
+    this.waste.set(0);
     this.finishing.set(0);
     this.packaging.set(0);
     this.extra.set(0);
     this.materialPrice.set(20);
     this.materialUsed.set(80);
-    this.waste.set(5);
+    this.waste.set(0);
     this.printHours.set(4);
     this.watts.set(120);
     this.electricity.set(0.16);

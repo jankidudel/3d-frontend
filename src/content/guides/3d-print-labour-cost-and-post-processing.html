@@ -1,0 +1,150 @@
+---
+title: '3D Print Labour Cost and Post-processing | InspectMesh'
+description: 'Estimate hands-on work by order, repeated plate and planned part, keeping unattended print hours separate from labour and agreed finishing scope.'
+slug: 3d-print-labour-cost-and-post-processing
+eyebrow: Practical job planning
+heading: '3D Print Labour Cost and Post-processing'
+faq:
+  - question: 'Is unattended printing charged as labour?'
+    answer: 'Only active work you actually include belongs in labour. Machine time and elapsed waiting are separate scopes.'
+  - question: 'Should preparation repeat for every part?'
+    answer: 'Only when preparation is repeated. Shared preparation occurs once per order; run handling and per-part finishing have their own repeat rules.'
+---
+
+<p>
+  Charge hands-on work according to when it actually occurs. Seven hours of
+  unattended machine time does not automatically mean seven hours of labour.
+  Preparation may be shared, handling may repeat with each run, and finishing
+  may scale with intended parts.
+</p>
+<figure>
+  <img
+    src="/images/job-planning/active-work.svg"
+    alt="Active work versus machine time: Preparation: 20 active minutes - Once for this fictional order; Plate handling: 10 minutes × 2 - Each actual planned run incurs handling; Finishing: 5 minutes × 5 parts - Packing cost entered once separately; Sliced machine duration: 7 hours - Not 7 hours of paid hands-on labour"
+    width="360"
+    height="348"
+  />
+  <figcaption>
+    Original planning diagram; hypothetical inputs, not observed production.
+  </figcaption>
+</figure>
+<h2>Use task scope before a rate</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Task</th>
+      <th scope="col">Scope</th>
+      <th scope="col">Input to retain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>File intake, slicing, agreed administration</td>
+      <td>Once per order when shared</td>
+      <td>Active minutes and revision/profile scope</td>
+    </tr>
+    <tr>
+      <td>Setup, unloading and run inspection</td>
+      <td>Each planned run where incurred</td>
+      <td>Minutes per run and repeat count</td>
+    </tr>
+    <tr>
+      <td>Support removal, finishing or inserts</td>
+      <td>Each applicable planned part</td>
+      <td>Active minutes per part and agreed process</td>
+    </tr>
+    <tr>
+      <td>Packing, delivery or consumables</td>
+      <td>Declared order allowance</td>
+      <td>Included amount; no hidden repeat multiplication</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The job calculator uses one editable labour rate for the selected job. If
+  materially different work needs different rates, retain a separate scoped
+  estimate and include it deliberately as an order extra rather than implying
+  all work has the same market value. No universal rate or finishing duration is
+  supplied.
+</p>
+<h2>Worked active-work arithmetic</h2>
+<p>
+  For
+  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}"
+    >the fictional five-part, two-plate job</a
+  >, a hypothetical 18 CU/hour rate gives 20/60 × 18 = 6 CU for preparation; 2 ×
+  10/60 × 18 = 6 CU for plate handling; and 5 × 5/60 × 18 = 7.50 CU for
+  finishing. Active labour totals 19.50 CU across 65 minutes. Seven sliced
+  machine hours are priced separately. Packaging is 1.60 CU entered once and is
+  not another labour duration.
+</p>
+<p>
+  If five independent runs each require the same ten minutes of handling,
+  handling becomes 15 CU. Preparation remains 6 CU only if it is still shared.
+  Repeated handling does not justify inventing a linear material or machine-time
+  estimate for the changed arrangement.
+</p>
+<h2>Define finishing and inspection before accepting the job</h2>
+<p>
+  Agree what the quoted work includes: support removal, surface acceptance,
+  inspection points, insert installation, assembly or a representative fit
+  coupon. Record the supplier/process instructions and who supplies hardware. An
+  estimate of hands-on minutes does not prescribe a hazardous finishing method,
+  guarantee fit or certify the finished part.
+</p>
+<p>
+  For a coupon iteration, list file preparation, sliced production and
+  measurement/installation work as distinct tasks. Agree the number of
+  iterations included and what triggers a revised quote: changed CAD, another
+  counterpart, a different material or a new profile. Preserve failed or
+  rejected results as outcomes; a planned coupon is not an accepted production
+  piece.
+</p>
+<h2>Avoid duplicate labour in allowances</h2>
+<p>
+  Ask whether a machine or overhead rate already includes routine supervision or
+  handling. If so, remove the equivalent separate labour entry or use a rate
+  that explicitly excludes it. Likewise, per-part finishing should not be
+  charged again inside run inspection when both describe the same task. A
+  failure budget should explain which cost scope it covers.
+</p>
+<h2>Active work is different from elapsed availability</h2>
+<p>
+  Cooling, curing, a queue gap or waiting for customer approval can lengthen
+  lead time without occupying hands-on labour for the whole interval. Enter any
+  actual active work separately, and take process waiting durations from the
+  relevant supplier guidance or your explicit input. The
+  <a href="{{ GuideSlug.Route3dPrintLeadTimeVsPrintTime }}">lead-time guide</a>
+  owns the elapsed schedule.
+</p>
+<h2>Record and revise the estimate</h2>
+<ol>
+  <li>
+    Resolve
+    <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
+      >quantity, revision, material and acceptance requirements</a
+    >.
+  </li>
+  <li>List active tasks and mark order, run or part scope.</li>
+  <li>
+    Enter user-estimated minutes and rate in
+    <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
+      >the existing job calculator</a
+    >.
+  </li>
+  <li>
+    Retain the report and revise assumptions when the agreed work changes.
+  </li>
+</ol>
+<p>
+  Prusa separates preparation/manpower from machine operation in its
+  <a href="https://blog.prusa3d.com/how-to-calculate-printing-costs_38650/"
+    >cost methodology article</a
+  >, published in 2020 and reviewed here 10 October 2026. Its historical rates
+  and examples are context, not current recommended prices. InspectMesh examples
+  are independent hypothetical arithmetic. Margin and selling fees belong to
+  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}"
+    >the pricing decision</a
+  >
+  after the work has been costed.
+</p>

@@ -2,8 +2,8 @@
   <p class="eyebrow">3D printing planning tool</p>
   <h1>3D Print Cost Calculator</h1>
   <p class="lead">
-    Estimate material, energy and production costs from slicer values or an STL
-    or 3MF model.
+    Estimate a single print or a job across several sliced plates. Record
+    complete consumption, run work and once-per-order costs.
   </p>
   <p class="accuracy-note">
     <strong
@@ -19,392 +19,414 @@
     before pricing a job.
   </p>
 
-  <section class="card upload" aria-labelledby="upload-title">
-    <h2 id="upload-title">Optional model estimate</h2>
-    <p>
-      Upload a model to calculate its solid-model-equivalent weight. STL units
-      need your confirmation; slicer settings can substantially change actual
-      use.
-    </p>
-    <div class="format-choice radio-group">
-      <div class="radio-option">
-        <input
-          id="format-stl"
-          type="radio"
-          name="format"
-          [checked]="fileFormat() === 'stl'"
-          (change)="setFormat('stl')"
-        /><label for="format-stl">STL</label>
-      </div>
-      <div class="radio-option">
-        <input
-          id="format-3mf"
-          type="radio"
-          name="format"
-          [checked]="fileFormat() === '3mf'"
-          (change)="setFormat('3mf')"
-        /><label for="format-3mf">3MF</label>
-      </div>
-    </div>
-    @if (fileFormat() === 'stl') {
-      <app-stl-file-picker
-        [selectedFileFromParent]="selectedFile()"
-        (fileSelected)="selectFile($event)"
-      />
-    } @else {
-      <app-three-mf-file-picker
-        [selectedFileFromParent]="selectedFile()"
-        (fileSelected)="selectFile($event)"
-      />
-    }
-    @if (fileFormat() === 'stl') {
-      <label class="field unit"
-        ><span>STL model unit</span
-        ><select
-          [value]="modelUnit()"
-          (change)="modelUnit.set($any($event.target).value)"
-        >
-          <option value="mm">Millimetres (mm)</option>
-          <option value="cm">Centimetres (cm)</option>
-          <option value="m">Metres (m)</option>
-          <option value="in">Inches (in)</option>
-        </select></label
-      >
-    }
+  <div class="actions" aria-label="Cost input mode">
     <button
-      class="button"
       type="button"
-      [disabled]="!selectedFile() || submitting()"
-      (click)="upload()"
+      [attr.aria-pressed]="!jobMode()"
+      (click)="jobMode.set(false)"
     >
-      {{ submitting() ? 'Uploading…' : 'Calculate model volume' }}
+      Simple estimate</button
+    ><button
+      type="button"
+      [attr.aria-pressed]="jobMode()"
+      (click)="jobMode.set(true)"
+    >
+      Several plates / one job
     </button>
-    @if (error()) {
-      <p class="error" role="alert">{{ error() }}</p>
-    }
-    @if (job(); as currentJob) {
-      @if (
-        currentJob.status === jobStatus.Created ||
-        currentJob.status === jobStatus.Processing
-      ) {
-        <app-job-progress
-          [job]="currentJob"
-          [uploading]="submitting()"
-          headingId="upload-title"
+  </div>
+  @if (jobMode()) {
+    <app-job-cost-editor />
+  } @else {
+    <section class="card upload" aria-labelledby="upload-title">
+      <h2 id="upload-title">Optional model estimate</h2>
+      <p>
+        Upload a model to calculate its solid-model-equivalent weight. STL units
+        need your confirmation; slicer settings can substantially change actual
+        use.
+      </p>
+      <div class="format-choice radio-group">
+        <div class="radio-option">
+          <input
+            id="format-stl"
+            type="radio"
+            name="format"
+            [checked]="fileFormat() === 'stl'"
+            (change)="setFormat('stl')"
+          /><label for="format-stl">STL</label>
+        </div>
+        <div class="radio-option">
+          <input
+            id="format-3mf"
+            type="radio"
+            name="format"
+            [checked]="fileFormat() === '3mf'"
+            (change)="setFormat('3mf')"
+          /><label for="format-3mf">3MF</label>
+        </div>
+      </div>
+      @if (fileFormat() === 'stl') {
+        <app-stl-file-picker
+          [selectedFileFromParent]="selectedFile()"
+          (fileSelected)="selectFile($event)"
         />
-      } @else if (volumeCm3() !== null) {
-        <p class="model-result">
-          Resolved model volume:
-          <strong>{{ number(volumeCm3(), 4) }} cm³</strong> · Solid-model
-          weight: <strong>{{ number(modelWeight(), 2) }} g</strong>
+      } @else {
+        <app-three-mf-file-picker
+          [selectedFileFromParent]="selectedFile()"
+          (fileSelected)="selectFile($event)"
+        />
+      }
+      @if (fileFormat() === 'stl') {
+        <label class="field unit"
+          ><span>STL model unit</span
+          ><select
+            [value]="modelUnit()"
+            (change)="modelUnit.set($any($event.target).value)"
+          >
+            <option value="mm">Millimetres (mm)</option>
+            <option value="cm">Centimetres (cm)</option>
+            <option value="m">Metres (m)</option>
+            <option value="in">Inches (in)</option>
+          </select></label
+        >
+      }
+      <button
+        class="button"
+        type="button"
+        [disabled]="!selectedFile() || submitting()"
+        (click)="upload()"
+      >
+        {{ submitting() ? 'Uploading…' : 'Calculate model volume' }}
+      </button>
+      @if (error()) {
+        <p class="error" role="alert">{{ error() }}</p>
+      }
+      @if (job(); as currentJob) {
+        @if (
+          currentJob.status === jobStatus.Created ||
+          currentJob.status === jobStatus.Processing
+        ) {
+          <app-job-progress
+            [job]="currentJob"
+            [uploading]="submitting()"
+            headingId="upload-title"
+          />
+        } @else if (volumeCm3() !== null) {
+          <p class="model-result">
+            Resolved model volume:
+            <strong>{{ number(volumeCm3(), 4) }} cm³</strong> · Solid-model
+            weight: <strong>{{ number(modelWeight(), 2) }} g</strong>
+          </p>
+        }
+      }
+    </section>
+
+    <section class="card calculator" aria-labelledby="calculator-title">
+      <h2 id="calculator-title">Calculate your print cost</h2>
+      <div class="mode-choice radio-group">
+        <div class="radio-option">
+          <input
+            id="source-slicer"
+            type="radio"
+            name="source"
+            [checked]="source() === 'slicer'"
+            (change)="source.set('slicer')"
+          /><label for="source-slicer"
+            ><strong>Use slicer values (recommended)</strong></label
+          >
+        </div>
+        <div class="radio-option" [class.is-disabled]="modelWeight() === null">
+          <input
+            id="source-model"
+            type="radio"
+            name="source"
+            [checked]="source() === 'model'"
+            [disabled]="modelWeight() === null"
+            (change)="source.set('model')"
+          /><label for="source-model">Use model estimate</label>
+        </div>
+      </div>
+      @if (source() === 'slicer') {
+        <p>Enter filament weight and print time from your slicer.</p>
+      } @else {
+        <p class="warning">
+          Model estimate uses a completely solid part. Infill, walls, supports,
+          orientation and slicer settings can change real usage substantially.
         </p>
       }
-    }
-  </section>
-
-  <section class="card calculator" aria-labelledby="calculator-title">
-    <h2 id="calculator-title">Calculate your print cost</h2>
-    <div class="mode-choice radio-group">
-      <div class="radio-option">
-        <input
-          id="source-slicer"
-          type="radio"
-          name="source"
-          [checked]="source() === 'slicer'"
-          (change)="source.set('slicer')"
-        /><label for="source-slicer"
-          ><strong>Use slicer values (recommended)</strong></label
-        >
-      </div>
-      <div class="radio-option" [class.is-disabled]="modelWeight() === null">
-        <input
-          id="source-model"
-          type="radio"
-          name="source"
-          [checked]="source() === 'model'"
-          [disabled]="modelWeight() === null"
-          (change)="source.set('model')"
-        /><label for="source-model">Use model estimate</label>
-      </div>
-    </div>
-    @if (source() === 'slicer') {
-      <p>Enter filament weight and print time from your slicer.</p>
-    } @else {
-      <p class="warning">
-        Model estimate uses a completely solid part. Infill, walls, supports,
-        orientation and slicer settings can change real usage substantially.
-      </p>
-    }
-    <div class="fields">
-      <label class="field"
-        ><span>Quote item description</span
-        ><input
-          type="text"
-          [value]="quoteItem()"
-          (input)="quoteItem.set($any($event.target).value)"
-      /></label>
-      <label class="field"
-        ><span>Material</span
-        ><select
-          [value]="material()"
-          (change)="material.set($any($event.target).value)"
-        >
-          <option value="pla">PLA</option>
-          <option value="petg">PETG</option>
-          <option value="abs">ABS</option>
-          <option value="asa">ASA</option>
-          <option value="tpu">TPU</option>
-          <option value="pa-nylon">PA / Nylon</option>
-          <option value="pc">Polycarbonate / PC</option>
-          <option value="pp">Polypropylene / PP</option>
-          <option value="custom">Custom</option>
-        </select></label
-      >
-      @if (material() === 'custom') {
+      <div class="fields">
         <label class="field"
-          ><span>Density (g/cm³)</span
+          ><span>Quote item description</span
+          ><input
+            type="text"
+            [value]="quoteItem()"
+            (input)="quoteItem.set($any($event.target).value)"
+        /></label>
+        <label class="field"
+          ><span>Material</span
+          ><select
+            [value]="material()"
+            (change)="material.set($any($event.target).value)"
+          >
+            <option value="pla">PLA</option>
+            <option value="petg">PETG</option>
+            <option value="abs">ABS</option>
+            <option value="asa">ASA</option>
+            <option value="tpu">TPU</option>
+            <option value="pa-nylon">PA / Nylon</option>
+            <option value="pc">Polycarbonate / PC</option>
+            <option value="pp">Polypropylene / PP</option>
+            <option value="custom">Custom</option>
+          </select></label
+        >
+        @if (material() === 'custom') {
+          <label class="field"
+            ><span>Density (g/cm³)</span
+            ><input
+              type="number"
+              min="0.001"
+              step="any"
+              [value]="customDensity()"
+              (input)="setNumber('customDensity', $event)"
+          /></label>
+        }
+        <label class="field"
+          ><span>Currency</span
+          ><select [value]="currency()" (change)="setCurrency($event)">
+            @for (
+              currencyOption of currencyOptions;
+              track currencyOption.value
+            ) {
+              <option [value]="currencyOption.value">
+                {{ currencyOption.label }}
+              </option>
+            }
+          </select></label
+        >
+        @if (source() === 'slicer') {
+          <label class="field"
+            ><span>Filament weight (g)</span
+            ><input
+              type="number"
+              min="0"
+              step="any"
+              [value]="filamentWeight()"
+              (input)="setNumber('filamentWeight', $event)"
+          /></label>
+        }
+        <label class="field"
+          ><span>Print time (hours)</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="printHours()"
+            (input)="setNumber('printHours', $event)"
+        /></label>
+        <label class="field"
+          ><span>Spool price</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="spoolPrice()"
+            (input)="setNumber('spoolPrice', $event)"
+        /></label>
+        <label class="field"
+          ><span>Spool weight (g)</span
           ><input
             type="number"
             min="0.001"
             step="any"
-            [value]="customDensity()"
-            (input)="setNumber('customDensity', $event)"
+            [value]="spoolWeight()"
+            (input)="setNumber('spoolWeight', $event)"
         /></label>
-      }
-      <label class="field"
-        ><span>Currency</span
-        ><select [value]="currency()" (change)="setCurrency($event)">
-          @for (currencyOption of currencyOptions; track currencyOption.value) {
-            <option [value]="currencyOption.value">
-              {{ currencyOption.label }}
-            </option>
-          }
-        </select></label
-      >
-      @if (source() === 'slicer') {
         <label class="field"
-          ><span>Filament weight (g)</span
+          ><span>Printer power (W)</span
           ><input
             type="number"
             min="0"
             step="any"
-            [value]="filamentWeight()"
-            (input)="setNumber('filamentWeight', $event)"
+            [value]="printerWatts()"
+            (input)="setNumber('printerWatts', $event)"
         /></label>
-      }
-      <label class="field"
-        ><span>Print time (hours)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="printHours()"
-          (input)="setNumber('printHours', $event)"
-      /></label>
-      <label class="field"
-        ><span>Spool price</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="spoolPrice()"
-          (input)="setNumber('spoolPrice', $event)"
-      /></label>
-      <label class="field"
-        ><span>Spool weight (g)</span
-        ><input
-          type="number"
-          min="0.001"
-          step="any"
-          [value]="spoolWeight()"
-          (input)="setNumber('spoolWeight', $event)"
-      /></label>
-      <label class="field"
-        ><span>Printer power (W)</span
-        ><input
-          type="number"
-          min="0"
-          step="any"
-          [value]="printerWatts()"
-          (input)="setNumber('printerWatts', $event)"
-      /></label>
-      <label class="field"
-        ><span>Your electricity price per kWh</span
-        ><input
-          type="number"
-          min="0"
-          step="0.001"
-          placeholder="e.g. 0.30"
-          [value]="electricityPrice() ?? ''"
-          (input)="setElectricityPrice($event)"
-      /></label>
-      @if (electricityPrice() === null) {
-        <p class="field-note" role="alert">
-          Enter the price from your electricity tariff. Currency only formats
-          results.
+        <label class="field"
+          ><span>Your electricity price per kWh</span
+          ><input
+            type="number"
+            min="0"
+            step="0.001"
+            placeholder="e.g. 0.30"
+            [value]="electricityPrice() ?? ''"
+            (input)="setElectricityPrice($event)"
+        /></label>
+        @if (electricityPrice() === null) {
+          <p class="field-note" role="alert">
+            Enter the price from your electricity tariff. Currency only formats
+            results.
+          </p>
+        }
+        <label class="field"
+          ><span>Machine wear / maintenance per hour</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="machineCost()"
+            (input)="setNumber('machineCost', $event)"
+        /></label>
+        <label class="field"
+          ><span>Labour cost per hour</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="labourCost()"
+            (input)="setNumber('labourCost', $event)"
+        /></label>
+        <label class="field"
+          ><span>Labour and post-processing time (hours)</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="labourHours()"
+            (input)="setNumber('labourHours', $event)"
+        /></label>
+        <label class="field"
+          ><span>Extra parts cost</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="extras()"
+            (input)="setNumber('extras', $event)"
+        /></label>
+        <label class="field"
+          ><span>Packaging cost</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="packaging()"
+            (input)="setNumber('packaging', $event)"
+        /></label>
+        <label class="field"
+          ><span>Shipping included in this quote</span
+          ><input
+            type="number"
+            min="0"
+            step="0.01"
+            [value]="shipping()"
+            (input)="setNumber('shipping', $event)"
+        /></label>
+        <label class="field"
+          ><span>Failure allowance (%)</span
+          ><input
+            type="number"
+            min="0"
+            step="0.1"
+            [value]="failure()"
+            (input)="setNumber('failure', $event)"
+        /></label>
+      </div>
+      @if (result(); as costs) {
+        <section class="breakdown" aria-live="polite">
+          <h3>Cost breakdown</h3>
+          <dl>
+            <div>
+              <dt>Filament/material</dt>
+              <dd>{{ format(costs.materialCost) }}</dd>
+            </div>
+            <div>
+              <dt>Electricity</dt>
+              <dd>{{ format(costs.electricityCost) }}</dd>
+            </div>
+            <div>
+              <dt>Machine use</dt>
+              <dd>{{ format(costs.machineCost) }}</dd>
+            </div>
+            <div>
+              <dt>Labour</dt>
+              <dd>{{ format(costs.labourCost) }}</dd>
+            </div>
+            <div>
+              <dt>Direct production cost</dt>
+              <dd>{{ format(costs.directProductionCost) }}</dd>
+            </div>
+            <div>
+              <dt>Packaging, delivery and extra parts</dt>
+              <dd>{{ format(costs.overheadCost) }}</dd>
+            </div>
+            <div>
+              <dt>Failure allowance</dt>
+              <dd>{{ format(costs.failureAllowance) }}</dd>
+            </div>
+            <div class="total">
+              <dt>Actual print cost</dt>
+              <dd>{{ format(costs.totalCost) }}</dd>
+            </div>
+          </dl>
+          <p>
+            This is a production-cost estimate. Actual material use, failures
+            and delivery costs can vary.
+          </p>
+          <div class="downloads">
+            <button
+              class="button button-secondary"
+              type="button"
+              (click)="downloadJson()"
+            >
+              Download JSON report</button
+            ><button
+              class="button button-secondary"
+              type="button"
+              (click)="downloadPdf()"
+            >
+              Download PDF report
+            </button>
+          </div>
+        </section>
+      } @else {
+        <p class="error" role="alert">
+          Check that all values are non-negative and that spool weight is above
+          zero.
         </p>
       }
-      <label class="field"
-        ><span>Machine wear / maintenance per hour</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="machineCost()"
-          (input)="setNumber('machineCost', $event)"
-      /></label>
-      <label class="field"
-        ><span>Labour cost per hour</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="labourCost()"
-          (input)="setNumber('labourCost', $event)"
-      /></label>
-      <label class="field"
-        ><span>Labour and post-processing time (hours)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="labourHours()"
-          (input)="setNumber('labourHours', $event)"
-      /></label>
-      <label class="field"
-        ><span>Extra parts cost</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="extras()"
-          (input)="setNumber('extras', $event)"
-      /></label>
-      <label class="field"
-        ><span>Packaging cost</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="packaging()"
-          (input)="setNumber('packaging', $event)"
-      /></label>
-      <label class="field"
-        ><span>Shipping included in this quote</span
-        ><input
-          type="number"
-          min="0"
-          step="0.01"
-          [value]="shipping()"
-          (input)="setNumber('shipping', $event)"
-      /></label>
-      <label class="field"
-        ><span>Failure allowance (%)</span
-        ><input
-          type="number"
-          min="0"
-          step="0.1"
-          [value]="failure()"
-          (input)="setNumber('failure', $event)"
-      /></label>
-    </div>
-    @if (result(); as costs) {
-      <section class="breakdown" aria-live="polite">
-        <h3>Cost breakdown</h3>
-        <dl>
-          <div>
-            <dt>Filament/material</dt>
-            <dd>{{ format(costs.materialCost) }}</dd>
-          </div>
-          <div>
-            <dt>Electricity</dt>
-            <dd>{{ format(costs.electricityCost) }}</dd>
-          </div>
-          <div>
-            <dt>Machine use</dt>
-            <dd>{{ format(costs.machineCost) }}</dd>
-          </div>
-          <div>
-            <dt>Labour</dt>
-            <dd>{{ format(costs.labourCost) }}</dd>
-          </div>
-          <div>
-            <dt>Direct production cost</dt>
-            <dd>{{ format(costs.directProductionCost) }}</dd>
-          </div>
-          <div>
-            <dt>Packaging, delivery and extra parts</dt>
-            <dd>{{ format(costs.overheadCost) }}</dd>
-          </div>
-          <div>
-            <dt>Failure allowance</dt>
-            <dd>{{ format(costs.failureAllowance) }}</dd>
-          </div>
-          <div class="total">
-            <dt>Actual print cost</dt>
-            <dd>{{ format(costs.totalCost) }}</dd>
-          </div>
-        </dl>
-        <p>
-          This is a production-cost estimate. Actual material use, failures and
-          delivery costs can vary.
-        </p>
-        <div class="downloads">
-          <button
-            class="button button-secondary"
-            type="button"
-            (click)="downloadJson()"
-          >
-            Download JSON report</button
-          ><button
-            class="button button-secondary"
-            type="button"
-            (click)="downloadPdf()"
-          >
-            Download PDF report
-          </button>
-        </div>
-      </section>
-    } @else {
-      <p class="error" role="alert">
-        Check that all values are non-negative and that spool weight is above
-        zero.
+    </section>
+    <section class="content">
+      <p>
+        Need to quote a customer? Use the
+        <a [routerLink]="routeUrl.PrintPriceCalculator"
+          >3D Printing Price Calculator</a
+        >.
       </p>
-    }
-  </section>
-  <section class="content">
-    <p>
-      Need to quote a customer? Use the
-      <a [routerLink]="routeUrl.PrintPriceCalculator"
-        >3D Printing Price Calculator</a
-      >.
-    </p>
-    <p>
-      Before estimating a production run, use the
-      <a [routerLink]="routeUrl.FlowRateCalculator">Flow Rate Calculator</a> to
-      check a material profile with a single-wall test.
-    </p>
-    <h2>Plan with slicer values</h2>
-    <p>
-      Your slicer is the best source for filament usage and print time. Learn
-      more in
-      <a [routerLink]="guideRouteUrl.RouteHowToCalculate3dPrintingCost"
-        >How to Calculate 3D Printing Cost</a
-      >
-      and
-      <a [routerLink]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
-        >How Much Filament Does a 3D Print Use</a
-      >.
-    </p>
-    <p>
-      Learn how to turn that cost into a transparent customer price in
-      <a [routerLink]="guideRouteUrl.RouteHowMuchToChargeFor3dPrints"
-        >How Much to Charge for 3D Prints</a
-      >.
-    </p>
-  </section>
-  <app-tool-evidence
-    [completed]="!!result()"
-    [page]="routeUrl.PrintCostCalculator"
-  />
+      <p>
+        Before estimating a production run, use the
+        <a [routerLink]="routeUrl.FlowRateCalculator">Flow Rate Calculator</a>
+        to check a material profile with a single-wall test.
+      </p>
+      <h2>Plan with slicer values</h2>
+      <p>
+        Your slicer is the best source for filament usage and print time. Learn
+        more in
+        <a [routerLink]="guideRouteUrl.RouteHowToCalculate3dPrintingCost"
+          >How to Calculate 3D Printing Cost</a
+        >
+        and
+        <a [routerLink]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
+          >How Much Filament Does a 3D Print Use</a
+        >.
+      </p>
+      <p>
+        Learn how to turn that cost into a transparent customer price in
+        <a [routerLink]="guideRouteUrl.RouteHowMuchToChargeFor3dPrints"
+          >How Much to Charge for 3D Prints</a
+        >.
+      </p>
+    </section>
+    <app-tool-evidence
+      [completed]="!!result()"
+      [page]="routeUrl.PrintCostCalculator"
+    />
+  }
 </main>

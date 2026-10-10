@@ -28,7 +28,10 @@ Process/printer: customer requirement or proposed machine
 Material/finish: exact requested grade and colour, or clarify
 Functional surfaces: mounting holes and mating cap face
 Use conditions: indoor/outdoor, load, temperature - clarify
-Delivery: required date and permitted design changes
+Delivery: required date, timezone, dispatch/collection scope
+Iterations: included coupons/prototypes and approval boundary
+Acceptance: quantity and functional/finish criteria
+Permitted design changes: record separately
 Approval needed: dimension, orientation and quote assumptions</pre>
 <p>
   This is a hypothetical intake record. Do not infer the load or tolerance from
@@ -176,4 +179,25 @@ Approval needed: dimension, orientation and quote assumptions</pre>
   <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}">pricing workflow</a>
   to allocate setup, quantity and failure allowance; those calculations belong
   after the customer intake decision.
+</p>
+
+<h2>Resolve production scope before committing a quote or date</h2>
+<p>
+  Confirm requested quantity by part, exact material/colour/grade, approved
+  revision, finish and inspection requirements, extra hardware, and included
+  test iterations. Planned units are not accepted or delivered units. Record
+  whether a changed file or failed coupon needs a separately agreed iteration.
+</p>
+<p>
+  Only then record actual sliced plates in
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
+    >the production job calculator</a
+  >. Confirm complete material and per-run work before
+  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}">pricing the order</a
+  >; use
+  <a href="{{ GuideSlug.Route3dPrintLeadTimeVsPrintTime }}"
+    >lead-time planning</a
+  >
+  to distinguish machine completion, ready-to-dispatch and requested arrival. A
+  clean file report alone cannot commit any of those outcomes.
 </p>

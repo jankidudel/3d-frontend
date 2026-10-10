@@ -28,59 +28,63 @@ faq:
   convert prices or identify tax obligations. All figures below are hypothetical
   currency units (CU), not market rates.
 </p>
-<h2>Worked one-part quote</h2>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Cost input</th>
-      <th scope="col">Hypothetical assumption</th>
-      <th scope="col">CU</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Material</td>
-      <td>100 g including supports and purge, at 24 CU/kg</td>
-      <td>2.40</td>
-    </tr>
-    <tr>
-      <td>Machine time</td>
-      <td>4 hours at 2 CU/hour for your stated machine allowance</td>
-      <td>8.00</td>
-    </tr>
-    <tr>
-      <td>Preparation</td>
-      <td>20 minutes at 18 CU/hour</td>
-      <td>6.00</td>
-    </tr>
-    <tr>
-      <td>Finishing / inspection</td>
-      <td>10 minutes at 18 CU/hour</td>
-      <td>3.00</td>
-    </tr>
-    <tr>
-      <td>Failure allowance</td>
-      <td>Chosen fixed 2 CU, not an observed failure rate</td>
-      <td>2.00</td>
-    </tr>
-    <tr>
-      <td>Packing</td>
-      <td>One order, excludes delivery and tax</td>
-      <td>1.60</td>
-    </tr>
-    <tr>
-      <td>Total cost</td>
-      <td>Sum of these assumptions</td>
-      <td>23.00</td>
-    </tr>
-  </tbody>
-</table>
+<h2>Price the shared fictional job</h2>
 <p>
-  With a 30% target margin and no selling fees, price is 23 / (1 - 0.30) = 32.86
-  CU. A 30% markup gives 23 × 1.30 = 29.90 CU, with a margin of about 23.08%. If
-  the selling channel instead takes 5% of revenue, the 30% margin scenario is 23
-  / (1 - 0.30 - 0.05) = 35.38 CU. Enter the actual fee rather than treating this
-  as a provider price.
+  The
+  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}"
+    >five-part, two-plate production record</a
+  >
+  has K = 39.192 CU. Enter or explicitly apply that complete order cost in the
+  price calculator. Job-total mode does not multiply K by quantity or add
+  another production failure budget. Any entered quantity remains a planned
+  count; mixed parts stay at order level.
+</p>
+<figure>
+  <img
+    src="/images/job-planning/cost-fee-price.svg"
+    alt="Production cost to selling price: K = 39.192 CU production cost - Entered job total, never quantity × K; m = 30%, f = 5%, F = 0 - Fee is on this modelled selling price P; P = K / (1 - m - f) - 60.295384… CU; displayed 60.30; Fee 3.014769…; profit 18.088615… - Profit / selling price = 30%"
+    width="360"
+    height="348"
+  />
+  <figcaption>
+    Original planning diagram; hypothetical inputs, not observed production.
+  </figcaption>
+</figure>
+<h2>Choose margin or markup explicitly</h2>
+<p>
+  Without fees, 30% target margin gives
+  <code>P = K / (1 - m) = 39.192 / 0.70 = 55.988571… CU</code>, displayed 55.99.
+  A 30% markup gives <code>P = K × (1 + u) = 50.9496 CU</code>, displayed 50.95.
+  Percentages become fractions. Margin is profit divided by price; markup in
+  this implementation targets profit u × K after entered fees.
+</p>
+<h2>Declare the exact selling-fee basis</h2>
+<p>
+  For fixed fee F once per order and percentage f on the calculator selling
+  price P, margin mode uses <code>P = (K + F) / (1 - m - f)</code>. With m =
+  0.30, f = 0.05 and F = 0, P is 60.295384… CU, displayed 60.30. Require m + f
+  &lt; 1. Markup mode uses <code>P = (K × (1 + u) + F) / (1 - f)</code>; 30%
+  markup and a 5% fee give 53.631157… CU, displayed 53.63. Require f &lt; 1.
+</p>
+<p>
+  This simplified fee scenario is implemented, but it is not a marketplace
+  tax/shipping model. Do not import a hardcoded fee table. If fees are already
+  incorporated in K, mark that basis and leave separate fees at zero. Tax and
+  unentered costs remain excluded; currency selection changes labels without
+  conversion.
+</p>
+<h2>Minimum price changes realised margin</h2>
+<p>
+  Apply the minimum order price after the chosen method. With a 65 CU minimum,
+  the fee-adjusted 60.295384… CU result becomes 65 CU. At the entered 5% fee,
+  fees are 3.25 CU; profit is 65 - 3.25 - 39.192 = 22.558 CU and realised margin
+  is 34.704615…%. The target remains 30%; the realised margin changes. The
+  calculator recomputes these outputs after the minimum.
+</p>
+<p>
+  Full precision is kept in calculations and JSON. Rounded unit values need not
+  multiply to the rounded order total. Do not quote mixed parts as if a single
+  average were their individual cost.
 </p>
 <h2>Make the inputs editable and retain the assumptions</h2>
 <ol>
@@ -106,12 +110,12 @@ faq:
     alongside the approved revision.
   </li>
 </ol>
-<h2>Allocate setup once when it really happens once</h2>
+<h2>Share setup only when it is shared</h2>
 <p>
-  Hypothetical five-part order: production cost is 4 CU per part and one
-  setup/packing charge is 10 CU. Cost is 5 × 4 + 10 = 30 CU, or 6 CU per part. A
-  30% margin needs 42.86 CU total; a 30% markup gives 39 CU. Five separate runs
-  can repeat unloading and inspection even if preparation was shared.
+  Record once-per-order work in the production job. Independent runs repeat
+  handling even if preparation was shared. Re-slice changed quantity or layout;
+  the batch guide owns those allocation decisions. An agreed minimum-order
+  policy is a price rule, separate from that cost scope.
 </p>
 <h2>Failure allowance and minimum order</h2>
 <p>

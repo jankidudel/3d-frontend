@@ -101,3 +101,43 @@ dd {
     widows: 3;
   }
 }
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.check input {
+  min-height: 0;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+.quote-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.quote-actions .button {
+  margin: 0;
+}
+@media print {
+  .offer,
+  .check,
+  .card > button,
+  .card > label {
+    display: none !important;
+  }
+  .source-job > pre {
+    display: block;
+  }
+  .source-job {
+    display: block;
+  }
+}

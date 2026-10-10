@@ -154,3 +154,32 @@ faq:
   correct the layout and regenerate the job rather than relying on printer-side
   clipping.
 </p>
+
+<h2>Move from layout to slice to job record</h2>
+<ol>
+  <li>
+    Confirm which placed footprints represent the requested parts. The
+    rectangular planner is a fit screen, not a packing optimiser or slicer.
+  </li>
+  <li>
+    Slice the actual plate with agreed material, orientation and profile. Record
+    its complete consumption and duration; geometry supplies neither.
+  </li>
+  <li>
+    Enter it in
+    <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
+      >Several plates / one job</a
+    >, with run handling and intended units.
+  </li>
+  <li>
+    Repeat an unchanged slice only deliberately. Partial plates or changed
+    quantities require another slice; preparation may be shared but unloading
+    and inspection can repeat.
+  </li>
+</ol>
+<p>
+  The planner can offer confirmed counts as an unsliced cost row, leaving grams
+  and duration incomplete. It cannot establish successful output.
+  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}">Batch allocation</a>
+  owns how plate overhead differs from one job total.
+</p>

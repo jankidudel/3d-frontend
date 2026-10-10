@@ -1,0 +1,141 @@
+---
+title: '3D Print Lead Time vs Print Time | InspectMesh'
+description: 'Build an explicit sequential job timeline from sliced durations and entered availability, cooling, finishing and dispatch assumptions.'
+slug: 3d-print-lead-time-vs-print-time
+eyebrow: Practical job planning
+heading: '3D Print Lead Time vs Print Time'
+faq:
+  - question: 'Does seven hours of printing mean delivery in seven hours?'
+    answer: 'No. Availability, sequential gaps, process waiting, finishing, inspection and dispatch need explicit assumptions.'
+  - question: 'Does the calculator schedule multiple printers?'
+    answer: 'No. It adds a selected elapsed estimate to a chosen start and timezone. Overlapping machines need a separate explicit schedule.'
+---
+
+<p>
+  Print time is a selected machine-run duration. Lead time includes the wait
+  until work can start and the other steps required for the agreed delivery
+  scope. A sum of sliced runs is useful arithmetic, but it is not an
+  unconditional completion or dispatch promise.
+</p>
+<figure>
+  <img
+    src="/images/job-planning/lead-time.svg"
+    alt="Explicit sequential timeline (UTC): 10 Oct, 09:00: preparation begins - 20 min preparation + 10 min handling; 09:30-13:30: Plate A run - 4 h sliced duration; 13:30-14:00: entered gap - 20 min cooling + 10 min next handling; 14:00-17:00: Plate B run - 3 h sliced duration; 17:00-18:00: entered completion work - 20 min cooling + 25 finishing + 15 packing"
+    width="360"
+    height="418"
+  />
+  <figcaption>
+    Original planning diagram; hypothetical inputs, not observed production.
+  </figcaption>
+</figure>
+<h2>One explicit hypothetical timeline</h2>
+<p>
+  The diagram uses UTC on 10 October 2026 and one available machine. Preparation
+  begins at 09:00 for 20 minutes, followed by ten minutes of first-plate
+  handling. Plate A starts at 09:30 and runs for four hours. Then a user-entered
+  20-minute cooling gap and ten minutes of next-run handling put Plate B at
+  14:00. That run lasts three hours. Another entered 20-minute cooling gap, 25
+  minutes of finishing and 15 minutes of packing end at 18:00.
+</p>
+<p>
+  All durations are hypothetical planning inputs. The two cooling intervals are
+  not process recommendations. Use the actual material/process guidance or an
+  explicit justified estimate. The seven sliced hours do not include those
+  additional steps. Inspection is assumed included in the stated
+  handling/finishing; assembly and dispatch transit are excluded.
+</p>
+<h2>Reconcile elapsed time without counting twice</h2>
+<p>
+  From a 09:30 first-run start, seven sliced hours plus 90 minutes of explicitly
+  entered gaps and completion work give 18:00 UTC. From the 09:00 preparation
+  start, include 120 additional minutes instead. Choose one start boundary and
+  record it. Do not add a warm-up or cooling allowance twice if the selected
+  source duration already includes it.
+</p>
+<p>
+  Use
+  <a href="{{ GuideSlug.Route3dPrintFinishTimeCalculator }}"
+    >the finish calculator</a
+  >
+  for elapsed-time arithmetic. Apply the offered sequential duration only after
+  setting the start and timezone and reviewing correction/additional time. The
+  recipient preserves those entries. An observed correction factor from
+  comparable runs may adjust sliced duration; it is not a universal
+  printer-speed factor.
+</p>
+<h2>What still needs a scheduling decision?</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Dependency</th>
+      <th scope="col">What to enter or agree</th>
+      <th scope="col">What the duration sum cannot establish</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Machine availability and queue</td>
+      <td>Actual start and explicit gaps</td>
+      <td>That the machine will be free</td>
+    </tr>
+    <tr>
+      <td>Cooling or curing</td>
+      <td>Process guidance or user estimate</td>
+      <td>A universal safe waiting interval</td>
+    </tr>
+    <tr>
+      <td>Finishing, assembly and inspection</td>
+      <td>Scope and elapsed time, including waits</td>
+      <td>Accepted quality or physical fit</td>
+    </tr>
+    <tr>
+      <td>Customer approval or another iteration</td>
+      <td>Decision boundary and contingency</td>
+      <td>That the first attempt succeeds</td>
+    </tr>
+    <tr>
+      <td>Packing, collection and dispatch</td>
+      <td>Cut-off, available service and agreed scope</td>
+      <td>Transit arrival from machine completion</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Repeated runs and multiple machines</h2>
+<p>
+  Two unchanged four-hour runs selected sequentially contribute eight sliced
+  hours. Re-slice if arrangement or profile changes. With several machines, run
+  overlap depends on availability, operator tasks and dependencies. This tool
+  does not optimise multi-machine allocation or monitor printers. Do not divide
+  total hours by printer count and call the result a validated schedule.
+</p>
+<h2>Keep quantities and outcomes separate</h2>
+<p>
+  The
+  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}">batch job record</a>
+  holds requested and planned quantity. Accepted, rejected and missing results
+  remain unknown before production. A rejected part can require a new run,
+  another inspection and a changed completion estimate. Budgeting a financial
+  failure uplift does not add an actual rerun to the timeline.
+</p>
+<h2>Timezone and delivery language</h2>
+<p>
+  Record the chosen timezone beside the start and finish, especially across
+  regions or daylight-saving changes. The finish calculator adds elapsed
+  duration to a resolved instant; a local clock day need not contain 24 hours.
+  Review any ambiguous or nonexistent local start time. State whether the
+  estimate means machine completion, ready for inspection, ready for dispatch or
+  expected collection.
+</p>
+<p>
+  Before quoting a date, resolve
+  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
+    >revision, material, finish and included test iterations</a
+  >. Keep
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">production cost</a> and
+  the elapsed plan together, while treating
+  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}"
+    >price and agreed delivery scope</a
+  >
+  as a separate decision. No slicer estimate, geometry check or timeline
+  establishes a physical production guarantee.
+</p>

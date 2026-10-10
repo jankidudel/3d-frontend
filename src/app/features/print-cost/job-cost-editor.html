@@ -1,0 +1,473 @@
+<section class="card job-editor" aria-labelledby="job-heading">
+  <h2 id="job-heading">Several plates / one job</h2>
+  <p>
+    Record actual sliced plates. All job inputs stay in this tab's memory; no
+    cloud storage, printer control or automatic save to disk. A slice plan
+    records planned parts, never successful or delivered parts.
+  </p>
+  @if (pending(); as offer) {
+    <section class="notice">
+      <p>{{ offer.basis }} - {{ offer.value }} planned units.</p>
+      <button
+        class="button"
+        type="button"
+        (click)="applyLayout()"
+        [disabled]="input().plates.length >= maxPlates"
+      >
+        Add as an unsliced plate (preserve current job)</button
+      ><button class="button" type="button" (click)="dismissLayout()">
+        Dismiss
+      </button>
+    </section>
+  }
+  <button class="button" type="button" (click)="example()">
+    Replace job with fictional five-part example
+  </button>
+  <details>
+    <summary>Job defaults and once-per-order work</summary>
+    <div class="fields">
+      <label
+        >Job reference<input
+          type="text"
+          maxlength="200"
+          [value]="input().reference"
+          (input)="set('reference', $any($event.target).value)"
+      /></label>
+      <label
+        >Currency<select
+          [value]="input().currency"
+          (change)="set('currency', $any($event.target).value)"
+        >
+          @for (c of currencies; track c.value) {
+            <option [value]="c.value" [selected]="input().currency === c.value">
+              {{ c.label }}
+            </option>
+          }
+        </select></label
+      >
+      <label
+        >Requested quantity (whole number)<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().requestedQuantity"
+          (input)="set('requestedQuantity', number($event))" /></label
+      ><label
+        >Default average power (W)<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().watts"
+          (input)="set('watts', number($event))" /></label
+      ><label
+        >Electricity / kWh<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().electricityRate"
+          (input)="set('electricityRate', number($event))" /></label
+      ><label
+        >Default machine allowance / hour<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().machineRate"
+          (input)="set('machineRate', number($event))" /></label
+      ><label
+        >Hands-on labour / hour<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().labourRate"
+          (input)="set('labourRate', number($event))" /></label
+      ><label
+        >One-time preparation/admin (minutes)<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().preparationMinutes"
+          (input)="set('preparationMinutes', number($event))" /></label
+      ><label
+        >Finishing per planned part (minutes)<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().finishingMinutesPerPart"
+          (input)="set('finishingMinutesPerPart', number($event))" /></label
+      ><label
+        >Packaging per order<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().packaging"
+          (input)="set('packaging', number($event))" /></label
+      ><label
+        >Delivery cost per order<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().shipping"
+          (input)="set('shipping', number($event))" /></label
+      ><label
+        >Hardware/extras per order<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().hardware"
+          (input)="set('hardware', number($event))" /></label
+      ><label
+        >Failure budget uplift on all costs (0-100%)<input
+          type="number"
+          step="any"
+          min="0"
+          [value]="input().failurePercent"
+          (input)="set('failurePercent', number($event))"
+      /></label>
+    </div>
+    <label class="check"
+      ><input
+        type="checkbox"
+        [checked]="input().machineIncludesEnergy"
+        (change)="set('machineIncludesEnergy', $any($event.target).checked)"
+      />All entered machine rates include energy (suppress separate energy
+      charge)</label
+    >
+    <label class="check"
+      ><input
+        type="checkbox"
+        [checked]="input().identicalParts"
+        (change)="set('identicalParts', $any($event.target).checked)"
+      />Parts are identical; show allocated average over planned usable
+      quantity</label
+    >
+    <p>
+      Defaults apply to each plate unless overridden. Machine allowance excludes
+      energy unless checked. Do not enter finishing twice in handling. Failure
+      budget is a percentage uplift of all entered costs, not an
+      expected-success model; set zero if rates already include it. Currency
+      changes labels, never exchange rates.
+    </p>
+  </details>
+  @for (p of input().plates; track p.id; let pi = $index) {
+    <fieldset>
+      <legend>Plate {{ pi + 1 }}</legend>
+      <div class="fields">
+        <label
+          >Plate label<input
+            type="text"
+            maxlength="120"
+            [value]="p.label"
+            (input)="plate(pi, 'label', $any($event.target).value)"
+        /></label>
+        <label
+          >Slice/source and profile basis<input
+            type="text"
+            maxlength="500"
+            [value]="p.source"
+            (input)="plate(pi, 'source', $any($event.target).value)"
+        /></label>
+        <label
+          >Complete sliced hours per run<input
+            type="number"
+            step="any"
+            min="0"
+            [value]="p.hours"
+            (input)="plate(pi, 'hours', number($event))" /></label
+        ><label
+          >Repeat runs (whole number)<input
+            type="number"
+            step="any"
+            min="1"
+            [value]="p.repeats"
+            (input)="plate(pi, 'repeats', number($event))" /></label
+        ><label
+          >Planned intended units per run<input
+            type="number"
+            step="any"
+            min="1"
+            [value]="p.unitsPerRun"
+            (input)="plate(pi, 'unitsPerRun', number($event))" /></label
+        ><label
+          >Setup/unloading/inspection minutes per run<input
+            type="number"
+            step="any"
+            min="0"
+            [value]="p.handlingMinutes"
+            (input)="plate(pi, 'handlingMinutes', number($event))"
+        /></label>
+      </div>
+      <details>
+        <summary>Override power or machine allowance</summary>
+        <div class="fields">
+          <label
+            >Power (W), blank inherits<input
+              type="number"
+              min="0"
+              [value]="p.wattsOverride"
+              (input)="
+                plate(
+                  pi,
+                  'wattsOverride',
+                  $any($event.target).value === '' ? null : number($event)
+                )
+              "
+          /></label>
+          <label
+            >Machine / hour, blank inherits<input
+              type="number"
+              min="0"
+              step="any"
+              [value]="p.machineRateOverride"
+              (input)="
+                plate(
+                  pi,
+                  'machineRateOverride',
+                  $any($event.target).value === '' ? null : number($event)
+                )
+              "
+          /></label>
+        </div>
+      </details>
+      @for (m of p.materials; track $index; let mi = $index) {
+        <fieldset>
+          <legend>Material {{ mi + 1 }} on {{ p.label }}</legend>
+          <div class="fields">
+            <label
+              >Material / compatible spool scope<input
+                type="text"
+                maxlength="120"
+                [value]="m.label"
+                (input)="material(pi, mi, 'label', $any($event.target).value)"
+            /></label>
+            <label
+              >Consumption basis<select
+                [value]="m.basis"
+                (change)="material(pi, mi, 'basis', $any($event.target).value)"
+              >
+                <option
+                  [value]="bases.Complete"
+                  [selected]="m.basis === bases.Complete"
+                >
+                  Complete slicer total, including supports/purge
+                </option>
+                <option
+                  [value]="bases.Partial"
+                  [selected]="m.basis === bases.Partial"
+                >
+                  Reported subtotal with separately unreported material
+                </option>
+              </select></label
+            >
+            <label
+              >Reported consumption per run (g)<input
+                type="number"
+                step="any"
+                min="0"
+                [value]="m.grams"
+                (input)="material(pi, mi, 'grams', number($event))" /></label
+            ><label
+              >Spool net filament weight (g)<input
+                type="number"
+                step="any"
+                min="0"
+                [value]="m.spoolGrams"
+                (input)="
+                  material(pi, mi, 'spoolGrams', number($event))
+                " /></label
+            ><label
+              >Spool price<input
+                type="number"
+                step="any"
+                min="0"
+                [value]="m.spoolPrice"
+                (input)="material(pi, mi, 'spoolPrice', number($event))"
+            /></label>
+            @if (m.basis === bases.Partial || m.additionalGrams !== 0) {
+              <label
+                >Additional unreported material per run (g)<input
+                  type="number"
+                  min="0"
+                  step="any"
+                  [value]="m.additionalGrams"
+                  (input)="material(pi, mi, 'additionalGrams', number($event))"
+              /></label>
+            }
+          </div>
+          <p>
+            A complete total gets no mandatory waste uplift. Switching to
+            complete requires additional grams to be zero. For different spool
+            prices, add separate material entries. Do not infer supports or
+            purge from mesh volume.
+          </p>
+          <button class="button" type="button" (click)="removeMaterial(pi, mi)">
+            Remove material {{ mi + 1 }} from {{ p.label }}
+          </button>
+        </fieldset>
+      }
+      <div class="actions">
+        <button
+          class="button"
+          type="button"
+          [attr.data-material-add]="p.id"
+          (click)="addMaterial(pi)"
+          [disabled]="p.materials.length >= maxMaterials"
+        >
+          Add material to {{ p.label }}</button
+        ><button class="button" type="button" (click)="removePlate(pi)">
+          Remove {{ p.label }}
+        </button>
+      </div>
+    </fieldset>
+  }
+  <button
+    class="button add-plate"
+    type="button"
+    (click)="addPlate()"
+    [disabled]="input().plates.length >= maxPlates"
+  >
+    Add plate (up to {{ maxPlates }})
+  </button>
+  @if (result(); as r) {
+    <section aria-live="polite">
+      <h3>Job production estimate</h3>
+      <p>
+        Requested {{ input().requestedQuantity }}; planned
+        {{ r.plannedQuantity }}. Rejected, accepted and delivered outcomes are
+        unknown. Re-slice if quantity, arrangement, material or profile changes.
+      </p>
+      <dl>
+        <dt>Material</dt>
+        <dd>{{ r.material | number: '1.2-2' }}</dd>
+        <dt>Separate energy</dt>
+        <dd>{{ r.energy | number: '1.2-3' }}</dd>
+        <dt>Machine allowance</dt>
+        <dd>{{ r.machine | number: '1.2-2' }}</dd>
+        <dt>Preparation once</dt>
+        <dd>{{ r.preparation | number: '1.2-2' }}</dd>
+        <dt>Handling repeated runs</dt>
+        <dd>{{ r.handling | number: '1.2-2' }}</dd>
+        <dt>Finishing planned parts</dt>
+        <dd>{{ r.finishing | number: '1.2-2' }}</dd>
+        <dt>Packaging / delivery / hardware</dt>
+        <dd>{{ r.packaging }} / {{ r.shipping }} / {{ r.hardware }}</dd>
+        <dt>Failure uplift</dt>
+        <dd>{{ r.failureAllowance | number: '1.2-2' }}</dd>
+        <dt>Total production cost ({{ input().currency }})</dt>
+        <dd>
+          <strong>{{ r.total | number: '1.2-2' }}</strong>
+        </dd>
+      </dl>
+      @if (r.allocatedAverage !== null) {
+        <p>
+          Allocated average over {{ r.plannedQuantity }} identical planned
+          parts: {{ r.allocatedAverage | number: '1.2-4' }}. This is not
+          marginal or exact piece cost.
+        </p>
+      } @else {
+        <p>
+          Mixed-part allocation is not offered. Use the order total; mass
+          allocation alone cannot assign machine time or shared overhead.
+        </p>
+      }
+      <p>
+        {{ r.grams }} g entered consumption; {{ r.sequentialHours }} h
+        sequential sliced run duration. Financial failure allowance does not add
+        physical material or repeat runs.
+      </p>
+      <div class="actions">
+        <button class="button" type="button" (click)="sendPrice()">
+          Offer production total to price calculator</button
+        ><button class="button" type="button" (click)="download()">
+          Download job JSON</button
+        ><button class="button" type="button" (click)="pdf()">
+          Download job PDF</button
+        ><button class="button" type="button" (click)="print()">
+          Print job record</button
+        ><button class="button" type="button" (click)="copy()">
+          Copy job record
+        </button>
+      </div>
+      <details>
+        <summary>Check a compatible spool or plan sequential finish</summary>
+        <label
+          >Material/spool scope<select
+            [value]="selectedScope()"
+            (change)="
+              selectedScope.set($any($event.target).value);
+              compatible.set(false)
+            "
+          >
+            <option value="">Select one scope</option>
+            @for (scope of materialScopes(); track scope) {
+              <option [value]="scope" [selected]="selectedScope() === scope">
+                {{ scope }}
+              </option>
+            }
+          </select></label
+        >
+        <label class="check"
+          ><input
+            type="checkbox"
+            [checked]="compatible()"
+            (change)="compatible.set($any($event.target).checked)"
+          />I confirm this scope can use the destination spool's material,
+          diameter and profile</label
+        ><button
+          class="button"
+          type="button"
+          [disabled]="!compatible() || !selectedScope()"
+          (click)="sendMaterial()"
+        >
+          Offer this scope's consumption to spool calculator
+        </button>
+        <label class="check"
+          ><input
+            type="checkbox"
+            [checked]="sequentialConfirmed()"
+            (change)="sequentialConfirmed.set($any($event.target).checked)"
+          />Use summed sliced duration as sequential elapsed estimate on one
+          machine</label
+        ><button
+          class="button"
+          type="button"
+          [disabled]="!sequentialConfirmed()"
+          (click)="sendDuration()"
+        >
+          Offer duration to finish calculator
+        </button>
+        <p>
+          Recipients show the offer before applying it. Set reserve,
+          start/timezone and any additional time deliberately.
+        </p>
+      </details>
+    </section>
+  } @else {
+    <p role="alert">
+      Complete every plate's source, positive sliced duration, material label
+      and consumption. Use finite non-negative costs, positive whole
+      repeats/quantities (up to 100,000), 1-24 plates and 1-8 materials each.
+      Complete totals require zero additional grams. Empty rows have no result.
+    </p>
+  }
+  <p role="status">{{ message() }}</p>
+  @if (copyFallback()) {
+    <label
+      >Copyable job record<textarea
+        rows="12"
+        readonly
+        [value]="summary()"
+      ></textarea>
+    </label>
+  }
+  @if (record()) {
+    <pre class="print-record">{{ summary() }}</pre>
+  }
+  <p>
+    <a [routerLink]="guides.Route3dPrintBatchCostPerPart"
+      >Understand plate and order allocation</a
+    >;
+    <a [routerLink]="guides.Route3dPrintSupportAndPurgeMaterialCost"
+      >reconcile material consumption</a
+    >.
+  </p>
+</section>

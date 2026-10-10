@@ -24,9 +24,9 @@ faq:
   Suppose a slicer reports 18.5 cm³ of extruded model and support material. With
   a documented density of 1.24 g/cm³, estimated mass is
   <code>18.5 × 1.24 = 22.94 g</code>. On a 1 kg spool that is about 2.3% of
-  nominal material mass. If the slicer separately reports purge or prime
-  structures, add them rather than assuming the model volume includes every
-  extrusion.
+  nominal material mass. If purge or prime structures are absent from that
+  subtotal, add their separately reported amount. A separate category may
+  already be included in a complete total; check before summing.
 </p>
 <p>
   A geometry tool's enclosed solid volume is a different quantity. The slicer
@@ -181,7 +181,10 @@ faq:
   <li>Read the filament weight in grams.</li>
   <li>Divide your spool price by its net weight to find cost per gram.</li>
   <li>Multiply grams used by cost per gram.</li>
-  <li>Add a little allowance for waste or a possible reprint.</li>
+  <li>
+    Add only identified material absent from the complete total. Keep reserve
+    and any financial failure budget separate.
+  </li>
   <li>Add electricity and print time if you want the full cost.</li>
 </ol>
 <p>
@@ -220,4 +223,25 @@ faq:
   answers a different conversion task. Re-slice if the number of copies or
   support settings changes. A model's solid volume is not a substitute for
   complete-job filament consumption.
+</p>
+
+<h2>Complete consumption for several plates</h2>
+<p>
+  A parts-only mass is insufficient when supports, brim, purge or another
+  structure consumes filament. Record each actual sliced plate and its unchanged
+  repeats, with each material/spool scope separate. The
+  <a href="{{ GuideSlug.Route3dPrintSupportAndPurgeMaterialCost }}"
+    >inclusion reconciliation guide</a
+  >
+  explains why 80 g plus separately absent 20 g purge is 100 g, while a complete
+  100 g figure must stay 100 g.
+</p>
+<p>
+  Offer complete consumption from
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">the job calculator</a>
+  only to a compatible material scope in
+  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
+    >the spool sufficiency tool</a
+  >. Confirm material, diameter and profile before applying; the receiving
+  reserve remains editable and is not hidden inside job grams.
 </p>

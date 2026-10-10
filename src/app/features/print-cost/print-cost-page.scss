@@ -125,3 +125,12 @@ dd {
     grid-template-columns: 1fr;
   }
 }
+
+@media print {
+  .cost-page:has(app-job-cost-editor) > :not(app-job-cost-editor) {
+    display: none !important;
+  }
+  .cost-page {
+    padding: 0;
+  }
+}

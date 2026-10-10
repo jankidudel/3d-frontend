@@ -178,4 +178,31 @@
       selection.
     </p>
   </section>
+  <section class="card">
+    <h2>Record the actual sliced plate</h2>
+    <p>
+      Slice the chosen layout in your printer's slicer. Enter its complete
+      material consumption and duration in Several plates / one job. Rectangular
+      placement supplies neither grams nor print time and does not establish
+      successful production.
+    </p>
+    <label
+      ><input
+        type="checkbox"
+        [checked]="countConfirmed()"
+        (change)="countConfirmed.set($any($event.target).checked)"
+      />I confirm {{ plan().placed.length }} placed footprints represent the
+      intended units on this planned plate</label
+    ><button
+      type="button"
+      [disabled]="!countConfirmed() || !plan().placed.length"
+      (click)="offerCost()"
+    >
+      Offer confirmed count to cost calculator
+    </button>
+    <p>
+      Open Several plates / one job at the destination, then add the offered
+      unsliced plate. Existing job rows are preserved.
+    </p>
+  </section>
 </main>

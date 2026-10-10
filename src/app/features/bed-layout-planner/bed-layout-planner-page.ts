@@ -1,3 +1,8 @@
+import { Router } from '@angular/router';
+import {
+  JobPlanningSession,
+  PlanningDestination,
+} from '../planning/job-planning-session';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -16,6 +21,21 @@ import { BedPart, planBedLayout } from './bed-layout';
   styleUrl: './bed-layout-planner-page.scss',
 })
 export class BedLayoutPlannerPage {
+  private readonly session = inject(JobPlanningSession);
+  private readonly router = inject(Router);
+  readonly countConfirmed = signal(false);
+  async offerCost(): Promise<void> {
+    if (!this.countConfirmed() || !this.plan().placed.length) {
+      return;
+    }
+    this.session.offer({
+      destination: PlanningDestination.Cost,
+      value: this.plan().placed.length,
+      basis:
+        'User-confirmed placed footprint count from bed planner; unsliced count only, not successful production. Enter actual slicer values.',
+    });
+    await this.router.navigateByUrl(PublicRouteUrl.PrintCostCalculator);
+  }
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly parts = signal<readonly BedPart[]>([]);
@@ -62,6 +82,7 @@ export class BedLayoutPlannerPage {
     input.click();
   }
   async chooseFiles(event: Event): Promise<void> {
+    this.countConfirmed.set(false);
     const files = Array.from((event.target as HTMLInputElement).files ?? []);
     this.error.set('');
     if (!files.length) {
@@ -108,18 +129,21 @@ export class BedLayoutPlannerPage {
     }
   }
   setMargin(event: Event): void {
+    this.countConfirmed.set(false);
     const value = Number((event.target as HTMLInputElement).value);
     if (Number.isFinite(value) && value >= 0) {
       this.margin.set(value);
     }
   }
   setBedDimension(axis: 'width' | 'depth', event: Event): void {
+    this.countConfirmed.set(false);
     const value = Number((event.target as HTMLInputElement).value);
     if (Number.isFinite(value) && value > 0) {
       (axis === 'width' ? this.bedWidth : this.bedDepth).set(value);
     }
   }
   clear(): void {
+    this.countConfirmed.set(false);
     this.parts.set([]);
   }
   format(value: number): string {

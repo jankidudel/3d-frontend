@@ -26,6 +26,7 @@ faq:
   heavier because of infill, perimeters, supports, purge and process settings.
   Use a slicer's material estimate for purchasing or quoting a real print, and
   use this geometry estimate to compare designs or catch an implausible result.
+  It cannot guarantee production-run consumption.
 </p>
 <h2>The geometry-to-mass formula</h2>
 <p>
@@ -58,8 +59,8 @@ faq:
 </ul>
 <p>
   Use solid mass to compare model revisions or detect an implausible volume. Use
-  the target slicer's material report for a real print and add a measured waste
-  allowance when purchasing or quoting.
+  the target slicer's material report for a real print and add only material
+  absent from its complete report when purchasing or quoting.
 </p>
 <h2>Validity checks before calculating</h2>
 <p>
@@ -136,12 +137,15 @@ faq:
   slicer remains the best source for the actual material estimate because it
   knows the print settings that will determine how much filament is deposited.
 </p>
-<h2>Use the estimate for the right decision</h2>
+<h2>Replace geometry mass before a production job</h2>
 <p>
-  Solid mass is useful for comparing model revisions or checking whether package
-  scale is plausible. It is unsuitable as a shipping, purchasing or quote figure
-  without sliced material and waste allowances. For several materials, calculate
-  regions separately only when assignments are preserved reliably; otherwise
-  defer to a configured slicer. State the density source and avoid false
-  gram-level precision.
+  After slicing the actual plate, preserve its complete per-material
+  consumption, profile/version and repeat count. Do not transfer solid-model
+  mass as a complete job input. The
+  <a href="{{ GuideSlug.Route3dPrintSupportAndPurgeMaterialCost }}"
+    >material reconciliation guide</a
+  >
+  owns inclusion;
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">the job calculator</a>
+  owns the selected production cost.
 </p>

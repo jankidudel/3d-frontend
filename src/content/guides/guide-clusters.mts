@@ -179,6 +179,11 @@ export const guideClusters: readonly GuideCluster[] = [
     pillar: 'how-to-calculate-3d-printing-cost',
     slugs: [
       'how-to-calculate-3d-printing-cost',
+      '3d-print-batch-cost-per-part',
+      '3d-print-support-and-purge-material-cost',
+      '3d-print-labour-cost-and-post-processing',
+      '3d-print-lead-time-vs-print-time',
+
       'how-much-to-charge-for-3d-prints',
       'how-much-filament-does-a-3d-print-use',
       'how-many-metres-in-1kg-filament',

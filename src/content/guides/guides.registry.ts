@@ -41,6 +41,39 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: '3d-print-batch-cost-per-part',
+    group: GuideGroupId.General,
+    order: 260,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: '3d-print-support-and-purge-material-cost',
+    group: GuideGroupId.General,
+    order: 261,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: '3d-print-labour-cost-and-post-processing',
+    group: GuideGroupId.General,
+    order: 262,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: '3d-print-lead-time-vs-print-time',
+    group: GuideGroupId.General,
+    order: 263,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+
+  {
     slug: '3d-print-hole-orientation-and-accuracy',
     group: GuideGroupId.Calibration,
     order: 10,
@@ -149,7 +182,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 101,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-08',
+    updatedDate: '2026-10-10',
     checkEditorialTargets: true,
   },
   {
@@ -227,6 +260,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-13',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-open-and-view-gcode-files',
@@ -320,7 +354,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-10',
     checkEditorialTargets: false,
   },
   {
@@ -338,7 +372,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-10-10',
     checkEditorialTargets: false,
   },
   {
@@ -715,5 +749,6 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
 ];

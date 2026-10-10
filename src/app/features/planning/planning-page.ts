@@ -1,5 +1,10 @@
+import {
+  JobPlanningSession,
+  PlanningDestination,
+} from './job-planning-session';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
   AnalyticsService,
@@ -66,7 +71,7 @@ const PLANNERS = {
     fields: [
       numeric(Field.Gross, 'Spool plus filament (g)', 350),
       numeric(Field.Tare, 'Empty spool tare (g)', 200),
-      numeric(Field.Reserve, 'Reserve (g)', 20),
+      numeric(Field.Reserve, 'Explicit reserve (g), editable', 0),
       numeric(Field.Job, 'Whole job or one complete copy (g)', 45, 0.01),
       numeric(Field.Diameter, 'Filament diameter (mm)', 1.75, 0.01),
       numeric(Field.Density, 'Density (g/cm³)', 1.24, 0.01),
@@ -136,9 +141,17 @@ const PLANNERS = {
     description:
       'Add your slicer duration, optional setup allowance and an observed correction factor to a chosen start time. See the finish in your selected timezone.',
     fields: [
-      numeric(Field.Hours, 'Slicer duration (hours)', 6),
+      numeric(
+        Field.Hours,
+        'Selected sliced duration: single or sequential runs (hours)',
+        6,
+      ),
       numeric(Field.Minutes, 'Additional minutes (0-59)', 30),
-      numeric(Field.Allowance, 'Setup or warm-up allowance (minutes)', 10),
+      numeric(
+        Field.Allowance,
+        'Additional elapsed time: setup/gaps/finish (minutes)',
+        0,
+      ),
       numeric(Field.Correction, 'Observed duration correction factor', 1, 0.01),
     ],
     method:
@@ -162,11 +175,23 @@ const PLANNERS = {
   templateUrl: './planning-page.html',
   styleUrl: './planning-page.scss',
 })
-export class PlanningPage {
+export class PlanningPage implements OnDestroy {
+  private readonly session = inject(JobPlanningSession);
+  readonly guides = GuideRouteUrl;
   readonly kinds = PlannerKind;
   readonly routeUrl = PublicRouteUrl;
   readonly kind: PlannerKind = inject(ActivatedRoute).snapshot.data['planner'];
   readonly config = PLANNERS[this.kind];
+  readonly pending = signal(
+    this.kind === PlannerKind.Spool
+      ? this.session.take(PlanningDestination.Spool)
+      : this.kind === PlannerKind.Finish
+        ? this.session.take(PlanningDestination.Finish)
+        : null,
+  );
+  readonly transferBasis = signal('');
+  readonly compatibilityConfirmed = signal(false);
+  readonly timingConfirmed = signal(false);
   readonly values = signal<Record<string, number>>(
     Object.fromEntries(
       this.config.fields.map((field) => [field.key, field.value]),
@@ -260,6 +285,42 @@ export class PlanningPage {
       }
       this.start.set(localNow(zone));
     }
+    const draft = this.session.plannerDrafts[this.kind];
+    if (draft) {
+      this.values.set(draft.values);
+      this.start.set(draft.start);
+      this.zone.set(draft.zone);
+      this.material.set(draft.material as FilamentPreset);
+      this.transferBasis.set(draft.basis);
+    }
+  }
+  ngOnDestroy(): void {
+    this.session.plannerDrafts[this.kind] = {
+      values: this.values(),
+      start: this.start(),
+      zone: this.zone(),
+      material: this.material(),
+      basis: this.transferBasis(),
+    };
+  }
+  applyOffer(): void {
+    const offer = this.pending();
+    if (!offer) {
+      return;
+    }
+    if (this.kind === PlannerKind.Spool && this.compatibilityConfirmed()) {
+      this.values.update((v) => ({ ...v, [Field.Job]: offer.value }));
+    } else if (this.kind === PlannerKind.Finish && this.timingConfirmed()) {
+      this.values.update((v) => ({
+        ...v,
+        [Field.Hours]: Math.floor(offer.value),
+        [Field.Minutes]: (offer.value % 1) * 60,
+      }));
+    } else {
+      return;
+    }
+    this.transferBasis.set(offer.basis);
+    this.pending.set(null);
   }
   setNumber(key: Field, event: Event): void {
     const input = event.target as HTMLInputElement;

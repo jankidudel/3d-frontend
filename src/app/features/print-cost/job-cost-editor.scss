@@ -1,0 +1,111 @@
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1rem;
+}
+label {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.6rem 0;
+}
+input,
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.6rem;
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.check input {
+  width: auto;
+  margin-top: 0.3rem;
+}
+fieldset {
+  min-width: 0;
+  margin: 1rem 0;
+  border: 1px solid #64748b;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+legend {
+  font-weight: 700;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+button {
+  padding: 0.65rem;
+  margin: 0.25rem 0;
+}
+details {
+  margin: 1rem 0;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+dd {
+  margin: 0;
+}
+.print-record {
+  display: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@media print {
+  .job-editor > * {
+    display: none !important;
+  }
+  .job-editor .print-record {
+    display: block !important;
+  }
+}
+
+.job-editor {
+  max-width: 70rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  margin-block: 1.5rem;
+}
+button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+input,
+select,
+textarea {
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #0369a1;
+  outline-offset: 3px;
+}
+@media print {
+  .job-editor {
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  .print-record {
+    font: 10pt/1.4 sans-serif;
+  }
+}

@@ -2,6 +2,72 @@
   <p class="eyebrow">Browser-local print planning</p>
   <h1>{{ config.title }}</h1>
   <p class="lead">{{ config.description }}</p>
+  @if (pending(); as offer) {
+    <section class="card offer">
+      <h2>Job input offered from cost calculator</h2>
+      <p>
+        {{ offer.value }} {{ kind === kinds.Spool ? 'g' : 'hours' }}.
+        {{ offer.basis }}
+      </p>
+      @if (kind === kinds.Spool) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="compatibilityConfirmed()"
+            (change)="compatibilityConfirmed.set($any($event.target).checked)"
+          />I confirm the material, diameter and usable spool match this scope.
+          The entered reserve stays separate.</label
+        >
+      }
+      @if (kind === kinds.Finish) {
+        <label
+          ><input
+            type="checkbox"
+            [checked]="timingConfirmed()"
+            (change)="timingConfirmed.set($any($event.target).checked)"
+          />I have set start/timezone, correction and additional time below for
+          this sequential estimate.</label
+        >
+      }
+      <button
+        type="button"
+        [disabled]="
+          kind === kinds.Spool ? !compatibilityConfirmed() : !timingConfirmed()
+        "
+        (click)="applyOffer()"
+      >
+        Apply offered
+        {{
+          kind === kinds.Spool ? 'consumption only' : 'duration only'
+        }}</button
+      ><button type="button" (click)="pending.set(null)">Dismiss</button>
+    </section>
+  }
+  @if (transferBasis()) {
+    <p class="card">
+      Applied source basis: {{ transferBasis() }}. Current values remain
+      editable.
+    </p>
+  }
+  @if (kind === kinds.Spool) {
+    <p>
+      Check one compatible material/spool scope at a time. A job with several
+      filaments cannot use a single aggregate spool weight. Complete consumption
+      already includes reported supports/purge; reserve is an explicit separate
+      input, not another mandatory waste allowance.
+    </p>
+  }
+  @if (kind === kinds.Finish) {
+    <p>
+      Summed sequential run durations are an elapsed printing estimate, not an
+      unconditional delivery date. Add queue gaps, availability, cooling,
+      finishing, inspection and dispatch deliberately. There is no multi-machine
+      scheduling or monitoring.
+      <a [routerLink]="guides.Route3dPrintLeadTimeVsPrintTime"
+        >Understand lead time versus print time</a
+      >.
+    </p>
+  }
   <section class="card" aria-labelledby="planner-inputs">
     <h2 id="planner-inputs">Plan your next job</h2>
     <button type="button" (click)="example()">Load a worked example</button>

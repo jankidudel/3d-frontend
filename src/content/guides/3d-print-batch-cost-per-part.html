@@ -1,0 +1,183 @@
+---
+title: '3D Print Batch Cost per Part and Order | InspectMesh'
+description: 'Allocate a multi-plate job deliberately: complete material, repeated run work, shared preparation and average cost for identical planned parts.'
+slug: 3d-print-batch-cost-per-part
+eyebrow: Practical job planning
+heading: '3D Print Batch Cost per Part: Plate and Order Allocation'
+faq:
+  - question: 'Can I divide total job cost by quantity?'
+    answer: 'For identical planned usable parts, it is an allocated average. Mixed parts require an explicit allocation method; the calculator keeps their total at order level.'
+  - question: 'Can I scale print time with quantity?'
+    answer: 'Only an unchanged explicitly repeated run uses repeated duration. A changed plate arrangement needs re-slicing; linear scaling is not a new slicer estimate.'
+---
+
+<p>
+  Cost a batch from its sliced plates, then add the work that happens once per
+  order. Five parts on two plates are not five independent machine runs. First
+  find the order total; only allocate an average when the parts and intended
+  quantity make that average meaningful.
+</p>
+<figure>
+  <img
+    src="/images/job-planning/scope.svg"
+    alt="Part, plate and order scope: Part: intended output - Finishing occurs for each planned part; Plate: one sliced run - Material, machine time and run handling; Order: all selected plates - Preparation and packing occur once"
+    width="360"
+    height="278"
+  />
+  <figcaption>
+    Original planning diagram; hypothetical inputs, not observed production.
+  </figcaption>
+</figure>
+<h2>Shared fictional job: five identical parts, two plates</h2>
+<p>
+  Plate A contains three identical parts and has a complete 90 g consumption
+  estimate and four-hour run. Plate B contains two of those parts, with 70 g and
+  three hours. Both run once. These are hypothetical inputs, not slicer
+  observations, measured power or market rates.
+</p>
+<figure>
+  <img
+    src="/images/job-planning/two-plates.svg"
+    alt="Five parts across two plates: Plate A: 3 identical parts - One run, 90 g complete total, 4 hours; Plate B: 2 identical parts - One run, 70 g complete total, 3 hours; Order: 5 planned parts - 160 g, 7 sliced hours; outcomes unknown"
+    width="360"
+    height="278"
+  />
+  <figcaption>
+    Original planning diagram; hypothetical inputs, not observed production.
+  </figcaption>
+</figure>
+<p>
+  Use 24 currency units (CU) per kilogram, 120 W average power and 0.30 CU/kWh.
+  Machine allowance is 2 CU/hour, explicitly excluding energy. Labour is 18
+  CU/hour. Preparation takes 20 minutes once; each run has 10 minutes of
+  handling; each planned part takes five minutes of finishing. Packaging is 1.60
+  CU for the order.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Component</th>
+      <th scope="col">Hypothetical calculation</th>
+      <th scope="col">CU</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Material</td>
+      <td>0.160 kg × 24</td>
+      <td>3.84</td>
+    </tr>
+    <tr>
+      <td>Energy</td>
+      <td>7 h × 0.120 kW × 0.30</td>
+      <td>0.252</td>
+    </tr>
+    <tr>
+      <td>Machine</td>
+      <td>7 h × 2, excludes energy</td>
+      <td>14.00</td>
+    </tr>
+    <tr>
+      <td>Preparation</td>
+      <td>20/60 h × 18, once</td>
+      <td>6.00</td>
+    </tr>
+    <tr>
+      <td>Plate handling</td>
+      <td>2 × 10/60 h × 18</td>
+      <td>6.00</td>
+    </tr>
+    <tr>
+      <td>Finishing</td>
+      <td>5 × 5/60 h × 18</td>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <td>Packaging</td>
+      <td>Once per order</td>
+      <td>1.60</td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td>No extra waste, shipping, tax or failure budget</td>
+      <td>39.192</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The allocated average is <code>39.192 / 5 = 7.8384 CU</code>. This spreads all
+  selected job costs across five identical intended usable parts. It is neither
+  an exact individual cost nor the marginal cost of adding one more part. Actual
+  accepted, rejected and missing results must be recorded separately after
+  production; the plan does not establish delivered quantity.
+</p>
+<h2>Five independent runs change the scope</h2>
+<p>
+  Keeping preparation at 20 minutes but incurring five ten-minute handling tasks
+  makes handling 15 CU instead of 6 CU. That alone adds 9 CU. Material and
+  duration cannot safely be copied from the two-plate total: slice each new
+  arrangement. The comparison isolates one scope effect, rather than claiming
+  five independent runs cost exactly 48.192 CU.
+</p>
+<h2>Changing quantity requires another slice</h2>
+<p>
+  Suppose the customer changes five parts to six. A fourth part may fit Plate A,
+  a third may fit Plate B, or another plate may be needed. Check the layout,
+  slicing profile and complete estimates for the chosen arrangement. Sharing a
+  purge tower, travel changes and partial plates can change the per-part
+  average. Do not multiply seven hours by 6/5 and call 8.4 hours a slicer
+  result.
+</p>
+<p>
+  Repeating the unchanged Plate A twice means six planned parts, 180 g and eight
+  sliced hours under that explicit repeat assumption. Its handling occurs twice.
+  Shared preparation still occurs once if no new preparation is required. A
+  different revision, material or approval step can add preparation again as
+  agreed work.
+</p>
+<h2>Mixed parts stay at order level</h2>
+<p>
+  A bracket and four caps can have different material, machine time and
+  finishing needs. A mass ratio is not an allocation method for shared machine
+  time or administration. The job calculator therefore offers a total, with
+  per-part average only after confirming identical parts. For mixed work, retain
+  plate/material rows and agree any allocation outside this first version.
+</p>
+<h2>Retain a reproducible job record</h2>
+<ol>
+  <li>
+    Record requested quantity and the exact revision, material and profile with
+    each plate.
+  </li>
+  <li>
+    Enter complete consumption separately for different spool price bases;
+    identify genuinely unreported extra material.
+  </li>
+  <li>
+    Record run handling, once-per-order work and per-part finishing in their own
+    scopes.
+  </li>
+  <li>
+    Document the selected failure budget and any costs already included in
+    rates.
+  </li>
+  <li>
+    Review the total and export the job inputs before making a pricing decision.
+  </li>
+</ol>
+<p>
+  Use
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
+    >Several plates / one job in the cost calculator</a
+  >. Its fictional example reproduces these inputs.
+  <a href="{{ GuideSlug.RouteHowToCalculate3dPrintingCost }}"
+    >Production methodology</a
+  >
+  owns rate and uncertainty choices;
+  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}"
+    >the pricing guide</a
+  >
+  owns margin, fees and the quote. JSON retains full precision; print and PDF
+  retain the same input basis. Rounded averages may not multiply to the
+  displayed rounded total.
+</p>
