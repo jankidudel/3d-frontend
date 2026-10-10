@@ -9,6 +9,8 @@ export interface MeshIntegrityReport {
   readonly nonManifoldEdges: number;
   readonly degenerateTriangles: number;
   readonly duplicateTriangles: number;
+  readonly shells: number;
+  readonly orientationConflicts: number;
   readonly volume: number | null;
   readonly volumeReliable: boolean;
 }
@@ -29,6 +31,30 @@ export function inspectMesh(
 ): MeshIntegrityReport {
   const edgeCounts = new Map<string, number>();
   const triangles = new Map<string, number>();
+  const directions = new Map<string, number>();
+  // Weld exactly equal coordinates, including duplicated vertices across 3MF placements.
+  const lookup = new Map<string, number>();
+  const remap: number[] = [];
+  for (let i = 0; i < mesh.positions.length; i += 3) {
+    const point = Array.from(mesh.positions.slice(i, i + 3));
+    if (!point.every(Number.isFinite)) {
+      throw new Error('The mesh contains nonfinite coordinates.');
+    }
+    const key = point.join(':');
+    if (!lookup.has(key)) {
+      lookup.set(key, lookup.size);
+    }
+    remap.push(lookup.get(key)!);
+  }
+  const parent = Array.from({ length: lookup.size }, (_, i) => i);
+  const root = (index: number): number => {
+    while (parent[index] !== index) {
+      parent[index] = parent[parent[index]];
+      index = parent[index];
+    }
+    return index;
+  };
+  const used = new Set<number>();
   let degenerateTriangles = 0;
   let signedVolume = 0;
   for (let index = 0; index < mesh.indices.length; index += 3) {
@@ -62,15 +88,20 @@ export function inspectMesh(
       degenerateTriangles += 1;
       continue;
     }
-    const signature = [...triangle].sort((a, b) => a - b).join(':');
+    const welded = triangle.map((index) => remap[index]);
+    const signature = [...welded].sort((a, b) => a - b).join(':');
     triangles.set(signature, (triangles.get(signature) ?? 0) + 1);
     for (const [a, b] of [
-      [triangle[0], triangle[1]],
-      [triangle[1], triangle[2]],
-      [triangle[2], triangle[0]],
+      [welded[0], welded[1]],
+      [welded[1], welded[2]],
+      [welded[2], welded[0]],
     ]) {
       const edge = a < b ? `${a}:${b}` : `${b}:${a}`;
       edgeCounts.set(edge, (edgeCounts.get(edge) ?? 0) + 1);
+      directions.set(edge, (directions.get(edge) ?? 0) + (a < b ? 1 : -1));
+      parent[root(b)] = root(a);
+      used.add(a);
+      used.add(b);
     }
     signedVolume +=
       ax * (by * cz - bz * cy) -
@@ -87,13 +118,24 @@ export function inspectMesh(
     (total, count) => total + Math.max(0, count - 1),
     0,
   );
+  const shells = new Set(Array.from(used, root)).size;
+  const orientationConflicts = [...edgeCounts.entries()].filter(
+    ([edge, count]) => count === 2 && directions.get(edge) !== 0,
+  ).length;
   const volumeReliable =
-    openEdges === 0 && nonManifoldEdges === 0 && degenerateTriangles === 0;
+    openEdges === 0 &&
+    nonManifoldEdges === 0 &&
+    degenerateTriangles === 0 &&
+    duplicateTriangles === 0 &&
+    orientationConflicts === 0 &&
+    shells === 1;
   return {
     openEdges,
     nonManifoldEdges,
     degenerateTriangles,
     duplicateTriangles,
+    shells,
+    orientationConflicts,
     volume: volumeReliable ? Math.abs(signedVolume / 6) : null,
     volumeReliable,
   };
@@ -126,6 +168,7 @@ export function preflightStatus(
     integrity.openEdges ||
     integrity.nonManifoldEdges ||
     integrity.degenerateTriangles ||
+    integrity.orientationConflicts ||
     fitsPrinter === false
   ) {
     return 'Needs attention';
@@ -158,6 +201,7 @@ export function preflightActions(
     integrity.openEdges ||
     integrity.nonManifoldEdges ||
     integrity.degenerateTriangles ||
+    integrity.orientationConflicts ||
     integrity.duplicateTriangles
   ) {
     actions.push({

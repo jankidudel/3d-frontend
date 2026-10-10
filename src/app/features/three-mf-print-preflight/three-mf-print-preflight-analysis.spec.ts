@@ -12,6 +12,8 @@ const cleanIntegrity: MeshIntegrityReport = {
   duplicateTriangles: 0,
   volume: 12,
   volumeReliable: true,
+  shells: 1,
+  orientationConflicts: 0,
 };
 
 describe('3MF print preflight analysis', () => {

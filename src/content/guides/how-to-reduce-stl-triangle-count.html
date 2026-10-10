@@ -19,6 +19,38 @@ faq:
   surface contains far more tiny faces than the intended print can show.
 </p>
 
+<h2>Compare the ridge before accepting unchanged bounds</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/detail-loss.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Projected original and 75 percent coupon surfaces with the narrow raised ridge."
+  />
+  <figcaption>
+    Distributed 24- and 18-triangle geometry, independently framed for
+    inspection. Unchanged bounds do not establish local equivalence.
+  </figcaption>
+</figure>
+<p>
+  Running the actual finite comparison on the original and 75% coupon in their
+  original frame, mm on both sides and 0.1 mm tolerance gives 5,000 samples per
+  direction: maximum sampled distance about 0.23290 mm, mean about 0.000512 mm,
+  and 25 of 10,000 samples above tolerance. The largest observed sample is not a
+  whole-surface maximum. A small mean can conceal a meaningful change on a
+  narrow ridge.
+</p>
+<p>
+  Use the paired loader in
+  <a href="{{ GuideSlug.RouteStlCompare }}">revision comparison</a> or load the
+  original in
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">the reducer</a> at 75%.
+  Download and reopen the derivative, check topology again and inspect named
+  small features rather than approving by count or bounding box. The existing
+  result table below records the separately verified 50% defect case; retain the
+  original if the feature requirement is unresolved.
+</p>
 <h2>What does STL triangle count mean?</h2>
 <p>
   An STL represents a surface as triangles. Flat areas need only a few. Curved

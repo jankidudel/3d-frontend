@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
@@ -19,10 +20,20 @@ type ScaleMethod = 'percentage' | 'target' | 'units';
 
 @Component({
   selector: 'app-stl-scale-page',
+  imports: [ExampleLoader],
   templateUrl: './stl-scale-page.html',
   styleUrl: './stl-scale-page.scss',
 })
 export class StlScalePage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    await this.selectFile(files[0]);
+    this.setPercentage(150);
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly routeUrl = PublicRouteUrl;
   readonly unit = ScaleUnit;
   readonly file = signal<File | null>(null);

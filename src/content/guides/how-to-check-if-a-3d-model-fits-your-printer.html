@@ -31,24 +31,66 @@ faq:
   diameter. Confirm placement in the target slicer.
 </p>
 
-<h2>Worked fit and rotation example</h2>
+<h2>Reproduce a custom envelope, then add explicit allowances</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/fit-layout.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="250 by 210 by 180 mm model and a 220 by 260 by 200 mm custom box, with a fitting rotation."
+  />
+  <figcaption>
+    X/Y/Z order is explicit. The projected control is not a collision or support
+    simulation.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Custom X/Y/Z box: 220 × 260 × 200 mm</th>
+      <th scope="col">Model or footprint X/Y/Z</th>
+      <th scope="col">Decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Original distributed rectangular control</td>
+      <td>250 × 210 × 180 mm</td>
+      <td>Fails X</td>
+    </tr>
+    <tr>
+      <td>Right-angle rotation</td>
+      <td>210 × 250 × 180 mm</td>
+      <td>Fits nominally</td>
+    </tr>
+    <tr>
+      <td>Hypothetical 5 mm allowance on each side of X and Y</td>
+      <td>220 × 260 × 180 mm</td>
+      <td>Exactly at two limits; no residual margin</td>
+    </tr>
+    <tr>
+      <td>Hypothetical 6 mm allowance on each side of X and Y</td>
+      <td>222 × 262 × 180 mm</td>
+      <td>Fails X and Y</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  Consider a 205 × 165 × 92 mm model and a stated 180 × 180 × 220 mm build
-  volume. It fails in the current orientation because 205 exceeds the X limit. A
-  right-angle rotation can permute the bounds to 92 × 165 × 205 mm, which fits
-  the three nominal axes. A different permutation, 165 × 205 × 92 mm, still
-  fails Y. Compare each model dimension with the specific printer axis rather
-  than comparing only the two largest numbers.
+  Load the rectangular control from
+  <a href="{{ GuideSlug.RouteExamples }}">the library</a> and enter that custom
+  build box. InspectMesh’s width/height/depth fields follow X/Y/Z, so check axis
+  labels rather than assuming a printer vendor's width/depth/height order.
+  Preflight's nominal fit does not add a brim or support allowance
+  automatically; the additions above are separate reproducible arithmetic, not
+  universal clearances.
 </p>
 <p>
-  The calculation assumes an axis-aligned bounding box and a rectangular usable
-  region. Clips, purge zones, toolhead clearance, non-rectangular beds and
-  firmware limits can reduce real space. Diagonal placement may help in some
-  cases, but it needs a newly measured bound and slicer confirmation. If a fit
-  requires zero margin, treat it as a warning and use the printer manufacturer's
-  documented printable area rather than the headline machine size.
+  Rotation can improve fit while changing support, layer direction and contact.
+  Confirm the actual reserved bed regions, nozzle/toolhead clearance and
+  complete sliced footprint. A rectangular envelope does not perform general
+  collision checking or choose a support strategy.
 </p>
-
 <h2>Fit does not choose the print orientation</h2>
 <p>
   A fitting rotation may create heavy support, weak layer orientation, a small
@@ -189,58 +231,4 @@ faq:
   <a href="{{ GuideSlug.RouteStlScaleTool }}">scale</a> only when changing
   real-world dimensions is acceptable, or plan separate parts and joint
   clearances.
-</p>
-
-<h2>Dimensions correct, but the sliced job will not fit</h2>
-<p>
-  Hypothetical rectangular bed: 220 × 220 mm. A centred 214 × 100 mm part has a
-  3 mm nominal margin at each X edge. A chosen 5 mm brim extends its X footprint
-  to 224 mm, so the complete footprint exceeds that hypothetical bed. The brim
-  width is an example input, not a universal clearance recommendation. Supports
-  or a purge structure can change the result again.
-</p>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Observation</th>
-      <th scope="col">Review next</th>
-      <th scope="col">Decision</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Bounds fit but brim exceeds bed</td>
-      <td>Actual sliced adhesion footprint</td>
-      <td>
-        Review adhesion/orientation choices; do not shrink a functional model
-        silently
-      </td>
-    </tr>
-    <tr>
-      <td>Part is inside nominal bounds but over a clip or excluded area</td>
-      <td>Documented usable bed shape and reservations</td>
-      <td>Move or rotate in the intended slicer</td>
-    </tr>
-    <tr>
-      <td>Correct spans but coordinates place the part off-bed</td>
-      <td>Origin, translation and lower Z extent</td>
-      <td>Confirm placement without confusing translation with scale</td>
-    </tr>
-    <tr>
-      <td>Fits only in a tall orientation</td>
-      <td>Contact, supports and layer direction</td>
-      <td>
-        Compare practical sliced jobs; box fit does not choose an acceptable
-        orientation
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p>
-  Use
-  <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">nominal fit checking</a> as
-  the early screen, then inspect the complete sliced job with
-  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">G-code preflight</a> and
-  the native slicer preview. Neither verifies every firmware offset or physical
-  obstruction.
 </p>

@@ -21,6 +21,116 @@ faq:
   results. A useful preflight checks each concern separately before repair.
 </p>
 
+<h2>Work through a known finding before editing your own model</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/open-boundary.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Closed cube beside the face-removed cube with its four boundary edges marked."
+  />
+  <figcaption>
+    Original missing-face diagram, not a screenshot or a physical-print result.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Local preflight observation</th>
+      <th scope="col">Meaning and confirmation</th>
+      <th scope="col">Focused next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Four open edges on the 10-triangle control</td>
+      <td>
+        One square face is absent; ask whether this surface was intended to be
+        closed
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
+          >Inspect the opening before filling</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>One duplicate; three over-shared edges</td>
+      <td>
+        13 facets overlap an existing facet; this is distinct from winding
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
+          >Compare independent duplicate and winding controls</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Three winding edge conflicts, no open edges</td>
+      <td>
+        12 triangles still cover the surface, but one triangle is reversed
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
+          >Correct orientation on a copy</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Two components; zero open/over-shared edges</td>
+      <td>
+        Separate or crossing closed shells; intersections were not checked
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
+          >Review component intent and crossing surfaces</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>12 of 36 bar samples below 1.2 mm</td>
+      <td>
+        Measured rays screen thin directions, not every feature or physical
+        strength
+      </td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+          >Compare geometry with actual slicer paths</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Unavailable volume or skipped fit</td>
+      <td>
+        No supported value or selected printer; these are not zeros or passing
+        checks
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlVolumeCalculationWrong }}"
+          >Review volume conditions and unit assumptions</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ol>
+  <li>
+    Load the closed cube from
+    <a href="{{ GuideSlug.RouteExamples }}">the example library</a> and select
+    millimetres: 12 triangles, zero open edges and 8,000 mm³.
+  </li>
+  <li>
+    Explicitly replace it with the face-removed control: 10 triangles, four open
+    edges and unavailable volume.
+  </li>
+  <li>
+    Keep the original and decide whether replacing that face matches the design.
+    Reopen a deliberately corrected copy and compare the affected region,
+    dimensions and sliced layers; an empty or failed report does not verify
+    correction.
+  </li>
+</ol>
 <h2>Interpret combinations, not isolated counts</h2>
 <p>
   One open loop plus consistent orientation may indicate a simple missing cap.
@@ -207,49 +317,4 @@ faq:
   <a href="{{ GuideSlug.RouteStlPrintPreflight }}">single-file preflight</a> for
   focused follow-up, then compare a revised export rather than silently
   overwriting the original.
-</p>
-
-<h2>Choose a check from an observable symptom</h2>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Symptom</th>
-      <th scope="col">First check</th>
-      <th scope="col">Stop condition</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Open boundary highlighted</td>
-      <td>Locate missing face and verify intended solid</td>
-      <td>
-        Return to CAD if replacing it requires inventing a functional surface
-      </td>
-    </tr>
-    <tr>
-      <td>No edge findings but strange overlapping layers</td>
-      <td>Inspect intersecting triangles and internal shells</td>
-      <td>Passing edge incidence does not rule out self intersections</td>
-    </tr>
-    <tr>
-      <td>Volume missing or implausible</td>
-      <td>Check units, winding, boundaries and shell interpretation</td>
-      <td>Do not substitute zero for an unavailable result</td>
-    </tr>
-    <tr>
-      <td>Known dimension differs from import</td>
-      <td>Verify the unit assumption and source scale</td>
-      <td>Do not repair topology to fix a unit error</td>
-    </tr>
-  </tbody>
-</table>
-<p>
-  Read
-  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
-    >how self intersections differ from non-manifold edges</a
-  >
-  and
-  <a href="{{ GuideSlug.RouteStlVolumeCalculationWrong }}"
-    >why STL volume can be implausible</a
-  >. These resolve different questions from choosing a repair operation.
 </p>

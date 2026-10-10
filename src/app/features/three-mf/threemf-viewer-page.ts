@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { isPlatformBrowser } from '@angular/common';
 import {
@@ -43,11 +44,24 @@ interface ModelInfo {
 
 @Component({
   selector: 'app-three-mf-viewer-page',
-  imports: [ObjectViewerComponent, MeshIssueHighlightsComponent, RouterLink],
+  imports: [
+    ExampleLoader,
+    ObjectViewerComponent,
+    MeshIssueHighlightsComponent,
+    RouterLink,
+  ],
   templateUrl: './threemf-viewer-page.html',
   styleUrl: './threemf-viewer-page.scss',
 })
 export class ThreeMfViewerPage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    await this.load(files[0]);
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');

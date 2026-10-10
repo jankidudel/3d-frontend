@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   ReviewSession,
@@ -43,11 +44,24 @@ const PLA_DENSITY_GRAMS_PER_CUBIC_CENTIMETRE = 1.24;
 
 @Component({
   selector: 'app-three-mf-print-preflight-page',
-  imports: [ToolEvidenceComponent, RouterLink, ThreeMfFilePicker],
+  imports: [
+    ExampleLoader,
+    ToolEvidenceComponent,
+    RouterLink,
+    ThreeMfFilePicker,
+  ],
   templateUrl: './three-mf-print-preflight-page.html',
   styleUrl: './three-mf-print-preflight-page.scss',
 })
 export class ThreeMfPrintPreflightPage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    await this.onFileSelected(files[0]);
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Preflight),
@@ -200,7 +214,6 @@ export class ThreeMfPrintPreflightPage {
       const resolved = await resolveThreeMfWallGeometry(
         await file.arrayBuffer(),
       );
-      this.resolved.set(resolved);
       await this.yieldToBrowser();
       this.progress.set(
         'Checking resolved mesh integrity, size and printer fit...',
@@ -214,6 +227,7 @@ export class ThreeMfPrintPreflightPage {
           WallThicknessUnit.Millimetres,
         ),
       );
+      this.resolved.set(resolved);
       this.progress.set('3MF preflight report ready.');
     } catch (error: unknown) {
       this.error.set(

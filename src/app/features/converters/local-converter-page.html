@@ -99,6 +99,15 @@
       <p class="error" role="alert" aria-live="assertive">{{ error() }}</p>
     }
   </section>
+  @if (kind === '3mf-to-stl') {
+    <app-example-loader
+      tool="/3mf-to-stl-converter"
+      [active]="file() !== null"
+      [busy]="converting()"
+      [current]="file()"
+      [load]="loadPublicExample"
+    />
+  }
   @if (result(); as conversion) {
     <section
       class="tool-result results card"

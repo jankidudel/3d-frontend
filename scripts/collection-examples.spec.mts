@@ -119,6 +119,17 @@ it('repairs the published duplicate package and exports declared units to millim
   });
   const { convertThreeMfToStl } =
     await import('../src/app/features/converters/three-mf-stl-export.ts');
+  for (const [name, width, triangles] of [
+    ['one-placed-cube.3mf', 20, 12],
+    ['two-placed-cubes.3mf', 60, 24],
+  ] as const) {
+    const output = await convertThreeMfToStl(
+      await (await file(`collection-review/${name}`)).arrayBuffer(),
+    );
+    const reopened = await readStl(new File([output.bytes], 'reopened.stl'));
+    expect(checkGeometry(reopened, settings).dimensionsMm.width).toBe(width);
+    expect(reopened.indices.length / 3).toBe(triangles);
+  }
   const converted = await convertThreeMfToStl(
     await (
       await file('english-market-batch/declared-inch-transformed.3mf')
@@ -132,4 +143,173 @@ it('repairs the published duplicate package and exports declared units to millim
   expect(Math.min(...xs)).toBeCloseTo(50.8, 4);
   expect(Math.max(...xs)).toBeCloseTo(76.2, 4);
   dom.window.close();
+});
+
+import {
+  publicExamples,
+  findPublicExample,
+} from '../src/app/features/examples/example-registry.ts';
+import { inspectMesh } from '../src/app/features/stl-print-preflight/stl-print-preflight-analysis.ts';
+import { surfaceDifference } from '../src/app/features/repeat-workflows/mesh-workflows.ts';
+import { scaleMesh } from '../src/app/features/stl-scale/stl-scale.ts';
+import { assessPrinterOrientations } from '../src/app/shared/model-dimensions.ts';
+
+describe('visual diagnosis teaching controls', () => {
+  it('keeps eight unique scenarios, bounded bytes and allowlisted IDs', async () => {
+    expect(publicExamples).toHaveLength(8);
+    expect(new Set(publicExamples.map((example) => example.id)).size).toBe(8);
+    expect(
+      findPublicExample('https://customer.invalid/private.stl', '/stl-viewer'),
+    ).toBeUndefined();
+    expect(
+      findPublicExample('build-conversion', '/stl-viewer'),
+    ).toBeUndefined();
+    for (const example of publicExamples) {
+      for (const asset of example.files) {
+        const bytes = await readFile(
+          resolve(root, asset.path.replace('/examples/', '')),
+        );
+        expect(bytes.length).toBe(asset.bytes);
+        expect(bytes.length).toBeLessThan(5 * 1024 * 1024);
+      }
+    }
+  });
+  it('distinguishes unit interpretation from scaling and reopens output', async () => {
+    const original = await readStl(
+      await file('english-market-batch/closed-20mm-cube.stl'),
+    );
+    expect(inspectMesh(original).volume).toBe(8000);
+    expect(
+      checkGeometry(original, settings, 25.4).dimensionsMm.width,
+    ).toBeCloseTo(508, 4);
+    const reopened = await readStl(
+      new File([writeBinaryStl(scaleMesh(original, 1.5)!)], 'scaled.stl'),
+    );
+    expect(checkGeometry(reopened, settings).dimensionsMm.width).toBe(30);
+    expect(inspectMesh(reopened).volume).toBe(27000);
+    expect(reopened.indices.length).toBe(original.indices.length);
+    expect(
+      inspectMesh(
+        await readStl(await file('english-market-batch/open-face-cube.stl')),
+      ),
+    ).toMatchObject({ openEdges: 4, volume: null });
+  });
+  it('independently varies duplicate facets, winding and stored normal vectors', async () => {
+    for (const [path, triangles, duplicates, overShared, conflicts, volume] of [
+      ['english-market-batch/closed-20mm-cube.stl', 12, 0, 0, 0, 8000],
+      ['cad-export/duplicate-face-cube.stl', 13, 1, 3, 0, null],
+      ['diagnosis/reversed-winding-cube.stl', 12, 0, 0, 3, null],
+      ['diagnosis/stored-normal-cube.stl', 12, 0, 0, 0, 8000],
+    ] as const) {
+      const mesh = await readStl(await file(path));
+      expect(mesh.indices.length / 3).toBe(triangles);
+      expect(inspectMesh(mesh)).toMatchObject({
+        duplicateTriangles: duplicates,
+        nonManifoldEdges: overShared,
+        orientationConflicts: conflicts,
+        volume,
+      });
+    }
+    const reversed = await readStl(
+      await file('diagnosis/reversed-winding-cube.stl'),
+    );
+    const correctedIndices = reversed.indices.slice();
+    [correctedIndices[1], correctedIndices[2]] = [
+      correctedIndices[2],
+      correctedIndices[1],
+    ];
+    const corrected = await readStl(
+      new File(
+        [writeBinaryStl({ ...reversed, indices: correctedIndices })],
+        'corrected.stl',
+      ),
+    );
+    expect(inspectMesh(corrected)).toMatchObject({
+      orientationConflicts: 0,
+      volume: 8000,
+      openEdges: 0,
+    });
+    await expect(
+      readStl(await file('diagnosis/malformed.stl')),
+    ).rejects.toThrow();
+  });
+  it('withholds ambiguous multiple-shell volume, also across 3MF placements', async () => {
+    for (const path of [
+      'diagnosis/separated-cubes.stl',
+      'collection-review/overlapping-cubes.stl',
+    ]) {
+      expect(inspectMesh(await readStl(await file(path)))).toMatchObject({
+        shells: 2,
+        openEdges: 0,
+        nonManifoldEdges: 0,
+        volume: null,
+      });
+    }
+    const dom = new JSDOM();
+    vi.stubGlobal('DOMParser', dom.window.DOMParser);
+    const loaded = await loadWorkflowModel(
+      await file('collection-review/two-placed-cubes.3mf'),
+      ModelUnits.Millimetres,
+    );
+    expect(inspectMesh(loaded.mesh)).toMatchObject({
+      shells: 2,
+      openEdges: 0,
+      volume: null,
+    });
+    dom.window.close();
+  });
+  it('runs finite comparison and wall sampling on distributed controls', async () => {
+    const original = await readStl(
+      await file('collection-review/detail-coupon.stl'),
+    );
+    const reduced = await readStl(
+      await file('collection-review/detail-coupon-75.stl'),
+    );
+    const difference = surfaceDifference(original, reduced, 0.1);
+    expect(difference.forward).toHaveLength(5000);
+    expect(difference.reverse).toHaveLength(5000);
+    expect(difference.maximumSampledMm).toBeGreaterThan(0);
+    expect(difference.maximumSampledMm).toBeLessThan(1);
+    const bars = checkGeometry(
+      await readStl(await file('english-market-batch/thin-wall-bars.stl')),
+      settings,
+    );
+    expect(bars.thickness?.measured).toBeGreaterThan(0);
+    expect(bars.thickness?.belowThreshold).toBeGreaterThan(0);
+    expect(difference.maximumSampledMm).toBeCloseTo(0.2329025659, 6);
+    expect(difference.samplesOverTolerance).toBe(25);
+    expect(bars.thickness).toMatchObject({
+      samples: 36,
+      measured: 36,
+      unmeasured: 0,
+      belowThreshold: 12,
+    });
+  });
+  it('checks custom fit, hypothetical margins and curve arithmetic independently', async () => {
+    const dimensions = checkGeometry(
+      await readStl(
+        await file('english-market-batch/printer-fit-250x210x180.stl'),
+      ),
+      settings,
+    ).dimensionsMm;
+    expect(dimensions).toEqual({ width: 250, height: 210, depth: 180 });
+    const fit = assessPrinterOrientations(
+      dimensions,
+      'mm',
+      { width: 220, height: 260, depth: 200 },
+      'mm',
+    );
+    expect(fit?.current.fit.fits).toBe(false);
+    expect(fit?.recommended?.fit.fits).toBe(true);
+    const rotated = [210, 250, 180],
+      box = [220, 260, 200];
+    expect(
+      rotated.map((n, i) => n + (i < 2 ? 10 : 0)).every((n, i) => n <= box[i]),
+    ).toBe(true);
+    expect(
+      rotated.map((n, i) => n + (i < 2 ? 12 : 0)).every((n, i) => n <= box[i]),
+    ).toBe(false);
+    expect(10 * (1 - Math.cos(Math.PI / 24))).toBeCloseTo(0.08555, 5);
+    expect(10 * (1 - Math.cos(Math.PI / 72))).toBeCloseTo(0.00952, 5);
+  });
 });

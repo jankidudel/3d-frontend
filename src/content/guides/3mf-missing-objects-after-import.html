@@ -19,6 +19,45 @@ faq:
   application is another thing to verify; it is not a universal 3MF display
   rule.
 </p>
+<h2>Read the resolved count beside the stored resource</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Package control</th>
+      <th scope="col">Stored mesh resources / placed build items</th>
+      <th scope="col">Actual resolved geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One-placed cube</td>
+      <td>1 / 1</td>
+      <td>12 triangles; 20 × 20 × 20 mm</td>
+    </tr>
+    <tr>
+      <td>Two-placed cubes</td>
+      <td>1 / 2</td>
+      <td>24 triangles; 60 × 20 × 20 mm; two components</td>
+    </tr>
+    <tr>
+      <td>Declared-inch transformed control</td>
+      <td>1 / 1</td>
+      <td>12 triangles; 25.4 mm spans; X from 50.8 to 76.2 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The paired files below have verified bytes and are resolved through the actual
+  local implementation. Use the explicit loader in
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF viewing</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a>. Stored
+  resource count is not visible instance count; conversion/reopening preserves
+  the supported placed surfaces but flattens their object identity.
+  Multi-component volume remains unavailable in preflight rather than pretending
+  to know the intended solid union.
+  <a href="{{ GuideSlug.RouteExamples }}">Compare the controls in the library</a
+  >.
+</p>
 <h2>Count resources and placed instances separately</h2>
 <p>
   The Core Specification separates reusable object resources from the build

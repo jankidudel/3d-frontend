@@ -33,6 +33,13 @@
       <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
+  <app-example-loader
+    tool="/stl-file-size-reducer"
+    [active]="file() !== null"
+    [busy]="processing()"
+    [current]="file()"
+    [load]="loadPublicExample"
+  />
   @if (sourceMetrics(); as sourceMetrics) {
     <section class="card" aria-labelledby="analysis-title">
       <h2 id="analysis-title">File analysis</h2>

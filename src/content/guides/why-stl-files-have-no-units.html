@@ -20,6 +20,35 @@ faq:
   <code>100</code> units. The printer software decides what that unit means.
 </p>
 
+<h2>Read a known 20-coordinate cube without changing its bytes</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/units-scale.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="20-coordinate cube interpreted as 20 mm or 508 mm, compared with 150 percent coordinate scaling."
+  />
+  <figcaption>
+    The size reference comes from generated coordinates; it is not a measured
+    printed cube.
+  </figcaption>
+</figure>
+<p>
+  Download the closed control from
+  <a href="{{ GuideSlug.RouteExamples }}">the example library</a> and load it in
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">local preflight</a>. Choosing
+  millimetres gives 20 mm spans; choosing inches gives 508 mm spans. That
+  selector changes interpretation. To make a different STL,
+  <a href="{{ GuideSlug.RouteStlScaleTool }}">scale the coordinates</a>
+  explicitly: 150% exports 30-coordinate spans with the same 12 triangles.
+</p>
+<p>
+  Reopen the saved result in the receiving application using the agreed unit and
+  check a reference dimension before repair or layout. The reopened STL still
+  has no unit metadata. Do not compensate twice by both converting coordinates
+  and selecting the wrong receiving unit.
+</p>
 <h2>Check the whole export chain</h2>
 <p>
   A CAD export dialog, mesh editor and slicer can each apply an assumption.
@@ -129,27 +158,4 @@ faq:
   reports the declared unit, and the
   <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> lets you inspect the
   displayed model locally.
-</p>
-
-<h2>Reproduce the 25.4 size error before changing the file</h2>
-<p>
-  A model exported with a width of 2 coordinate units can mean 2 inches in the
-  author's CAD workflow. Imported as millimetres, it measures only 2 mm;
-  intended width is 2 × 25.4 = 50.8 mm. The correction is a factor of 25.4, or
-  2,540%, not an arbitrary scale guessed from the viewer.
-</p>
-<p>
-  The built-in batch fixture is a 20-unit cube. Under a millimetre assumption
-  its width is 20 mm; under an inch assumption it is 508 mm. That software
-  demonstration changes interpretation, not the original coordinates. Compare a
-  known reference dimension, such as a hole centre distance, with the supplied
-  drawing before deciding which interpretation is correct.
-</p>
-<p>
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">Check dimensions</a> and
-  explicitly select the assumed unit. If you need a converted STL, use
-  <a href="{{ GuideSlug.RouteStlScaleTool }}">the scale tool</a> to save a new
-  copy and verify it in the target slicer. Converting into 3MF can carry unit
-  metadata, but the source STL still cannot tell you which unit its author
-  intended.
 </p>

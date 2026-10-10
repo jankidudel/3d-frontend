@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -35,11 +36,21 @@ interface PreviewModel {
 
 @Component({
   selector: 'app-stl-reducer-page',
-  imports: [RouterLink, ObjectViewerComponent],
+  imports: [ExampleLoader, RouterLink, ObjectViewerComponent],
   templateUrl: './stl-reducer-page.html',
   styleUrl: './stl-reducer-page.scss',
 })
 export class StlReducerPage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    await this.onFileSelected(files[0]);
+    this.mode.set('reduction');
+    this.keepPercent.set(75);
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly previewVersion = PreviewVersion;
@@ -152,7 +163,7 @@ export class StlReducerPage {
         this.result.set({ mesh: source, blob, keepPercent: 100 });
         this.analytics.trackReducer(AnalyticsEvent.ReducerLosslessCompleted);
       } else {
-        const mesh = await simplify(source, this.keepPercent() / 100);
+        const mesh = await simplify(source, this.keepPercent());
         const blob = writeBinaryStl(mesh);
         const output = metrics(mesh, blob.size);
         if (

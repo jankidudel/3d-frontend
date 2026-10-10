@@ -22,6 +22,100 @@ faq:
   likely to be lost when the model is sliced.
 </p>
 
+<h2>Known thin bars versus actual Classic and Arachne exports</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/thin-features.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Three closed bars 0.3, 0.45 and 0.9 mm wide, with exaggerated widths for readability."
+  />
+  <figcaption>
+    Original dimension diagram. Actual slicer screenshots and preview-only
+    exports accompany the recorded experiment below.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Evidence</th>
+      <th scope="col">Observation</th>
+      <th scope="col">Interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Generated bars</td>
+      <td>Widths 0.3 / 0.45 / 0.9 mm; length 20 mm, height 10 mm</td>
+      <td>Closed geometry can still contain narrow features</td>
+    </tr>
+    <tr>
+      <td>Actual local preflight, mm, 1.2 mm threshold</td>
+      <td>
+        36 samples, 36 measured, 0 unmeasured; 12 below threshold; minimum about
+        0.29999 mm
+      </td>
+      <td>
+        Centroid rays also hit long/tall directions. The minimum includes the
+        method’s ray offset, not a precision measurement
+      </td>
+    </tr>
+    <tr>
+      <td>PrusaSlicer 2.9.6 Classic, retained second layer</td>
+      <td>4 extrusion moves; one closed narrow outline</td>
+      <td>A fixed-width configuration does not preserve every bar</td>
+    </tr>
+    <tr>
+      <td>PrusaSlicer 2.9.6 Arachne, retained second layer</td>
+      <td>6 extrusion moves; paths at three bar positions</td>
+      <td>
+        Variable-width paths differ; no strength or print success established
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The retained runs used a 0.4 mm nozzle, 0.2 mm layer height, 0.45 mm extrusion
+  width, two perimeters, zero infill and thin-wall option off; other CLI
+  defaults remain in each export footer. Both warned about low bed adhesion;
+  Classic also warned about loose extrusions. The G-code is for preview
+  inspection only and must not be sent to a printer.
+</p>
+<figure>
+  <img
+    src="/examples/diagnosis/slicer-classic.jpg"
+    width="1120"
+    height="1001"
+    loading="lazy"
+    alt="Actual parsed preview of the retained Classic second layer showing one narrow outline."
+  />
+  <figcaption>
+    Recorded local preview of the retained Classic export. Screen capture
+    dimensions are adjusted to the original image.
+  </figcaption>
+</figure>
+<figure>
+  <img
+    src="/examples/diagnosis/slicer-arachne.jpg"
+    width="1120"
+    height="1001"
+    loading="lazy"
+    alt="Actual parsed preview of the retained Arachne second layer showing paths at three bar positions."
+  />
+  <figcaption>
+    Recorded local preview of the retained Arachne export, not a physical-print
+    photograph.
+  </figcaption>
+</figure>
+<p>
+  <a href="{{ GuideSlug.RouteExamples }}"
+    >Download the bars and exact preview-only exports</a
+  >. An unmeasured ray in another model is not zero thickness or a passing
+  region. Compare the selected process's design requirements, material,
+  orientation and load with the native slicer preview. This experiment does not
+  establish a universal minimum wall.
+</p>
 <h2>Sources and process caveats</h2>
 <p>
   Official process documentation should control a real design decision. For one

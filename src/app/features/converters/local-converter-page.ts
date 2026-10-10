@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { isPlatformBrowser } from '@angular/common';
 import {
@@ -33,11 +34,19 @@ const UNIT_LABELS: Readonly<Record<OutputUnit, string>> = {
 
 @Component({
   selector: 'app-local-converter-page',
-  imports: [RouterLink],
+  imports: [ExampleLoader, RouterLink],
   templateUrl: './local-converter-page.html',
   styleUrl: './local-converter-page.scss',
 })
 export class LocalConverterPage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    this.select(files[0]);
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly guideRouteUrl = GuideRouteUrl;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
   readonly routeUrl = PublicRouteUrl;
@@ -264,7 +273,7 @@ export class LocalConverterPage {
 
 @Component({
   selector: 'app-stl-to-three-mf-converter-page',
-  imports: [RouterLink],
+  imports: [ExampleLoader, RouterLink],
   templateUrl: './local-converter-page.html',
   styleUrl: './local-converter-page.scss',
 })
@@ -272,7 +281,7 @@ export class StlToThreeMfConverterPage extends LocalConverterPage {}
 
 @Component({
   selector: 'app-three-mf-to-stl-converter-page',
-  imports: [RouterLink],
+  imports: [ExampleLoader, RouterLink],
   templateUrl: './local-converter-page.html',
   styleUrl: './local-converter-page.scss',
 })

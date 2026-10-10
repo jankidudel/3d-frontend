@@ -130,10 +130,10 @@
       /></label>
     </div>
     <button type="button" (click)="example()" [disabled]="busy()">
-      Compare known 20 → 24 mm change
+      Replace revisions: compare 20 → 24 mm
     </button>
     <button type="button" (click)="example(true)" [disabled]="busy()">
-      Try unchanged surface with different triangles
+      Replace revisions: unchanged surface, new triangles
     </button>
     <button
       type="button"
@@ -161,6 +161,13 @@
       coordinate move; no rotation or rescaling is performed.
     </p>
   </section>
+  <app-example-loader
+    tool="/stl-compare"
+    [active]="before() !== null || after() !== null"
+    [busy]="busy()"
+    [current]="before()"
+    [load]="loadPublicExample"
+  />
   @if (object(); as scene) {
     <app-object-viewer
       [object]="scene"

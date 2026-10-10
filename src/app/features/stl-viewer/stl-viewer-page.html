@@ -63,6 +63,13 @@
       <p class="error" role="alert">{{ message }}</p>
     }
   </section>
+  <app-example-loader
+    tool="/stl-viewer"
+    [active]="model() !== null"
+    [busy]="loading()"
+    [current]="model()"
+    [load]="loadPublicExample"
+  />
   @if (model(); as current) {
     <section
       id="viewer-results"
@@ -85,7 +92,7 @@
         (measurementCompleted)="trackMeasurement('completed')"
         (measurementCleared)="trackMeasurement('cleared')"
       />
-      <aside class="card model-info">
+      <section class="card model-info">
         <h2 id="model-title">Model details</h2>
         <dl>
           <div>
@@ -133,7 +140,7 @@
           <a [routerLink]="routeUrl.DimensionsChecker">Dimensions Checker</a> to
           check printer fit and scaling.
         </p>
-      </aside>
+      </section>
       <app-mesh-issue-highlights
         [report]="issueReport()"
         [centre]="current.centre"

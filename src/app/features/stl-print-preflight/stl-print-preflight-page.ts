@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   ReviewSession,
@@ -33,11 +34,20 @@ import {
 
 @Component({
   selector: 'app-stl-print-preflight-page',
-  imports: [ToolEvidenceComponent, RouterLink],
+  imports: [ExampleLoader, ToolEvidenceComponent, RouterLink],
   templateUrl: './stl-print-preflight-page.html',
   styleUrl: './stl-print-preflight-page.scss',
 })
 export class StlPrintPreflightPage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    this.unit.set('mm');
+    await this.onFileSelected(files[0]);
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Preflight),
@@ -105,7 +115,8 @@ export class StlPrintPreflightPage {
     if (
       integrity.openEdges ||
       integrity.nonManifoldEdges ||
-      integrity.degenerateTriangles
+      integrity.degenerateTriangles ||
+      integrity.orientationConflicts
     ) {
       return 'Mesh integrity findings need review before slicing.';
     }
@@ -117,6 +128,9 @@ export class StlPrintPreflightPage {
     }
     if (integrity.duplicateTriangles) {
       return 'Duplicate triangles were found and should be reviewed.';
+    }
+    if (!integrity.volumeReliable) {
+      return 'Solid volume is unavailable because component or orientation interpretation needs review.';
     }
     return 'No issue was found by the checks completed here.';
   });
@@ -164,6 +178,7 @@ export class StlPrintPreflightPage {
         await import('../repeat-workflows/example-meshes');
       await this.onFileSelected(exampleFile(MeshExample.Cube));
     } catch (error: unknown) {
+      this.reset();
       this.error.set(
         error instanceof Error
           ? error.message
@@ -194,7 +209,6 @@ export class StlPrintPreflightPage {
     try {
       this.progress.set('Reading mesh and dimensions...');
       const mesh = await readStl(file);
-      this.mesh.set(mesh);
       await this.yieldToBrowser();
       this.progress.set('Checking mesh integrity and printer fit...');
       this.integrityReport.set(inspectMesh(mesh));
@@ -207,8 +221,10 @@ export class StlPrintPreflightPage {
         report ? 'completed' : 'skipped',
       );
       this.analytics.trackPreflightCompleted();
+      this.mesh.set(mesh);
       this.progress.set('Preflight report ready.');
     } catch (error: unknown) {
+      this.reset();
       this.error.set(
         error instanceof Error
           ? error.message

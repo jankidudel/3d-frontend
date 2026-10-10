@@ -103,40 +103,6 @@ export function checkGeometry(
     indices: source.indices,
   });
   const basic = inspectMesh(mesh);
-  const edges = new Map<string, { direction: number; count: number }>();
-  const parent = Array.from({ length: mesh.positions.length / 3 }, (_, i) => i);
-  const root = (index: number): number => {
-    let node = index;
-    while (parent[node] !== node) {
-      parent[node] = parent[parent[node]];
-      node = parent[node];
-    }
-    return node;
-  };
-  for (let i = 0; i < mesh.indices.length; i += 3) {
-    const [a, b, c] = mesh.indices.slice(i, i + 3);
-    for (const [from, to] of [
-      [a, b],
-      [b, c],
-      [c, a],
-    ]) {
-      parent[root(to)] = root(from);
-      const key = from < to ? `${from}:${to}` : `${to}:${from}`;
-      const edge = edges.get(key) ?? { direction: 0, count: 0 };
-      edge.count += 1;
-      edge.direction += from < to ? 1 : -1;
-      edges.set(key, edge);
-    }
-  }
-  const shells = new Set(Array.from(mesh.indices, root)).size;
-  const orientationConflicts = [...edges.values()].filter(
-    (edge) => edge.count === 2 && edge.direction !== 0,
-  ).length;
-  const volumeValid =
-    basic.volumeReliable &&
-    !basic.duplicateTriangles &&
-    !orientationConflicts &&
-    shells === 1;
   const dimensions = meshDimensions(mesh);
   const d = [dimensions.width, dimensions.height, dimensions.depth];
   const bed = settings.printer?.dimensions;
@@ -159,13 +125,7 @@ export function checkGeometry(
   return {
     dimensionsMm: dimensions,
     triangles: mesh.indices.length / 3,
-    topology: {
-      ...basic,
-      volume: volumeValid ? basic.volume : null,
-      volumeReliable: volumeValid,
-      shells,
-      orientationConflicts,
-    },
+    topology: basic,
     fit,
     thickness: thickness
       ? {

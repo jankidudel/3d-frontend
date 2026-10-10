@@ -41,6 +41,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-inspectmesh-checks-files',
+    group: GuideGroupId.General,
+    order: 250,
+    enabled: true,
+    publishDate: '2026-10-10',
+    checkEditorialTargets: true,
+  },
+  {
     slug: 'how-to-export-stl-from-cad',
     group: GuideGroupId.Stl,
     order: 203,
@@ -55,6 +63,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-08',
     checkEditorialTargets: true,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'stl-multiple-shells-disconnected-parts',
@@ -72,6 +81,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-07',
     checkEditorialTargets: true,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'stl-volume-calculation-wrong',
@@ -80,6 +90,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-07',
     checkEditorialTargets: true,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'self-intersecting-mesh-vs-non-manifold',
@@ -254,8 +265,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 1,
     enabled: true,
     publishDate: '2026-09-08',
-    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-check-if-a-3d-model-is-ready-to-print',
@@ -316,8 +327,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-check-stl-for-errors',
@@ -325,8 +336,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-make-an-stl-file-printable',
@@ -343,6 +354,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-tell-if-an-stl-is-watertight',
@@ -366,8 +378,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 50,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-scale-an-stl-file-for-3d-printing',
@@ -400,8 +412,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 75,
     enabled: true,
     publishDate: '2026-09-06',
-    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-repair-an-stl-file',
@@ -419,6 +431,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-fix-flipped-normals-in-an-stl-file',
@@ -427,6 +440,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-remove-duplicate-triangles-from-an-stl-file',
@@ -622,8 +636,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 100,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-07',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-10',
   },
   {
     slug: 'how-to-repair-a-3mf-file',

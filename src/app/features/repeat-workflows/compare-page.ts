@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ReviewSession, ReviewDestination } from './review-session';
 import { DecimalPipe } from '@angular/common';
@@ -45,11 +46,24 @@ interface Revision {
 }
 @Component({
   selector: 'app-compare-page',
-  imports: [RouterLink, DecimalPipe, ObjectViewerComponent],
+  imports: [ExampleLoader, RouterLink, DecimalPipe, ObjectViewerComponent],
   templateUrl: './compare-page.html',
   styleUrl: '../planning/planning-page.scss',
 })
 export class ComparePage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    this.beforeUnit.set(ModelUnits.Millimetres);
+    this.afterUnit.set(ModelUnits.Millimetres);
+    this.alignment.set(Alignment.Original);
+    await this.load(RevisionSide.Before, files[0]);
+    await this.load(RevisionSide.After, files[1]);
+    await this.compare();
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Compare),

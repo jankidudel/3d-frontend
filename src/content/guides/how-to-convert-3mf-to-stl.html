@@ -19,6 +19,60 @@ faq:
   structure, materials or slicer project settings. Keep the source 3MF and
   verify the receiving application after conversion.
 </p>
+<h2>Verified conversion output, reopened as a real STL</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/build-conversion.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="One stored cube resource referenced by one or two placed build items."
+  />
+  <figcaption>
+    The supported build is flattened to triangle geometry. This diagram does not
+    imply project settings survive.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Source package</th>
+      <th scope="col">Reopened binary STL under mm</th>
+      <th scope="col">What to confirm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One placed 20 mm cube</td>
+      <td>12 triangles; 20 mm spans</td>
+      <td>The intended build was selected</td>
+    </tr>
+    <tr>
+      <td>Two placements of the same resource</td>
+      <td>24 triangles; 60 × 20 × 20 mm</td>
+      <td>Both placed surfaces remain, while object identity is lost</td>
+    </tr>
+    <tr>
+      <td>One-inch cube translated two inches on X</td>
+      <td>12 triangles; 25.4 mm spans; X 50.8 to 76.2 mm</td>
+      <td>Physical coordinates are resolved before writing unitless STL</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The regression suite calls the actual converter, saves its binary bytes and
+  parses that result as STL. It checks dimensions, triangle counts and
+  translated coordinates, rather than accepting a download click as evidence.
+  <a href="{{ GuideSlug.RouteExamples }}">Download the source controls</a> and
+  use the explicit local conversion action; reopen your own result in the
+  receiving application with a millimetre assumption.
+</p>
+<p>
+  Keep the original 3MF/project when colours, materials, build structure,
+  settings or unsupported extensions matter. The single STL output does not
+  retain those features, cannot recover missing geometry and does not certify a
+  physical print.
+</p>
 <h2>Select the intended deliverable</h2>
 <p>
   A stored resource is not necessarily a placed part. Decide whether the

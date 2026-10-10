@@ -18,19 +18,58 @@ faq:
   failed volume screens rather than displaying zero as if a solid had been
   measured.
 </p>
-<h2>Use a known-size cube</h2>
+<h2>Interpretation and scaling give different reproducible numbers</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/units-scale.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Known cube with 20-coordinate spans and a 1.5 scaling calculation."
+  />
+  <figcaption>
+    Coordinate interpretation leaves the input bytes unchanged; coordinate
+    scaling writes a different mesh.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Operation on the closed control</th>
+      <th scope="col">Linear span</th>
+      <th scope="col">Volume interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Original, mm assumption</td>
+      <td>20 mm</td>
+      <td>8,000 mm³</td>
+    </tr>
+    <tr>
+      <td>Same original bytes, inch assumption</td>
+      <td>508 mm</td>
+      <td>131,096,512 mm³ = 8,000 × 25.4³</td>
+    </tr>
+    <tr>
+      <td>Save a 150% scaled copy; reopen as mm</td>
+      <td>30 mm</td>
+      <td>27,000 mm³ = 8,000 × 1.5³</td>
+    </tr>
+    <tr>
+      <td>Face-removed copy, mm assumption</td>
+      <td>20 mm bounds</td>
+      <td>Unavailable, not zero</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  The owned closed cube has a 20 mm span on each axis, 12 triangles and exact
-  geometric volume 20 × 20 × 20 = 8,000 mm³ = 8 cm³. Run
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}">the mixed collection</a> to
-  reproduce it. Its open-face counterpart has 10 triangles and four boundary
-  edges, so reported volume is unavailable.
-</p>
-<p>
-  The same 20-unit STL interpreted as inches spans 508 mm and its cube volume is
-  131,096,512 mm³. A linear scale factor 25.4 becomes a volume factor 25.4³ =
-  16,387.064. Changing a unit label without scaling coordinates is a different
-  operation; retain the explicit assumption in your report.
+  Actual scale export/re-import retains 12 triangles and gives 30-coordinate
+  spans. The 3.375 volume factor applies to a valid closed solid, not a reliable
+  volume for an open surface.
+  <a href="{{ GuideSlug.RouteExamples }}">Use the same known control</a> to
+  check the receiving application's unit before trusting a volume or using it
+  for material planning.
 </p>
 <h2>Signed volume and winding</h2>
 <p>

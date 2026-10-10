@@ -28,6 +28,13 @@
       <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
+  <app-example-loader
+    tool="/stl-scale-tool"
+    [active]="file() !== null"
+    [busy]="false"
+    [current]="file()"
+    [load]="loadPublicExample"
+  />
   @if (source(); as source) {
     <section class="card" aria-labelledby="file-title">
       <h2 id="file-title">Uploaded model</h2>

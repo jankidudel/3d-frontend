@@ -29,9 +29,6 @@
     fit, sampled wall thickness, complexity and whether a volume estimate is
     meaningful.
   </p>
-  <button type="button" (click)="runOwnedExample()" [disabled]="analysing()">
-    Run an owned model example
-  </button>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Run an STL preflight</h2>
     <div
@@ -63,6 +60,13 @@
       <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
+  <app-example-loader
+    tool="/stl-print-preflight"
+    [active]="file() !== null"
+    [busy]="analysing()"
+    [current]="file()"
+    [load]="loadPublicExample"
+  />
   @if (mesh(); as model) {
     <section class="card" aria-labelledby="report-title">
       <h2 id="report-title">Preflight report</h2>
@@ -119,11 +123,20 @@
             <dt>Duplicate triangles</dt>
             <dd>{{ report.duplicateTriangles }}</dd>
           </div>
+          <div>
+            <dt>Winding edge conflicts</dt>
+            <dd>{{ report.orientationConflicts }}</dd>
+          </div>
+          <div>
+            <dt>Connected components</dt>
+            <dd>{{ report.shells }}</dd>
+          </div>
         </dl>
         @if (
           report.openEdges ||
           report.nonManifoldEdges ||
           report.degenerateTriangles ||
+          report.orientationConflicts ||
           report.duplicateTriangles
         ) {
           <p>
@@ -313,4 +326,10 @@
     [completed]="!!integrity()"
     [page]="routeUrl.StlPrintPreflight"
   />
+  <p>
+    Self intersections and nested-shell solid interpretation are not checked. A
+    completed check is not a print-success claim. Confirm design intent and
+    review the intended slicer setup.
+    <a [routerLink]="routeUrl.Methods">How these checks work</a>.
+  </p>
 </main>

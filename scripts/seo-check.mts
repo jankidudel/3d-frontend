@@ -2,7 +2,10 @@ import { access, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import matter from 'gray-matter';
 import { JSDOM } from 'jsdom';
-import { canonicalPublicRoutePaths } from '../src/app/core/seo/public-routes.ts';
+import {
+  canonicalPublicRoutePaths,
+  PublicRouteUrl,
+} from '../src/app/core/seo/public-routes.ts';
 import {
   createGuideCatalogue,
   type GuideContent,
@@ -89,7 +92,13 @@ for (const file of files) {
 }
 const catalogue = createGuideCatalogue(registry, guideGroups, contents, asOf);
 const publicSlugs = new Set(catalogue.guides.map((guide) => guide.slug));
+// Public legal utilities are valid navigation targets without sitemap eligibility.
+const navigableUtilities = new Set<string>([
+  PublicRouteUrl.Privacy,
+  PublicRouteUrl.Cookies,
+]);
 const knownRoutes = new Set([
+  ...navigableUtilities,
   ...canonicalPublicRoutePaths.map((path) => `/${path}`),
   ...registry.map((entry) => `/${entry.slug}`),
 ]);
@@ -193,7 +202,7 @@ for (const guide of catalogue.guides) {
         'broken-internal-link',
         `Correct or remove ${href}.`,
       );
-    else if (!publicRoutes.has(href))
+    else if (!publicRoutes.has(href) && !navigableUtilities.has(href))
       report(
         'ERROR',
         source,

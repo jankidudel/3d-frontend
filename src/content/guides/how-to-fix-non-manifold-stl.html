@@ -10,7 +10,7 @@ faq:
   - question: Does non-manifold always mean there is a visible hole?
     answer: No. Internal faces, overlapping solids and several faces sharing the same edge can be difficult to see in a normal shaded view.
   - question: Can InspectMesh repair my STL?
-    answer: No. InspectMesh identifies mesh problems so you can choose an appropriate repair workflow and verify the repaired result.
+    answer: InspectMesh offers conservative supported repairs, but does not reconstruct every missing surface or resolve design intent. Review the changed copy and its remaining findings.
 ---
 
 <p class="lead">
@@ -20,6 +20,68 @@ faq:
   unambiguous surface with a usable inside and outside.
 </p>
 
+<h2>Zero open edges on separated and crossing cubes</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/shells-intersections.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Two separated cubes and two crossing cubes, with 60 and 30 mm overall X spans."
+  />
+  <figcaption>
+    Actual distributed geometry projections. Closed edges do not distinguish
+    intentional separate bodies from crossing surfaces.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Control or concern</th>
+      <th scope="col">Supported observation</th>
+      <th scope="col">What it cannot settle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Separated cubes at X = 0 and 40</td>
+      <td>2 components, 0 open edges, 0 over-shared edges; 60 × 20 × 20 mm</td>
+      <td>Whether the two parts are intended</td>
+    </tr>
+    <tr>
+      <td>Overlapping cubes at X = 0 and 10</td>
+      <td>2 components, 0 open edges, 0 over-shared edges; 30 × 20 × 20 mm</td>
+      <td>No intersection detector ran; volume is withheld</td>
+    </tr>
+    <tr>
+      <td>Duplicate facet</td>
+      <td>3 edges have more than two incident triangles</td>
+      <td>Different problem from disconnected parts or crossing surfaces</td>
+    </tr>
+    <tr>
+      <td>Touching at a vertex or edge</td>
+      <td>Connectivity can join bodies without proving a usable solid</td>
+      <td>
+        A real joint, clear separation or intended boolean needs design review
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Load both controls from
+  <a href="{{ GuideSlug.RouteExamples }}">the library</a> into local preflight.
+  Preserve intentional parts rather than merging every component. Return to CAD
+  for an intended union or functional joint when a mesh-only change would invent
+  solid relationships. See
+  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+    >disconnected-shell interpretation</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
+    >intersection concerns</a
+  >
+  for the distinct questions.
+</p>
 <h2>Preserve intentional separate parts</h2>
 <p>
   Several closed shells are not automatically non-manifold and may represent a
@@ -133,21 +195,13 @@ faq:
   </li>
 </ul>
 <h2>Repair options</h2>
-<h3>Blender</h3>
+<h3>A mesh editor or source CAD</h3>
 <p>
-  Import the STL, enter <strong>Edit Mode</strong>, then use
-  <strong>Select &gt; Select All by Trait &gt; Non-Manifold</strong> to locate
-  suspect geometry. Depending on the issue, fill a simple hole, remove internal
-  faces, merge nearby duplicate vertices carefully, or perform a proper boolean
-  union on overlapping objects. Recalculate normals after the surface is clean,
-  then export a new STL.
-</p>
-<h3>Microsoft 3D Builder</h3>
-<p>
-  For a straightforward consumer-printing model, open the file in 3D Builder.
-  When it offers to repair the model, review the result and save it as a new
-  file. Re-check the saved STL afterwards; automated repair can change small
-  details, so it should not be the only verification step for a precise part.
+  Use the editor's non-manifold selection and face-orientation tools to inspect
+  the affected region. Correct only an understood boundary, extra sheet or
+  intended solid union, then export a separately named copy. Exact commands vary
+  by version; consult the installed application's documentation. No new editor
+  repair experiment is claimed here.
 </p>
 <h3>Your slicer</h3>
 <p>

@@ -19,6 +19,50 @@ faq:
   boundary of the missing area.
 </p>
 
+<h2>A missing face is different from a vessel mouth</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/open-boundary.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Four exposed boundary edges around a removed cube face."
+  />
+  <figcaption>
+    Removing the square face deletes two triangles. The opening is a surface
+    boundary.
+  </figcaption>
+</figure>
+<p>
+  The distributed closed cube has 12 triangles, no boundary edges and a screened
+  8,000 mm³ volume under millimetres. Removing one face gives 10 triangles and
+  four boundary edges; actual local preflight withholds volume. These known
+  geometry controls do not prove that another model should be filled.
+</p>
+<p>
+  A hollow vessel can have an open mouth while its inner and outer wall surfaces
+  join around a rim, creating a closed material boundary. Filling that mouth
+  would change the design. Conversely, an uncapped single surface has exposed
+  edges. Confirm which surface was intended before applying closure.
+</p>
+<ol>
+  <li>
+    Download the paired controls from
+    <a href="{{ GuideSlug.RouteExamples }}">the library</a> and inspect the
+    opening.
+  </li>
+  <li>
+    For a mathematically planar accidental cap, reconstruct a copy only if the
+    surface is unambiguous. Use source CAD for a thread, mating surface, curved
+    contour or uncertain intent.
+  </li>
+  <li>
+    Reopen the saved copy in preflight. Check open edges, winding, dimensions
+    and the repaired region against the source, then review the actual slicer
+    layers. A zero boundary count alone does not show the correct patch was
+    made.
+  </li>
+</ol>
 <h2>Distinguish boundary types before filling</h2>
 <p>
   A missing planar cap has one simple boundary loop and may be safely filled

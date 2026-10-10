@@ -65,6 +65,7 @@ export const guideClusters: readonly GuideCluster[] = [
       '3d-print-file-preflight-checklist',
       'how-to-make-an-stl-file-printable',
       'how-to-check-stl-for-errors',
+      'how-inspectmesh-checks-files',
       'how-to-check-a-3mf-file-for-errors',
       'stl-file-wont-slice',
       'why-wont-my-3mf-file-slice',

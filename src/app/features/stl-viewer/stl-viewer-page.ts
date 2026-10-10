@@ -1,3 +1,4 @@
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import {
@@ -45,6 +46,7 @@ interface ModelInfo {
 @Component({
   selector: 'app-stl-viewer-page',
   imports: [
+    ExampleLoader,
     ToolEvidenceComponent,
     ObjectViewerComponent,
     MeshIssueHighlightsComponent,
@@ -54,6 +56,14 @@ interface ModelInfo {
   styleUrl: '../shared/model-viewer-page.scss',
 })
 export class StlViewerPage {
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    await this.load(files[0]);
+    if (this.error()) {
+      throw new Error(this.error());
+    }
+  };
   readonly guideRouteUrl = GuideRouteUrl;
   readonly handoff = signal(
     inject(ReviewSession).take(ReviewDestination.Viewer),

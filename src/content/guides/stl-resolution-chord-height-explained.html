@@ -17,6 +17,22 @@ heading: 'STL Resolution: Chord Height and Angular Tolerance'
   count is an outcome of those settings and the shape; it is not a universal
   measure of dimensional accuracy.
 </p>
+<h2>Verify the curve calculation, then inspect the actual export</h2>
+<p>
+  The circular values below are independently checked by the fixture regression
+  suite: R = 10 mm gives 0.0855514 mm at 24 equal segments and 0.0095178 mm at
+  72. With a 0.01 mm target, 70 segments miss the ideal circular condition and
+  71 meet it. This verifies arithmetic, not an installed CAD export or a
+  physical tolerance.
+</p>
+<p>
+  After exporting, inspect a section through the actual curved feature and
+  compare its facet distribution with the CAD radius. Two exports with the same
+  total triangle count can distribute triangles differently.
+  <a href="{{ GuideSlug.RouteExamples }}">The detail-loss control</a> and
+  <a href="{{ GuideSlug.RouteStlCompare }}">sampled comparison</a> help
+  illustrate why a bound or global count cannot recover an exact analytic curve.
+</p>
 <h2>A circular cross-section gives a checkable example</h2>
 <p>
   For a circle of radius R, replacing an arc with a straight chord creates a

@@ -138,6 +138,8 @@ export const PublicRoutePath = {
   ThreeMfVolumeCalculator: toolRoute('3mf-volume-calculator'),
   ThreeMfToStlConverter: toolRoute('3mf-to-stl-converter'),
   Guides: guideRoute('guides'),
+  Examples: guideRoute('examples'),
+  Methods: guideRoute('how-inspectmesh-checks-files'),
   MissingThreeMfObjectsGuide: guideRoute('3mf-missing-objects-after-import'),
   StlVolumeWrongGuide: guideRoute('stl-volume-calculation-wrong'),
   MeshIntersectionsGuide: guideRoute('self-intersecting-mesh-vs-non-manifold'),
@@ -314,5 +316,6 @@ export const canonicalPublicRoutePaths = [
   PublicRoutePath.ThreeMfVolumeCalculator.path,
   PublicRoutePath.ThreeMfToStlConverter.path,
   PublicRoutePath.Guides.path,
+  PublicRoutePath.Examples.path,
   PublicRoutePath.Contact.path,
 ] as const;

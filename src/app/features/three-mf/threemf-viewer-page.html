@@ -36,6 +36,13 @@
       <p class="error" role="alert">{{ message }}</p>
     }
   </section>
+  <app-example-loader
+    tool="/3mf-viewer"
+    [active]="model() !== null"
+    [busy]="loading()"
+    [current]="model()"
+    [load]="loadPublicExample"
+  />
   @if (model(); as current) {
     <section
       id="viewer-results"
@@ -65,7 +72,7 @@
         (analyzeRequested)="analyzeIssues()"
         (linesChange)="issueLines.set($event)"
       />
-      <aside class="card model-info">
+      <section class="card model-info">
         <h2 id="model-title">Displayed build geometry</h2>
         <dl>
           <div>
@@ -129,7 +136,7 @@
           [routerLink]="routeUrl.ThreeMfDimensionsChecker"
           >Measure 3MF dimensions</a
         >
-      </aside>
+      </section>
     </section>
   }
   <section class="content">

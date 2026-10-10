@@ -9,6 +9,11 @@ import { materials } from './features/materials/material-catalogue';
 import { materialComparisonPaths } from './features/materials/material-comparisons';
 
 const breadcrumbRoutes: Routes = [
+  {
+    path: PublicRoutePath.Examples,
+    loadComponent: () =>
+      import('./features/examples/examples-page').then((m) => m.ExamplesPage),
+  },
   ...[
     [PublicRoutePath.FilamentRemainingCalculator, PlannerKind.Spool],
     [PublicRoutePath.NozzleLayerHeightCalculator, PlannerKind.Wall],

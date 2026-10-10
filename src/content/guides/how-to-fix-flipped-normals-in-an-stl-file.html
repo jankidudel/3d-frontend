@@ -19,6 +19,79 @@ faq:
   surface.
 </p>
 
+<h2>Three controls separate stored normals from vertex winding</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/duplicate-winding.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Duplicate facet and a separately reversed triangle on known closed cubes."
+  />
+  <figcaption>
+    Triangle order, duplicate facets and stored normal vectors are independently
+    controlled. Projected surfaces alone can hide all three.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Distributed control</th>
+      <th scope="col">Actual local preflight output</th>
+      <th scope="col">Interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Reference closed cube</td>
+      <td>12 triangles; 0 winding conflicts; 8,000 mm³ under mm</td>
+      <td>Consistent single-component reference</td>
+    </tr>
+    <tr>
+      <td>One duplicated facet</td>
+      <td>
+        13 triangles; 1 duplicate; 3 over-shared edges; volume unavailable
+      </td>
+      <td>
+        Remove only a confirmed duplicate; winding cleanup alone does not remove
+        it
+      </td>
+    </tr>
+    <tr>
+      <td>One reversed triangle</td>
+      <td>
+        12 triangles; 3 winding edge conflicts; 0 open edges; volume unavailable
+      </td>
+      <td>
+        Adjacent triangles traverse three shared edges in the same direction
+      </td>
+    </tr>
+    <tr>
+      <td>Only stored STL normal changed</td>
+      <td>12 triangles; 0 winding conflicts; 8,000 mm³</td>
+      <td>
+        The local checker reads triangle vertex order, not the stored normal
+        vector
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The reversed control swaps two vertex positions in one triangle while
+  retaining its stored normal record. Reversing that same triangle back in a
+  controlled copy restores the reference orientation and zero conflicts; tests
+  compare the changed geometry and reopen the export. This is a known
+  mathematical correction, not an observed automatic server repair.
+</p>
+<p>
+  For your own model, preserve the original, inspect the affected region and use
+  a deliberate editor or source-CAD correction. Reopen the saved copy and
+  compare dimensions, boundary findings and winding; consistent shared-edge
+  directions still cannot establish which side the designer intended as outside.
+  <a href="{{ GuideSlug.RouteExamples }}">Download the independent controls</a>
+  and use the paired comparison to see why identical visible surfaces do not
+  imply identical topology.
+</p>
 <h2>Distinguish a display issue from winding data</h2>
 <p>
   If one viewer looks dark but mesh checks and another viewer agree on

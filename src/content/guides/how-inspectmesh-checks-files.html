@@ -1,0 +1,245 @@
+---
+title: 'How InspectMesh Checks Files: Methods and Processing | InspectMesh'
+description: 'Understand local mesh checks, unit assumptions, 3MF build resolution, sampled measurements and optional server analysis before interpreting a result.'
+slug: how-inspectmesh-checks-files
+eyebrow: Methods and processing
+heading: How InspectMesh Checks Files
+faq:
+  - question: Does a completed check mean print ready?
+    answer: No. Completed describes a software operation. Unsupported intersections, unsampled detail, design intent and the physical process still need review.
+  - question: Do examples upload my model?
+    answer: Loading a public example downloads that fixed control and uses the tool's local workflow. Optional viewer issue analysis is a separate deliberate server upload.
+---
+
+<p>
+  InspectMesh reports bounded geometry observations, not a print certification.
+  Read the method, assumptions and unavailable checks alongside a finding. A
+  closed-looking picture, zero edge findings or a completed operation each
+  answers only part of the question.
+</p>
+<h2>What the local methods can establish</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Method and inputs</th>
+      <th scope="col">Supported finding</th>
+      <th scope="col">Important limit</th>
+      <th scope="col">Representative example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>STL coordinates with an explicit unit assumption</td>
+      <td>Axis spans and scaled dimensions</td>
+      <td>
+        STL has no standard unit declaration; an assumed unit does not rewrite
+        bytes
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
+          >20-coordinate cube</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Supported 3MF mesh build, declared unit and transforms</td>
+      <td>
+        Placed triangle geometry normalised to millimetres for
+        analysis/conversion
+      </td>
+      <td>
+        Stored resources differ from build instances. Unsupported extensions and
+        project settings are not validated
+      </td>
+      <td>
+        <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+          >One resource, two placements</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Exact-coordinate welding and edge incidence in local preflight and
+        collection checks
+      </td>
+      <td>
+        One-face boundary edges, more-than-two-face edges, duplicate and
+        zero-area triangles
+      </td>
+      <td>
+        No distance-tolerance welding, exhaustive vertex-manifold proof or
+        self-intersection detector
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
+          >Face-removed cube</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Directed shared edges and vertex-connected components</td>
+      <td>Neighbouring winding conflicts and component counts</td>
+      <td>
+        Stored STL normal vectors are not used; consistent winding does not
+        determine the intended outside. A point-touching body can be one
+        component
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
+          >Reversed triangle versus stored normal</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Signed tetrahedron sum, screened single closed component</td>
+      <td>Magnitude of geometric enclosed volume under the selected unit</td>
+      <td>
+        Withheld for detected open, degenerate, duplicate, over-shared, winding
+        or multi-component ambiguity. Intersections can escape these screens
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlVolumeCalculationWrong }}"
+          >Unavailable is not zero</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Bounded triangle-centroid normal-direction rays</td>
+      <td>
+        Sampled opposing-surface distances and counts below the chosen threshold
+      </td>
+      <td>
+        Unmeasured rays are not zero thickness. Small details and
+        unsupported/opposing geometry may be missed; strength is not tested
+      </td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+          >Thin bars and retained slicer paths</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Bidirectional area-distributed samples to triangle BVHs in revision
+        comparison
+      </td>
+      <td>
+        5,000 point-to-surface distances per direction, sampled maximum/mean and
+        tolerance counts
+      </td>
+      <td>
+        Finite samples can miss detail. Maximum sampled is not a global upper
+        bound, certified metrology or equality proof
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
+          >Raised-ridge coupon</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Axis-aligned bounds and six right-angle axis permutations</td>
+      <td>Nominal rectangular fit for the selected box</td>
+      <td>
+        No arbitrary-rotation search, general collision check, automatic
+        brim/support allowance or orientation recommendation for strength
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+          >Custom envelope and allowances</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Which actions process locally and which upload</h2>
+<p>
+  The STL/3MF viewers open geometry locally. STL/3MF preflight, revision
+  comparison, STL scale, STL reduction and the geometry converter also run
+  locally. Loading an example fetches only a fixed public registry asset; it
+  does not send your active model. Renderer code loads when the relevant tool
+  needs it; this library uses lightweight static diagrams.
+</p>
+<p>
+  The viewer's optional issue-analysis action explicitly uploads the selected
+  file to the quality-checker server workflow. Server quality checking and STL
+  repair have their own processing disclosure. Do not interpret the local
+  viewer's initial opening as server analysis, or assume the local methods are
+  the same as every server checker. Review
+  <a href="{{ GuideSlug.RoutePrivacy }}">the privacy policy</a> for policy and
+  retention details before an upload.
+</p>
+<p>
+  Collection navigation can hold a selected File in this tab's memory for an
+  explicit handoff. Reloading requires reselection. Optional collection history
+  stores report data such as labels, settings, findings and bounded thumbnails
+  in this browser, not original model bytes or full geometry arrays. Exported
+  reports can contain private filenames and findings; choose where to share them
+  yourself. Example URLs carry only a public allowlisted ID and canonicals point
+  to the clean tool page.
+</p>
+<h2>Read result states literally</h2>
+<ul>
+  <li>
+    <strong>Completed:</strong> the supported operation returned a result;
+    inspect warnings and scope.
+  </li>
+  <li>
+    <strong>Warning / needs attention:</strong> review a finding against units,
+    design intent and the intended process.
+  </li>
+  <li>
+    <strong>Skipped / unsupported:</strong> the method did not run or cannot
+    answer this question. It is not a passing result.
+  </li>
+  <li>
+    <strong>Sampled:</strong> a bounded set of observations, not exhaustive
+    coverage.
+  </li>
+  <li>
+    <strong>Failed:</strong> no usable result from that operation. Do not read
+    an empty report as zero defects.
+  </li>
+  <li>
+    <strong>Unavailable volume:</strong> no supported solid-volume
+    interpretation, not zero material.
+  </li>
+</ul>
+<h2>How the examples were produced and verified</h2>
+<p>
+  <a href="{{ GuideSlug.RouteExamples }}">The example library</a> contains eight
+  teaching scenarios with stable IDs, original generated geometry, known
+  dimensions, downloadable bytes and original explanatory diagrams. Regression
+  checks read those distributed files, run the actual local implementations and
+  reopen generated STL output. They distinguish duplicate facets, reversed
+  winding and stored normal vectors, resolve 3MF instances/units/transforms and
+  check nominal fit arithmetic independently. These are software controls, not
+  customer models or physical prints.
+</p>
+<p>
+  The coupon derivatives use meshoptimizer 1.2.0, relative error 0.01 and
+  LockBorder. Actual retained PrusaSlicer 2.9.6 Classic/Arachne exports use a
+  0.4 mm nozzle, 0.2 mm layers, 0.45 mm extrusion width, two perimeters, zero
+  infill and thin-wall option off. Their configuration footers remain available
+  in preview-only G-code. No printer was controlled; a slicer estimate is not
+  measured print time. The guide explains the recorded experiment and its
+  limitations.
+</p>
+<h2>Technical basis and review boundary</h2>
+<p>
+  The
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core Specification</a
+  >
+  defines units, resources, build items and transforms.
+  <a href="https://github.com/zeux/meshoptimizer">meshoptimizer</a> documents
+  simplification constraints;
+  <a href="https://help.prusa3d.com/article/arachne-perimeter-generator_352769"
+    >Prusa's Arachne documentation</a
+  >
+  explains variable-width perimeters. Reviewed 10 October 2026 alongside the
+  application code. These references support specific method claims; no standard
+  certifies the whole application and no expert reviewer credentials are
+  claimed.
+</p>
