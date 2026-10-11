@@ -1,0 +1,136 @@
+---
+title: 'One Combined STL or Separate Placed Parts? | InspectMesh'
+description: 'Choose between a combined geometry derivative, individual placed-item STL exports and retaining the original 3MF project.'
+slug: 3mf-to-stl-combined-or-separate-parts
+eyebrow: Placed geometry and derivative review
+heading: 'One Combined STL or Separate Placed Parts?'
+faq:
+  - question: 'Does one STL file mean one joined solid?'
+    answer: 'No. Combined triangles can include disconnected or overlapping surfaces without a Boolean union.'
+  - question: 'Can shell splitting recover the original placements?'
+    answer: 'Not reliably. Connectivity and source placed-item identity are different concepts.'
+---
+
+<p>
+  Use a combined STL when the recipient needs the entire supported placed
+  geometry in one file. Use an individual placed-item export when only that
+  placement is required. Keep the original 3MF whenever editable build structure
+  or project properties matter. File count, placed-item identity and connected
+  surfaces answer different questions.
+</p>
+<figure>
+  <img
+    src="/examples/part-inspection/scope-verification.svg"
+    width="720"
+    height="600"
+    loading="lazy"
+    alt="Source to scope to derivative check: mathematical schematic."
+  />
+  <figcaption>
+    The source remains intact. Scope is a deliberate converter choice;
+    exact-byte reopening checks the derivative against that scope.
+  </figcaption>
+</figure>
+<h2>Choose the delivery that fits the request</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Recipient needs</th>
+      <th>Delivery</th>
+      <th>Trade-off</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>All supported placed triangles together</td>
+      <td>Entire-build binary STL</td>
+      <td>One file; editable placement records and unit metadata are absent</td>
+    </tr>
+    <tr>
+      <td>Only the second repeated placement</td>
+      <td>Single-item STL preserving placement</td>
+      <td>
+        Distinct source identity recorded in report; STL itself cannot retain it
+      </td>
+    </tr>
+    <tr>
+      <td>Each item available independently</td>
+      <td>Repeat deliberate single-item exports</td>
+      <td>
+        No automatic multiple-file export in this version; review every scope
+      </td>
+    </tr>
+    <tr>
+      <td>Editable assembly, colours, materials or settings</td>
+      <td>Original project and compatible authoring workflow</td>
+      <td>Confirm extension/application support with the recipient</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Two cubes: one file does not mean one solid</h2>
+<p>
+  The two-placed-cubes control has one stored cube resource and two build items.
+  Each cube has 12 triangles and 20 mm spans. The combined export has 24
+  triangles, X=0..60 mm and Y/Z=0..20 mm. The empty 20 mm gap is part of its
+  bounding envelope, not solid material. Combining these triangles does not join
+  the cubes or recover two editable resource records on reopening.
+</p>
+<p>
+  Open the <a href="{{ GuideSlug.RouteExamples }}">example collection</a>,
+  inspect both placements in
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, then use
+  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL Converter</a> to
+  compare entire-build and build-2 scopes. Detailed extraction steps belong in
+  <a href="{{ GuideSlug.RouteExtractPartFrom3mf }}">extract one placed part</a>.
+  This guide owns the delivery decision rather than an STL-splitting procedure.
+</p>
+<figure>
+  <img
+    src="/examples/part-inspection/resource-placements.svg"
+    width="720"
+    height="600"
+    loading="lazy"
+    alt="One resource, two placements: mathematical schematic."
+  />
+  <figcaption>
+    Resource reuse is compact in 3MF. A flattened derivative contains geometry
+    for both placements.
+  </figcaption>
+</figure>
+<h2>Coincident placements: count and identity still matter</h2>
+<p>
+  The coincident control places the same 20 mm cube twice at exactly the same
+  coordinates. It still has two independently selectable identities and 24
+  triangles, while its bounds remain 20 × 20 × 20 mm. No deduplication or
+  Boolean union occurs. Matching outer dimensions cannot establish that
+  overlapping surfaces make a valid solid; use an intentional modelling
+  operation in the source application when a union is required.
+</p>
+<h2>Connectivity cannot reliably reconstruct the project</h2>
+<p>
+  A placed item may contain several disconnected component surfaces. Two
+  different placements may overlap or share coordinates. Splitting a combined
+  STL by connectivity therefore need not recover the source's item boundaries,
+  labels or placement records. For a recipient who needs those distinctions,
+  exchange the original project or export each chosen placement before
+  flattening.
+</p>
+<p>
+  Next step: agree whether the recipient needs all geometry, one placement or
+  editable project data. State millimetres for every STL, attach the scoped
+  report and ask them to verify a known dimension. Retain the source so another
+  scope can be generated later. See
+  <a href="{{ GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings }}"
+    >project property portability</a
+  >
+  for the separate question of richer data.
+</p>
+<p>
+  Technical basis:
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core specification 1.4.0</a
+  >, sections 3.3, 3.4 and 4.2; reviewed 11 October 2026. Examples are original
+  mathematical controls, not physical print measurements or tests of every
+  slicer.
+</p>

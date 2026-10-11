@@ -53,8 +53,10 @@
         [object]="current.object"
         [extent]="current.extent"
         [issueLines]="issueLines()"
-        [measurementUnit]="current.unit"
-        [measurementAvailable]="hasUsableUnit(current.unit)"
+        measurementUnit="mm"
+        [selectedPlacedItem]="selectedItem()"
+        [isolatedPlacedItem]="isolatedItem()"
+        (placedItemSelected)="selectItem($event)"
         ariaLabel="3D 3MF build geometry viewer"
         (chooseAnother)="openPicker()"
         (renderFailed)="onRenderFailed()"
@@ -63,6 +65,88 @@
         (measurementCompleted)="trackMeasurement('completed')"
         (measurementCleared)="trackMeasurement('cleared')"
       />
+      <section class="card placed-parts" aria-labelledby="placed-title">
+        <h2 id="placed-title">Select a placed item</h2>
+        <p>
+          Displayed unit: millimetres. {{ current.resolved.status }}. Isolation
+          only changes the preview; export scope is chosen separately in the
+          converter.
+        </p>
+        <p>
+          <strong>All-build bounds:</strong>
+          {{ boundsText(current.resolved.bounds) }}
+        </p>
+        <p>
+          {{ current.resolved.buildItemCount }} top-level placements;
+          {{ current.resolved.storedObjectCount }} stored object resources. File
+          labels are not proof of authorship or intended machine.
+        </p>
+        @for (item of current.resolved.items; track item.id) {
+          <div class="placed-row">
+            <button
+              type="button"
+              class="button button-secondary"
+              [attr.aria-pressed]="selectedItem() === item.id"
+              (click)="selectItem(item.id)"
+            >
+              {{ selectedItem() === item.id ? 'Selected: ' : 'Select: '
+              }}{{ item.label }} ({{ item.id }})
+            </button>
+            <p>{{ boundsText(item.bounds) }}</p>
+            <details>
+              <summary>Resource and placement details</summary>
+              <p>
+                Resource {{ item.resourceId }}; component paths
+                {{ item.componentPaths.join('; ') }}
+              </p>
+              <p>
+                Placement matrix (Three.js column-major, source units):
+                {{ item.transform.join(' ') }}
+              </p>
+            </details>
+          </div>
+        }
+        <div class="part-actions">
+          <button
+            class="button"
+            type="button"
+            [disabled]="!selectedItem()"
+            (click)="isolate()"
+          >
+            Isolate selected
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="showAll()"
+          >
+            Show all
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            [disabled]="!selectedItem()"
+            (click)="frameSelected()"
+          >
+            Frame selected
+          </button>
+        </div>
+        @for (item of current.resolved.items; track item.id) {
+          @if (selectedItem() === item.id) {
+            <p role="status">
+              <strong>Selected scope {{ item.id }}:</strong>
+              {{ boundsText(item.bounds) }}. Nested components remain one
+              top-level selection.
+            </p>
+          }
+        }
+        @for (limitation of current.resolved.limitations; track limitation) {
+          <p>{{ limitation }}</p>
+        }
+        <a [routerLink]="routeUrl.ThreeMfToStlConverter"
+          >Export an entire build or one placed item in the converter</a
+        >
+      </section>
       <app-mesh-issue-highlights
         [report]="issueReport()"
         [centre]="current.centre"
@@ -99,15 +183,15 @@
           </div>
           <div>
             <dt>Width</dt>
-            <dd>{{ formatValue(current.width) }} {{ current.unit }}</dd>
+            <dd>{{ formatValue(current.width) }} mm</dd>
           </div>
           <div>
             <dt>Height</dt>
-            <dd>{{ formatValue(current.height) }} {{ current.unit }}</dd>
+            <dd>{{ formatValue(current.height) }} mm</dd>
           </div>
           <div>
             <dt>Depth</dt>
-            <dd>{{ formatValue(current.depth) }} {{ current.unit }}</dd>
+            <dd>{{ formatValue(current.depth) }} mm</dd>
           </div>
         </dl>
         <p>
@@ -212,8 +296,11 @@
     </p>
     <h3>Does this work for all 3MF files?</h3>
     <p>
-      It supports standard 3MF files compatible with the browser loader.
-      Unsupported package extensions may not load.
+      It resolves supported core mesh resources, components, build placements
+      and declared units within bounded processing limits. Required unsupported
+      extensions, cross-part references and invalid geometry stop with an
+      explicit diagnostic. Optional project properties remain outside the
+      geometry workflow.
     </p>
   </section>
 </main>

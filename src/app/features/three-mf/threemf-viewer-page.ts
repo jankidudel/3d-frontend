@@ -11,7 +11,17 @@ import {
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { unzipSync } from 'fflate';
+import {
+  resolveThreeMfWallGeometry,
+  type ResolvedThreeMfGeometry,
+} from '../shared/wall-thickness/three-mf-wall-thickness';
+import {
+  Group,
+  Mesh,
+  BufferGeometry,
+  BufferAttribute,
+  MeshStandardMaterial,
+} from 'three';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
@@ -40,6 +50,7 @@ interface ModelInfo {
   readonly object: import('three').Object3D;
   readonly extent: number;
   readonly centre: readonly [number, number, number];
+  readonly resolved: ResolvedThreeMfGeometry;
 }
 
 @Component({
@@ -68,6 +79,30 @@ export class ThreeMfViewerPage {
   readonly error = signal('');
   readonly model = signal<ModelInfo | null>(null);
   readonly loading = signal(false);
+  readonly selectedItem = signal<string | null>(null);
+  readonly isolatedItem = signal<string | null>(null);
+  readonly viewer = viewChild(ObjectViewerComponent);
+  private loadRun = 0;
+
+  selectItem(id: string): void {
+    this.selectedItem.set(id);
+  }
+  isolate(): void {
+    this.isolatedItem.set(this.selectedItem());
+  }
+  showAll(): void {
+    this.isolatedItem.set(null);
+  }
+  frameSelected(): void {
+    this.viewer()?.framePlacedItem(this.selectedItem());
+  }
+  boundsText(bounds: {
+    min: readonly number[];
+    max: readonly number[];
+    spans: readonly number[];
+  }): string {
+    return `Min ${bounds.min.map((value) => this.formatValue(value)).join(' / ')}; max ${bounds.max.map((value) => this.formatValue(value)).join(' / ')}; spans ${bounds.spans.map((value) => this.formatValue(value)).join(' × ')} mm (X / Y / Z)`;
+  }
   readonly webglUnavailable = signal(false);
   readonly analyzingIssues = signal(false);
   readonly issueAnalysisError = signal('');
@@ -88,7 +123,10 @@ export class ThreeMfViewerPage {
         'Open a 3MF file locally, inspect its resolved build geometry, measure point-to-point distances and review declared units and dimensions before 3D printing.',
       path: PublicRouteUrl.ThreeMfViewer,
     });
-    this.destroyRef.onDestroy(() => this.issuePolling?.unsubscribe());
+    this.destroyRef.onDestroy(() => {
+      ++this.loadRun;
+      this.issuePolling?.unsubscribe();
+    });
   }
 
   openPicker(): void {
@@ -144,6 +182,7 @@ export class ThreeMfViewerPage {
     if (!file || this.analyzingIssues()) {
       return;
     }
+    const run = this.loadRun;
     this.issueAnalysisError.set('');
     this.analyzingIssues.set(true);
     let createdJob: Job | null = null;
@@ -151,6 +190,9 @@ export class ThreeMfViewerPage {
       createdJob = job;
     }).subscribe({
       next: () => {
+        if (run !== this.loadRun) {
+          return;
+        }
         if (!createdJob) {
           this.analysisFailed(
             'We could not start issue analysis. Please try again.',
@@ -159,7 +201,11 @@ export class ThreeMfViewerPage {
         }
         this.issuePolling?.unsubscribe();
         this.issuePolling = pollJob(this.jobs, createdJob.id).subscribe({
-          next: (job) => this.receiveIssueJob(job),
+          next: (job) => {
+            if (run === this.loadRun) {
+              this.receiveIssueJob(job);
+            }
+          },
           error: () =>
             this.analysisFailed(
               'We could not retrieve issue analysis. Please try again.',
@@ -174,6 +220,12 @@ export class ThreeMfViewerPage {
   }
 
   private async load(file: File): Promise<void> {
+    const run = ++this.loadRun;
+    this.sourceFile = null;
+    this.analyzingIssues.set(false);
+    this.loading.set(false);
+    this.selectedItem.set(null);
+    this.isolatedItem.set(null);
     this.issuePolling?.unsubscribe();
     this.issuePolling = undefined;
     this.error.set('');
@@ -201,48 +253,66 @@ export class ThreeMfViewerPage {
 
     this.loading.set(true);
     try {
-      const [{ ThreeMFLoader }, three] = await Promise.all([
-        import('three/examples/jsm/loaders/3MFLoader.js'),
-        import('three'),
-      ]);
-      const data = await file.arrayBuffer();
-      const group = new ThreeMFLoader().parse(data);
-      group.updateMatrixWorld(true);
-      const bounds = new three.Box3().setFromObject(group);
-      if (bounds.isEmpty()) {
-        throw new Error('empty');
+      const resolved = await resolveThreeMfWallGeometry(
+        await file.arrayBuffer(),
+      );
+      if (run !== this.loadRun) {
+        return;
       }
-      const size = bounds.getSize(new three.Vector3());
-      const triangles = this.triangleCount(group);
-      if (triangles === 0) {
-        throw new Error('empty');
+      const centre = resolved.bounds.min.map(
+        (value, axis) => (value + resolved.bounds.max[axis]) / 2,
+      );
+      const group = new Group();
+      for (const item of resolved.items) {
+        const geometry = new BufferGeometry();
+        geometry.setAttribute(
+          'position',
+          new BufferAttribute(item.geometry.positions.slice(), 3),
+        );
+        geometry.setIndex(
+          new BufferAttribute(item.geometry.indices.slice(), 1),
+        );
+        geometry.computeVertexNormals();
+        const mesh = new Mesh(
+          geometry,
+          new MeshStandardMaterial({ color: '#7B8794' }),
+        );
+        mesh.userData['placedItemId'] = item.id;
+        group.add(mesh);
       }
-      const centre = bounds.getCenter(new three.Vector3());
-      group.position.sub(centre);
+      group.position.set(-centre[0], -centre[1], -centre[2]);
       group.updateMatrixWorld(true);
       this.sourceFile = file;
       this.model.set({
         name: file.name,
         size: file.size,
-        unit: this.declaredUnit(data),
-        triangles,
-        buildItems: group.children.length > 0 ? group.children.length : null,
-        width: size.x,
-        height: size.y,
-        depth: size.z,
+        unit: resolved.declaredUnit,
+        triangles: resolved.geometry.indices.length / 3,
+        buildItems: resolved.buildItemCount,
+        width: resolved.bounds.spans[0],
+        height: resolved.bounds.spans[1],
+        depth: resolved.bounds.spans[2],
         object: group,
-        extent: Math.max(size.x, size.y, size.z),
-        centre: [centre.x, centre.y, centre.z],
+        extent: resolved.extent,
+        centre: centre as [number, number, number],
+        resolved,
       });
-    } catch {
+    } catch (error) {
+      if (run !== this.loadRun) {
+        return;
+      }
       this.model.set(null);
       this.error.set(
         this.webglUnavailable()
           ? 'WebGL is unavailable in this browser. You can still use the other tools.'
-          : 'We could not open that 3MF file. Choose a standard, unencrypted 3MF file and try again.',
+          : error instanceof Error
+            ? error.message
+            : 'We could not open that 3MF file.',
       );
     } finally {
-      this.loading.set(false);
+      if (run === this.loadRun) {
+        this.loading.set(false);
+      }
     }
   }
 
@@ -262,42 +332,6 @@ export class ThreeMfViewerPage {
   private analysisFailed(message: string): void {
     this.analyzingIssues.set(false);
     this.issueAnalysisError.set(message);
-  }
-
-  private declaredUnit(data: ArrayBuffer): string {
-    try {
-      const files = unzipSync(new Uint8Array(data));
-      const modelFile = Object.keys(files).find((path) =>
-        /^3D\/[^/]*\.model$/i.test(path),
-      );
-      if (!modelFile) {
-        return 'Not declared';
-      }
-      const xml = new TextDecoder().decode(files[modelFile]);
-      return (
-        /<model\b[^>]*\bunit\s*=\s*["']([^"']+)["']/i.exec(xml)?.[1] ??
-        'Not declared'
-      );
-    } catch {
-      return 'Not declared';
-    }
-  }
-
-  private triangleCount(group: import('three').Object3D): number {
-    let count = 0;
-    group.traverse((object) => {
-      const mesh = object as import('three').Mesh;
-      if (!mesh.isMesh) {
-        return;
-      }
-      const geometry = mesh.geometry;
-      const positions = geometry.getAttribute('position');
-      if (!positions) {
-        return;
-      }
-      count += (geometry.index?.count ?? positions.count) / 3;
-    });
-    return count;
   }
 
   onRenderFailed(): void {

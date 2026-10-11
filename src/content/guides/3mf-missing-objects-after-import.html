@@ -19,6 +19,35 @@ faq:
   application is another thing to verify; it is not a universal 3MF display
   rule.
 </p>
+<h2>Use selection to trace the missing placement</h2>
+<p>
+  The <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> panel lists
+  top-level placed items before triangles are flattened. Select build-1 and
+  build-2 of the repeated cube, isolate each, then show all. Both reference
+  resource 1; neither is a separate stored mesh definition. In the
+  unplaced-resource control, stored count rises to two but export remains 24
+  triangles with X=0..60 mm. Do not promote unplaced resources to the build or
+  infer identity from disconnected shells.
+</p>
+<figure>
+  <img
+    src="/examples/part-inspection/resource-placements.svg"
+    width="720"
+    height="600"
+    loading="lazy"
+    alt="One resource, two placements: mathematical schematic."
+  />
+  <figcaption>
+    A resource can be placed twice. A stored but unplaced resource contributes
+    no build triangles.
+  </figcaption>
+</figure>
+<p>
+  A missing reference fails the load with a specific diagnostic; it cannot
+  silently omit the failed item and report a complete build. Required production
+  semantics and cross-part references remain unsupported in this bounded local
+  workflow. Review them in the original application.
+</p>
 <h2>Read the resolved count beside the stored resource</h2>
 <table>
   <thead>

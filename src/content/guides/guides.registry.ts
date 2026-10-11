@@ -41,6 +41,31 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'extract-part-from-3mf',
+    group: GuideGroupId.ThreeMf,
+    order: 310,
+    enabled: true,
+    publishDate: '2026-10-11',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: '3mf-to-stl-wrong-size-or-position',
+    group: GuideGroupId.ThreeMf,
+    order: 311,
+    enabled: true,
+    publishDate: '2026-10-11',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: '3mf-to-stl-combined-or-separate-parts',
+    group: GuideGroupId.ThreeMf,
+    order: 312,
+    enabled: true,
+    publishDate: '2026-10-11',
+    checkEditorialTargets: true,
+  },
+
+  {
     slug: 'gcode-outside-print-bed',
     group: GuideGroupId.General,
     order: 270,
@@ -141,7 +166,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
 
   {
     slug: 'how-inspectmesh-checks-files',
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-11',
     group: GuideGroupId.General,
     order: 250,
     enabled: true,
@@ -181,7 +206,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-07',
     checkEditorialTargets: true,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-11',
   },
   {
     slug: 'stl-volume-calculation-wrong',
@@ -221,7 +246,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'inspect-customer-supplied-print-files',
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-11',
     group: GuideGroupId.General,
     order: 102,
     enabled: true,
@@ -667,6 +692,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.ThreeMf,
     order: 20,
     enabled: true,
+    updatedDate: '2026-10-11',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -676,7 +702,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 25,
     enabled: true,
     publishDate: '2026-09-15',
-    updatedDate: '2026-10-08',
+    updatedDate: '2026-10-11',
     checkEditorialTargets: false,
   },
   {
@@ -709,7 +735,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 60,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-11',
     checkEditorialTargets: false,
   },
   {
@@ -725,6 +751,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.ThreeMf,
     order: 80,
     enabled: true,
+    updatedDate: '2026-10-11',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -743,7 +770,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-11',
   },
   {
     slug: 'how-to-repair-a-3mf-file',

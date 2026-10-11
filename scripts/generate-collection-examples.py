@@ -30,3 +30,27 @@ for count in [1,2]:
             info=zipfile.ZipInfo(path,date_time=(2026,10,7,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;package.writestr(info,data)
 stl('overlapping-cubes.stl',[vertices,box(10,0,0,20,20,20)])
 stl('detail-coupon.stl',[box(0,0,0,40,20,10),box(12,8,10,16,0.6,0.5)])
+
+# Part-inspection controls: independent coordinate expectations live in tests and registry.
+PART_OUT = OUT.parent / 'part-inspection'
+PART_OUT.mkdir(parents=True, exist_ok=True)
+def object_xml(identifier, dimensions):
+    v=''.join(f'<vertex x="{x}" y="{y}" z="{z}"/>' for x,y,z in box(0,0,0,*dimensions))
+    t=''.join(f'<triangle v1="{FACES[i]}" v2="{FACES[i+1]}" v3="{FACES[i+2]}"/>' for i in range(0,len(FACES),3))
+    return f'<object id="{identifier}" type="model"><mesh><vertices>{v}</vertices><triangles>{t}</triangles></mesh></object>'
+base=object_xml(1,(20,20,20))
+controls={
+ 'unplaced-resource':(base+object_xml(2,(100,100,100)), '<item objectid="1"/><item objectid="1" transform="1 0 0 0 1 0 0 0 1 40 0 0"/>', ''),
+ 'nested-rotation':(object_xml(1,(10,20,30))+'<object id="2" type="model"><components><component objectid="1" transform="0 1 0 -1 0 0 0 0 1 0 0 0"/></components></object>', '<item objectid="2" transform="1 0 0 0 1 0 0 0 1 40 0 0"/>', ''),
+ 'coincident-placements':(base, '<item objectid="1"/><item objectid="1"/>', ''),
+ 'required-extension':(base, '<item objectid="1"/>', 'xmlns:p="http://schemas.microsoft.com/3dmanufacturing/production/2015/06" requiredextensions="p"'),
+ 'required-extension-alias':(base, '<item objectid="1"/>', 'xmlns:other="http://schemas.microsoft.com/3dmanufacturing/production/2015/06" requiredextensions="other"'),
+ 'bad-reference':(base, '<item objectid="1"/><item objectid="99"/>', ''),
+ 'component-cycle':('<object id="1" type="model"><components><component objectid="1"/></components></object>', '<item objectid="1"/>', ''),
+ 'reflected-cube':(base, '<item objectid="1" transform="-1 0 0 0 1 0 0 0 1 20 0 0"/>', ''),
+}
+for name,(resources,build,attributes) in controls.items():
+    model=f'<model unit="millimeter" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" {attributes}><resources>{resources}</resources><build>{build}</build></model>'
+    with zipfile.ZipFile(PART_OUT/f'{name}.3mf','w',zipfile.ZIP_DEFLATED) as package:
+        for path,data in {'Models/main.model':model,'[Content_Types].xml':'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/></Types>','_rels/.rels':'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Target="/Models/main.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/></Relationships>'}.items():
+            info=zipfile.ZipInfo(path,date_time=(2026,10,11,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;package.writestr(info,data)

@@ -96,6 +96,17 @@
     </section>
     <section class="card">
       <h2>3MF file and build</h2>
+      <p>
+        {{ build.status }}. {{ build.storedObjectCount }} stored object
+        resources; {{ build.buildItemCount }} top-level placements. Display and
+        analysis coordinates are millimetres.
+      </p>
+      @for (limitation of build.limitations; track limitation) {
+        <p>{{ limitation }}</p>
+      }
+      <a [routerLink]="routeUrl.ThreeMfViewer"
+        >Inspect selected placements and their bounds in the viewer</a
+      >
       <dl class="metrics">
         <div>
           <dt>Declared unit</dt>

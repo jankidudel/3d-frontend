@@ -78,10 +78,57 @@
         the model.
       </p>
     }
+    @if (resolving()) {
+      <p role="status">Resolving placed geometry locally...</p>
+    }
+    @if (resolved(); as source) {
+      <h3>Choose export scope</h3>
+      <p>
+        {{ source.status }}. Declared unit: {{ source.declaredUnit }}. Display
+        and STL convention: millimetres. STL has no unit declaration.
+      </p>
+      <label for="export-scope">Placed geometry to export</label>
+      <select
+        id="export-scope"
+        [value]="itemId()"
+        (change)="changeScope($event)"
+      >
+        <option value="">Entire supported placed build</option>
+        @for (item of source.items; track item.id) {
+          <option [value]="item.id">{{ item.label }} ({{ item.id }})</option>
+        }
+      </select>
+      <label class="translation-choice"
+        ><input
+          type="checkbox"
+          [checked]="coordinatePolicy() === policies.Origin"
+          (change)="changePolicy($event)"
+        />
+        Translate exported minimum corner to the origin</label
+      >
+      @if (preview(); as scope) {
+        <p><strong>Before export:</strong> {{ boundsText(scope.before) }}</p>
+        <p><strong>Download bounds:</strong> {{ boundsText(scope.bounds) }}</p>
+        <p>
+          {{ scope.policy }}. Translation offset X / Y / Z:
+          {{ scope.offset.join(' / ') }} mm.
+          {{ scope.geometry.indices.length / 3 }} triangles. Nested components
+          belong to their selected top-level item.
+        </p>
+      }
+      @for (limitation of source.limitations; track limitation) {
+        <p>{{ limitation }}</p>
+      }
+    }
     <button
       class="button submit"
       type="button"
-      [disabled]="!file() || converting()"
+      [disabled]="
+        !file() ||
+        converting() ||
+        resolving() ||
+        (kind === '3mf-to-stl' && !resolved())
+      "
       (click)="convert()"
     >
       {{
@@ -89,7 +136,7 @@
           ? 'Converting locally…'
           : kind === 'stl-to-3mf'
             ? 'Convert STL to 3MF'
-            : 'Convert 3MF to STL'
+            : 'Generate and verify STL'
       }}
     </button>
     @if (status()) {
@@ -103,7 +150,7 @@
     <app-example-loader
       tool="/3mf-to-stl-converter"
       [active]="file() !== null"
-      [busy]="converting()"
+      [busy]="converting() || resolving()"
       [current]="file()"
       [load]="loadPublicExample"
     />
@@ -133,7 +180,7 @@
         </div>
         @if (conversion.dimensions; as dimensions) {
           <div>
-            <dt>Final dimensions</dt>
+            <dt>Final dimensions (X / Y / Z, mm)</dt>
             <dd>
               {{ format(dimensions[0]) }} × {{ format(dimensions[1]) }} ×
               {{ format(dimensions[2]) }}
@@ -141,6 +188,89 @@
           </div>
         }
       </dl>
+    </section>
+  }
+  @if (report(); as review) {
+    <section class="card export-report" aria-labelledby="verification-title">
+      <h2 id="verification-title">
+        Export verification passed for the selected scope
+      </h2>
+      <p>
+        <strong>{{ review.scope }}</strong> - {{ review.coordinatePolicy }}.
+        {{ review.resolutionStatus }}.
+      </p>
+      <p>
+        Source label: {{ review.source.name }} ({{
+          review.source.bytes
+        }}
+        bytes). Declared unit: {{ review.source.declaredUnit }}; display/export
+        convention: millimetres. Retain the original project.
+      </p>
+      <p>
+        Expected {{ review.expectedTriangles }} triangles; reopened
+        {{ review.reopenedTriangles }}.
+      </p>
+      <p>Source scope: {{ boundsText(review.expectedBoundsMm) }}</p>
+      <p>Exported: {{ boundsText(review.exportedBoundsMm) }}</p>
+      <p>Reopened: {{ boundsText(review.reopenedBoundsMm) }}</p>
+      <p>Translation X / Y / Z: {{ review.translationMm.join(' / ') }} mm.</p>
+      <p>{{ review.verification.method }}</p>
+      <p>
+        Float32 rounding allowance: {{ review.verification.toleranceMm }} mm;
+        source-resolution rounding error:
+        {{ review.verification.sourceFloat32ErrorMm }} mm; additional export
+        rounding error: {{ review.verification.maximumFloat32ErrorMm }} mm.
+      </p>
+      @for (limitation of review.limitations; track limitation) {
+        <p>{{ limitation }}</p>
+      }
+      <p>{{ review.nextAction }}</p>
+      <div class="report-actions">
+        <button type="button" class="button" (click)="downloadDerivative()">
+          Download verified STL (mm)
+        </button>
+        <button
+          type="button"
+          class="button button-secondary"
+          (click)="downloadReport()"
+        >
+          Download JSON report
+        </button>
+        <button
+          type="button"
+          class="button button-secondary"
+          (click)="copyReport()"
+        >
+          Copy report
+        </button>
+        <button
+          type="button"
+          class="button button-secondary"
+          (click)="printReport()"
+        >
+          Print report
+        </button>
+      </div>
+      <div class="print-method">
+        <p>
+          Method version: {{ review.methodVersion }}. Source model part:
+          {{ review.source.modelPart }}.
+        </p>
+        @for (item of review.placedItems; track item.id) {
+          <p>
+            Placed identifier {{ item.id }}, resource {{ item.resourceId }}.
+            Original placement (column-major, source units):
+            {{ item.originalPlacement.join(' / ') }}.
+          </p>
+        }
+      </div>
+      <details class="full-report">
+        <summary>Complete method and placement report</summary>
+        <pre>{{ reportText() }}</pre>
+      </details>
+      <a [routerLink]="routeUrl.Viewer"
+        >Reopen the derivative in the STL viewer</a
+      >
     </section>
   }
   <section class="content">
@@ -168,8 +298,9 @@
         >
       </p>
       <p>
-        Where a file has multiple build items, this export becomes one resolved
-        STL mesh. The original editable assembly cannot be reconstructed from
+        An entire-build export combines its placed triangles into one STL; a
+        selected-item export includes that placement and its supported nested
+        components. The original editable assembly cannot be reconstructed from
         it.
       </p>
       <p>
@@ -212,9 +343,10 @@
       <p>
         The converter resolves supported build geometry, applies component and
         build transforms, converts physical coordinates to millimetres and
-        writes one binary STL. It exports the complete resolved build on this
-        page; there is no single-instance selection control. Separate placements
-        become triangles in one file rather than editable build-item records.
+        writes one binary STL. Choose the entire supported placed build or one
+        top-level placed item. Isolation in the viewer does not change this
+        choice. Separate placements become triangles in one file rather than
+        editable build-item records.
       </p>
       <ol>
         <li>

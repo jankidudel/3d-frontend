@@ -27,3 +27,79 @@ select {
   margin: 0.5rem 0 1rem;
   min-height: 2.5rem;
 }
+
+.translation-choice {
+  display: block;
+  margin-block: 1rem;
+}
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block: 1.5rem;
+}
+.export-report,
+.checker {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.export-report {
+  max-width: 58rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+.export-report h2 {
+  margin-top: 0;
+}
+.export-report .full-report {
+  margin-block: 1.25rem;
+}
+.export-report pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
+@media print {
+  .export-report {
+    display: block !important;
+  }
+  .export-report .report-actions {
+    display: none;
+  }
+  .export-report details {
+    display: block;
+  }
+  .export-report details > pre {
+    display: block !important;
+  }
+}
+
+select {
+  max-inline-size: 100%;
+}
+@media print {
+  @page {
+    margin: 15mm;
+  }
+  .converter-page:has(.export-report) > :not(.export-report) {
+    display: none !important;
+  }
+  .export-report {
+    box-shadow: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .export-report > details {
+    display: none !important;
+  }
+  .export-report .print-method {
+    display: block !important;
+  }
+  .export-report > a {
+    display: none;
+  }
+}
+.print-method {
+  display: none;
+}

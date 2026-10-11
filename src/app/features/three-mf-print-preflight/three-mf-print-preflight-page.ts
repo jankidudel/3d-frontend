@@ -188,8 +188,10 @@ export class ThreeMfPrintPreflightPage {
       );
     }
   }
+  private run = 0;
   async onFileSelected(file: File | null): Promise<void> {
     this.reset();
+    const run = this.run;
     if (!file) {
       return;
     }
@@ -214,11 +216,20 @@ export class ThreeMfPrintPreflightPage {
       const resolved = await resolveThreeMfWallGeometry(
         await file.arrayBuffer(),
       );
+      if (run !== this.run) {
+        return;
+      }
       await this.yieldToBrowser();
       this.progress.set(
         'Checking resolved mesh integrity, size and printer fit...',
       );
+      if (run !== this.run) {
+        return;
+      }
       await this.yieldToBrowser();
+      if (run !== this.run) {
+        return;
+      }
       this.progress.set('Sampling wall thickness...');
       this.wallReport.set(
         analyseWallThickness(
@@ -230,13 +241,18 @@ export class ThreeMfPrintPreflightPage {
       this.resolved.set(resolved);
       this.progress.set('3MF preflight report ready.');
     } catch (error: unknown) {
+      if (run !== this.run) {
+        return;
+      }
       this.error.set(
-        error instanceof Error && error.message === 'unsupported-unit'
-          ? 'This 3MF declares an unsupported unit, so its physical dimensions cannot be checked safely.'
-          : 'We could not resolve this 3MF print build locally. Choose a standard, unencrypted mesh-based 3MF with a readable model package.',
+        error instanceof Error
+          ? error.message
+          : 'We could not resolve this 3MF print build locally.',
       );
     } finally {
-      this.analysing.set(false);
+      if (run === this.run) {
+        this.analysing.set(false);
+      }
     }
   }
 
@@ -250,6 +266,8 @@ export class ThreeMfPrintPreflightPage {
   }
 
   reset(): void {
+    ++this.run;
+    this.analysing.set(false);
     this.file.set(null);
     this.resolved.set(null);
     this.wallReport.set(null);

@@ -1,0 +1,146 @@
+---
+title: 'Extract One Placed Part from a 3MF | InspectMesh'
+description: 'Select one top-level placed 3MF item, retain its placement and verify the generated STL using an owned repeated-cube control.'
+slug: extract-part-from-3mf
+eyebrow: Placed geometry and derivative review
+heading: 'Extract One Placed Part from a 3MF'
+faq:
+  - question: 'Does one selected placement include its nested components?'
+    answer: 'Yes. All supported descendants belong to the selected top-level placed item; this workflow does not separately select nested children.'
+  - question: 'Does isolation change export scope?'
+    answer: 'No. Isolation changes the preview. Choose export scope explicitly in the converter.'
+---
+
+<p>
+  To extract one placed part, open the 3MF in
+  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL Converter</a>,
+  choose its top-level placed item and generate a geometry-only STL. Preserve
+  placement unless you deliberately choose translation. Inspect the reopened
+  derivative before downloading, and retain the original project.
+</p>
+<figure>
+  <img
+    src="/examples/part-inspection/resource-placements.svg"
+    width="720"
+    height="600"
+    loading="lazy"
+    alt="One resource, two placements: mathematical schematic."
+  />
+  <figcaption>
+    One stored 20 mm cube is referenced twice. The selections belong to
+    placements, not two different resources.
+  </figcaption>
+</figure>
+<h2>Which kind of object are you choosing?</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Concept</th>
+      <th>Meaning</th>
+      <th>Selection boundary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Stored resource</td>
+      <td>A reusable definition in the package</td>
+      <td>
+        May be used twice or never placed; resource count is not export count
+      </td>
+    </tr>
+    <tr>
+      <td>Placed build item</td>
+      <td>A top-level reference plus placement</td>
+      <td>
+        One selectable item, even when the same resource is referenced again
+      </td>
+    </tr>
+    <tr>
+      <td>Nested component</td>
+      <td>A child resource composed into a placed item</td>
+      <td>Supported descendants export together with their top-level parent</td>
+    </tr>
+    <tr>
+      <td>Disconnected shell</td>
+      <td>A connected triangle surface</td>
+      <td>Connectivity does not recover original project identity</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Worked example: select the second cube</h2>
+<ol>
+  <li>
+    Download the two-placed-cubes control from the
+    <a href="{{ GuideSlug.RouteExamples }}">example collection</a>. Its one
+    resource has 12 triangles; two placements resolve 24.
+  </li>
+  <li>
+    Load it in <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Select
+    build-2 using the row or the geometry. The selected spans are 20 × 20 × 20
+    mm; X runs from 40 to 60 mm.
+  </li>
+  <li>
+    Use Isolate selected to inspect it and Show all to restore the other cube.
+    Isolation affects viewing only.
+  </li>
+  <li>
+    Open the same source in the converter and explicitly select build-2. Review
+    the scope before generation.
+  </li>
+  <li>
+    Leave Preserve resolved placement selected. Generate and verify: the
+    reopened derivative must have 12 triangles and X=40..60 mm.
+  </li>
+  <li>
+    Download the STL and report. Open it in the receiving application using
+    millimetres and check a 20 mm edge and the retained location.
+  </li>
+</ol>
+<figure>
+  <img
+    src="/examples/part-inspection/build-selected-bounds.svg"
+    width="720"
+    height="600"
+    loading="lazy"
+    alt="Entire build and selected item: mathematical schematic."
+  />
+  <figcaption>
+    All-build X spans 60 mm while the selected placement spans 20 mm. These are
+    different measurement scopes.
+  </figcaption>
+</figure>
+<h2>Nested composites and unplaced resources</h2>
+<p>
+  A nested composite remains one selectable top-level item. Its technical
+  details show component paths; selecting it includes every supported
+  descendant. This first version does not offer individual nested-child or
+  multiple-file selection. The unplaced-resource control stores an additional
+  100 mm cube without a build reference. It must not become an exported part
+  merely because its definition exists.
+</p>
+<h2>Keep design intent with its source</h2>
+<p>
+  Labels come from the uploaded file or neutral generated names. They do not
+  authenticate the designer or intended machine. Extracting triangles cannot
+  reconstruct editable CAD, material assignments or project settings. See
+  <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
+    >the general conversion guide</a
+  >
+  for format losses. If a required extension or invalid reference prevents
+  resolution, use the original authoring application and request a supported
+  geometry export rather than stripping package declarations.
+</p>
+<p>
+  Next step: reproduce the second placement, then choose the required scope in
+  your own file. Store the original project alongside the derivative and its
+  report.
+</p>
+<p>
+  Technical basis:
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core specification 1.4.0</a
+  >, sections 3.3, 3.4 and 4.2; reviewed 11 October 2026. Examples are original
+  mathematical controls, not physical print measurements or tests of every
+  slicer.
+</p>

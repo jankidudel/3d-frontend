@@ -157,7 +157,11 @@ import { assessPrinterOrientations } from '../src/app/shared/model-dimensions.ts
 describe('visual diagnosis teaching controls', () => {
   it('keeps unique registered scenarios, bounded bytes and allowlisted IDs', async () => {
     expect(
-      publicExamples.filter((example) => example.group !== 'G-code evidence'),
+      publicExamples.filter(
+        (example) =>
+          example.group !== 'G-code evidence' &&
+          example.group !== '3MF placements / export',
+      ),
     ).toHaveLength(8);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
@@ -352,5 +356,228 @@ describe('distributed analytical G-code controls', () => {
       expect(example.provenance).toContain('hand-authored');
       expect(example.limitations).toContain('Never execute');
     }
+  });
+});
+
+import {
+  resolveThreeMfWallGeometry,
+  ThreeMfResolutionStatus,
+} from '../src/app/features/shared/wall-thickness/three-mf-wall-thickness.ts';
+import {
+  convertThreeMfToStl,
+  CoordinatePolicy,
+  verifyStlGeometry,
+} from '../src/app/features/converters/three-mf-stl-export.ts';
+import { unzipSync, zipSync, strToU8 } from 'fflate';
+const domForParts = () => {
+  const dom = new JSDOM();
+  vi.stubGlobal('DOMParser', dom.window.DOMParser);
+  return dom;
+};
+describe('3MF identity, scope and exact derivative bytes', () => {
+  it('keeps repeated placements and unplaced resources distinct and exports the second placement deliberately', async () => {
+    const dom = domForParts();
+    const data = await (
+      await file('part-inspection/unplaced-resource.3mf')
+    ).arrayBuffer();
+    const resolved = await resolveThreeMfWallGeometry(data);
+    expect(resolved.storedObjectCount).toBe(2);
+    expect(resolved.items.map((item) => item.id)).toEqual([
+      'build-1',
+      'build-2',
+    ]);
+    expect(resolved.bounds).toEqual({
+      min: [0, 0, 0],
+      max: [60, 20, 20],
+      spans: [60, 20, 20],
+    });
+    const all = await convertThreeMfToStl(data);
+    expect(all.report.reopenedTriangles).toBe(24);
+    for (const policy of [CoordinatePolicy.Preserve, CoordinatePolicy.Origin]) {
+      const result = await convertThreeMfToStl(data, {
+        itemId: 'build-2',
+        coordinatePolicy: policy,
+      });
+      expect(result.report.reopenedTriangles).toBe(12);
+      expect(result.report.reopenedBoundsMm).toEqual({
+        min: [policy === CoordinatePolicy.Preserve ? 40 : 0, 0, 0],
+        max: [policy === CoordinatePolicy.Preserve ? 60 : 20, 20, 20],
+        spans: [20, 20, 20],
+      });
+      expect(result.bytes.byteLength).toBe(684);
+      expect(result.report.verification.passed).toBe(true);
+      expect(result.report.translationMm).toEqual([
+        policy === CoordinatePolicy.Origin ? -40 : 0,
+        0,
+        0,
+      ]);
+    }
+    dom.window.close();
+  });
+  it('applies child rotation before parent translation, including selected composites', async () => {
+    const dom = domForParts();
+    const result = await convertThreeMfToStl(
+      await (await file('part-inspection/nested-rotation.3mf')).arrayBuffer(),
+      { itemId: 'build-1' },
+    );
+    expect(result.report.reopenedBoundsMm).toEqual({
+      min: [20, 0, 0],
+      max: [40, 10, 30],
+      spans: [20, 10, 30],
+    });
+    expect(result.report.reopenedTriangles).toBe(12);
+    dom.window.close();
+  });
+  it('converts declared-inch translation exactly once and compares actual Float32 coordinates', async () => {
+    const dom = domForParts();
+    const result = await convertThreeMfToStl(
+      await (
+        await file('english-market-batch/declared-inch-transformed.3mf')
+      ).arrayBuffer(),
+    );
+    expect(result.report.reopenedBoundsMm.min).toEqual([
+      Math.fround(50.8),
+      0,
+      0,
+    ]);
+    expect(result.report.reopenedBoundsMm.max).toEqual([
+      Math.fround(76.2),
+      Math.fround(25.4),
+      Math.fround(25.4),
+    ]);
+    expect(result.report.reopenedTriangles).toBe(12);
+    dom.window.close();
+  });
+  it('retains coincident multiplicity and reflected winding against independent cube surfaces', async () => {
+    const dom = domForParts();
+    const coincident = await convertThreeMfToStl(
+      await (
+        await file('part-inspection/coincident-placements.3mf')
+      ).arrayBuffer(),
+    );
+    expect(coincident.report.placedItems.length).toBe(2);
+    expect(coincident.report.reopenedTriangles).toBe(24);
+    const reflected = await resolveThreeMfWallGeometry(
+      await (await file('part-inspection/reflected-cube.3mf')).arrayBuffer(),
+    );
+    const cube = await readStl(
+      await file('english-market-batch/closed-20mm-cube.stl'),
+    );
+    expect(reflected.bounds).toEqual({
+      min: [0, 0, 0],
+      max: [20, 20, 20],
+      spans: [20, 20, 20],
+    });
+    // Independent orientation oracle: every face normal points away from (10,10,10).
+    for (let face = 0; face < reflected.geometry.indices.length; face += 3) {
+      const points = Array.from(
+        reflected.geometry.indices.slice(face, face + 3),
+        (index) =>
+          Array.from(
+            reflected.geometry.positions.slice(index * 3, index * 3 + 3),
+          ),
+      );
+      const u = points[1].map((v, i) => v - points[0][i]);
+      const v = points[2].map((n, i) => n - points[0][i]);
+      const normal = [
+        u[1] * v[2] - u[2] * v[1],
+        u[2] * v[0] - u[0] * v[2],
+        u[0] * v[1] - u[1] * v[0],
+      ];
+      expect(
+        normal.reduce((sum, n, axis) => sum + n * (points[0][axis] - 10), 0),
+      ).toBeGreaterThan(0);
+    }
+    expect(reflected.geometry.indices.length).toBe(cube.indices.length);
+    dom.window.close();
+  });
+  it('blocks unsupported namespaces independently of their prefix and never omits a bad item', async () => {
+    const dom = domForParts();
+    for (const name of ['required-extension', 'required-extension-alias']) {
+      await expect(
+        convertThreeMfToStl(
+          await (await file(`part-inspection/${name}.3mf`)).arrayBuffer(),
+        ),
+      ).rejects.toMatchObject({ status: ThreeMfResolutionStatus.Unsupported });
+    }
+    for (const name of ['bad-reference', 'component-cycle']) {
+      await expect(
+        convertThreeMfToStl(
+          await (await file(`part-inspection/${name}.3mf`)).arrayBuffer(),
+        ),
+      ).rejects.toMatchObject({ status: ThreeMfResolutionStatus.Invalid });
+    }
+    dom.window.close();
+  });
+  it('detects wrong scale, wrong translation and altered surfaces with unchanged count/bounds', async () => {
+    const mesh = await readStl(
+      await file('english-market-batch/closed-20mm-cube.stl'),
+    );
+    for (const changed of [
+      mesh.positions.map((v) => v * 25.4),
+      mesh.positions.map((v) => v + 40),
+      mesh.positions.map((v, i) => (i === 3 ? v + 1 : v)),
+    ]) {
+      expect(verifyStlGeometry(mesh, { ...mesh, positions: changed })).toBe(
+        false,
+      );
+    }
+  });
+  it('bounds nonfinite, deep, external and oversized inputs', async () => {
+    const dom = domForParts();
+    const original = unzipSync(
+      new Uint8Array(
+        await (await file('part-inspection/nested-rotation.3mf')).arrayBuffer(),
+      ),
+    );
+    const originalXml = new TextDecoder().decode(original['Models/main.model']);
+    for (const changed of [
+      originalXml.replace('x="0"', 'x="NaN"'),
+      originalXml.replace(
+        '0 1 0 -1 0 0 0 0 1 0 0 0',
+        '0 1 0 -1 0 0 0 0 1 Infinity 0 0',
+      ),
+    ]) {
+      const bytes = zipSync({
+        ...original,
+        'Models/main.model': strToU8(changed),
+      });
+      await expect(
+        resolveThreeMfWallGeometry(bytes.slice().buffer),
+      ).rejects.toMatchObject({ status: ThreeMfResolutionStatus.Invalid });
+    }
+    const external = zipSync({
+      ...original,
+      '_rels/.rels': strToU8(
+        '<Relationships><Relationship Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel" Target="https://example.com/mesh.model" TargetMode="External"/></Relationships>',
+      ),
+    });
+    await expect(
+      resolveThreeMfWallGeometry(external.slice().buffer),
+    ).rejects.toMatchObject({ status: ThreeMfResolutionStatus.Invalid });
+    const oversized = zipSync({
+      ...original,
+      'padding.txt': new Uint8Array(21 * 1024 * 1024),
+    });
+    await expect(
+      resolveThreeMfWallGeometry(oversized.slice().buffer),
+    ).rejects.toMatchObject({ status: ThreeMfResolutionStatus.Limit });
+    const chain = Array.from(
+      { length: 70 },
+      (_, i) =>
+        `<object id="${i + 3}" type="model"><components><component objectid="${i + 2}"/></components></object>`,
+    ).join('');
+    const deep = zipSync({
+      ...original,
+      'Models/main.model': strToU8(
+        originalXml
+          .replace('</resources>', chain + '</resources>')
+          .replace('<item objectid="2"', '<item objectid="72"'),
+      ),
+    });
+    await expect(
+      resolveThreeMfWallGeometry(deep.slice().buffer),
+    ).rejects.toMatchObject({ status: ThreeMfResolutionStatus.Limit });
+    dom.window.close();
   });
 });

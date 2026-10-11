@@ -60,6 +60,9 @@ export class ObjectViewerComponent {
   readonly measurementUnit = input('model units');
   readonly measurementAvailable = input(true);
   readonly chooseAnotherAvailable = input(true);
+  readonly selectedPlacedItem = input<string | null>(null);
+  readonly isolatedPlacedItem = input<string | null>(null);
+  readonly placedItemSelected = output<string>();
   readonly chooseAnother = output<void>();
   readonly resetView = output<void>();
   readonly rendered = output<void>();
@@ -127,6 +130,11 @@ export class ObjectViewerComponent {
       void this.render(this.object(), this.extent());
     });
     effect(() => this.updateIssueLines(this.issueLines()));
+    effect(() => {
+      this.selectedPlacedItem();
+      this.isolatedPlacedItem();
+      this.updatePlacedItems();
+    });
     effect(() => {
       this.crossSectionEnabled();
       this.crossSectionAxis();
@@ -204,13 +212,39 @@ export class ObjectViewerComponent {
     const start = this.pointerStart;
     this.pointerStart = null;
     if (
-      !this.measuring() ||
       !start ||
       Math.hypot(event.clientX - start.x, event.clientY - start.y) > 8
     ) {
       return;
     }
-    this.selectMeasurementPoint(event);
+    if (this.measuring()) {
+      this.selectMeasurementPoint(event);
+    } else {
+      const runtime = this.runtime;
+      const host = this.viewport()?.nativeElement;
+      if (!runtime || !host) {
+        return;
+      }
+      const rect = host.getBoundingClientRect();
+      const raycaster = new runtime.THREE.Raycaster();
+      raycaster.setFromCamera(
+        new runtime.THREE.Vector2(
+          ((event.clientX - rect.left) / rect.width) * 2 - 1,
+          (-(event.clientY - rect.top) / rect.height) * 2 + 1,
+        ),
+        runtime.camera,
+      );
+      const hit = raycaster
+        .intersectObject(runtime.object, true)
+        .find(
+          (hit) => hit.object.visible && hit.object.userData['placedItemId'],
+        );
+      if (hit) {
+        this.placedItemSelected.emit(
+          hit.object.userData['placedItemId'] as string,
+        );
+      }
+    }
   }
 
   onViewportPointerMove(event: PointerEvent): void {
@@ -366,6 +400,7 @@ export class ObjectViewerComponent {
       this.updateIssueLines(this.issueLines());
       this.updateMeasurementOverlay();
       this.updateCrossSection();
+      this.updatePlacedItems();
       this.frame(runtime);
       this.observer = new ResizeObserver(() => this.resize(runtime));
       this.observer.observe(host);
@@ -410,6 +445,46 @@ export class ObjectViewerComponent {
     });
   }
 
+  private updatePlacedItems(): void {
+    const runtime = this.runtime;
+    if (!runtime) {
+      return;
+    }
+    runtime.object.traverse((child) => {
+      const mesh = child as import('three').Mesh;
+      const id = child.userData['placedItemId'];
+      if (!mesh.isMesh || !id) {
+        return;
+      }
+      mesh.visible =
+        !this.isolatedPlacedItem() || id === this.isolatedPlacedItem();
+      const material = mesh.material as import('three').MeshStandardMaterial;
+      const selected = id === this.selectedPlacedItem();
+      material.emissive.set(selected ? '#425d79' : '#000000');
+      material.wireframe = selected;
+    });
+  }
+  framePlacedItem(id: string | null): void {
+    const runtime = this.runtime;
+    if (!runtime || !id) {
+      return;
+    }
+    const item = runtime.object.children.find(
+      (child) => child.userData['placedItemId'] === id,
+    );
+    if (!item) {
+      return;
+    }
+    const box = new runtime.THREE.Box3().setFromObject(item);
+    const centre = box.getCenter(new runtime.THREE.Vector3());
+    const size = box.getSize(new runtime.THREE.Vector3());
+    const distance = Math.max(size.x, size.y, size.z) * 1.8 || 10;
+    runtime.controls.target.copy(centre);
+    runtime.camera.position
+      .copy(centre)
+      .add(new runtime.THREE.Vector3(distance, distance * 0.7, distance));
+    runtime.controls.update();
+  }
   private frame(runtime: ViewerRuntime): void {
     const box = new runtime.THREE.Box3().setFromObject(runtime.object);
     const size = box.getSize(new runtime.THREE.Vector3());

@@ -26,6 +26,71 @@ faq:
   rather than repaired it.
 </p>
 
+<h2>Required extension declarations need explicit support</h2>
+<p>
+  A required declaration lists namespace prefixes, but each prefix is only an
+  alias for its namespace URI. The two required-extension controls use p and
+  other for the same production URI; both produce the same unsupported status in
+  this local geometry workflow. Changing an alias cannot enable support.
+  Namespace presence alone is not proof that required semantics were
+  implemented.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Finding</th>
+      <th>Next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Unknown optional project/property data</td>
+      <td>
+        Geometry may resolve; retain the source for settings and appearance
+      </td>
+    </tr>
+    <tr>
+      <td>Unsupported required or recommended semantics</td>
+      <td>
+        Review in the original authoring application and deliberately export
+        supported geometry
+      </td>
+    </tr>
+    <tr>
+      <td>Cross-part component reference</td>
+      <td>
+        Production-extension resolution is unsupported here; no complete export
+        offered
+      </td>
+    </tr>
+    <tr>
+      <td>Missing reference or cycle</td>
+      <td>
+        Obtain a corrected source package; do not accept omitted triangles
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Do not delete extension declarations or package files to force an import. That
+  can hide the very semantics the author required. Try the labelled
+  diagnostic-only fixtures in the
+  <a href="{{ GuideSlug.RouteExamples }}">example collection</a>; they are
+  analytical software tests, not printable models. For resolved placement
+  absence use
+  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+    >missing-object diagnosis</a
+  >.
+</p>
+<p>
+  Technical basis:
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core specification 1.4.0</a
+  >, sections 3.3, 3.4 and 4.2; reviewed 11 October 2026. Examples are original
+  mathematical controls, not physical print measurements or tests of every
+  slicer.
+</p>
 <h2>Symptom-to-check guide</h2>
 <table>
   <thead>

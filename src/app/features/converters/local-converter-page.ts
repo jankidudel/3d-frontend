@@ -1,3 +1,14 @@
+import { computed } from '@angular/core';
+import {
+  resolveThreeMfWallGeometry,
+  type ResolvedThreeMfGeometry,
+} from '../shared/wall-thickness/three-mf-wall-thickness';
+import {
+  CoordinatePolicy,
+  exportGeometry,
+  serializeThreeMfScope,
+  type ThreeMfExportReport,
+} from './three-mf-stl-export';
 import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { isPlatformBrowser } from '@angular/common';
@@ -42,7 +53,7 @@ export class LocalConverterPage {
   readonly loadPublicExample = async (
     files: readonly File[],
   ): Promise<void> => {
-    this.select(files[0]);
+    await this.select(files[0]);
     if (this.error()) {
       throw new Error(this.error());
     }
@@ -55,6 +66,86 @@ export class LocalConverterPage {
   readonly error = signal('');
   readonly result = signal<ConversionResult | null>(null);
   readonly converting = signal(false);
+  readonly resolving = signal(false);
+  readonly resolved = signal<ResolvedThreeMfGeometry | null>(null);
+  readonly itemId = signal('');
+  readonly coordinatePolicy = signal<CoordinatePolicy>(
+    CoordinatePolicy.Preserve,
+  );
+  readonly policies = CoordinatePolicy;
+  readonly report = signal<ThreeMfExportReport | null>(null);
+  readonly preview = computed(() => {
+    const resolved = this.resolved();
+    if (!resolved) {
+      return null;
+    }
+    return exportGeometry(resolved, {
+      itemId: this.itemId() || undefined,
+      coordinatePolicy: this.coordinatePolicy(),
+    });
+  });
+  readonly reportText = computed(() =>
+    this.report() ? JSON.stringify(this.report(), null, 2) : '',
+  );
+  private derivative: { bytes: Uint8Array; name: string; type: string } | null =
+    null;
+
+  changeScope(event: Event): void {
+    this.itemId.set((event.target as HTMLSelectElement).value);
+    this.invalidateDerivative();
+  }
+  changePolicy(event: Event): void {
+    this.coordinatePolicy.set(
+      (event.target as HTMLInputElement).checked
+        ? CoordinatePolicy.Origin
+        : CoordinatePolicy.Preserve,
+    );
+    this.invalidateDerivative();
+  }
+  private invalidateDerivative(): void {
+    ++this.run;
+    this.result.set(null);
+    this.report.set(null);
+    this.derivative = null;
+    this.converting.set(false);
+    this.status.set('Scope changed. Generate and verify a new derivative.');
+  }
+  downloadDerivative(): void {
+    if (this.derivative && this.report()?.verification.passed) {
+      this.download(
+        this.derivative.bytes,
+        this.derivative.name,
+        this.derivative.type,
+      );
+    }
+  }
+  downloadReport(): void {
+    this.download(
+      new TextEncoder().encode(this.reportText()),
+      'inspectmesh-export-report.json',
+      'application/json',
+    );
+  }
+  async copyReport(): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(this.reportText());
+      this.status.set('Export report copied.');
+    } catch {
+      this.status.set(
+        'Clipboard unavailable. Download the JSON report instead.',
+      );
+    }
+  }
+  printReport(): void {
+    window.print();
+  }
+  boundsText(bounds: {
+    min: readonly number[];
+    max: readonly number[];
+    spans: readonly number[];
+  }): string {
+    return `Min ${bounds.min.join(' / ')}; max ${bounds.max.join(' / ')}; spans ${bounds.spans.join(' × ')} mm (X / Y / Z)`;
+  }
   readonly outputUnit = signal<OutputUnit>('millimeter');
   readonly outputUnits: readonly OutputUnit[] = [
     'millimeter',
@@ -81,13 +172,13 @@ export class LocalConverterPage {
 
   onPicker(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.select(input.files?.item(0) ?? null);
+    void this.select(input.files?.item(0) ?? null);
     input.value = '';
   }
 
   onDrop(event: DragEvent): void {
     event.preventDefault();
-    this.select(event.dataTransfer?.files.item(0) ?? null);
+    void this.select(event.dataTransfer?.files.item(0) ?? null);
   }
 
   onDragOver(event: DragEvent): void {
@@ -119,10 +210,17 @@ export class LocalConverterPage {
         return;
       }
       this.status.set('Preparing your download…');
-      this.download(converted.bytes, converted.name, converted.type);
+      if (this.kind === '3mf-to-stl' && 'report' in converted) {
+        this.report.set(converted.report);
+        this.derivative = converted;
+      } else {
+        this.download(converted.bytes, converted.name, converted.type);
+      }
       this.result.set(converted.result);
       this.status.set(
-        'Converted locally and downloaded. Your source file was not uploaded.',
+        this.kind === '3mf-to-stl'
+          ? 'Export generated and reopened locally. Review the report, then download the STL using millimetres.'
+          : 'Converted locally and downloaded. Your source file was not uploaded.',
       );
     } catch (error: unknown) {
       if (run !== this.run) {
@@ -137,8 +235,14 @@ export class LocalConverterPage {
     }
   }
 
-  protected select(file: File | null): void {
-    ++this.run;
+  protected async select(file: File | null): Promise<void> {
+    const run = ++this.run;
+    this.resolving.set(false);
+    this.resolved.set(null);
+    this.itemId.set('');
+    this.coordinatePolicy.set(CoordinatePolicy.Preserve);
+    this.report.set(null);
+    this.derivative = null;
     this.converting.set(false);
     this.file.set(null);
     this.error.set('');
@@ -165,6 +269,29 @@ export class LocalConverterPage {
       return;
     }
     this.file.set(file);
+    if (this.kind === '3mf-to-stl') {
+      this.resolving.set(true);
+      try {
+        const resolved = await resolveThreeMfWallGeometry(
+          await file.arrayBuffer(),
+        );
+        if (run === this.run) {
+          // Check Float32 budget before offering scope controls.
+          exportGeometry(resolved);
+          this.resolved.set(resolved);
+        }
+      } catch (error) {
+        if (run === this.run) {
+          this.error.set(
+            error instanceof Error ? error.message : 'Resolution failed.',
+          );
+        }
+      } finally {
+        if (run === this.run) {
+          this.resolving.set(false);
+        }
+      }
+    }
   }
 
   private async stlToThreeMf(file: File, unit: OutputUnit) {
@@ -216,11 +343,21 @@ export class LocalConverterPage {
 
   private async threeMfToStl(file: File) {
     this.status.set('Resolving 3MF build geometry locally…');
-    const { convertThreeMfToStl } = await import('./three-mf-stl-export');
-    const converted = await convertThreeMfToStl(await file.arrayBuffer());
+    const resolved = this.resolved();
+    if (!resolved) {
+      throw new Error('Resolve a supported source before exporting.');
+    }
+    const converted = await serializeThreeMfScope(resolved, file.size, {
+      itemId: this.itemId() || undefined,
+      coordinatePolicy: this.coordinatePolicy(),
+      sourceName: file.name,
+    });
     return {
       ...converted,
-      name: outputName(file.name, '.stl'),
+      name: outputName(
+        file.name,
+        `${this.itemId() ? '-' + this.itemId() : '-build'}.stl`,
+      ),
       type: 'model/stl',
     };
   }
@@ -243,6 +380,9 @@ export class LocalConverterPage {
     if (error instanceof Error && error.message === 'empty-3mf') {
       return 'This 3MF has no resolved build geometry to export.';
     }
+    if (this.kind === '3mf-to-stl' && error instanceof Error) {
+      return error.message;
+    }
     return this.kind === 'stl-to-3mf'
       ? 'We could not convert that STL. Choose a valid ASCII or binary STL file and try again.'
       : 'We could not resolve that 3MF. Choose a standard, unencrypted 3MF with supported mesh geometry and try again.';
@@ -262,7 +402,7 @@ export class LocalConverterPage {
       description:
         this.kind === 'stl-to-3mf'
           ? 'Convert STL files to basic 3MF packages locally in your browser, with no upload.'
-          : 'Export resolved 3MF geometry as one binary STL locally in your browser, with no upload.',
+          : 'Select an entire 3MF build or one placed item, export binary STL in millimetres and verify the generated bytes locally before downloading.',
       path:
         this.kind === 'stl-to-3mf'
           ? PublicRouteUrl.StlToThreeMfConverter

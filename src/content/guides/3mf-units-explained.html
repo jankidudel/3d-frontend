@@ -19,6 +19,31 @@ faq:
   substitute for checking the dimensions of the final build.
 </p>
 
+<h2>Inch source, millimetre derivative</h2>
+<figure>
+  <img
+    src="/examples/part-inspection/inch-round-trip.svg"
+    width="720"
+    height="600"
+    loading="lazy"
+    alt="Declared inch to millimetre STL: mathematical schematic."
+  />
+  <figcaption>
+    One inch becomes 25.4 mm once, including the source placement translation.
+  </figcaption>
+</figure>
+<p>
+  The declared-inch control spans one source unit and is translated two source
+  units on X. Expected resolved bounds are X=50.8..76.2 mm, Y/Z=0..25.4 mm, with
+  12 triangles. The generated STL reopens with nearby Float32 coordinates in
+  this same millimetre convention. It has no unit declaration; explicitly choose
+  millimetres in the receiving application. Use
+  <a href="{{ GuideSlug.Route3mfToStlWrongSizeOrPosition }}"
+    >derivative troubleshooting</a
+  >
+  to distinguish a receiving assumption from a deliberate translation rather
+  than blindly applying a 25.4 correction.
+</p>
 <h2>Unit conversion example</h2>
 <p>
   If a package declares inches and a resolved object spans 4 coordinate units,

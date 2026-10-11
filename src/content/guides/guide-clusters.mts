@@ -113,6 +113,9 @@ export const guideClusters: readonly GuideCluster[] = [
       'Work with 3MF packages, build items, units and format conversion limits.',
     pillar: 'how-to-check-a-3mf-file-for-errors',
     slugs: [
+      'extract-part-from-3mf',
+      '3mf-to-stl-wrong-size-or-position',
+      '3mf-to-stl-combined-or-separate-parts',
       'how-to-open-a-3mf-file',
       '3mf-missing-objects-after-import',
       'how-to-repair-a-3mf-file',

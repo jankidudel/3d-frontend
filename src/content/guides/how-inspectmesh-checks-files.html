@@ -17,6 +17,92 @@ faq:
   closed-looking picture, zero edge findings or a completed operation each
   answers only part of the question.
 </p>
+<h2>Placed identity and export verification contract</h2>
+<p>
+  The local viewer, converter, local preflight and collection path share a
+  bounded core geometry resolver. It follows the package root model
+  relationship, applies component then parent placement transforms and converts
+  source units once to millimetres. Top-level build order supplies stable
+  identities for repeated references. Unplaced resources contribute no build
+  geometry. The server dimensions/quality methods remain separate methods with
+  their own reports.
+</p>
+<figure>
+  <img
+    src="/examples/part-inspection/scope-verification.svg"
+    width="720"
+    height="600"
+    loading="lazy"
+    alt="Source to scope to derivative check: mathematical schematic."
+  />
+  <figcaption>
+    Method version inspectmesh-3mf-export-1 compares the derivative against a
+    deliberately chosen scope.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Complete supported geometry</td>
+      <td>
+        Every placed item resolved within the implemented core mesh/component
+        contract; project properties are outside the check
+      </td>
+    </tr>
+    <tr>
+      <td>Unsupported required semantics</td>
+      <td>
+        Required namespace or cross-part geometry needs another application; no
+        complete export offered
+      </td>
+    </tr>
+    <tr>
+      <td>Invalid model data</td>
+      <td>
+        Malformed XML, invalid references, cyclic or nonfinite data; no
+        omitted-item success
+      </td>
+    </tr>
+    <tr>
+      <td>Processing limit reached</td>
+      <td>
+        Bounded file/expanded package, entry, component, geometry or precision
+        budget
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Limits are 25 MiB compressed, 20 MiB expanded, 1,024 entries, 500,000
+  triangles, 1,500,000 resolved vertices, 10,000 component visits and depth 64.
+  Collection retains its stricter 5 MiB / 100,000-triangle budget. External
+  relationships and uploaded links are never fetched. Recommended unsupported
+  extensions conservatively stop for authoring-application review. Unknown
+  optional properties alone do not block core geometry.
+</p>
+<p>
+  Exact serialized STL bytes reopen through the repository parser. Every
+  oriented triangle is compared after Float32 rounding, allowing cyclic vertex
+  order and preserving multiplicity. Count and bounds supplement this check. A
+  half-ULP scale-based allowance with a 0.0000001 mm floor describes
+  representation; exports exceeding a 0.01 mm allowance are rejected. Matching
+  this geometry does not certify topology or physical printing.
+</p>
+<p>
+  Technical basis:
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core specification 1.4.0</a
+  >, sections 3.3, 3.4 and 4.2; reviewed 11 October 2026. Examples are original
+  mathematical controls, not physical print measurements or tests of every
+  slicer.
+</p>
 <h2>What the local methods can establish</h2>
 <table>
   <thead>
