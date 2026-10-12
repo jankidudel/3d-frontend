@@ -55,7 +55,7 @@ describe('3MF asynchronous source and scope ownership', () => {
       fixture.destroy();
     }
   });
-  it('copy and JSON download carry the same complete report, with a clipboard fallback', async () => {
+  it('copy rounds display while JSON keeps the same complete precise report, with a clipboard fallback', async () => {
     const fixture = TestBed.createComponent(ThreeMfToStlConverterPage);
     const instance = fixture.componentInstance;
     await instance.loadPublicExample([source('model.3mf')]);
@@ -73,7 +73,7 @@ describe('3MF asynchronous source and scope ownership', () => {
     vi.stubGlobal('navigator', { clipboard: { writeText } });
     try {
       await instance.copyReport();
-      expect(writeText).toHaveBeenCalledWith(expected);
+      expect(writeText).toHaveBeenCalledWith(instance.humanReportText());
       expect(instance.status()).toBe('Export report copied.');
       instance.downloadReport();
       expect(new TextDecoder().decode(download.mock.calls[0][0])).toBe(

@@ -1,3 +1,9 @@
+import {
+  displayNumber,
+  displayVector,
+  displayBounds,
+  NUMERIC_DISPLAY_NOTE,
+} from '../../shared/numeric-display';
 import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { isPlatformBrowser } from '@angular/common';
@@ -74,6 +80,9 @@ export class ThreeMfViewerPage {
     }
   };
   readonly guideRouteUrl = GuideRouteUrl;
+  readonly displayNumber = displayNumber;
+  readonly displayVector = displayVector;
+  readonly numericNote = NUMERIC_DISPLAY_NOTE;
   readonly routeUrl = PublicRouteUrl;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
   readonly error = signal('');
@@ -101,7 +110,7 @@ export class ThreeMfViewerPage {
     max: readonly number[];
     spans: readonly number[];
   }): string {
-    return `Min ${bounds.min.map((value) => this.formatValue(value)).join(' / ')}; max ${bounds.max.map((value) => this.formatValue(value)).join(' / ')}; spans ${bounds.spans.map((value) => this.formatValue(value)).join(' × ')} mm (X / Y / Z)`;
+    return displayBounds(bounds);
   }
   readonly webglUnavailable = signal(false);
   readonly analyzingIssues = signal(false);
@@ -349,8 +358,6 @@ export class ThreeMfViewerPage {
   }
 
   formatValue(value: number): string {
-    return new Intl.NumberFormat('en', { maximumFractionDigits: 3 }).format(
-      value,
-    );
+    return displayNumber(value);
   }
 }

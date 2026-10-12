@@ -53,16 +53,24 @@ interface MeasurementLabelPosition {
 export class ObjectViewerComponent {
   readonly object = input.required<import('three').Object3D>();
   readonly extent = input.required<number>();
+  /** Optional common camera framing for original/candidate review. */
+  readonly frameExtent = input<number | null>(null);
   readonly ariaLabel = input.required<string>();
   readonly issueLines = input<readonly ViewerIssueLine[]>([]);
   readonly scrollOnRender = input(true);
   readonly preserveVertexColors = input(false);
   readonly measurementUnit = input('model units');
   readonly measurementAvailable = input(true);
+  readonly showMeasurementControls = input(true);
+  readonly showCrossSectionControls = input(true);
   readonly chooseAnotherAvailable = input(true);
   readonly selectedPlacedItem = input<string | null>(null);
   readonly isolatedPlacedItem = input<string | null>(null);
   readonly placedItemSelected = output<string>();
+  /** Original triangle IDs supplied by batched mesh previews. */
+  readonly triangleInteraction = input(false);
+  readonly triangleSelected = output<number>();
+  readonly triangleHovered = output<number | null>();
   readonly chooseAnother = output<void>();
   readonly resetView = output<void>();
   readonly rendered = output<void>();
@@ -102,6 +110,7 @@ export class ObjectViewerComponent {
   private rotationAnimating = false;
   private measurementPoints: import('three').Vector3[] = [];
   private measurementPreview: import('three').Vector3 | null = null;
+  private triangleHoverTime = 0;
   private pointerStart: { readonly x: number; readonly y: number } | null =
     null;
 
@@ -234,11 +243,28 @@ export class ObjectViewerComponent {
         ),
         runtime.camera,
       );
-      const hit = raycaster
-        .intersectObject(runtime.object, true)
-        .find(
-          (hit) => hit.object.visible && hit.object.userData['placedItemId'],
+      const intersections = raycaster.intersectObject(runtime.object, true);
+      const triangleHit = intersections.find(
+        (hit) =>
+          hit.object.visible &&
+          hit.faceIndex != null &&
+          hit.object.userData['sourceFaces'],
+      );
+      if (
+        this.triangleInteraction() &&
+        triangleHit &&
+        triangleHit.faceIndex != null
+      ) {
+        this.triangleSelected.emit(
+          (triangleHit.object.userData['sourceFaces'] as Uint32Array)[
+            triangleHit.faceIndex
+          ],
         );
+        return;
+      }
+      const hit = intersections.find(
+        (hit) => hit.object.visible && hit.object.userData['placedItemId'],
+      );
       if (hit) {
         this.placedItemSelected.emit(
           hit.object.userData['placedItemId'] as string,
@@ -248,6 +274,39 @@ export class ObjectViewerComponent {
   }
 
   onViewportPointerMove(event: PointerEvent): void {
+    if (
+      !this.measuring() &&
+      this.triangleInteraction() &&
+      performance.now() - this.triangleHoverTime > 150
+    ) {
+      this.triangleHoverTime = performance.now();
+      const runtime = this.runtime;
+      const host = this.viewport()?.nativeElement;
+      if (runtime && host) {
+        const rect = host.getBoundingClientRect();
+        const ray = new runtime.THREE.Raycaster();
+        ray.setFromCamera(
+          new runtime.THREE.Vector2(
+            ((event.clientX - rect.left) / rect.width) * 2 - 1,
+            -((event.clientY - rect.top) / rect.height) * 2 + 1,
+          ),
+          runtime.camera,
+        );
+        const hit = ray
+          .intersectObject(runtime.object, true)
+          .find(
+            (hit) =>
+              hit.object.visible &&
+              hit.faceIndex != null &&
+              hit.object.userData['sourceFaces'],
+          );
+        this.triangleHovered.emit(
+          hit && hit.faceIndex != null
+            ? (hit.object.userData['sourceFaces'] as Uint32Array)[hit.faceIndex]
+            : null,
+        );
+      }
+    }
     if (!this.measuring() || this.measurementPoints.length !== 1) {
       return;
     }
@@ -485,10 +544,27 @@ export class ObjectViewerComponent {
       .add(new runtime.THREE.Vector3(distance, distance * 0.7, distance));
     runtime.controls.update();
   }
+  frameBounds(min: readonly number[], max: readonly number[]): void {
+    const runtime = this.runtime;
+    if (!runtime) {
+      return;
+    }
+    const centre = new runtime.THREE.Vector3(...min)
+      .add(new runtime.THREE.Vector3(...max))
+      .multiplyScalar(0.5);
+    const distance =
+      Math.max(...max.map((value, axis) => value - min[axis])) * 1.1 || 10;
+    runtime.controls.target.copy(centre);
+    runtime.camera.position
+      .copy(centre)
+      .add(new runtime.THREE.Vector3(distance, distance * 0.7, distance));
+    runtime.controls.update();
+  }
   private frame(runtime: ViewerRuntime): void {
     const box = new runtime.THREE.Box3().setFromObject(runtime.object);
     const size = box.getSize(new runtime.THREE.Vector3());
-    const distance = Math.max(size.x, size.y, size.z) * 1.8 || 10;
+    const distance =
+      (this.frameExtent() ?? Math.max(size.x, size.y, size.z)) * 1.8 || 10;
     runtime.camera.position.set(distance, distance * 0.7, distance);
     runtime.controls.target.set(0, 0, 0);
     runtime.controls.update();

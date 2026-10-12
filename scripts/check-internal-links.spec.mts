@@ -1,3 +1,4 @@
+import { resolveGuideLinks } from './internal-guide-links.mts';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
@@ -132,5 +133,33 @@ describe('internal link validation', () => {
     expect(
       routeForFile(outputDirectory, join(outputDirectory, 'index.html')),
     ).toBe('/');
+  });
+});
+
+describe('registered guide links with section fragments', () => {
+  it('resolves the existing repair route while retaining its anchor', () => {
+    expect(
+      resolveGuideLinks(
+        '<a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts">Review</a>',
+        { RouteStlRepair: 'stl-repair' },
+        'guide.html',
+      ),
+    ).toBe('<a href="/stl-repair#remove-floating-parts">Review</a>');
+    expect(
+      resolveGuideLinks(
+        '<a href="{{GuideSlug.RouteStlRepair}}">Repair</a>',
+        { RouteStlRepair: 'stl-repair' },
+        'guide.html',
+      ),
+    ).toBe('<a href="/stl-repair">Repair</a>');
+  });
+  it('rejects an unknown owner even with an anchor', () => {
+    expect(() =>
+      resolveGuideLinks(
+        '<a href="{{ GuideSlug.Unknown }}#part">x</a>',
+        {},
+        'guide.html',
+      ),
+    ).toThrow('unknown internal route');
   });
 });

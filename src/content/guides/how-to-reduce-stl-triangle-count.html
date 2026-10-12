@@ -8,7 +8,7 @@ faq:
   - question: Does reducing STL triangle count reduce print quality?
     answer: It can if the reduction is too aggressive. Use a conservative setting, then inspect curved surfaces, small features and fitting areas before printing.
   - question: Is reducing triangle count the same as compressing an STL?
-    answer: No. Converting ASCII STL to binary is a lossless encoding change. Reducing triangles changes the mesh geometry to make the file smaller.
+    answer: No. Binary encoding preserves triangle records under Float32 storage; ASCII coordinates may round. Reducing triangles changes the mesh geometry to make the file smaller.
   - question: What triangle reduction should I start with?
     answer: Start conservatively, such as keeping 75% of triangles. Compare the result before trying a larger reduction.
 ---
@@ -66,11 +66,11 @@ faq:
   high number is only a problem when it creates a practical issue, such as slow
   slicing, a large upload or a file that is hard to share.
 </p>
-<h2>Triangle reduction versus lossless file optimisation</h2>
+<h2>Triangle reduction versus storage encoding</h2>
 <p>
-  Converting ASCII STL to binary STL stores the same geometry more compactly.
-  That conversion is lossless: the model shape and triangle count stay
-  unchanged.
+  Binary STL stores triangle records compactly without intentionally removing
+  them. Float32 coordinates can round ASCII decimals; unchanged triangle count
+  does not establish exact decimal equality.
 </p>
 <p>
   Triangle reduction, also called mesh simplification or decimation, removes and
@@ -168,7 +168,7 @@ faq:
   </tbody>
 </table>
 <p>
-  Measured in the repository software on 7 October 2026: meshoptimizer 1.2.0,
+  Reproduced in the repository software on 11 October 2026: meshoptimizer 1.2.0,
   target percentage, relative error 0.01 and LockBorder, then binary export,
   re-import and collection topology checks. The target is a request, not a
   promised final count. These observations do not establish that the 75% copy
@@ -198,10 +198,163 @@ faq:
 </ol>
 <p>
   The
-  <a href="https://github.com/zeux/meshoptimizer">meshoptimizer project</a>
-  documents mesh simplification and error/constraint trade-offs; reviewed 7
-  October 2026. This fixture illustrates why reduction percentage alone is not
-  quality evidence.
+  <a href="https://github.com/zeux/meshoptimizer/tree/v1.2"
+    >meshoptimizer project</a
+  >
+  documents mesh simplification and error/constraint trade-offs; version 1.2
+  documentation reviewed 11 October 2026. This fixture illustrates why reduction
+  percentage alone is not quality evidence.
   <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">Simplify a copy locally</a>
   only when the resulting model meets your own named feature checks.
+</p>
+
+<h2>Why a requested triangle target can remain unmet</h2>
+<p>
+  The installed meshoptimizer 1.2.0 simplifier takes a target index count, not a
+  removed-vertex count. InspectMesh computes requested triangles as
+  floor(original triangles × kept percentage / 100), with a minimum of one, and
+  passes three times that count as indices. The owned ridge starts with 24
+  triangles: 75% requests 18 and produces 18; 50% requests 12 and produces 16.
+  Relative error 0.01 and LockBorder are unchanged.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">State</th>
+      <th scope="col">Interpretation and next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Actual count above requested</td>
+      <td>
+        The method stopped within its constraints; inspect actual geometry.
+        Count alone cannot diagnose your source.
+      </td>
+    </tr>
+    <tr>
+      <td>Invalid or unsupported source</td>
+      <td>
+        No successful candidate. Correct the source or use a suitable authoring
+        application.
+      </td>
+    </tr>
+    <tr>
+      <td>Cancelled or processing failure</td>
+      <td>
+        No completed result from this attempt; retry deliberately with the
+        original.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The version-specific
+  <a href="https://github.com/zeux/meshoptimizer/blob/v1.2/js/README.md"
+    >JavaScript contract</a
+  >
+  describes error and topology limits. A relative error flag is an algorithm
+  setting, not a measured physical tolerance or a guaranteed surface bound. Do
+  not disable protections merely to obtain the percentage.
+</p>
+<figure>
+  <img
+    src="/examples/reduction-review/local-feature.svg"
+    width="720"
+    height="600"
+    alt="Original narrow rib and a diagnostic revision with the same outer bounds"
+  />
+  <figcaption>
+    Original analytical schematic, not a physical print measurement.
+  </figcaption>
+</figure>
+<h2>Named small features need their own review</h2>
+<p>
+  The
+  <a href="/examples/reduction-review/narrow-rib-original.stl" download
+    >original narrow-rib control</a
+  >
+  has a 20-coordinate cube, a 2 × 2 × 0.2 marker at (1, 1, 20) and a 2 × 0.1 ×
+  0.2 rib at (9, 9, 20). The
+  <a href="/examples/reduction-review/narrow-rib-removed.stl" download
+    >diagnostic revision</a
+  >
+  deliberately removes that rib: 36 versus 24 triangles, with the same outer
+  bounds. The marker keeps the maximum height. These touching shells are not a
+  Boolean union or a physical print control; the revision is hand-authored, not
+  a reduction result.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Feature</th>
+      <th scope="col">Review beyond the outer box</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Hole or mating face</td>
+      <td>
+        Compare source CAD diameter and contact plane; inspect the relevant
+        section.
+      </td>
+    </tr>
+    <tr>
+      <td>Rib or lettering</td>
+      <td>
+        Inspect close-up geometry and relevant slicer layers; area sampling may
+        miss it.
+      </td>
+    </tr>
+    <tr>
+      <td>Silhouette</td>
+      <td>Rotate the shared-frame preview; look for flattened curvature.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Generate gentler alternatives independently from the original, compare the
+  selected candidate, and retain source CAD when a required feature remains
+  unresolved. A low global mean does not approve a local feature.
+</p>
+<figure>
+  <img
+    src="/examples/reduction-review/topology-regression.svg"
+    width="720"
+    height="600"
+    alt="Existing source findings versus new increased candidate findings"
+  />
+  <figcaption>
+    Original analytical schematic, not a physical print measurement.
+  </figcaption>
+</figure>
+<h2>Smaller bytes with increased mesh findings</h2>
+<p>
+  The reproduced 50% ridge output has 16 triangles and 884 bytes, versus 24 and
+  1,284 bytes in the original, but introduces two duplicate triangles and one
+  over-shared edge. Reject it for the intended print workflow. The reducer
+  retains it for diagnostic review and requires an explicit acknowledgement
+  before a diagnostic download. The original already has two touching shells:
+  that existing ambiguity is distinct from the new findings.
+</p>
+<ol>
+  <li>
+    Keep the original and reject a candidate with unexplained new findings.
+  </li>
+  <li>
+    Try a gentler independent target and recheck the same supported topology
+    method.
+  </li>
+  <li>
+    Return to source CAD if connectivity or required detail cannot be preserved.
+  </li>
+  <li>
+    Use
+    <a href="{{ GuideSlug.RouteHowToRepairAnStlFile }}">the repair owner</a> for
+    a separate repair workflow; no silent cleanup occurs during simplification.
+  </li>
+</ol>
+<p>
+  Identical finding counts do not prove identical defect locations. Self
+  intersections and physical print success remain unchecked.
 </p>

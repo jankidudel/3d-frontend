@@ -1,0 +1,142 @@
+solid inspectmesh_synthetic
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 20 20 0
+vertex 20 0 0
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 0 20 0
+vertex 20 20 0
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 20
+vertex 20 0 20
+vertex 20 20 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 20
+vertex 20 20 20
+vertex 0 20 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 20 0 0
+vertex 20 0 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 20 0 20
+vertex 0 0 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 20 0
+vertex 0 20 20
+vertex 20 20 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 20 0
+vertex 20 20 20
+vertex 20 20 0
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 0 0 20
+vertex 0 20 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 0 0 0
+vertex 0 20 20
+vertex 0 20 0
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 20 0 0
+vertex 20 20 0
+vertex 20 20 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 20 0 0
+vertex 20 20 20
+vertex 20 0 20
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 28 0 6
+vertex 28 3 6
+vertex 31 0 6
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 28 0 6
+vertex 31 0 6
+vertex 28 0 9
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 28 0 6
+vertex 28 0 9
+vertex 28 3 6
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex 31 0 6
+vertex 28 3 6
+vertex 28 0 9
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex -8 6 12
+vertex -8 8 12
+vertex -6 6 12
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex -8 6 12
+vertex -6 6 12
+vertex -8 6 14
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex -8 6 12
+vertex -8 6 14
+vertex -8 8 12
+endloop
+endfacet
+facet normal 0 0 0
+outer loop
+vertex -6 6 12
+vertex -8 8 12
+vertex -8 6 14
+endloop
+endfacet
+endsolid inspectmesh_synthetic

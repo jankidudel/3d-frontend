@@ -119,3 +119,21 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   >
   to keep independent findings and unsupported checks in a report.
 </p>
+
+<h2>Review floating segments without replacing your upload</h2>
+<p>
+  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
+    >Remove floating parts from STL</a
+  >
+  on the existing repair page. Choose a file once, review the neutral count of
+  disconnected mesh pieces, then open the optional removal panel. Every piece
+  starts retained. Select unwanted pieces or propose keeping the largest by
+  surface area, review the preview and explicitly download the retained STL.
+</p>
+<p>
+  This feature uses exact shared edges; point contact does not join surfaces. It
+  does not identify design intent, detect all unsupported slicer regions or
+  generate supports. Inner cavity surfaces and intended separate parts may be
+  necessary. Selection-only export retains the chosen triangles' coordinates and
+  winding; standard server cleanup remains a separate explicit action.
+</p>

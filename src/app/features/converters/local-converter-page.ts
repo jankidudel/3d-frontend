@@ -1,3 +1,9 @@
+import {
+  displayNumber,
+  displayVector,
+  displayBounds,
+  NUMERIC_DISPLAY_NOTE,
+} from '../../shared/numeric-display';
 import { computed } from '@angular/core';
 import {
   resolveThreeMfWallGeometry,
@@ -59,6 +65,9 @@ export class LocalConverterPage {
     }
   };
   readonly guideRouteUrl = GuideRouteUrl;
+  readonly displayNumber = displayNumber;
+  readonly displayVector = displayVector;
+  readonly numericNote = NUMERIC_DISPLAY_NOTE;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
   readonly routeUrl = PublicRouteUrl;
   readonly file = signal<File | null>(null);
@@ -86,6 +95,18 @@ export class LocalConverterPage {
   });
   readonly reportText = computed(() =>
     this.report() ? JSON.stringify(this.report(), null, 2) : '',
+  );
+  readonly humanReportText = computed(() =>
+    this.report()
+      ? JSON.stringify(
+          this.report(),
+          (key, value: unknown) =>
+            typeof value === 'number'
+              ? displayNumber(value, /error|tolerance/i.test(key))
+              : value,
+          2,
+        )
+      : '',
   );
   private derivative: { bytes: Uint8Array; name: string; type: string } | null =
     null;
@@ -128,7 +149,7 @@ export class LocalConverterPage {
   }
   async copyReport(): Promise<void> {
     try {
-      await navigator.clipboard.writeText(this.reportText());
+      await navigator.clipboard.writeText(this.humanReportText());
       this.status.set('Export report copied.');
     } catch {
       this.status.set(
@@ -144,7 +165,7 @@ export class LocalConverterPage {
     max: readonly number[];
     spans: readonly number[];
   }): string {
-    return `Min ${bounds.min.join(' / ')}; max ${bounds.max.join(' / ')}; spans ${bounds.spans.join(' × ')} mm (X / Y / Z)`;
+    return displayBounds(bounds);
   }
   readonly outputUnit = signal<OutputUnit>('millimeter');
   readonly outputUnits: readonly OutputUnit[] = [
@@ -392,9 +413,7 @@ export class LocalConverterPage {
     return UNIT_LABELS[unit];
   }
   protected format(value: number): string {
-    return new Intl.NumberFormat('en', { maximumFractionDigits: 3 }).format(
-      value,
-    );
+    return displayNumber(value);
   }
   protected applySeo(): void {
     this.seo.apply({

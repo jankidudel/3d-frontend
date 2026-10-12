@@ -1,13 +1,7 @@
+import { FloatingParts } from './floating-parts';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
-import {
-  Component,
-  computed,
-  DestroyRef,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
@@ -40,6 +34,7 @@ type RepairReport = {
   selector: 'app-stl-repair-page',
   imports: [
     ToolEvidenceComponent,
+    FloatingParts,
     RouterLink,
     StlFilePicker,
     JobProgress,
@@ -53,6 +48,7 @@ export class StlRepairPage {
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;
   readonly selectedFile = signal<File | null>(null);
+  readonly originalFile = signal<File | null>(null);
   readonly job = signal<Job | null>(null);
   readonly submitting = signal(false);
   readonly refreshing = signal(false);
@@ -70,20 +66,40 @@ export class StlRepairPage {
   private readonly stlJobs = inject(StlJobService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly picker = viewChild(StlFilePicker);
   private polling?: Subscription;
+  private upload?: Subscription;
+  private generation = 0;
 
   constructor() {
     this.seo.apply({
       title: 'Free STL Repair Tool - Repair STL Files Online | InspectMesh',
       description:
-        'Remove duplicate and degenerate STL triangles, and correct safe simple orientation issues before checking your STL again.',
+        'Repair supported STL issues or review and remove disconnected floating parts. Preview pieces and download a separate STL while keeping your original.',
       path: PublicRouteUrl.StlRepair,
     });
-    this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
+    this.destroyRef.onDestroy(() => {
+      this.polling?.unsubscribe();
+      this.upload?.unsubscribe();
+      this.generation++;
+    });
   }
 
   onFileSelected(file: File | null): void {
+    this.originalFile.set(file);
+    this.selectActiveFile(file);
+  }
+  inspectRetained(file: File): void {
+    this.selectActiveFile(file);
+  }
+  restoreOriginal(): void {
+    this.selectActiveFile(this.originalFile());
+  }
+  private selectActiveFile(file: File | null): void {
+    this.generation++;
+    this.polling?.unsubscribe();
+    this.upload?.unsubscribe();
+    this.submitting.set(false);
+    this.refreshing.set(false);
     this.selectedFile.set(file);
     this.job.set(null);
     this.error.set('');
@@ -94,12 +110,24 @@ export class StlRepairPage {
     if (!file || this.submitting()) {
       return;
     }
+    this.polling?.unsubscribe();
     this.submitting.set(true);
     this.error.set('');
-    createAndUploadStlRepairJob(this.stlJobs, this.jobs, file, (job) =>
-      this.job.set(job),
+    const generation = this.generation;
+    this.upload = createAndUploadStlRepairJob(
+      this.stlJobs,
+      this.jobs,
+      file,
+      (job) => {
+        if (generation === this.generation) {
+          this.job.set(job);
+        }
+      },
     ).subscribe({
       next: () => {
+        if (generation !== this.generation) {
+          return;
+        }
         this.submitting.set(false);
         const job = this.job();
         if (job) {
@@ -107,6 +135,9 @@ export class StlRepairPage {
         }
       },
       error: (error: unknown) => {
+        if (generation !== this.generation) {
+          return;
+        }
         this.submitting.set(false);
         this.error.set(uploadErrorMessage(error));
       },
@@ -117,16 +148,30 @@ export class StlRepairPage {
     if (!job) {
       return;
     }
+    const generation = this.generation;
     this.refreshing.set(true);
     this.jobs
       .getJob(job.id)
-      .pipe(finalize(() => this.refreshing.set(false)))
+      .pipe(
+        finalize(() => {
+          if (generation === this.generation) {
+            this.refreshing.set(false);
+          }
+        }),
+      )
       .subscribe({
-        next: (value) => this.job.set(value),
-        error: () =>
-          this.error.set(
-            'We could not refresh this repair job. Please try again.',
-          ),
+        next: (value) => {
+          if (generation === this.generation) {
+            this.job.set(value);
+          }
+        },
+        error: () => {
+          if (generation === this.generation) {
+            this.error.set(
+              'We could not refresh this repair job. Please try again.',
+            );
+          }
+        },
       });
   }
   private poll(id: string): void {

@@ -382,3 +382,36 @@ faq:
   authenticated provenance. Path uncertainty and declaration availability are
   separate metrics.
 </p>
+
+<h2>Operation-specific reducer verification</h2>
+<p>
+  Reducer candidates start independently from the retained original. Each is
+  serialized once, then those exact bytes reopen through the STL parser; the
+  download reuses that blob. The verifier compares every intended output
+  triangle under Float32 storage, retaining winding and multiplicity. For
+  encoding, intended output is the source triangle geometry. For simplification,
+  intended output is the algorithm's derivative: it is not expected to equal the
+  original.
+</p>
+<p>
+  Count and 84 + 50N binary byte arithmetic supplement the triangle check.
+  Original and candidate use the shared exact-coordinate topology screening up
+  to 100,000 triangles. Boundary, over-shared, duplicate, degenerate and
+  winding-conflict counts are compared; unavailable screening is labelled. Self
+  intersections and defect locations are not checked. Increased finding counts
+  require diagnostic-download acknowledgement, not a repaired or safe badge.
+</p>
+<p>
+  Comparison is explicit, uses the existing bounded worker and retains candidate
+  identity and unit/tolerance basis. Candidate replacement or removal clears
+  associated results; source replacement cancels work and suppresses late
+  responses. Up to three derivative blobs remain in tab memory without automatic
+  raw-file persistence.
+</p>
+<p>
+  Human dimensions and offsets show up to three decimals; small nonzero values
+  and diagnostic errors use significant digits or scientific notation.
+  Unavailable is distinct from zero. Geometry serialization, JSON numbers,
+  tolerance tests and boundary decisions retain stored precision. Display
+  resolution does not establish physical accuracy.
+</p>

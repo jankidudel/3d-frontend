@@ -146,3 +146,16 @@ heading: 'STL Resolution: Chord Height and Angular Tolerance'
   <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">file reduction</a> only with
   a feature-preservation check.
 </p>
+
+<h2>Later simplification does not inherit the CAD export guarantee</h2>
+<p>
+  The circular sagitta examples describe source tessellation. A later reduction
+  acts on triangles, not the original analytic curve; its target percentage and
+  error flag do not re-establish the CAD chord-height condition. Keep the source
+  export settings and review the actual derivative's surfaces and named
+  features.
+  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
+    >Requested versus actual ridge candidates</a
+  >
+  demonstrate a different operation from source meshing.
+</p>

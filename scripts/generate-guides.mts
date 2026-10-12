@@ -1,3 +1,4 @@
+import { resolveGuideLinks } from './internal-guide-links.mts';
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import matter from 'gray-matter';
@@ -88,8 +89,6 @@ const htmlToSafeHtml = unified()
   .use(rehypeSanitize, guideSchema)
   .use(rehypeStringify);
 
-const internalGuideLinkToken =
-  /href="\{\{\s*GuideSlug\.([A-Za-z][A-Za-z0-9]*)\s*\}\}"/g;
 const internalRouteSlugs = new Set([
   ...Object.values(PublicRoutePathValue),
   ...guideRegistry.map((guide) => guide.slug),
@@ -106,18 +105,7 @@ const guideSlugReference = Object.fromEntries(
 );
 
 function resolveInternalGuideLinks(content: string, filePath: string): string {
-  return content.replace(
-    internalGuideLinkToken,
-    (_match, reference: string) => {
-      const slug = guideSlugReference[reference];
-      if (!internalRouteSlugs.has(slug)) {
-        throw new Error(
-          `Guide validation failed: ${filePath} references unknown internal route ${slug}.`,
-        );
-      }
-      return `href="/${slug}"`;
-    },
-  );
+  return resolveGuideLinks(content, guideSlugReference, filePath);
 }
 
 const contentFiles = (await readdir(contentDirectory))

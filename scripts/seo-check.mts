@@ -1,3 +1,4 @@
+import { resolveGuideLinks } from './internal-guide-links.mts';
 import { access, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import matter from 'gray-matter';
@@ -73,11 +74,7 @@ for (const file of files) {
     const front = validateGuideFrontMatter(parsed.data, source);
     contents.set(front.slug, {
       ...front,
-      html: parsed.content.replace(
-        /href="\{\{\s*GuideSlug\.([A-Za-z][A-Za-z0-9]*)\s*\}\}"/g,
-        (_match, reference: keyof typeof GuideSlug) =>
-          `href="/${GuideSlug[reference]}"`,
-      ),
+      html: resolveGuideLinks(parsed.content, GuideSlug, source),
     });
     sourceBySlug.set(front.slug, source);
   } catch (error) {
@@ -155,7 +152,9 @@ for (const guide of catalogue.guides) {
     .filter(Boolean).length;
   const guideLinks = Array.from(document.querySelectorAll('a[href]'))
     .map((a) => a.getAttribute('href')!)
-    .filter((href) => href.startsWith('/'));
+    .filter((href) => href.startsWith('/'))
+    // Route eligibility ignores fragments; built-site checks validate their anchors.
+    .map((href) => new URL(href, 'https://www.inspectmesh.com').pathname);
   const internalLinks = guideLinks.filter((href) => publicRoutes.has(href));
   const toolLinks = guideLinks.filter((href) =>
     canonicalPublicRoutePaths.some(

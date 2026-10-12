@@ -49,7 +49,7 @@ faq:
   is no universal target byte size: choose the least destructive method that
   satisfies the actual upload, storage or application constraint.
 </p>
-<h2>Choose lossless or lossy reduction</h2>
+<h2>Choose storage encoding or surface simplification</h2>
 <p>
   Binary STL conversion can reduce bytes without changing triangles. Decimation
   changes geometry and needs a copy plus before/after checks of dimensions,
@@ -87,24 +87,25 @@ faq:
   Duplicate triangles and degenerate faces add data without improving the print.
 </p>
 <p>
-  The <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> can safely
-  remove exact duplicates and degenerate triangles. This will not dramatically
-  reduce every large file, but it is a sensible clean-up step and avoids
-  simplifying defects into a more complicated problem.
+  The <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> can remove
+  exact duplicates and degenerate triangles. This will not dramatically reduce
+  every large file, but it is a sensible clean-up step and avoids simplifying
+  defects into a more complicated problem.
 </p>
 <h2>Simplify the mesh carefully</h2>
 <h3>Convert ASCII STL to binary first</h3>
 <p>
   An ASCII STL stores every triangle as readable text, which can make the file
-  much larger than the same geometry stored in binary STL. Converting an ASCII
-  STL to binary does not remove detail or change the model shape; it simply
-  stores the same triangle data more efficiently.
+  much larger than the same geometry stored in binary STL. Converting ASCII STL
+  to binary does not intentionally remove triangles. Binary Float32 coordinates
+  can round arbitrary text decimals; recheck precision-sensitive coordinates and
+  the receiving application.
 </p>
 <p>
-  If the file is already binary STL, there is usually little room for a lossless
-  reduction. To make a binary STL substantially smaller, you normally need to
-  reduce its triangle count, which changes the mesh and should be checked before
-  printing.
+  If the file is already binary STL, there is usually little room for an
+  encoding-only reduction. To make a binary STL substantially smaller, you
+  normally need to reduce its triangle count, which changes the mesh and should
+  be checked before printing.
 </p>
 <p>
   Use the
@@ -159,4 +160,51 @@ faq:
   The best STL is not the smallest possible file. It is the smallest file that
   still produces the print you intended, slices reliably and retains the details
   that matter.
+</p>
+
+<figure>
+  <img
+    src="/examples/reduction-review/independent-branches.svg"
+    width="720"
+    height="600"
+    alt="Original retained with independent encoding, 75 percent and 50 percent candidate branches"
+  />
+  <figcaption>
+    Original analytical schematic, not a physical print measurement.
+  </figcaption>
+</figure>
+<h2>Review actual candidate bytes before accepting savings</h2>
+<ol>
+  <li>
+    Load the original into
+    <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">the reducer</a>; nothing
+    simplifies on upload.
+  </li>
+  <li>
+    Generate binary encoding first, then at most two independent reduction
+    alternatives. Each starts from the original.
+  </li>
+  <li>
+    Inspect the actual reopened count, bytes, coordinate bounds and supported
+    topology. Negative bytes saved means the output grew.
+  </li>
+  <li>
+    Select a candidate and explicitly run its inline comparison. This uses the
+    existing revision method, original coordinates, the same unit on both sides,
+    and 5,000 samples per direction.
+  </li>
+  <li>
+    Review named holes, ribs and mating faces, then download the exact reviewed
+    blob and its selected-candidate report. Retain the original.
+  </li>
+</ol>
+<p>
+  A 12-triangle cube encodes to 684 bytes; encoding a 684-byte binary cube again
+  gives no positive saving.
+  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}"
+    >Float32 representation limits</a
+  >
+  differ from deliberate surface simplification. A larger original can exceed
+  the comparison's unchanged 5 MiB or 100,000-triangle budget: use manual
+  receiving-application review when comparison is unavailable.
 </p>

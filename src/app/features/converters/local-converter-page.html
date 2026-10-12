@@ -111,7 +111,7 @@
         <p><strong>Download bounds:</strong> {{ boundsText(scope.bounds) }}</p>
         <p>
           {{ scope.policy }}. Translation offset X / Y / Z:
-          {{ scope.offset.join(' / ') }} mm.
+          {{ displayVector(scope.offset) }} mm.
           {{ scope.geometry.indices.length / 3 }} triangles. Nested components
           belong to their selected top-level item.
         </p>
@@ -213,13 +213,18 @@
       <p>Source scope: {{ boundsText(review.expectedBoundsMm) }}</p>
       <p>Exported: {{ boundsText(review.exportedBoundsMm) }}</p>
       <p>Reopened: {{ boundsText(review.reopenedBoundsMm) }}</p>
-      <p>Translation X / Y / Z: {{ review.translationMm.join(' / ') }} mm.</p>
-      <p>{{ review.verification.method }}</p>
       <p>
-        Float32 rounding allowance: {{ review.verification.toleranceMm }} mm;
+        Translation X / Y / Z: {{ displayVector(review.translationMm) }} mm.
+      </p>
+      <p>{{ review.verification.method }}</p>
+      <p>{{ numericNote }}</p>
+      <p>
+        Float32 rounding allowance:
+        {{ displayNumber(review.verification.toleranceMm, true) }} mm;
         source-resolution rounding error:
-        {{ review.verification.sourceFloat32ErrorMm }} mm; additional export
-        rounding error: {{ review.verification.maximumFloat32ErrorMm }} mm.
+        {{ displayNumber(review.verification.sourceFloat32ErrorMm, true) }} mm;
+        additional export rounding error:
+        {{ displayNumber(review.verification.maximumFloat32ErrorMm, true) }} mm.
       </p>
       @for (limitation of review.limitations; track limitation) {
         <p>{{ limitation }}</p>
@@ -260,13 +265,13 @@
           <p>
             Placed identifier {{ item.id }}, resource {{ item.resourceId }}.
             Original placement (column-major, source units):
-            {{ item.originalPlacement.join(' / ') }}.
+            {{ displayVector(item.originalPlacement) }}.
           </p>
         }
       </div>
       <details class="full-report">
         <summary>Complete method and placement report</summary>
-        <pre>{{ reportText() }}</pre>
+        <pre>{{ humanReportText() }}</pre>
       </details>
       <a [routerLink]="routeUrl.Viewer"
         >Reopen the derivative in the STL viewer</a

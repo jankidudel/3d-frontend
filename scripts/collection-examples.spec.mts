@@ -1,3 +1,8 @@
+import {
+  analyseParts,
+  closeLargestAreas,
+  parsePartStl,
+} from '../src/app/features/stl-repair/disconnected-parts.ts';
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -162,7 +167,7 @@ describe('visual diagnosis teaching controls', () => {
           example.group !== 'G-code evidence' &&
           example.group !== '3MF placements / export',
       ),
-    ).toHaveLength(8);
+    ).toHaveLength(13);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
     );
@@ -579,5 +584,146 @@ describe('3MF identity, scope and exact derivative bytes', () => {
       resolveThreeMfWallGeometry(deep.slice().buffer),
     ).rejects.toMatchObject({ status: ThreeMfResolutionStatus.Limit });
     dom.window.close();
+  });
+});
+
+describe('reduction review controls', () => {
+  it('checks independent ASCII/binary cube expectations and decimal representation', async () => {
+    const { reviewedCandidate, ReductionMethod } =
+      await import('../src/app/features/stl-reducer/candidate-review.ts');
+    for (const name of ['cube-ascii.stl', 'cube-binary.stl']) {
+      const input = await file(`reduction-review/${name}`);
+      const originalBytes = new Uint8Array(await input.arrayBuffer());
+      const original = await readStl(input);
+      const output = await reviewedCandidate(
+        original,
+        ReductionMethod.Encoding,
+        100,
+      );
+      expect(output.blob.size).toBe(684);
+      expect(output.mesh.indices.length / 3).toBe(12);
+      expect(output.bounds).toEqual({
+        min: [0, 0, 0],
+        max: [20, 20, 20],
+        spans: [20, 20, 20],
+      });
+      expect(new Uint8Array(await input.arrayBuffer())).toEqual(originalBytes);
+      if (name === 'cube-binary.stl') {
+        expect(input.size - output.blob.size).toBe(0);
+      }
+    }
+    const decimal = await readStl(
+      await file('reduction-review/decimal-offset-ascii.stl'),
+    );
+    expect(decimal.maximumStorageError).toBeCloseTo(0.000000381469725141, 14);
+    const output = await reviewedCandidate(
+      decimal,
+      ReductionMethod.Encoding,
+      100,
+    );
+    expect(output.bounds.min[0]).toBe(0.10000000149011612);
+    expect(output.bounds.max[0]).toBe(20.100000381469727);
+  });
+  it('reproduces actual ridge candidates and their two-way evidence with the pinned method', async () => {
+    const { reviewedCandidate, ReductionMethod } =
+      await import('../src/app/features/stl-reducer/candidate-review.ts');
+    const { surfaceDifference } =
+      await import('../src/app/features/repeat-workflows/mesh-workflows.ts');
+    const original = await readStl(
+      await file('collection-review/detail-coupon.stl'),
+    );
+    for (const [percent, actual, duplicateCount] of [
+      [75, 18, 0],
+      [50, 16, 2],
+    ]) {
+      const candidate = await reviewedCandidate(
+        original,
+        ReductionMethod.Reduction,
+        percent,
+      );
+      expect(candidate.mesh.indices.length / 3).toBe(actual);
+      expect(candidate.topology!.duplicateTriangles).toBe(duplicateCount);
+      const result = surfaceDifference(original, candidate.mesh, 0.1);
+      console.log(
+        'Reproduced ridge',
+        JSON.stringify({
+          percent,
+          requested: candidate.requestedTriangles,
+          actual,
+          bounds: candidate.bounds,
+          topology: candidate.topology,
+          regressions: candidate.regressions,
+          maximum: result.maximumSampledMm,
+          mean: result.meanSampledMm,
+          exceedances: result.samplesOverTolerance,
+        }),
+      );
+      if (percent === 75) {
+        expect(result.maximumSampledMm).toBeCloseTo(0.2329, 4);
+        expect(result.samplesOverTolerance).toBe(25);
+      } else {
+        expect(candidate.regressions).toContain('duplicateTriangles');
+        expect(candidate.regressions).toContain('nonManifoldEdges');
+      }
+    }
+  });
+  it('preserves existing missing-face defects and exposes same bounds with removed narrow rib', async () => {
+    const { reviewedCandidate, ReductionMethod } =
+      await import('../src/app/features/stl-reducer/candidate-review.ts');
+    const open = await readStl(
+      await file('english-market-batch/open-face-cube.stl'),
+    );
+    const encoded = await reviewedCandidate(
+      open,
+      ReductionMethod.Encoding,
+      100,
+    );
+    expect(encoded.originalTopology!.openEdges).toBe(4);
+    expect(encoded.topology!.openEdges).toBe(4);
+    expect(encoded.regressions).toEqual([]);
+    const a = await readStl(
+      await file('reduction-review/narrow-rib-original.stl'),
+    );
+    const b = await readStl(
+      await file('reduction-review/narrow-rib-removed.stl'),
+    );
+    const { geometryBounds } =
+      await import('../src/app/features/shared/wall-thickness/three-mf-wall-thickness.ts');
+    expect(a.indices.length / 3).toBe(36);
+    expect(b.indices.length / 3).toBe(24);
+    expect(geometryBounds(a)).toEqual(geometryBounds(b));
+    expect(geometryBounds(a).spans[2]).toBe(Math.fround(20.2));
+  });
+});
+
+describe('registered disconnected-part controls', () => {
+  it('matches the removal demonstration captions to actual generated ASCII and binary files', async () => {
+    const example = findPublicExample('floating-parts-removal', '/stl-repair')!;
+    expect(example.files).toHaveLength(2);
+    for (const asset of example.files) {
+      const bytes = await readFile(
+        resolve(root, asset.path.replace('/examples/', '')),
+      );
+      const result = analyseParts(parsePartStl(Uint8Array.from(bytes).buffer));
+      expect(result.parts.map((part) => part.triangles)).toEqual([12, 4, 4]);
+      expect(result.bounds).toMatchObject({
+        min: [-8, 0, 0],
+        max: [31, 20, 20],
+      });
+      expect(result.parts[0].area).toBe(2400);
+    }
+  });
+  it('matches the intended-parts counterexample and close-area warning to its file', async () => {
+    const example = findPublicExample(
+      'floating-parts-intentional',
+      '/stl-repair',
+    )!;
+    const bytes = await readFile(
+      resolve(root, example.files[0].path.replace('/examples/', '')),
+    );
+    const result = analyseParts(parsePartStl(Uint8Array.from(bytes).buffer));
+    expect(result.parts.map((part) => part.area)).toEqual([2400, 2166]);
+    expect(result.triangles).toBe(24);
+    expect(closeLargestAreas(result)).toBe(true);
   });
 });

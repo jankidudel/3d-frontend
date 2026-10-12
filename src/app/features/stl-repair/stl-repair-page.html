@@ -1,41 +1,61 @@
 <main class="page tool-page quality-page">
-  <p class="eyebrow">Safe STL cleanup</p>
+  <p class="eyebrow">Inspect and clean STL files</p>
   <h1>STL Repair Tool</h1>
-  <p>
-    <a [routerLink]="routeUrl.StlPrintPreflight"
-      >Run STL Print Preflight first</a
-    >
-    when you need to understand the reported mesh issue before repair.
-  </p>
   <p class="lead">
-    Remove duplicate and degenerate triangles, and correct simple orientation
-    issues before checking your STL again.
+    Find disconnected pieces and choose which to keep. You can also clean
+    duplicate or degenerate triangles and simple orientation issues.
   </p>
-  <section class="checker card" aria-labelledby="upload-title">
-    <h2 id="upload-title">Choose an STL to clean safely</h2>
+  <section
+    id="remove-floating-parts"
+    class="checker card"
+    tabindex="-1"
+    aria-labelledby="upload-title"
+  >
+    <h2 id="upload-title">Choose an STL file</h2>
     <p>
-      Pressing Clean STL safely uploads your file to InspectMesh for server
-      processing. Keep an original copy.
-    </p>
-    <p>
-      InspectMesh safely cleans only certain STL issues. It cannot reliably fill
-      holes or repair every non-manifold model automatically.
+      Choosing a file finds separate pieces in your browser. All pieces start
+      kept; review them before downloading a changed copy. This step does not
+      upload your file.
     </p>
     <app-stl-file-picker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
-    /><button
-      class="button submit"
-      type="button"
-      (click)="repair()"
-      [disabled]="!selectedFile() || submitting()"
-    >
-      {{ submitting() ? 'Creating job...' : 'Clean STL safely' }}
-    </button>
+    />
+    <details class="repair-option">
+      <summary>Need standard STL cleanup instead?</summary>
+      <p>
+        Clean duplicate and degenerate triangles and correct simple orientation
+        issues. Pressing the button uploads the selected file to InspectMesh for
+        server processing. Keep an original copy. It cannot reliably fill holes
+        or repair every non-manifold model.
+      </p>
+      <button
+        class="button submit"
+        type="button"
+        (click)="repair()"
+        [disabled]="!selectedFile() || submitting()"
+      >
+        {{ submitting() ? 'Creating job...' : 'Clean STL safely' }}
+      </button>
+    </details>
     @if (error(); as message) {
       <p class="error" role="alert">{{ message }}</p>
     }
   </section>
+  @if (originalFile() && selectedFile() !== originalFile()) {
+    <p>
+      <button class="button" type="button" (click)="restoreOriginal()">
+        Restore original STL
+      </button>
+    </p>
+  }
+  @if (selectedFile()) {
+    <app-floating-parts
+      [file]="selectedFile()"
+      [autoReview]="true"
+      (inspectRetained)="inspectRetained($event)"
+    />
+  }
   @if (job(); as currentJob) {
     <section class="tool-result results card" aria-live="polite">
       @if (processing() || timedOut()) {
@@ -80,7 +100,7 @@
             <a
               class="button"
               [href]="'/api/v1/jobs/' + currentJob.id + '/cleaned-stl'"
-              >Download cleaned STL</a
+              >Download standard repaired STL (entire selected file)</a
             >
           </p>
           <p>
@@ -115,6 +135,140 @@
       <a [routerLink]="routeUrl.WatertightChecker">check for open edges</a>.
     </p>
   </section>
+  <details class="content interpretation-guide">
+    <summary>How floating-part removal works and its limits</summary>
+    <section aria-labelledby="parts-help-title">
+      <h2 id="parts-help-title">Review loose parts in three steps</h2>
+      <ol>
+        <li>Choose one STL above. Automatic detection retains every piece.</li>
+        <li>
+          Use Previous and Next to review each piece highlighted on the full
+          model. Clear Keep only for pieces you do not want. Review the whole
+          model before downloading.
+        </li>
+        <li>
+          Download STL with kept pieces to save the retained triangles, then
+          inspect the separate copy in your slicer.
+        </li>
+      </ol>
+      <figure>
+        <svg
+          viewBox="0 0 640 230"
+          role="img"
+          aria-label="Generated example: a 20-unit cube with 12 triangles and two detached tetrahedra with four triangles each"
+          style="max-width: 100%; height: auto"
+        >
+          <rect width="640" height="230" fill="#f8fafc" />
+          <path
+            d="M230 70 L340 70 L340 180 L230 180 Z M230 70 L280 30 L390 30 L340 70 M340 180 L390 140 L390 30"
+            fill="#dbeafe"
+            stroke="#175bb5"
+            stroke-width="3"
+          />
+          <path
+            d="M455 120 L515 135 L475 80 Z M455 120 L480 145 L515 135 M475 80 L480 145"
+            fill="#ffedd5"
+            stroke="#a94313"
+            stroke-width="3"
+          />
+          <path
+            d="M100 90 L145 105 L120 55 Z M100 90 L120 115 L145 105 M120 55 L120 115"
+            fill="#dcfce7"
+            stroke="#126b52"
+            stroke-width="3"
+          />
+          <text x="190" y="210" fill="#0f172a" font-size="18">
+            Part 1: cube / 12 triangles
+          </text>
+          <text x="425" y="180" fill="#0f172a" font-size="18">
+            Part 2: 4 triangles
+          </text>
+          <text x="30" y="145" fill="#0f172a" font-size="18">
+            Part 3: 4 triangles
+          </text>
+        </svg>
+        <figcaption>
+          Annotated schematic of the actual generated demonstration, with a 20 ×
+          20 × 20 cube and detached 3-unit and 2-unit tetrahedra. Original: 3
+          parts / 20 triangles. Keeping the cube: 1 part / 12 triangles;
+          removing 2 parts / 8 triangles. This is mathematical geometry, not a
+          print test.
+        </figcaption>
+      </figure>
+      <p>
+        <a
+          href="/examples/floating-parts/cube-plus-two-fragments-binary.stl"
+          download
+          >Download the binary demonstration STL</a
+        >
+        or
+        <a
+          href="/examples/floating-parts/cube-plus-two-fragments-ascii.stl"
+          download
+          >the ASCII version</a
+        >. These are generated files for testing through the picker above.
+      </p>
+      <h3>Counterexample: separate pieces can be intentional</h3>
+      <p>
+        <a
+          href="/examples/floating-parts/two-intended-parts-binary.stl"
+          download
+          >Two intended cube parts</a
+        >
+        has 20-unit and 19-unit cubes: 2 parts / 24 triangles. Both start
+        retained, and their surface areas are within 10%. Removing the smaller
+        one by size alone would discard an intended object. Lettering, inner
+        cavity surfaces and print-in-place mechanisms can also contain necessary
+        disconnected shells.
+      </p>
+      <h3>How are separate shells found?</h3>
+      <p>
+        A component is a group of triangles connected through complete shared
+        edges. Exact coordinate matches are used, even for STL triangle soups;
+        there is no tolerance welding. Point contacts, small gaps and
+        intersecting surfaces with no shared edges may remain separate.
+        Component counts do not establish defects or artistic intent. Open and
+        non-manifold components have area and bounds, but no inferred reliable
+        volume. Zero-area faces require an explicit standard repair first.
+      </p>
+      <h3>Can size identify unwanted pieces?</h3>
+      <p>
+        No. The review order uses surface area, with triangle count and stable
+        part ID as tie-breakers. Smaller islands or loose parts may be
+        important. Inspect each piece in context before changing its Keep
+        selection.
+      </p>
+      <h3>Do dimensions change?</h3>
+      <p>
+        Retained vertices keep their coordinates, winding, scale and position.
+        Overall file bounds can shrink when you remove an outer piece; the
+        retained body is not resized or moved. STL is unitless; displayed
+        millimetres are assumed. ASCII coordinates are retained in ASCII output;
+        binary input keeps its stored Float32 coordinates. Normals are
+        recalculated, and colour/material metadata is not preserved.
+      </p>
+      <h3>What about floating regions in a slicer's layer preview?</h3>
+      <p>
+        A slicer floating region can belong to one continuous model. This tool
+        does not detect every unsupported region or generate supports. Removing
+        disconnected pieces does not guarantee printability, manifoldness or
+        watertightness. Use
+        <a [href]="guideRouteUrl.RouteStlMultipleShellsDisconnectedParts"
+          >the disconnected-shell guide</a
+        >
+        and
+        <a [routerLink]="routeUrl.StlPrintPreflight">STL Print Preflight</a> to
+        interpret remaining issues.
+      </p>
+      <p>
+        Component analysis is limited to the existing 25 MiB file allowance and
+        500,000 triangles. Heavy parsing, connectivity and verified export run
+        in a cancellable browser worker. The list shows 30 parts per page, and
+        the full-resolution preview batches retained and removed triangles into
+        two meshes. No unlimited-file promise is made.
+      </p>
+    </section>
+  </details>
   <app-tool-evidence [page]="routeUrl.StlRepair" />
   <section class="content interpretation-guide">
     <h2>Cleanup removes redundant faces, not missing design</h2>

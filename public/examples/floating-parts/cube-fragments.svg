@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 640 230"
+        role="img"
+        aria-label="Generated example: a 20-unit cube with 12 triangles and two detached tetrahedra with four triangles each"
+        style="max-width: 100%; height: auto"
+      >
+        <rect width="640" height="230" fill="#f8fafc" />
+        <path
+          d="M230 70 L340 70 L340 180 L230 180 Z M230 70 L280 30 L390 30 L340 70 M340 180 L390 140 L390 30"
+          fill="#dbeafe"
+          stroke="#175bb5"
+          stroke-width="3"
+        />
+        <path
+          d="M455 120 L515 135 L475 80 Z M455 120 L480 145 L515 135 M475 80 L480 145"
+          fill="#ffedd5"
+          stroke="#a94313"
+          stroke-width="3"
+        />
+        <path
+          d="M100 90 L145 105 L120 55 Z M100 90 L120 115 L145 105 M120 55 L120 115"
+          fill="#dcfce7"
+          stroke="#126b52"
+          stroke-width="3"
+        />
+        <text x="190" y="210" fill="#0f172a" font-size="18">
+          Part 1: cube / 12 triangles
+        </text>
+        <text x="425" y="180" fill="#0f172a" font-size="18">
+          Part 2: 4 triangles
+        </text>
+        <text x="30" y="145" fill="#0f172a" font-size="18">
+          Part 3: 4 triangles
+        </text>
+      </svg>

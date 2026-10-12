@@ -1,0 +1,355 @@
+<section
+  id="floating-parts-review"
+  class="parts-section card"
+  tabindex="-1"
+  aria-labelledby="parts-title"
+>
+  <h2 id="parts-title" tabindex="-1">Remove floating parts from your STL</h2>
+  <p>
+    Inspect this STL's separate pieces and keep the ones you need. Separate
+    pieces may be intentional. Detection and downloads run in your browser.
+  </p>
+  @if (busy()) {
+    <p role="status">Analysing disconnected mesh pieces: {{ progress() }}%</p>
+    <progress
+      max="100"
+      [value]="progress()"
+      aria-label="Component analysis progress"
+    ></progress>
+    <button type="button" class="button" (click)="cancel()">
+      Cancel analysis
+    </button>
+  }
+  @if (error()) {
+    <p role="alert">{{ error() }}</p>
+    <button
+      type="button"
+      class="button"
+      (click)="retry()"
+      [disabled]="busy() || exporting()"
+    >
+      Retry part analysis
+    </button>
+  }
+  @if (analysis(); as result) {
+    <p role="status">
+      {{
+        result.parts.length === 1
+          ? 'No disconnected pieces found'
+          : 'This model contains ' + result.parts.length + ' separate pieces'
+      }}. Separate does not necessarily mean unwanted.
+    </p>
+    @if (result.parts.length > 1 && largestAreaPercent() < 50) {
+      <p class="interpretation-warning">
+        No single piece dominates this model. The largest accounts for only
+        {{ largestAreaPercent() | number: '1.0-1' }}% of its surface area. These
+        pieces may all be intentional; size alone cannot identify waste.
+      </p>
+    }
+    <div class="part-actions">
+      @if (result.parts.length > 1) {
+        <button
+          type="button"
+          class="button"
+          [attr.aria-expanded]="open()"
+          aria-controls="parts-panel"
+          (click)="open() ? closeReview() : review()"
+        >
+          {{ open() ? 'Close piece selection' : 'Choose pieces to keep' }}
+        </button>
+      }
+      @if (removed().size) {
+        <button
+          type="button"
+          class="button secondary"
+          (click)="reset()"
+          [disabled]="exporting()"
+        >
+          Keep all / Reset selection
+        </button>
+      }
+    </div>
+    @if (removed().size && !open()) {
+      <p role="status">
+        Removal selections are pending: {{ removed().size }} pieces. Reopen
+        selection to review and download, or reset to keep all.
+      </p>
+    }
+    @if (open()) {
+      <div class="download-bar">
+        <p aria-live="polite">
+          Keeping {{ result.parts.length - removed().size }} of
+          {{ result.parts.length }} pieces ({{
+            keptTriangles() | number
+          }}
+          triangles). Removing {{ removed().size }}.
+        </p>
+        <button
+          type="button"
+          class="button"
+          (click)="download()"
+          [disabled]="!removed().size || !keptTriangles() || exporting()"
+        >
+          {{
+            exporting()
+              ? 'Verifying retained STL...'
+              : 'Download STL with kept pieces'
+          }}
+        </button>
+      </div>
+      @if (!removed().size) {
+        <p class="thumbnail-note">
+          Choose a piece to remove before downloading a new STL.
+        </p>
+      }
+      @if (!keptTriangles()) {
+        <p role="status">Keep at least one piece before downloading.</p>
+      }
+    }
+    <div class="parts-workspace" [class.selecting]="open()">
+      <div class="preview-column">
+        @if (inspectedPart(); as part) {
+          <div class="inspection-bar">
+            <span>
+              Piece {{ part.id + 1 }} is highlighted in blue
+              {{ isolated() === null ? 'on the full model' : 'alone' }}.
+            </span>
+            @if (isolated() !== null) {
+              <button
+                type="button"
+                class="button secondary"
+                (click)="showSelectedInModel()"
+              >
+                Show in full model
+              </button>
+            }
+          </div>
+        }
+        @if (object(); as model) {
+          <app-object-viewer
+            [object]="model"
+            [extent]="extent()"
+            [frameExtent]="frameExtent()"
+            [scrollOnRender]="false"
+            [preserveVertexColors]="true"
+            [measurementAvailable]="false"
+            [showMeasurementControls]="false"
+            [showCrossSectionControls]="false"
+            [chooseAnotherAvailable]="false"
+            [triangleInteraction]="open()"
+            ariaLabel="STL pieces. Click a piece to inspect it. Kept pieces are solid; removals are red and ghosted. Use Keep checkboxes to change the download."
+            (triangleSelected)="onTriangle($event)"
+            (triangleHovered)="hoverTriangle($event)"
+            (renderFailed)="viewerError.set(true)"
+          />
+        }
+        @if (viewerError()) {
+          <p role="alert">
+            The 3D preview needs WebGL. The selectable list and verified
+            download remain available; inspect the result in your slicer.
+          </p>
+        }
+        @if (open() && removed().size && isolated() === null) {
+          <label class="preview-option"
+            ><input
+              type="checkbox"
+              [checked]="cleanedPreview()"
+              (change)="cleanedPreview.set(!cleanedPreview())"
+            />Show kept pieces only</label
+          >
+        }
+      </div>
+      @if (open()) {
+        <aside id="parts-panel" aria-labelledby="parts-panel-title">
+          <h3 id="parts-panel-title" tabindex="-1">Review the pieces</h3>
+          <p class="chooser-help">
+            Select a piece to see it on the whole model. Decide whether it
+            belongs before removing it.
+          </p>
+          @if (inspectedPart(); as part) {
+            <nav class="piece-navigation" aria-label="Review pieces">
+              <button
+                type="button"
+                class="button secondary"
+                (click)="stepPart(-1)"
+                [disabled]="selectedRank() <= 0"
+              >
+                Previous
+              </button>
+              <span
+                >Piece {{ selectedRank() + 1 }} of
+                {{ result.parts.length }}</span
+              >
+              <button
+                type="button"
+                class="button secondary"
+                (click)="stepPart(1)"
+                [disabled]="selectedRank() + 1 >= result.parts.length"
+              >
+                Next
+              </button>
+            </nav>
+            <div class="selected-piece">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <path [attr.d]="thumbnails()[part.id]" />
+              </svg>
+              <div>
+                <strong>Piece {{ part.id + 1 }}</strong>
+                <p>
+                  {{ part.triangles | number }} triangles ·
+                  {{ (part.area / totalArea()) * 100 | number: '1.0-1' }}% of
+                  surface area
+                </p>
+                <p
+                  class="review-state"
+                  [class.will-remove]="removed().has(part.id)"
+                >
+                  {{
+                    removed().has(part.id)
+                      ? 'Selected for removal'
+                      : 'Currently kept'
+                  }}
+                </p>
+                <label
+                  ><input
+                    type="checkbox"
+                    [attr.aria-label]="'Keep piece ' + (part.id + 1)"
+                    [checked]="!removed().has(part.id)"
+                    [disabled]="exporting()"
+                    (change)="toggle(part.id)"
+                  />Keep this piece</label
+                >
+              </div>
+            </div>
+            @if (isolated() === null) {
+              <button
+                type="button"
+                class="button secondary isolate-button"
+                (click)="isolateSelected()"
+              >
+                View this piece alone
+              </button>
+            }
+          }
+          <details class="browse-pieces">
+            <summary>Browse all {{ result.parts.length }} pieces</summary>
+            <p class="thumbnail-note">
+              Largest surface areas first. Thumbnails are sampled identification
+              aids; select a row to highlight its position in the full model.
+            </p>
+            <ul class="part-list">
+              @for (part of visibleParts(); track part.id) {
+                <li
+                  [class.inspected]="inspected() === part.id"
+                  [class.removing]="removed().has(part.id)"
+                  (mouseenter)="highlighted.set(part.id)"
+                  (mouseleave)="highlighted.set(null)"
+                  (focusin)="highlighted.set(part.id)"
+                  (focusout)="highlighted.set(null)"
+                >
+                  <button
+                    type="button"
+                    class="thumbnail"
+                    [attr.aria-label]="'Inspect piece ' + (part.id + 1)"
+                    [attr.aria-pressed]="inspected() === part.id"
+                    (click)="inspectPart(part)"
+                  >
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                      <path [attr.d]="thumbnails()[part.id]" />
+                    </svg>
+                    <span>Piece {{ part.id + 1 }}</span>
+                  </button>
+                  <span class="piece-state"
+                    >{{ removed().has(part.id) ? 'Will remove' : 'Kept' }} ·
+                    {{ (part.area / totalArea()) * 100 | number: '1.0-1' }}%
+                    area</span
+                  >
+                </li>
+              }
+            </ul>
+            @if (pageCount() > 1) {
+              <nav aria-label="Part list pages" class="part-actions pagination">
+                <button
+                  type="button"
+                  class="button secondary"
+                  (click)="page.set(page() - 1)"
+                  [disabled]="page() === 0"
+                >
+                  Previous
+                </button>
+                <span>{{ page() + 1 }} / {{ pageCount() }}</span>
+                <button
+                  type="button"
+                  class="button secondary"
+                  (click)="page.set(page() + 1)"
+                  [disabled]="page() + 1 >= pageCount()"
+                >
+                  Next
+                </button>
+              </nav>
+            }
+          </details>
+        </aside>
+      }
+    </div>
+    @if (open()) {
+      <p class="thumbnail-note">
+        This download uses your Keep selections. Standard cleanup above uses the
+        entire selected file and runs only when you press its button.
+      </p>
+    }
+    <details>
+      <summary>Model details and limits</summary>
+      <p>
+        {{ result.triangles | number }} original triangles. Dimensions:
+        {{ result.bounds.spans[0] | number: '1.0-6' }} ×
+        {{ result.bounds.spans[1] | number: '1.0-6' }} ×
+        {{ result.bounds.spans[2] | number: '1.0-6' }} mm (assumed; STL is
+        unitless).
+      </p>
+      <p>
+        Original bounds: X {{ result.bounds.min[0] | number: '1.0-6' }} to
+        {{ result.bounds.max[0] | number: '1.0-6' }}, Y
+        {{ result.bounds.min[1] | number: '1.0-6' }} to
+        {{ result.bounds.max[1] | number: '1.0-6' }}, Z
+        {{ result.bounds.min[2] | number: '1.0-6' }} to
+        {{ result.bounds.max[2] | number: '1.0-6' }}.
+      </p>
+      @if (inspectedPart(); as part) {
+        <p>
+          Piece {{ part.id + 1 }}: {{ part.triangles | number }} triangles;
+          {{ part.area | number: '1.0-6' }} mm² (assumed). Dimensions:
+          {{ part.bounds.spans[0] | number: '1.0-6' }} ×
+          {{ part.bounds.spans[1] | number: '1.0-6' }} ×
+          {{ part.bounds.spans[2] | number: '1.0-6' }}.
+        </p>
+      }
+      <p>
+        Exact shared edges connect faces; touching at one point does not.
+        Unsupported regions can belong to one continuous model. This tool does
+        not generate supports.
+      </p>
+      <p>
+        Preview uses Float32 display coordinates. Export retains source
+        coordinates and winding without moving or resizing them. ASCII input
+        stays ASCII; binary input stays binary. STL colour/material metadata is
+        not preserved. This selection-only download does not run standard repair
+        or guarantee printability, manifoldness or watertightness.
+      </p>
+    </details>
+    @if (downloaded()) {
+      <p role="status">
+        The saved STL was reparsed and its retained triangle coordinates and
+        winding verified. Inspect this separate copy in your slicer.
+      </p>
+      <button type="button" class="button" (click)="inspect()">
+        Inspect retained result here (replace active file)
+      </button>
+      <p>
+        Keep the original for reset. This selects the downloaded result and
+        reanalyses it; standard repair still requires its explicit upload
+        button.
+      </p>
+    }
+  }
+</section>

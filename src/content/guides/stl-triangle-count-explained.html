@@ -8,7 +8,7 @@ faq:
   - question: Does a larger STL file always have more detail?
     answer: Not necessarily. It may contain unnecessary triangles, duplicate geometry or other inefficient mesh data. Inspect the model at its intended print size.
   - question: Does reducing triangles make a model smaller?
-    answer: It usually reduces file size, but it does not change the model's physical dimensions unless you also scale it.
+    answer: It usually reduces bytes, but simplification can change local geometry or bounds even without scaling. Check actual reopened dimensions and features.
   - question: Can very high triangle counts cause problems?
     answer: Yes. They can make browsers, modelling tools and slicers slower, particularly on less powerful hardware.
 ---
@@ -109,7 +109,6 @@ faq:
     The slicer uses a lot of memory without a visible quality improvement.
   </li>
 </ul>
-<h2>Triangle count and print quality</h2>
 <h2>Reducing triangles to make an STL smaller</h2>
 <p>
   A dense STL can be unnecessarily heavy for sharing, browser viewing or
@@ -136,4 +135,14 @@ faq:
   <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
   and the
   <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
+</p>
+
+<p>
+  Requested and actual reduction counts are separate. The
+  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
+    >owned ridge control</a
+  >
+  requests 12 triangles at 50% but produces 16 with increased mesh findings. A
+  count measures complexity; it is not a geometry-equality or quality acceptance
+  test.
 </p>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" role="img" aria-label="Two intended cubes start retained: 20-unit and 19-unit cube, 12 triangles each">
+<rect width="640" height="230" fill="#f8fafc"/>
+<path d="M90 70 L190 70 L190 170 L90 170 Z M90 70 L140 30 L240 30 L190 70 M190 170 L240 130 L240 30" fill="#dbeafe" stroke="#175bb5" stroke-width="3"/>
+<path d="M370 75 L465 75 L465 170 L370 170 Z M370 75 L417 37 L512 37 L465 75 M465 170 L512 132 L512 37" fill="#ffedd5" stroke="#a94313" stroke-width="3"/>
+<text x="75" y="205" fill="#0f172a" font-size="18">20-unit cube: retained</text><text x="355" y="205" fill="#0f172a" font-size="18">19-unit cube: retained</text>
+</svg>

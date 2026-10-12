@@ -27,11 +27,11 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     guideLabel: 'Distinguish visible crossings from connectivity checks',
   },
   [PublicRouteUrl.StlRepair]: {
-    heading: 'Conservative cleanup uses server processing',
+    heading: 'Local part removal and explicit server cleanup',
     example:
       'The owned cube plus an exact duplicate triangle has 13 faces. Removing that duplicate should restore 12 without inventing a surface. A missing whole cube face is a different problem: cleanup cannot recreate its intended design.',
     interpretation:
-      'The STL Repair action explicitly uploads your selected file, up to the current 25 MiB guest limit, for server processing. STL has no declared unit. Review the actual removal counts and skipped reasons, download the separate copy, then reselect it for preflight and revision comparison. No unconditional printability claim is made.',
+      'Standard STL cleanup explicitly uploads your selected file, up to the current 25 MiB guest limit, for server processing. Disconnected-piece detection and selection-only export run locally and never silently combine with that action. STL has no declared unit. Review the actual removal counts and skipped reasons, download the separate copy, then reselect it for preflight and revision comparison. No unconditional printability claim is made.',
     next: PublicRouteUrl.StlCompare,
     cta: 'Compare input and cleaned STL surfaces',
     guide: '/how-to-repair-an-stl-file',

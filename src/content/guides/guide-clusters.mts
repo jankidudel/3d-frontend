@@ -19,6 +19,19 @@ export interface GuideIndexCluster {
 
 export const guideClusters: readonly GuideCluster[] = [
   {
+    id: 'reduction-review',
+    label: 'STL encoding and candidate review',
+    description:
+      'Separate byte savings, Float32 representation and actual simplified surfaces before selecting a derivative.',
+    pillar: 'how-to-reduce-stl-file-size',
+    slugs: [
+      'how-to-reduce-stl-file-size',
+      'how-to-reduce-stl-triangle-count',
+      'ascii-vs-binary-stl',
+      'stl-triangle-count-explained',
+    ],
+  },
+  {
     id: 'cad-export',
     label: 'CAD export and mesh interpretation',
     description:
@@ -100,10 +113,6 @@ export const guideClusters: readonly GuideCluster[] = [
       'why-stl-files-have-no-units',
       'stl-volume-calculation-wrong',
       'how-to-measure-3d-model',
-      'stl-triangle-count-explained',
-      'how-to-reduce-stl-triangle-count',
-      'how-to-reduce-stl-file-size',
-      'ascii-vs-binary-stl',
     ],
   },
   {

@@ -1,0 +1,25 @@
+{
+  "method": "Python struct little-endian IEEE754 float32; representation experiment, not metrology",
+  "values": [
+    {
+      "decimal": 20.0,
+      "reopenedFloat32": 20.0,
+      "absoluteDifference": 0.0
+    },
+    {
+      "decimal": 0.1,
+      "reopenedFloat32": 0.10000000149011612,
+      "absoluteDifference": 1.4901161138336505e-9
+    },
+    {
+      "decimal": 20.1,
+      "reopenedFloat32": 20.100000381469727,
+      "absoluteDifference": 3.8146972514141453e-7
+    },
+    {
+      "decimal": 1000000.1,
+      "reopenedFloat32": 1000000.125,
+      "absoluteDifference": 0.025000000023283064
+    }
+  ]
+}

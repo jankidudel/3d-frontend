@@ -212,6 +212,7 @@ export class ComparePage {
       : null;
   }
   changeAlignment(event: Event): void {
+    this.controller?.abort();
     this.alignment.set((event.target as HTMLSelectElement).value as Alignment);
     this.difference.set(null);
     this.redraw();
@@ -246,7 +247,8 @@ export class ComparePage {
     this.busy.set(true);
     this.error.set('');
     this.difference.set(null);
-    this.controller = new AbortController();
+    const controller = new AbortController();
+    this.controller = controller;
     this.analytics.trackWorkflow(AnalyticsEvent.ToolStarted, 'stl_compare');
     try {
       const [a, b] = await Promise.all([
@@ -272,17 +274,24 @@ export class ComparePage {
             after: aligned,
             tolerance: this.tolerance(),
           },
-          this.controller.signal,
+          controller.signal,
         ),
         runMeshWorker(
           { mode: MeshWorkerMode.Check, mesh: before.mesh, settings, scale: 1 },
-          this.controller.signal,
+          controller.signal,
         ),
         runMeshWorker(
           { mode: MeshWorkerMode.Check, mesh: aligned, settings, scale: 1 },
-          this.controller.signal,
+          controller.signal,
         ),
       ]);
+      if (
+        controller.signal.aborted ||
+        this.before() !== before ||
+        this.after() !== after
+      ) {
+        return;
+      }
       this.volumeChecks.set([firstCheck.check!, secondCheck.check!]);
       this.difference.set(result.difference ?? null);
       this.redraw();
@@ -402,6 +411,8 @@ export class ComparePage {
         method: result.method,
         samplesPerDirection: WorkflowLimits.CompareSamples,
         toleranceMm: result.toleranceMm,
+        forward: result.forwardSummary,
+        reverse: result.reverseSummary,
         maximumSampledMm: result.maximumSampledMm,
         meanSampledMm: result.meanSampledMm,
         samplesOverTolerance: result.samplesOverTolerance,

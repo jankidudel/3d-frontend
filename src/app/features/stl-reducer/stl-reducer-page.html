@@ -28,6 +28,10 @@
         (change)="onPicker($event)"
       />
       <p class="hint">ASCII and binary STL files up to 25 MiB are supported.</p>
+      @if (processing()) {
+        <p role="status">Processing locally...</p>
+        <button type="button" (click)="cancel()">Cancel local work</button>
+      }
     </div>
     @if (error()) {
       <p class="error" role="alert">{{ error() }}</p>
@@ -45,7 +49,7 @@
       <h2 id="analysis-title">File analysis</h2>
       <dl class="metrics">
         <div>
-          <dt>Source format</dt>
+          <dt>Original: {{ file()!.name }}</dt>
           <dd>{{ source()?.encoding }}</dd>
         </div>
         <div>
@@ -57,21 +61,30 @@
           <dd>{{ sourceMetrics.triangleCount.toLocaleString() }}</dd>
         </div>
         <div>
-          <dt>Dimensions</dt>
+          <dt>Spans ({{ unit() }} stored coordinates)</dt>
           <dd>{{ formatDimensions(sourceMetrics.dimensions) }}</dd>
         </div>
         <div>
           <dt>Mesh quality</dt>
           <dd>
-            {{
-              sourceMetrics.warnings.length
-                ? sourceMetrics.warnings.join(' ')
-                : 'No local topology warnings detected.'
-            }}
+            {{ topologyText(sourceTopology()) }}
           </dd>
         </div>
       </dl>
     </section>
+    <p>{{ numericNote }}</p>
+    <label
+      >Assumed STL unit
+      <select [value]="unit()" (change)="changeUnit($event)">
+        <option [value]="units.Millimetres">Millimetres</option>
+        <option [value]="units.Inches">Inches</option>
+      </select></label
+    >
+    <p>
+      Bounds in stored coordinates ({{ unit() }}):
+      {{ displayVector(sourceBounds()!.min) }} to
+      {{ displayVector(sourceBounds()!.max) }}.
+    </p>
     <section class="card" aria-labelledby="mode-title">
       <h2 id="mode-title">Choose how to reduce file size</h2>
       <label
@@ -81,10 +94,11 @@
           [checked]="mode() === 'encoding'"
           (change)="mode.set('encoding')"
         />
-        Optimise file encoding (lossless)</label
+        Encode original as binary (Float32)</label
       >
       <p>
-        Convert ASCII STL to binary without changing triangle count or geometry.
+        Preserve triangle records under Float32 storage. ASCII decimals may
+        round; encoding does not repair surfaces.
       </p>
       <label
         ><input
@@ -100,8 +114,8 @@
       </p>
       @if (mode() === 'encoding' && source()?.encoding === 'binary STL') {
         <p>
-          This file is already in compact binary STL format. Use triangle
-          reduction to make it smaller.
+          This file is already in compact binary STL format. Repeated encoding
+          may not save bytes.
         </p>
       }
       @if (mode() === 'reduction') {
@@ -140,7 +154,8 @@
         type="button"
         [disabled]="
           processing() ||
-          (mode() === 'encoding' && source()?.encoding === 'binary STL')
+          candidates().length >= 3 ||
+          (mode() === methods.Reduction && !targetValid())
         "
         (click)="process()"
       >
@@ -154,9 +169,70 @@
       </button>
     </section>
   }
+  @if (source()) {
+    <section class="card" aria-labelledby="candidates-title">
+      <h2 id="candidates-title">Independent candidates</h2>
+      <p>
+        Retain up to three derivatives. Each starts from the original; remove
+        one to make a replacement. Nothing simplifies automatically on upload.
+      </p>
+      @if (processing()) {
+        <button type="button" (click)="cancel()">Cancel local work</button>
+      }
+      @for (candidate of candidates(); track candidate.id) {
+        <article class="candidate-row">
+          <h3>Candidate {{ candidate.id }}: {{ candidate.method }}</h3>
+          <p>
+            Requested kept percentage:
+            {{ displayNumber(candidate.keepPercent) }}% ({{
+              candidate.requestedTriangles
+            }}
+            triangles). Actual reopened:
+            {{ candidate.mesh.indices.length / 3 }} triangles,
+            {{ candidate.blob.size }} bytes.
+            @if (
+              candidate.mesh.indices.length / 3 > candidate.requestedTriangles
+            ) {
+              <strong
+                >Target not reached: limited by method and constraints.</strong
+              >
+            }
+          </p>
+          <p>
+            Bytes saved against original:
+            {{ file()!.size - candidate.blob.size }} (negative means larger).
+          </p>
+          <p>
+            Bounds ({{ unit() }}): {{ displayVector(candidate.bounds.min) }} to
+            {{ displayVector(candidate.bounds.max) }}; spans
+            {{ displayVector(candidate.bounds.spans, ' × ') }}; span delta
+            {{ spanDeltaText(candidate.bounds.spans) }}. Coordinate delta:
+            {{ boundsDeltaText(candidate.bounds) }}.
+          </p>
+          <p>
+            Topology: {{ topologyText(candidate.topology) }}. Increased
+            findings: {{ candidate.regressions.join(', ') || 'none observed' }}.
+            Comparison: {{ candidate.comparisonState }}.
+          </p>
+          <button
+            type="button"
+            [attr.aria-pressed]="result()?.id === candidate.id"
+            (click)="selectCandidate(candidate.id)"
+          >
+            Inspect candidate {{ candidate.id }}
+          </button>
+          <button type="button" (click)="removeCandidate(candidate.id)">
+            Remove candidate {{ candidate.id }}
+          </button>
+        </article>
+      } @empty {
+        <p>No candidates yet. Choose an operation above.</p>
+      }
+    </section>
+  }
   @if (resultMetrics(); as resultMetrics) {
     <section class="card" aria-labelledby="result-title">
-      <h2 id="result-title">Result comparison</h2>
+      <h2 id="result-title">Selected candidate {{ result()!.id }} review</h2>
       <dl class="metrics">
         <div>
           <dt>File size</dt>
@@ -184,22 +260,18 @@
           </dd>
         </div>
         <div>
-          <dt>Dimensions</dt>
+          <dt>Spans ({{ unit() }} stored coordinates)</dt>
           <dd>{{ formatDimensions(resultMetrics.dimensions) }}</dd>
         </div>
         <div>
           <dt>Mesh quality</dt>
           <dd>
-            {{
-              resultMetrics.warnings.length
-                ? resultMetrics.warnings.join(' ')
-                : 'No local topology warnings detected.'
-            }}
+            {{ topologyText(result()!.topology) }}
           </dd>
         </div>
       </dl>
       <p>
-        @if (mode() === 'encoding') {
+        @if (result()!.method === 'encoding') {
           Binary encoding reduces text overhead but does not reduce geometric
           detail.
         } @else {
@@ -207,16 +279,126 @@
           it can be downloaded.
         }
       </p>
-      <button class="button" type="button" (click)="download()">
-        Download {{ mode() === 'encoding' ? 'binary STL' : 'reduced STL' }}
+      <p>Original topology: {{ topologyText(result()!.originalTopology) }}.</p>
+      <p>
+        Reopened candidate topology: {{ topologyText(result()!.topology) }}.
+      </p>
+      <p>
+        {{ result()!.integrity }} Maximum source Float32 storage rounding:
+        {{ displayNumber(result()!.storageError, true) }} stored units.
+      </p>
+      <p>{{ result()!.algorithm }}</p>
+      <p>
+        Self intersections and defect locations are not checked. Unchanged
+        counts do not prove unchanged defect locations or design intent.
+      </p>
+      @if (result()!.regressions.length) {
+        <p class="error" role="alert">
+          Reject or review this candidate: increased topology findings ({{
+            result()!.regressions.join(', ')
+          }}). It is not recommended for printing.
+        </p>
+        <label
+          ><input
+            type="checkbox"
+            [checked]="result()!.acknowledged"
+            (change)="acknowledge($event)"
+          />I want a diagnostic download with these topology regressions.</label
+        >
+      }
+      <label
+        >Surface tolerance (mm)<input
+          type="number"
+          min="0"
+          step="0.01"
+          [value]="tolerance()"
+          (change)="changeTolerance($event)"
+      /></label>
+      <p>
+        Both directions use the same assumed {{ unit() }} unit and original
+        coordinates. Translation: 0 / 0 / 0 mm. No automatic alignment or
+        rescaling.
+      </p>
+      @if (limit()) {
+        <p>{{ limit() }}</p>
+      }
+      <button
+        type="button"
+        [disabled]="comparing() || !!limit()"
+        (click)="compareSelected()"
+      >
+        Compare selected candidate
       </button>
+      @if (comparing()) {
+        <p role="status">Measuring bounded surface samples locally...</p>
+        <button type="button" (click)="cancelComparison()">
+          Cancel comparison
+        </button>
+      }
+      <p>
+        Comparison: {{ result()!.comparisonState }}.
+        {{ result()!.comparisonError }}
+      </p>
+      @if (result()!.comparison; as comparison) {
+        <p>
+          {{ comparison.method }}. {{ comparison.samplesPerDirection }} samples
+          per direction; tolerance
+          {{ displayNumber(comparison.toleranceMm, true) }} mm.
+        </p>
+        <p>
+          Observed sampled maximum:
+          {{ displayNumber(comparison.maximumSampledMm, true) }} mm; mean:
+          {{ displayNumber(comparison.meanSampledMm, true) }} mm; sampled
+          exceedances: {{ comparison.samplesOverTolerance }}.
+        </p>
+        <p>
+          Original to candidate: {{ directionText(comparison.forwardSummary) }}.
+          Candidate to original: {{ directionText(comparison.reverseSummary) }}.
+        </p>
+      }
+      <p>
+        Finite sampling can miss a narrow feature. A sampled maximum is not a
+        guaranteed whole-surface upper bound; a small mean is not acceptance
+        evidence.
+      </p>
+      <p>
+        Review named features: holes, mating faces, ribs, lettering and
+        silhouette. Return to source CAD if a required feature is unresolved.
+      </p>
+      <label
+        >Optional review notes<textarea
+          [value]="result()!.notes"
+          (input)="reviewNotes($event)"
+        ></textarea>
+      </label>
+      <button
+        class="button"
+        type="button"
+        [disabled]="result()!.regressions.length > 0 && !result()!.acknowledged"
+        (click)="download()"
+      >
+        Download candidate {{ result()!.id }}
+        {{ result()!.regressions.length ? '(diagnostic)' : 'STL' }}
+      </button>
+      <button type="button" (click)="exportReport()">
+        Download JSON report
+      </button>
+      <button type="button" (click)="copyReport()">Copy report</button>
+      <button type="button" (click)="printReport()">Print report</button>
+      <pre class="print-report">{{ reportText() }}</pre>
     </section>
   }
   @if (previewModel(); as model) {
     <section class="card" aria-labelledby="preview-title">
       <h2 id="preview-title">
         Preview:
-        {{ preview() === previewVersion.Original ? 'Original' : 'Reduced' }}
+        @if (preview() === previewVersion.Original) {
+          Original
+        } @else if (preview() === previewVersion.Overlay) {
+          Overlay: cyan original, orange candidate
+        } @else {
+          Selected candidate {{ result()?.id }}
+        }
       </h2>
       @if (result()) {
         <div class="preview-toggle" aria-label="Preview version">
@@ -234,13 +416,24 @@
             [attr.aria-pressed]="preview() === previewVersion.Reduced"
             (click)="showReduced()"
           >
-            Reduced
+            Selected candidate
+          </button>
+          <button
+            type="button"
+            [attr.aria-pressed]="preview() === previewVersion.Overlay"
+            [class.selected]="preview() === previewVersion.Overlay"
+            (click)="showOverlay()"
+          >
+            Overlay
           </button>
         </div>
       }
       <app-object-viewer
         [object]="model.object"
         [extent]="model.extent"
+        [frameExtent]="model.extent"
+        [preserveVertexColors]="preview() === previewVersion.Overlay"
+        [measurementUnit]="unit()"
         ariaLabel="STL reducer model preview"
         [scrollOnRender]="false"
         (chooseAnother)="reset()"

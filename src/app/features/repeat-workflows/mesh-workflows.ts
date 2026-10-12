@@ -255,6 +255,16 @@ export function surfaceDifference(
     const forward = sampleDirection(before, bvhs[1]);
     const reverse = sampleDirection(after, bvhs[0]);
     const distances = [...forward, ...reverse].map((sample) => sample.distance);
+    const summary = (samples: typeof forward) => ({
+      samples: samples.length,
+      maximumSampledMm: Math.max(...samples.map((sample) => sample.distance)),
+      meanSampledMm:
+        samples.reduce((sum, sample) => sum + sample.distance, 0) /
+        samples.length,
+      samplesOverTolerance: samples.filter(
+        (sample) => sample.distance > toleranceMm,
+      ).length,
+    });
     return {
       method:
         'Bidirectional area-distributed surface sampling against triangle BVHs',
@@ -268,6 +278,8 @@ export function surfaceDifference(
       ).length,
       forward,
       reverse,
+      forwardSummary: summary(forward),
+      reverseSummary: summary(reverse),
     };
   } finally {
     geometries.forEach((geometry) => geometry.dispose());

@@ -50,7 +50,7 @@ faq:
   specific legacy integration, compatibility takes priority over size; otherwise
   binary is generally the practical STL export.
 </p>
-<h2>Encoding does not change geometry</h2>
+<h2>Encoding does not intentionally remove triangles</h2>
 <p>
   Binary STL is usually smaller because it stores triangles compactly; ASCII is
   readable text. Both can describe the same triangles, so binary conversion can
@@ -88,8 +88,9 @@ faq:
 </p>
 <h2>Does the encoding change print quality?</h2>
 <p>
-  No. If the triangles and coordinates are identical, the physical print result
-  is the same.
+  Encoding alone does not establish print quality. Identical represented
+  triangles have the same geometric input; physical results still depend on the
+  printing process.
 </p>
 <h2>Which STL format has the smaller file size?</h2>
 <p>
@@ -98,10 +99,11 @@ faq:
   while binary stores compact numeric values.
 </p>
 <p>
-  Changing ASCII STL to binary is a lossless file-format optimisation: the
-  triangle count and geometry stay the same. It does not fix mesh problems or
-  make a high-poly model simpler. If a binary STL is still too large, reduce
-  triangles carefully and inspect the result before slicing.
+  Changing ASCII STL to binary preserves triangle records under Float32 storage.
+  Arbitrary decimal coordinates may round, while exactly representable values
+  can remain unchanged. It does not fix mesh problems or make a high-poly model
+  simpler. If a binary STL is still too large, reduce triangles carefully and
+  inspect the result before slicing.
 </p>
 <p>
   Try the
@@ -165,4 +167,99 @@ faq:
     >Choose curve resolution at CAD export</a
   >
   when surface approximation is the concern.
+</p>
+
+<figure>
+  <img
+    src="/examples/reduction-review/storage-surfaces.svg"
+    width="720"
+    height="600"
+    alt="Encoding stores triangle records while simplification changes surfaces"
+  />
+  <figcaption>
+    Original analytical schematic, not a physical print measurement.
+  </figcaption>
+</figure>
+<h2>Does converting ASCII STL to binary lose coordinate precision?</h2>
+<p>
+  It can round a decimal coordinate that is not exactly representable in IEEE
+  754 Float32. It does not intentionally remove triangles, close a hole or
+  restore source CAD accuracy. ASCII can also contain rounded or inaccurate
+  decimals; more digits do not establish physical accuracy.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Decimal input</th>
+      <th scope="col">Encoded and reopened Float32</th>
+      <th scope="col">Absolute difference</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>20</td>
+      <td>20</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0.1</td>
+      <td>0.10000000149011612</td>
+      <td>1.4901161138336505e-9</td>
+    </tr>
+    <tr>
+      <td>20.1</td>
+      <td>20.100000381469727</td>
+      <td>3.8146972514141453e-7</td>
+    </tr>
+    <tr>
+      <td>1000000.1</td>
+      <td>1000000.125</td>
+      <td>0.025000000023283064</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Representation experiment reproduced 11 October 2026 with little-endian Python
+  struct Float32 packing and unpacking;
+  <a href="/examples/reduction-review/float32-representation.json" download
+    >download the numerical evidence</a
+  >. The decimal-offset cube also runs through the actual STL serializer/reopen
+  checks. Differences are coordinate-unit values, not a universal acceptable
+  printing tolerance. Large offsets make Float32 spacing coarser; changing units
+  or translating a source is a separate deliberate operation.
+</p>
+<figure>
+  <img
+    src="/examples/reduction-review/display-storage.svg"
+    width="720"
+    height="600"
+    alt="Readable displayed coordinates versus full stored numerical precision"
+  />
+  <figcaption>
+    Original analytical schematic, not a physical print measurement.
+  </figcaption>
+</figure>
+<p>
+  25.39999771118164 displays as 25.4 mm. A tiny negative value retains its sign;
+  a value of 20.0000001 still exceeds a 20 boundary even when its display rounds
+  to 20. Screen and copy values are presentation; JSON coordinates and
+  verification decisions retain stored numerical precision. Three displayed
+  decimals do not imply 0.001 mm measurement accuracy.
+</p>
+<p>
+  The
+  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000505.shtml"
+    >Library of Congress binary STL description</a
+  >
+  documents the record structure;
+  <a
+    href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/fround"
+    >Math.fround documentation</a
+  >
+  explains single-precision conversion. Reviewed 11 October 2026.
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}"
+    >Review an encoding candidate</a
+  >
+  against its original bytes and reopened geometry, then check a known
+  coordinate in the receiving application.
 </p>

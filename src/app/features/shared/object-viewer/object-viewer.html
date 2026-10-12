@@ -12,6 +12,7 @@
     (pointerdown)="onViewportPointerDown($event)"
     (pointerup)="onViewportPointerUp($event)"
     (pointermove)="onViewportPointerMove($event)"
+    (pointerleave)="triangleHovered.emit(null)"
   ></div>
   @if (measurement(); as result) {
     <output
@@ -95,36 +96,42 @@
           Choose another file
         </button>
       }
-      <button
-        class="button button-secondary"
-        type="button"
-        [disabled]="!measurementAvailable()"
-        [attr.aria-pressed]="measuring()"
-        (click)="toggleMeasurement()"
-      >
-        {{ measuring() ? 'Stop measuring' : 'Measure distance' }}
-      </button>
-      <button
-        class="button button-secondary"
-        type="button"
-        (click)="clearMeasurement()"
-      >
-        Clear measurement
-      </button>
-      <button
-        class="button button-secondary"
-        type="button"
-        [attr.aria-pressed]="crossSectionEnabled()"
-        (click)="toggleCrossSection()"
-      >
-        {{
-          crossSectionEnabled()
-            ? 'Close cross-section'
-            : 'Inspect cross-section'
-        }}
-      </button>
+      @if (showMeasurementControls()) {
+        <button
+          class="button button-secondary"
+          type="button"
+          [disabled]="!measurementAvailable()"
+          [attr.aria-pressed]="measuring()"
+          (click)="toggleMeasurement()"
+        >
+          {{ measuring() ? 'Stop measuring' : 'Measure distance' }}
+        </button>
+        <button
+          class="button button-secondary"
+          type="button"
+          (click)="clearMeasurement()"
+        >
+          Clear measurement
+        </button>
+      }
+      @if (showCrossSectionControls()) {
+        <button
+          class="button button-secondary"
+          type="button"
+          [attr.aria-pressed]="crossSectionEnabled()"
+          (click)="toggleCrossSection()"
+        >
+          {{
+            crossSectionEnabled()
+              ? 'Close cross-section'
+              : 'Inspect cross-section'
+          }}
+        </button>
+      }
     </div>
-    <p class="hint">{{ measurementHint() }}</p>
+    @if (showMeasurementControls()) {
+      <p class="hint">{{ measurementHint() }}</p>
+    }
     @if (measurement(); as result) {
       <dl>
         <div>

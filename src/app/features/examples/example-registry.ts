@@ -692,6 +692,160 @@ export const publicExamples: readonly PublicExample[] = [
     provenance:
       'Original InspectMesh deterministic generator scripts/generate-collection-examples.py, 11 October 2026; independent coordinate regression tests.',
   },
+  {
+    id: 'encoding-review',
+    name: 'Encoding and repeated binary bytes',
+    group: 'Reduction / exact bytes',
+    question: 'Does binary encoding actually save bytes?',
+    files: [
+      {
+        path: '/examples/reduction-review/cube-ascii.stl',
+        name: 'cube-ascii.stl',
+        bytes: 1117,
+      },
+      {
+        path: '/examples/reduction-review/cube-binary.stl',
+        name: 'cube-binary.stl',
+        bytes: 684,
+      },
+      {
+        path: '/examples/reduction-review/cube-shifted-x3.stl',
+        name: 'cube-shifted-x3.stl',
+        bytes: 684,
+      },
+    ],
+    preview: '/examples/reduction-review/storage-surfaces.svg',
+    alt: 'Encoding and repeated binary bytes; original analytical diagram.',
+    known: '12 triangles; cube 0..20. Shifted control X=3..23, Y/Z=0..20.',
+    observed:
+      'Binary cube has exactly 684 bytes. Repeated encoding cannot promise positive savings.',
+    settings:
+      'Choose an operation explicitly. Inline comparison: original coordinates, same units, 0.1 mm tolerance, 5,000 samples per direction.',
+    limitations:
+      'Touching shells are not a Boolean solid; no physical validation. Finite samples can miss the narrow rib.',
+    guide: '/ascii-vs-binary-stl',
+    tools: ['/stl-file-size-reducer', '/stl-compare'],
+    provenance:
+      'Original InspectMesh generated geometry. No customer models or physical testing.',
+  },
+  {
+    id: 'precision-review',
+    name: 'Stored Float32 versus displayed decimals',
+    group: 'Reduction / exact bytes',
+    question: 'Does a readable number prove exact storage?',
+    files: [
+      {
+        path: '/examples/reduction-review/decimal-offset-ascii.stl',
+        name: 'decimal-offset-ascii.stl',
+        bytes: 1189,
+      },
+    ],
+    preview: '/examples/reduction-review/display-storage.svg',
+    alt: 'Stored Float32 versus displayed decimals; original analytical diagram.',
+    known: 'ASCII X coordinates are 0.1 and 20.1; Y/Z are 0 and 20.',
+    observed:
+      'Float32 reopens 0.1 as 0.10000000149011612 and 20.1 as 20.100000381469727. Display rounding does not replace these stored values.',
+    settings:
+      'Choose an operation explicitly. Inline comparison: original coordinates, same units, 0.1 mm tolerance, 5,000 samples per direction.',
+    limitations:
+      'Touching shells are not a Boolean solid; no physical validation. Finite samples can miss the narrow rib.',
+    guide: '/ascii-vs-binary-stl',
+    tools: ['/stl-file-size-reducer', '/stl-compare'],
+    provenance:
+      'Original InspectMesh generated geometry. No customer models or physical testing.',
+  },
+  {
+    id: 'narrow-rib-review',
+    name: 'A missing narrow rib at equal bounds',
+    group: 'Reduction / exact bytes',
+    question: 'Can equal bounds approve a local feature?',
+    files: [
+      {
+        path: '/examples/reduction-review/narrow-rib-original.stl',
+        name: 'narrow-rib-original.stl',
+        bytes: 1884,
+      },
+      {
+        path: '/examples/reduction-review/narrow-rib-removed.stl',
+        name: 'narrow-rib-removed.stl',
+        bytes: 1284,
+      },
+    ],
+    preview: '/examples/reduction-review/local-feature.svg',
+    alt: 'A missing narrow rib at equal bounds; original analytical diagram.',
+    known:
+      '20-coordinate cube, a 2 \u00d7 2 \u00d7 0.2 marker, and a 2 \u00d7 0.1 \u00d7 0.2 rib at (9, 9, 20). Diagnostic revision removes only the narrow rib.',
+    observed:
+      '36 versus 24 triangles; both retain the same outer bounds because the marker stays. This is a hand-authored feature-difference control, not a simplifier output.',
+    settings:
+      'Choose an operation explicitly. Inline comparison: original coordinates, same units, 0.1 mm tolerance, 5,000 samples per direction.',
+    limitations:
+      'Touching shells are not a Boolean solid; no physical validation. Finite samples can miss the narrow rib.',
+    guide: '/how-to-reduce-stl-triangle-count',
+    tools: ['/stl-file-size-reducer', '/stl-compare'],
+    provenance:
+      'Original InspectMesh generated geometry. No customer models or physical testing.',
+  },
+  {
+    id: 'floating-parts-removal',
+    name: 'Cube and two detached fragments',
+    group: 'Boundaries / topology',
+    question:
+      'Can I review disconnected pieces and download only the chosen body?',
+    files: [
+      {
+        path: '/examples/floating-parts/cube-plus-two-fragments-binary.stl',
+        name: 'cube-plus-two-fragments-binary.stl',
+        bytes: 1084,
+      },
+      {
+        path: '/examples/floating-parts/cube-plus-two-fragments-ascii.stl',
+        name: 'cube-plus-two-fragments-ascii.stl',
+        bytes: 1868,
+      },
+    ],
+    preview: '/examples/floating-parts/cube-fragments.svg',
+    alt: 'Annotated schematic of the generated cube and two detached tetrahedra, not a slicer screenshot.',
+    known:
+      'A 20-unit cube (12 triangles) and detached 3-unit and 2-unit tetrahedra (4 triangles each): 3 parts and 20 triangles.',
+    observed:
+      'The edge-connected removal analysis finds 3 parts. Explicitly keeping the cube exports 12 triangles; the saved copy retains its original coordinates, winding and 20-unit dimensions.',
+    settings:
+      'On STL Repair, choose the file once, open Review / remove floating parts, propose Keep largest part by surface area, review, then Download cleaned STL. Millimetres are assumed, not stored in STL.',
+    limitations:
+      'The example defines which body is intended. Real files require design review; cavity boundaries and lettering can be necessary. Removal does not generate supports or establish printability.',
+    guide: '/stl-multiple-shells-disconnected-parts',
+    tools: ['/stl-repair', '/stl-print-preflight'],
+    provenance:
+      'Original InspectMesh generated mathematical geometry, reproduced by scripts/generate-floating-parts-fixtures.mts. No physical print evidence.',
+  },
+  {
+    id: 'floating-parts-intentional',
+    name: 'Two intended separate pieces',
+    group: 'Boundaries / topology',
+    question: 'Does a second component mean that I should delete it?',
+    files: [
+      {
+        path: '/examples/floating-parts/two-intended-parts-binary.stl',
+        name: 'two-intended-parts-binary.stl',
+        bytes: 1284,
+      },
+    ],
+    preview: '/examples/floating-parts/intended-parts.svg',
+    alt: 'Annotated schematic of two intended cubes, both retained by default.',
+    known:
+      '20-unit and 19-unit cubes: 2 parts, 12 triangles each, surface areas 2,400 and 2,166 square coordinate units.',
+    observed:
+      'Both pieces start retained. The largest-area comparison is within 10%, so the interface warns before treating the shortcut as an intended-part decision.',
+    settings:
+      'Choose the file on STL Repair. Review each piece; manual selections and the largest-area proposal are reversible before explicit download.',
+    limitations:
+      'A size-based shortcut cannot identify artistic or assembly intent. STL units are assumed; the files do not prove physical assembly or printability.',
+    guide: '/stl-multiple-shells-disconnected-parts',
+    tools: ['/stl-repair'],
+    provenance:
+      'Original InspectMesh generated mathematical geometry, reproduced by scripts/generate-floating-parts-fixtures.mts. No physical print evidence.',
+  },
 ];
 /** Only registry IDs are accepted; unknown values never become fetch locations. */
 export function findPublicExample(

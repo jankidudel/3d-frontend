@@ -1,6 +1,7 @@
 <main class="page tool-page viewer-page">
   <p class="eyebrow">Private browser-based 3MF inspection</p>
   <h1>Free 3MF Viewer Online</h1>
+  <p>{{ numericNote }}</p>
   <p class="lead">
     Open a 3MF file locally, inspect its loaded build geometry, measure visible
     features and review declared units and dimensions.
@@ -101,7 +102,7 @@
               </p>
               <p>
                 Placement matrix (Three.js column-major, source units):
-                {{ item.transform.join(' ') }}
+                {{ displayVector(item.transform, ' ') }}
               </p>
             </details>
           </div>

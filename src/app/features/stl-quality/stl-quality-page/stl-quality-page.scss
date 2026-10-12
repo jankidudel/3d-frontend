@@ -2,6 +2,7 @@
   max-width: 58rem;
   margin-top: 2.5rem;
   padding: clamp(1.25rem, 4vw, 2rem);
+  scroll-margin-top: 5rem;
 }
 .checker > h2 {
   margin: 0;
@@ -12,6 +13,24 @@
 app-stl-file-picker {
   display: block;
   margin-block: 1.5rem;
+}
+.repair-option {
+  border-top: 1px solid var(--border);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+}
+.repair-option summary {
+  cursor: pointer;
+  color: var(--link, #176c39);
+  font-weight: 700;
+  padding-block: 0.5rem;
+}
+.repair-option summary:focus-visible {
+  outline: 3px solid #175bb5;
+  outline-offset: 3px;
+}
+.repair-option p {
+  color: var(--muted);
 }
 .submit {
   width: 100%;

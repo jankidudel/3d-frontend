@@ -4,6 +4,7 @@ export interface StlMesh {
   readonly encoding: StlEncoding;
   readonly indices: Uint32Array;
   readonly positions: Float32Array;
+  readonly maximumStorageError?: number;
 }
 
 export interface StlMetrics {
@@ -43,7 +44,22 @@ export async function readStl(file: File): Promise<StlMesh> {
       'We could not read that STL file. Choose a valid ASCII or binary STL file.',
     );
   }
-  return weldVertices(vertices, encoding);
+  if (
+    vertices.some(
+      (value) =>
+        !Number.isFinite(value) || !Number.isFinite(Math.fround(value)),
+    )
+  ) {
+    throw new Error('The STL contains nonfinite or out-of-range coordinates.');
+  }
+  return {
+    ...weldVertices(vertices, encoding),
+    maximumStorageError: vertices.reduce(
+      (maximum, value) =>
+        Math.max(maximum, Math.abs(value - Math.fround(value))),
+      0,
+    ),
+  };
 }
 
 export function metrics(mesh: StlMesh, bytes: number): StlMetrics {
@@ -122,12 +138,14 @@ export function writeBinaryStl(mesh: StlMesh): Blob {
 export async function simplify(
   mesh: StlMesh,
   keepPercent: number,
+  requestedTriangles?: number,
 ): Promise<StlMesh> {
   const { MeshoptSimplifier } = await import('meshoptimizer/simplifier');
   await MeshoptSimplifier.ready;
   const target = Math.max(
     3,
-    Math.floor((mesh.indices.length * keepPercent) / 300) * 3,
+    (requestedTriangles ??
+      Math.floor((mesh.indices.length * keepPercent) / 300)) * 3,
   );
   const [indices] = MeshoptSimplifier.simplify(
     mesh.indices,
@@ -146,14 +164,21 @@ function parseAscii(text: string): number[] {
       'We could not read that STL file. Choose a valid ASCII or binary STL file.',
     );
   }
+  const body = text
+    .replace(/^\s*solid[^\r\n]*[\r\n]/i, '')
+    .replace(/endsolid\b[^\r\n]*\s*$/i, '');
+  const facetPattern =
+    /facet\s+normal\s+\S+\s+\S+\s+\S+\s+outer\s+loop\s+vertex\s+(\S+)\s+(\S+)\s+(\S+)\s+vertex\s+(\S+)\s+(\S+)\s+(\S+)\s+vertex\s+(\S+)\s+(\S+)\s+(\S+)\s+endloop\s+endfacet/gi;
   const values: number[] = [];
-  const expression = /vertex\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)/gi;
-  for (const match of text.matchAll(expression)) {
+  for (const match of body.matchAll(facetPattern)) {
     const coordinates = match.slice(1).map(Number);
     if (coordinates.some((coordinate) => !Number.isFinite(coordinate))) {
       throw new Error('The STL contains invalid vertex coordinates.');
     }
     values.push(...coordinates);
+  }
+  if (body.replace(facetPattern, '').trim()) {
+    throw new Error('Malformed or incomplete ASCII STL facet structure.');
   }
   return values;
 }

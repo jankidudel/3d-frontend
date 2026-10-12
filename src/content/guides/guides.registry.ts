@@ -188,7 +188,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-08',
     checkEditorialTargets: true,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-11',
   },
   {
     slug: 'stl-multiple-shells-disconnected-parts',
@@ -196,6 +196,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 205,
     enabled: true,
     publishDate: '2026-10-08',
+    updatedDate: '2026-10-12',
     checkEditorialTargets: true,
   },
 
@@ -232,7 +233,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 100,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-11',
     checkEditorialTargets: true,
   },
   {
@@ -502,6 +503,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-11',
   },
   {
     slug: 'why-stl-files-have-no-units',
@@ -536,6 +538,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-11',
   },
   {
     slug: 'how-to-reduce-stl-triangle-count',
@@ -544,7 +547,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-06',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-11',
   },
   {
     slug: 'how-to-repair-an-stl-file',
@@ -552,7 +555,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-08',
+    updatedDate: '2026-10-12',
     checkEditorialTargets: false,
   },
   {
@@ -631,7 +634,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 180,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-08',
+    updatedDate: '2026-10-11',
     checkEditorialTargets: false,
   },
   {

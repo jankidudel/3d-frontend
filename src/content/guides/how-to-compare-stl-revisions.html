@@ -140,3 +140,21 @@ faq:
   surface. The results are software calculations, not measurements of printed
   cubes.
 </p>
+
+<h2>Compare a reducer candidate without replacing this pair</h2>
+<p>
+  The <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">reducer</a> now offers
+  an explicit Compare selected candidate action. It runs inline with this tool's
+  shared bidirectional method, retaining the original and exact reopened
+  candidate bytes. It uses original coordinates, the same assumed unit on both
+  sides, 5,000 samples per direction and a user-entered millimetre tolerance.
+  Its selected-candidate report retains both directions, settings and
+  limitations.
+</p>
+<p>
+  For deliberate centre alignment or independent units, download the original
+  and selected candidate and open them here manually. No active comparison pair
+  is silently replaced. A source larger than 5 MiB or 100,000 triangles remains
+  outside the comparison budget; use another application rather than treating
+  unavailable evidence as success.
+</p>

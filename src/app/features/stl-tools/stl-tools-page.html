@@ -40,7 +40,12 @@
       </li>
       <li>
         Need safe cleanup of duplicate or degenerate triangles?
-        <a [routerLink]="routeUrl.StlRepair">STL Repair Tool</a>
+        <a [routerLink]="routeUrl.StlRepair">STL Repair Tool</a>. For
+        disconnected shells,
+        <a [routerLink]="routeUrl.StlRepair" fragment="remove-floating-parts"
+          >review and remove floating parts</a
+        >
+        after choosing your file.
       </li>
       <li>
         Is it watertight?
