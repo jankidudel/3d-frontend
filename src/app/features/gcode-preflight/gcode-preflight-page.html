@@ -6,18 +6,69 @@
     practical preflight details before printing. This G-code Preflight Checker
     only reads the file; it never uploads, runs, sends or changes G-code.
   </p>
-  @if (file()) {
+  @if (file() || loadingSlicerExample()) {
     <p>
       Loading a slicer example replaces the current file and result. Preserve
       unsaved exports first.
     </p>
   }
-  <button type="button" (click)="runSlicerExample()" [disabled]="parsing()">
-    Load actual Arachne slicer example
-  </button>
-  <button type="button" (click)="runSlicerExample(true)" [disabled]="parsing()">
-    Load actual Classic slicer control
-  </button>
+  <div class="slicer-example-actions">
+    <button
+      class="button button-secondary"
+      [class.is-current]="
+        slicerExampleLoaded() && file()?.name === 'thin-arachne.gcode'
+      "
+      [class.is-loading]="loadingSlicerExample() === 'arachne'"
+      type="button"
+      (click)="runSlicerExample()"
+      [disabled]="parsing() && loadingSlicerExample() === null"
+      [attr.aria-busy]="loadingSlicerExample() === 'arachne'"
+      [attr.aria-pressed]="
+        slicerExampleLoaded() && file()?.name === 'thin-arachne.gcode'
+      "
+    >
+      Load actual Arachne slicer example
+    </button>
+    <button
+      class="button button-secondary"
+      [class.is-current]="
+        slicerExampleLoaded() && file()?.name === 'thin-classic.gcode'
+      "
+      [class.is-loading]="loadingSlicerExample() === 'classic'"
+      type="button"
+      (click)="runSlicerExample(true)"
+      [disabled]="parsing() && loadingSlicerExample() === null"
+      [attr.aria-busy]="loadingSlicerExample() === 'classic'"
+      [attr.aria-pressed]="
+        slicerExampleLoaded() && file()?.name === 'thin-classic.gcode'
+      "
+    >
+      Load actual Classic slicer control
+    </button>
+  </div>
+  @if (loadingSlicerExample()) {
+    <p role="status" aria-live="polite">
+      Loading the
+      {{
+        loadingSlicerExample() === 'classic'
+          ? 'Classic control'
+          : 'Arachne example'
+      }}
+      and reviewing it locally…
+    </p>
+  } @else if (slicerExampleLoaded() && file()) {
+    <p role="status" aria-live="polite">
+      {{ file()?.name }} loaded and parsed:
+      {{ report()?.layers?.length }} layers,
+      {{ report()?.extrusionMoves?.toLocaleString() }} extrusion moves.
+      <a [routerLink]="routeUrl.GcodePreflightChecker" fragment="gcode-result"
+        >Jump to result</a
+      >
+    </p>
+  }
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
   <p>
     Owned thin-wall bars sliced with PrusaSlicer 2.9.6. Preview-only CLI
     exports: do not send these files to a printer.
@@ -52,14 +103,13 @@
     </div>
     @if (parsing()) {
       <p role="status">Reading G-code locally…</p>
-      <button type="button" (click)="cancel()">Cancel review</button>
-    }
-    @if (error()) {
-      <p class="error" role="alert">{{ error() }}</p>
+      <button class="button button-secondary" type="button" (click)="cancel()">
+        Cancel review
+      </button>
     }
   </section>
   @if (report(); as result) {
-    <section class="card">
+    <section class="card" id="gcode-result">
       <h2>G-code viewer summary</h2>
       <p class="status">
         <strong>{{ summary() }}</strong>
@@ -362,12 +412,20 @@
       <details>
         <summary>Inspect heater target source lines</summary>
         @for (target of result.hotendTargets; track target.line) {
-          <button type="button" (click)="focusEvidence(target)">
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="focusEvidence(target)"
+          >
             Hotend {{ target.value }} °C, line {{ target.line }}
           </button>
         }
         @for (target of result.bedTargets; track target.line) {
-          <button type="button" (click)="focusEvidence(target)">
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="focusEvidence(target)"
+          >
             Bed {{ target.value }} °C, line {{ target.line }}
           </button>
         }
@@ -533,7 +591,11 @@
           </h3>
           <p>{{ finding.interpretation }} {{ finding.action }}</p>
           @for (sample of finding.samples; track sample.line) {
-            <button type="button" (click)="focusEvidence(sample)">
+            <button
+              class="button button-secondary"
+              type="button"
+              (click)="focusEvidence(sample)"
+            >
               Inspect line {{ sample.line }}
             </button>
           }
@@ -551,7 +613,11 @@
             Mode/metadata/unsupported findings have no exact path association.
           </p>
           <pre>{{ item.excerpt }}</pre>
-          <button type="button" (click)="copyEvidence()">
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="copyEvidence()"
+          >
             Copy this excerpt
           </button>
         </div>
@@ -615,6 +681,7 @@
         destination will ask before applying.</label
       >
       <button
+        class="button button-secondary"
         type="button"
         (click)="offer(destinations.Finish)"
         [disabled]="!reviewed() || !result.duration || !reviewedHours()"
@@ -622,6 +689,7 @@
         Review duration in finish planner
       </button>
       <button
+        class="button button-secondary"
         type="button"
         (click)="offer(destinations.Cost)"
         [disabled]="!reviewed() || (!result.duration && !result.material)"
@@ -629,6 +697,7 @@
         Review new plate in cost calculator
       </button>
       <button
+        class="button button-secondary"
         type="button"
         (click)="offer(destinations.Spool)"
         [disabled]="!reviewed() || !result.material || !reviewedGrams()"
@@ -660,12 +729,22 @@
         Matches exact bytes; whitespace changes the hash. A matching hash does
         not authenticate the author or printer compatibility.
       </p>
-      <button type="button" (click)="downloadJson()">
+      <button class="button" type="button" (click)="downloadJson()">
         Download review JSON
       </button>
-      <button type="button" (click)="copyReport()">Copy review record</button>
-      <button type="button" (click)="pdf()">Download review PDF</button>
-      <button type="button" (click)="print()">Print review record</button>
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="copyReport()"
+      >
+        Copy review record
+      </button>
+      <button class="button button-secondary" type="button" (click)="pdf()">
+        Download review PDF
+      </button>
+      <button class="button button-secondary" type="button" (click)="print()">
+        Print review record
+      </button>
     </section>
     @if (exportText()) {
       <pre class="export-record">{{ recordSummary() }}</pre>

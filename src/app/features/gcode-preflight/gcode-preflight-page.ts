@@ -59,6 +59,8 @@ export class GcodePreflightPage implements OnDestroy {
   readonly report = signal<GcodeReport | null>(null);
   readonly error = signal('');
   readonly parsing = signal(false);
+  readonly loadingSlicerExample = signal<'arachne' | 'classic' | null>(null);
+  readonly slicerExampleLoaded = signal(false);
   readonly selectedLayer = signal(0);
   readonly showTravel = signal(true);
   readonly previewUsed = signal(false);
@@ -163,20 +165,24 @@ export class GcodePreflightPage implements OnDestroy {
     await this.loadFile((event.target as HTMLInputElement).files?.item(0));
   }
   async runSlicerExample(classic = false): Promise<void> {
-    const request = this.request;
     const exampleRequest = ++this.exampleRequest;
+    this.reset(false);
+    this.loadingSlicerExample.set(classic ? 'classic' : 'arachne');
     try {
       const { ownedDemoFile, DemoAsset } =
         await import('../repeat-workflows/demo-file');
       const file = await ownedDemoFile(
         classic ? DemoAsset.Classic : DemoAsset.Arachne,
       );
-      if (request !== this.request || exampleRequest !== this.exampleRequest) {
+      if (exampleRequest !== this.exampleRequest) {
         return;
       }
-      await this.loadFile(file);
+      await this.loadFile(file, true);
+      if (this.file() === file && this.report()) {
+        this.slicerExampleLoaded.set(true);
+      }
     } catch (error: unknown) {
-      if (request !== this.request || exampleRequest !== this.exampleRequest) {
+      if (exampleRequest !== this.exampleRequest) {
         return;
       }
       this.error.set(
@@ -184,10 +190,17 @@ export class GcodePreflightPage implements OnDestroy {
           ? error.message
           : 'The example could not be loaded.',
       );
+    } finally {
+      if (exampleRequest === this.exampleRequest) {
+        this.loadingSlicerExample.set(null);
+      }
     }
   }
-  async loadFile(file: File | null | undefined): Promise<void> {
-    this.reset();
+  async loadFile(
+    file: File | null | undefined,
+    fromSlicerExample = false,
+  ): Promise<void> {
+    this.reset(!fromSlicerExample);
     const request = this.request;
     if (!file) {
       return;
@@ -508,8 +521,12 @@ export class GcodePreflightPage implements OnDestroy {
     const value = Number((event.target as HTMLInputElement).value);
     signalToSet.set(Number.isFinite(value) && value > 0 ? value : null);
   }
-  private reset(): void {
-    this.exampleRequest++;
+  private reset(invalidateExample = true): void {
+    if (invalidateExample) {
+      this.exampleRequest++;
+      this.loadingSlicerExample.set(null);
+    }
+    this.slicerExampleLoaded.set(false);
     this.planning.invalidateGcodeOffers();
     this.request++;
     this.worker?.terminate();

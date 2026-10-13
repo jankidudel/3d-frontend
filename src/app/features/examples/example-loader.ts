@@ -95,7 +95,12 @@ export async function fetchPublicExample(
             : 'Your own file can still be chosen above.'
         }}
       </p>
-      <button type="button" (click)="open()" [disabled]="loading() || busy()">
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="open()"
+        [disabled]="loading() || busy()"
+      >
         {{
           active()
             ? 'Replace current model with example'
@@ -141,10 +146,6 @@ export async function fetchPublicExample(
       width: 100%;
       max-width: 42rem;
       padding: 0.6rem;
-      font: inherit;
-    }
-    button {
-      padding: 0.7rem;
       font: inherit;
     }
     p {

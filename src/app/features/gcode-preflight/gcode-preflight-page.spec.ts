@@ -183,3 +183,161 @@ it('does not replace a newly chosen file with a late native-example download', a
     fixture.destroy();
   }
 });
+
+it.each([
+  { name: 'Arachne', classic: false, filename: 'thin-arachne.gcode' },
+  { name: 'Classic', classic: true, filename: 'thin-classic.gcode' },
+])(
+  'loads the $name native slicer example and exposes the completed result',
+  async ({ classic, filename }) => {
+    const fixture = setup();
+    const page = fixture.componentInstance;
+    const fetchExample = vi.fn().mockResolvedValue(new Response('G1 X10'));
+    vi.stubGlobal('fetch', fetchExample);
+    try {
+      const loading = page.runSlicerExample(classic);
+      expect(page.loadingSlicerExample()).toBe(classic ? 'classic' : 'arachne');
+      await vi.waitFor(() =>
+        expect(ControlledWorker.instances).toHaveLength(1),
+      );
+      expect(fetchExample).toHaveBeenCalledWith(
+        `/examples/english-market-batch/${filename}`,
+      );
+      ControlledWorker.instances[0].finish('G1 X10');
+      await loading;
+      expect(page.file()?.name).toBe(filename);
+      expect(page.report()).not.toBeNull();
+      expect(page.slicerExampleLoaded()).toBe(true);
+      expect(page.loadingSlicerExample()).toBeNull();
+    } finally {
+      fixture.destroy();
+    }
+  },
+);
+
+it('keeps the replacement notice in place while switching slicer examples', () => {
+  const fixture = setup();
+  const page = fixture.componentInstance;
+  fixture.detectChanges();
+  const notice =
+    'Loading a slicer example replaces the current file and result.';
+  expect(fixture.nativeElement.textContent).not.toContain(notice);
+
+  page.file.set(new File(['G1 X10'], 'thin-arachne.gcode'));
+  fixture.detectChanges();
+  expect(fixture.nativeElement.textContent).toContain(notice);
+
+  page.file.set(null);
+  page.loadingSlicerExample.set('classic');
+  fixture.detectChanges();
+  expect(fixture.nativeElement.textContent).toContain(notice);
+  fixture.destroy();
+});
+
+it('switches examples when the rendered buttons are clicked', async () => {
+  const fixture = setup();
+  const page = fixture.componentInstance;
+  const fetchExample = vi.fn(() => Promise.resolve(new Response('G1 X10')));
+  vi.stubGlobal('fetch', fetchExample);
+  fixture.detectChanges();
+  const button = (label: string) =>
+    [...fixture.nativeElement.querySelectorAll('button')].find((candidate) =>
+      candidate.textContent.includes(label),
+    ) as HTMLButtonElement;
+
+  try {
+    const arachneButton = button('Load actual Arachne slicer example');
+    const classicButton = button('Load actual Classic slicer control');
+    expect(arachneButton.getAttribute('aria-pressed')).toBe('false');
+    expect(classicButton.getAttribute('aria-pressed')).toBe('false');
+
+    arachneButton.click();
+    await vi.waitFor(() => expect(ControlledWorker.instances).toHaveLength(1));
+    ControlledWorker.instances[0].finish('G1 X10');
+    await vi.waitFor(() => expect(page.slicerExampleLoaded()).toBe(true));
+    fixture.detectChanges();
+    expect(arachneButton.getAttribute('aria-pressed')).toBe('true');
+    expect(classicButton.getAttribute('aria-pressed')).toBe('false');
+
+    classicButton.click();
+    await vi.waitFor(() => expect(page.loadingSlicerExample()).toBe('classic'));
+    await vi.waitFor(() => expect(ControlledWorker.instances).toHaveLength(2));
+    ControlledWorker.instances[1].finish('G1 X10');
+    await vi.waitFor(() => expect(page.slicerExampleLoaded()).toBe(true));
+    expect(page.file()?.name).toBe('thin-classic.gcode');
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement
+        .querySelector('a[href*="gcode-result"]')
+        ?.getAttribute('href'),
+    ).toContain('/gcode-preflight-checker#gcode-result');
+    expect(arachneButton.getAttribute('aria-pressed')).toBe('false');
+    expect(classicButton.getAttribute('aria-pressed')).toBe('true');
+    expect(fixture.nativeElement.textContent).toContain('extrusion moves');
+  } finally {
+    fixture.destroy();
+  }
+});
+
+it('switches to the latest slicer example while an earlier download is pending', async () => {
+  const fixture = setup();
+  const page = fixture.componentInstance;
+  const downloads: ((response: Response) => void)[] = [];
+  const fetchExample = vi.fn(
+    () =>
+      new Promise<Response>((resolve) => {
+        downloads.push(resolve);
+      }),
+  );
+  vi.stubGlobal('fetch', fetchExample);
+  try {
+    const arachne = page.runSlicerExample();
+    await vi.waitFor(() => expect(fetchExample).toHaveBeenCalledTimes(1));
+    const classic = page.runSlicerExample(true);
+    await vi.waitFor(() => expect(fetchExample).toHaveBeenCalledTimes(2));
+
+    downloads[0](new Response('G1 X10'));
+    await arachne;
+    expect(ControlledWorker.instances).toHaveLength(0);
+    expect(page.loadingSlicerExample()).toBe('classic');
+
+    downloads[1](new Response('G1 X20'));
+    await vi.waitFor(() => expect(ControlledWorker.instances).toHaveLength(1));
+    ControlledWorker.instances[0].finish('G1 X20');
+    await classic;
+    expect(page.file()?.name).toBe('thin-classic.gcode');
+    expect(page.report()?.extents?.max.x).toBe(20);
+    expect(page.slicerExampleLoaded()).toBe(true);
+  } finally {
+    fixture.destroy();
+  }
+});
+
+it('cancels an earlier parse when the other slicer example is selected', async () => {
+  const fixture = setup();
+  const page = fixture.componentInstance;
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockResolvedValueOnce(new Response('G1 X10'))
+      .mockResolvedValueOnce(new Response('G1 X20')),
+  );
+  try {
+    const arachne = page.runSlicerExample();
+    await vi.waitFor(() => expect(ControlledWorker.instances).toHaveLength(1));
+    const classic = page.runSlicerExample(true);
+    await vi.waitFor(() => expect(ControlledWorker.instances).toHaveLength(2));
+    expect(ControlledWorker.instances[0].terminated).toBe(true);
+    expect(page.loadingSlicerExample()).toBe('classic');
+
+    ControlledWorker.instances[1].finish('G1 X20');
+    await Promise.all([arachne, classic]);
+    expect(page.file()?.name).toBe('thin-classic.gcode');
+    expect(page.report()?.extents?.max.x).toBe(20);
+    expect(page.slicerExampleLoaded()).toBe(true);
+    expect(page.loadingSlicerExample()).toBeNull();
+  } finally {
+    fixture.destroy();
+  }
+});
