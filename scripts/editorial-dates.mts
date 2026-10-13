@@ -12,8 +12,8 @@ const legacyLastModifiedDate = '2026-10-06';
 /** Recorded editorial dates and the explicit legacy baseline, never build time. */
 export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.Examples]: '2026-10-12',
-  [PublicRouteUrl.Home]: '2026-10-10',
-  [PublicRouteUrl.AllTools]: '2026-10-09',
+  [PublicRouteUrl.Home]: '2026-10-13',
+  [PublicRouteUrl.AllTools]: '2026-10-13',
   [PublicRouteUrl.Guides]: '2026-10-11',
   [`/${MaterialRoutePath.Pla}`]: '2026-10-09',
   [`/${MaterialRoutePath.Petg}`]: '2026-10-09',
@@ -82,7 +82,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.ToleranceCalculator]: '2026-10-10',
   [PublicRouteUrl.ShrinkageCalculator]: '2026-10-10',
   [PublicRouteUrl.BedLayoutPlanner]: '2026-10-10',
-  [PublicRouteUrl.Tools]: '2026-10-12',
+  [PublicRouteUrl.Tools]: '2026-10-13',
   [PublicRouteUrl.StlRepair]: '2026-10-13',
   [PublicRouteUrl.StlSplitter]: '2026-10-08',
   [PublicRouteUrl.ManifoldChecker]: '2026-10-09',

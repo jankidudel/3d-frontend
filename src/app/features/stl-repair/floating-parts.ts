@@ -71,6 +71,7 @@ export class FloatingParts {
   );
   readonly object = signal<Group | null>(null);
   readonly downloaded = signal<Blob | null>(null);
+  readonly downloadedPartId = signal<number | null>(null);
   readonly viewerError = signal(false);
   readonly viewer = viewChild(ObjectViewerComponent);
   readonly pageSize = PartLimits.PageSize;
@@ -294,31 +295,52 @@ export class FloatingParts {
     }
     this.error.set('');
     this.exportVersion = this.selectionVersion;
+    this.downloadedPartId.set(null);
     this.exporting.set(true);
     this.worker.postMessage({
       action: PartsAction.Export,
       removed: [...this.removed()],
     });
   }
+  downloadPart(): void {
+    const part = this.inspectedPart();
+    if (!this.worker || !part || this.exporting()) {
+      return;
+    }
+    this.error.set('');
+    this.exportVersion = this.selectionVersion;
+    this.downloadedPartId.set(part.id);
+    this.exporting.set(true);
+    this.worker.postMessage({
+      action: PartsAction.Export,
+      removed: [],
+      keepPartId: part.id,
+    });
+  }
   inspect(): void {
     const blob = this.downloaded();
     if (blob) {
       this.inspectRetained.emit(
-        new File([blob], this.outputName(), { type: 'model/stl' }),
+        new File([blob], this.outputName(this.downloadedPartId()), {
+          type: 'model/stl',
+        }),
       );
     }
   }
-  private outputName(): string {
+  private outputName(partId: number | null = null): string {
+    if (partId !== null) {
+      return `${this.file()?.name.replace(/\.stl$/i, '') ?? 'model'}-piece-${partId + 1}.stl`;
+    }
     return (
       (this.file()?.name.replace(/\.stl$/i, '') ?? 'model') +
       '-selected-pieces.stl'
     );
   }
-  private save(blob: Blob): void {
+  private save(blob: Blob, partId: number | null = null): void {
     const url = URL.createObjectURL(blob);
     const link = this.document.createElement('a');
     link.href = url;
-    link.download = this.outputName();
+    link.download = this.outputName(partId);
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -337,6 +359,7 @@ export class FloatingParts {
     this.highlighted.set(null);
     this.cleanedPreview.set(false);
     this.downloaded.set(null);
+    this.downloadedPartId.set(null);
     this.error.set('');
     this.busy.set(false);
     this.exporting.set(false);
@@ -388,7 +411,8 @@ export class FloatingParts {
           this.exporting.set(false);
           if (this.exportVersion === this.selectionVersion) {
             this.downloaded.set(data.blob);
-            this.save(data.blob);
+            this.downloadedPartId.set(data.keepPartId ?? null);
+            this.save(data.blob, data.keepPartId ?? null);
           }
         } else if (data.progress !== undefined) {
           this.progress.set(data.progress);

@@ -49,7 +49,16 @@ addEventListener('message', async ({ data }: MessageEvent<PartsRequest>) => {
       if (!mesh || !analysis) {
         throw new Error('Analyse the selected file before exporting.');
       }
-      postMessage({ blob: await exportParts(mesh, analysis, data.removed) });
+      const removed =
+        data.keepPartId === undefined
+          ? data.removed
+          : analysis.parts
+              .filter((part) => part.id !== data.keepPartId)
+              .map((part) => part.id);
+      postMessage({
+        blob: await exportParts(mesh, analysis, removed),
+        keepPartId: data.keepPartId,
+      });
     }
   } catch (error: unknown) {
     postMessage({

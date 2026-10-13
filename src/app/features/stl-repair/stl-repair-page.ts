@@ -18,6 +18,7 @@ import { SeoService } from '../../core/seo/seo.service';
 import { Job, JobStatus } from '../../models/job';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
+import { floatingPartsDemo } from './parts-fixtures';
 
 type RepairReport = {
   hasCleanedFile?: boolean;
@@ -74,7 +75,7 @@ export class StlRepairPage {
     this.seo.apply({
       title: 'Free STL Repair Tool - Repair STL Files Online | InspectMesh',
       description:
-        'Repair supported STL issues or review and remove disconnected floating parts. Preview pieces and download a separate STL while keeping your original.',
+        'Review disconnected STL pieces in your browser, remove selected components, or explicitly run conservative server cleanup. Keep the original file.',
       path: PublicRouteUrl.StlRepair,
     });
     this.destroyRef.onDestroy(() => {
@@ -87,6 +88,9 @@ export class StlRepairPage {
   onFileSelected(file: File | null): void {
     this.originalFile.set(file);
     this.selectActiveFile(file);
+  }
+  loadExample(): void {
+    this.onFileSelected(floatingPartsDemo());
   }
   inspectRetained(file: File): void {
     this.selectActiveFile(file);

@@ -54,9 +54,9 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '✦',
         title: 'STL Repair Tool',
         description:
-          'Clean duplicate and degenerate triangles, and correct simple orientation issues before checking the STL again.',
+          'Review and remove disconnected pieces in your browser, or run conservative server cleanup for duplicate and degenerate triangles and simple orientation issues.',
         route: PublicRouteUrl.StlRepair,
-        cta: 'Clean an STL safely',
+        cta: 'Review STL pieces or clean',
       },
       {
         icon: '○',

@@ -153,8 +153,10 @@ faq:
         zero-area triangles
       </td>
       <td>
-        No distance-tolerance welding, exhaustive vertex-manifold proof or
-        self-intersection detector
+        No distance-tolerance welding or exhaustive vertex-manifold proof. Local
+        STL preflight separately runs a bounded BVH triangle-pair screen;
+        duplicate/coplanar overlap remains ambiguous and collection review does
+        not run it
       </td>
       <td>
         <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"

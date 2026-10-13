@@ -4,7 +4,7 @@
   tabindex="-1"
   aria-labelledby="parts-title"
 >
-  <h2 id="parts-title" tabindex="-1">Remove floating parts from your STL</h2>
+  <h2 id="parts-title" tabindex="-1">Review disconnected pieces in your STL</h2>
   <p>
     Inspect this STL's separate pieces and keep the ones you need. Separate
     pieces may be intentional. Detection and downloads run in your browser.
@@ -219,6 +219,20 @@
                     (change)="toggle(part.id)"
                   />Keep this piece</label
                 >
+                <button
+                  type="button"
+                  class="button secondary part-export"
+                  (click)="downloadPart()"
+                  [disabled]="exporting()"
+                >
+                  Download this part as STL ({{ part.triangles | number }}
+                  triangles)
+                </button>
+                <p class="thumbnail-note">
+                  Exports only this inspected component. Highlighting or solo
+                  preview does not change the Keep selection. Coordinates and
+                  scale stay as supplied; STL units are assumed from the source.
+                </p>
               </div>
             </div>
             @if (isolated() === null) {
@@ -339,8 +353,9 @@
     </details>
     @if (downloaded()) {
       <p role="status">
-        The saved STL was reparsed and its retained triangle coordinates and
-        winding verified. Inspect this separate copy in your slicer.
+        The saved STL was reparsed and its triangle coordinates and winding
+        verified. This is a separate copy in the original coordinates; STL units
+        are assumed to match the source. Inspect it in your slicer.
       </p>
       <button type="button" class="button" (click)="inspect()">
         Inspect retained result here (replace active file)

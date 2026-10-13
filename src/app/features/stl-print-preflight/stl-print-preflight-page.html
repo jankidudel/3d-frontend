@@ -154,10 +154,53 @@
           </p>
         }
       </section>
+      @if (intersectionReport(); as intersections) {
+        <section class="card" aria-labelledby="intersection-title">
+          <h2 id="intersection-title">Triangle surface intersections</h2>
+          @if (intersections.state === 'complete') {
+            <p role="status">Check complete: no crossing pairs were found.</p>
+          } @else if (intersections.state === 'found') {
+            <p role="status">
+              {{ intersections.findings.length }} intersecting or ambiguous
+              triangle pairs need review. This check does not repair or join
+              shells.
+            </p>
+          } @else if (intersections.state === 'skipped') {
+            <p role="status">Check skipped. {{ intersections.reason }}</p>
+          } @else {
+            <p role="status">Check incomplete. {{ intersections.reason }}</p>
+          }
+          <p>
+            Open-edge and non-manifold counts measure triangle connectivity;
+            surfaces can cross even when both counts are zero. Duplicate and
+            coplanar overlaps are labelled ambiguous because their geometric
+            intent cannot be inferred here.
+          </p>
+          @if (intersections.findings.length) {
+            <ol aria-label="Triangle intersection findings">
+              @for (finding of intersections.findings; track $index) {
+                <li>
+                  {{
+                    finding.kind === 'crossing'
+                      ? 'Crossing'
+                      : 'Ambiguous overlap'
+                  }}: triangles {{ finding.triangles[0] + 1 }} and
+                  {{ finding.triangles[1] + 1 }}; approximate pair-centre
+                  location ({{ format(finding.location[0]) }},
+                  {{ format(finding.location[1]) }},
+                  {{ format(finding.location[2]) }}) {{ unit() }}.
+                </li>
+              }
+            </ol>
+          }
+        </section>
+      }
       <section class="card">
         <h2>Complexity and volume</h2>
         <p>{{ format(model.indices.length / 3) }} triangles.</p>
-        @if (report.volumeReliable) {
+        @if (
+          report.volumeReliable && intersectionReport()?.state === 'complete'
+        ) {
           <p>
             Closed-mesh volume: {{ format(report.volume!) }} {{ unit() }}³. This
             is a geometric estimate, not a material quote.
@@ -167,9 +210,11 @@
           </p>
         } @else {
           <p>
-            Volume is not shown because this check found topology issues. A
-            closed, manifold surface is needed for a meaningful solid-volume
-            estimate.
+            Volume is not shown because this check found topology issues or
+            triangle-surface intersections were found, ambiguous or not
+            completely checked. A closed, manifold surface is needed for a
+            meaningful solid-volume estimate, and edge counts alone do not rule
+            out crossing triangles.
           </p>
         }
       </section>

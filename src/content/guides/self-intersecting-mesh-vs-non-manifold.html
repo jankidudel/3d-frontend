@@ -6,7 +6,7 @@ eyebrow: File diagnosis with owned examples
 heading: 'Self Intersections and Non-Manifold Edges Are Different Checks'
 faq:
   - question: 'Does zero non-manifold edges rule out intersections?'
-    answer: 'No. Edge incidence measures connectivity; triangles can cross without sharing mesh edges. Collection review does not run self-intersection detection.'
+    answer: 'No. Edge incidence measures connectivity; triangles can cross without sharing mesh edges. STL preflight runs a bounded local BVH triangle-pair screen, while collection review does not.'
   - question: 'Should overlapping shells always be merged?'
     answer: 'No. Determine the intended union, cavity or separate moving parts before changing the design. Return to source CAD when intent is unclear.'
 ---
@@ -15,8 +15,9 @@ faq:
   A non-manifold edge concerns how faces are connected. A self intersection
   concerns where surfaces cross in space. A mesh can pass an edge-incidence
   check while its triangles still intersect. InspectMesh collection review does
-  not detect self intersections; zero non-manifold edges must not be presented
-  as an intersection clearance.
+  not detect self intersections. Local STL preflight runs a bounded BVH screen;
+  zero non-manifold edges alone must not be presented as an intersection
+  clearance.
 </p>
 <h2>Two independent questions</h2>
 <table>
@@ -85,10 +86,15 @@ faq:
   </figcaption>
 </figure>
 <p>
-  This control demonstrates crossing shells; intersections can also occur within
-  one connected shell. No one-shell self-intersection detector is claimed.
-  Duplicate removal cannot resolve a crossing between unrelated triangles merely
-  because their faces occupy some of the same space.
+  Local STL preflight can report triangle pairs for supported files up to its
+  documented triangle limit. The reported location is an approximate pair
+  centre, not an exact intersection curve or a 3D highlight. Exact duplicate and
+  coplanar overlaps are labelled ambiguous. Larger, malformed or
+  resource-limited inputs are skipped or incomplete, never reported as a clean
+  check. The screen is diagnostic; it does not infer whether to union shells,
+  preserve a cavity or retain separate parts. Duplicate removal cannot resolve a
+  crossing between unrelated triangles merely because their faces occupy some of
+  the same space.
 </p>
 <h2>Practical inspection sequence</h2>
 <ol>

@@ -21,6 +21,12 @@
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
+    <p>
+      <button class="button secondary" type="button" (click)="loadExample()">
+        Try the three-part example
+      </button>
+      <span> Generated test geometry; choosing another file replaces it.</span>
+    </p>
     <details class="repair-option">
       <summary>Need standard STL cleanup instead?</summary>
       <p>
@@ -136,7 +142,7 @@
     </p>
   </section>
   <details class="content interpretation-guide">
-    <summary>How floating-part removal works and its limits</summary>
+    <summary>How disconnected-piece review works and its limits</summary>
     <section aria-labelledby="parts-help-title">
       <h2 id="parts-help-title">Review loose parts in three steps</h2>
       <ol>

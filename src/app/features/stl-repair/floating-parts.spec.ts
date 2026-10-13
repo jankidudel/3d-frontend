@@ -197,7 +197,7 @@ describe('optional STL part removal lifecycle', () => {
     });
     const blob = new Blob([binaryFixture(cubeTriangles())]);
     worker.reply({ blob });
-    expect(save).toHaveBeenCalledWith(blob);
+    expect(save).toHaveBeenCalledWith(blob, null);
     instance.inspect();
     expect(emit.mock.calls[0][0].name).toBe(
       'cube-plus-two-fragments-selected-pieces.stl',
@@ -207,6 +207,31 @@ describe('optional STL part removal lifecycle', () => {
     worker.reply({ blob });
     expect(save).toHaveBeenCalledTimes(1);
     expect(instance.downloaded()).toBeNull();
+    fixture.destroy();
+  });
+  it('exports only the inspected component with an explicit separate filename', () => {
+    const { fixture, instance, worker } = create();
+    worker.reply(response());
+    instance.inspectPart(instance.analysis()!.parts[1]);
+    instance.downloadPart();
+    expect(worker.postMessage).toHaveBeenLastCalledWith({
+      action: PartsAction.Export,
+      removed: [],
+      keepPartId: 1,
+    });
+    const save = vi
+      .spyOn(
+        instance as unknown as {
+          save: (blob: Blob, id: number | null) => void;
+        },
+        'save',
+      )
+      .mockImplementation(() => {});
+    const blob = new Blob([binaryFixture(demoTriangles().slice(0, 9 * 4))]);
+    worker.reply({ blob, keepPartId: 1 });
+    expect(save).toHaveBeenCalledWith(blob, 1);
+    instance.inspect();
+    expect(instance.downloadedPartId()).toBe(1);
     fixture.destroy();
   });
   it('one component has honest empty state and failures expose a retry', () => {

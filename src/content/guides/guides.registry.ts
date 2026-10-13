@@ -220,6 +220,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'self-intersecting-mesh-vs-non-manifold',
+    updatedDate: '2026-10-13',
     group: GuideGroupId.Stl,
     order: 202,
     enabled: true,

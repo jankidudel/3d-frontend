@@ -31,6 +31,11 @@ import {
   UNIT_AMBIGUITY_MESSAGE,
   WALL_THICKNESS_LIMITATION_MESSAGE,
 } from './stl-print-preflight-analysis';
+import {
+  IntersectionCheckState,
+  SelfIntersectionReport,
+} from './self-intersections';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
 
 @Component({
   selector: 'app-stl-print-preflight-page',
@@ -65,6 +70,7 @@ export class StlPrintPreflightPage {
   readonly integrityReport = signal<ReturnType<typeof inspectMesh> | null>(
     null,
   );
+  readonly intersectionReport = signal<SelfIntersectionReport | null>(null);
   readonly dimensionsReport = signal<ModelDimensions | null>(null);
   readonly progress = signal('');
   readonly error = signal('');
@@ -97,7 +103,7 @@ export class StlPrintPreflightPage {
     if (!integrity) {
       return null;
     }
-    return preflightStatus(
+    const baseStatus = preflightStatus(
       integrity,
       (this.wallReport()?.belowThreshold ?? 0) > 0,
       this.orientation()?.recommended !== null
@@ -106,6 +112,25 @@ export class StlPrintPreflightPage {
           ? false
           : null,
     );
+    const intersection = this.intersectionReport();
+    if (
+      intersection?.state === IntersectionCheckState.Found &&
+      intersection.findings.some((finding) => finding.kind === 'crossing')
+    ) {
+      return 'Needs attention';
+    }
+    if (
+      (!intersection ||
+        intersection.state === IntersectionCheckState.Skipped ||
+        intersection.state === IntersectionCheckState.Incomplete ||
+        intersection.findings.some(
+          (finding) => finding.kind === 'ambiguous',
+        )) &&
+      baseStatus === 'No issue found in this check'
+    ) {
+      return 'Check before slicing';
+    }
+    return baseStatus;
   });
   readonly statusReason = computed(() => {
     const integrity = this.integrity();
@@ -119,6 +144,24 @@ export class StlPrintPreflightPage {
       integrity.orientationConflicts
     ) {
       return 'Mesh integrity findings need review before slicing.';
+    }
+    const intersection = this.intersectionReport();
+    if (
+      intersection?.state === IntersectionCheckState.Found &&
+      intersection.findings.some((finding) => finding.kind === 'crossing')
+    ) {
+      return 'Triangle surfaces cross in this check. Review the affected pair in the finding list.';
+    }
+    if (
+      !intersection ||
+      intersection.state === IntersectionCheckState.Skipped ||
+      intersection.state === IntersectionCheckState.Incomplete ||
+      intersection.findings.some((finding) => finding.kind === 'ambiguous')
+    ) {
+      return (
+        intersection?.reason ??
+        'Triangle intersection review is incomplete or ambiguous.'
+      );
     }
     if ((this.wallReport()?.belowThreshold ?? 0) > 0) {
       return 'Sampled areas are below the generic 1.2 mm review threshold.';
@@ -153,6 +196,9 @@ export class StlPrintPreflightPage {
   });
   private readonly analytics = inject(AnalyticsService);
   private readonly seo = inject(SeoService);
+  private intersectionWorker: Worker | null = null;
+  private rejectIntersection: ((error: Error) => void) | null = null;
+  private analysisGeneration = 0;
 
   async openHandoff(): Promise<void> {
     const item = this.handoff();
@@ -188,6 +234,7 @@ export class StlPrintPreflightPage {
   }
   async onFileSelected(file: File | null): Promise<void> {
     this.reset();
+    const generation = this.analysisGeneration;
     if (!file) {
       return;
     }
@@ -209,9 +256,17 @@ export class StlPrintPreflightPage {
     try {
       this.progress.set('Reading mesh and dimensions...');
       const mesh = await readStl(file);
+      if (generation !== this.analysisGeneration) {
+        return;
+      }
       await this.yieldToBrowser();
       this.progress.set('Checking mesh integrity and printer fit...');
       this.integrityReport.set(inspectMesh(mesh));
+      this.progress.set('Checking triangle intersections...');
+      this.intersectionReport.set(await this.checkIntersections(mesh));
+      if (generation !== this.analysisGeneration) {
+        return;
+      }
       this.dimensionsReport.set(meshDimensions(mesh));
       await this.yieldToBrowser();
       this.progress.set('Sampling wall thickness...');
@@ -224,6 +279,9 @@ export class StlPrintPreflightPage {
       this.mesh.set(mesh);
       this.progress.set('Preflight report ready.');
     } catch (error: unknown) {
+      if (generation !== this.analysisGeneration) {
+        return;
+      }
       this.reset();
       this.error.set(
         error instanceof Error
@@ -232,7 +290,9 @@ export class StlPrintPreflightPage {
       );
       this.analytics.trackPreflightWallThickness('failed');
     } finally {
-      this.analysing.set(false);
+      if (generation === this.analysisGeneration) {
+        this.analysing.set(false);
+      }
     }
   }
 
@@ -267,13 +327,65 @@ export class StlPrintPreflightPage {
   }
 
   reset(): void {
+    this.analysisGeneration += 1;
+    this.cancelIntersectionCheck();
     this.file.set(null);
     this.mesh.set(null);
     this.integrityReport.set(null);
+    this.intersectionReport.set(null);
     this.dimensionsReport.set(null);
     this.wallReport.set(null);
     this.error.set('');
     this.progress.set('');
+    this.analysing.set(false);
+  }
+
+  private checkIntersections(
+    mesh: IndexedTriangleGeometry,
+  ): Promise<SelfIntersectionReport> {
+    this.cancelIntersectionCheck();
+    const worker = new Worker(
+      new URL('./self-intersections.worker', import.meta.url),
+      { type: 'module' },
+    );
+    this.intersectionWorker = worker;
+    return new Promise((resolve, reject) => {
+      this.rejectIntersection = reject;
+      worker.onmessage = (event: MessageEvent<SelfIntersectionReport>) => {
+        this.intersectionWorker = null;
+        this.rejectIntersection = null;
+        worker.terminate();
+        resolve(event.data);
+      };
+      worker.onerror = () => {
+        this.intersectionWorker = null;
+        this.rejectIntersection = null;
+        worker.terminate();
+        resolve({
+          state: IntersectionCheckState.Incomplete,
+          findings: [],
+          reason: 'The background triangle intersection check failed.',
+          candidatePairs: 0,
+        });
+      };
+      const positions = new Float32Array(mesh.positions);
+      const indices = new Uint32Array(mesh.indices);
+      worker.postMessage({ positions, indices }, [
+        positions.buffer,
+        indices.buffer,
+      ]);
+    });
+  }
+
+  private cancelIntersectionCheck(): void {
+    if (!this.intersectionWorker) {
+      return;
+    }
+    this.intersectionWorker.terminate();
+    this.intersectionWorker = null;
+    const reject = this.rejectIntersection;
+    this.rejectIntersection = null;
+    reject?.(new Error('The previous intersection check was cancelled.'));
   }
 
   format(value: number): string {

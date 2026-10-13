@@ -41,7 +41,9 @@
       <li>
         Need safe cleanup of duplicate or degenerate triangles?
         <a [routerLink]="routeUrl.StlRepair">STL Repair Tool</a>. For
-        disconnected shells,
+        disconnected pieces, review which to keep in your browser; they may be
+        intentional. Standard cleanup is a separate explicit server action. For
+        this local review,
         <a [routerLink]="routeUrl.StlRepair" fragment="remove-floating-parts"
           >review and remove floating parts</a
         >
