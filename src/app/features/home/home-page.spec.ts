@@ -27,11 +27,20 @@ describe('HomePage', () => {
     expect(featured.length).toBeLessThan(
       HOME_TOOL_GROUPS.flatMap((group) => group.tools).length,
     );
+    const heroLinks = [...element.querySelectorAll('.hero-actions a')];
     expect(
-      element
-        .querySelector('.hero-actions a:nth-child(2)')
-        ?.getAttribute('href'),
-    ).toBe('/tools');
+      heroLinks.map((link) => [
+        link.textContent?.trim(),
+        link.getAttribute('href'),
+      ]),
+    ).toEqual([
+      ['Open an STL model', '/stl-viewer'],
+      ['Open a 3MF model', '/3mf-viewer'],
+      ['Browse all tools', '/tools'],
+    ]);
+    expect(heroLinks.every((link) => link.classList.contains('button'))).toBe(
+      true,
+    );
     expect(element.querySelectorAll('h1')).toHaveLength(1);
     expect(element.textContent).toContain(
       'Some quality, topology and volume checks upload',
