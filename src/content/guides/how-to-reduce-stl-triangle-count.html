@@ -1,6 +1,6 @@
 ---
-title: 'How to Reduce STL Triangle Count Without Ruining Your Model | InspectMesh'
-description: Learn how to reduce STL triangle count safely, shrink large mesh files and preserve enough detail for slicing and 3D printing.
+title: 'STL Triangle Reduction: Inspect Local Detail | InspectMesh'
+description: See how a requested STL triangle target can differ from actual output and why bounds and average surface deviation can miss a small feature.
 slug: how-to-reduce-stl-triangle-count
 eyebrow: STL optimisation guide
 heading: How to Reduce STL Triangle Count
@@ -10,7 +10,7 @@ faq:
   - question: Is reducing triangle count the same as compressing an STL?
     answer: No. Binary encoding preserves triangle records under Float32 storage; ASCII coordinates may round. Reducing triangles changes the mesh geometry to make the file smaller.
   - question: What triangle reduction should I start with?
-    answer: Start conservatively, such as keeping 75% of triangles. Compare the result before trying a larger reduction.
+    answer: There is no percentage that guarantees feature preservation. Compare the exact reopened candidate against the local features and topology that matter to your model.
 ---
 
 <p>
@@ -128,14 +128,14 @@ faq:
 <h2>Owned raised-ridge coupon: a reproducible comparison</h2>
 <p>
   Download
-  <a href="/examples/collection-review/detail-coupon.stl" download
+  <a href="{{ ExampleAsset.DetailCouponStl }}" download
     >the original 24-triangle coupon</a
   >,
-  <a href="/examples/collection-review/detail-coupon-75.stl" download
+  <a href="{{ ExampleAsset.DetailCoupon75Stl }}" download
     >the 75% target output</a
   >
   and
-  <a href="/examples/collection-review/detail-coupon-50.stl" download
+  <a href="{{ ExampleAsset.DetailCoupon50Stl }}" download
     >the 50% target output</a
   >. The original has a 40 × 20 × 10 mm block plus a separate touching 16 × 0.6
   × 0.5 mm ridge. This deliberately simple two-shell control is not a validated
@@ -271,12 +271,12 @@ faq:
 <h2>Named small features need their own review</h2>
 <p>
   The
-  <a href="/examples/reduction-review/narrow-rib-original.stl" download
+  <a href="{{ ExampleAsset.NarrowRibOriginalStl }}" download
     >original narrow-rib control</a
   >
   has a 20-coordinate cube, a 2 × 2 × 0.2 marker at (1, 1, 20) and a 2 × 0.1 ×
   0.2 rib at (9, 9, 20). The
-  <a href="/examples/reduction-review/narrow-rib-removed.stl" download
+  <a href="{{ ExampleAsset.NarrowRibRemovedStl }}" download
     >diagnostic revision</a
   >
   deliberately removes that rib: 36 versus 24 triangles, with the same outer

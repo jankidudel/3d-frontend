@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import {
   Component,
   computed,
@@ -41,6 +42,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: './stl-volume-page.scss',
 })
 export class StlVolumePage {
+  readonly exampleAsset = ExampleAsset;
   readonly routeUrl = PublicRouteUrl;
   readonly jobFailureMessage = jobFailureMessage;
   readonly jobStatus = JobStatus;

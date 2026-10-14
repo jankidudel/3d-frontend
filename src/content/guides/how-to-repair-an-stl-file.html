@@ -27,17 +27,30 @@ faq:
 </p>
 <h2>Safe STL Repair in InspectMesh</h2>
 <p>
-  InspectMesh can safely remove exact duplicate triangles, remove degenerate
-  faces and correct certain simple orientation issues in a region that can be
-  oriented reliably. Those operations preserve the model geometry and
-  dimensions, and the cleaned output is checked again before it can be
-  downloaded.
+  Standard server cleanup can remove exact duplicate triangles and degenerate
+  faces, and reverse triangle winding in a closed manifold region only when its
+  orientation can be determined. It does not cap boundaries, weld vertices, join
+  overlapping shells or delete disconnected parts. The separate selection-only
+  workflow on the same
+  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts">repair page</a>
+  can retain chosen pieces without changing their coordinates or winding.
 </p>
 <p>
   It cannot reliably fill holes, invent missing geometry, remesh a surface, or
   repair every non-manifold or self-intersecting model. A downloaded cleaned STL
   can still contain unsupported problems, so it is not automatically
   print-ready.
+</p>
+<p>
+  The result report distinguishes an unsuccessful job from a completed cleanup
+  that still has findings. A download is a checked derivative, not a
+  watertightness or print-success guarantee. For example, the
+  <a href="{{ ExampleAsset.CubePlusTwoFragmentsBinaryStl }}" download
+    >cube with two detached tetrahedra</a
+  >
+  is a piece-selection control: removing the tetrahedra leaves the cube's 12
+  triangles, but a similar selection cannot fill an opening in the remaining
+  surface.
 </p>
 
 <h2>Check, clean, check again, then slice</h2>

@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import {
   JobPlanningSession,
   PlanningDestination,
@@ -176,6 +177,7 @@ const PLANNERS = {
   styleUrl: './planning-page.scss',
 })
 export class PlanningPage implements OnDestroy {
+  readonly exampleAsset = ExampleAsset;
   private readonly session = inject(JobPlanningSession);
   readonly guides = GuideRouteUrl;
   readonly kinds = PlannerKind;

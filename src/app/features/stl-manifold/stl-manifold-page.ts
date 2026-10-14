@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   Component,
@@ -35,6 +36,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: '../shared/model-checker-page.scss',
 })
 export class StlManifoldPage {
+  readonly exampleAsset = ExampleAsset;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;

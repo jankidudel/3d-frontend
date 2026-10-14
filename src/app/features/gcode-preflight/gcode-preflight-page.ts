@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal, OnDestroy } from '@angular/core';
@@ -32,6 +33,7 @@ import {
   styleUrl: './gcode-preflight-page.scss',
 })
 export class GcodePreflightPage implements OnDestroy {
+  readonly exampleAsset = ExampleAsset;
   private readonly router = inject(Router);
   private readonly planning = inject(JobPlanningSession);
   readonly NaNValue = NaN;

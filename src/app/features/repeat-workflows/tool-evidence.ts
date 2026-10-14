@@ -1,5 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { ExampleAsset } from '../examples/example-assets';
 import {
   AnalyticsEvent,
   AnalyticsService,
@@ -188,15 +189,13 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
       <p>{{ item.interpretation }}</p>
       <a [href]="item.next" (click)="track()">{{ item.cta }}</a>
       <p>
-        <a href="/examples/english-market-batch/closed-20mm-cube.stl" download
+        <a [href]="exampleAsset.Closed20mmCubeStl" download
           >Download the owned 20 mm cube sample</a
         >, or
-        <a
-          href="/examples/english-market-batch/declared-inch-transformed.3mf"
-          download
+        <a [href]="exampleAsset.DeclaredInchTransformed3mf" download
           >the declared-inch 3MF sample</a
         >. For a G-code preview, use the
-        <a href="/examples/english-market-batch/thin-arachne.gcode" download
+        <a [href]="exampleAsset.ThinArachneGcode" download
           >actual Arachne slicer export</a
         >. Model samples are illustrative geometry; the G-code is for inspection
         and must not be sent to a printer.
@@ -219,6 +218,7 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
   ],
 })
 export class ToolEvidenceComponent {
+  readonly exampleAsset = ExampleAsset;
   readonly page = input.required<string>();
   readonly completed = input(false);
   readonly evidence = () => toolEvidence[this.page()];

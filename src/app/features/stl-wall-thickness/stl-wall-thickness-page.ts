@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
@@ -25,6 +26,7 @@ import {
   imports: [ToolEvidenceComponent, ObjectViewerComponent],
 })
 export class StlWallThicknessPage {
+  readonly exampleAsset = ExampleAsset;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly unit = WallThicknessUnit;

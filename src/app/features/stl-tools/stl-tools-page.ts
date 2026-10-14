@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { HOME_TOOL_GROUPS } from '../home/home-tools';
 import { FormatToolsGrid } from '../../core/components/format-tools-grid/format-tools-grid';
@@ -14,6 +15,7 @@ import { FormatToolsGrid } from '../../core/components/format-tools-grid/format-
 export class StlToolsPage {
   readonly tools = HOME_TOOL_GROUPS[0].tools;
   readonly routeUrl = PublicRouteUrl;
+  readonly guideRouteUrl = GuideRouteUrl;
   private readonly seo = inject(SeoService);
 
   constructor() {

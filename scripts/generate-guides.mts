@@ -16,6 +16,7 @@ import {
 } from '../src/content/guides/guides.registry.ts';
 import { createGuideClusterIndex } from '../src/content/guides/guide-clusters.mts';
 import { PublicRoutePathValue } from '../src/app/core/seo/public-routes.ts';
+import { ExampleAsset } from '../src/app/features/examples/example-assets.ts';
 import {
   validateGuideRegistry,
   validateRegistryContentConsistency,
@@ -108,6 +109,21 @@ function resolveInternalGuideLinks(content: string, filePath: string): string {
   return resolveGuideLinks(content, guideSlugReference, filePath);
 }
 
+function resolveExampleAssetLinks(content: string, filePath: string): string {
+  return content.replace(
+    /\{\{\s*ExampleAsset\.([A-Za-z][A-Za-z0-9]*)\s*\}\}/g,
+    (_match, key: keyof typeof ExampleAsset) => {
+      const path = ExampleAsset[key];
+      if (!path) {
+        throw new Error(
+          `Unknown example asset "${key}" referenced in ${filePath}.`,
+        );
+      }
+      return path;
+    },
+  );
+}
+
 const contentFiles = (await readdir(contentDirectory))
   .filter((file) => file.endsWith('.html'))
   .sort();
@@ -138,7 +154,10 @@ for (const fileName of contentFiles) {
     faqs: frontMatter.faqs,
     html: String(
       await htmlToSafeHtml.process(
-        resolveInternalGuideLinks(parsed.content, filePath),
+        resolveExampleAssetLinks(
+          resolveInternalGuideLinks(parsed.content, filePath),
+          filePath,
+        ),
       ),
     )
       .replaceAll(

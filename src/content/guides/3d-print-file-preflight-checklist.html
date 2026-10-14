@@ -1,6 +1,6 @@
 ---
-title: '3D Print File Preflight Checklist: Check STL and 3MF Before Slicing | InspectMesh'
-description: 'A practical preflight checklist for STL and 3MF files: check dimensions, printer fit, mesh errors, wall thickness, complexity and other risks before slicing.'
+title: '3D Print File Preflight Checklist | InspectMesh'
+description: 'An STL and 3MF checklist for dimensions, mesh integrity, printer fit and thickness before slicing, with clear pass, warning, skipped and incomplete states.'
 slug: 3d-print-file-preflight-checklist
 eyebrow: 3D print preparation guide
 heading: 3D Print File Preflight Checklist
@@ -131,6 +131,61 @@ faq:
   the saved result and repeat only the affected checks plus a visual comparison.
   Confirm dimensions, object count, topology and triangle count where relevant.
   A successful save message does not establish that design intent survived.
+</p>
+<h2>Read pass, warning, skipped and incomplete separately</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Report state</th>
+      <th scope="col">What it establishes</th>
+      <th scope="col">What remains to do</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Completed, no issue detected</td>
+      <td>The named check ran and found no reported issue within its method</td>
+      <td>
+        Review unsupported checks and design intent; then inspect slicer layers
+      </td>
+    </tr>
+    <tr>
+      <td>Warning or finding</td>
+      <td>
+        A measured condition needs interpretation, such as four boundaries on
+        the open-cube control
+      </td>
+      <td>
+        Confirm the affected region and decide whether it is intentional before
+        editing
+      </td>
+    </tr>
+    <tr>
+      <td>Skipped</td>
+      <td>
+        No result was calculated; printer fit is skipped when no profile is
+        selected
+      </td>
+      <td>Supply the missing input or leave fit explicitly unchecked</td>
+    </tr>
+    <tr>
+      <td>Sampled or incomplete</td>
+      <td>A bounded subset was measured or the analysis could not finish</td>
+      <td>
+        Do not treat an unobserved area as passing; retry within limits or
+        inspect in the authoring/slicer application
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A useful owned control is the
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a>: its
+  preflight can complete the boundary check (four edges) while withholding
+  closed-solid volume and skipping printer fit without a saved profile. A
+  completed report can therefore contain unavailable or skipped metrics. Units
+  for STL remain user assumptions, and wall-thickness results are samples, not
+  an exhaustive minimum or proof of printability.
 </p>
 
 <h2>Stop conditions</h2>

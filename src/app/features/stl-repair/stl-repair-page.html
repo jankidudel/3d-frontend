@@ -17,6 +17,12 @@
       kept; review them before downloading a changed copy. This step does not
       upload your file.
     </p>
+    <p>
+      Pieces are joined only when triangles share a complete edge with exactly
+      matching coordinates. Point contact, overlap or a small gap does not join
+      them, and this mesh connectivity check does not identify slicer support
+      regions or decide which parts the design needs.
+    </p>
     <app-stl-file-picker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
@@ -202,23 +208,17 @@
         </figcaption>
       </figure>
       <p>
-        <a
-          href="/examples/floating-parts/cube-plus-two-fragments-binary.stl"
-          download
+        <a [href]="exampleAsset.CubePlusTwoFragmentsBinaryStl" download
           >Download the binary demonstration STL</a
         >
         or
-        <a
-          href="/examples/floating-parts/cube-plus-two-fragments-ascii.stl"
-          download
+        <a [href]="exampleAsset.CubePlusTwoFragmentsAsciiStl" download
           >the ASCII version</a
         >. These are generated files for testing through the picker above.
       </p>
       <h3>Counterexample: separate pieces can be intentional</h3>
       <p>
-        <a
-          href="/examples/floating-parts/two-intended-parts-binary.stl"
-          download
+        <a [href]="exampleAsset.TwoIntendedPartsBinaryStl" download
           >Two intended cube parts</a
         >
         has 20-unit and 19-unit cubes: 2 parts / 24 triangles. Both start
@@ -335,7 +335,7 @@
     <h3>Try a narrow, reproducible repair</h3>
     <p>
       Download the
-      <a href="/examples/cad-export/duplicate-face-cube.stl" download
+      <a [href]="exampleAsset.DuplicateFaceCubeStl" download
         >20 mm cube with one duplicate triangle</a
       >. It contains 13 triangles: the 12 faces of a consistently oriented cube
       and one repeated triangle. Select it above, then explicitly submit

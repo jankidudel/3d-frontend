@@ -1,6 +1,6 @@
 ---
-title: 'How to Fix Holes in an STL File for 3D Printing | InspectMesh'
-description: Learn how to find holes and open edges in an STL file, why they cause printing problems, and when an automatic repair is safe to use.
+title: 'Fix STL Holes: Check Before Capping | InspectMesh'
+description: Check a known open-cube result, choose CAD or mesh editing when a face is missing, and verify the saved STL without confusing fragment removal with hole repair.
 slug: how-to-fix-holes-in-an-stl-file
 eyebrow: STL repair guide
 heading: How to Fix Holes in an STL File
@@ -10,13 +10,15 @@ faq:
   - question: Does the InspectMesh STL Repair Tool fill holes automatically?
     answer: No. It makes conservative repairs such as removing degenerate or duplicate triangles, but it does not reconstruct missing geometry or fill holes automatically.
   - question: How do I know whether an STL hole was fixed?
-    answer: Run a watertight or quality check again after repair. The result should show no open edges before you rely on the file for printing.
+    answer: Recheck the saved copy after a deliberate CAD or mesh edit. A no-open-edge result confirms closure was detected, not that the new surface matches design intent or will print successfully.
 ---
 
 <p>
-  An STL hole is a gap in the triangle surface of a model. Instead of forming
-  one closed shell around a solid object, the mesh has open edges at the
-  boundary of the missing area.
+  An STL surface hole is an exposed boundary in the triangle mesh. First check
+  whether a face is actually missing: the InspectMesh repair tool removes safe
+  triangle defects and selected disconnected pieces, but does not fill holes. A
+  missing functional surface needs a deliberate CAD or mesh edit, followed by a
+  check of the saved copy.
 </p>
 
 <h2>A missing face is different from a vessel mouth</h2>
@@ -38,6 +40,17 @@ faq:
   8,000 mm³ volume under millimetres. Removing one face gives 10 triangles and
   four boundary edges; actual local preflight withholds volume. These known
   geometry controls do not prove that another model should be filled.
+</p>
+<p>
+  Download the
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a>
+  and the
+  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
+    >closed 20 mm control</a
+  >. The watertight checker reports four open edges on the first and none on the
+  second. Use the
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  to locate the type of finding; use preflight to review the broader report.
 </p>
 <p>
   A hollow vessel can have an open mouth while its inner and outer wall surfaces
@@ -167,6 +180,12 @@ faq:
   It does <strong>not</strong> pretend to fill missing geometry automatically.
   Reconstructing a hole requires deciding what shape belongs there, and an
   automatic guess can easily alter a functional part.
+</p>
+<p>
+  Removing a detached fragment on the same repair page changes which existing
+  triangles are retained; it does not add the missing face or close its four
+  boundary edges. Keep these two operations separate, then recheck the
+  selection-only or repaired download that you actually intend to use.
 </p>
 <p>
   After any repair, run the file through the

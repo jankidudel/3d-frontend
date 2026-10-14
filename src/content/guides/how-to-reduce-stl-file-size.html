@@ -1,6 +1,6 @@
 ---
-title: 'How to Reduce STL File Size Without Losing Print Quality | InspectMesh'
-description: Learn how to reduce STL file size by removing unnecessary mesh detail, checking triangle count and exporting with settings that still suit your 3D print.
+title: 'Reduce STL File Size: Choose Your Method | InspectMesh'
+description: Choose binary, triangle reduction, CAD re-export or stop based on the file-size need. Compare the exact reopened output before replacing the original.
 slug: how-to-reduce-stl-file-size
 eyebrow: STL optimisation guide
 heading: How to Reduce STL File Size Without Losing Print Quality
@@ -56,6 +56,65 @@ faq:
   silhouette and critical holes. Pick a reduction target based on the workflow
   problem, not a universal triangle number.
 </p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Choice</th>
+      <th scope="col">Use it when</th>
+      <th scope="col">What changes</th>
+      <th scope="col">Decision check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Re-encode as binary</td>
+      <td>The source is ASCII and the receiver accepts binary STL</td>
+      <td>
+        Storage representation; ASCII decimal coordinates may round to Float32
+      </td>
+      <td>
+        Reopen the exact output and compare triangle records, bounds and
+        precision-sensitive features
+      </td>
+    </tr>
+    <tr>
+      <td>Reduce triangles</td>
+      <td>
+        The binary file remains too large or slow and fewer facets are
+        acceptable
+      </td>
+      <td>Surface geometry and potentially local features</td>
+      <td>
+        Reparse the downloaded candidate; compare counts, topology, bounds,
+        sampled deviation and named features
+      </td>
+    </tr>
+    <tr>
+      <td>Re-export from CAD</td>
+      <td>
+        The editable design is available and its tessellation is unnecessarily
+        fine
+      </td>
+      <td>Mesh tessellation from the source model</td>
+      <td>
+        Set export tolerance for the part, then compare holes, curves and mating
+        dimensions
+      </td>
+    </tr>
+    <tr>
+      <td>Stop and keep the original</td>
+      <td>
+        A smaller file requires losing a critical detail or exceeds an unknown
+        recipient constraint
+      </td>
+      <td>Nothing until the requirement is clarified</td>
+      <td>
+        Confirm the receiver's limit or ask for another format; no percentage
+        guarantees feature preservation
+      </td>
+    </tr>
+  </tbody>
+</table>
 <p>
   Reducing file size is not about making a model rougher for the sake of it. The
   aim is to remove detail your printer cannot reproduce while keeping the shape

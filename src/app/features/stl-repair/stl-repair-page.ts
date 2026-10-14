@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { FloatingParts } from './floating-parts';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
@@ -45,6 +46,7 @@ type RepairReport = {
   styleUrl: '../stl-quality/stl-quality-page/stl-quality-page.scss',
 })
 export class StlRepairPage {
+  readonly exampleAsset = ExampleAsset;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;

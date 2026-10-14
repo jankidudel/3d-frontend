@@ -26,74 +26,88 @@
   </p>
   <p><a [routerLink]="routeUrl.AllTools">Browse all 3D file tools</a></p>
   <section class="content" aria-labelledby="need-title">
-    <h2 id="need-title">Which tool do I need?</h2>
+    <h2 id="need-title">Choose a path by task</h2>
     <ul>
       <li>
-        Is my model printable?
-        <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a>
+        Starting with an unfamiliar file? Run
+        <a [routerLink]="routeUrl.StlPrintPreflight">STL Print Preflight</a>,
+        then follow the finding to a focused check.
       </li>
       <li>
-        Need one practical check before slicing?
-        <a [routerLink]="routeUrl.StlPrintPreflight"
-          >STL Print Preflight Checker</a
-        >
-      </li>
-      <li>
-        Need safe cleanup of duplicate or degenerate triangles?
-        <a [routerLink]="routeUrl.StlRepair">STL Repair Tool</a>. For
-        disconnected pieces, review which to keep in your browser; they may be
-        intentional. Standard cleanup is a separate explicit server action. For
-        this local review,
-        <a [routerLink]="routeUrl.StlRepair" fragment="remove-floating-parts"
-          >review and remove floating parts</a
-        >
-        after choosing your file.
-      </li>
-      <li>
-        Is it watertight?
+        Suspect an open surface? Use the
         <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>
+        and
+        <a [href]="guideRouteUrl.RouteHowToFixHolesInAnStlFile"
+          >inspect the hole before capping it</a
+        >.
       </li>
       <li>
-        Does it have non-manifold geometry?
-        <a [routerLink]="routeUrl.ManifoldChecker">STL Manifold Checker</a>
+        Found detached pieces? Review the retained selection in
+        <a [routerLink]="routeUrl.StlRepair" fragment="remove-floating-parts"
+          >STL Repair</a
+        >
+        and
+        <a [href]="guideRouteUrl.RouteStlMultipleShellsDisconnectedParts"
+          >identify intended shells before removing any</a
+        >.
       </li>
       <li>
-        Can I inspect the model visually?
-        <a [routerLink]="routeUrl.Viewer">Free STL Viewer</a>
+        Need an intentional cut between parts? Use the
+        <a [routerLink]="routeUrl.StlSplitter">STL Splitter</a> for that
+        deliberate separation; it is a different task from removing detached
+        fragments.
       </li>
       <li>
-        What are its dimensions?
-        <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>
+        File too large? The
+        <a [routerLink]="routeUrl.StlFileSizeReducer">local reducer</a>
+        compares binary re-encoding with lossy triangle reduction; read the
+        <a [href]="guideRouteUrl.RouteHowToReduceStlFileSize"
+          >size-reduction decision guide</a
+        >
+        before choosing a target.
       </li>
       <li>
-        Need to resize it proportionally?
-        <a [routerLink]="routeUrl.StlScaleTool">STL Scale Tool</a>
+        Concerned about non-manifold edges or disconnected shells? Run the
+        <a [routerLink]="routeUrl.ManifoldChecker">STL Manifold Checker</a>; it
+        checks different topology findings from the open-edge check.
       </li>
       <li>
-        Need an approximate thin-wall preflight check?
+        Want to rotate and inspect the model before deciding what to do? Open
+        the <a [routerLink]="routeUrl.Viewer">Free STL Viewer</a>.
+      </li>
+      <li>
+        Need the model's overall size or printer-fit dimensions? Use the
+        <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>;
+        confirm the unit assumption before interpreting measurements.
+      </li>
+      <li>
+        Need to change size without changing proportions? Use the
+        <a [routerLink]="routeUrl.StlScaleTool">STL Scale Tool</a> and verify
+        the resulting dimensions.
+      </li>
+      <li>
+        Checking whether thin regions may need attention? The
         <a [routerLink]="routeUrl.StlWallThicknessChecker"
           >STL Wall Thickness Checker</a
         >
+        provides an approximate sampled preflight, not a guarantee of printable
+        walls.
       </li>
       <li>
-        Need two capped printable parts?
-        <a [routerLink]="routeUrl.StlSplitter">STL Splitter</a>
-      </li>
-      <li>
-        How many triangles does it contain?
+        Need a quick measure of mesh complexity? The
         <a [routerLink]="routeUrl.TriangleCounter">STL Triangle Counter</a>
+        reports the triangle count; it does not reduce the file.
       </li>
       <li>
-        Need to make an STL smaller locally?
-        <a [routerLink]="routeUrl.StlFileSizeReducer">STL File Size Reducer</a>
+        Estimating solid-model volume or material mass? Use the
+        <a [routerLink]="routeUrl.VolumeCalculator">STL Volume Calculator</a>;
+        the estimate depends on a valid closed volume and selected material
+        density.
       </li>
       <li>
-        What is its volume or estimated material weight?
-        <a [routerLink]="routeUrl.VolumeCalculator">STL Volume Calculator</a>
-      </li>
-      <li>
-        Need a basic 3MF with a declared unit?
-        <a [routerLink]="routeUrl.StlToThreeMfConverter">Convert STL to 3MF</a>
+        Need a basic 3MF with an explicit unit for the STL coordinates? Use the
+        <a [routerLink]="routeUrl.StlToThreeMfConverter">STL to 3MF Converter</a
+        >.
       </li>
     </ul>
   </section>

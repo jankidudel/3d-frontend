@@ -68,6 +68,18 @@ faq:
     imply project settings survive.
   </figcaption>
 </figure>
+<p>
+  Replay the three controls directly:
+  <a href="{{ ExampleAsset.OnePlacedCube3mf }}" download>one placed cube</a>,
+  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
+    >the same resource placed twice</a
+  >, and the
+  <a href="{{ ExampleAsset.DeclaredInchTransformed3mf }}" download
+    >declared-inch translated cube</a
+  >. The repeated-build control must export 24 triangles across 60 × 20 × 20 mm;
+  the transformed control must reopen as 12 triangles with a 25.4 mm span and X
+  bounds 50.8–76.2 mm when interpreted as millimetres.
+</p>
 <table>
   <thead>
     <tr>
@@ -156,9 +168,7 @@ faq:
 <h2>Worked declared-inch control</h2>
 <p>
   Use the owned
-  <a
-    href="/examples/english-market-batch/declared-inch-transformed.3mf"
-    download
+  <a href="{{ ExampleAsset.DeclaredInchTransformed3mf }}" download
     >declared-inch 3MF</a
   >. It contains a one-unit cube declared in inches and translated two units on
   X. The resolved cube is 25.4 mm per side, positioned from X = 50.8 to 76.2 mm.

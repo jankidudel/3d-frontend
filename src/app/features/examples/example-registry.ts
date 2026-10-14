@@ -1,3 +1,4 @@
+import { ExampleAsset } from './example-assets';
 export interface PublicExample {
   readonly id: string;
   readonly name: string;
@@ -27,7 +28,7 @@ export const publicExamples: readonly PublicExample[] = [
       'What changes when 20 coordinates mean inches, or are scaled to 150%?',
     files: [
       {
-        path: '/examples/english-market-batch/closed-20mm-cube.stl',
+        path: ExampleAsset.Closed20mmCubeStl,
         name: 'closed-20mm-cube.stl',
         bytes: 684,
       },
@@ -53,12 +54,12 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Is the missing face a fault or an intended opening?',
     files: [
       {
-        path: '/examples/english-market-batch/closed-20mm-cube.stl',
+        path: ExampleAsset.Closed20mmCubeStl,
         name: 'closed-20mm-cube.stl',
         bytes: 684,
       },
       {
-        path: '/examples/english-market-batch/open-face-cube.stl',
+        path: ExampleAsset.OpenFaceCubeStl,
         name: 'open-face-cube.stl',
         bytes: 584,
       },
@@ -84,22 +85,22 @@ export const publicExamples: readonly PublicExample[] = [
       'Can edge checks distinguish a duplicate from a reversed triangle?',
     files: [
       {
-        path: '/examples/english-market-batch/closed-20mm-cube.stl',
+        path: ExampleAsset.Closed20mmCubeStl,
         name: 'closed-20mm-cube.stl',
         bytes: 684,
       },
       {
-        path: '/examples/cad-export/duplicate-face-cube.stl',
+        path: ExampleAsset.DuplicateFaceCubeStl,
         name: 'duplicate-face-cube.stl',
         bytes: 734,
       },
       {
-        path: '/examples/diagnosis/reversed-winding-cube.stl',
+        path: ExampleAsset.DiagnosisReversedWindingCubeStl,
         name: 'reversed-winding-cube.stl',
         bytes: 684,
       },
       {
-        path: '/examples/diagnosis/stored-normal-cube.stl',
+        path: ExampleAsset.DiagnosisStoredNormalCubeStl,
         name: 'stored-normal-cube.stl',
         bytes: 684,
       },
@@ -126,12 +127,12 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Do zero open edges rule out intersecting solids?',
     files: [
       {
-        path: '/examples/diagnosis/separated-cubes.stl',
+        path: ExampleAsset.DiagnosisSeparatedCubesStl,
         name: 'separated-cubes.stl',
         bytes: 1284,
       },
       {
-        path: '/examples/collection-review/overlapping-cubes.stl',
+        path: ExampleAsset.OverlappingCubesStl,
         name: 'overlapping-cubes.stl',
         bytes: 1284,
       },
@@ -158,17 +159,17 @@ export const publicExamples: readonly PublicExample[] = [
       'Why can sampled thickness and slicer paths tell different stories?',
     files: [
       {
-        path: '/examples/english-market-batch/thin-wall-bars.stl',
+        path: ExampleAsset.ThinWallBarsStl,
         name: 'thin-wall-bars.stl',
         bytes: 1884,
       },
       {
-        path: '/examples/english-market-batch/thin-classic.gcode',
+        path: ExampleAsset.ThinClassicGcode,
         name: 'thin-classic.gcode',
         bytes: 24245,
       },
       {
-        path: '/examples/english-market-batch/thin-arachne.gcode',
+        path: ExampleAsset.ThinArachneGcode,
         name: 'thin-arachne.gcode',
         bytes: 38901,
       },
@@ -195,17 +196,17 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Does an unchanged bounding box preserve a small ridge?',
     files: [
       {
-        path: '/examples/collection-review/detail-coupon.stl',
+        path: ExampleAsset.DetailCouponStl,
         name: 'detail-coupon.stl',
         bytes: 1284,
       },
       {
-        path: '/examples/collection-review/detail-coupon-75.stl',
+        path: ExampleAsset.DetailCoupon75Stl,
         name: 'detail-coupon-75.stl',
         bytes: 984,
       },
       {
-        path: '/examples/collection-review/detail-coupon-50.stl',
+        path: ExampleAsset.DetailCoupon50Stl,
         name: 'detail-coupon-50.stl',
         bytes: 884,
       },
@@ -233,17 +234,17 @@ export const publicExamples: readonly PublicExample[] = [
       'How do resources, placements and declared units affect the STL export?',
     files: [
       {
-        path: '/examples/collection-review/one-placed-cube.3mf',
+        path: ExampleAsset.OnePlacedCube3mf,
         name: 'one-placed-cube.3mf',
         bytes: 973,
       },
       {
-        path: '/examples/collection-review/two-placed-cubes.3mf',
+        path: ExampleAsset.TwoPlacedCubes3mf,
         name: 'two-placed-cubes.3mf',
         bytes: 979,
       },
       {
-        path: '/examples/english-market-batch/declared-inch-transformed.3mf',
+        path: ExampleAsset.DeclaredInchTransformed3mf,
         name: 'declared-inch-transformed.3mf',
         bytes: 940,
       },
@@ -270,7 +271,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Can a rotation fit after allowing space for a brim?',
     files: [
       {
-        path: '/examples/english-market-batch/printer-fit-250x210x180.stl',
+        path: ExampleAsset.EnglishMarketBatchPrinterFit250x210x180Stl,
         name: 'printer-fit-250x210x180.stl',
         bytes: 684,
       },
@@ -297,7 +298,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Absolute E and resets - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/absolute-extrusion.gcode',
+        path: ExampleAsset.GcodeEvidenceAbsoluteExtrusionGcode,
         name: 'absolute-extrusion.gcode',
         bytes: 156,
       },
@@ -323,7 +324,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Relative E counterpart - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/relative-extrusion.gcode',
+        path: ExampleAsset.GcodeEvidenceRelativeExtrusionGcode,
         name: 'relative-extrusion.gcode',
         bytes: 156,
       },
@@ -350,7 +351,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Small path outside bounds - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/shifted-location.gcode',
+        path: ExampleAsset.GcodeEvidenceShiftedLocationGcode,
         name: 'shifted-location.gcode',
         bytes: 127,
       },
@@ -377,7 +378,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Extrusion inside, travel outside - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/travel-outside.gcode',
+        path: ExampleAsset.GcodeEvidenceTravelOutsideGcode,
         name: 'travel-outside.gcode',
         bytes: 139,
       },
@@ -403,7 +404,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Unsupported arc and macro - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/unsupported-arc.gcode',
+        path: ExampleAsset.GcodeEvidenceUnsupportedArcGcode,
         name: 'unsupported-arc.gcode',
         bytes: 152,
       },
@@ -431,7 +432,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Missing and ambiguous metadata - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/ambiguous-metadata.gcode',
+        path: ExampleAsset.GcodeEvidenceAmbiguousMetadataGcode,
         name: 'ambiguous-metadata.gcode',
         bytes: 155,
       },
@@ -457,7 +458,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Malformed numeric input - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/malformed-number.gcode',
+        path: ExampleAsset.GcodeEvidenceMalformedNumberGcode,
         name: 'malformed-number.gcode',
         bytes: 95,
       },
@@ -484,7 +485,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Comments-only input - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/comments-only.gcode',
+        path: ExampleAsset.GcodeEvidenceCommentsOnlyGcode,
         name: 'comments-only.gcode',
         bytes: 128,
       },
@@ -510,7 +511,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Declared estimate handoff control - what can this parser establish?',
     files: [
       {
-        path: '/examples/gcode-evidence/reviewed-estimates.gcode',
+        path: ExampleAsset.GcodeEvidenceReviewedEstimatesGcode,
         name: 'reviewed-estimates.gcode',
         bytes: 227,
       },
@@ -537,7 +538,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Stored but unplaced resource - which scope can resolve?',
     files: [
       {
-        path: '/examples/part-inspection/unplaced-resource.3mf',
+        path: ExampleAsset.PartInspectionUnplacedResource3mf,
         name: 'unplaced-resource.3mf',
         bytes: 990,
       },
@@ -564,7 +565,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Noncommuting nested transforms - which scope can resolve?',
     files: [
       {
-        path: '/examples/part-inspection/nested-rotation.3mf',
+        path: ExampleAsset.PartInspectionNestedRotation3mf,
         name: 'nested-rotation.3mf',
         bytes: 980,
       },
@@ -591,7 +592,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Coincident placements - which scope can resolve?',
     files: [
       {
-        path: '/examples/part-inspection/coincident-placements.3mf',
+        path: ExampleAsset.PartInspectionCoincidentPlacements3mf,
         name: 'coincident-placements.3mf',
         bytes: 933,
       },
@@ -617,12 +618,12 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Required extension aliases - which scope can resolve?',
     files: [
       {
-        path: '/examples/part-inspection/required-extension.3mf',
+        path: ExampleAsset.PartInspectionRequiredExtension3mf,
         name: 'required-extension.3mf',
         bytes: 963,
       },
       {
-        path: '/examples/part-inspection/required-extension-alias.3mf',
+        path: ExampleAsset.PartInspectionRequiredExtensionAlias3mf,
         name: 'required-extension-alias.3mf',
         bytes: 966,
       },
@@ -649,7 +650,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Invalid build reference - which scope can resolve?',
     files: [
       {
-        path: '/examples/part-inspection/bad-reference.3mf',
+        path: ExampleAsset.PartInspectionBadReference3mf,
         name: 'bad-reference.3mf',
         bytes: 937,
       },
@@ -674,7 +675,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Cyclic component reference - which scope can resolve?',
     files: [
       {
-        path: '/examples/part-inspection/component-cycle.3mf',
+        path: ExampleAsset.PartInspectionComponentCycle3mf,
         name: 'component-cycle.3mf',
         bytes: 812,
       },
@@ -699,17 +700,17 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Does binary encoding actually save bytes?',
     files: [
       {
-        path: '/examples/reduction-review/cube-ascii.stl',
+        path: ExampleAsset.ReductionReviewCubeAsciiStl,
         name: 'cube-ascii.stl',
         bytes: 1117,
       },
       {
-        path: '/examples/reduction-review/cube-binary.stl',
+        path: ExampleAsset.ReductionReviewCubeBinaryStl,
         name: 'cube-binary.stl',
         bytes: 684,
       },
       {
-        path: '/examples/reduction-review/cube-shifted-x3.stl',
+        path: ExampleAsset.ReductionReviewCubeShiftedX3Stl,
         name: 'cube-shifted-x3.stl',
         bytes: 684,
       },
@@ -735,7 +736,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Does a readable number prove exact storage?',
     files: [
       {
-        path: '/examples/reduction-review/decimal-offset-ascii.stl',
+        path: ExampleAsset.ReductionReviewDecimalOffsetAsciiStl,
         name: 'decimal-offset-ascii.stl',
         bytes: 1189,
       },
@@ -761,12 +762,12 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Can equal bounds approve a local feature?',
     files: [
       {
-        path: '/examples/reduction-review/narrow-rib-original.stl',
+        path: ExampleAsset.NarrowRibOriginalStl,
         name: 'narrow-rib-original.stl',
         bytes: 1884,
       },
       {
-        path: '/examples/reduction-review/narrow-rib-removed.stl',
+        path: ExampleAsset.NarrowRibRemovedStl,
         name: 'narrow-rib-removed.stl',
         bytes: 1284,
       },
@@ -794,12 +795,12 @@ export const publicExamples: readonly PublicExample[] = [
       'Can I review disconnected pieces and download only the chosen body?',
     files: [
       {
-        path: '/examples/floating-parts/cube-plus-two-fragments-binary.stl',
+        path: ExampleAsset.CubePlusTwoFragmentsBinaryStl,
         name: 'cube-plus-two-fragments-binary.stl',
         bytes: 1084,
       },
       {
-        path: '/examples/floating-parts/cube-plus-two-fragments-ascii.stl',
+        path: ExampleAsset.CubePlusTwoFragmentsAsciiStl,
         name: 'cube-plus-two-fragments-ascii.stl',
         bytes: 1868,
       },
@@ -826,7 +827,7 @@ export const publicExamples: readonly PublicExample[] = [
     question: 'Does a second component mean that I should delete it?',
     files: [
       {
-        path: '/examples/floating-parts/two-intended-parts-binary.stl',
+        path: ExampleAsset.TwoIntendedPartsBinaryStl,
         name: 'two-intended-parts-binary.stl',
         bytes: 1284,
       },

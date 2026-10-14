@@ -17,22 +17,52 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   or overlapping bodies. Shell count alone cannot prove corruption, completeness
   or a valid Boolean union.
 </p>
-<h2>Two placements are not one bad part</h2>
+<h2>One main body with two detached fragments</h2>
+<p>
+  Download the generated
+  <a href="{{ ExampleAsset.CubePlusTwoFragmentsBinaryStl }}" download
+    >20-unit cube plus two fragments</a
+  >. Under the STL coordinates-as-millimetres example assumption, inspection
+  finds three edge-connected pieces and 20 triangles: 12 on the cube and four on
+  each tetrahedron. Keeping the cube and removing both fragments leaves 12
+  triangles with bounds from 0 to 20 mm on each axis; the original bounds run
+  from -8 to 31 mm on X. These are generated geometric controls, not labels of
+  which pieces are mistakes in a real design.
+</p>
+<p>
+  In
+  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts">STL Repair</a>,
+  every piece starts retained. Select the two tetrahedra, inspect the preview,
+  then explicitly download the selection-only result. The operation uses exact
+  coordinate triples and complete shared edges; point-touching surfaces remain
+  separate. Kept triangle coordinates and winding are preserved. A disconnected
+  slicer region may still belong to a continuous mesh through another path, so
+  this count does not locate every unsupported island.
+</p>
+<h2>Two similar parts can both be intentional</h2>
+<p>
+  Compare the generated
+  <a href="{{ ExampleAsset.TwoIntendedPartsBinaryStl }}" download
+    >two intended cubes</a
+  >: inspection finds two pieces and 24 triangles. Their surface areas differ by
+  less than 10%, so the largest-piece suggestion does not select one by default.
+  Separate parts are not evidence of fragments; confirm the design before
+  changing the retained set.
+</p>
+<h2>Repeated 3MF placements are a different question</h2>
 <p>
   Download the
-  <a href="/examples/collection-review/two-placed-cubes.3mf" download
-    >two placed cubes</a
-  >. One 20 mm cube resource is placed twice, with the second shifted 40 mm
-  along X. The expected complete build spans 60 × 20 × 20 mm and has two
-  disconnected shells. An application opening just the resource rather than the
-  build may display only one cube; that is a build-resolution question rather
-  than proof that one cube is corrupt.
+  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download>two placed cubes</a>.
+  One 20 mm cube resource is placed twice, with the second shifted 40 mm along
+  X. The expected complete build spans 60 × 20 × 20 mm and has two disconnected
+  shells. An application opening just the resource rather than the build may
+  display only one cube; that is a build-resolution question rather than proof
+  that one cube is corrupt.
 </p>
 <p>
   Compare it with
-  <a href="/examples/collection-review/one-placed-cube.3mf" download
-    >one placed cube</a
-  >, whose X span is 20 mm and whose screened volume is 8,000 mm³. InspectMesh's
+  <a href="{{ ExampleAsset.OnePlacedCube3mf }}" download>one placed cube</a>,
+  whose X span is 20 mm and whose screened volume is 8,000 mm³. InspectMesh's
   local collection check withholds its single-solid volume result for multiple
   shells. That explicit unavailable state does not mean the geometry has zero
   volume.
@@ -40,7 +70,7 @@ heading: 'Multiple STL Shells and Disconnected Parts'
 <h2>Overlaps need another question</h2>
 <p>
   The
-  <a href="/examples/collection-review/overlapping-cubes.stl" download
+  <a href="{{ ExampleAsset.OverlappingCubesStl }}" download
     >overlapping cube example</a
   >
   contains two independently closed surfaces that cross. A connectivity check

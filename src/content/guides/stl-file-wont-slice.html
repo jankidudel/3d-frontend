@@ -38,31 +38,77 @@ faq:
 <table>
   <thead>
     <tr>
-      <th>What you see</th>
-      <th>Possibility to investigate</th>
-      <th>Useful next check</th>
+      <th scope="col">Symptom</th>
+      <th scope="col">Possible cause</th>
+      <th scope="col">Confirming test</th>
+      <th scope="col">Next action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>The file will not open or is unexpectedly tiny</td>
-      <td>Wrong file, incomplete download or an incorrect unit assumption</td>
-      <td>Open a fresh copy and inspect its dimensions</td>
+      <td>The model imports at a size about 25.4 times too large or small</td>
+      <td>STL coordinates interpreted under a different unit assumption</td>
+      <td>Measure a known dimension and compare the source export units</td>
+      <td>
+        Set the intended units or re-export; then confirm size in the slicer
+        before repair
+      </td>
     </tr>
     <tr>
-      <td>The slicer imports nothing or only a fragment</td>
-      <td>Empty geometry, hidden shells or invalid coordinates</td>
-      <td>Run the STL Quality Checker and inspect the model in a viewer</td>
+      <td>Layers show a gap around an apparently missing face</td>
+      <td>Open surface or missing triangles</td>
+      <td>
+        Run the watertight check; the owned open-face cube has four boundary
+        edges
+      </td>
+      <td>
+        Return to CAD or mesh editing to reconstruct only a known intended
+        surface, then recheck
+      </td>
     </tr>
     <tr>
-      <td>Layers have gaps, extra walls or filled cavities</td>
-      <td>Open edges, overlaps, non-manifold edges or inverted faces</td>
-      <td>Check watertightness, manifoldness and orientation</td>
+      <td>A join creates an unexpected branch, wall or filled cavity</td>
+      <td>Non-manifold edge sharing, overlap or self-intersection</td>
+      <td>
+        Compare quality, manifold and intersection findings at the affected
+        region
+      </td>
+      <td>
+        Repair the source boolean or separate the conflicting surfaces; do not
+        infer a union from a clean edge count
+      </td>
+    </tr>
+    <tr>
+      <td>An isolated object appears or disappears in the preview</td>
+      <td>Detached triangles may be intended parts or export fragments</td>
+      <td>Inspect component locations and compare with the source assembly</td>
+      <td>
+        Keep intended pieces; remove only identified fragments with an explicit
+        retained-copy review
+      </td>
+    </tr>
+    <tr>
+      <td>One region is missing although mesh checks are clean</td>
+      <td>Slicer-specific unsupported region, profile or import behaviour</td>
+      <td>
+        Reopen the same source in the intended slicer and inspect the first
+        affected layer and warnings
+      </td>
+      <td>
+        Check region width, perimeter generator and slicer settings; mesh repair
+        is not the next step without a geometry finding
+      </td>
     </tr>
     <tr>
       <td>The import stalls or slicing is extremely slow</td>
       <td>Very dense geometry or a slicer-specific import limit</td>
-      <td>Inspect triangle count, then simplify a copy carefully</td>
+      <td>
+        Inspect triangle count and compare another copy in the same application
+      </td>
+      <td>
+        Re-export from CAD or reduce a copy conservatively, then re-open and
+        compare local features
+      </td>
     </tr>
   </tbody>
 </table>

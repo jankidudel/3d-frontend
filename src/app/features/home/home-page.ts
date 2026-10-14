@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -13,6 +14,7 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './home-page.scss',
 })
 export class HomePage {
+  readonly exampleAsset = ExampleAsset;
   readonly guideRouteUrl = GuideRouteUrl;
   protected readonly featuredTools = [
     PublicRouteUrl.Viewer,

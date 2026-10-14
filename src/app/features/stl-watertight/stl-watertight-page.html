@@ -5,6 +5,17 @@
     Check whether your STL is a closed surface, with open edges and possible
     holes surfaced first.
   </p>
+  <p>
+    Known controls: the
+    <a [href]="exampleAsset.OpenFaceCubeStl" download
+      >20 mm cube with one face removed</a
+    >
+    has 10 triangles and four boundary edges; the
+    <a [href]="exampleAsset.Closed20mmCubeStl" download>closed 20 mm cube</a>
+    has 12 triangles and zero. The open control has no reliable solid-volume
+    result. These counts show what this check detects, not which opening should
+    be capped.
+  </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL</h2>
     <p>Upload an STL file up to 25 MiB.</p>
@@ -119,9 +130,8 @@
     <h2>A closed boundary is the question here</h2>
     <p>
       Use this check when you need to find exposed triangle boundaries. In the
-      <a href="/examples/english-market-batch/open-face-cube.stl" download
-        >open-face cube</a
-      >, a missing square face leaves four open edges. The opening may be
+      <a [href]="exampleAsset.OpenFaceCubeStl" download>open-face cube</a>, a
+      missing square face leaves four open edges. The opening may be
       intentional: inspect its location before accepting a repair that changes
       the design.
     </p>

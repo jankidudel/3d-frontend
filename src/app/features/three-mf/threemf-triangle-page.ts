@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
@@ -13,6 +14,7 @@ import { ThreeMfQualityPage } from './threemf-quality-page';
   styleUrl: '../shared/model-checker-page.scss',
 })
 export class ThreeMfTrianglePage extends ThreeMfQualityPage {
+  readonly exampleAsset = ExampleAsset;
   private readonly triangleSeo = inject(SeoService);
   readonly complexity = computed(() => {
     const count = this.report()?.['triangleCount'];

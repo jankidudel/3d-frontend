@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -28,6 +29,7 @@ import {
   styleUrl: './threemf-wall-thickness-page.scss',
 })
 export class ThreeMfWallThicknessPage {
+  readonly exampleAsset = ExampleAsset;
   readonly routeUrl = PublicRouteUrl;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly file = signal<File | null>(null);

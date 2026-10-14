@@ -1,3 +1,4 @@
+import { ExampleAsset } from '../examples/example-assets';
 import { ExampleLoader } from '../examples/example-loader';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -25,6 +26,7 @@ type ScaleMethod = 'percentage' | 'target' | 'units';
   styleUrl: './stl-scale-page.scss',
 })
 export class StlScalePage {
+  readonly exampleAsset = ExampleAsset;
   readonly loadPublicExample = async (
     files: readonly File[],
   ): Promise<void> => {

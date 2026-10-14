@@ -65,11 +65,27 @@ faq:
 </table>
 <h2>Choose a preservation-aware route</h2>
 <p>
-  A package-level re-export may preserve object structure, units and supported
-  properties better than extracting and repairing a mesh. A mesh-only repair may
-  flatten build transforms or discard colours, materials and application
-  settings. Before changing the file, record the object count, plate layout,
-  dimensions and properties that the receiving workflow needs.
+  InspectMesh 3MF Repair edits supported mesh triangles inside the source model
+  part and copies the other package entries. It does not flatten the build or
+  intentionally change declared units, object references or placements. Its
+  output is still a regenerated ZIP/XML package, so reopen it and verify the
+  receiver's behaviour. Other mesh-export workflows can flatten transforms or
+  discard colours, materials and application settings. Record the object count,
+  plate layout, dimensions and properties that matter before changing any file.
+</p>
+<p>
+  To test unit and placement interpretation separately from repair, download the
+  generated
+  <a href="{{ ExampleAsset.DeclaredInchTransformed3mf }}" download
+    >one-inch cube translated two inches on X</a
+  >. The conversion control resolves it to a 25.4 mm cube at X = 50.8 to 76.2
+  mm. Compare the before/after dimensions and placement when validating any
+  repair workflow; a successful mesh cleanup does not prove a receiving app
+  retained project settings. See the
+  <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
+    >measured 3MF-to-STL export workflow</a
+  >
+  for the actual reopened conversion outputs.
 </p>
 <h2>Use the least destructive repair</h2>
 <ol>
