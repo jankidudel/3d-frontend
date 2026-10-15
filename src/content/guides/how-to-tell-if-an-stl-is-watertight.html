@@ -1,137 +1,122 @@
 ---
-title: How to Tell If an STL File Is Watertight | InspectMesh
-description: Learn how to check whether an STL model is watertight, why open edges and holes matter for 3D printing, and what to do when a mesh is not closed.
+title: 'Is My STL Watertight? Read the Open-Edge Result | InspectMesh'
+description: Run a closure check on known cube controls, interpret open edges and separate shells, and decide what the result cannot prove.
 slug: how-to-tell-if-an-stl-is-watertight
 eyebrow: STL topology guide
 heading: How to Tell If an STL File Is Watertight
 faq:
-  - question: Is a watertight STL always printable?
-    answer: No. Watertightness checks the surface closure. Wall thickness, scale, overhangs, support, material and printer settings can still affect whether a print succeeds.
-  - question: Are separate shells always a problem?
-    answer: No. A file can intentionally contain several separate parts. The important question is whether each intended solid has a clean, closed surface.
-  - question: Is manifold the same as watertight?
-    answer: They are related but not identical. Watertightness focuses on open boundaries. Manifold analysis also considers whether edges and surfaces join in an unambiguous way.
+  - question: Is zero open edges a printability result?
+    answer: No. It is a closure finding under the check method; geometry, slicing and physical suitability need separate review.
+  - question: Can two separate closed shells have zero open edges?
+    answer: Yes. Closure and component count answer different questions; inspect whether both solids are intended and whether they overlap.
 ---
 
-<p class="lead">
+<p>
+  Check whether triangle edges have a neighbour. An exposed edge belongs to only
+  one face and marks an open boundary under this mesh check. A result of zero
+  open edges supports closure, but it does not prove correct design,
+  non-intersection or printability. Use the
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
+  to inspect your exact file.
+</p>
+<h2>Establish the meaning with two controls</h2>
+<p>
   The
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-    >STL Print Preflight Checker</a
+  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
+    >closed 20-unit cube</a
   >
-  combines this topology concern with size, printer-fit and sampled
-  wall-thickness guidance before you slice.
+  has 12 triangles and zero boundary edges. The
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face copy</a>
+  deletes two triangles and has four boundary edges. Under a millimetre
+  assumption, local preflight screens the closed cube's volume at 8,000 mm³;
+  volume is unavailable for the open copy. STL itself contains no length unit.
+  Recheck both controls before interpreting a report on a more complex design.
 </p>
-
-<h2>Check connected components as well as edges</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/open-boundary.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="Closed cube beside a cube with two face triangles removed and four boundary edges exposed"
+  />
+  <figcaption>
+    Original generated geometry, not a physical print or a claim about all
+    slicers.
+  </figcaption>
+</figure>
+<h2>Interpret closure alongside other findings</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Result</th>
+      <th scope="col">What it establishes</th>
+      <th scope="col">Next check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Open edges above zero</td>
+      <td>
+        At least one boundary is exposed under the checker's coordinate and edge
+        rules.
+      </td>
+      <td>
+        Locate the loop and compare it with intended design;
+        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
+          >choose whether to patch</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <td>Zero open edges, one shell</td>
+      <td>No boundary was found by this method.</td>
+      <td>
+        Check orientation, non-manifold edges, intersections, dimensions and
+        sliced layers.
+      </td>
+    </tr>
+    <tr>
+      <td>Zero open edges, several shells</td>
+      <td>Each surface may be closed, but the file has separate components.</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+          >Identify intended parts, nested shells and overlaps</a
+        >; do not delete them by count alone.
+      </td>
+    </tr>
+    <tr>
+      <td>Malformed parse or check unavailable</td>
+      <td>No valid zero finding exists.</td>
+      <td>Re-export the source and rerun the check.</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  A file can contain several individually closed shells and still report no open
-  boundaries. Determine whether they are intended separate solids, nested voids
-  or accidental duplicates. Coincident closed shells may cause ambiguous volume
-  or duplicate toolpaths even though each shell is watertight by itself.
+  A thick-walled vessel's inner and outer walls can meet around an open mouth
+  and still form a closed material surface. A single uncapped sheet has exposed
+  edges. A hidden internal shell or self-intersection can remain even with zero
+  open edges. The
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">broader preflight</a>
+  reports other supported checks and their unavailable or sampled states.
 </p>
+<h2>Recheck the file you will slice</h2>
+<ol>
+  <li>
+    Keep the original and record the location and count of the reported
+    boundary.
+  </li>
+  <li>
+    Repair only a surface whose intended shape is known, preferably in source
+    CAD for functional geometry.
+  </li>
+  <li>
+    Open the saved derivative, rerun closure and topology checks, then inspect
+    the affected slicer layers and dimensions.
+  </li>
+</ol>
 <p>
-  Compare component count with the source and inspect cross-sections through
-  suspicious areas. Closure answers whether boundaries exist; it does not assign
-  material to nested regions or prove that overlapping components form a valid
-  union.
-</p>
-
-<h2>Interpret open-edge results</h2>
-<p>
-  Zero boundary edges is the usual closure signal for a shell, but it does not
-  prove a clean printable solid. A closed mesh can still self-intersect, contain
-  internal faces, use inconsistent orientation or include multiple nested shells
-  whose intended material regions are unclear. Conversely, an intentional
-  surface model may be open by design even though it is not suitable as a solid
-  print without additional thickness.
-</p>
-<p>
-  When boundaries exist, locate their loops. A small loop on a planar end may be
-  a missing cap; a long seam can indicate unwelded borders; many scattered loops
-  may point to a damaged export. Do not automatically fill a drain, socket or
-  other deliberate opening. Choose repair only after comparing the region with
-  the source design.
-</p>
-<p>
-  Re-check closure, manifold topology, face orientation and dimensions after any
-  edit, then inspect the slicer preview. Watertightness supports volume and
-  inside reasoning, but printer fit, wall thickness and toolpath generation
-  remain separate checks.
-</p>
-<h2>Use closure as evidence, not a complete preflight</h2>
-<p>
-  Open edges show that a surface boundary is not closed. A watertight result can
-  support volume calculation and solid slicing, but it does not rule out thin
-  walls, overlaps, wrong scale or unsuitable orientation. Inspect the reported
-  area and re-check any repaired copy.
-</p>
-<p class="lead">
-  A watertight STL describes a completely closed surface. Imagine filling the
-  model with water: if the surface has no holes, the water stays inside. For a
-  single solid intended for 3D printing, that closed boundary gives the slicer a
-  clear definition of what is inside the object and what is outside.
-</p>
-<p class="lead">
-  An STL is not watertight when it has <strong>open edges</strong>. An open edge
-  belongs to only one triangle instead of joining to a neighbouring triangle. A
-  model may have one obvious hole, many tiny gaps, or disconnected patches that
-  are hard to spot in a normal 3D preview.
-</p>
-<h2>The quickest way to check</h2>
-<p>
-  Use the free
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a
-  >. It analyses the mesh and reports whether it finds open edges, together with
-  the number of separate shells. For a broader report that also checks
-  duplicates, degenerate triangles, non-manifold edges and face orientation, use
-  the <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
-</p>
-<p>
-  A zero open-edge count is a strong indication that a mesh is closed. It is
-  still useful to look at the rest of the report: a closed mesh can have other
-  geometry issues, including non-manifold edges or inconsistent orientation.
-</p>
-<h2>Why watertightness matters for 3D printing</h2>
-<p>
-  A slicer must decide which regions receive material. If a model has holes or
-  an ambiguous surface, it may create missing walls, unexpected infill, gaps in
-  layers or an incomplete print. Some slicers repair simple gaps automatically,
-  but different slicers can make different assumptions. A validated source file
-  is more predictable.
-</p>
-<p>
-  Watertightness is especially important for models that are meant to be one
-  solid piece: figurines, enclosures, functional brackets, containers and
-  scan-derived models. A file containing several intentionally separate
-  printable parts can still be acceptable, but each part should be assessed
-  separately.
-</p>
-<h2>Visual checks are helpful, but not enough</h2>
-<p>
-  Opening the file in the
-  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> is useful for
-  inspecting its shape and dimensions, but a viewer alone cannot reliably reveal
-  every tiny hole or internal topology issue. A mesh can look closed from the
-  outside while still having open edges deep inside or beneath overlapping
-  faces.
-</p>
-<p>
-  Use visual inspection alongside a topology check. If the checker reports open
-  edges, repair the file in your modelling software or a repair utility, save a
-  new version, then run the check again.
-</p>
-<h2>What to do when an STL is not watertight</h2>
-<p>
-  Start by finding the cause. A small missing face may be simple to fill.
-  Intersecting parts may need a boolean union. A 3D scan can need hole filling
-  and surface reconstruction. The guide
-  <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
-    >How to Fix Non-Manifold STL Files</a
-  >
-  explains common repair approaches and why some defects are not visible at
-  first glance.
-</p>
-<p>
-  Always keep the original file and verify the repaired copy. Automated repair
-  can be useful, but it can also remove or reshape fine details.
+  Watertightness is one property of a surface. It does not measure wall
+  thickness, support, printer fit, material behaviour or the outcome of a
+  physical print.
 </p>

@@ -1,0 +1,143 @@
+---
+title: 'Floating Regions in a Slicer | InspectMesh'
+description: 'Compare a continuous overhang with detached and intended parts, then inspect the first unsupported layer and tested support paths.'
+slug: floating-regions-in-slicer
+eyebrow: Slicer layer diagnosis
+heading: 'Floating Regions in a Slicer'
+faq:
+  - question: Does a floating-region warning mean the STL has a detached mesh piece?
+    answer: No. A continuous overhang can start above empty space; inspect the first affected layer and the source component count separately.
+  - question: Will Keep largest part add support paths?
+    answer: No. It selects source triangles for a separate STL download; support paths are a slicer-profile decision.
+---
+
+<p>
+  A floating-region warning concerns the
+  <strong>layer path and what lies below it</strong>. It does not prove that the
+  STL contains a disconnected fragment. Move to the first affected layer in your
+  slicer preview, then compare that extrusion with the preceding layer and the
+  intended model. An integral overhang may need support or a different
+  orientation; a detached component may instead need a deliberate keep-or-remove
+  decision.
+</p>
+<h2>Three controls that separate those decisions</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Downloadable STL</th>
+      <th scope="col">Known geometry</th>
+      <th scope="col">Decision it tests</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.IntegralOverhangStl }}" download
+          >Integral overhang</a
+        >
+      </td>
+      <td>
+        One closed component, 20 triangles; an arm starts at Z=10 mm and extends
+        20 mm beyond the base.
+      </td>
+      <td>Support or orientation, while keeping the connected design.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.DetachedTetrahedronStl }}" download
+          >Cube and detached tetrahedron</a
+        >
+      </td>
+      <td>Two closed components, 16 triangles total.</td>
+      <td>Inspect whether the separate small object is unwanted.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.TwoIntendedCubesStl }}" download
+          >Two intended cubes</a
+        >
+      </td>
+      <td>Two closed components, 24 triangles total.</td>
+      <td>Do not delete a part merely because it is separate.</td>
+    </tr>
+  </tbody>
+</table>
+<h2>What the slicer actually produced</h2>
+<p>
+  The integral-overhang STL was sliced in PrusaSlicer 2.9.6 with its 200 × 200
+  mm default bed, centred at X/Y=100 mm, a 0.4 mm nozzle, 0.45 mm extrusion
+  width, 0.2 mm first and subsequent layers, two perimeters and 15% infill. With
+  supports off, the CLI reported “Floating bridge anchors, Loose extrusions,
+  Long bridging extrusions” and suggested supports. At Z=5.2 mm its G-code has
+  no support-material extrusion moves. Enabling support material and automatic
+  generation produced 20 such moves on that layer. These are software paths, not
+  a printed-part test.
+</p>
+<figure>
+  <img
+    src="/examples/slicer-diagnosis/overhang-layer.svg"
+    width="520"
+    height="290"
+    alt="Actual Z 5.2 millimetre G-code layer: no red support paths with support off, red support paths below the arm with support on"
+  />
+  <figcaption>
+    Original rendering of the retained PrusaSlicer G-code; red is support, blue
+    is model extrusion. Travel and skirt are hidden.
+  </figcaption>
+</figure>
+<p>
+  Recheck the
+  <a href="{{ ExampleAsset.OverhangNoSupportGcode }}" download
+    >support-off G-code</a
+  >
+  against the
+  <a href="{{ ExampleAsset.OverhangSupportGcode }}" download
+    >support-on G-code</a
+  >
+  in a compatible viewer. Settings and the exact input are retained with the
+  files. A different profile can choose different paths.
+</p>
+<h2>Choose the correction from the first affected layer</h2>
+<ol>
+  <li>
+    If the region joins the model above the build plate, inspect the layer below
+    it. Try a reviewed orientation or support setting, then re-slice and compare
+    the same layer. The
+    <a href="{{ GuideSlug.Route3dPrintOverhangsAndSupportsGuide }}"
+      >overhang guide</a
+    >
+    covers the broader support decision.
+  </li>
+  <li>
+    If an entire object is separated in the source mesh, use
+    <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
+      >STL Repair's local piece review</a
+    >. Keep all parts by default; remove only a confirmed fragment. That
+    operation does not generate supports.
+  </li>
+  <li>
+    If the separate object is intentional, keep it and check its placement, bed
+    contact and toolpaths independently. A mesh component count cannot infer
+    design intent.
+  </li>
+  <li>
+    If an expected region is absent in layers, use
+    <a href="{{ GuideSlug.RouteStlFileWontSlice }}">slice-failure triage</a> to
+    distinguish geometry, placement and profile causes.
+  </li>
+</ol>
+<p>
+  Start with
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a>
+  for source geometry, then finish in the target slicer's layer preview. This
+  example uses STL coordinates as millimetres; STL does not declare a unit. The
+  experiment shows support-path changes for one profile and says nothing about
+  adhesion, strength or a successful physical print.
+</p>
+<p>
+  Source reviewed 14 October 2026:
+  <a href="https://help.prusa3d.com/article/support-material_1698"
+    >Prusa's support material documentation</a
+  >
+  describes automatic support generation and support modes.
+</p>

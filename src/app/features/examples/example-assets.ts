@@ -1,5 +1,23 @@
 /** Canonical paths for downloadable public example files linked from pages and guides. */
 export const ExampleAsset = {
+  IntegralOverhangStl: '/examples/slicer-diagnosis/integral-overhang.stl',
+  DetachedTetrahedronStl: '/examples/slicer-diagnosis/detached-tetrahedron.stl',
+  TwoIntendedCubesStl: '/examples/slicer-diagnosis/two-intended-cubes.stl',
+  OverhangNoSupportGcode:
+    '/examples/slicer-diagnosis/integral-overhang-no-support.gcode',
+  OverhangSupportGcode:
+    '/examples/slicer-diagnosis/integral-overhang-support.gcode',
+  OriginCubeStl: '/examples/slicer-diagnosis/origin-cube.stl',
+  ShiftedCubeStl: '/examples/slicer-diagnosis/shifted-cube.stl',
+  ShiftedCubePlacedGcode: '/examples/slicer-diagnosis/shifted-cube.gcode',
+  OpenThroughChannelStl: '/examples/slicer-diagnosis/open-through-channel.stl',
+  CappedChannelStl: '/examples/slicer-diagnosis/capped-channel.stl',
+  OverlappingChannelStl: '/examples/slicer-diagnosis/overlapping-channel.stl',
+  OpenThroughChannelGcode:
+    '/examples/slicer-diagnosis/open-through-channel.gcode',
+  CappedChannelGcode: '/examples/slicer-diagnosis/capped-channel.gcode',
+  OverlappingChannelGcode:
+    '/examples/slicer-diagnosis/overlapping-channel.gcode',
   DuplicateFaceCube3mf: '/examples/cad-export/duplicate-face-cube.3mf',
   DuplicateFaceCubeStl: '/examples/cad-export/duplicate-face-cube.stl',
   DetailCoupon50Stl: '/examples/collection-review/detail-coupon-50.stl',

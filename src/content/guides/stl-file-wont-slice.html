@@ -1,282 +1,179 @@
 ---
-title: 'STL File Won’t Slice: Common Causes and Fixes | InspectMesh'
-description: Find out why an STL file will not slice, how to check common mesh and scale problems, and what to fix before sending it to a 3D printer.
+title: 'STL Will Not Slice: Diagnose the First Failing Step | InspectMesh'
+description: Triage a failed STL import or layer preview by symptom, then test geometry, placement or slicer settings without confusing the results.
 slug: stl-file-wont-slice
 eyebrow: STL troubleshooting guide
-heading: STL File Won’t Slice? Common Causes and Fixes
+heading: STL File Won’t Slice? Find the First Failing Step
 faq:
-  - question: Why does my STL open in a viewer but not slice?
-    answer: A viewer can display a surface even when the mesh has holes, non-manifold edges or inconsistent orientation. A slicer needs clearer solid geometry to create printable layers.
-  - question: Can the printer bed size stop an STL from slicing?
-    answer: Yes. A model that is larger than the configured build volume may be rejected or need scaling, rotation or splitting before it can be sliced.
-  - question: Should I repair an STL before changing slicer settings?
-    answer: Check the model first. If the layer preview is wrong because of mesh errors, changing temperature, infill or support settings will not correct the underlying file.
+  - question: Can a mesh check explain every missing extrusion?
+    answer: No. A valid mesh can lose a narrow feature under a particular slicer profile; inspect the first affected layer.
+  - question: Does a successful slice prove the geometry is correct?
+    answer: No. Inspect the actual layers, dimensions and intended openings. A slicer can produce toolpaths for a model whose design intent was changed.
 ---
 
 <p>
-  An STL that will not slice is usually either not the file you expected, not a
-  usable solid, the wrong size, or beyond what the selected slicer can process.
-  Start with the file and its geometry, then inspect the slicer preview. This
-  guide diagnoses an STL slicing failure; it does not replace a full
-  <a href="{{ GuideSlug.RouteHowToMakeAnStlFilePrintable }}"
-    >STL preparation workflow</a
-  >
-  or prove that a model will print successfully on a particular machine.
+  First identify whether the STL fails to open, imports at the wrong size, or
+  loses geometry only after slicing. A mesh finding, a slicer-profile outcome
+  and a physical print are three different things. Save the source and change
+  one cause at a time.
 </p>
-<p>
-  Start by checking the model before changing nozzle temperature, infill or
-  support settings. Those settings affect how a valid model prints; they do not
-  repair a broken surface.
-</p>
-<h2>Check for mesh errors</h2>
-<p>
-  The first step is the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
-  checks common issues that can interfere with slicing:
-</p>
-<h2>Match the symptom to the next check</h2>
+<h2>Quick triage</h2>
+<ol>
+  <li>Cannot open or empty: verify the export and triangle count.</li>
+  <li>
+    Surprising size or position: compare known dimensions and source units.
+  </li>
+  <li>
+    Gaps or missing layers: look for a surface finding, then compare layers.
+  </li>
+  <li>
+    Detached objects: identify every intended piece before selecting removals.
+  </li>
+  <li>
+    Valid mesh but omitted thin extrusion: inspect the profile and first
+    affected layer.
+  </li>
+  <li>Slow import: inspect triangle count before reducing a copy.</li>
+</ol>
 <table>
   <thead>
     <tr>
       <th scope="col">Symptom</th>
-      <th scope="col">Possible cause</th>
       <th scope="col">Confirming test</th>
       <th scope="col">Next action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>The model imports at a size about 25.4 times too large or small</td>
-      <td>STL coordinates interpreted under a different unit assumption</td>
-      <td>Measure a known dimension and compare the source export units</td>
+      <td>File is rejected or blank</td>
       <td>
-        Set the intended units or re-export; then confirm size in the slicer
-        before repair
+        Open it in the
+        <a href="{{ GuideSlug.RouteStlViewer }}">STL viewer</a> and check
+        whether complete triangles exist.
+      </td>
+      <td>
+        Re-export from source if malformed or empty; do not ask a mesh repair to
+        recreate missing design data.
       </td>
     </tr>
     <tr>
-      <td>Layers show a gap around an apparently missing face</td>
-      <td>Open surface or missing triangles</td>
+      <td>Import is huge, tiny or outside the usable bed</td>
       <td>
-        Run the watertight check; the owned open-face cube has four boundary
-        edges
+        Measure a known span and the bounds in the
+        <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+          >dimensions checker</a
+        >.
       </td>
       <td>
-        Return to CAD or mesh editing to reconstruct only a known intended
-        surface, then recheck
-      </td>
-    </tr>
-    <tr>
-      <td>A join creates an unexpected branch, wall or filled cavity</td>
-      <td>Non-manifold edge sharing, overlap or self-intersection</td>
-      <td>
-        Compare quality, manifold and intersection findings at the affected
-        region
-      </td>
-      <td>
-        Repair the source boolean or separate the conflicting surfaces; do not
-        infer a union from a clean edge count
+        Correct the unit assumption or follow the
+        <a href="{{ GuideSlug.RouteStlModelOffBuildPlate }}"
+          >off-bed placement control</a
+        >, then confirm the final preview.
       </td>
     </tr>
     <tr>
-      <td>An isolated object appears or disappears in the preview</td>
-      <td>Detached triangles may be intended parts or export fragments</td>
-      <td>Inspect component locations and compare with the source assembly</td>
+      <td>Opening or missing wall in layers</td>
       <td>
-        Keep intended pieces; remove only identified fragments with an explicit
-        retained-copy review
+        Run the
+        <a href="{{ GuideSlug.RouteStlWatertightChecker }}">open-edge check</a>;
+        the owned open-face cube has four boundary edges.
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
+          >Reconstruct a known missing surface</a
+        >
+        in CAD or a mesh editor and recheck.
       </td>
     </tr>
     <tr>
-      <td>One region is missing although mesh checks are clean</td>
-      <td>Slicer-specific unsupported region, profile or import behaviour</td>
+      <td>Unexpected join, branch or filled region</td>
       <td>
-        Reopen the same source in the intended slicer and inspect the first
-        affected layer and warnings
+        Compare manifold and overlap evidence in
+        <a href="{{ GuideSlug.RouteStlPrintPreflight }}">preflight</a> with the
+        source design.
       </td>
       <td>
-        Check region width, perimeter generator and slicer settings; mesh repair
-        is not the next step without a geometry finding
+        Compare the
+        <a href="{{ GuideSlug.RouteSlicerFillsHoleInStl }}"
+          >closed-channel slicer control</a
+        >, then correct a failed Boolean or overlap in the source. A clean edge
+        count alone is insufficient.
       </td>
     </tr>
     <tr>
-      <td>The import stalls or slicing is extremely slow</td>
-      <td>Very dense geometry or a slicer-specific import limit</td>
+      <td>Extra separate object</td>
       <td>
-        Inspect triangle count and compare another copy in the same application
+        Review every component in
+        <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
+          >STL Repair</a
+        >.
       </td>
       <td>
-        Re-export from CAD or reduce a copy conservatively, then re-open and
-        compare local features
+        Keep intended pieces; remove a confirmed fragment only by an explicit
+        retained-copy download.
+      </td>
+    </tr>
+    <tr>
+      <td>Thin feature disappears despite a valid import</td>
+      <td>
+        Compare source width with sliced paths under the chosen perimeter
+        generator and line width.
+      </td>
+      <td>
+        Review the
+        <a href="{{ GuideSlug.RouteHowToCheckStlWallThicknessFor3dPrinting }}"
+          >thin-wall experiment</a
+        >; redesign or adjust a tested profile rather than running unrelated
+        mesh cleanup.
+      </td>
+    </tr>
+    <tr>
+      <td>Import stalls</td>
+      <td>
+        Check
+        <a href="{{ GuideSlug.RouteStlTriangleCounter }}">triangle count</a> and
+        test a saved copy in the same slicer.
+      </td>
+      <td>
+        Re-export from CAD or
+        <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
+          >simplify conservatively</a
+        >
+        and compare detail.
       </td>
     </tr>
   </tbody>
 </table>
-<h2>Rule out an incorrect or empty file</h2>
+<h2>When the mesh check and slicer disagree</h2>
 <p>
-  Confirm that the file came from the expected export or download and that its
-  size is plausible. An STL can be syntactically readable while containing no
-  useful triangles, coordinates that are not finite, or a shell positioned far
-  from the origin. A viewer is helpful here because it can reveal a model that
-  is present but zoomed far away, hidden inside another shell or effectively
-  zero-sized.
+  A clean supported topology result does not cover every self-intersection, tiny
+  extrusion or unsupported region. Find the first incorrect layer and compare it
+  with the source model. A surface defect calls for geometry review; a narrow
+  feature omitted under one profile calls for a profile or design decision. For
+  a warning about an unsupported layer, follow the
+  <a href="{{ GuideSlug.RouteFloatingRegionsInSlicer }}"
+    >floating-region control</a
+  >. Neither result certifies physical print performance.
 </p>
+<h2>A retained slicer control</h2>
 <p>
-  If the file cannot be opened consistently, export it again from the source CAD
-  application. Do not use a repair tool to guess missing design geometry. Keep
-  the original unchanged and diagnose or repair a copy.
-</p>
-<ul>
-  <li>open edges and holes</li>
-  <li>non-manifold edges</li>
-  <li>degenerate triangles</li>
-  <li>duplicate triangles</li>
-  <li>inconsistent triangle orientation</li>
-  <li>invalid coordinate values</li>
-</ul>
-<p>
-  Open edges mean the model is not a closed surface. Non-manifold edges make it
-  unclear which regions are inside the object. Duplicate or degenerate faces can
-  make the mesh harder for software to interpret.
-</p>
-<p>
-  If issues are reported, use the
-  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> for conservative
-  repairs. It can safely remove certain defective triangles and correct
-  orientation where the result is clear. It does not attempt to invent missing
-  geometry or hide serious topology problems.
-</p>
-<h2>Check whether the model is watertight and manifold</h2>
-<p>
-  A good next step is to run both the
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
-  and the
-  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>.
-</p>
-<h2>Check face direction and intersecting shells</h2>
-<p>
-  Slicers use triangle winding or normals to reason about the outside of a
-  surface. Recalculating normals can help when a closed, otherwise sound shell
-  was exported with inconsistent face direction. It cannot decide the intended
-  surface when shells overlap, a boolean operation left self-intersections, or
-  the model has both internal and exterior faces. In those cases, return to the
-  source model or use mesh software to inspect the affected region.
-</p>
-<p>
-  Use the quality result as evidence, not as a guarantee. A repaired mesh can
-  still have walls too thin for the nozzle or process, and a visually clean mesh
-  can still need different orientation or support.
-</p>
-<p>
-  A watertight model has no open boundaries. A manifold model describes a
-  consistent surface that can define a solid volume. Most ordinary FDM and resin
-  prints are easier to slice when both conditions are met.
-</p>
-<h2>Confirm the size and orientation</h2>
-<p>
-  An otherwise valid STL may be too large for the printer profile currently
-  selected in your slicer. STL files do not reliably store units, so a model
-  intended as millimetres can appear wildly oversized or tiny if interpreted
-  incorrectly.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  to inspect the width, height and depth, choose a sensible design unit and
-  compare it with your printer’s usable build volume.
-</p>
-<p>
-  If the model nearly fits, rotating it may help. If it is much larger than the
-  bed, scale it only if the dimensions are not functional; otherwise, consider
-  splitting the model in suitable software.
-</p>
-<h2>Inspect the layer preview</h2>
-<p>
-  After checking or repairing the file, open it in your slicer again and inspect
-  the preview layer by layer.
-</p>
-<p>Look for:</p>
-<ul>
-  <li>missing perimeters</li>
-  <li>unexpected filled cavities</li>
-  <li>disconnected fragments</li>
-  <li>thin walls that disappear</li>
-  <li>geometry outside the build area</li>
-</ul>
-<p>
-  A slicer may still process a problematic file, so a successful “slice” button
-  is not proof that the output is correct.
-</p>
-<h2>Reduce complexity only after preserving the original</h2>
-<p>
-  A high triangle count does not automatically make an STL invalid. It can,
-  however, slow import and slicing enough to expose a software or hardware
-  limit. If the model is much denser than its visible shape requires, use a
-  careful simplification workflow on a copy. Compare dimensions and critical
-  curves before and after; see
-  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
-    >how to reduce STL triangle count</a
-  >. Converting ASCII STL to binary can reduce file bytes without changing the
-  number of triangles, so it is a different remedy.
-</p>
-<h2>Separate file diagnosis from slicer-specific limits</h2>
-<p>
-  A valid STL may still fail in one slicer because of its import settings,
-  supported variation, memory limits or configured build volume. Test a clean
-  copy in the intended slicer and inspect its own warnings. If another slicer
-  handles the same file, that is a clue about the workflow, not proof that the
-  model is ready to print. The final authority is a plausible layer preview for
-  your selected printer, material and settings.
-</p>
-<h2>Return to the source when necessary</h2>
-<p>
-  If the STL contains large holes, self-intersections, badly overlapping parts
-  or missing features, returning to the original CAD or modelling file is often
-  the fastest reliable solution. Repairing a mesh is useful for small defects;
-  recreating the original solid is better when the model’s intended shape is
-  unclear.
-</p>
-<p>
-  Once the file slices cleanly, save a copy of the validated version so you do
-  not need to repeat the same diagnosis before every print.
-</p>
-
-<h2>Distinguish a missing surface from a missing extrusion</h2>
-<p>
-  Use the open-face example in
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}">the mixed batch collection</a>:
-  it has four boundary edges and no trustworthy closed-model volume. That is a
-  geometry finding. By contrast, a clean closed mesh can still lose a narrow
-  feature when the chosen perimeter generator and line-width profile cannot
-  represent it. The first branch needs geometry review; the second needs
-  layer-preview and profile review.
-</p>
-<p>
-  If the entire import is unexpectedly tiny or huge, verify a known dimension
-  before repairing anything. A 20-unit STL interpreted as inches becomes 508 mm
-  wide, while the same coordinates interpreted as millimetres become 20 mm. A
-  mesh repair does not resolve that unit ambiguity.
-</p>
-<p>
-  Run <a href="{{ GuideSlug.RouteStlPrintPreflight }}">local preflight</a>,
-  compare imported size, then inspect the first failing layer in your slicer.
-  Keep a copy of the original and change one assumption at a time. A no-issue
-  mesh result does not prove support choices, settings, material or printer
-  suitability.
-</p>
-
-<h2>Replay an actual thin-wall slicer experiment</h2>
-<p>
-  In the retained PrusaSlicer 2.9.6 software experiment, changing the perimeter
-  generator changed which thin bars appeared in the second-layer preview. This
-  is evidence to investigate extrusion settings when a valid thin feature
-  disappears, rather than repeatedly repairing its mesh.
-</p>
-<p>
-  See the
+  The owned three-bar STL was sliced with PrusaSlicer 2.9.6 at 0.4 mm nozzle,
+  0.45 mm extrusion width, 0.2 mm layer height, two perimeters, zero infill and
+  thin walls disabled. In the retained second-layer G-code preview, Classic
+  produced four extrusion moves at one bar position; Arachne produced six moves
+  at three bar positions. The
   <a href="{{ GuideSlug.RouteHowToCheckStlWallThicknessFor3dPrinting }}"
-    >STL wall-thickness procedure</a
+    >wall-thickness guide</a
   >
-  for the complete geometry, settings and downloadable exports. The observation
-  does not certify a physical print.
+  has the files, settings and full interpretation. This software result shows
+  why a successful geometry import can still omit a feature. It is not a tested
+  physical print or a universal minimum feature size.
+</p>
+<p>
+  Finish by reopening the actual saved STL and inspecting all affected layers in
+  the slicer and printer profile you intend to use. For a broader preparation
+  sequence, see the
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
+    >model-ready checklist</a
+  >.
 </p>

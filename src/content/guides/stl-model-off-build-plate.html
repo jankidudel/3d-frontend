@@ -1,0 +1,119 @@
+---
+title: 'STL Off the Build Plate | InspectMesh'
+description: 'A 20 mm cube can have X=230..250 and Z=-5..15. Compare raw STL bounds with tested PrusaSlicer placement and final paths.'
+slug: stl-model-off-build-plate
+eyebrow: Model placement
+heading: 'STL Model Off the Build Plate'
+faq:
+  - question: Can a 20 mm cube be outside a 200 mm bed?
+    answer: Yes. Width is a span; a cube with X bounds 230..250 mm lies outside an X=0..200 mm frame until a placement transform moves it.
+  - question: Does centering the imported model repair its original STL coordinates?
+    answer: No. The tested slicer placement changes the sliced job; keep the source file and verify assembly intent before exporting a revised model.
+---
+
+<p>
+  If an STL appears away from or below the build plate, check its
+  <strong>minimum and maximum X/Y/Z coordinates</strong> as well as its size. A
+  20 mm span alone cannot tell you where the model was exported. Then use your
+  slicer's placement controls deliberately and verify the resulting layer
+  preview. A slicer may recenter or drop an imported model automatically, so the
+  source coordinates and placed job are different evidence.
+</p>
+<h2>Same size, different source positions</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Original control</th>
+      <th scope="col">X / Y / Z bounds (mm assumed)</th>
+      <th scope="col">Spans</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.OriginCubeStl }}" download>Origin cube</a>
+      </td>
+      <td>0..20 / 0..20 / 0..20</td>
+      <td>20 × 20 × 20 mm</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.ShiftedCubeStl }}" download>Shifted cube</a>
+      </td>
+      <td>230..250 / 20..40 / -5..15</td>
+      <td>20 × 20 × 20 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Both are closed 12-triangle binary STLs of 684 bytes. On a hypothetical
+  X/Y=0..200 mm bed, the shifted source is outside X and crosses Z=0. This is a
+  coordinate observation, not a universal verdict about printer fit: the slicer
+  can apply a placement transform, and a printer's usable area may differ from
+  its nominal rectangle.
+</p>
+<h2>Observed PrusaSlicer placement contrast</h2>
+<p>
+  In PrusaSlicer 2.9.6's CLI, the shifted cube with <code>--dont-arrange</code>
+  produced “All objects are outside of the print volume” and no G-code. With
+  <code>--center 100,100</code>, the shifted and origin controls produced
+  <strong>byte-identical G-code</strong> in this run. Thus the tested centering
+  workflow relocated the shifted geometry and placed it on the bed before
+  slicing. The exported
+  <a href="{{ ExampleAsset.ShiftedCubePlacedGcode }}" download>placed G-code</a>
+  is a software result, not proof that the original file was correctly located
+  for an assembly.
+</p>
+<p>
+  The run used PrusaSlicer's default 200 × 200 mm bed, 0.4 mm nozzle, 0.45 mm
+  extrusion width, 0.2 mm first and subsequent layers, two perimeters and
+  rectilinear 100% infill. Other slicers or import settings may move the object
+  differently. STL coordinates are unitless; all millimetre labels here are an
+  explicit interpretation of the control.
+</p>
+<h2>Fix the placement without hiding an assembly error</h2>
+<ol>
+  <li>
+    Open the STL in
+    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+      >STL Dimensions Checker</a
+    >. Read the minima and maxima as well as the X/Y/Z spans, under the intended
+    unit assumption.
+  </li>
+  <li>
+    If Z is negative, inspect why the mesh extends below the bed. Use the
+    slicer's drop-to-bed or place-on-face action only after choosing the
+    intended contact face.
+  </li>
+  <li>
+    If X/Y are far away, review the slicer's move or arrange operation and
+    confirm the resulting object footprint in the layer preview. A centred
+    bounding box is not automatically the intended coordinate origin.
+  </li>
+  <li>
+    For multiple intended pieces, preserve and inspect their relative positions
+    before moving them. Re-export from CAD when source placement is part of the
+    design.
+  </li>
+  <li>
+    After slicing, review the actual extrusion and travel envelope.
+    <a href="{{ GuideSlug.RouteGcodeOutsidePrintBed }}"
+      >G-code outside the bed</a
+    >
+    handles already sliced paths;
+    <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+      >printer fit</a
+    >
+    handles model size and orientation.
+  </li>
+</ol>
+<p>
+  Source reviewed 14 October 2026:
+  <a href="https://help.prusa3d.com/article/move-rotate-scale-tools_1914"
+    >Prusa's Move and Drop to bed controls</a
+  >
+  and
+  <a href="https://help.prusa3d.com/article/auto-arrange-tool_1770"
+    >Auto-arrange documentation</a
+  >. Neither source establishes the placement behaviour of another slicer.
+</p>

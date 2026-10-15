@@ -23,10 +23,174 @@ const settings = {
   thicknessThresholdMm: 1.2,
 };
 const root = resolve(import.meta.dirname, '../public/examples');
+const slicerEvidenceRoot = resolve(
+  import.meta.dirname,
+  '../docs/english-market-batch/fixtures/slicer-diagnosis',
+);
 const file = async (path: string) =>
   new File([await readFile(resolve(root, path))], path.split('/').at(-1)!);
+const gcode = async (name: string) =>
+  (await readFile(resolve(slicerEvidenceRoot, name), 'utf8')).split('\n');
+function layerEvidence(lines: readonly string[], layer: number) {
+  let x = 0;
+  let y = 0;
+  let e = 0;
+  let z = 0;
+  let kind = '';
+  let supportMoves = 0;
+  let centreMoves = 0;
+  for (const line of lines) {
+    if (line.startsWith(';Z:')) {
+      z = Number(line.slice(3));
+      continue;
+    }
+    if (line.startsWith(';TYPE:')) {
+      kind = line.slice(6);
+      continue;
+    }
+    if (line.startsWith('G92 E')) {
+      e = Number(line.slice(5).split(' ')[0]);
+      continue;
+    }
+    if (!line.startsWith('G0 ') && !line.startsWith('G1 ')) {
+      continue;
+    }
+    const values = Object.fromEntries(
+      [...line.matchAll(/([XYE])(-?\d+(?:\.\d+)?)/g)].map((match) => [
+        match[1],
+        Number(match[2]),
+      ]),
+    );
+    const nx = values['X'] ?? x;
+    const ny = values['Y'] ?? y;
+    const ne = values['E'] ?? e;
+    if (Math.abs(z - layer) < 0.0001 && ne > e && kind !== 'Skirt/Brim') {
+      if (kind.startsWith('Support')) {
+        supportMoves++;
+      } else {
+        const dx = nx - x;
+        const dy = ny - y;
+        const lengthSquared = dx * dx + dy * dy;
+        const t = lengthSquared
+          ? Math.max(
+              0,
+              Math.min(1, ((100 - x) * dx + (100 - y) * dy) / lengthSquared),
+            )
+          : 0;
+        if (Math.hypot(x + t * dx - 100, y + t * dy - 100) < 1) {
+          centreMoves++;
+        }
+      }
+    }
+    x = nx;
+    y = ny;
+    e = ne;
+  }
+  return { supportMoves, centreMoves };
+}
 afterEach(() => vi.unstubAllGlobals());
 describe('published owned geometry controls', () => {
+  it('checks the published slicer controls against their independent source geometry', async () => {
+    for (const [name, bytes, triangles, parts, min, max] of [
+      ['integral-overhang.stl', 1084, 20, 1, [0, 0, 0], [30, 10, 20]],
+      ['detached-tetrahedron.stl', 884, 16, 2, [0, 0, 0], [24, 10, 10]],
+      ['two-intended-cubes.stl', 1284, 24, 2, [0, 0, 0], [30, 10, 10]],
+      ['origin-cube.stl', 684, 12, 1, [0, 0, 0], [20, 20, 20]],
+      ['shifted-cube.stl', 684, 12, 1, [230, 20, -5], [250, 40, 15]],
+      ['open-through-channel.stl', 1684, 32, 1, [-10, -10, 0], [10, 10, 10]],
+      ['capped-channel.stl', 684, 12, 1, [-10, -10, 0], [10, 10, 10]],
+      ['overlapping-channel.stl', 2284, 44, 2, [-10, -10, 0], [10, 10, 10]],
+    ] as const) {
+      const sample = await file(`slicer-diagnosis/${name}`);
+      const analysed = analyseParts(parsePartStl(await sample.arrayBuffer()));
+      expect(sample.size).toBe(bytes);
+      expect(analysed.triangles).toBe(triangles);
+      expect(analysed.parts.length).toBe(parts);
+      expect(analysed.bounds.min).toEqual(min);
+      expect(analysed.bounds.max).toEqual(max);
+    }
+  });
+  it('recomputes support and clear-channel findings from retained slicer moves', async () => {
+    const off = await gcode('integral-overhang-no-support.gcode');
+    const on = await gcode('integral-overhang-support.gcode');
+    expect(off[0]).toContain('PrusaSlicer 2.9.6');
+    expect(layerEvidence(off, 5.2).supportMoves).toBe(0);
+    expect(layerEvidence(on, 5.2).supportMoves).toBe(20);
+    for (const [name, centre] of [
+      ['open-through-channel.gcode', 0],
+      ['capped-channel.gcode', 6],
+      ['overlapping-channel.gcode', 6],
+    ] as const) {
+      expect(layerEvidence(await gcode(name), 0.2).centreMoves).toBe(centre);
+    }
+  });
+  it('runs the channel and placement controls through local preflight geometry', async () => {
+    for (const [name, shells] of [
+      ['open-through-channel.stl', 1],
+      ['capped-channel.stl', 1],
+      ['overlapping-channel.stl', 2],
+    ] as const) {
+      const mesh = await readStl(await file(`slicer-diagnosis/${name}`));
+      const result = checkGeometry(mesh, settings);
+      expect(result.topology.openEdges).toBe(0);
+      expect(result.topology.shells).toBe(shells);
+      expect(result.dimensionsMm).toEqual({
+        width: 20,
+        height: 20,
+        depth: 10,
+      });
+    }
+    for (const name of ['origin-cube.stl', 'shifted-cube.stl']) {
+      const mesh = await readStl(await file(`slicer-diagnosis/${name}`));
+      expect(checkGeometry(mesh, settings).dimensionsMm).toEqual({
+        width: 20,
+        height: 20,
+        depth: 20,
+      });
+    }
+  });
+  it('distinguishes source placement from the slicer-centred paths', async () => {
+    expect(
+      await readFile(resolve(slicerEvidenceRoot, 'origin-cube.gcode')),
+    ).toEqual(
+      await readFile(resolve(slicerEvidenceRoot, 'shifted-cube.gcode')),
+    );
+    expect(
+      await readFile(resolve(slicerEvidenceRoot, 'capped-channel.gcode')),
+    ).toEqual(
+      await readFile(resolve(slicerEvidenceRoot, 'overlapping-channel.gcode')),
+    );
+    expect(
+      await readFile(
+        resolve(slicerEvidenceRoot, 'shifted-cube-no-arrange.txt'),
+        'utf8',
+      ),
+    ).toContain('All objects are outside of the print volume.');
+  });
+  it('reparses the measured file-size examples and their actual byte counts', async () => {
+    const ascii = await file(
+      'floating-parts/cube-plus-two-fragments-ascii.stl',
+    );
+    const binary = await file(
+      'floating-parts/cube-plus-two-fragments-binary.stl',
+    );
+    const original = await file('collection-review/detail-coupon.stl');
+    const reduced = await file('collection-review/detail-coupon-75.stl');
+    expect([ascii.size, binary.size, original.size, reduced.size]).toEqual([
+      1868, 1084, 1284, 984,
+    ]);
+    for (const item of [ascii, binary]) {
+      const parsed = parsePartStl(await item.arrayBuffer());
+      const analysis = analyseParts(parsed);
+      expect(analysis.triangles).toBe(20);
+      expect(analysis.bounds).toMatchObject({
+        min: [-8, 0, 0],
+        max: [31, 20, 20],
+      });
+    }
+    expect((await readStl(original)).indices.length / 3).toBe(24);
+    expect((await readStl(reduced)).indices.length / 3).toBe(18);
+  });
   it('resolves declared inches and transformed builds independently of the STL selector', async () => {
     const dom = new JSDOM();
     vi.stubGlobal('DOMParser', dom.window.DOMParser);
@@ -167,7 +331,7 @@ describe('visual diagnosis teaching controls', () => {
           example.group !== 'G-code evidence' &&
           example.group !== '3MF placements / export',
       ),
-    ).toHaveLength(13);
+    ).toHaveLength(16);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
     );

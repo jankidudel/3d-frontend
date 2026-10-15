@@ -1,234 +1,136 @@
 ---
-title: 'How to Check if a 3D Model Fits Your Printer | InspectMesh'
-description: Learn how to compare STL or 3MF model dimensions with a 3D printer’s build volume, account for orientation and avoid scaling mistakes before slicing.
+title: 'Will a 3D Model Fit Your Printer? | InspectMesh'
+description: 'Compare X/Y/Z spans, a tested right-angle rotation and explicit allowances with the printer’s usable space before checking final placement.'
 slug: how-to-check-if-a-3d-model-fits-your-printer
 eyebrow: 3D printing size guide
 heading: How to Check if a 3D Model Fits Your Printer
 faq:
-  - question: Does a model fit if one dimension equals the printer limit?
-    answer: It can fit mathematically, but leave practical clearance for brim, supports, printer limits and slicer setup rather than relying on an exact edge-to-edge fit.
-  - question: Can rotating a model make it fit?
-    answer: Yes. A right-angle rotation can place a different model dimension along the printer width, height or depth. Confirm the final arrangement in your slicer.
-  - question: Is it safe to scale a model down to fit?
-    answer: It can be, but proportional scaling also shrinks holes, wall thickness and functional clearances. Review those features after scaling.
+  - question: Does a mathematical bounding-box fit guarantee a printable job?
+    answer: No. Brims, supports, purge structures, bed shape, excluded areas and machine clearance still need review in the slicer.
+  - question: Is a model off the bed necessarily too large?
+    answer: No. Size is a span; source coordinates and slicer placement are separate. Check minima and maxima before changing scale.
 ---
 
 <p>
-  For STL files, the
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-    >STL Print Preflight Checker</a
-  >
-  adds mesh and sampled wall-thickness findings to this printer-fit review.
+  Compare the model's <strong>X, Y and Z spans</strong> with the printer's
+  usable envelope in the intended orientation. If one axis fails, test a
+  right-angle rotation and explicit allowances before scaling. A numerical fit
+  is only an early screen: the final placed job must still be checked in the
+  slicer.
 </p>
+<h2>Run a measured fit control</h2>
 <p>
-  Record the printer model and usable dimensions used for the decision so the
-  result is not reused for a different machine by accident.
+  Download the original
+  <a
+    href="{{ ExampleAsset.EnglishMarketBatchPrinterFit250x210x180Stl }}"
+    download
+    >250 × 210 × 180 mm rectangular STL</a
+  >. Its coordinate spans are the box dimensions under an explicit millimetre
+  assumption; STL does not store that unit. Enter a hypothetical usable X/Y/Z
+  box of 220 × 260 × 200 mm in the
+  <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">printer fit checker</a>.
 </p>
-<p>
-  For a cylindrical or irregular printer volume, test the actual footprint
-  rather than only the rectangular bounding-box numbers. Corners of that box may
-  lie outside a circular bed even when X and Y spans are each below its
-  diameter. Confirm placement in the target slicer.
-</p>
-
-<h2>Reproduce a custom envelope, then add explicit allowances</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Arrangement</th>
+      <th scope="col">X/Y/Z envelope</th>
+      <th scope="col">Result against 220 × 260 × 200 mm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Source orientation</td>
+      <td>250 × 210 × 180 mm</td>
+      <td>X exceeds the entered limit by 30 mm.</td>
+    </tr>
+    <tr>
+      <td>Right-angle rotation</td>
+      <td>210 × 250 × 180 mm</td>
+      <td>Fits nominally, with 10 mm left on X and Y.</td>
+    </tr>
+    <tr>
+      <td>Rotated plus a hypothetical 5 mm allowance on each X/Y side</td>
+      <td>220 × 260 × 180 mm</td>
+      <td>Exactly at both X/Y limits, with no residual margin.</td>
+    </tr>
+    <tr>
+      <td>Rotated plus a hypothetical 6 mm allowance on each X/Y side</td>
+      <td>222 × 262 × 180 mm</td>
+      <td>Fails X and Y.</td>
+    </tr>
+  </tbody>
+</table>
 <figure>
   <img
     src="/examples/diagnosis/fit-layout.svg"
     width="720"
     height="260"
     loading="lazy"
-    alt="250 by 210 by 180 mm model and a 220 by 260 by 200 mm custom box, with a fitting rotation."
+    alt="A 250 by 210 by 180 millimetre box rotates to 210 by 250 by 180 within a 220 by 260 by 200 box"
   />
   <figcaption>
-    X/Y/Z order is explicit. The projected control is not a collision or support
-    simulation.
+    Original box and arithmetic control. It is not a support, collision or
+    physical print test.
   </figcaption>
 </figure>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Custom X/Y/Z box: 220 × 260 × 200 mm</th>
-      <th scope="col">Model or footprint X/Y/Z</th>
-      <th scope="col">Decision</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Original distributed rectangular control</td>
-      <td>250 × 210 × 180 mm</td>
-      <td>Fails X</td>
-    </tr>
-    <tr>
-      <td>Right-angle rotation</td>
-      <td>210 × 250 × 180 mm</td>
-      <td>Fits nominally</td>
-    </tr>
-    <tr>
-      <td>Hypothetical 5 mm allowance on each side of X and Y</td>
-      <td>220 × 260 × 180 mm</td>
-      <td>Exactly at two limits; no residual margin</td>
-    </tr>
-    <tr>
-      <td>Hypothetical 6 mm allowance on each side of X and Y</td>
-      <td>222 × 262 × 180 mm</td>
-      <td>Fails X and Y</td>
-    </tr>
-  </tbody>
-</table>
 <p>
-  Load the rectangular control from
-  <a href="{{ GuideSlug.RouteExamples }}">the library</a> and enter that custom
-  build box. InspectMesh’s width/height/depth fields follow X/Y/Z, so check axis
-  labels rather than assuming a printer vendor's width/depth/height order.
-  Preflight's nominal fit does not add a brim or support allowance
-  automatically; the additions above are separate reproducible arithmetic, not
-  universal clearances.
+  The allowance numbers are deliberately hypothetical. Use the actual brim,
+  support, purge and excluded-area rules of the target printer and profile. A
+  circular bed also needs a footprint check; fitting its rectangular X/Y spans
+  does not prove that every corner lies within the printable circle.
 </p>
+<h2>Keep size and source position separate</h2>
 <p>
-  Rotation can improve fit while changing support, layer direction and contact.
-  Confirm the actual reserved bed regions, nozzle/toolhead clearance and
-  complete sliced footprint. A rectangular envelope does not perform general
-  collision checking or choose a support strategy.
+  The
+  <a href="{{ ExampleAsset.ShiftedCubeStl }}" download>shifted-cube control</a>
+  has 20 mm spans, yet its source X bounds are 230..250 mm and Z bounds are
+  -5..15 mm under the same unit assumption. It is small enough by dimension for
+  many beds but lies outside a hypothetical X=0..200 mm coordinate frame until a
+  placement operation moves it. The
+  <a href="{{ GuideSlug.RouteStlModelOffBuildPlate }}">off-bed diagnosis</a>
+  compares those source bounds with an actual PrusaSlicer centering run. Do not
+  shrink a part to solve an origin problem.
 </p>
-<h2>Fit does not choose the print orientation</h2>
+<h2>Apply the result to your file</h2>
+<ol>
+  <li>
+    Confirm STL units from a known design dimension, or read the declared 3MF
+    unit and resolved build placements. Measure X/Y/Z using the
+    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+      >STL dimensions checker</a
+    >
+    or
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
+      >3MF dimensions checker</a
+    >.
+  </li>
+  <li>
+    Record the exact printer's usable X/Y/Z limits and bed shape. Check each
+    span in the planned orientation; test a right-angle rotation if needed.
+  </li>
+  <li>
+    Add actual process allowances. Rotation can change supports, layer
+    direction, appearance and contact area, so judge it as a candidate rather
+    than an automatic improvement.
+  </li>
+  <li>
+    If no practical orientation fits, consider an intentional split or revise
+    the design.
+    <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}">Scaling</a>
+    also changes holes, walls and mating clearances.
+  </li>
+  <li>
+    Inspect final placement and the complete sliced footprint in the target
+    slicer. For already generated extrusion and travel coordinates, use the
+    separate
+    <a href="{{ GuideSlug.RouteGcodeOutsidePrintBed }}"
+      >G-code outside-bed guide</a
+    >.
+  </li>
+</ol>
 <p>
-  A fitting rotation may create heavy support, weak layer orientation, a small
-  bed contact area or an unacceptable visible surface. Review those trade-offs
-  before slicing. If no practical orientation fits with process allowances,
-  split the model at a deliberate joint or revise the design; do not silently
-  scale a dimension-critical part merely to make the bounding box pass.
-</p>
-<h2>Use usable volume, not only nominal dimensions</h2>
-<p>
-  Compare X, Y and Z with the printer's usable envelope, then consider brims,
-  clips, probes, gantry clearance and orientation. A right-angle rotation can
-  change the bounding dimensions, but it does not settle support, stability or
-  process-specific clearance.
-</p>
-<p>
-  For the wider pre-slice workflow, see
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
-    >how to check if a 3D model is ready to print</a
-  >.
-</p>
-<p>
-  For a tool-linked sequence from visual inspection through final verification,
-  see the
-  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
-    >3D print file preflight checklist</a
-  >.
-</p>
-<p>
-  Before a print starts, the model must fit inside the usable build volume of
-  your printer. That sounds simple, but problems often come from incorrect STL
-  units, an unexpected 3MF build transform, the wrong orientation or a model
-  that technically fits but leaves no room for practical printing clearances.
-</p>
-
-<h2>Know your printer’s usable build volume</h2>
-
-<p>
-  Find the printer's usable width, depth and height in millimetres. Use the
-  actual printable space configured in your slicer, not only a marketing
-  specification. A build volume might be stated as width × depth × height, while
-  a model measurement is shown as width × height × depth, so read the axis
-  labels carefully.
-</p>
-
-<h2>Measure the model before scaling it</h2>
-
-<p>
-  For STL, use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
-  >. STL files normally do not declare a reliable unit, so first choose the unit
-  used by the design software. A model interpreted as millimetres instead of
-  inches can be wrong by a very large factor.
-</p>
-
-<p>
-  For 3MF, use the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
-  >. A 3MF can declare a unit and can contain multiple placed build items, so
-  inspect the final resolved build dimensions rather than assuming the first
-  stored object represents the print.
-</p>
-
-<h2>Compare all three dimensions</h2>
-
-<p>
-  A model must fit within the build width, depth and height in its chosen
-  orientation. Do not compare only its height. A wide model can fail even when
-  it is short enough, and a tall model can require a different orientation or a
-  smaller scale.
-</p>
-
-<p>
-  The Dimensions Checkers can compare the model with a selected or entered
-  printer volume. Use the result as an early check, then confirm the final
-  placement in the slicer.
-</p>
-
-<h2>Try a right-angle rotation</h2>
-
-<p>
-  If a model does not fit in its current orientation, rotating it by 90 degrees
-  may place its longest side along a larger printer axis. This can be useful for
-  tall, narrow objects or flat, wide parts.
-</p>
-
-<p>
-  Rotation changes more than fit: it can affect supports, surface finish, part
-  strength and print time. A fitting orientation is a candidate, not
-  automatically the best print orientation.
-</p>
-
-<h2>Scale proportionally when necessary</h2>
-
-<p>
-  When no suitable orientation fits, scale the model proportionally to preserve
-  its shape. Review small holes, snap fits, wall thickness, lettering and
-  moving-part clearances afterwards. These features can stop working when the
-  entire model is reduced.
-</p>
-
-<p>
-  For more help with unit assumptions and proportional scaling, read
-  <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
-    >how to scale an STL file for 3D printing</a
-  >.
-</p>
-
-<h2>Leave real-world clearance</h2>
-
-<p>
-  Build-volume comparison checks model bounds. Your final slicer setup may also
-  require room for a brim, raft, supports, purge structures or a small
-  positioning margin. Inspect the slicer preview and avoid treating an exact
-  mathematical fit as a guaranteed practical fit.
-</p>
-
-<h2>Check one model against different nominal beds</h2>
-<p>
-  Illustrative rigid bounding box: 250 × 210 × 180 mm. Against an A1 Mini's
-  nominal 180 × 180 × 180 mm volume, no axis permutation can fit because at
-  least one axis exceeds 180 mm. Against an A1's nominal 256 × 256 × 256 mm box,
-  the same model fits geometrically without scaling. Those nominal dimensions
-  come from the linked printer catalogue's specification sources.
-</p>
-<p>
-  The 6 mm nominal margin on the 250 mm axis is not automatically usable for a
-  brim, purge structure or excluded bed area. A right-angle bounding-box check
-  does not find every arbitrary rotation, and it does not prove that the actual
-  footprint fits around clips or slicer reservations. The same geometry might be
-  practical after splitting even when a box fails.
-</p>
-<p>
-  <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">Try the fit checker</a>
-  with an explicit printer profile, then inspect your slicer bed. For a helmet,
-  compare wearer dimensions separately: fitting a printer does not establish fit
-  on a person's head. Use
-  <a href="{{ GuideSlug.RouteStlScaleTool }}">scale</a> only when changing
-  real-world dimensions is acceptable, or plan separate parts and joint
-  clearances.
+  This workflow tests geometric fit under stated inputs. It does not establish
+  collision clearance, support adequacy, strength or success on a physical
+  printer. Keep the selected printer and profile with the review record.
 </p>

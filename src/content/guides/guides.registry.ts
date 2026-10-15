@@ -196,7 +196,31 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 205,
     enabled: true,
     publishDate: '2026-10-08',
-    updatedDate: '2026-10-12',
+    updatedDate: '2026-10-14',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'floating-regions-in-slicer',
+    group: GuideGroupId.Stl,
+    order: 206,
+    enabled: true,
+    publishDate: '2026-10-15',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'stl-model-off-build-plate',
+    group: GuideGroupId.Stl,
+    order: 207,
+    enabled: true,
+    publishDate: '2026-10-15',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'slicer-fills-hole-in-stl',
+    group: GuideGroupId.Stl,
+    order: 208,
+    enabled: true,
+    publishDate: '2026-10-15',
     checkEditorialTargets: true,
   },
 
@@ -461,7 +485,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-15',
   },
   {
     slug: 'how-to-check-stl-for-errors',
@@ -496,6 +520,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-14',
   },
   {
     slug: 'stl-triangle-count-explained',
@@ -539,7 +564,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-11',
+    updatedDate: '2026-10-14',
   },
   {
     slug: 'how-to-reduce-stl-triangle-count',
@@ -556,7 +581,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-12',
+    updatedDate: '2026-10-14',
     checkEditorialTargets: false,
   },
   {
@@ -566,7 +591,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-14',
   },
   {
     slug: 'how-to-fix-flipped-normals-in-an-stl-file',
@@ -600,7 +625,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 140,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-09',
+    updatedDate: '2026-10-14',
     checkEditorialTargets: false,
   },
   {

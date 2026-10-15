@@ -1,206 +1,130 @@
 ---
-title: 'Fix STL Holes: Check Before Capping | InspectMesh'
-description: Check a known open-cube result, choose CAD or mesh editing when a face is missing, and verify the saved STL without confusing fragment removal with hole repair.
+title: 'Fix Holes in an STL: Check the Boundary First | InspectMesh'
+description: Compare open and closed cube controls, decide whether a surface is missing or intentional, and verify a deliberate CAD or mesh repair in the saved copy.
 slug: how-to-fix-holes-in-an-stl-file
 eyebrow: STL repair guide
 heading: How to Fix Holes in an STL File
 faq:
-  - question: Can an STL file with holes still print?
-    answer: Sometimes, but slicing results can be unreliable. A hole means the mesh is not a closed solid, so the slicer may create missing layers, unexpected walls or gaps.
-  - question: Does the InspectMesh STL Repair Tool fill holes automatically?
-    answer: No. It makes conservative repairs such as removing degenerate or duplicate triangles, but it does not reconstruct missing geometry or fill holes automatically.
-  - question: How do I know whether an STL hole was fixed?
-    answer: Recheck the saved copy after a deliberate CAD or mesh edit. A no-open-edge result confirms closure was detected, not that the new surface matches design intent or will print successfully.
+  - question: Does removing a floating fragment fill a surface hole?
+    answer: No. It discards selected existing triangles; it does not reconstruct missing faces or close an open boundary.
+  - question: Can a vessel have an open mouth and still be a closed material surface?
+    answer: Yes. A thick wall whose inner and outer surfaces meet around a rim may have no exposed mesh boundary; an uncapped single sheet differs.
 ---
 
 <p>
-  An STL surface hole is an exposed boundary in the triangle mesh. First check
-  whether a face is actually missing: the InspectMesh repair tool removes safe
-  triangle defects and selected disconnected pieces, but does not fill holes. A
-  missing functional surface needs a deliberate CAD or mesh edit, followed by a
-  check of the saved copy.
+  A hole in an STL surface is an exposed triangle boundary, but a visible
+  opening can also be an intentional passage. Check the boundary and the design
+  before adding faces. InspectMesh can report open edges; its repair tool does
+  not invent a missing surface.
 </p>
-
-<h2>A missing face is different from a vessel mouth</h2>
+<h2>Compare a known open and closed surface</h2>
+<p>
+  Download the
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a> and
+  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>closed cube</a>. Both
+  use 20-unit sides, assumed to be millimetres here because STL stores no unit.
+  The closed control has 12 triangles, zero boundary edges and screened volume
+  of 8,000 mm³. Deleting one square face removes two triangles: the open control
+  has 10 triangles and four boundary edges; its volume is unavailable, not zero.
+  Run both through the
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">watertight checker</a>
+  before interpreting your own file.
+</p>
 <figure>
   <img
     src="/examples/diagnosis/open-boundary.svg"
     width="720"
     height="260"
     loading="lazy"
-    alt="Four exposed boundary edges around a removed cube face."
+    alt="Two triangles missing from one face of a cube leave four exposed boundary edges"
   />
   <figcaption>
-    Removing the square face deletes two triangles. The opening is a surface
-    boundary.
+    Original mathematical cube control. The missing square face leaves a
+    boundary loop.
   </figcaption>
 </figure>
 <p>
-  The distributed closed cube has 12 triangles, no boundary edges and a screened
-  8,000 mm³ volume under millimetres. Removing one face gives 10 triangles and
-  four boundary edges; actual local preflight withholds volume. These known
-  geometry controls do not prove that another model should be filled.
+  An open mouth on a thick-walled vessel can still have a closed material
+  boundary: its inner and outer walls meet at a rim. A single uncapped sheet has
+  exposed edges. Neither appearance alone tells you whether to cap the mouth.
+  Compare the source design, nearby surfaces and intended channel before
+  editing. If a designed channel is present in the source but fills in sliced
+  layers, use the
+  <a href="{{ GuideSlug.RouteSlicerFillsHoleInStl }}"
+    >closed-channel slicer comparison</a
+  >
+  rather than patching an opening.
 </p>
-<p>
-  Download the
-  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a>
-  and the
-  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
-    >closed 20 mm control</a
-  >. The watertight checker reports four open edges on the first and none on the
-  second. Use the
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
-  to locate the type of finding; use preflight to review the broader report.
-</p>
-<p>
-  A hollow vessel can have an open mouth while its inner and outer wall surfaces
-  join around a rim, creating a closed material boundary. Filling that mouth
-  would change the design. Conversely, an uncapped single surface has exposed
-  edges. Confirm which surface was intended before applying closure.
-</p>
+<h2>Choose a repair from the intended surface</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Finding</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A simple planar face is accidentally absent</td>
+      <td>
+        Patch a copy in a mesh editor if the plane and boundary are unambiguous;
+        preserve the original.
+      </td>
+    </tr>
+    <tr>
+      <td>A curved, threaded or mating face is missing</td>
+      <td>
+        Rebuild from source CAD or use reference geometry for a manual
+        reconstruction. A flat automatic cap can alter function.
+      </td>
+    </tr>
+    <tr>
+      <td>A long seam or several nearby boundary loops appear</td>
+      <td>
+        Check whether two borders need welding or a designed feature is missing.
+        Do not cap each loop until the source shape is understood.
+      </td>
+    </tr>
+    <tr>
+      <td>The opening is a designed channel or vessel mouth</td>
+      <td>
+        Keep it. Check whether the material walls form the intended closed
+        boundary and inspect its sliced layers.
+      </td>
+    </tr>
+    <tr>
+      <td>Separate fragments exist elsewhere</td>
+      <td>
+        Review them in
+        <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
+          >STL Repair</a
+        >. Removing existing triangles does not fill the open cube's two missing
+        triangles.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Verify the saved copy, then the slices</h2>
 <ol>
   <li>
-    Download the paired controls from
-    <a href="{{ GuideSlug.RouteExamples }}">the library</a> and inspect the
-    opening.
+    Reopen the edited STL, not just the mesh-editor viewport. Compare the
+    patched region, local silhouette, dimensions and face orientation with the
+    original.
   </li>
   <li>
-    For a mathematically planar accidental cap, reconstruct a copy only if the
-    surface is unambiguous. Use source CAD for a thread, mating surface, curved
-    contour or uncertain intent.
+    Run the same boundary and broader
+    <a href="{{ GuideSlug.RouteStlPrintPreflight }}">preflight checks</a>. Zero
+    open edges confirms closure under that method, not the correct shape,
+    absence of intersections or physical suitability.
   </li>
   <li>
-    Reopen the saved copy in preflight. Check open edges, winding, dimensions
-    and the repaired region against the source, then review the actual slicer
-    layers. A zero boundary count alone does not show the correct patch was
-    made.
+    Inspect the affected layers in your selected slicer for missing or
+    unexpected perimeters and a changed channel. Save the original and edited
+    exports separately.
   </li>
 </ol>
-<h2>Distinguish boundary types before filling</h2>
 <p>
-  A missing planar cap has one simple boundary loop and may be safely filled
-  with a flat patch. A torn curved surface needs new faces that follow the
-  surrounding shape. Several nearby loops can indicate a deleted feature, while
-  a long seam may be two surface borders that should be welded rather than
-  capped. An intentional opening, such as a drain or socket, is not damage at
-  all.
-</p>
-<p>
-  Use automatic closure only when the proposed patch is obvious and does not
-  alter function. For a mechanical face, threaded region, mating surface or
-  sculpted contour, repair in the source CAD or manually rebuild the local mesh
-  with reference geometry. Filling a loop proves only that a boundary was
-  closed; it does not prove the replacement surface has the intended shape.
-</p>
-<p>
-  Verify boundary-edge count, manifold status, normals, dimensions and the local
-  silhouette after repair. Compare the repaired area directly with the original,
-  then inspect sliced layers. Reject the repair if it bridges separate shells,
-  closes a deliberate passage or creates a thin internal sheet.
-</p>
-<h2>Match the repair to the opening</h2>
-<p>
-  A small accidental boundary with clear surrounding shape may be repairable; a
-  large opening, intended cavity or failed boolean deserves source-CAD
-  correction. Keep the original, repair one copy, and re-check closure and
-  dimensions before slicing. A visually filled hole is not sufficient evidence
-  of a sound solid.
-</p>
-<p>
-  That matters because a 3D printer needs a clear inside and outside. If the
-  model is open, a slicer has to guess what the object should look like.
-  Sometimes it guesses correctly; sometimes it creates missing walls, strange
-  infill, gaps, or a print that looks fine in preview but fails part-way
-  through.
-</p>
-<h2>Start by checking whether the model is actually open</h2>
-<p>
-  A visible crack is not the only sign of a hole. Small gaps can be hidden
-  inside a detailed mesh, under overlapping surfaces, or around thin features.
-</p>
-<p>
-  Upload the file to the
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
-  first. It looks for open edges: triangle edges that are used only once instead
-  of being shared by a neighbouring triangle.
-</p>
-<p>
-  You can also use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> for a
-  broader report. It checks for open edges alongside other problems, including
-  degenerate triangles, duplicate faces and non-manifold geometry.
-</p>
-<p>
-  If the report shows open edges, the STL is not watertight. It may still be
-  usable for a visual model, but it needs attention before dependable 3D
-  printing.
-</p>
-<h2>Why holes appear in STL files</h2>
-<p>
-  Holes commonly appear when a model was exported from CAD with missing faces,
-  when separate parts were joined imperfectly, or when a mesh was edited without
-  closing the resulting boundary.
-</p>
-<p>
-  They can also appear after boolean operations, mesh reduction, sculpting, file
-  conversion or incomplete downloads. A model may look solid in a viewer because
-  the rendering software displays both sides of a surface, even though the mesh
-  is technically open.
-</p>
-<h2>Choose the right repair approach</h2>
-<p>
-  Small, simple gaps are often repairable in mesh-editing software. A typical
-  workflow is:
-</p>
-<ol>
-  <li>Identify the open boundary.</li>
-  <li>Inspect the nearby triangles for overlapping or damaged geometry.</li>
-  <li>Create faces across the gap.</li>
-  <li>Recalculate normals if needed.</li>
-  <li>Re-check the model for open and non-manifold edges.</li>
-</ol>
-<p>
-  For a simple mechanical part, returning to the original CAD model is usually
-  the cleanest solution. Repairing the original solid and exporting a fresh STL
-  avoids accidental changes to dimensions.
-</p>
-<p>
-  For downloaded or sculpted meshes where the original model is unavailable,
-  tools such as Blender, MeshLab or dedicated mesh-repair software can sometimes
-  close the boundary. Check the repaired result carefully, especially around
-  thin walls, holes for screws, and mating surfaces.
-</p>
-<h2>What InspectMesh can repair safely</h2>
-<p>
-  The <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> can safely
-  remove certain triangle-level defects, such as exact duplicate or degenerate
-  triangles. These repairs may improve a file that has several issues at once.
-</p>
-<p>
-  It does <strong>not</strong> pretend to fill missing geometry automatically.
-  Reconstructing a hole requires deciding what shape belongs there, and an
-  automatic guess can easily alter a functional part.
-</p>
-<p>
-  Removing a detached fragment on the same repair page changes which existing
-  triangles are retained; it does not add the missing face or close its four
-  boundary edges. Keep these two operations separate, then recheck the
-  selection-only or repaired download that you actually intend to use.
-</p>
-<p>
-  After any repair, run the file through the
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
-  again. A successful result should show that the mesh is closed, with no open
-  edges remaining.
-</p>
-<h2>Check the slicer before printing</h2>
-<p>
-  Even after a watertight result, open the file in your slicer and inspect the
-  layer preview. Look for missing perimeters, sudden gaps, unexpected bridges or
-  areas with no infill. This is especially important if the repair was made
-  around a load-bearing feature or a surface that must fit another part.
-</p>
-<p>
-  A watertight STL is not a guarantee of a perfect print, but it removes one of
-  the most common sources of unpredictable slicing behaviour.
+  If the intended surface cannot be inferred, return to the design source. A
+  visually closed or watertight mesh can still slice incorrectly or fail as a
+  physical part.
 </p>

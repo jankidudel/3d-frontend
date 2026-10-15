@@ -1,269 +1,131 @@
 ---
-title: 'Reduce STL File Size: Choose Your Method | InspectMesh'
-description: Choose binary, triangle reduction, CAD re-export or stop based on the file-size need. Compare the exact reopened output before replacing the original.
+title: 'Reduce STL File Size: Choose a Method | InspectMesh'
+description: Compare measured ASCII, binary and simplified STL outputs, then choose transfer compression, re-encoding, CAD export or mesh reduction.
 slug: how-to-reduce-stl-file-size
-eyebrow: STL optimisation guide
-heading: How to Reduce STL File Size Without Losing Print Quality
+eyebrow: STL transfer guide
+heading: How to Reduce STL File Size
 faq:
-  - question: Does a smaller STL file always mean lower print quality?
-    answer: No. Many STL files contain far more triangles than a printer can reproduce at the chosen layer height and nozzle size. Sensible reduction can leave the visible print unchanged.
-  - question: What is the best way to check whether an STL has too many triangles?
-    answer: Check its triangle count, inspect the model at its intended size and compare the mesh detail with what your printer can physically reproduce.
-  - question: Can InspectMesh reduce STL file size automatically?
-    answer: InspectMesh can convert ASCII STL to binary locally and create a controlled simplified copy. Check every simplified result before printing.
+  - question: Does ZIP create a smaller slicer-ready STL?
+    answer: No. ZIP can help transfer, but the receiver normally needs the extracted STL.
+  - question: Why can a 75% target output have a different triangle count?
+    answer: The target is a request to the simplifier. Its topology constraints and algorithm can produce a different count; reparse the exact export.
 ---
 
 <p>
-  Large STL files are often slower to upload, open, slice and share. A file can
-  contain hundreds of thousands of triangles even when the final print cannot
-  show that level of surface detail.
+  If you need a smaller transferable STL, check its encoding first. Re-encode
+  ASCII as binary when the receiver accepts it; reduce triangles only when a
+  smaller mesh is still needed and local detail can be reviewed. Keep the
+  original until the receiving slicer opens the exact new file.
+</p>
+<h2>Two measured controls</h2>
+<p>
+  The owned
+  <a href="{{ ExampleAsset.CubePlusTwoFragmentsAsciiStl }}" download
+    >ASCII three-piece control</a
+  >
+  is 1,868 bytes. Its
+  <a href="{{ ExampleAsset.CubePlusTwoFragmentsBinaryStl }}" download
+    >binary counterpart</a
+  >
+  is 1,084 bytes. Both reparse to 20 triangles with the same coordinate bounds:
+  X -8 to 31 units, Y 0 to 20 and Z 0 to 20. This fixture uses exact integer
+  coordinates, so its Float32 binary values agree with the text values. Other
+  ASCII decimals can round on binary export. Ordinary binary triangle records
+  occupy <code>84 + 50N</code> bytes for N triangles; 20 gives 1,084 bytes.
+  Colour extensions or non-standard records need separate verification.
 </p>
 <p>
-  Record the receiving application's maximum or practical limit before
-  optimizing.
+  The
+  <a href="{{ ExampleAsset.DetailCouponStl }}" download
+    >24-triangle raised-ridge coupon</a
+  >
+  is 1,284 bytes. Its independently generated
+  <a href="{{ ExampleAsset.DetailCoupon75Stl }}" download>75% target copy</a>
+  is 984 bytes and reopens at 18 triangles. Both retain 40 × 20 × 10.5 unit
+  outer bounds, two shells and zero reported boundary or over-shared edges. A
+  finite comparison at 5,000 surface samples in each direction and 0.1-unit
+  tolerance measured a maximum of 0.2329025659 units, a mean of 0.00051183744
+  units and 25 samples above tolerance. These samples are not a whole-surface
+  bound; equal outer bounds do not prove the ridge or a functional fit survived.
+  The
+  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
+    >triangle-count guide</a
+  >
+  owns the full ridge experiment and the rejected 50% alternative.
 </p>
-<p>
-  Compressing an STL inside an archive may help storage or transfer, but the
-  receiving slicer usually still needs the extracted STL. Treat transport
-  compression separately from a smaller interoperable mesh file.
-</p>
-
-<h2>Compare before and after with the same checks</h2>
-<p>
-  Start with binary conversion when the source is ASCII and the receiver accepts
-  binary STL. That changes storage encoding without changing triangle count. Use
-  decimation only when fewer triangles are actually acceptable; it is a lossy
-  geometry operation even if the displayed model looks similar at one zoom
-  level.
-</p>
-<p>
-  Before replacing the original, record bytes, triangle count, dimensions,
-  watertightness and manifold status. After reduction, compare the silhouette at
-  several angles, curved surfaces, holes, thin features and mating faces, then
-  run the same measurements and mesh checks. Finally open the smaller file in
-  the receiving slicer. A file that uploads faster but shifts a hole or
-  introduces an open edge is not a successful optimization.
-</p>
-<p>
-  Keep the high-resolution source and name reduced derivatives by purpose. There
-  is no universal target byte size: choose the least destructive method that
-  satisfies the actual upload, storage or application constraint.
-</p>
-<h2>Choose storage encoding or surface simplification</h2>
-<p>
-  Binary STL conversion can reduce bytes without changing triangles. Decimation
-  changes geometry and needs a copy plus before/after checks of dimensions,
-  silhouette and critical holes. Pick a reduction target based on the workflow
-  problem, not a universal triangle number.
-</p>
+<h2>Choose by the receiving constraint</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Choice</th>
-      <th scope="col">Use it when</th>
-      <th scope="col">What changes</th>
-      <th scope="col">Decision check</th>
+      <th scope="col">Need</th>
+      <th scope="col">First route</th>
+      <th scope="col">Check before use</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Re-encode as binary</td>
-      <td>The source is ASCII and the receiver accepts binary STL</td>
+      <td>Smaller attachment or archive only</td>
+      <td>ZIP the original for transfer, then extract it.</td>
       <td>
-        Storage representation; ASCII decimal coordinates may round to Float32
-      </td>
-      <td>
-        Reopen the exact output and compare triangle records, bounds and
-        precision-sensitive features
+        The slicer receives the extracted STL; ZIP is not a slicer-ready STL.
       </td>
     </tr>
     <tr>
-      <td>Reduce triangles</td>
+      <td>Smaller STL from ASCII</td>
       <td>
-        The binary file remains too large or slow and fewer facets are
-        acceptable
+        Use <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">the reducer</a> to
+        generate binary encoding.
       </td>
-      <td>Surface geometry and potentially local features</td>
       <td>
-        Reparse the downloaded candidate; compare counts, topology, bounds,
-        sampled deviation and named features
-      </td>
-    </tr>
-    <tr>
-      <td>Re-export from CAD</td>
-      <td>
-        The editable design is available and its tessellation is unnecessarily
-        fine
-      </td>
-      <td>Mesh tessellation from the source model</td>
-      <td>
-        Set export tolerance for the part, then compare holes, curves and mating
-        dimensions
+        Reopen the downloaded bytes and compare triangle records, bounds and
+        precision-sensitive dimensions.
       </td>
     </tr>
     <tr>
-      <td>Stop and keep the original</td>
+      <td>Binary STL still exceeds a size or import limit</td>
+      <td>Try a modest simplification on a copy.</td>
       <td>
-        A smaller file requires losing a critical detail or exceeds an unknown
-        recipient constraint
+        Compare actual count, topology, sampled deviation, named features and
+        slicer layers. Simplification is lossy.
       </td>
-      <td>Nothing until the requirement is clarified</td>
+    </tr>
+    <tr>
+      <td>Editable CAD source exists</td>
+      <td>Re-export with a suitable tessellation tolerance.</td>
       <td>
-        Confirm the receiver's limit or ask for another format; no percentage
-        guarantees feature preservation
+        Check curves, holes, mating dimensions and the exact exported STL. The
+        CAD source remains authoritative.
       </td>
+    </tr>
+    <tr>
+      <td>No known limit or detail cannot be sacrificed</td>
+      <td>Keep the original until the receiver's requirement is known.</td>
+      <td>Smaller bytes alone do not establish an acceptable print.</td>
     </tr>
   </tbody>
 </table>
-<p>
-  Reducing file size is not about making a model rougher for the sake of it. The
-  aim is to remove detail your printer cannot reproduce while keeping the shape
-  and important features intact.
-</p>
-<h2>Start with triangle count, not file size alone</h2>
-<p>
-  File size is useful, but triangle count tells you more about mesh complexity.
-  Use the
-  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a> to
-  see how many faces the model contains.
-</p>
-<p>
-  A high count is not automatically wrong. Organic sculpts, miniatures and
-  curved display pieces may genuinely need many triangles. But a simple bracket,
-  box or mechanical part with an extremely dense mesh is usually a sign that it
-  was exported with unnecessarily fine settings.
-</p>
-<p>
-  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to inspect the
-  file at its intended print size. If you cannot see the individual facets or
-  the extra surface detail at that size, the model may be a good candidate for
-  simplification.
-</p>
-<h2>Remove unnecessary mesh problems first</h2>
-<p>
-  Before using a general mesh-reduction tool, run the file through the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
-  Duplicate triangles and degenerate faces add data without improving the print.
-</p>
-<p>
-  The <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> can remove
-  exact duplicates and degenerate triangles. This will not dramatically reduce
-  every large file, but it is a sensible clean-up step and avoids simplifying
-  defects into a more complicated problem.
-</p>
-<h2>Simplify the mesh carefully</h2>
-<h3>Convert ASCII STL to binary first</h3>
-<p>
-  An ASCII STL stores every triangle as readable text, which can make the file
-  much larger than the same geometry stored in binary STL. Converting ASCII STL
-  to binary does not intentionally remove triangles. Binary Float32 coordinates
-  can round arbitrary text decimals; recheck precision-sensitive coordinates and
-  the receiving application.
-</p>
-<p>
-  If the file is already binary STL, there is usually little room for an
-  encoding-only reduction. To make a binary STL substantially smaller, you
-  normally need to reduce its triangle count, which changes the mesh and should
-  be checked before printing.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a> to
-  see whether your file is ASCII or binary, compare the size before and after
-  conversion, and optionally create a simplified copy.
-</p>
-<p>
-  General mesh simplification is usually done in software such as Blender,
-  MeshLab or your CAD/export tool. Look for options called decimate, reduce,
-  simplify or mesh reduction.
-</p>
-<p>Work gradually:</p>
-<ol>
-  <li>Save a copy of the original STL.</li>
-  <li>Reduce the triangle count by a modest amount.</li>
-  <li>Compare the simplified mesh with the original.</li>
-  <li>
-    Inspect curves, holes, text, thin walls and functional mating surfaces.
-  </li>
-  <li>Open both versions in your slicer and compare layer previews.</li>
-</ol>
-<p>
-  Mechanical parts need special care. A simplification step can round a sharp
-  edge, alter a hole diameter or damage a flat surface that needs to mate with
-  another component.
-</p>
-<h2>Export with sensible settings</h2>
-<p>
-  If you still have the original CAD or modelling file, re-exporting is often
-  better than simplifying an STL repeatedly.
-</p>
-<p>
-  When exporting curved geometry, choose a tolerance that is finer than the
-  detail your printer can reproduce, but not dramatically finer. A 0.4 mm nozzle
-  and typical layer heights do not benefit from microscopic facets across every
-  curve.
-</p>
-<p>
-  The right setting depends on the part’s size, material, nozzle, layer height
-  and the visual importance of smooth curves.
-</p>
-<h2>Validate the smaller file</h2>
-<p>
-  After reducing or re-exporting, use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  to confirm that the overall size has not changed. Then re-run the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
-  inspect the model in your slicer.
-</p>
-<p>
-  The best STL is not the smallest possible file. It is the smallest file that
-  still produces the print you intended, slices reliably and retains the details
-  that matter.
-</p>
-
-<figure>
-  <img
-    src="/examples/reduction-review/independent-branches.svg"
-    width="720"
-    height="600"
-    alt="Original retained with independent encoding, 75 percent and 50 percent candidate branches"
-  />
-  <figcaption>
-    Original analytical schematic, not a physical print measurement.
-  </figcaption>
-</figure>
-<h2>Review actual candidate bytes before accepting savings</h2>
+<h2>Review the exact candidate</h2>
 <ol>
   <li>
-    Load the original into
-    <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">the reducer</a>; nothing
-    simplifies on upload.
+    Record original bytes, triangle count and the feature that must remain.
   </li>
   <li>
-    Generate binary encoding first, then at most two independent reduction
-    alternatives. Each starts from the original.
+    Generate one candidate from the original in the
+    <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a>.
+    Nothing simplifies on upload.
   </li>
   <li>
-    Inspect the actual reopened count, bytes, coordinate bounds and supported
-    topology. Negative bytes saved means the output grew.
+    Open the serialized result and compare count, bounds and supported topology.
+    Treat unavailable checks as unknown.
   </li>
   <li>
-    Select a candidate and explicitly run its inline comparison. This uses the
-    existing revision method, original coordinates, the same unit on both sides,
-    and 5,000 samples per direction.
-  </li>
-  <li>
-    Review named holes, ribs and mating faces, then download the exact reviewed
-    blob and its selected-candidate report. Retain the original.
+    For a reduced mesh, run the tool's explicit comparison and inspect relevant
+    ridges, holes and sliced layers in the receiving profile.
   </li>
 </ol>
 <p>
-  A 12-triangle cube encodes to 684 bytes; encoding a 684-byte binary cube again
-  gives no positive saving.
-  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}"
-    >Float32 representation limits</a
-  >
-  differ from deliberate surface simplification. A larger original can exceed
-  the comparison's unchanged 5 MiB or 100,000-triangle budget: use manual
-  receiving-application review when comparison is unavailable.
+  For the representation difference and Float32 limits, see
+  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}">ASCII versus binary STL</a>.
+  This is a software and geometry comparison under a millimetre assumption for
+  discussion; no physical print was tested.
 </p>

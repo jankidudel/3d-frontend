@@ -37,7 +37,11 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   coordinate triples and complete shared edges; point-touching surfaces remain
   separate. Kept triangle coordinates and winding are preserved. A disconnected
   slicer region may still belong to a continuous mesh through another path, so
-  this count does not locate every unsupported island.
+  this count does not locate every unsupported island. The
+  <a href="{{ GuideSlug.RouteFloatingRegionsInSlicer }}"
+    >slicer-layer comparison</a
+  >
+  shows a continuous overhang that needs a different decision.
 </p>
 <h2>Two similar parts can both be intentional</h2>
 <p>
@@ -45,9 +49,10 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   <a href="{{ ExampleAsset.TwoIntendedPartsBinaryStl }}" download
     >two intended cubes</a
   >: inspection finds two pieces and 24 triangles. Their surface areas differ by
-  less than 10%, so the largest-piece suggestion does not select one by default.
-  Separate parts are not evidence of fragments; confirm the design before
-  changing the retained set.
+  less than 10%. Both remain kept by default. Pressing Keep largest part first
+  shows a warning; only a second confirmation applies the reversible proposal.
+  Keep all / Reset selection restores both. Separate parts are not evidence of
+  fragments; confirm the design before changing the retained set.
 </p>
 <h2>Repeated 3MF placements are a different question</h2>
 <p>
@@ -150,20 +155,22 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   to keep independent findings and unsupported checks in a report.
 </p>
 
-<h2>Review floating segments without replacing your upload</h2>
+<h2>Use the piece control on the same upload</h2>
 <p>
-  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
-    >Remove floating parts from STL</a
-  >
-  on the existing repair page. Choose a file once, review the neutral count of
-  disconnected mesh pieces, then open the optional removal panel. Every piece
-  starts retained. Select unwanted pieces or propose keeping the largest by
-  surface area, review the preview and explicitly download the retained STL.
+  On
+  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts">STL Repair</a>,
+  Try the three-part example opens the review automatically. A user-selected STL
+  also opens review when analysis finds multiple pieces; a single-piece file
+  explains why no removal is offered. Every piece starts kept. Keep largest part
+  proposes retaining the greatest surface-area piece, with triangle count and
+  stable piece ID as tie-breaks. Review the preview and manually restore any
+  intended piece before downloading. Collapsing review leaves a visible pending
+  selection; Keep all / Reset selection restores the original set.
 </p>
 <p>
-  This feature uses exact shared edges; point contact does not join surfaces. It
-  does not identify design intent, detect all unsupported slicer regions or
-  generate supports. Inner cavity surfaces and intended separate parts may be
-  necessary. Selection-only export retains the chosen triangles' coordinates and
-  winding; standard server cleanup remains a separate explicit action.
+  This local selection uses exact shared edges; point contact does not join
+  surfaces. It does not identify slicer support islands, generate supports or
+  run standard server cleanup. The saved selection preserves source coordinates
+  and winding under the source STL unit assumption. Verify the downloaded copy
+  in the slicer before treating any removed piece as an export fragment.
 </p>

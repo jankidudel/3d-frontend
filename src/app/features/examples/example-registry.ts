@@ -812,7 +812,7 @@ export const publicExamples: readonly PublicExample[] = [
     observed:
       'The edge-connected removal analysis finds 3 parts. Explicitly keeping the cube exports 12 triangles; the saved copy retains its original coordinates, winding and 20-unit dimensions.',
     settings:
-      'On STL Repair, choose the file once, open Review / remove floating parts, propose Keep largest part by surface area, review, then Download cleaned STL. Millimetres are assumed, not stored in STL.',
+      'On STL Repair, choose the generated example to open review automatically, press Keep largest part, inspect the reversible selection, then download the STL with kept pieces. Millimetres are assumed, not stored in STL.',
     limitations:
       'The example defines which body is intended. Real files require design review; cavity boundaries and lettering can be necessary. Removal does not generate supports or establish printability.',
     guide: '/stl-multiple-shells-disconnected-parts',
@@ -846,6 +846,138 @@ export const publicExamples: readonly PublicExample[] = [
     tools: ['/stl-repair'],
     provenance:
       'Original InspectMesh generated mathematical geometry, reproduced by scripts/generate-floating-parts-fixtures.mts. No physical print evidence.',
+  },
+  {
+    id: 'slicer-floating-regions',
+    name: 'Floating-region diagnosis',
+    group: 'Slicer diagnosis',
+    question: 'Is the region unsupported, detached or an intended second part?',
+    files: [
+      {
+        path: ExampleAsset.IntegralOverhangStl,
+        name: 'integral-overhang.stl',
+        bytes: 1084,
+      },
+      {
+        path: ExampleAsset.DetachedTetrahedronStl,
+        name: 'detached-tetrahedron.stl',
+        bytes: 884,
+      },
+      {
+        path: ExampleAsset.TwoIntendedCubesStl,
+        name: 'two-intended-cubes.stl',
+        bytes: 1284,
+      },
+      {
+        path: ExampleAsset.OverhangNoSupportGcode,
+        name: 'integral-overhang-no-support.gcode',
+        bytes: 127544,
+      },
+      {
+        path: ExampleAsset.OverhangSupportGcode,
+        name: 'integral-overhang-support.gcode',
+        bytes: 179552,
+      },
+    ],
+    preview: '/examples/slicer-diagnosis/overhang-layer.svg',
+    alt: 'Actual 5.2 mm layer paths: support-off versus support-on.',
+    known:
+      'A 20-triangle continuous arm, a 16-triangle cube plus tetrahedron and two intended 10 mm cubes.',
+    observed:
+      'PrusaSlicer 2.9.6 warned about floating bridge anchors without support; the support-on run has 20 support moves at Z=5.2 mm versus none without support.',
+    settings:
+      'Default 200 × 200 mm bed; centred at 100,100; 0.4 mm nozzle, 0.45 mm width, 0.2 mm layer and first layer, two perimeters, 15% infill.',
+    limitations:
+      'Software paths are not physical print evidence. The support outcome depends on profile and orientation.',
+    guide: '/floating-regions-in-slicer',
+    tools: ['/stl-print-preflight', '/stl-repair'],
+    provenance:
+      'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
+  },
+  {
+    id: 'slicer-placement',
+    name: 'Source coordinates and slicer placement',
+    group: 'Slicer diagnosis',
+    question: 'Can a 20 mm cube be outside a 200 mm bed?',
+    files: [
+      { path: ExampleAsset.OriginCubeStl, name: 'origin-cube.stl', bytes: 684 },
+      {
+        path: ExampleAsset.ShiftedCubeStl,
+        name: 'shifted-cube.stl',
+        bytes: 684,
+      },
+      {
+        path: ExampleAsset.ShiftedCubePlacedGcode,
+        name: 'shifted-cube.gcode',
+        bytes: 438758,
+      },
+    ],
+    preview: '/examples/slicer-diagnosis/placement.svg',
+    alt: 'A 20 mm source cube at X230 to 250 lies beyond a 200 mm bed; a tested center operation relocates it.',
+    known:
+      'Both cubes have 20 mm spans; shifted bounds are X230..250, Y20..40 and Z-5..15, assuming millimetres.',
+    observed:
+      'PrusaSlicer 2.9.6 with --dont-arrange reported all objects outside print volume; --center 100,100 yielded G-code byte-identical to the origin control.',
+    settings:
+      'Default 200 × 200 mm bed; 0.4 mm nozzle, 0.45 mm width, 0.2 mm layers, two perimeters and 100% rectilinear infill.',
+    limitations:
+      'The diagram represents source bounds and the tested placement, not a universal import rule or machine safety check.',
+    guide: '/stl-model-off-build-plate',
+    tools: ['/stl-dimensions-checker', '/stl-viewer'],
+    provenance:
+      'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
+  },
+  {
+    id: 'slicer-channel',
+    name: 'A channel that stays open or fills',
+    group: 'Slicer diagnosis',
+    question: 'Why did an intended through-channel become solid paths?',
+    files: [
+      {
+        path: ExampleAsset.OpenThroughChannelStl,
+        name: 'open-through-channel.stl',
+        bytes: 1684,
+      },
+      {
+        path: ExampleAsset.CappedChannelStl,
+        name: 'capped-channel.stl',
+        bytes: 684,
+      },
+      {
+        path: ExampleAsset.OverlappingChannelStl,
+        name: 'overlapping-channel.stl',
+        bytes: 2284,
+      },
+      {
+        path: ExampleAsset.OpenThroughChannelGcode,
+        name: 'open-through-channel.gcode',
+        bytes: 364940,
+      },
+      {
+        path: ExampleAsset.CappedChannelGcode,
+        name: 'capped-channel.gcode',
+        bytes: 227568,
+      },
+      {
+        path: ExampleAsset.OverlappingChannelGcode,
+        name: 'overlapping-channel.gcode',
+        bytes: 227568,
+      },
+    ],
+    preview: '/examples/slicer-diagnosis/channel-layer.svg',
+    alt: 'Actual first-layer paths show a clear channel centre versus filled central extrusion.',
+    known:
+      'The control has a 6 × 6 mm through-channel; a solid cap or an overlapping cube closes its intended path. All have zero open edges.',
+    observed:
+      'In PrusaSlicer 2.9.6, the open channel has no extrusion within 1 mm of centre on the first layer; the cap and overlap each have six and identical complete G-code.',
+    settings:
+      'Default 200 × 200 mm bed; 0.4 mm nozzle, 0.45 mm width, 0.2 mm layers, two perimeters and 100% rectilinear infill.',
+    limitations:
+      'One profile and layer comparison cannot establish physical hole accuracy or diagnose an arbitrary customer file.',
+    guide: '/slicer-fills-hole-in-stl',
+    tools: ['/stl-viewer', '/stl-print-preflight'],
+    provenance:
+      'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
   },
 ];
 /** Only registry IDs are accepted; unknown values never become fetch locations. */

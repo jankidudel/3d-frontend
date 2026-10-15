@@ -24,6 +24,7 @@ import {
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
 import {
   PartLimits,
+  closeLargestAreas,
   rankedParts,
   type MeshPart,
   type PartAnalysis,
@@ -53,6 +54,10 @@ export class FloatingParts {
   readonly error = signal('');
   readonly open = signal(false);
   readonly removed = signal<ReadonlySet<number>>(new Set());
+  readonly confirmLargest = signal(false);
+  readonly largestAreasClose = computed(() =>
+    this.analysis() ? closeLargestAreas(this.analysis()!) : false,
+  );
   readonly cleanedPreview = signal(false);
   readonly highlighted = signal<number | null>(null);
   readonly page = signal(0);
@@ -194,11 +199,23 @@ export class FloatingParts {
   }
   private select(next: Set<number>): void {
     this.removed.set(next);
+    this.confirmLargest.set(false);
     this.downloaded.set(null);
     this.selectionVersion++;
   }
   reset(): void {
     this.select(new Set());
+  }
+  keepLargest(): void {
+    const parts = this.orderedParts();
+    if (parts.length < 2 || this.exporting()) {
+      return;
+    }
+    if (this.largestAreasClose() && !this.confirmLargest()) {
+      this.confirmLargest.set(true);
+      return;
+    }
+    this.select(new Set(parts.slice(1).map((part) => part.id)));
   }
   onTriangle(face: number): void {
     const id = this.analysis()?.faceParts[face];
@@ -275,6 +292,7 @@ export class FloatingParts {
     this.isolated.set(null);
     this.thumbnails.set([]);
     this.removed.set(new Set());
+    this.confirmLargest.set(false);
     this.downloaded.set(null);
     this.releasePreview();
     this.error.set(
@@ -354,6 +372,7 @@ export class FloatingParts {
     this.isolated.set(null);
     this.thumbnails.set([]);
     this.removed.set(new Set());
+    this.confirmLargest.set(false);
     this.open.set(false);
     this.page.set(0);
     this.highlighted.set(null);

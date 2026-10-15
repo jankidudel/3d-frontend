@@ -243,6 +243,14 @@ describe('optional STL part removal lifecycle', () => {
       'No disconnected pieces found',
     );
     expect(fixture.nativeElement.textContent).toContain(
+      'Only one piece was found, so there is nothing to remove.',
+    );
+    expect(
+      [...fixture.nativeElement.querySelectorAll('button')].some(
+        (button) => button.textContent?.trim() === 'Keep largest part',
+      ),
+    ).toBe(false);
+    expect(fixture.nativeElement.textContent).toContain(
       'This tool does not generate supports',
     );
     const download = fixture.nativeElement.querySelector(
@@ -255,7 +263,7 @@ describe('optional STL part removal lifecycle', () => {
     fixture.destroy();
   });
   it('warns that several similarly sized pieces are not automatically waste', () => {
-    const { fixture, worker } = create();
+    const { fixture, instance, worker } = create();
     const cubes = [0, 3, 6].flatMap((x) => cubeTriangles(1, [x, 0, 0]));
     worker.reply(response(cubes));
     fixture.detectChanges();
@@ -263,9 +271,69 @@ describe('optional STL part removal lifecycle', () => {
       'No single piece dominates this model',
     );
     expect(fixture.nativeElement.textContent).toContain('33.3%');
-    expect(fixture.nativeElement.textContent).not.toContain(
-      'Keep largest part',
+    instance.review();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Keep largest part');
+    instance.keepLargest();
+    expect(instance.removed().size).toBe(0);
+    expect(instance.confirmLargest()).toBe(true);
+    instance.keepLargest();
+    expect(instance.removed().size).toBe(2);
+    instance.reset();
+    expect(instance.removed().size).toBe(0);
+    fixture.destroy();
+  });
+  it('requires confirmation for the intended 20-unit and 19-unit cubes', () => {
+    const { fixture, instance, worker } = create();
+    worker.reply(
+      response([...cubeTriangles(20), ...cubeTriangles(19, [30, 0, 0])]),
     );
+    instance.review();
+    fixture.detectChanges();
+    expect(instance.keptTriangles()).toBe(24);
+    expect(instance.largestAreasClose()).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain(
+      'Both pieces may be intended',
+    );
+    instance.keepLargest();
+    fixture.detectChanges();
+    expect(instance.keptTriangles()).toBe(24);
+    expect(fixture.nativeElement.textContent).toContain(
+      'Confirm: Keep largest part',
+    );
+    instance.keepLargest();
+    expect(instance.keptTriangles()).toBe(12);
+    instance.reset();
+    expect(instance.keptTriangles()).toBe(24);
+    fixture.destroy();
+  });
+  it('proposes the greatest surface area and exports exactly the cube faces', async () => {
+    const { fixture, instance, worker } = create();
+    worker.reply(response());
+    instance.review();
+    fixture.detectChanges();
+    const shortcut = [...fixture.nativeElement.querySelectorAll('button')].find(
+      (button) => button.textContent?.trim() === 'Keep largest part',
+    ) as HTMLButtonElement;
+    shortcut.click();
+    fixture.detectChanges();
+    expect(instance.removed()).toEqual(new Set([1, 2]));
+    expect(instance.keptTriangles()).toBe(12);
+    expect(worker.postMessage).toHaveBeenCalledTimes(1);
+    instance.closeReview();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain(
+      'Removal selections are pending: 2 pieces',
+    );
+    instance.review();
+    expect(instance.removed()).toEqual(new Set([1, 2]));
+    const source = parsePartStl(binaryFixture(demoTriangles()));
+    const analysis = analyseParts(source);
+    const { exportParts } = await import('./disconnected-parts');
+    const saved = await exportParts(source, analysis, [...instance.removed()]);
+    expect(saved.size).toBe(684);
+    const reparsed = parsePartStl(await saved.arrayBuffer());
+    expect(reparsed.positions).toEqual(new Float32Array(cubeTriangles()));
     fixture.destroy();
   });
 });

@@ -1,284 +1,111 @@
 ---
-title: 'How to Repair an STL File for 3D Printing | InspectMesh'
-description: Learn which STL problems can be cleaned automatically, when holes and non-manifold geometry need manual repair, and how to verify a repaired STL before slicing.
+title: 'Repair an STL File: Match the Fault to the Method | InspectMesh'
+description: Decide when conservative cleanup, component selection or source-model reconstruction fits an STL fault, then verify the saved derivative.
 slug: how-to-repair-an-stl-file
 eyebrow: STL repair guide
 heading: How to Repair an STL File for 3D Printing
 faq:
-  - question: Can an STL file be repaired automatically?
-    answer: Some problems can be cleaned safely, including duplicate triangles, degenerate faces and certain normal-orientation issues. Holes and complex non-manifold geometry often need further manual repair.
-  - question: Will repairing an STL change its dimensions?
-    answer: Safe cleanup should preserve the model’s geometry and dimensions. Check the repaired file again before slicing, especially if the original had several issues.
-  - question: Is a cleaned STL always ready to print?
-    answer: No. Re-check it for open edges, non-manifold geometry and other remaining problems, then review it in your slicer before printing.
+  - question: Does Keep largest part also run standard repair?
+    answer: No. It only changes the local retained-component selection. Standard cleanup is a separate explicit server action.
+  - question: Can standard cleanup fill a missing cube face?
+    answer: No. The missing face requires a deliberate reconstruction from the design. Safe cleanup does not create that missing surface.
 ---
 
 <p>
-  STL repair is not one universal operation. A model can look fine while
-  containing mesh faults that create gaps, strange toolpaths or warnings in a
-  slicer. Keep the original file and work on a copy so that every change can be
-  checked.
+  Diagnose the actual mesh fault before editing. A duplicate face needs a
+  different operation from a missing surface, and a detached piece may be an
+  intended part. Keep the original, save each derivative separately and compare
+  the exact file you will slice.
 </p>
-<p>
-  Keep the repair log with the derivative: original filename, reported fault,
-  operation applied and verification result. That small record prevents an
-  automatically reconstructed mesh from being mistaken for the untouched design
-  source later.
-</p>
-<h2>Safe STL Repair in InspectMesh</h2>
-<p>
-  Standard server cleanup can remove exact duplicate triangles and degenerate
-  faces, and reverse triangle winding in a closed manifold region only when its
-  orientation can be determined. It does not cap boundaries, weld vertices, join
-  overlapping shells or delete disconnected parts. The separate selection-only
-  workflow on the same
-  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts">repair page</a>
-  can retain chosen pieces without changing their coordinates or winding.
-</p>
-<p>
-  It cannot reliably fill holes, invent missing geometry, remesh a surface, or
-  repair every non-manifold or self-intersecting model. A downloaded cleaned STL
-  can still contain unsupported problems, so it is not automatically
-  print-ready.
-</p>
-<p>
-  The result report distinguishes an unsuccessful job from a completed cleanup
-  that still has findings. A download is a checked derivative, not a
-  watertightness or print-success guarantee. For example, the
-  <a href="{{ ExampleAsset.CubePlusTwoFragmentsBinaryStl }}" download
-    >cube with two detached tetrahedra</a
-  >
-  is a piece-selection control: removing the tetrahedra leaves the cube's 12
-  triangles, but a similar selection cannot fill an opening in the remaining
-  surface.
-</p>
-
-<h2>Check, clean, check again, then slice</h2>
-<ol>
-  <li>Run the quality check and keep the original STL.</li>
-  <li>
-    Use safe cleanup for duplicate, degenerate or supported orientation issues.
-  </li>
-  <li>Download the cleaned copy and upload it again to verify the result.</li>
-  <li>Compare dimensions, inspect the model and preview it in your slicer.</li>
-</ol>
-<p>
-  Checking again matters because safe cleanup does not fabricate missing
-  surfaces or change unsupported topology. Confirm the final size and allow for
-  supports, bed adhesion and the printer's usable area before printing.
-</p>
-<h2>When manual repair is needed</h2>
-<p>
-  Open edges and holes, non-manifold joins, self-intersections and damaged
-  design intent need a modelling, mesh-repair or slicer tool. Do not assume a
-  one-click repair understands a mechanical feature, thin wall or internal
-  cavity. If issues remain after safe cleanup, stop and repair the model in a
-  desktop tool or return to the source CAD model.
-</p>
-
-<p><a href="{{ GuideSlug.RouteStlRepair }}">Clean an STL safely</a></p>
-<p>
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">Check STL quality</a> ·
-  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">Check STL topology</a> ·
-  <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
-    >How to Fix Non-Manifold STL Geometry</a
-  >
-</p>
-<h2>Fault-to-method decision table</h2>
 <table>
   <thead>
     <tr>
-      <th>Fault</th>
-      <th>Conservative route</th>
-      <th>Stop condition</th>
+      <th scope="col">Finding</th>
+      <th scope="col">Narrowest useful action</th>
+      <th scope="col">Stop when</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Degenerate or exact duplicate triangle</td>
-      <td>Remove the defective face on a copy and re-check</td>
-      <td>Nearby geometry disappears or topology worsens</td>
+      <td>Exact duplicate or degenerate triangle</td>
+      <td>
+        Run explicit standard cleanup on the
+        <a href="{{ GuideSlug.RouteStlRepair }}">repair page</a>; it uploads
+        this file for server processing.
+      </td>
+      <td>Geometry disappears or the report retains a serious finding.</td>
     </tr>
     <tr>
-      <td>Inconsistent orientation</td>
-      <td>Recalculate connected-shell orientation</td>
-      <td>The shell is open or inside/outside remains ambiguous</td>
+      <td>Orientation conflict on an otherwise closed region</td>
+      <td>Review a supported cleanup correction and recheck winding.</td>
+      <td>The shell is open or its intended inside is ambiguous.</td>
     </tr>
     <tr>
-      <td>Small accidental opening</td>
-      <td>Fill only when the intended boundary is clear</td>
-      <td>The missing surface contains design detail</td>
+      <td>Detached component</td>
+      <td>
+        Use local piece review on
+        <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
+          >the same repair page</a
+        >. All pieces start kept; Keep largest part proposes the greatest-area
+        piece, with a near-equal warning.
+      </td>
+      <td>You cannot identify whether another piece is intended.</td>
     </tr>
     <tr>
-      <td>Non-manifold junction</td>
-      <td>Separate or remodel the conflicting surfaces</td>
-      <td>Software must guess which volume is intended</td>
+      <td>Missing surface or open boundary</td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
+          >Reconstruct the known surface</a
+        >
+        from CAD or in a mesh editor.
+      </td>
+      <td>The cap shape or design intent is uncertain.</td>
     </tr>
     <tr>
-      <td>Overlapping shells or self-intersection</td>
-      <td>Repair the boolean/source model</td>
-      <td>Automatic union changes cavities or dimensions</td>
+      <td>Non-manifold join or intersecting shells</td>
+      <td>Repair the Boolean or assembly in the source model.</td>
+      <td>An automatic union would alter a cavity or mating face.</td>
     </tr>
   </tbody>
 </table>
-<h2>Safe cleanup versus destructive reconstruction</h2>
+<h2>Know which download you are making</h2>
 <p>
-  Safe cleanup removes unambiguous invalid data or corrects orientation without
-  inventing a surface. Reconstruction creates faces, merges shells, remeshes or
-  smooths the object. Those operations can erase holes, text, clearances and
-  sharp features. Keep the original and use reconstruction only when you can
-  compare the result with design intent.
+  Piece review runs in your browser and exports only retained original triangle
+  coordinates and winding. It does not fix duplicate faces or add missing
+  geometry. The example's 20 triangles include a 12-triangle cube and two
+  four-triangle tetrahedra. Keeping largest proposes the cube, but surface area
+  is only a ranking rule, not evidence that the other pieces are waste.
 </p>
-<h2>Choose an alternative when browser repair is insufficient</h2>
 <p>
-  Return to the native CAD model for failed booleans, missing features or
-  dimension-critical work. Use established desktop mesh software when you need
-  localized selection, manual boundary construction or visual comparison. A
-  slicer may compensate for some faults, but a successful slice is not evidence
-  that the repaired geometry matches the design.
+  Standard cleanup is separate. It starts only when you press Clean STL safely
+  and uploads the selected file. Its report names removed duplicate or
+  degenerate triangles, orientation corrections and unresolved reasons. It does
+  not automatically apply your local Keep selection. An open-face cube remains
+  open unless a deliberate source edit restores its missing two triangles.
 </p>
-<h2>Revalidate the saved copy</h2>
+<h2>Verify the derivative against its purpose</h2>
 <ol>
   <li>
-    Compare overall dimensions, triangle count and visible features with the
-    original.
+    Reopen the saved STL and record its triangle count, bounds and supported
+    <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality findings</a>. An
+    unavailable volume is not zero.
   </li>
-  <li>Run quality, watertightness and manifold checks again.</li>
-  <li>Inspect cross-sections when internal shells or cavities matter.</li>
-  <li>Open the copy in the target slicer and review every affected layer.</li>
   <li>
-    Use a small test print for a dimension-critical or load-bearing repair.
+    Check the region you meant to change. Compare the original and derivative in
+    <a href="{{ GuideSlug.RouteStlCompare }}">STL revision comparison</a> when
+    surface movement matters; finite samples do not certify all features.
+  </li>
+  <li>
+    Inspect affected slicer layers, dimensions, openings and intended separate
+    parts. Keep the source CAD or original STL for correction.
   </li>
 </ol>
 <p>
-  InspectMesh STL Repair uploads the selected STL for server processing. Local
-  preflight, collection checks and revision comparison are separate browser
-  tools. It does not infer missing design intent or certify the repaired model
-  as printable.
-</p>
-<h2>Repair examples by symptom</h2>
-<p>
-  If a slicer omits one region and the checker reports an open boundary there,
-  inspect the source opening before filling it. If the preview creates an
-  unexpected solid slab and several shells overlap, fix the boolean or source
-  assembly rather than deleting arbitrary faces. If only orientation is
-  inconsistent on an otherwise closed shell, recalculation may be the narrowest
-  appropriate operation.
-</p>
-<h2>Protect dimensions and topology</h2>
-<p>
-  Record the original bounding dimensions, volume when valid, triangle count and
-  important feature measurements. After repair, unexpected movement in any of
-  those values is a reason to inspect further. Remeshing and smoothing can make
-  a file look cleaner while changing fit-critical geometry.
-</p>
-<p>
-  For downloaded models without source intent, prefer a conservative result and
-  document uncertainty. For your own model, repair the native design and export
-  again whenever possible; this preserves editable dimensions and avoids adding
-  another lossy mesh-processing step.
-</p>
-<h2>Know when no repair is the safer result</h2>
-<p>
-  A warning can be acceptable only when you understand the intended geometry and
-  the target slicer's interpretation. Do not remove an internal surface that
-  defines a deliberate cavity, close a boundary that is meant to remain open, or
-  merge components that must move separately. Document any warning you
-  intentionally retain, inspect the corresponding layers and keep the unchanged
-  file available for comparison.
-</p>
-
-<h2>Verify a repair against the original revision</h2>
-<p>
-  Keep the input and output as separate files. A triangle-count reduction can
-  mean duplicate faces were removed, but it can also hide removed geometry.
-  Dimensions and screened volume are useful checks, yet neither alone proves
-  that an intentional hole, lettering or thin rib survived.
-</p>
-<p>
-  Use <a href="{{ GuideSlug.RouteStlCompare }}">revision comparison</a> in
-  original coordinates after a repair. The unchanged retriangulation control
-  demonstrates why different triangle connectivity is not necessarily a shape
-  change. The known widened-cube control demonstrates a 4 mm surface change even
-  when most of the model stays in place.
-</p>
-<p>
-  Choose a review tolerance appropriate to your own task; the sampled result is
-  not certified tolerancing. Inspect locations over tolerance, check boundary
-  and winding findings again, then slice the repaired copy. Automatic cleanup
-  does not know which disconnected shell was intentional, and an open model's
-  volume should remain unavailable until the geometry supports a solid
-  interpretation.
-</p>
-
-<h2>Can automatic slicer repair change intended geometry?</h2>
-<p>
-  Yes: operations that construct faces, union shells or remesh necessarily
-  choose a surface interpretation. An intentional open surface may be capped, or
-  two separate overlapping components may be merged. These are risks to check,
-  not observed universal results across slicers. Conservative duplicate removal
-  is a different operation.
-</p>
-<p>
-  For the owned open-face cube, the original has 10 triangles, four boundary
-  edges and no reliable closed volume. Adding the intended square face gives the
-  original closed control: 12 triangles, zero boundary edges and 8,000 mm³. That
-  is a mathematical reconstruction example, not a claim that any slicer
-  performed that repair. If the missing face was intentional, the new closed
-  solid is a changed design.
-</p>
-<ol>
-  <li>
-    Keep original and repaired exports separately with application version and
-    repair settings.
-  </li>
-  <li>
-    Compare topology, dimensions and critical openings; bounds alone can miss
-    internal changes.
-  </li>
-  <li>
-    <a href="{{ GuideSlug.RouteStlCompare }}">Compare the STL surfaces</a> with
-    explicit units and alignment.
-  </li>
-  <li>
-    Inspect affected native slicer layers. Return to CAD when the intended
-    surface cannot be inferred.
-  </li>
-</ol>
-<p>
-  Prusa documents limited automatic repair in
-  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
-    >the diagnostic context</a
-  >; its
-  <a
-    href="https://help.prusa3d.com/article/corrupted-3d-models-for-printing_2205"
-    >official repair documentation</a
-  >
-  was reviewed on 7 October 2026. Platform-specific external-repair availability
-  is not established here. No unperformed slicer repair result is claimed.
-</p>
-
-<p>
-  Before removing disconnected pieces,
-  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
-    >identify intended shells, overlaps and fragments</a
-  >. A shell count is not a repair instruction.
-</p>
-
-<h2>Review floating segments without replacing your upload</h2>
-<p>
-  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
-    >Remove floating parts from STL</a
-  >
-  on the existing repair page. Choose a file once, review the neutral count of
-  disconnected mesh pieces, then open the optional removal panel. Every piece
-  starts retained. Select unwanted pieces or propose keeping the largest by
-  surface area, review the preview and explicitly download the retained STL.
-</p>
-<p>
-  This feature uses exact shared edges; point contact does not join surfaces. It
-  does not identify design intent, detect all unsupported slicer regions or
-  generate supports. Inner cavity surfaces and intended separate parts may be
-  necessary. Selection-only export retains the chosen triangles' coordinates and
-  winding; standard server cleanup remains a separate explicit action.
+  The generated widened-cube comparison reveals a 4 mm surface change; a
+  retriangulated control has different bytes with zero displayed sampled
+  deviation. These controls show why bytes and triangle count alone cannot
+  establish an acceptable repair. If the intended surface is unknown, do not
+  infer it from a successful download or clean-looking preview. For a broader
+  failed-import diagnosis, use
+  <a href="{{ GuideSlug.RouteStlFileWontSlice }}">the slice-failure guide</a>.
 </p>

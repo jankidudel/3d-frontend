@@ -81,6 +81,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'how-inspectmesh-checks-files',
       'how-to-check-a-3mf-file-for-errors',
       'stl-file-wont-slice',
+      'floating-regions-in-slicer',
       'why-wont-my-3mf-file-slice',
     ],
   },
@@ -99,6 +100,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'what-is-non-manifold-geometry',
       'self-intersecting-mesh-vs-non-manifold',
       'how-to-tell-if-an-stl-is-watertight',
+      'slicer-fills-hole-in-stl',
     ],
   },
   {
@@ -149,6 +151,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'how-to-check-stl-wall-thickness-for-3d-printing',
       'how-to-check-3mf-wall-thickness-for-3d-printing',
       'how-to-check-if-a-3d-model-fits-your-printer',
+      'stl-model-off-build-plate',
       'how-to-rotate-a-3d-model-to-fit-your-printer',
       'how-to-orient-an-stl-file-for-3d-printing',
       'how-to-arrange-multiple-parts-on-a-3d-printer-bed',

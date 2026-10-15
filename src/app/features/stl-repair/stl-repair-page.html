@@ -154,9 +154,10 @@
       <ol>
         <li>Choose one STL above. Automatic detection retains every piece.</li>
         <li>
-          Use Previous and Next to review each piece highlighted on the full
-          model. Clear Keep only for pieces you do not want. Review the whole
-          model before downloading.
+          The example opens review automatically. Use Previous and Next to
+          inspect pieces, or press Keep largest part to propose the
+          greatest-area component. Similar areas trigger a warning and require
+          confirmation. Restore intended pieces with Keep, or reset to keep all.
         </li>
         <li>
           Download STL with kept pieces to save the retained triangles, then
@@ -222,10 +223,11 @@
           >Two intended cube parts</a
         >
         has 20-unit and 19-unit cubes: 2 parts / 24 triangles. Both start
-        retained, and their surface areas are within 10%. Removing the smaller
-        one by size alone would discard an intended object. Lettering, inner
-        cavity surfaces and print-in-place mechanisms can also contain necessary
-        disconnected shells.
+        retained. Their areas differ by less than 10%, so Keep largest part
+        first warns and asks for confirmation. Reset restores both. Removing the
+        smaller one by size alone would discard an intended object. Lettering,
+        inner cavity surfaces and print-in-place mechanisms can also contain
+        necessary disconnected shells.
       </p>
       <h3>How are separate shells found?</h3>
       <p>

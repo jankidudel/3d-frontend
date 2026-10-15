@@ -39,6 +39,9 @@
           : 'This model contains ' + result.parts.length + ' separate pieces'
       }}. Separate does not necessarily mean unwanted.
     </p>
+    @if (result.parts.length === 1) {
+      <p>Only one piece was found, so there is nothing to remove.</p>
+    }
     @if (result.parts.length > 1 && largestAreaPercent() < 50) {
       <p class="interpretation-warning">
         No single piece dominates this model. The largest accounts for only
@@ -58,12 +61,12 @@
           {{ open() ? 'Close piece selection' : 'Choose pieces to keep' }}
         </button>
       }
-      @if (removed().size) {
+      @if (!open() && removed().size) {
         <button
           type="button"
           class="button secondary"
           (click)="reset()"
-          [disabled]="exporting()"
+          [disabled]="exporting() || !removed().size"
         >
           Keep all / Reset selection
         </button>
@@ -162,6 +165,45 @@
       @if (open()) {
         <aside id="parts-panel" aria-labelledby="parts-panel-title">
           <h3 id="parts-panel-title" tabindex="-1">Review the pieces</h3>
+          <div class="part-actions">
+            @if (result.parts.length > 1) {
+              <button
+                type="button"
+                class="button secondary"
+                (click)="keepLargest()"
+                [disabled]="exporting()"
+              >
+                {{
+                  confirmLargest()
+                    ? 'Confirm: Keep largest part'
+                    : 'Keep largest part'
+                }}
+              </button>
+              <button
+                type="button"
+                class="button secondary"
+                (click)="reset()"
+                [disabled]="exporting() || !removed().size"
+              >
+                Keep all / Reset selection
+              </button>
+            }
+          </div>
+          <p class="chooser-help">
+            Keep largest part proposes the piece with the greatest surface area.
+            Triangle count, then stable piece ID, break ties. Nothing is
+            downloaded until you choose Download STL with kept pieces.
+          </p>
+          @if (largestAreasClose()) {
+            <p class="interpretation-warning" role="status">
+              The two largest surface areas differ by at most 10%. Both pieces
+              may be intended. Review their locations before choosing one.
+              @if (confirmLargest()) {
+                Press Confirm: Keep largest part to apply this reversible
+                selection.
+              }
+            </p>
+          }
           <p class="chooser-help">
             Select a piece to see it on the whole model. Decide whether it
             belongs before removing it.
