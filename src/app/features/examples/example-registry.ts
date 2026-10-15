@@ -21,6 +21,49 @@ export interface PublicExample {
 }
 export const publicExamples: readonly PublicExample[] = [
   {
+    id: 'quality-control-selection',
+    name: 'Quality report controls',
+    group: 'Boundaries / topology',
+    question:
+      'How do a missing face, duplicate face and malformed file differ in the report?',
+    files: [
+      {
+        path: ExampleAsset.Closed20mmCubeStl,
+        name: 'closed-20mm-cube.stl',
+        bytes: 684,
+      },
+      {
+        path: ExampleAsset.OpenFaceCubeStl,
+        name: 'open-face-cube.stl',
+        bytes: 584,
+      },
+      {
+        path: ExampleAsset.DuplicateFaceCubeStl,
+        name: 'duplicate-face-cube.stl',
+        bytes: 734,
+      },
+      {
+        path: ExampleAsset.DiagnosisMalformedStl,
+        name: 'malformed.stl',
+        bytes: 57,
+      },
+    ],
+    preview: '/examples/diagnosis/open-boundary.svg',
+    alt: 'A closed cube and a cube missing one square face illustrate report differences.',
+    known:
+      'The 20-coordinate cube has 12 triangles; removing a square gives 10; repeating one face gives 13. The malformed text is not STL geometry.',
+    observed:
+      'The processor reports zero listed issues, four open edges, one exact duplicate with three over-shared edges, and a parse error, respectively.',
+    settings:
+      'Download controls without uploading. Explicitly submit one at a time to the Quality Checker for a server report.',
+    limitations:
+      'A clean report covers supported findings only. Parsing failure is not a zero-finding result.',
+    guide: '/how-to-check-stl-for-errors',
+    tools: ['/stl-quality-checker', '/stl-manifold-checker'],
+    provenance:
+      'Original InspectMesh generated geometry and measured processor results; no physical print test.',
+  },
+  {
     id: 'units-scale',
     name: 'Size and units',
     group: 'Size / units',
@@ -76,6 +119,81 @@ export const publicExamples: readonly PublicExample[] = [
     tools: ['/stl-viewer', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
+  },
+  {
+    id: 'sheet-versus-plate',
+    name: 'Open sheet and closed plate',
+    group: 'Boundaries / topology',
+    question: 'Does the model enclose material or only display a surface?',
+    files: [
+      {
+        path: ExampleAsset.DiagnosisHorizontalSheetStl,
+        name: 'horizontal-sheet.stl',
+        bytes: 184,
+      },
+      {
+        path: ExampleAsset.DiagnosisVerticalSheetStl,
+        name: 'vertical-sheet.stl',
+        bytes: 184,
+      },
+      {
+        path: ExampleAsset.DiagnosisClosedPlateStl,
+        name: 'closed-1-unit-plate.stl',
+        bytes: 684,
+      },
+    ],
+    preview: '/examples/diagnosis/sheet-versus-plate.svg',
+    alt: 'An open sheet has exposed perimeter edges; a closed plate has front, back and side faces.',
+    known:
+      'Two 20 by 20 coordinate-unit sheets contain two triangles each; the 20 by 20 by 1 plate contains 12.',
+    observed:
+      'The processor reports four boundary edges on each sheet and zero on the plate. The closed plate has 400 cubic coordinate units; an open sheet has no reliable enclosed volume.',
+    settings:
+      'Open locally in the STL Viewer; optional server quality analysis requires an explicit upload. No slicer output is claimed for these controls.',
+    limitations:
+      'STL has no unit. A vertical sheet has nonzero Z span while still lacking thickness. Edge counts do not measure arbitrary wall width.',
+    guide: '/zero-thickness-stl-surface',
+    tools: ['/stl-viewer', '/stl-quality-checker'],
+    provenance:
+      'Original InspectMesh generated geometry and measured processor results; no physical print test.',
+  },
+  {
+    id: 'internal-sheet',
+    name: 'Hidden sheet versus cavity wall',
+    group: 'Boundaries / topology',
+    question:
+      'Is an unseen internal face a defect or an intended material boundary?',
+    files: [
+      {
+        path: ExampleAsset.Closed20mmCubeStl,
+        name: 'closed-20mm-cube.stl',
+        bytes: 684,
+      },
+      {
+        path: ExampleAsset.DiagnosisInternalSheetCubeStl,
+        name: 'cube-with-internal-sheet.stl',
+        bytes: 784,
+      },
+      {
+        path: ExampleAsset.OpenThroughChannelStl,
+        name: 'open-through-channel.stl',
+        bytes: 1684,
+      },
+    ],
+    preview: '/examples/diagnosis/internal-sheet-channel.svg',
+    alt: 'Cross-sections show a plain cube, a detached internal divider, and inner walls around an intended channel.',
+    known:
+      'A two-triangle square at Z10 lies wholly inside the 20-unit cube; a separate closed channel control has an intended 6 by 6 passage.',
+    observed:
+      'The internal-sheet cube has 14 triangles, four boundary edges and two vertex-components. The closed channel has 32 triangles and zero boundary edges.',
+    settings:
+      'Use Inspect cross-section in the local viewer before deciding whether an internal surface belongs.',
+    limitations:
+      'The processor does not label design intent or test all spatial intersections. Do not delete an inner wall solely from its area.',
+    guide: '/internal-faces-in-stl',
+    tools: ['/stl-viewer', '/stl-quality-checker'],
+    provenance:
+      'Original InspectMesh generated geometry and measured processor results; no physical print test.',
   },
   {
     id: 'duplicate-winding',

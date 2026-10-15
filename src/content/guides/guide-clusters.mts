@@ -98,6 +98,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'how-to-fix-flipped-normals-in-an-stl-file',
       'how-to-remove-duplicate-triangles-from-an-stl-file',
       'what-is-non-manifold-geometry',
+      'internal-faces-in-stl',
       'self-intersecting-mesh-vs-non-manifold',
       'how-to-tell-if-an-stl-is-watertight',
       'slicer-fills-hole-in-stl',
@@ -149,6 +150,7 @@ export const guideClusters: readonly GuideCluster[] = [
     slugs: [
       '3d-print-wall-thickness-guide',
       'how-to-check-stl-wall-thickness-for-3d-printing',
+      'zero-thickness-stl-surface',
       'how-to-check-3mf-wall-thickness-for-3d-printing',
       'how-to-check-if-a-3d-model-fits-your-printer',
       'stl-model-off-build-plate',

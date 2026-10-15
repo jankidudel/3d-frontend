@@ -70,7 +70,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '⌁',
         title: 'STL Manifold Checker',
         description:
-          'Check whether an STL is closed and manifold, with clear counts for open edges, non-manifold edges and separate shells.',
+          'Count exposed and over-shared STL edges plus vertex-connected groups; review the surface before repair.',
         route: PublicRouteUrl.ManifoldChecker,
         cta: 'Check STL topology',
       },

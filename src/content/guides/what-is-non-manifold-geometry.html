@@ -1,142 +1,150 @@
 ---
-title: 'What Is Non-Manifold Geometry in 3D Printing? | InspectMesh'
-description: Learn what non-manifold geometry means, why it causes STL slicing problems, and how to check a 3D model before printing.
+title: 'What Is Non-Manifold Geometry? | InspectMesh'
+description: 'Compare open, ordinary and over-shared edges with known STL controls, and see what separate shells and crossings require you to check next.'
 slug: what-is-non-manifold-geometry
-eyebrow: STL mesh guide
-heading: What Is Non-Manifold Geometry?
+eyebrow: Mesh topology explained
+heading: 'What Does Non-Manifold Geometry Mean?'
 faq:
-  - question: Is a non-manifold model always impossible to print?
-    answer: Not always. Some slicers can cope with simple problems, but the result is less predictable and can include missing walls, stray material or incorrect infill.
-  - question: Are non-manifold edges the same as holes?
-    answer: No. A hole usually creates open edges, while a non-manifold edge is commonly shared by more than two faces. Both can prevent a clean solid mesh.
-  - question: Can InspectMesh repair non-manifold geometry?
-    answer: InspectMesh can identify non-manifold edges and safely remove some simple triangle-level defects. Complex topology problems may need manual repair or a return to the original model.
+  - question: Can two closed parts be separate without an edge defect?
+    answer: Yes. The separate-cube control has two vertex-connected components and no boundary or over-shared edges; whether both parts belong is a design decision.
+  - question: Does a zero boundary count prove one printable solid?
+    answer: No. The crossing-cube control has no boundary edges while its surfaces intersect; the edge test does not identify that crossing.
 ---
 
-<p>
-  Non-manifold geometry is mesh geometry that does not describe one clear,
-  physically meaningful solid. In a printable model, software should be able to
-  identify a consistent outside, inside and surface boundary.
+<p class="lead">
+  Non-manifold geometry means a surface does not join into one unambiguous
+  neighbourhood everywhere. An edge used by more than two triangles is an easy
+  example. A hole, two separate closed parts and surfaces that cross in space
+  are different observations; they can also cause slicing trouble, but an
+  edge-count result cannot identify all of them.
 </p>
+<h2>The three edge patterns</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/edge-incidence.svg"
+    width="720"
+    height="260"
+    loading="lazy"
+    alt="One triangle at a boundary edge, two triangles at an ordinary interior edge, and three triangles sharing an over-shared edge. Each panel labels the face count in text."
+  />
+  <figcaption>
+    Owned 2D edge-incidence diagram. The heavy line is the same tested edge;
+    adjacent triangles are shown as separate wedges.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Faces incident on an edge</th>
+      <th scope="col">Report meaning</th>
+      <th scope="col">What it cannot decide</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One</td>
+      <td>Boundary or open edge</td>
+      <td>Whether the opening was intended</td>
+    </tr>
+    <tr>
+      <td>Two</td>
+      <td>Ordinary shared edge; direction is checked separately</td>
+      <td>Whether the complete solid is sound</td>
+    </tr>
+    <tr>
+      <td>Three or more</td>
+      <td>Over-shared edge, labelled non-manifold edge in the report</td>
+      <td>Which face should be removed</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Cases an edge count cannot settle</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Downloadable control</th>
+      <th scope="col">Implemented checker result</th>
+      <th scope="col">Additional question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>Open cube</a>
+      </td>
+      <td>10 faces, four boundary edges</td>
+      <td>Was the square face meant to be present?</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>Closed cube</a>
+      </td>
+      <td>12 faces, no edge findings</td>
+      <td>Does the shape match the source?</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.DuplicateFaceCubeStl }}" download
+          >Duplicate face</a
+        >
+      </td>
+      <td>13 faces, one duplicate, three over-shared edges</td>
+      <td>Is one exact face redundant?</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.DiagnosisSeparatedCubesStl }}" download
+          >Separate cubes</a
+        >
+      </td>
+      <td>24 faces, two vertex-connected components, no edge findings</td>
+      <td>Are two parts intended?</td>
+    </tr>
+    <tr>
+      <td>Point-only contact</td>
+      <td>
+        Server vertex connectivity may count one component; edge incidence does
+        not establish a joint
+      </td>
+      <td>Is a physical joint intended? Inspect source CAD.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.OverlappingCubesStl }}" download
+          >Crossing cubes</a
+        >
+      </td>
+      <td>
+        24 faces, two components, no edge findings; intersection not tested
+      </td>
+      <td>Should these solids be joined?</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  Report the exact component and edge pattern when asking for help;
-  “non-manifold” alone covers several different topologies and does not identify
-  a safe edit.
-</p>
-
-<h2>Interpret common diagnostic patterns</h2>
-<p>
-  One boundary loop around an otherwise clean shell often points to a missing
-  cap. An edge shared by three faces can indicate an internal divider or two
-  solids joined without a proper union. Two shells touching only at a vertex
-  have no printable volume connecting them even though they appear to meet. A
-  model can also be watertight yet non-manifold if an internal sheet creates
-  over-shared edges.
-</p>
-<p>
-  Counts tell you that topology needs inspection, not what the designer
-  intended. Locate the highlighted edges, inspect cross-sections and compare the
-  region with source CAD. Do not assume every separate shell is an error:
-  disjoint closed components can be intentional, while coincident or merely
-  touching components need closer review.
-</p>
-<p>
-  This explainer helps classify the result. Use the focused non-manifold repair
-  workflow only after classification, and return to source CAD when a functional
-  joint or internal structure is ambiguous. Re-check topology and sliced layers
-  after any repair rather than treating an automatic success message as proof.
-</p>
-<h2>Diagnose before repairing</h2>
-<p>
-  Non-manifold geometry can include an edge shared by too many faces, ambiguous
-  intersections or disconnected surface conditions. The definition explains why
-  a solid may be unclear to a slicer; it does not prescribe a universal fix. Use
-  the manifold checker to find evidence, then follow the repair guide or return
-  to CAD.
-</p>
-<p>
-  A simple example is an edge shared by three triangles. A normal solid surface
-  usually has exactly two triangles meeting along an internal edge: one on each
-  side of the surface. When three or more faces share that edge, the model
-  becomes ambiguous. The slicer no longer has a simple answer to the question:
-  what is inside the object?
-</p>
-<h2>Common types of non-manifold geometry</h2>
-<p>Non-manifold problems take several forms:</p>
-<ul>
-  <li>An edge shared by more than two faces.</li>
-  <li>Two separate parts that touch only along an edge or a single point.</li>
-  <li>Internal faces trapped inside an otherwise solid object.</li>
-  <li>Overlapping shells that were never properly combined.</li>
-  <li>
-    Zero-thickness surfaces, such as a single sheet of triangles with no wall
-    thickness.
-  </li>
-</ul>
-<p>
-  A hole is related but not identical. A hole creates open edges because the
-  surface is incomplete. Non-manifold geometry can exist even when there are no
-  open edges at all.
-</p>
-<h2>Why it matters for 3D printing</h2>
-<p>
-  A slicer converts a 3D model into layers and toolpaths. To do that reliably,
-  it needs a clear solid volume.
-</p>
-<p>Non-manifold geometry can cause unexpected results:</p>
-<ul>
-  <li>walls disappear or become extremely thin</li>
-  <li>infill appears outside the intended part</li>
-  <li>separate regions merge unexpectedly</li>
-  <li>a layer preview contains gaps or floating fragments</li>
-  <li>the slicer refuses to process the model</li>
-</ul>
-<p>
-  Some slicers attempt automatic fixes. That can be useful for minor defects,
-  but it is better to understand the model first rather than assume the slicer
-  made the correct decision.
-</p>
-<h2>How to check a model</h2>
-<p>
-  Upload the file to the
-  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>. It
-  reports non-manifold edges, open edges and shell information so you can see
-  whether the mesh is likely to behave as a clean solid.
-</p>
-<p>
-  For a broader diagnosis, use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
-  checks non-manifold edges alongside duplicate triangles, degenerate triangles,
-  invalid coordinates and inconsistent orientation.
-</p>
-<p>
-  If the model has open edges too, run the
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a
-  >. A printable part should normally be both manifold and watertight.
-</p>
-<h2>What to do after finding an issue</h2>
-<p>
-  Start with the original CAD model whenever you have it. Rebuilding a clean
-  solid and exporting a new STL is usually more reliable than patching a damaged
-  mesh.
-</p>
-<p>
-  If you only have the STL, inspect the model in a mesh editor. Look for
-  overlapping components, internal faces, accidental duplicate surfaces and thin
-  sheets. Simple triangle-level problems may be improved by the
-  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a>, but it should
-  not be expected to reconstruct complex topology automatically.
-</p>
-<p>
-  After making changes, check the model again and inspect its layer preview in
-  your slicer. A clean manifold result is one important part of print readiness;
-  scale, wall thickness, supports and printer settings still matter too.
-</p>
-
-<p>
-  A connectivity count is different from a spatial crossing test. See
-  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
-    >self intersections versus non-manifold edges</a
+  Two separate closed shells can each be well formed and intentionally separate.
+  A point touch can be an invalid joint despite no over-shared edge. Spatially
+  crossing faces can have no shared mesh edge at all. The
+  <a href="https://doc.cgal.org/latest/Polygon_mesh_processing/index.html"
+    >CGAL mesh-processing manual</a
   >
-  for an owned overlapping-shell counterexample with zero over-shared edges.
+  distinguishes mesh topology from self-intersection testing.
+</p>
+<h2>Read your InspectMesh result</h2>
+<p>
+  The <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>
+  matches exact stored vertex positions, excludes degenerate faces from its edge
+  counts, and connects reported components by shared
+  <em>vertices</em>. The local STL Repair part selector instead needs a complete
+  shared <em>edge</em>. Neither count identifies intended material, nested
+  shells or all vertex non-manifold cases. “Closed by edge test” means no
+  boundary edge was found by that method; it is not a printability certificate.
+</p>
+<h2>What to do next</h2>
+<p>
+  Match your actual finding to the
+  <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
+    >focused correction workflow</a
+  >. Inspect the original model and save a separately named derivative before
+  testing sliced layers.
 </p>

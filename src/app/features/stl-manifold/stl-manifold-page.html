@@ -1,13 +1,71 @@
 <main class="page tool-page manifold-page">
   <p class="eyebrow">STL topology check</p>
-  <h1>STL Manifold Checker</h1>
+  <h1>STL Manifold Checker: Open and Over-Shared Edges</h1>
   <p class="lead">
-    Find out whether your STL is manifold and closed before sending it to a
-    slicer.
+    Check how STL triangles join: exposed edges, edges shared by too many faces
+    and vertex-connected pieces. The result helps locate a topology question; it
+    cannot infer the intended solid or detect every spatial intersection.
   </p>
+  <section class="content" aria-labelledby="reports-title">
+    <h2 id="reports-title">What this check reports</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Finding</th>
+          <th scope="col">Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>One triangle at an edge</td>
+          <td>Boundary or open edge; design intent remains unknown.</td>
+        </tr>
+        <tr>
+          <td>Two triangles at an edge</td>
+          <td>Ordinary shared edge; winding is checked separately.</td>
+        </tr>
+        <tr>
+          <td>Three or more triangles at an edge</td>
+          <td>Over-shared edge, labelled “non-manifold edge” in the report.</td>
+        </tr>
+        <tr>
+          <td>Component count</td>
+          <td>
+            Groups connected by any exact shared vertex in this server report,
+            not defect count. Local repair selection uses complete shared edges
+            instead.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The
+      <a [href]="exampleAsset.OpenFaceCubeStl" download>10-face open cube</a>
+      reports four boundary edges. The
+      <a [href]="exampleAsset.DuplicateFaceCubeStl" download
+        >13-face duplicate cube</a
+      >
+      reports three over-shared edges.
+      <a [href]="exampleAsset.DiagnosisSeparatedCubesStl" download
+        >Two intended closed cubes</a
+      >
+      report two components with no edge defect.
+    </p>
+  </section>
+  <app-example-loader
+    [tool]="routeUrl.ManifoldChecker"
+    [active]="!!selectedFile()"
+    [current]="selectedFile()"
+    [busy]="submitting()"
+    [load]="loadPublicExample"
+  />
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL topology</h2>
-    <p>Upload an STL file up to 25 MiB.</p>
+    <p>
+      Choosing and submitting a file uploads it for server analysis. The guest
+      limit is 25 MiB. Download the public controls above without uploading your
+      own model.
+    </p>
     <app-stl-file-picker
       #filePicker
       [selectedFileFromParent]="selectedFile()"
@@ -57,18 +115,35 @@
           Upload another file
         </button>
       } @else if (report()) {
-        @if (category() === 'manifold') {
+        @if (category() === 'unknown') {
+          <div class="primary warning">
+            <p class="eyebrow">Topology unavailable</p>
+            <h2 id="results-title">No usable edge counts returned</h2>
+            <p>
+              Do not interpret missing fields as zero. Open the full report or
+              check the file again.
+            </p>
+          </div>
+        }
+        @if (category() === 'no_edge_findings') {
           <div class="primary positive">
             <p class="eyebrow">Topology result</p>
-            <h2 id="results-title">Manifold and closed</h2>
-            <p>No open or non-manifold edges were found.</p>
+            <h2 id="results-title">No edge-incidence findings</h2>
+            <p>
+              No boundary or over-shared edges were found. Vertex
+              neighbourhoods, spatial crossings and intended cavities are not
+              certified by this result.
+            </p>
           </div>
         }
         @if (category() === 'open_edges') {
           <div class="primary warning">
             <p class="eyebrow">Topology result</p>
             <h2 id="results-title">Open edges found</h2>
-            <p>This model is not closed because it has unsealed boundaries.</p>
+            <p>
+              At least one edge belongs to one accepted triangle. Check whether
+              that opening is intended.
+            </p>
           </div>
         }
         @if (category() === 'non_manifold') {
@@ -76,8 +151,7 @@
             <p class="eyebrow">Topology result</p>
             <h2 id="results-title">Non-manifold edges found</h2>
             <p>
-              This model is not manifold because some edges are shared in an
-              unsupported way.
+              At least one edge belongs to more than two accepted triangles.
             </p>
           </div>
         }
@@ -85,57 +159,60 @@
           <div class="primary warning">
             <p class="eyebrow">Topology result</p>
             <h2 id="results-title">Open and non-manifold edges found</h2>
-            <p>This model is not manifold or closed.</p>
+            <p>
+              Boundary and over-shared edges were both found by this edge test.
+            </p>
           </div>
         }
-        <dl class="metrics">
-          <div>
-            <dt>Open edges</dt>
-            <dd>{{ formatNumber(openEdges()) }}</dd>
-          </div>
-          <div>
-            <dt>Non-manifold edges</dt>
-            <dd>{{ formatNumber(nonManifoldEdges()) }}</dd>
-          </div>
-          <div>
-            <dt>Connected shells</dt>
-            <dd>{{ formatNumber(shellCount()) }}</dd>
-          </div>
-          <div>
-            <dt>Triangles</dt>
-            <dd>{{ formatNumber(report()?.['triangleCount']) }}</dd>
-          </div>
-        </dl>
-        @if (openEdges() > 0) {
-          <p>
-            <strong>Open edges:</strong> holes or unsealed boundaries in the
-            mesh.
-          </p>
-        }
-        @if (nonManifoldEdges() > 0) {
-          <p>
-            <strong>Non-manifold edges:</strong> geometry shared in a way that
-            can confuse slicers or repair tools.
-          </p>
-        }
-        @if (shellCount() > 1) {
-          <p>
-            <strong>Multiple disconnected shells:</strong> separate mesh parts
-            were found; this can be intentional.
-          </p>
-        }
-        @if (hasOrientationIssue()) {
-          <p>
-            <strong>Inconsistent orientation:</strong> the surface direction is
-            inconsistent; volume results may be unreliable.
-          </p>
+        @if (hasUsableTopology()) {
+          <dl class="metrics">
+            <div>
+              <dt>Open edges</dt>
+              <dd>{{ formatNumber(openEdges()) }}</dd>
+            </div>
+            <div>
+              <dt>Over-shared edges</dt>
+              <dd>{{ formatNumber(nonManifoldEdges()) }}</dd>
+            </div>
+            <div>
+              <dt>Vertex-connected components</dt>
+              <dd>{{ formatNumber(shellCount()) }}</dd>
+            </div>
+            <div>
+              <dt>Triangles</dt>
+              <dd>{{ formatNumber(report()?.['triangleCount']) }}</dd>
+            </div>
+          </dl>
+          @if (openEdges() > 0) {
+            <p>
+              <strong>Boundary edges:</strong> an exposed mesh boundary, whose
+              intent needs review.
+            </p>
+          }
+          @if (nonManifoldEdges() > 0) {
+            <p>
+              <strong>Over-shared edges:</strong> more than two accepted
+              triangles meet at an exact edge.
+            </p>
+          }
+          @if (shellCount() > 1) {
+            <p>
+              <strong>Multiple vertex-connected components:</strong> separate
+              groups were found; this can be intentional.
+            </p>
+          }
+          @if (hasOrientationIssue()) {
+            <p>
+              <strong>Inconsistent orientation:</strong> the surface direction
+              is inconsistent; volume results may be unreliable.
+            </p>
+          }
         }
         <section class="fix" aria-labelledby="fix-title">
-          <h3 id="fix-title">How to fix it</h3>
+          <h3 id="fix-title">Choose the next check</h3>
           <p>
-            Use your slicer’s repair function, Blender, Meshmixer, or the model
-            source application. Export the repaired model, then upload it again
-            to confirm the result.
+            Match the finding to the decision below, edit only an understood
+            surface, then recheck the downloaded copy and sliced layers.
           </p>
         </section>
         <div class="actions">
@@ -152,58 +229,55 @@
       }
     </section>
   }
-  <section class="content">
-    <h2>How it works</h2>
+  <section class="content" aria-labelledby="next-title">
+    <h2 id="next-title">If your report says...</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Finding</th>
+          <th scope="col">Narrow next action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Boundary edges</td>
+          <td>
+            Inspect the opening with the
+            <a [href]="guideRouteUrl.RouteHowToFixHolesInAnStlFile"
+              >hole guide</a
+            >
+            before filling anything.
+          </td>
+        </tr>
+        <tr>
+          <td>Over-shared edges</td>
+          <td>
+            Use the
+            <a [href]="routeUrl.FixNonManifoldStlGuide"
+              >focused topology repair workflow</a
+            >
+            to determine the intended face.
+          </td>
+        </tr>
+        <tr>
+          <td>Multiple vertex-connected components</td>
+          <td>
+            Review the
+            <a [href]="guideRouteUrl.RouteStlMultipleShellsDisconnectedParts"
+              >separate-shell guide</a
+            >
+            before keeping or removing any piece.
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <p>
-      The checker examines the edges shared by STL triangles and counts open
-      boundaries, non-manifold connections and disconnected shells.
-    </p>
-    <h2>What the results mean</h2>
-    <p>
-      A manifold mesh has a consistent surface around each edge. Open edges and
-      non-manifold edges can confuse slicers; disconnected shells may be
-      intentional but deserve review.
-    </p>
-    <h2>FAQ</h2>
-    <h3>What is a manifold mesh?</h3>
-    <p>
-      It is a mesh whose surface joins consistently without ambiguous edge
-      connections.
-    </p>
-    <h3>Are disconnected shells always wrong?</h3>
-    <p>
-      No. Separate parts can be deliberate, but they may need separate printing
-      decisions.
-    </p>
-    <p>
-      <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a> ·
-      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-      <a [routerLink]="routeUrl.Tools">All STL tools</a>
-    </p>
-  </section>
-  <section class="content">
-    <h2>Read edge incidence and orientation separately</h2>
-    <p>
-      One face incident on an edge identifies a boundary; more than two
-      identifies a non-manifold edge. Inconsistent face direction is a separate
-      finding. Several connected shells can be intentional, such as two separate
-      parts, so a shell count alone is not a repair instruction.
-    </p>
-    <p>
-      The original closed 20 mm cube has 12 triangles and no open edges. The
-      <a [href]="exampleAsset.OpenFaceCubeStl" download>open-face example</a>
-      has 10 triangles and four boundaries. Inspect the missing face before
-      filling it. A zero count does not establish every vertex property or rule
-      out self-intersections.
-    </p>
-    <p>
-      This checker uploads the chosen STL for server analysis. Results describe
-      detected edge relationships; use the
-      <a [href]="guideRouteUrl.RouteWhatIsNonManifoldGeometry"
-        >topology explanation</a
-      >
-      to choose a correction, then export and recheck. A successful result is
-      not a printability certificate.
+      Method and limits: the server compares exact stored vertex positions,
+      excludes degenerate triangles from edge counts, and connects components
+      through shared vertices. It does not run a complete vertex-manifold or
+      spatial-intersection test. A malformed STL returns an error, not a clean
+      zero. For exposed-boundary interpretation alone, use the
+      <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>.
     </p>
   </section>
 </main>

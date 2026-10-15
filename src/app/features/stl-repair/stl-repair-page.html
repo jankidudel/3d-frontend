@@ -33,6 +33,13 @@
       </button>
       <span> Generated test geometry; choosing another file replaces it.</span>
     </p>
+    <app-example-loader
+      [tool]="routeUrl.StlRepair"
+      [active]="!!selectedFile()"
+      [current]="selectedFile()"
+      [busy]="submitting()"
+      [load]="loadPublicExample"
+    />
     <details class="repair-option">
       <summary>Need standard STL cleanup instead?</summary>
       <p>

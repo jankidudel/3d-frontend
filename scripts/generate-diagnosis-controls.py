@@ -24,3 +24,53 @@ for face in range(12):
     separated.extend(record)
 (out / 'separated-cubes.stl').write_bytes(separated)
 (out / 'malformed.stl').write_text('This bounded file deliberately contains no STL geometry.\n')
+
+# Additional topology controls. Each binary STL is built from explicit triangle
+# records so the published coordinates can be reproduced without a CAD package.
+def records(data):
+    count = struct.unpack_from('<I', data, 80)[0]
+    return [bytes(data[84 + i * 50:134 + i * 50]) for i in range(count)]
+
+def write(name, triangles):
+    header = bytearray(80)
+    header[:11] = b'InspectMesh'
+    (out / name).write_bytes(header + struct.pack('<I', len(triangles)) + b''.join(triangles))
+
+def facet(a, b, c):
+    return struct.pack('<12fH', 0, 0, 0, *a, *b, *c, 0)
+
+def reverse(record):
+    changed = bytearray(record)
+    changed[24:36], changed[36:48] = record[36:48], record[24:36]
+    return bytes(changed)
+
+cube = records(source)
+write('inward-cube.stl', [reverse(record) for record in cube])
+write('reversed-face-cube.stl', [reverse(record) if index < 2 else record for index, record in enumerate(cube)])
+write('opposite-winding-duplicate-cube.stl', cube + [reverse(cube[0])])
+
+sheet = [
+    facet((0, 0, 0), (20, 0, 0), (20, 20, 0)),
+    facet((0, 0, 0), (20, 20, 0), (0, 20, 0)),
+]
+write('horizontal-sheet.stl', sheet)
+write('vertical-sheet.stl', [
+    facet((0, 0, 0), (20, 0, 0), (20, 0, 20)),
+    facet((0, 0, 0), (20, 0, 20), (0, 0, 20)),
+])
+
+plate = []
+for record in cube:
+    changed = bytearray(record)
+    for vertex in range(3):
+        offset = 12 + vertex * 12 + 8
+        z = struct.unpack_from('<f', record, offset)[0]
+        struct.pack_into('<f', changed, offset, z / 20)
+    plate.append(bytes(changed))
+write('closed-1-unit-plate.stl', plate)
+
+divider = [
+    facet((4, 4, 10), (16, 4, 10), (16, 16, 10)),
+    facet((4, 4, 10), (16, 16, 10), (4, 16, 10)),
+]
+write('cube-with-internal-sheet.stl', cube + divider)

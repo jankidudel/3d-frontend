@@ -73,6 +73,16 @@ export class JobStatusComponent {
       ? count
       : null;
   });
+  readonly volumeDisplayAvailable = computed(() => {
+    const topology = this.topology();
+    return (
+      this.isValid() &&
+      topology?.['openEdgeCount'] === 0 &&
+      topology?.['nonManifoldEdgeCount'] === 0 &&
+      topology?.['hasInconsistentOrientation'] === false &&
+      this.connectedComponentCount() === 1
+    );
+  });
   readonly highlightSampleTotal = computed(() => {
     const highlights = this.asRecord(this.report()?.['issueHighlights']);
     const samples = this.asRecord(highlights?.['samples']);

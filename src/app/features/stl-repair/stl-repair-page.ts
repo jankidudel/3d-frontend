@@ -20,6 +20,7 @@ import { Job, JobStatus } from '../../models/job';
 import { uploadErrorMessage } from '../../core/api/upload-error';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
 import { floatingPartsDemo } from './parts-fixtures';
+import { ExampleLoader } from '../examples/example-loader';
 
 type RepairReport = {
   hasCleanedFile?: boolean;
@@ -41,6 +42,7 @@ type RepairReport = {
     StlFilePicker,
     JobProgress,
     FeedbackLinkComponent,
+    ExampleLoader,
   ],
   templateUrl: './stl-repair-page.html',
   styleUrl: '../stl-quality/stl-quality-page/stl-quality-page.scss',
@@ -94,6 +96,11 @@ export class StlRepairPage {
   loadExample(): void {
     this.onFileSelected(floatingPartsDemo());
   }
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    this.onFileSelected(files[0] ?? null);
+  };
   inspectRetained(file: File): void {
     this.selectActiveFile(file);
   }

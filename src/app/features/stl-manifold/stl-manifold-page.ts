@@ -1,4 +1,5 @@
 import { ExampleAsset } from '../examples/example-assets';
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   Component,
@@ -26,12 +27,13 @@ import { Job, JobStatus } from '../../models/job';
 import { jobFailureMessage } from '../../models/job-failure';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
 
-type ResultCategory = 'manifold' | 'open_edges' | 'non_manifold' | 'both';
+type ResultCategory =
+  'no_edge_findings' | 'open_edges' | 'non_manifold' | 'both' | 'unknown';
 type ReportRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-stl-manifold-page',
-  imports: [RouterLink, StlFilePicker, JobProgress],
+  imports: [RouterLink, StlFilePicker, JobProgress, ExampleLoader],
   templateUrl: './stl-manifold-page.html',
   styleUrl: '../shared/model-checker-page.scss',
 })
@@ -73,6 +75,9 @@ export class StlManifoldPage {
     () => this.topology()?.['hasInconsistentOrientation'] === true,
   );
   readonly category = computed<ResultCategory>(() => {
+    if (!this.hasUsableTopology()) {
+      return 'unknown';
+    }
     const open = this.openEdges() > 0;
     const nonManifold = this.nonManifoldEdges() > 0;
     return open && nonManifold
@@ -81,7 +86,15 @@ export class StlManifoldPage {
         ? 'open_edges'
         : nonManifold
           ? 'non_manifold'
-          : 'manifold';
+          : 'no_edge_findings';
+  });
+  readonly hasUsableTopology = computed(() => {
+    const topology = this.topology();
+    return (
+      this.isCount(topology?.['openEdgeCount']) &&
+      this.isCount(topology?.['nonManifoldEdgeCount']) &&
+      this.isCount(topology?.['connectedComponentCount'])
+    );
   });
   readonly processing = computed(() => {
     const status = this.job()?.status;
@@ -93,9 +106,9 @@ export class StlManifoldPage {
 
   constructor() {
     this.seo.apply({
-      title: 'STL Manifold Checker - Check if Your STL Is Watertight',
+      title: 'STL Manifold Checker: Open and Over-Shared Edges | InspectMesh',
       description:
-        'Check an STL file for open edges, non-manifold geometry and disconnected shells. Find out whether your 3D model is manifold and ready for slicing.',
+        'Inspect exposed and over-shared STL edges plus vertex-connected components. Learn which topology findings need a design review.',
       path: PublicRouteUrl.ManifoldChecker,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
@@ -109,6 +122,11 @@ export class StlManifoldPage {
     this.pollingTimedOut.set(false);
     this.outcomeTracked = false;
   }
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    this.onFileSelected(files[0] ?? null);
+  };
 
   checkManifold(): void {
     if (this.submitting()) {
@@ -173,7 +191,7 @@ export class StlManifoldPage {
   formatNumber(value: unknown): string {
     return typeof value === 'number' && Number.isFinite(value)
       ? new Intl.NumberFormat('en').format(value)
-      : '0';
+      : '—';
   }
 
   private startPolling(jobId: string): void {
@@ -193,7 +211,12 @@ export class StlManifoldPage {
     }
     if (job.status === JobStatus.Completed) {
       this.analytics.trackAnalysisCompleted('manifold_checker', job.report);
-      this.analytics.trackManifoldResult(this.category());
+      const category = this.category();
+      if (category !== 'unknown') {
+        this.analytics.trackManifoldResult(
+          category === 'no_edge_findings' ? 'manifold' : category,
+        );
+      }
       this.outcomeTracked = true;
     } else if (job.status === JobStatus.Failed) {
       this.analytics.trackAnalysisFailed('manifold_checker', job.failure);
@@ -216,6 +239,9 @@ export class StlManifoldPage {
     return typeof value === 'number' && Number.isFinite(value) && value >= 0
       ? value
       : 0;
+  }
+  private isCount(value: unknown): value is number {
+    return typeof value === 'number' && Number.isInteger(value) && value >= 0;
   }
   private asRecord(value: unknown): ReportRecord | null {
     return typeof value === 'object' && value !== null && !Array.isArray(value)

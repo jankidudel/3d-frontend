@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { NEVER, of, throwError } from 'rxjs';
 import { JobsService } from '../../../core/api/jobs.service';
 import { StlJobService } from '../../../core/api/stl-job.service';
@@ -44,6 +45,7 @@ describe('StlQualityPage', () => {
     TestBed.configureTestingModule({
       imports: [StlQualityPage],
       providers: [
+        provideRouter([]),
         { provide: JobsService, useValue: jobsService },
         { provide: StlJobService, useValue: stlJobs },
         { provide: AnalyticsService, useValue: analytics },

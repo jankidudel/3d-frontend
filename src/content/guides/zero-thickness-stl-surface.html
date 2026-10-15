@@ -1,0 +1,128 @@
+---
+title: 'Zero-Thickness STL Surface: Sheet or Thin Solid? | InspectMesh'
+description: 'Compare an open triangle sheet with a closed thin plate, inspect mesh edges and slicer layers, and choose a source-model thickness edit when needed.'
+slug: zero-thickness-stl-surface
+eyebrow: STL surface diagnosis
+heading: 'Why Does My STL Surface Have No Thickness?'
+faq:
+  - question: Can a watertight model still be too thin for my profile?
+    answer: Yes. The closed plate has a real 1-unit separation, but whether a chosen extrusion profile prints it requires layer preview. The edge test does not decide process limits.
+  - question: Will automatic duplicate cleanup give a sheet thickness?
+    answer: No. Removing repeated triangles cannot create a back face or close the four exposed perimeter edges of the sheet control.
+---
+
+<p class="lead">
+  An STL can contain a triangle sheet that looks like a wall in a two-sided
+  viewer but encloses no material. A thin plate is different: its front, back
+  and sides form a closed surface with a real separation. Check the original
+  mesh and the first sliced layer before changing line width or asking a repair
+  tool to invent the missing side.
+</p>
+<h2>Sheet versus plate</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/sheet-versus-plate.svg"
+    width="720"
+    height="280"
+    loading="lazy"
+    alt="A two-triangle sheet has one face and exposed perimeter edges; a thin plate has distinct front and back faces joined by four closed side walls."
+  />
+  <figcaption>
+    Owned geometry diagram. The plate has a front, back and four side walls; the
+    sheet does not enclose material.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Download</th>
+      <th scope="col">Coordinates and triangles</th>
+      <th scope="col">Actual mesh check</th>
+      <th scope="col">Solid-volume interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.DiagnosisHorizontalSheetStl }}" download
+          >Horizontal sheet</a
+        >
+      </td>
+      <td>20 × 20 × 0; two triangles</td>
+      <td>
+        Four boundary edges, one server vertex-component, no winding conflict
+      </td>
+      <td>
+        Volume unavailable because the sheet is open; a signed triangle sum
+        would not represent enclosed material.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.DiagnosisVerticalSheetStl }}" download
+          >Vertical sheet</a
+        >
+      </td>
+      <td>20 × 0 × 20; two triangles</td>
+      <td>Four boundary edges, one component</td>
+      <td>Also open; nonzero Z span does not create thickness.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.DiagnosisClosedPlateStl }}" download
+          >Closed plate</a
+        >
+      </td>
+      <td>20 × 20 × 1; 12 triangles</td>
+      <td>Zero boundary and over-shared edges, no winding conflict</td>
+      <td>400 cubic coordinate units from the known closed control.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  These are mathematical controls measured in the InspectMesh processor. STL
+  carries no unit, so “mm” applies only if you choose that interpretation. An
+  edge check does not measure arbitrary wall thickness; the 1-unit separation is
+  known from this fixture's coordinates.
+</p>
+<h2>Check the source before the slicer</h2>
+<p>
+  Download both controls without uploading a model. Open each in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">local STL Viewer</a>, choose
+  <strong>Inspect cross-section</strong>, select Z for the horizontal sheet and
+  plate, and move the slider through the displayed bounds. Rotate the plate to
+  see its side closure. Then explicitly submit each example to the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality checker</a> or
+  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">boundary checker</a> if
+  you want the server report. The sheet's rendered face can be visible from both
+  sides, but its four open edges mean it does not enclose a solid. See the
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >cross-section controls</a
+  >
+  for the exact viewer steps.
+</p>
+<h2>Check what your selected slicer generated</h2>
+<p>
+  Import each downloaded STL as a separate object with the same chosen unit and
+  profile. Record the slicer name, version, nozzle, layer height and any
+  surface-processing mode. Compare the first layer, a middle layer and exported
+  G-code model extrusion. If the sheet disappears, the profile did not create a
+  printable region from that source; if a surface mode prints it, that is a
+  profile-specific interpretation, not enclosed source volume. No slicer output
+  is claimed for these two new fixtures here.
+</p>
+<h2>Choose the correct edit</h2>
+<p>
+  If a physical plate is intended, add front-to-back separation and closed sides
+  in source CAD or by a deliberate mesh extrusion with a controlled direction.
+  Re-export under a new filename and recheck the actual output. If the part is
+  already closed but too thin for the chosen profile, use the
+  <a href="{{ GuideSlug.RouteHowToCheckStlWallThicknessFor3dPrinting }}"
+    >wall-thickness workflow</a
+  >
+  and only then test thin-wall settings. If a sheet is intentional for a
+  non-solid output, preserve it. Standard STL cleanup cannot invent its missing
+  back and side walls; for a boundary that should be sealed, use the
+  <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}">open-edge workflow</a>
+  after confirming design intent.
+</p>

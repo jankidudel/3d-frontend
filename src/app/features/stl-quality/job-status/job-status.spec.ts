@@ -21,6 +21,12 @@ describe('JobStatusComponent', () => {
     dimensions: { width: 5, height: 20, depth: 4.35432 },
     surfaceArea: 343.889,
     volume: 362.606,
+    topology: {
+      connectedComponentCount: 1,
+      openEdgeCount: 0,
+      nonManifoldEdgeCount: 0,
+      hasInconsistentOrientation: false,
+    },
     validation: { issues: [], isValid: true },
   };
   const completedJob: Job = {
@@ -50,7 +56,7 @@ describe('JobStatusComponent', () => {
     const fixture = render();
     const text = fixture.nativeElement.textContent;
 
-    expect(text).toContain('Model passed validation');
+    expect(text).toContain('No listed mesh blockers found');
     expect(text).toContain('No mesh validation issues found');
     expect(text).toContain('5 × 20 × 4.35');
     expect(text).toContain('343.89');
@@ -116,7 +122,7 @@ describe('JobStatusComponent', () => {
     });
     const text = fixture.nativeElement.textContent;
 
-    expect(text).toContain('Model passed validation');
+    expect(text).toContain('No listed mesh blockers found');
     expect(text).toContain('2 separate components');
     expect(text).toContain('Multiple disconnected shells');
     expect(text).toContain('Check separate components');
@@ -128,11 +134,15 @@ describe('JobStatusComponent', () => {
   });
 
   it('hides the component metric safely when older reports omit topology', () => {
-    const fixture = render();
+    const fixture = render({
+      ...completedJob,
+      report: { ...report, topology: undefined },
+    });
 
     expect(fixture.nativeElement.textContent).not.toContain(
       'Connected components',
     );
+    expect(fixture.nativeElement.textContent).toContain('Unavailable');
   });
 
   it.each([

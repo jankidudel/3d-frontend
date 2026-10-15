@@ -331,7 +331,7 @@ describe('visual diagnosis teaching controls', () => {
           example.group !== 'G-code evidence' &&
           example.group !== '3MF placements / export',
       ),
-    ).toHaveLength(16);
+    ).toHaveLength(19);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
     );
@@ -409,6 +409,49 @@ describe('visual diagnosis teaching controls', () => {
     await expect(
       readStl(await file('diagnosis/malformed.stl')),
     ).rejects.toThrow();
+  });
+  it('reopens the topology article controls and saved repair derivatives', async () => {
+    for (const [
+      path,
+      triangles,
+      openEdges,
+      overShared,
+      duplicates,
+      conflicts,
+    ] of [
+      ['diagnosis/horizontal-sheet.stl', 2, 4, 0, 0, 0],
+      ['diagnosis/vertical-sheet.stl', 2, 4, 0, 0, 0],
+      ['diagnosis/closed-1-unit-plate.stl', 12, 0, 0, 0, 0],
+      ['diagnosis/cube-with-internal-sheet.stl', 14, 4, 0, 0, 0],
+      ['diagnosis/reversed-face-cube.stl', 12, 0, 0, 0, 4],
+      ['diagnosis/inward-cube.stl', 12, 0, 0, 0, 0],
+      ['diagnosis/opposite-winding-duplicate-cube.stl', 13, 0, 3, 1, 0],
+      ['diagnosis/duplicate-cleaned-cube.stl', 12, 0, 0, 0, 0],
+      ['diagnosis/opposite-duplicate-cleaned-cube.stl', 12, 0, 0, 0, 0],
+      ['diagnosis/reversed-face-cleaned-cube.stl', 12, 0, 0, 0, 0],
+    ] as const) {
+      const mesh = await readStl(await file(path));
+      expect(mesh.indices.length / 3, path).toBe(triangles);
+      expect(inspectMesh(mesh), path).toMatchObject({
+        openEdges,
+        nonManifoldEdges: overShared,
+        duplicateTriangles: duplicates,
+        orientationConflicts: conflicts,
+      });
+    }
+    const plate = inspectMesh(
+      await readStl(await file('diagnosis/closed-1-unit-plate.stl')),
+    );
+    expect(plate.volume).toBeCloseTo(400);
+    expect(
+      inspectMesh(await readStl(await file('diagnosis/horizontal-sheet.stl')))
+        .volume,
+    ).toBeNull();
+    expect(
+      inspectMesh(
+        await readStl(await file('diagnosis/cube-with-internal-sheet.stl')),
+      ).volume,
+    ).toBeNull();
   });
   it('withholds ambiguous multiple-shell volume, also across 3MF placements', async () => {
     for (const path of [

@@ -24,6 +24,8 @@ import { Job, JobStatus } from '../../../models/job';
 import { JobStatusComponent } from '../job-status/job-status';
 import { StlFilePicker } from '../stl-file-picker/stl-file-picker';
 import { FeedbackLinkComponent } from '../../../core/components/feedback-link/feedback-link';
+import { ExampleAsset } from '../../examples/example-assets';
+import { ExampleLoader } from '../../examples/example-loader';
 
 @Component({
   selector: 'app-stl-quality-page',
@@ -32,11 +34,13 @@ import { FeedbackLinkComponent } from '../../../core/components/feedback-link/fe
     StlFilePicker,
     JobStatusComponent,
     FeedbackLinkComponent,
+    ExampleLoader,
   ],
   templateUrl: './stl-quality-page.html',
   styleUrl: './stl-quality-page.scss',
 })
 export class StlQualityPage {
+  readonly exampleAsset = ExampleAsset;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   private readonly jobsService = inject(JobsService);
@@ -61,9 +65,9 @@ export class StlQualityPage {
 
   constructor() {
     this.seo.apply({
-      title: 'STL Quality Checker - Check 3D Printing Files',
+      title: 'STL Quality Checker: Mesh Findings and Next Steps | InspectMesh',
       description:
-        'Check STL files for mesh and topology problems, including open edges, non-manifold geometry, duplicate triangles and orientation issues.',
+        'Check STL boundaries, over-shared edges, exact duplicates, degenerate faces and winding findings with controlled examples and clear next steps.',
       path: PublicRouteUrl.QualityCheck,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
@@ -91,6 +95,12 @@ export class StlQualityPage {
     this.uploadCompletedTracked = false;
     this.outcomeTracked = false;
   }
+
+  readonly loadPublicExample = async (
+    files: readonly File[],
+  ): Promise<void> => {
+    this.onFileSelected(files[0] ?? null);
+  };
 
   checkStl(): void {
     if (this.submitting()) {

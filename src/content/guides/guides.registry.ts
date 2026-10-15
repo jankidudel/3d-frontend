@@ -511,7 +511,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-15',
   },
   {
     slug: 'how-to-tell-if-an-stl-is-watertight',
@@ -600,7 +600,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-15',
   },
   {
     slug: 'how-to-remove-duplicate-triangles-from-an-stl-file',
@@ -609,6 +609,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-15',
   },
   {
     slug: 'what-is-non-manifold-geometry',
@@ -616,7 +617,23 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 130,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-07',
+    updatedDate: '2026-10-15',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: 'zero-thickness-stl-surface',
+    group: GuideGroupId.Stl,
+    order: 131,
+    enabled: true,
+    publishDate: '2026-10-15',
+    checkEditorialTargets: false,
+  },
+  {
+    slug: 'internal-faces-in-stl',
+    group: GuideGroupId.Stl,
+    order: 132,
+    enabled: true,
+    publishDate: '2026-10-15',
     checkEditorialTargets: false,
   },
   {

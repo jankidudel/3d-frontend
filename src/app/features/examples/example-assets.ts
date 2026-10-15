@@ -45,6 +45,22 @@ export const ExampleAsset = {
   NarrowRibRemovedStl: '/examples/reduction-review/narrow-rib-removed.stl',
   DiagnosisReversedWindingCubeStl:
     '/examples/diagnosis/reversed-winding-cube.stl',
+  DiagnosisReversedFaceCubeStl: '/examples/diagnosis/reversed-face-cube.stl',
+  DiagnosisReversedFaceCleanedCubeStl:
+    '/examples/diagnosis/reversed-face-cleaned-cube.stl',
+  DiagnosisInwardCubeStl: '/examples/diagnosis/inward-cube.stl',
+  DiagnosisOppositeWindingDuplicateCubeStl:
+    '/examples/diagnosis/opposite-winding-duplicate-cube.stl',
+  DiagnosisOppositeDuplicateCleanedCubeStl:
+    '/examples/diagnosis/opposite-duplicate-cleaned-cube.stl',
+  DiagnosisDuplicateCleanedCubeStl:
+    '/examples/diagnosis/duplicate-cleaned-cube.stl',
+  DiagnosisHorizontalSheetStl: '/examples/diagnosis/horizontal-sheet.stl',
+  DiagnosisVerticalSheetStl: '/examples/diagnosis/vertical-sheet.stl',
+  DiagnosisClosedPlateStl: '/examples/diagnosis/closed-1-unit-plate.stl',
+  DiagnosisInternalSheetCubeStl:
+    '/examples/diagnosis/cube-with-internal-sheet.stl',
+  DiagnosisMalformedStl: '/examples/diagnosis/malformed.stl',
   DiagnosisSeparatedCubesStl: '/examples/diagnosis/separated-cubes.stl',
   DiagnosisStoredNormalCubeStl: '/examples/diagnosis/stored-normal-cube.stl',
   EnglishMarketBatchPrinterFit250x210x180Stl:

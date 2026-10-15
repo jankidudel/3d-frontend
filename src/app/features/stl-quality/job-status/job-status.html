@@ -35,12 +35,13 @@
       <div>
         <p class="eyebrow">Quality report</p>
         <h2 id="job-title">
-          {{ isValid() ? 'Model passed validation' : 'Problems found' }}
+          {{ isValid() ? 'No listed mesh blockers found' : 'Problems found' }}
         </h2>
         <p>
           @if (isValid()) {
-            No mesh validation problems were detected. Printer settings and wall
-            thickness are not included in this check.
+            The supported mesh checks found no listed blockers. Intersections,
+            design intent, printer settings and wall thickness are not
+            certified.
           } @else {
             Review the mesh issues below before slicing or printing this model.
           }
@@ -110,15 +111,21 @@
         <span>square model units</span>
       </div>
       <div class="metric">
-        <dt>Volume</dt>
-        <dd>{{ formatNumber(qualityReport['volume']) }}</dd>
-        <span>cubic model units</span>
+        <dt>Closed-mesh volume</dt>
+        <dd>
+          {{
+            volumeDisplayAvailable()
+              ? formatNumber(qualityReport['volume'])
+              : 'Unavailable'
+          }}
+        </dd>
+        <span>cubic model units; unavailable for unsupported topology</span>
       </div>
       @if (connectedComponentCount(); as componentCount) {
         <div class="metric">
           <dt>Connected components</dt>
           <dd>{{ connectedComponentsLabel(componentCount) }}</dd>
-          <span>mesh shells</span>
+          <span>joined by exact shared vertices in this server report</span>
         </div>
       }
     </dl>
