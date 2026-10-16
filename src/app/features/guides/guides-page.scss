@@ -14,6 +14,28 @@
   background: var(--surface);
 }
 
+.guides-page .wall-guides {
+  margin-top: 1.5rem;
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+.wall-guides h2 {
+  margin: 0;
+}
+
+.wall-guides p {
+  margin: 1rem 0;
+}
+
+.wall-guides ul {
+  margin: 0;
+  padding-left: 1.35rem;
+}
+
+.wall-guides li + li {
+  margin-top: 0.5rem;
+}
+
 .guide-search h2,
 .guide-empty h2 {
   margin-top: 0;

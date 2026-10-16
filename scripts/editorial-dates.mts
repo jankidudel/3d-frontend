@@ -14,7 +14,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.Examples]: '2026-10-15',
   [PublicRouteUrl.Home]: '2026-10-13',
   [PublicRouteUrl.AllTools]: '2026-10-13',
-  [PublicRouteUrl.Guides]: '2026-10-15',
+  [PublicRouteUrl.Guides]: '2026-10-16',
   [`/${MaterialRoutePath.Pla}`]: '2026-10-09',
   [`/${MaterialRoutePath.Petg}`]: '2026-10-09',
   [`/${MaterialRoutePath.Abs}`]: '2026-10-09',

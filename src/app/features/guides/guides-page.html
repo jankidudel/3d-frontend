@@ -11,36 +11,6 @@
     plan the print. Choose the question you need to answer before changing the
     model.
   </p>
-  <section class="card" aria-labelledby="wall-guides-title">
-    <h2 id="wall-guides-title">Start with wall thickness</h2>
-    <p>
-      <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
-        >Decide what a wall observation means</a
-      >
-      for a solid feature, empty gap, process and intended use.
-    </p>
-    <ul>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToCheckStlWallThicknessFor3dPrinting"
-          >STL units and sampled-result workflow</a
-        >
-        — confirm an assumed unit and compare the saved copy with sliced layers.
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting"
-          >3MF placed-build workflow</a
-        >
-        — check declared units, repeated instances and transforms.
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToInspectStl3mfCrossSections"
-          >Visual cross-section inspection</a
-        >
-        — distinguish material boundaries from empty clearance.
-      </li>
-    </ul>
-  </section>
-
   <section class="guide-search" aria-labelledby="guide-search-title">
     <h2 id="guide-search-title">Find a guide</h2>
     <label class="field" for="guide-search-input">
@@ -68,6 +38,38 @@
       }
     </p>
   </section>
+  @if (!hasSearchQuery()) {
+    <section class="card wall-guides" aria-labelledby="wall-guides-title">
+      <h2 id="wall-guides-title">Start with wall thickness</h2>
+      <p>
+        <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
+          >Decide what a wall observation means</a
+        >
+        for a solid feature, empty gap, process and intended use.
+      </p>
+      <ul>
+        <li>
+          <a [href]="guideRouteUrl.RouteHowToCheckStlWallThicknessFor3dPrinting"
+            >STL units and sampled-result workflow</a
+          >
+          — confirm an assumed unit and compare the saved copy with sliced
+          layers.
+        </li>
+        <li>
+          <a [href]="guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting"
+            >3MF placed-build workflow</a
+          >
+          — check declared units, repeated instances and transforms.
+        </li>
+        <li>
+          <a [href]="guideRouteUrl.RouteHowToInspectStl3mfCrossSections"
+            >Visual cross-section inspection</a
+          >
+          — distinguish material boundaries from empty clearance.
+        </li>
+      </ul>
+    </section>
+  }
   @if (hasSearchQuery() && resultCount() === 0) {
     <section class="guide-empty" aria-labelledby="guide-empty-title">
       <h2 id="guide-empty-title">No matching guides</h2>
