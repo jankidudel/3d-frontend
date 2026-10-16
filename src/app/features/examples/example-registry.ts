@@ -8,6 +8,8 @@ export interface PublicExample {
     readonly path: string;
     readonly name: string;
     readonly bytes: number;
+    readonly label?: string;
+    readonly reference?: string;
   }[];
   readonly preview: string;
   readonly alt: string;
@@ -59,9 +61,56 @@ export const publicExamples: readonly PublicExample[] = [
     limitations:
       'A clean report covers supported findings only. Parsing failure is not a zero-finding result.',
     guide: '/how-to-check-stl-for-errors',
-    tools: ['/stl-quality-checker', '/stl-manifold-checker'],
+    tools: ['/stl-quality-checker'],
     provenance:
       'Original InspectMesh generated geometry and measured processor results; no physical print test.',
+  },
+  {
+    id: 'topology-edge-controls',
+    name: 'Open edges, over-shared edges and separate parts',
+    group: 'Boundaries / topology',
+    question:
+      'Does this STL have an exposed edge, an over-shared edge, or two intentional closed pieces?',
+    files: [
+      {
+        path: ExampleAsset.OpenFaceCubeStl,
+        name: 'open-face-cube.stl',
+        bytes: 584,
+        label: 'Missing face',
+        reference:
+          '10 triangles and four boundary edges; a square face is absent.',
+      },
+      {
+        path: ExampleAsset.DuplicateFaceCubeStl,
+        name: 'duplicate-face-cube.stl',
+        bytes: 734,
+        label: 'Duplicate face',
+        reference:
+          '13 triangles, one exact duplicate and three over-shared edges.',
+      },
+      {
+        path: ExampleAsset.DiagnosisSeparatedCubesStl,
+        name: 'separated-cubes.stl',
+        bytes: 1284,
+        label: 'Two separate closed cubes',
+        reference:
+          '24 triangles, two vertex-connected components, and no boundary or over-shared edges; separation alone is not a defect.',
+      },
+    ],
+    preview: '/examples/diagnosis/edge-incidence.svg',
+    alt: 'One, two and three triangles incident to an edge, shown as a labelled topology diagram.',
+    known:
+      'One known square is absent, one exact cube face is repeated, or two closed cubes remain intentionally separate.',
+    observed:
+      'The processor reports four boundary edges, three over-shared edges, or two vertex-connected components without an edge defect, respectively.',
+    settings:
+      'Load a public control locally. Press Check manifold geometry only if you want to submit it for a server report; selecting the file alone does not submit it.',
+    limitations:
+      'Edge counts do not establish design intent or detect every spatial crossing.',
+    guide: '/what-is-non-manifold-geometry',
+    tools: ['/stl-manifold-checker'],
+    provenance:
+      'Original InspectMesh geometry measured in the processor; no physical print test.',
   },
   {
     id: 'units-scale',

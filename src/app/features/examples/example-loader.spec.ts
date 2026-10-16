@@ -7,7 +7,7 @@ import { publicExamples } from './example-registry';
 
 describe('explicit public example loading', () => {
   afterEach(() => vi.unstubAllGlobals());
-  const setup = () => {
+  const setup = (tool: string = PublicRouteUrl.Viewer) => {
     TestBed.configureTestingModule({
       imports: [ExampleLoader],
       providers: [
@@ -25,7 +25,7 @@ describe('explicit public example loading', () => {
     });
     const fixture = TestBed.createComponent(ExampleLoader);
     const load = vi.fn().mockResolvedValue(undefined);
-    fixture.componentRef.setInput('tool', PublicRouteUrl.Viewer);
+    fixture.componentRef.setInput('tool', tool);
     fixture.componentRef.setInput('load', load);
     return { fixture, load };
   };
@@ -105,5 +105,54 @@ describe('explicit public example loading', () => {
     expect(fixture.componentInstance.loaded()).toBe(false);
     expect(fixture.componentInstance.error()).toBe('Actual tool failed');
     expect(fixture.componentInstance.status()).toBe('');
+  });
+
+  it('offers topology controls without replacing the quality four-file scenario', async () => {
+    const quality = publicExamples.find(
+      (item) => item.id === 'quality-control-selection',
+    )!;
+    expect(quality.files).toHaveLength(4);
+    expect(quality.tools).toContain(PublicRouteUrl.QualityCheck);
+    expect(quality.tools).not.toContain(PublicRouteUrl.ManifoldChecker);
+
+    const { fixture, load } = setup(PublicRouteUrl.ManifoldChecker);
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    expect(component.choices().map((item) => item.id)).toEqual([
+      'topology-edge-controls',
+    ]);
+    expect(component.selected().guide).toBe('/what-is-non-manifold-geometry');
+    const assets = component.selected().files;
+    expect(assets.map((asset) => asset.label)).toEqual([
+      'Missing face',
+      'Duplicate face',
+      'Two separate closed cubes',
+    ]);
+    expect(fixture.nativeElement.textContent).not.toContain('malformed.stl');
+
+    for (const [index, asset] of assets.entries()) {
+      const select = fixture.nativeElement.querySelectorAll(
+        'select',
+      )[1] as HTMLSelectElement;
+      select.value = String(index);
+      select.dispatchEvent(new Event('change'));
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue(new Response(new Uint8Array(asset.bytes))),
+      );
+      await component.open();
+      fixture.detectChanges();
+      expect(load.mock.lastCall?.[0][0].name).toBe(asset.name);
+      expect(fixture.nativeElement.textContent).toContain(asset.reference);
+    }
+    const links = Array.from(
+      fixture.nativeElement.querySelectorAll('a'),
+    ) as HTMLAnchorElement[];
+    expect(links.map((link) => link.getAttribute('href'))).toContain(
+      '/examples#topology-edge-controls',
+    );
+    expect(links.map((link) => link.getAttribute('href'))).toContain(
+      '/what-is-non-manifold-geometry',
+    );
   });
 });

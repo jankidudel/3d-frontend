@@ -1,5 +1,4 @@
 import { GuideRouteUrl } from '../../../core/seo/guide-routes';
-import { ToolEvidenceComponent } from '../../repeat-workflows/tool-evidence';
 import {
   Component,
   DestroyRef,
@@ -30,7 +29,6 @@ import { ExampleLoader } from '../../examples/example-loader';
 @Component({
   selector: 'app-stl-quality-page',
   imports: [
-    ToolEvidenceComponent,
     StlFilePicker,
     JobStatusComponent,
     FeedbackLinkComponent,

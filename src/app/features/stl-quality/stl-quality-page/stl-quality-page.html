@@ -202,8 +202,10 @@
       report means only that supported checks found no listed blockers. Volume
       is unavailable for open or inconsistent reports; even a reported
       closed-mesh value cannot establish that untested spatial crossings or
-      cavity intent are correct.
+      cavity intent are correct. If two closed surfaces overlap despite a clean
+      edge count, compare them with the
+      <a [href]="routeUrl.MeshIntersectionsGuide">crossing-surface guide</a>
+      before changing the source model.
     </p>
   </section>
-  <app-tool-evidence [page]="routeUrl.QualityCheck" />
 </main>

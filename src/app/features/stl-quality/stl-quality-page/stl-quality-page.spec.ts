@@ -110,6 +110,19 @@ describe('StlQualityPage', () => {
     ).toBe(false);
   });
 
+  it('keeps one quality workflow without the old evidence appendix', () => {
+    const fixture = TestBed.createComponent(StlQualityPage);
+    fixture.detectChanges();
+    const text = fixture.nativeElement.textContent as string;
+
+    expect(text).toContain('Choose a known 20-unit control');
+    expect(text).toContain('Turn a finding into one next action');
+    expect(text).toContain('crossing-surface guide');
+    expect(text).not.toContain('Use defect fixtures to interpret');
+    expect(text).not.toContain('declared-inch 3MF');
+    expect(text).not.toContain('Arachne slicer export');
+  });
+
   it('shows an API failure', () => {
     stlJobs.create.mockReturnValue(throwError(() => new Error('offline')));
     const fixture = TestBed.createComponent(StlQualityPage);

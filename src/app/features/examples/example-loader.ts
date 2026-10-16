@@ -75,6 +75,9 @@ export async function fetchPublicExample(
           @for (asset of selected().files; track asset.path; let i = $index) {
             @if (supported(asset.name)) {
               <option [value]="i">
+                @if (asset.label) {
+                  {{ asset.label }} —
+                }
                 {{ asset.name }} ({{ asset.bytes }} bytes)
               </option>
             }
@@ -112,7 +115,10 @@ export async function fetchPublicExample(
         <p role="alert">{{ error() }}</p>
       }
       @if (loaded()) {
-        <p><strong>Reference observation:</strong> {{ selected().observed }}</p>
+        <p>
+          <strong>Reference observation:</strong>
+          {{ selected().files[chosenIndex()].reference ?? selected().observed }}
+        </p>
         <p>{{ selected().limitations }}</p>
       }
       <p>
@@ -204,6 +210,8 @@ export class ExampleLoader {
   chooseFile(event: Event): void {
     this.fileIndex.set(Number((event.target as HTMLSelectElement).value));
     this.loaded.set(false);
+    this.status.set('');
+    this.error.set('');
   }
   async open(): Promise<void> {
     if (this.loading() || this.busy()) {

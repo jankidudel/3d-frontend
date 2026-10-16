@@ -72,17 +72,6 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     next: PublicRouteUrl.BatchStlChecker,
     cta: 'Check supported 3MF collections',
   },
-  [PublicRouteUrl.QualityCheck]: {
-    guide: PublicRouteUrl.MeshIntersectionsGuide,
-    guideLabel: 'Understand why edge counts do not rule out intersections',
-    heading: 'Use defect fixtures to interpret a quality report',
-    example:
-      'Deleting a square face from a 20 mm cube creates four boundary edges. Adding one duplicate face creates three edges shared by more than two triangles. A repeated-vertex triangle is degenerate. Two separate closed cubes have two shells; their design intent still needs review.',
-    interpretation:
-      'These owned software fixtures are available through the batch workflow and its report. Geometry counts are findings, not a physical printability guarantee. Choose the correction from the actual defect and verify the new export against the original dimensions and shape.',
-    next: PublicRouteUrl.BatchStlChecker,
-    cta: 'Open a mixed collection example',
-  },
   [PublicRouteUrl.DimensionsChecker]: {
     guide: '/how-to-check-if-a-3d-model-fits-your-printer',
     guideLabel: 'Check brims, excluded areas and placement after nominal fit',
