@@ -1,20 +1,30 @@
 <main class="page tool-page wall-thickness-page">
-  <p class="eyebrow">STL printability check</p>
+  <p class="eyebrow">Local STL geometry screen</p>
   <h1>STL Wall Thickness Checker</h1>
   <p class="lead">
-    Estimate wall thickness across an STL and highlight sampled areas that may
-    be too thin for your 3D-printing setup.
+    Estimate wall thickness at sampled STL surface locations. Confirm the
+    coordinate unit, choose a review threshold and inspect flagged locations
+    before checking important features in CAD and your slicer.
   </p>
-  <button type="button" (click)="runOwnedExample()" [disabled]="analysing()">
-    Try example files
-  </button>
+  <app-example-loader
+    [tool]="routeUrl.StlWallThicknessChecker"
+    [active]="!!file()"
+    [current]="file()"
+    [busy]="analysing()"
+    [load]="loadExample"
+  />
+  <p>
+    <a [href]="exampleAsset.ThinWallBarsStl" download
+      >Download the thin-bar STL control</a
+    >
+  </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
-    <h2 id="upload-title">Check your STL wall thickness</h2>
+    <h2 id="upload-title">Choose an STL</h2>
     <div class="drop-zone">
-      <p>Choose an STL file to analyse locally.</p>
       <button class="button" type="button" (click)="openPicker(wallPicker)">
-        Choose STL file</button
-      ><input
+        Choose STL file
+      </button>
+      <input
         #wallPicker
         type="file"
         accept=".stl"
@@ -23,8 +33,8 @@
       />
     </div>
     <p class="hint">
-      ASCII and binary STL files up to 25 MiB are supported. Your STL stays in
-      your browser.
+      ASCII and binary STL files up to {{ fileLimitMiB }} MiB are supported.
+      Your file is processed in this browser.
     </p>
     @if (error()) {
       <p class="error" role="alert">{{ error() }}</p>
@@ -32,25 +42,28 @@
   </section>
   @if (mesh(); as mesh) {
     <section class="card">
-      <h2>Model and threshold</h2>
+      <h2>Unit and review threshold</h2>
       <p>
         <strong>{{ file()?.name }}</strong> · {{ formatBytes(file()!.size) }} ·
         {{ (mesh.indices.length / 3).toLocaleString() }} triangles
       </p>
       <label
-        >Assumed unit
+        >STL coordinate unit
         <select
           [value]="assumedUnit()"
-          (change)="
-            assumedUnit.set($any($event.target).value); report.set(null)
-          "
+          (change)="setUnit($any($event.target).value)"
         >
           <option value="mm">mm</option>
           <option value="cm">cm</option>
           <option value="inches">inches</option>
-        </select></label
-      ><label
-        >Minimum wall thickness
+        </select>
+      </label>
+      <p class="hint">
+        STL does not declare a unit. Check a known dimension before interpreting
+        thickness. The threshold and result use the selected coordinate unit.
+      </p>
+      <label
+        >Review threshold ({{ assumedUnit() }})
         <input
           type="number"
           min="0.0001"
@@ -58,15 +71,7 @@
           [value]="threshold()"
           (input)="setThreshold(+$any($event.target).value)"
         />
-        {{ assumedUnit() }}</label
-      >
-      <p>
-        @for (preset of [0.8, 1, 1.2, 1.6, 2]; track preset) {
-          <button type="button" (click)="setThreshold(preset)">
-            {{ preset }}
-          </button>
-        }
-      </p>
+      </label>
       @if (!thresholdValid()) {
         <p class="error" role="alert">
           Enter a finite threshold greater than zero.
@@ -80,60 +85,32 @@
       >
         {{ analysing() ? 'Analysing locally...' : 'Analyse wall thickness' }}
       </button>
-      <p class="safety-note">
-        This is a sampled, normal-direction estimate. It does not repair a model
-        or guarantee a successful print. Printer settings, material,
-        orientation, supports, and part use also matter.
+      <p role="status" aria-live="polite">
+        {{ analysing() ? 'Sampling selected triangles...' : '' }}
       </p>
     </section>
   }
   @if (report(); as result) {
     <section class="card result">
-      <h2>Wall thickness result</h2>
+      <h2>Sampled wall result</h2>
+      <app-wall-thickness-summary
+        [report]="result"
+        [triangleCount]="mesh()!.indices.length / 3"
+      />
       <p>
-        <strong>{{
-          result.belowThreshold
-            ? 'Thin areas were found'
-            : result.unmeasured
-              ? 'Analysis completed with unmeasured areas'
-              : 'No sampled walls were below your threshold'
-        }}</strong>
+        Resolved here means the loaded STL coordinates under your chosen unit. A
+        ray can hit a different nearby body; compare flagged places with your
+        intended material wall.
       </p>
-      <dl class="metrics">
-        <div>
-          <dt>Minimum sampled thickness</dt>
-          <dd>{{ format(result.minimum) }} {{ result.unit }}</dd>
-        </div>
-        <div>
-          <dt>Average sampled thickness</dt>
-          <dd>{{ format(result.average) }} {{ result.unit }}</dd>
-        </div>
-        <div>
-          <dt>Samples below threshold</dt>
-          <dd>{{ result.belowThreshold }}</dd>
-        </div>
-        <div>
-          <dt>Samples measured</dt>
-          <dd>{{ result.measured }}</dd>
-        </div>
-        <div>
-          <dt>Samples not measured</dt>
-          <dd>{{ result.unmeasured }}</dd>
-        </div>
-      </dl>
-      <p class="legend">
-        Heatmap legend: red below {{ result.threshold }} {{ result.unit }} ·
-        orange/yellow close to threshold · blue/green above threshold · grey
-        unmeasured.
-      </p>
-      <label class="heatmap-toggle">
-        <input
+      <p class="legend">Heatmap legend: {{ legend(result) }}</p>
+      <label class="heatmap-toggle"
+        ><input
           type="checkbox"
           [checked]="showHeatmap()"
           (change)="showHeatmap.set($any($event.target).checked)"
         />
-        Show thickness heatmap
-      </label>
+        Show thickness heatmap</label
+      >
       @if (heatmap(); as display) {
         <section class="heatmap-viewer" aria-labelledby="heatmap-title">
           <h3 id="heatmap-title">Sampled thickness heatmap</h3>
@@ -145,90 +122,72 @@
             (chooseAnother)="openPicker(wallPicker)"
           />
         </section>
-      } @else if (!showHeatmap()) {
-        <p class="hint">
-          The heatmap is hidden. Text results remain available without WebGL.
-        </p>
-      }
-      @if (result.unmeasured) {
-        <p class="warning">
-          Some areas could not be measured reliably. Treat this analysis as
-          guidance, not a printability guarantee.
-        </p>
-      }
-      @if (result.belowThreshold === 0) {
-        <p>
-          No sampled areas were below the selected threshold. Confirm the result
-          against your printer, material, nozzle, layer height, and intended
-          use.
-        </p>
       }
       <p>
-        Learn how to interpret a warning in the
-        <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
-          >3D Print Wall Thickness Guide</a
-        >.
-      </p>
-      <p>
-        <a [href]="routeUrl.StlPrintPreflight">STL Print Preflight Checker</a> ·
-        <a [href]="routeUrl.StlOverhangChecker">STL Overhang Checker</a> ·
-        <a [href]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-        <a [href]="routeUrl.StlRepair">STL Repair Tool</a> ·
-        <a [href]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
-        <a [href]="routeUrl.StlScaleTool">STL Scale Tool</a> ·
-        <a [href]="routeUrl.ToleranceCalculator"
-          >Tolerance &amp; Clearance Calculator</a
+        <a [href]="guideRouteUrl.RouteHowToCheckStlWallThicknessFor3dPrinting"
+          >Work through an STL result</a
         >
-        · <a [href]="routeUrl.StlSplitter">STL Splitter</a> ·
-        <a [href]="guideRouteUrl.RouteHowToMakeAnStlFilePrintable"
-          >How to Make an STL File Printable</a
-        >
+        with units, source geometry and sliced layers.
       </p>
     </section>
   }
-  <app-tool-evidence
-    [completed]="!!report()"
-    [page]="routeUrl.StlWallThicknessChecker"
-  />
   <section class="content interpretation-guide">
-    <h2>What the wall samples measure</h2>
+    <h2>How to act on a sampled result</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Observation</th>
+          <th scope="col">Next action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Measured sample below threshold</td>
+          <td>
+            Inspect that geometry and the same sliced region.
+            <a [href]="routeUrl.NozzleLayerHeightCalculator"
+              >Compare nominal line widths</a
+            >
+            only after checking the actual wall.
+          </td>
+        </tr>
+        <tr>
+          <td>No measured sample below threshold</td>
+          <td>
+            Review unmeasured locations and critical features that finite
+            sampling can miss.
+          </td>
+        </tr>
+        <tr>
+          <td>Unmeasured sample, possibly alongside a thin sample</td>
+          <td>
+            Inspect open, degenerate or ambiguous geometry in CAD and the mesh
+            viewer.
+          </td>
+        </tr>
+        <tr>
+          <td>No valid measurement</td>
+          <td>
+            Check unit, geometry and method limits; no zero or success is
+            implied.
+          </td>
+        </tr>
+        <tr>
+          <td>File could not be analysed</td>
+          <td>
+            Choose a supported nonempty STL within the file limit and try again.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Method boundary</h2>
     <p>
-      This local method selects up to 2,000 triangles spread through input
-      triangle order. From each triangle centroid it casts bounded
-      normal-direction rays and records a supported opposing hit. It is not an
-      exhaustive shortest-distance measurement over every point on the model.
-      Triangle-order sampling can miss a narrow feature or oversample a region
-      with many facets.
-    </p>
-    <p>
-      Choose the source coordinate unit before analysis. The review threshold is
-      expressed in the selected unit; 0.04 inches is approximately 1.016 mm, not
-      0.04 mm. A threshold identifies samples to inspect, not a certified
-      printable minimum for a material or printer.
-    </p>
-    <h3>Known wall example and no-hit outcomes</h3>
-    <p>
-      Download the
-      <a [href]="exampleAsset.ThinWallBarsStl" download
-        >generated thin-wall bars</a
-      >
-      and inspect their faces with the millimetre assumption. Compare the wall
-      directions you intended to measure with the centroid-ray locations. Angled
-      rays, adjacent bodies and irregular geometry can measure a different gap
-      from a source-CAD wall dimension. The built-in cube example is a broad
-      sanity check, not proof of sensitivity to small ribs.
-    </p>
-    <p>
-      No opposing hit or an invalid ray stays unmeasured. It is neither a
-      zero-thickness wall nor a passed sample. Review unmeasured counts, source
-      winding and open boundaries even when no measured value is below
-      threshold. Stop if the important feature has no sample or the selected
-      unit is uncertain; use source CAD section measurements and the intended
-      slicer's thin-wall preview.
-      <a [href]="guideRouteUrl.RouteHowToMeasure3dModel"
-        >Compare point selection with source dimensions</a
-      >
-      before accepting a functional part.
+      The checker selects up to 2,000 triangles across input triangle order and
+      casts one inward normal ray from each centroid. Degenerate faces and rays
+      without an accepted opposing hit remain unmeasured. Unsampled triangles
+      receive no estimate. A ray may hit another body, so this is neither a
+      per-part result nor a whole-model minimum certificate.
+      <a [href]="routeUrl.Methods">Read the sampling method</a>.
     </p>
   </section>
 </main>

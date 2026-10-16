@@ -192,13 +192,19 @@ faq:
       </td>
     </tr>
     <tr>
-      <td>Bounded triangle-centroid normal-direction rays</td>
       <td>
-        Sampled opposing-surface distances and counts below the chosen threshold
+        Up to 2,000 input-order triangle-centroid inward normal rays; one ray
+        per selected face
       </td>
       <td>
-        Unmeasured rays are not zero thickness. Small details and
-        unsupported/opposing geometry may be missed; strength is not tested
+        Attempted = measured + unmeasured samples. Below-threshold counts use
+        measured ray distances; unsampled triangles are separate
+      </td>
+      <td>
+        The ray starts 0.00001 coordinate units inward, accepts a finite first
+        hit beyond that offset and has no explicit distance cap. Degenerate
+        sampled faces and absent hits are unmeasured. Another body can be hit;
+        small features may be missed. Strength is not tested
       </td>
       <td>
         <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"

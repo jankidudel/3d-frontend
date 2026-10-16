@@ -112,13 +112,13 @@ for (const guide of catalogue.guides) {
   const entry = registry.find((candidate) => candidate.slug === guide.slug)!;
   const document = new JSDOM(guide.html).window.document;
   const checksEditorialTargets = entry.checkEditorialTargets !== false;
-  if (guide.faqs.length < 2)
+  if (guide.faqs.length === 1)
     report(
       'ERROR',
       source,
       route,
       'faq-count',
-      'Provide at least two useful FAQ entries.',
+      'Use at least two substantive FAQ entries when a guide has an FAQ section, or omit the section.',
     );
   if (guide.title.trim().length < 15 || guide.description.trim().length < 50)
     report(
@@ -387,6 +387,9 @@ async function checkGeneratedOutput(): Promise<void> {
           'Public production pages must be indexable.',
         );
       if (publicSlugs.has(route.slice(1))) {
+        const guide = catalogue.guides.find(
+          (candidate) => `/${candidate.slug}` === route,
+        );
         const json = doc.querySelector(
           'script[data-seo-structured-data]',
         )?.textContent;
@@ -395,14 +398,15 @@ async function checkGeneratedOutput(): Promise<void> {
           if (
             !Array.isArray(graph) ||
             !graph.some((item) => item?.['@type'] === 'Article') ||
-            !graph.some((item) => item?.['@type'] === 'FAQPage')
+            graph.some((item) => item?.['@type'] === 'FAQPage') !==
+              Boolean(guide?.faqs.length)
           )
             report(
               'ERROR',
               page.filePath,
               route,
               'guide-structured-data',
-              'Render valid Article and visible FAQ structured data.',
+              'Render Article data and FAQ data only when a visible FAQ exists.',
             );
         } catch {
           report(
@@ -410,7 +414,7 @@ async function checkGeneratedOutput(): Promise<void> {
             page.filePath,
             route,
             'guide-structured-data',
-            'Render valid Article and visible FAQ structured data.',
+            'Render Article data and FAQ data only when a visible FAQ exists.',
           );
         }
       }

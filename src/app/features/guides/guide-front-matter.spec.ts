@@ -32,20 +32,22 @@ describe('guide front matter validation', () => {
     expect(guideRoutePath(guide.slug)).toBe('/example-guide');
   });
 
-  it.each([
-    'title',
-    'description',
-    'slug',
-    'eyebrow',
-    'heading',
-    'faq',
-  ] as const)('rejects a missing required %s field', (field) => {
-    const guide = { ...validGuide } as Record<string, unknown>;
-    delete guide[field];
+  it.each(['title', 'description', 'slug', 'eyebrow', 'heading'] as const)(
+    'rejects a missing required %s field',
+    (field) => {
+      const guide = { ...validGuide } as Record<string, unknown>;
+      delete guide[field];
 
-    expect(() => validateGuideFrontMatter(guide, filePath)).toThrow(
-      `Guide validation failed: ${filePath} is missing required front-matter field "${field}".`,
-    );
+      expect(() => validateGuideFrontMatter(guide, filePath)).toThrow(
+        `Guide validation failed: ${filePath} is missing required front-matter field "${field}".`,
+      );
+    },
+  );
+
+  it('allows a guide without a repeated FAQ tail', () => {
+    const { faq, ...guide } = validGuide;
+    expect(faq).toHaveLength(2);
+    expect(validateGuideFrontMatter(guide, filePath).faqs).toEqual([]);
   });
 
   it('rejects invalid slug formats', () => {

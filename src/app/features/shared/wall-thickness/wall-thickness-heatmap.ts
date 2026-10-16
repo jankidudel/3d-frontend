@@ -46,7 +46,7 @@ export function classifyWallThicknessSample(
 }
 
 export function wallThicknessLegend(report: WallThicknessReport): string {
-  return `Red below ${report.threshold} ${report.unit}; orange/yellow close to threshold; blue/green comfortably above; grey unmeasured.`;
+  return `Red: measured below ${report.threshold} ${report.unit}; orange: measured from the threshold to below ${report.threshold * 1.25} ${report.unit}; blue/green: measured at or above ${report.threshold * 1.25} ${report.unit}; grey: unmeasured sample or triangle not sampled.`;
 }
 
 /** Creates a display-only colour mesh and does not mutate analysed geometry. */

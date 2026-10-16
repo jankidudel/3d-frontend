@@ -62,7 +62,7 @@ export function validateGuideFrontMatter(
     slug,
     eyebrow,
     heading,
-    faqs: requiredFaqs(record, filePath),
+    faqs: optionalFaqs(record, filePath),
     published: optionalString(record, 'published', filePath),
     updated: optionalString(record, 'updated', filePath),
     image: optionalString(record, 'image', filePath),
@@ -154,21 +154,18 @@ function optionalString(
   return value;
 }
 
-function requiredFaqs(
+function optionalFaqs(
   record: Record<string, unknown>,
   filePath: string,
 ): readonly GuideFaq[] {
   if (!('faq' in record)) {
-    throw validationError(
-      filePath,
-      'is missing required front-matter field "faq".',
-    );
+    return [];
   }
   const value = record['faq'];
-  if (!Array.isArray(value) || value.length === 0) {
+  if (!Array.isArray(value)) {
     throw validationError(
       filePath,
-      'field "faq" must be a non-empty array when provided.',
+      'field "faq" must be an array when provided.',
     );
   }
   return value.map((faq, index) => faqEntry(faq, index, filePath));

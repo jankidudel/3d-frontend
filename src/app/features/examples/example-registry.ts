@@ -346,15 +346,47 @@ export const publicExamples: readonly PublicExample[] = [
     known:
       'Three bars are 0.3, 0.45 and 0.9 mm wide, 20 mm long and 10 mm high.',
     observed:
-      'Retained PrusaSlicer 2.9.6 second-layer previews show four extrusion moves for Classic and six for Arachne, at three bar positions. These are software exports, not prints.',
+      'Local sampled checker, mm and 1.2 mm threshold: 36 attempted, 36 measured, 12 below threshold, zero unmeasured, smallest about 0.29999 mm. Retained PrusaSlicer 2.9.6 second-layer previews show four Classic versus six Arachne extrusion moves. These are software observations, not prints.',
     settings:
-      'Preflight threshold: 1.2 mm. Slicer experiment: 0.4 mm nozzle, 0.2 mm layers, 0.45 mm width, two perimeters, zero infill, thin-wall option off.',
+      'STL coordinate unit mm; review threshold 1.2 mm. Slicer experiment: 0.4 mm nozzle, 0.2 mm layers, 0.45 mm width, two perimeters, zero infill, thin-wall option off.',
     limitations:
       'Review measured and unmeasured rays and the native slicer preview. Preview-only G-code must not be run on a printer. No universal minimum wall is established.',
     guide: '/3d-print-wall-thickness-guide',
-    tools: ['/stl-viewer', '/stl-print-preflight'],
+    tools: [
+      '/stl-viewer',
+      '/stl-print-preflight',
+      '/stl-wall-thickness-checker',
+    ],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
+  },
+  {
+    id: 'placed-wall-scales',
+    name: 'One 3MF slab at two placed scales',
+    group: 'Thin features / detail',
+    question:
+      'Does the checker include a repeated resource after a 50% placement scale?',
+    files: [
+      {
+        path: ExampleAsset.TwoScaleSlabs3mf,
+        name: 'two-scale-slabs.3mf',
+        bytes: 966,
+      },
+    ],
+    preview: '/examples/diagnosis/build-conversion.svg',
+    alt: 'Diagram of one stored mesh placed twice with distinct transforms.',
+    known:
+      'One closed 0.8 × 10 × 10 mm slab resource is placed at full size and again at 50% scale, translated 30 mm in X after scaling.',
+    observed:
+      'The resolver returns two placed items with 0.8 mm and 0.4 mm X spans, separated by 29.2 mm. The sampled result must be read separately from these designed dimensions.',
+    settings:
+      'Declared unit: millimetre. Review threshold: 0.6 mm. Load locally, then run the sampled check.',
+    limitations:
+      'Combined-scene rays are not labelled by instance. The sample is a geometry control, not a print test.',
+    guide: '/how-to-check-3mf-wall-thickness-for-3d-printing',
+    tools: ['/3mf-wall-thickness-checker'],
+    provenance:
+      'Original InspectMesh generated 3MF using scripts/generate-collection-examples.py; no physical print test.',
   },
   {
     id: 'detail-loss',

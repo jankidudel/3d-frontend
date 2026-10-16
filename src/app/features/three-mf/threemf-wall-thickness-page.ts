@@ -1,7 +1,7 @@
 import { ExampleAsset } from '../examples/example-assets';
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
@@ -13,10 +13,8 @@ import {
   WallThicknessUnit,
 } from '../shared/wall-thickness/wall-thickness-analysis';
 import { createWallThicknessHeatmap } from '../shared/wall-thickness/wall-thickness-heatmap';
-import {
-  roundedThickness,
-  wallThicknessOutcomeText,
-} from '../shared/wall-thickness/wall-thickness-result';
+import { wallThicknessLegend } from '../shared/wall-thickness/wall-thickness-heatmap';
+import { WallThicknessSummaryComponent } from '../shared/wall-thickness/wall-thickness-summary';
 import {
   resolveThreeMfWallGeometry,
   ResolvedThreeMfGeometry,
@@ -24,7 +22,11 @@ import {
 
 @Component({
   selector: 'app-three-mf-wall-thickness-page',
-  imports: [ObjectViewerComponent, RouterLink],
+  imports: [
+    ObjectViewerComponent,
+    ExampleLoader,
+    WallThicknessSummaryComponent,
+  ],
   templateUrl: './threemf-wall-thickness-page.html',
   styleUrl: './threemf-wall-thickness-page.scss',
 })
@@ -40,6 +42,7 @@ export class ThreeMfWallThicknessPage {
   readonly error = signal('');
   readonly showHeatmap = signal(true);
   readonly thresholdValid = computed(() => validThreshold(this.threshold()));
+  readonly fileLimitMiB = getMaxFileUploadSizeLimit() / (1024 * 1024);
   readonly heatmap = computed(() => {
     const resolved = this.resolved();
     const report = this.report();
@@ -47,15 +50,20 @@ export class ThreeMfWallThicknessPage {
       ? createWallThicknessHeatmap(resolved.geometry, report)
       : null;
   });
-  readonly outcome = wallThicknessOutcomeText;
+  readonly legend = wallThicknessLegend;
+  readonly loadExample = async (files: readonly File[]) => {
+    this.setThreshold(0.6);
+    await this.select(files[0] ?? null);
+  };
+  private revision = 0;
   private readonly seo = inject(SeoService);
 
   constructor() {
     this.seo.apply({
       title:
-        '3MF Wall Thickness Checker - Check Thin Walls Online | InspectMesh',
+        '3MF Wall Thickness Checker: Inspect Resolved Builds | InspectMesh',
       description:
-        'Estimate resolved 3MF build wall thickness locally in your browser, including build-item transforms and repeated objects.',
+        'Screen sampled wall thickness in a resolved 3MF build. Check declared units, transforms, unmeasured samples and combined-scene ray limits.',
       path: PublicRouteUrl.ThreeMfWallThicknessChecker,
     });
   }
@@ -72,6 +80,8 @@ export class ThreeMfWallThicknessPage {
     this.report.set(null);
   }
   async select(file: File | null): Promise<void> {
+    const revision = ++this.revision;
+    this.loading.set(false);
     this.file.set(null);
     this.resolved.set(null);
     this.report.set(null);
@@ -89,22 +99,31 @@ export class ThreeMfWallThicknessPage {
     }
     if (file.size > getMaxFileUploadSizeLimit()) {
       this.error.set(
-        'This file is over the 25 MiB limit. Choose a smaller 3MF file.',
+        `This file is over the ${this.fileLimitMiB} MiB limit. Choose a smaller 3MF file.`,
       );
       return;
     }
     this.loading.set(true);
     try {
-      this.resolved.set(
-        await resolveThreeMfWallGeometry(await file.arrayBuffer()),
+      const resolved = await resolveThreeMfWallGeometry(
+        await file.arrayBuffer(),
       );
+      if (revision !== this.revision) {
+        return;
+      }
+      this.resolved.set(resolved);
       this.file.set(file);
     } catch {
+      if (revision !== this.revision) {
+        return;
+      }
       this.error.set(
         'We could not resolve this 3MF build locally. Choose a standard, unencrypted 3MF with supported mesh geometry and a declared supported unit.',
       );
     } finally {
-      this.loading.set(false);
+      if (revision === this.revision) {
+        this.loading.set(false);
+      }
     }
   }
   analyse(): void {
@@ -119,8 +138,5 @@ export class ThreeMfWallThicknessPage {
         WallThicknessUnit.Millimetres,
       ),
     );
-  }
-  format(value: number | null): string {
-    return roundedThickness(value);
   }
 }

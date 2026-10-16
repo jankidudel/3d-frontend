@@ -1,138 +1,146 @@
 ---
 title: 'How to Check 3MF Wall Thickness for 3D Printing | InspectMesh'
-description: Learn how to estimate thin walls in resolved 3MF build geometry, including units, components, transforms and slicer checks.
+description: Check the declared unit and placed 3MF build, compare a two-scale control with sampled results, and verify critical walls in the native slicer.
 slug: how-to-check-3mf-wall-thickness-for-3d-printing
 eyebrow: 3MF print preparation guide
 heading: How to Check 3MF Wall Thickness for 3D Printing
-faq:
-  - question: Does the 3MF wall checker include build-item transforms?
-    answer: Yes. It resolves supported build items, repeated objects, component references and transforms before sampling build-space geometry.
-  - question: Does a result below the threshold guarantee a failed print?
-    answer: No. It is a sampled estimate for investigation. Confirm the result with the printer profile, material and slicer preview you intend to use.
 ---
 
 <p>
-  Wall thickness is the distance between opposite surfaces of a part. It is an
-  important preflight measurement, but it is not a promise that a part will
-  print successfully. Nozzle size, layer height, material, orientation, cooling,
-  supports and the intended use of the part all affect the final result.
+  A 3MF wall check must use the geometry actually placed in the build. Declared
+  units, repeated instances and scale transforms affect what is measured; a
+  combined-scene sample can also hit a neighbouring part.
 </p>
 
-<h2>Verify transformed and repeated objects</h2>
+<h2>1. Read the declared unit and resolved build</h2>
 <p>
-  A 3MF package may reuse one object resource in several build items.
-  Translation and rotation do not change its local wall thickness, but scaling
-  does. A 0.8 mm wall becomes 0.4 mm after a uniform 50% scale; non-uniform
-  scaling can change thickness differently by direction. Review the resolved
-  instance that will be printed rather than assuming the resource's
-  untransformed measurement applies to every placement.
-</p>
-<p>
-  Sampled thickness is a screen, not a promise that every point was measured.
-  Thin ribs, sharp corners, internal passages and coincident surfaces can be
-  missed or produce ambiguous rays. Rotate the view, inspect cross-sections
-  where available, and compare flagged regions with the source design. Confirm
-  the final perimeter and layer result in the slicer because extrusion width,
-  layer height and feature-generation rules determine what the machine is asked
-  to print.
-</p>
-<h2>Inspect the placed 3MF build</h2>
-<p>
-  Evaluate wall thickness after build-item transforms and at the intended
-  physical scale. Sampling identifies areas worth inspecting, not every possible
-  minimum or a process guarantee. Check a highlighted region in the slicer, then
-  compare it with nozzle, material, orientation and the part's intended load.
-</p>
-<p>
-  For the format-neutral workflow and warning context, read the
-  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
-    >3D Print Wall Thickness Guide</a
-  >.
-</p>
-<p>
-  Use
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> first
-  when wall thickness is only one part of the decision: it also reports the
-  resolved build unit, dimensions, printer fit and mesh findings.
-</p>
-<h2>Check the resolved build, not an object in isolation</h2>
-<p>
-  A 3MF file can contain several build items, repeated objects, component
-  references and placement transforms. The useful geometry for a print check is
-  the final build arrangement. A wall checker should therefore resolve every
-  build item and transform before measuring. Looking only at a stored mesh
-  object can miss repeated parts or measure it in the wrong position.
-</p>
-<p>
-  The
+  A mesh resource is stored geometry. A build item places that resource,
+  possibly more than once, and can apply a transform. Supported nested
+  components are also resolved. The
   <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
     >3MF Wall Thickness Checker</a
   >
-  resolves supported build geometry locally in your browser. It does not upload
-  the selected file. It uses the declared 3MF unit, converts the resolved
-  geometry to build-space millimetres for the calculation, and presents the
-  threshold in millimetres.
+  shows the declared unit, build-item count, placed-mesh count and resolved
+  triangle count. A missing unit uses the 3MF millimetre default; unsupported
+  required or recommended extensions stop the local check.
 </p>
-<h2>How to use the checker</h2>
+<figure>
+  <img
+    src="/examples/diagnosis/build-conversion.svg"
+    width="720"
+    height="240"
+    loading="lazy"
+    alt="Diagram of one stored resource reused by build placements; it is not a live measurement."
+  />
+  <figcaption>
+    Explanatory placement diagram. Use the checker summary for the loaded
+    package's actual build counts.
+  </figcaption>
+</figure>
+<p>
+  The resolver applies component and build transforms before converting
+  coordinates to millimetres. This checker has no source-unit override: its
+  <strong>Review threshold</strong>, sampled distances and heatmap are all in
+  <strong>mm</strong>, even when a package declares inches.
+</p>
+
+<h2>2. Worked control: one resource, two scales</h2>
+<p>
+  Load the
+  <a href="{{ ExampleAsset.TwoScaleSlabs3mf }}" download
+    >two-scale 3MF control</a
+  >. Its one closed slab resource is designed at 0.8 × 10 × 10 mm. The build
+  places it once unchanged and once at uniform 50% scale, translated 30 mm in X
+  after scaling. The second placed slab therefore has source-derived dimensions
+  of 0.4 × 5 × 5 mm. The instances are separated, so this positive control
+  avoids a nearby cross-body hit.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Placed item</th>
+      <th scope="col">Resolved X bounds</th>
+      <th scope="col">Designed X thickness</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Full scale</td>
+      <td>0 to about 0.8 mm</td>
+      <td>0.8 mm</td>
+    </tr>
+    <tr>
+      <td>Half scale</td>
+      <td>30 to about 30.4 mm</td>
+      <td>0.4 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  With a 0.6 mm review threshold, the current combined-scene ray method measured
+  24 of 24 attempted samples, with four below threshold and none unmeasured. The
+  smallest measured sample was about 0.39999 mm; four other short-axis samples
+  were about 0.79999 mm. Other faces measured roughly 5 or 10 mm because their
+  normals cross the larger slab dimensions. These are actual software
+  observations from 16 October 2026, not a complete minimum-wall proof or
+  physical print. The
+  <a href="{{ GuideSlug.RouteExamples }}#placed-wall-scales">example record</a>
+  retains the fixture and reproduction settings.
+</p>
+
+<h2>3. Nearby parts can change a sample</h2>
+<p>
+  The checker casts rays through a combined placed triangle scene and does not
+  retain a per-instance identity in the thickness report. A hit on a
+  neighbouring part can describe an assembly gap rather than a material wall.
+  Translation leaves an isolated part's own wall unchanged, but moving a
+  neighbour can change which surface a ray hits. An open surface may yield no
+  accepted hit. Inspect
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >visual cross-sections</a
+  >
+  to distinguish material boundaries from empty clearance; that viewer does not
+  measure a section.
+</p>
+
+<h2>4. Follow the checker controls</h2>
 <ol>
-  <li>Choose a standard, unencrypted 3MF file.</li>
-  <li>Confirm the declared unit shown after the build is resolved.</li>
-  <li>Enter the minimum wall thickness you want to investigate.</li>
-  <li>Run the local sampled analysis and inspect the text counts.</li>
   <li>
-    Use the heatmap to locate sampled thin, near-threshold and unmeasured areas.
+    Choose a supported, unencrypted mesh-based 3MF or load the public control
+    locally.
   </li>
   <li>
-    Confirm important areas in your slicer using the profile, material and
-    nozzle you plan to use.
+    Confirm its declared unit, build count and resolved triangle count against
+    the original application.
+  </li>
+  <li>
+    Enter a <strong>Review threshold (mm)</strong> and run the sampled check.
+  </li>
+  <li>
+    Read attempted, measured, below-threshold, unmeasured and unsampled counts
+    outside the heatmap. Red means below threshold; orange is from the threshold
+    to below 1.25 times it; blue/green is at or above that boundary; grey
+    includes unmeasured and unsampled triangles.
+  </li>
+  <li>
+    Compare important locations with the source geometry and native sliced
+    layers.
   </li>
 </ol>
-<h2>Read the heatmap carefully</h2>
 <p>
-  Red marks samples below the selected threshold. Orange and yellow mark samples
-  close to it. Blue and green mark samples comfortably above it. Grey marks an
-  unmeasured sample. The checker samples triangle centroids and casts along the
-  triangle normal, so it is a fast screening tool rather than an exhaustive
-  minimum-wall solver.
+  A threshold change clears the prior report. A zero below-threshold count is
+  only a statement about measured samples. If no sample is measured, the tool
+  provides no wall estimate.
 </p>
+
+<h2>5. Verify before editing the source</h2>
 <p>
-  An unmeasured count is significant. It can occur around open surfaces,
-  degenerate triangles, ambiguous intersections or geometry that does not
-  provide a reliable opposite hit in the sampled direction. Inspect these areas
-  with a mesh checker and in a slicer. A zero thin-sample count does not mean
-  every possible point on the model is thick enough.
-</p>
-<h2>Choose a practical threshold</h2>
-<p>
-  Use a threshold based on your actual process rather than a generic online
-  number. A decorative shell, a functional clip and a load-bearing bracket have
-  different needs. Start with the nozzle diameter and expected perimeter count,
-  then account for material behavior and the direction of the force. Slicer
-  preview is especially useful for confirming whether a feature receives the
-  intended number of perimeters.
-</p>
-<p>
-  For STL files, coordinates do not declare a unit. Use the
-  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
-    >STL Wall Thickness Checker</a
-  >
-  only after selecting the unit your slicer uses. 3MF is usually clearer because
-  it can declare a unit, but that still does not replace checking the selected
-  printer profile.
-</p>
-<h2>When the checker cannot resolve a file</h2>
-<p>
-  The browser tool safely stops when a 3MF has no resolved mesh build, an
-  unsupported declared unit, or features its local loader cannot resolve. It
-  does not fall back to server conversion or silently measure raw object-local
-  geometry. Export a standard mesh-based 3MF from your CAD or slicer, or inspect
-  the model in its authoring application.
-</p>
-<h2>Next steps</h2>
-<p>
-  Combine the thickness result with the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>, the
-  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
-  and your slicer preview. These checks help you investigate geometry before
-  committing material and machine time; they cannot guarantee printability.
+  Keep the original 3MF. Check its build items and transformed dimensions in the
+  authoring application, make a targeted source edit where needed, then compare
+  a newly saved resolved copy with the native slicer preview. Do not flatten to
+  STL if you need 3MF package identity, project settings, materials or declared
+  units. For process and feature-use decisions, use the
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >wall-thickness guide</a
+  >.
 </p>

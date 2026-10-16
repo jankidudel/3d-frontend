@@ -83,15 +83,6 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     next: PublicRouteUrl.PrinterFitChecker,
     cta: 'Compare the same model against named printers',
   },
-  [PublicRouteUrl.StlWallThicknessChecker]: {
-    heading: 'Connect geometry samples to actual extrusion width',
-    example:
-      'For a 0.4 mm nozzle, 0.45 mm actual line width and 1.3 mm CAD wall, three equal-width lines give 1.35 mm nominal thickness. That arithmetic is not the slicer toolpath. Variable-width generators, line overlap and extrusion shape can change the result.',
-    interpretation:
-      'A normal-direction ray that finds no opposing hit is unmeasured, not zero or safe. The threshold is a review input; finite sampling can miss a thin corner or rib. Inspect the identified geometry and the actual sliced layer rather than claiming the entire part meets a strength specification.',
-    next: PublicRouteUrl.NozzleLayerHeightCalculator,
-    cta: 'Plan nozzle, line width and walls',
-  },
   [PublicRouteUrl.PrintCostCalculator]: {
     heading: 'A complete material and energy example',
     example:

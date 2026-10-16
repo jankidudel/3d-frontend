@@ -198,6 +198,11 @@
           <dd>{{ result.layerRatio * 100 | number: '1.0-1' }}%</dd>
         </dl>
         <p>
+          The planner rounds intended wall thickness divided by chosen line
+          width to the nearest positive whole line count. This is equal-width
+          arithmetic; inspect generated slicer paths before choosing a CAD wall.
+        </p>
+        <p>
           {{
             result.reviewLayer
               ? 'This layer exceeds the 80% starting limit in the cited Prusa guidance. Review the exact nozzle and printer profile.'
@@ -272,6 +277,13 @@
     </ul>
   </section>
   @if (kind === kinds.Wall) {
+    <p>
+      <a [href]="guides.Route3dPrintWallThicknessGuide"
+        >Interpret wall thickness for the feature's use</a
+      >. If you already have a mesh, screen its sampled geometry with the
+      <a [routerLink]="routeUrl.StlWallThicknessChecker">STL checker</a> or
+      <a [routerLink]="routeUrl.ThreeMfWallThicknessChecker">3MF checker</a>.
+    </p>
     <section class="card">
       <h2>Actual thin-wall slicer control</h2>
       <p>

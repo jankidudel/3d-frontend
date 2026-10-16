@@ -59,6 +59,9 @@ import { publicExamples } from './example-registry';
                 </p>
                 <p><strong>Known geometry:</strong> {{ example.known }}</p>
                 <p>
+                  <strong>Reproduction settings:</strong> {{ example.settings }}
+                </p>
+                <p>
                   <strong>Software observation:</strong> {{ example.observed }}
                 </p>
                 <p>{{ example.limitations }}</p>

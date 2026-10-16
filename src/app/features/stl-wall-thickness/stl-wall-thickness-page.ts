@@ -1,6 +1,6 @@
 import { ExampleAsset } from '../examples/example-assets';
+import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
-import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { SeoService } from '../../core/seo/seo.service';
@@ -8,10 +8,8 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
 import { createWallThicknessHeatmap } from '../shared/wall-thickness/wall-thickness-heatmap';
-import {
-  roundedThickness,
-  wallThicknessOutcomeText,
-} from '../shared/wall-thickness/wall-thickness-result';
+import { wallThicknessLegend } from '../shared/wall-thickness/wall-thickness-heatmap';
+import { WallThicknessSummaryComponent } from '../shared/wall-thickness/wall-thickness-summary';
 import {
   analyseWallThickness,
   validThreshold,
@@ -23,13 +21,16 @@ import {
   selector: 'app-stl-wall-thickness-page',
   templateUrl: './stl-wall-thickness-page.html',
   styleUrl: './stl-wall-thickness-page.scss',
-  imports: [ToolEvidenceComponent, ObjectViewerComponent],
+  imports: [
+    ObjectViewerComponent,
+    ExampleLoader,
+    WallThicknessSummaryComponent,
+  ],
 })
 export class StlWallThicknessPage {
   readonly exampleAsset = ExampleAsset;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
-  readonly unit = WallThicknessUnit;
   readonly file = signal<File | null>(null);
   readonly mesh = signal<StlMesh | null>(null);
   readonly assumedUnit = signal<WallThicknessUnit>(
@@ -61,30 +62,25 @@ export class StlWallThicknessPage {
   readonly error = signal('');
   readonly analysing = signal(false);
   readonly thresholdValid = computed(() => validThreshold(this.threshold()));
+  readonly fileLimitMiB = getMaxFileUploadSizeLimit() / (1024 * 1024);
+  readonly legend = wallThicknessLegend;
+  readonly loadExample = async (files: readonly File[]) => {
+    this.setUnit(WallThicknessUnit.Millimetres);
+    this.setThreshold(1.2);
+    await this.onFileSelected(files[0] ?? null);
+  };
+  private revision = 0;
   private readonly seo = inject(SeoService);
   constructor() {
     this.seo.apply({
-      title:
-        'STL Wall Thickness Checker - Check Thin Walls Online | InspectMesh',
+      title: 'STL Wall Thickness Checker: Sample Thin Areas | InspectMesh',
       description:
-        'Estimate STL wall thickness locally in your browser, highlight sampled thin areas, and check whether a model needs closer print-preparation review.',
+        'Estimate sampled STL wall thickness in your browser. Set units and a review threshold, inspect thin or unmeasured samples, then verify critical features.',
       path: PublicRouteUrl.StlWallThicknessChecker,
     });
   }
-  async runOwnedExample(): Promise<void> {
-    try {
-      const { exampleFile, MeshExample } =
-        await import('../repeat-workflows/example-meshes');
-      await this.onFileSelected(exampleFile(MeshExample.Cube));
-    } catch (error: unknown) {
-      this.error.set(
-        error instanceof Error
-          ? error.message
-          : 'The example could not be loaded.',
-      );
-    }
-  }
   async onFileSelected(file: File | null): Promise<void> {
+    const revision = ++this.revision;
     this.error.set('');
     this.mesh.set(null);
     this.file.set(null);
@@ -102,14 +98,21 @@ export class StlWallThicknessPage {
     }
     if (file.size > getMaxFileUploadSizeLimit()) {
       this.error.set(
-        'This file is over the 25 MiB limit. Choose a smaller STL file.',
+        `This file is over the ${this.fileLimitMiB} MiB limit. Choose a smaller STL file.`,
       );
       return;
     }
     try {
-      this.mesh.set(await readStl(file));
+      const mesh = await readStl(file);
+      if (revision !== this.revision) {
+        return;
+      }
+      this.mesh.set(mesh);
       this.file.set(file);
     } catch (error: unknown) {
+      if (revision !== this.revision) {
+        return;
+      }
       this.error.set(
         error instanceof Error
           ? error.message
@@ -120,11 +123,13 @@ export class StlWallThicknessPage {
   onPicker(event: Event): void {
     const input = event.target as HTMLInputElement;
     void this.onFileSelected(input.files?.item(0) ?? null);
+    input.value = '';
   }
   openPicker(input: HTMLInputElement): void {
     input.click();
   }
   setThreshold(value: number): void {
+    this.revision++;
     this.threshold.set(value);
     this.report.set(null);
   }
@@ -135,19 +140,24 @@ export class StlWallThicknessPage {
     }
     this.analysing.set(true);
     this.report.set(null);
+    const revision = ++this.revision;
+    const threshold = this.threshold();
+    const unit = this.assumedUnit();
     try {
       await new Promise((resolve) => setTimeout(resolve));
-      this.report.set(
-        analyseWallThickness(mesh, this.threshold(), this.assumedUnit()),
-      );
+      const result = analyseWallThickness(mesh, threshold, unit);
+      if (revision === this.revision) {
+        this.report.set(result);
+      }
     } finally {
       this.analysing.set(false);
     }
   }
-  format(value: number | null): string {
-    return roundedThickness(value);
+  setUnit(unit: WallThicknessUnit): void {
+    this.revision++;
+    this.assumedUnit.set(unit);
+    this.report.set(null);
   }
-  readonly outcome = wallThicknessOutcomeText;
   formatBytes(bytes: number): string {
     return bytes < 1024 * 1024
       ? `${(bytes / 1024).toFixed(1)} KiB`

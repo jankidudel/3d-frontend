@@ -33,6 +33,7 @@ export const ExampleAsset = {
   ThinArachneGcode: '/examples/english-market-batch/thin-arachne.gcode',
   ThinClassicGcode: '/examples/english-market-batch/thin-classic.gcode',
   ThinWallBarsStl: '/examples/english-market-batch/thin-wall-bars.stl',
+  TwoScaleSlabs3mf: '/examples/wall-controls/two-scale-slabs.3mf',
   CubePlusTwoFragmentsAsciiStl:
     '/examples/floating-parts/cube-plus-two-fragments-ascii.stl',
   CubePlusTwoFragmentsBinaryStl:

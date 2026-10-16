@@ -45,14 +45,18 @@ export class GuidePage {
             ? { dateModified: this.guide.updatedDate }
             : {}),
         },
-        {
-          '@type': 'FAQPage',
-          mainEntity: this.guide.faqs.map((faq) => ({
-            '@type': 'Question',
-            name: faq.question,
-            acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-          })),
-        },
+        ...(this.guide.faqs.length
+          ? [
+              {
+                '@type': 'FAQPage',
+                mainEntity: this.guide.faqs.map((faq) => ({
+                  '@type': 'Question',
+                  name: faq.question,
+                  acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+                })),
+              },
+            ]
+          : []),
       ],
     };
   }

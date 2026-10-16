@@ -274,13 +274,16 @@
       <h2>Wall thickness</h2>
       @if (wallReport(); as wall) {
         <p>
-          Minimum sampled thickness:
+          Smallest measured sample:
           {{
             wall.minimum === null
               ? 'not measured'
               : format(wall.minimum) + ' ' + wall.unit
-          }}. {{ wall.belowThreshold }} sampled areas were below 1.2
-          {{ wall.unit }}.
+          }}. {{ wall.belowThreshold }} of {{ wall.measured }} measured samples
+          were below the 1.2 {{ wall.unit }} review threshold;
+          {{ wall.unmeasured }} of {{ wall.samples.length }} attempted samples
+          were unmeasured. These counts can coexist and are not a whole-model
+          pass.
         </p>
       } @else {
         <p>Wall-thickness sampling was not available for this mesh.</p>

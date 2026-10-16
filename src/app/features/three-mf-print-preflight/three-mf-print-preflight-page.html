@@ -250,13 +250,16 @@
         <h2>Wall thickness</h2>
         @if (wallReport(); as wall) {
           <p>
-            Minimum sampled thickness:
+            Smallest measured sample:
             {{
               wall.minimum === null
                 ? 'not measured'
                 : format(wall.minimum) + ' mm'
-            }}. {{ wall.belowThreshold }} sampled areas were below the 1.2 mm
-            review threshold.
+            }}. {{ wall.belowThreshold }} of {{ wall.measured }} measured
+            samples were below the 1.2 mm review threshold;
+            {{ wall.unmeasured }} of {{ wall.samples.length }} attempted samples
+            were unmeasured. The combined resolved build is sampled, not each
+            item independently.
           </p>
         } @else {
           <p>

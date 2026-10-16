@@ -100,9 +100,9 @@ const PLANNERS = {
       numeric(Field.Layer, 'Chosen layer height (mm)', 0.2, 0.01),
     ],
     method:
-      'The nearest positive whole line count is round(wall thickness / line width); nominal thickness is line count × line width. This is a simple equal-width estimate. The 80% nozzle-diameter layer check follows Prusa starting guidance.',
+      'The nearest positive whole line count is round(intended wall thickness / chosen line width); nominal thickness is line count × line width. This is equal-width line arithmetic. The 80% nozzle-diameter layer check follows Prusa starting guidance.',
     caveat:
-      'This is not a slicer simulation. Extrusion shape, line overlap and variable-width perimeter engines change real walls. A 1.3 mm wall and 0.45 mm lines give three nominal lines (1.35 mm); preview the actual toolpaths before altering CAD.',
+      'This is equal-width line arithmetic. Your slicer may use variable widths, overlap and gap filling, so inspect the generated paths before choosing a wall dimension. For 1.3 mm requested and 0.45 mm chosen width, the nearest whole count is three: 1.35 mm nominal total.',
     links: [
       PublicRouteUrl.StlWallThicknessChecker,
       PublicRouteUrl.VolumetricFlowCalculator,

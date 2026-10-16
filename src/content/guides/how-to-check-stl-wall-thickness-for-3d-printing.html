@@ -1,220 +1,146 @@
 ---
 title: 'How to Check STL Wall Thickness for 3D Printing | InspectMesh'
-description: Learn why STL wall thickness matters, how to check thin areas before printing, and how nozzle size and material affect a printable design.
+description: Confirm STL units, interpret measured and unmeasured wall samples, revise the right feature and verify the saved copy in your slicer.
 slug: how-to-check-stl-wall-thickness-for-3d-printing
-eyebrow: 3D print preparation guide
+eyebrow: STL print preparation guide
 heading: How to Check STL Wall Thickness for 3D Printing
-faq:
-  - question: What wall thickness is safe for 3D printing?
-    answer: It depends on the printer, nozzle, material and part purpose. A wall should normally be thick enough for multiple printed lines rather than relying on one fragile line.
-  - question: Can an STL look solid but have walls that are too thin?
-    answer: Yes. A model can be watertight and manifold while still containing areas that are thinner than your printer can produce reliably.
-  - question: Does scaling an STL change wall thickness?
-    answer: Yes. Scaling changes every dimension, including thin walls, holes and clearances.
 ---
 
 <p>
-  Start with the
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-    >STL Print Preflight Checker</a
-  >
-  when you also need to review mesh integrity, scale and printer fit before
-  investigating sampled thin areas.
+  Confirm the STL's physical size before interpreting a wall result. Then choose
+  a review threshold, inspect measured and unmeasured samples separately, and
+  verify critical features in the source model and sliced layers.
 </p>
 
-<h2>Choose the threshold from the intended process</h2>
+<h2>1. Set the scale before the threshold</h2>
 <p>
-  Do not copy a minimum from an unrelated printer or material. Start with the
-  process documentation and planned extrusion or exposure settings, then use the
-  checker to locate geometry below that chosen screening value. A threshold is a
-  question you ask of the model, not a property the STL supplies.
-</p>
-<p>
-  Keep cosmetic details, load-bearing walls and sacrificial features separate in
-  the decision. A short embossed stroke and a long structural web can share the
-  same measured thickness but carry different consequences. Document the region
-  and requirement before editing the model globally.
-</p>
-
-<h2>Interpret a sampled result</h2>
-<p>
-  Treat a flagged sample as a location to inspect, not a complete map of the
-  model. A thin decorative rib can fall between samples, while a ray near a
-  sharp corner can cross an unintended surface. Re-run at an appropriate
-  threshold, inspect several viewing angles and use a cross-section for internal
-  passages. If the STL is open or self-intersecting, repair or return to source
-  CAD before relying on inside-to-outside thickness measurements.
-</p>
-<p>
-  For example, if a nominal 1.2 mm shell contains a flagged 0.55 mm patch, first
-  locate whether it is an intentional edge taper, export artifact or damaged
-  surface. Editing the original parametric wall is usually safer than inflating
-  the entire STL, which can close holes and shift mating faces. Export a new
-  mesh, repeat dimensions and mesh checks, then confirm generated walls in the
-  slicer preview.
-</p>
-<h2>Use the STL result as a screening step</h2>
-<p>
-  STL has no authoritative unit, so confirm dimensions before interpreting any
-  thickness result. The checker samples geometry and highlights candidates for
-  review; it cannot determine the correct nozzle, material, support plan or
-  mechanical requirement. Verify important features in the slicer after scaling
-  or repair.
-</p>
-<p>
-  For the format-neutral workflow and warning context, read the
-  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
-    >3D Print Wall Thickness Guide</a
-  >.
-</p>
-<p>
-  Wall thickness is the distance between the inside and outside surfaces of a
-  model. A part can be perfectly watertight and still fail because some areas
-  are thinner than the printer can produce reliably.
-</p>
-<p>
-  Thin walls can disappear in the slicer, print as fragile single lines or break
-  during use.
-</p>
-<h2>Why wall thickness depends on the printer</h2>
-<p>
-  There is no single safe thickness for every print. The practical minimum
-  depends on:
-</p>
-<ul>
-  <li>nozzle diameter</li>
-  <li>line width</li>
-  <li>layer height</li>
-  <li>material</li>
-  <li>print orientation</li>
-  <li>whether the part is decorative or load-bearing</li>
-</ul>
-<p>
-  A 0.4 mm nozzle cannot reliably create every feature that is mathematically
-  wider than zero. In practice, walls normally need enough space for one or more
-  controlled extrusion lines.
-</p>
-<p>
-  Functional parts need more margin than display models. A thin decorative shell
-  may print successfully, while a thin bracket or clip can crack under load.
-</p>
-<h2>Check the model dimensions first</h2>
-<p>
-  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to inspect
-  thin-looking areas such as edges, fins, small holes and decorative features.
-</p>
-<p>
-  Then use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  to confirm overall size. If the entire model has been scaled down, walls that
-  were safe in the original design may no longer be printable.
-</p>
-<p>
-  InspectMesh does not currently calculate every local wall thickness in an STL.
-  Use your CAD software, slicer analysis tools or dedicated mesh software when
-  you need a precise thickness map.
-</p>
-<h2>Check the slicer preview</h2>
-<p>
-  The slicer preview is often the most practical test. Slice the model with your
-  actual printer profile and inspect thin areas layer by layer.
-</p>
-<p>Watch for:</p>
-<ul>
-  <li>walls that vanish</li>
-  <li>gaps between perimeters</li>
-  <li>isolated single lines</li>
-  <li>holes that close up</li>
-  <li>very small bridges or unsupported tips</li>
-</ul>
-<p>
-  If a feature disappears, increase the wall thickness in the original model
-  where possible. Scaling up may help for a decorative model, but it can change
-  functional dimensions.
-</p>
-<h2>Check mesh health as well</h2>
-<p>
-  Wall thickness is separate from mesh quality. Use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> to
-  find holes, non-manifold edges and duplicate triangles before trying to solve
-  printability with slicer settings.
-</p>
-<h2>Check sampled wall thickness online</h2>
-<p>
-  The
+  STL stores coordinates without a declared physical unit. A cube spanning one
+  coordinate unit could be read as 1 mm or 25.4 mm under different assumptions;
+  neither proves the author's intended size. Check a known dimension in
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
+  >. In the
   <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
     >STL Wall Thickness Checker</a
-  >
-  estimates thickness by sampling the mesh and measuring inward from the
-  surface. Choose the unit you believe the STL coordinates represent, set a
-  minimum thickness for your intended print, and inspect the colour map for
-  sampled thin areas.
-</p>
-<p>
-  Treat the result as a practical preflight check rather than a guarantee. STL
-  files do not contain a declared unit, and a suitable thickness depends on the
-  printer, nozzle, material, print orientation, layer height, and whether the
-  part is decorative or load-bearing. Check mesh errors with the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>, then
-  confirm the final dimensions before slicing.
-</p>
-<p>
-  A reliable print starts with a clean mesh, suitable wall thickness and a
-  realistic printer profile.
+  >, choose the <strong>STL coordinate unit</strong>. Its
+  <strong>Review threshold</strong> and reported samples use that selected unit.
+  A physical 0.04-inch target equals 1.016 mm; enter 0.04 with inches selected
+  or 1.016 with mm selected. Changing the unit clears the earlier result and
+  requires a new run.
 </p>
 
-<h2>Interpret unmeasured and below-threshold samples separately</h2>
-<p>
-  A sampled wall screen casts normal-direction rays from selected triangle
-  locations. In a simple closed 20 mm cube, opposing faces give a known scale
-  for the test. In an open-face cube, some directions may have no opposing hit.
-  No hit is an unmeasured location, not evidence of a zero-width wall and not a
-  pass.
-</p>
-<p>
-  If a result reports 25 samples below a chosen 1.2 mm review threshold, it says
-  those sampled locations merit attention. It does not show that exactly 25
-  physical regions fail or that unsampled corners are thick enough. The
-  threshold is your review input, not a universal strength minimum.
-</p>
-<p>
-  For a 1.3 mm CAD wall and 0.45 mm lines,
-  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}"
-    >the wall planner</a
-  >
-  estimates three equal-width lines with nominal thickness 1.35 mm. Check your
-  actual slicer generator and layer preview; variable-width engines and overlap
-  alter the result. Changing scale alters holes and walls together, so recheck
-  the final exported copy.
-</p>
-
-<h2>Replay an actual thin-wall slicer experiment</h2>
-<p>
-  Our owned fixture has three separate 20 mm long, 10 mm high bars with widths
-  of 0.3, 0.45 and 0.9 mm. PrusaSlicer 2.9.6 was run with a 0.4 mm nozzle, 0.2
-  mm layers, 0.45 mm extrusion width, two perimeters, zero infill and thin-wall
-  detection disabled. Only the perimeter generator changed between Classic and
-  Arachne. This is a software experiment, not a physical print.
-</p>
-<p>
-  The Classic export reports 83.41 mm of filament and an estimated 3 minutes 32
-  seconds. Arachne reports 142.10 mm and 5 minutes 28 seconds. Both reported low
-  bed adhesion; Classic also warned about loose extrusions. The longer result is
-  not automatically the better print. Inspect whether the intended narrow
-  geometry has extrusion paths, then review adhesion, strength and supports
-  separately.
-</p>
+<h2>2. Run the known thin-bar control</h2>
 <p>
   Download the
-  <a href="{{ ExampleAsset.ThinWallBarsStl }}" download>owned thin-wall STL</a>
-  and the
-  <a href="{{ ExampleAsset.ThinClassicGcode }}" download>Classic</a>
-  or
-  <a href="{{ ExampleAsset.ThinArachneGcode }}" download
-    >Arachne preview G-code</a
-  >. Open the exports in the
-  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">G-code viewer</a> to
-  compare the extrusion paths. These demonstration exports use CLI defaults
-  outside the listed settings; do not send them to a printer. Filament mass is
-  unavailable because the CLI density default was zero.
+  <a href="{{ ExampleAsset.ThinWallBarsStl }}" download>closed thin-bar STL</a>
+  or load it on the checker. The three designed bars are 20 mm long, 10 mm high
+  and 0.3, 0.45 and 0.9 mm wide. Select mm, enter a 1.2 mm review threshold and
+  run the local analysis. The current centroid-ray implementation, checked 16
+  October 2026, returned:
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Attempted</th>
+      <th scope="col">Measured</th>
+      <th scope="col">Below 1.2 mm</th>
+      <th scope="col">Unmeasured</th>
+      <th scope="col">Smallest measured sample</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>36</td>
+      <td>36</td>
+      <td>12</td>
+      <td>0</td>
+      <td>About 0.29999 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The source widths and measured ray distances answer different questions. Faces
+  along a long dimension can return a larger distance; the roughly 0.3 mm sample
+  includes the ray offset and is not a metrology accuracy claim. The result
+  samples these 36 triangles, not every point in each bar. Reproduction settings
+  and the original slicer exports are retained with the
+  <a href="{{ GuideSlug.RouteExamples }}#thin-features">thin-feature example</a
+  >.
+</p>
+
+<h2>3. Read the result without over-interpreting it</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">What to check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One or more measured samples below threshold</td>
+      <td>
+        Find the marked region; compare intended CAD material with the sliced
+        paths. The count is rays, not separate defects.
+      </td>
+    </tr>
+    <tr>
+      <td>Some sampled locations unmeasured</td>
+      <td>
+        Inspect open or ambiguous geometry. An absent opposing hit is neither
+        zero thickness nor a pass; it can coexist with thin measured samples.
+      </td>
+    </tr>
+    <tr>
+      <td>No measured sample below threshold</td>
+      <td>
+        Review critical details and unmeasured locations. Finite input-order
+        sampling can miss a narrow rib.
+      </td>
+    </tr>
+    <tr>
+      <td>Unit changed</td>
+      <td>
+        Rerun after confirming a known dimension. The old result is invalid for
+        the new physical interpretation.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a> is an
+  optional no-hit control. At the same mm assumption and 1.2 mm threshold, the
+  current checker attempted 10 samples, measured eight and left two unmeasured;
+  none of the measured samples was below threshold. Removing one face does not
+  make every ray miss: inspect which sampled directions still find another
+  surface. Use a
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >visual cross-section</a
+  >
+  when an internal passage is the concern.
+</p>
+
+<h2>4. Change the feature that needs changing</h2>
+<p>
+  In the source CAD, increase a specific wall or rib when its role requires more
+  material. Global scale changes every dimension: a 1.2 mm wall scaled to 75%
+  becomes 0.9 mm, while a 10 mm hole becomes 7.5 mm. That is dimensional
+  arithmetic, not an observed print. Prefer a local parametric edit when holes,
+  mating faces or clearances must remain fixed. Use the
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >wall-thickness decision guide</a
+  >
+  to judge the feature's process and use.
+</p>
+
+<h2>5. Confirm the saved copy and sliced layers</h2>
+<p>
+  Export a new STL copy, recheck its physical dimensions and topology, then
+  inspect the same critical region with the sampled checker. Slice that copy
+  with the intended profile and inspect native perimeter paths layer by layer.
+  In a retained PrusaSlicer 2.9.6 software experiment on the thin bars, Classic
+  and Arachne produced different second-layer paths under recorded settings. The
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}">full comparison</a>
+  explains its settings and limitations. Neither software preview is a physical
+  print test.
 </p>

@@ -54,3 +54,23 @@ for name,(resources,build,attributes) in controls.items():
     with zipfile.ZipFile(PART_OUT/f'{name}.3mf','w',zipfile.ZIP_DEFLATED) as package:
         for path,data in {'Models/main.model':model,'[Content_Types].xml':'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/></Types>','_rels/.rels':'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Target="/Models/main.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/></Relationships>'}.items():
             info=zipfile.ZipInfo(path,date_time=(2026,10,11,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;package.writestr(info,data)
+
+# A separated two-scale 3MF wall control. One resource is placed at full size
+# and again at half size; translation is applied after scaling.
+wall_out = OUT.parent / 'wall-controls'
+wall_out.mkdir(parents=True, exist_ok=True)
+wall_model = (
+    '<model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">'
+    '<resources>' + object_xml(1, (0.8, 10, 10)) + '</resources>'
+    '<build><item objectid="1"/>'
+    '<item objectid="1" transform="0.5 0 0 0 0.5 0 0 0 0.5 30 0 0"/></build></model>'
+)
+with zipfile.ZipFile(wall_out/'two-scale-slabs.3mf', 'w', zipfile.ZIP_DEFLATED) as package:
+    for path, data in {
+        '3D/3dmodel.model': wall_model,
+        '[Content_Types].xml': '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/></Types>',
+        '_rels/.rels': '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Target="/3D/3dmodel.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/></Relationships>',
+    }.items():
+        info=zipfile.ZipInfo(path,date_time=(2026,10,16,0,0,0))
+        info.compress_type=zipfile.ZIP_DEFLATED
+        package.writestr(info,data)

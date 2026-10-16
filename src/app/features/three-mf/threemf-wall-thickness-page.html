@@ -1,17 +1,30 @@
 <main class="page tool-page wall-thickness-page">
-  <p class="eyebrow">3MF build-space preflight</p>
+  <p class="eyebrow">Local 3MF build screen</p>
   <h1>3MF Wall Thickness Checker</h1>
   <p class="lead">
-    Estimate sampled wall thickness across the resolved 3MF build, including
-    placements, components and transforms.
+    Estimate sampled wall thickness in the supported, resolved 3MF build. Check
+    the declared unit and placed geometry before interpreting the result; a ray
+    hit is not necessarily the wall of one isolated part.
+  </p>
+  <app-example-loader
+    [tool]="routeUrl.ThreeMfWallThicknessChecker"
+    [active]="!!file()"
+    [current]="file()"
+    [busy]="loading()"
+    [load]="loadExample"
+  />
+  <p>
+    <a [href]="exampleAsset.TwoScaleSlabs3mf" download
+      >Download the two-scale 3MF control</a
+    >
   </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
-    <h2 id="upload-title">Check your 3MF wall thickness</h2>
+    <h2 id="upload-title">Choose a 3MF</h2>
     <div class="drop-zone">
-      <p>Choose a 3MF file to analyse locally.</p>
       <button class="button" type="button" (click)="openPicker(picker)">
-        Choose 3MF file</button
-      ><input
+        Choose 3MF file
+      </button>
+      <input
         #picker
         type="file"
         accept=".3mf"
@@ -20,7 +33,8 @@
       />
     </div>
     <p class="hint">
-      3MF files up to 25 MiB are supported. Your 3MF stays in your browser.
+      3MF files up to {{ fileLimitMiB }} MiB are supported. Your file is
+      resolved and sampled in this browser.
     </p>
     @if (loading()) {
       <p role="status">Resolving build geometry locally...</p>
@@ -31,14 +45,22 @@
   </section>
   @if (resolved(); as model) {
     <section class="card">
-      <h2>Model and threshold</h2>
+      <h2>Resolved build and review threshold</h2>
       <p>
-        <strong>{{ file()?.name }}</strong> ·
+        <strong>{{ file()?.name }}</strong> · declared unit:
+        {{ model.declaredUnit
+        }}{{ model.declaredUnitExplicitly ? '' : ' (3MF default)' }} ·
+        {{ model.buildItemCount }} build items ·
+        {{ model.resolvedMeshCount }} placed meshes ·
         {{ (model.geometry.indices.length / 3).toLocaleString() }} resolved
-        triangles · declared unit: {{ model.declaredUnit }}
+        triangles.
+      </p>
+      <p>
+        Geometry is converted to millimetres. Enter the review threshold in
+        <strong>mm</strong>; the heatmap and result also display mm.
       </p>
       <label
-        >Minimum wall thickness
+        >Review threshold (mm)
         <input
           type="number"
           min="0.0001"
@@ -46,8 +68,7 @@
           [value]="threshold()"
           (input)="setThreshold(+$any($event.target).value)"
         />
-        mm</label
-      >
+      </label>
       @if (!thresholdValid()) {
         <p class="error" role="alert">
           Enter a finite threshold greater than zero.
@@ -61,50 +82,22 @@
       >
         Analyse wall thickness
       </button>
-      <p class="safety-note">
-        This is a sampled, normal-direction estimate. It does not repair a model
-        or guarantee a successful print.
-      </p>
-      <p>
-        If open or ambiguous mesh geometry makes a thickness result less
-        trustworthy, inspect it first with the
-        <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair Tool</a> where
-        conservative cleanup is available.
-      </p>
     </section>
   }
   @if (report(); as result) {
     <section class="card result">
-      <h2>Wall thickness result</h2>
+      <h2>Sampled build result</h2>
+      <app-wall-thickness-summary
+        [report]="result"
+        [triangleCount]="resolved()!.geometry.indices.length / 3"
+      />
       <p>
-        <strong>{{ outcome(result) }}</strong>
+        The ray check uses the combined placed scene. A hit may belong to a
+        neighbouring component or instance; these counts are not named
+        per-instance wall results. Moving a neighbouring part may change a hit
+        even though translation leaves the isolated part's own wall unchanged.
       </p>
-      <dl class="metrics">
-        <div>
-          <dt>Minimum sampled thickness</dt>
-          <dd>{{ format(result.minimum) }} mm</dd>
-        </div>
-        <div>
-          <dt>Average sampled thickness</dt>
-          <dd>{{ format(result.average) }} mm</dd>
-        </div>
-        <div>
-          <dt>Samples below threshold</dt>
-          <dd>{{ result.belowThreshold }}</dd>
-        </div>
-        <div>
-          <dt>Samples measured</dt>
-          <dd>{{ result.measured }}</dd>
-        </div>
-        <div>
-          <dt>Samples not measured</dt>
-          <dd>{{ result.unmeasured }}</dd>
-        </div>
-      </dl>
-      <p class="legend">
-        Heatmap legend: red below {{ result.threshold }} mm · orange/yellow
-        close to threshold · blue/green above threshold · grey unmeasured.
-      </p>
+      <p class="legend">Heatmap legend: {{ legend(result) }}</p>
       <label class="heatmap-toggle"
         ><input
           type="checkbox"
@@ -122,69 +115,28 @@
           (chooseAnother)="openPicker(picker)"
         />
       }
-      @if (result.unmeasured) {
-        <p class="warning">
-          Some areas could not be measured reliably. Treat this analysis as
-          guidance, not a printability guarantee.
-        </p>
-      }
+      <p>
+        <a [href]="guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting"
+          >Work through a placed 3MF result</a
+        >
+        before editing the original build.
+      </p>
     </section>
   }
-  <section class="content">
-    <p>
-      Learn how to interpret a warning in the
-      <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
-        >3D Print Wall Thickness Guide</a
-      >.
-    </p>
-    <p>
-      Need mesh integrity, declared unit, printer fit, wall and volume guidance
-      together?
-      <a [routerLink]="routeUrl.ThreeMfPrintPreflight"
-        >Run 3MF Print Preflight</a
-      >. Also review unsupported geometry with the
-      <a [href]="routeUrl.ThreeMfOverhangChecker">3MF Overhang Checker</a>.
-    </p>
-  </section>
   <section class="content interpretation-guide">
-    <h2>Measure the placed build, not just an unplaced resource</h2>
+    <h2>Placed-build interpretation</h2>
     <p>
-      This local analysis resolves supported 3MF build items and component
-      transforms into a combined triangle scene, then converts the declared
-      coordinate unit. Repeated mesh resources contribute their actual placed
-      instances. It analyses the resolved build together; it does not offer an
-      individual-instance selection control on this page. Confirm that the part
-      you care about is present and oriented as intended.
+      The checker resolves supported mesh build items, repeated resources and
+      nested component transforms into one millimetre scene. It samples at most
+      2,000 selected triangle centroids; unmeasured rays and unsampled triangles
+      remain outside the measured result. Open boundaries, neighbouring parts
+      and assembly gaps need review in the original application. Unsupported
+      required or recommended extensions, unsafe packages and unresolved mesh
+      geometry stop with an error rather than a guessed result.
     </p>
     <p>
-      The
-      <a [href]="exampleAsset.DeclaredInchTransformed3mf" download
-        >declared-inch cube example</a
-      >
-      has one-coordinate-unit spans: its resolved size is 25.4 mm on each axis.
-      Its translation changes placement, not wall thickness. An STL unit
-      selector elsewhere must not override this package's declared unit.
-      Unsupported units or unresolved geometry produce an error rather than a
-      guessed thickness.
-    </p>
-    <h3>Interpret gaps and multiple instances carefully</h3>
-    <p>
-      Centroid normal rays provide bounded samples, with up to 2,000 selected
-      triangles. A hit in another nearby body is not necessarily the wall you
-      intended to measure. Separate parts, overlaps and assembly gaps therefore
-      require visual review. No-hit samples remain unmeasured; a result with
-      unmeasured samples is not an all-clear wall report.
-    </p>
-    <p>
-      Confirm the selected display unit and review threshold, inspect the
-      highlighted locations and compare important walls with source CAD. This
-      does not interpret application-specific slicer profiles, validate supports
-      or certify a process minimum. Stop if the build differs from the source or
-      an important instance is absent.
-      <a [href]="routeUrl.MissingThreeMfObjectsGuide"
-        >Resolve missing build objects</a
-      >
-      before sampling them, and retain the original package.
+      <a [href]="routeUrl.Methods">Read the sampling method</a>. Keep the
+      original 3MF and compare critical geometry with its native slicer preview.
     </p>
   </section>
 </main>

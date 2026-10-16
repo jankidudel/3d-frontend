@@ -331,7 +331,7 @@ describe('visual diagnosis teaching controls', () => {
           example.group !== 'G-code evidence' &&
           example.group !== '3MF placements / export',
       ),
-    ).toHaveLength(20);
+    ).toHaveLength(21);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
     );
@@ -505,6 +505,24 @@ describe('visual diagnosis teaching controls', () => {
       belowThreshold: 12,
     });
   });
+  it('preserves measured and no-hit rays on the open-face wall control', async () => {
+    const open = await readStl(
+      await file('english-market-batch/open-face-cube.stl'),
+    );
+    const report = analyseWallThickness(
+      open,
+      1.2,
+      WallThicknessUnit.Millimetres,
+    );
+    expect(report).toMatchObject({
+      measured: 8,
+      unmeasured: 2,
+      belowThreshold: 0,
+      threshold: 1.2,
+    });
+    expect(report?.minimum).toBeCloseTo(20, 2);
+    expect(report?.samples.length).toBe(10);
+  });
   it('checks custom fit, hypothetical margins and curve arithmetic independently', async () => {
     const dimensions = checkGeometry(
       await readStl(
@@ -576,6 +594,10 @@ import {
   ThreeMfResolutionStatus,
 } from '../src/app/features/shared/wall-thickness/three-mf-wall-thickness.ts';
 import {
+  analyseWallThickness,
+  WallThicknessUnit,
+} from '../src/app/features/shared/wall-thickness/wall-thickness-analysis.ts';
+import {
   convertThreeMfToStl,
   CoordinatePolicy,
   verifyStlGeometry,
@@ -587,6 +609,34 @@ const domForParts = () => {
   return dom;
 };
 describe('3MF identity, scope and exact derivative bytes', () => {
+  it('resolves both placed wall scales before a combined-scene sampled screen', async () => {
+    const dom = domForParts();
+    const resolved = await resolveThreeMfWallGeometry(
+      await (await file('wall-controls/two-scale-slabs.3mf')).arrayBuffer(),
+    );
+    const report = analyseWallThickness(
+      resolved.geometry,
+      0.6,
+      WallThicknessUnit.Millimetres,
+    );
+    expect(resolved.buildItemCount).toBe(2);
+    expect(resolved.resolvedMeshCount).toBe(2);
+    expect(resolved.declaredUnit).toBe('millimeter');
+    expect(resolved.items[0].bounds.spans[0]).toBeCloseTo(0.8, 5);
+    expect(resolved.items[1].bounds.min[0]).toBe(30);
+    expect(resolved.items[1].bounds.spans[0]).toBeCloseTo(0.4, 5);
+    expect(report).not.toBeNull();
+    expect(report).toMatchObject({
+      measured: 24,
+      unmeasured: 0,
+      belowThreshold: 4,
+      threshold: 0.6,
+      unit: 'mm',
+    });
+    expect(report!.minimum).toBeCloseTo(0.4 - 0.00001, 5);
+    expect(report!.samples.length).toBe(24);
+    dom.window.close();
+  });
   it('keeps repeated placements and unplaced resources distinct and exports the second placement deliberately', async () => {
     const dom = domForParts();
     const data = await (

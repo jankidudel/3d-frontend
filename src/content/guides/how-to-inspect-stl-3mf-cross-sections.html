@@ -1,158 +1,94 @@
 ---
 title: 'Inspect STL and 3MF Cross-Sections | InspectMesh'
-description: 'Learn how to use model cross-sections to inspect the inside of STL and 3MF files before slicing, and understand what a visual cut can and cannot confirm.'
+description: Use the viewer clipping plane to inspect walls and empty channels, then compare critical geometry with source dimensions and sampled checks.
 slug: how-to-inspect-stl-3mf-cross-sections
 eyebrow: 3D model inspection guide
 heading: How to Inspect STL and 3MF Cross-Sections Before Printing
-faq:
-  - question: What is a cross-section in a 3D model viewer?
-    answer: A cross-section hides one side of a model at a chosen X, Y or Z position so you can look into the displayed mesh. It is a visual inspection aid, not a new printable part.
-  - question: Can a cross-section prove that a model will print successfully?
-    answer: No. It can help you spot unexpected internal geometry, but it does not validate mesh topology, wall thickness, printer settings, supports or the final slicer toolpath.
-  - question: Is a model cross-section the same as a slicer layer preview?
-    answer: No. A model cross-section is used before slicing to understand the geometry. A slicer layer preview shows the toolpath produced after the slicer applies its settings.
-  - question: Do STL cross-sections have millimetre units?
-    answer: Not automatically. STL files usually do not declare a unit, so interpret any dimensions only after confirming the intended unit.
 ---
 
 <p>
-  A 3D model can look correct from the outside while still containing geometry
-  that deserves a closer look. A cross-section lets you move a visual cut
-  through an STL or 3MF model, hiding one side so you can inspect the interior
-  from different angles before you spend time slicing or printing.
+  A cross-section view helps you inspect internal walls, channels and separate
+  parts. The InspectMesh viewer clips the visible mesh; it does not create an
+  intersection contour, cap the cut, measure a section or prove that the model
+  is a valid solid.
 </p>
-<p>
-  Label saved screenshots with plane axis and position so another reviewer can
-  reproduce the same cut.
-</p>
+<figure>
+  <img
+    src="/examples/diagnosis/internal-sheet-channel.svg"
+    width="720"
+    height="300"
+    loading="lazy"
+    alt="Explanatory diagram contrasting a solid material region with an empty channel."
+  />
+  <figcaption>
+    Explanatory geometry diagram, not a live viewer measurement. Material
+    between boundaries is a wall; the channel's empty space is clearance.
+  </figcaption>
+</figure>
 
-<h2>Examples of faults a section can reveal</h2>
+<h2>Choose a known wall or channel</h2>
 <p>
-  Move the plane through a supposedly solid wall to look for an unintended
-  internal cavity, through a boolean joint to find a trapped partition, and
-  through a narrow channel to check whether it remains open. On a nested-shell
-  model, a section can show whether the inner surface is consistently separated
-  from the outer one. Compare several nearby slices because a single plane may
-  miss a localized fault.
-</p>
-<p>
-  Sections are also useful after repair: verify that a patch did not bridge a
-  passage, that hollowing leaves a continuous wall, and that split connectors
-  have the intended engagement. Keep orientation and plane position documented
-  when comparing before and after.
-</p>
-
-<h2>What a cross-section cannot establish</h2>
-<p>
-  One two-dimensional cut cannot prove the whole mesh is watertight, manifold or
-  free from self-intersections. It does not measure every wall, identify
-  material behavior or predict a slicer's complete toolpath. Combine section
-  inspection with topology, dimensions and wall-thickness checks appropriate to
-  the question, then review sliced layers.
-</p>
-<h2>Know what a section can reveal</h2>
-<p>
-  Cross-sections can expose internal voids, unexpected shells, wall changes and
-  intersections that a surface view hides. They cannot establish material
-  strength, slicer settings or every topology condition. Move the cut through
-  several critical regions and pair it with mesh checks.
-</p>
-<p>
-  Open a model locally in the
-  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, then use
-  <strong>Inspect cross-section</strong> below the viewer controls. No file is
-  uploaded just to view a cross-section.
-</p>
-<h2>What a cross-section helps you inspect</h2>
-<p>
-  A cross-section is particularly useful when an external view cannot tell you
-  how a model is arranged inside. Move the cut slowly across the model and
-  rotate the view to look for features such as:
-</p>
-<ul>
-  <li>unexpected internal shells, cavities or overlapping parts;</li>
-  <li>holes, channels, mounting features or pockets in the expected place;</li>
-  <li>internal supports or ribs that are easy to miss from the outside;</li>
-  <li>large areas that appear unexpectedly thin or crowded; and</li>
-  <li>
-    multiple 3MF build items that overlap or sit in an unexpected position.
-  </li>
-</ul>
-<p>
-  This visual check is useful before a more specific analysis. If a region needs
-  closer thickness review, use the
-  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
-    >STL Wall Thickness Checker</a
+  Start with a feature whose intended source dimensions you know. The
+  <a href="{{ ExampleAsset.OpenThroughChannelStl }}" download
+    >open-through-channel STL control</a
   >
-  or
-  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
-    >3MF Wall Thickness Checker</a
-  >.
+  can help you follow an empty passage; compare it with the source model rather
+  than treating a drawn diagram as measured output. Open an STL in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or a supported
+  resolved 3MF in the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>.
+  STL requires a confirmed physical unit; supported 3MF geometry uses its
+  declared unit and placed build transforms.
 </p>
-<h2>How to inspect a model cross-section</h2>
+
+<h2>Move the cut through the feature</h2>
 <ol>
-  <li>Open the STL or 3MF file in the matching local viewer.</li>
-  <li>Rotate the outside first so you understand the model orientation.</li>
-  <li>Choose <strong>Inspect cross-section</strong>.</li>
+  <li>Rotate the outside view so the feature and model axes are clear.</li>
   <li>
-    Select X, Y or Z depending on the direction you want the cut to travel.
+    Choose <strong>Inspect cross-section</strong> under the viewer controls.
   </li>
   <li>
-    Move the cut-position slider gradually from one side of the displayed model
-    to the other, rotating and zooming as needed.
+    Select the X, Y or Z <strong>Cut axis</strong>, then move
+    <strong>Cut position</strong> from 0% to 100% across the displayed bounds.
+    The percentage is a position, not a physical thickness.
   </li>
   <li>
-    Leave the cut-plane guide on when it helps you understand the current cut,
-    or turn it off for a clearer view of the exposed geometry.
+    Rotate and zoom the exposed view. Toggle
+    <strong>Show cut-plane guide</strong> when its location helps explain the
+    current cut.
   </li>
-  <li>Follow up with the relevant checker if you find something to confirm.</li>
+  <li>
+    Repeat at nearby positions: one plane can miss a narrow local feature.
+  </li>
 </ol>
-<h2>Choose the right cut axis</h2>
+
+<h2>Identify material boundaries and empty space</h2>
 <p>
-  The axis describes the direction in which the visual cut travels across the
-  currently displayed model. An X cut moves left to right, a Y cut moves bottom
-  to top, and a Z cut moves front to back. Try more than one axis for a complex
-  model: a hidden channel may be obvious in one direction and invisible in
-  another.
+  Look for the two surfaces bounding a solid web or enclosure wall. A passage
+  between surfaces is empty clearance, even when a normal ray from one part
+  could hit another part across that gap. Open edges, internal sheets and
+  overlaps can make a clipped view ambiguous. The viewer hides geometry on one
+  side of a plane; it does not add a closed cap, produce a true intersection
+  outline or calculate the distance between exposed surfaces.
 </p>
+
+<h2>Compare with source dimensions</h2>
 <p>
-  The percentage shown by the viewer is a position across the displayed bounds,
-  not a guaranteed design dimension. For a specific feature size, use
-  point-to-point measurement and confirm the intended STL unit. For overall
-  printer fit, use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  or
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
-  >.
-</p>
-<h2>Cross-sections do not replace validation</h2>
-<p>
-  The cross-section viewer hides part of the displayed mesh. It does not create
-  a watertight cap at the cut, repair a model, calculate a reliable wall
-  thickness, or prove that a physical print will succeed. Mesh resolution can
-  also make curved surfaces and small features look less exact than the source
-  CAD design.
-</p>
-<p>
-  After visual inspection, run
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> for
-  mesh, size, fit and other file-level checks. Then, after slicing, use the
-  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
-    >G-code Preflight Checker</a
+  Use CAD dimensions or a suitable point-to-point measurement for the intended
+  feature, after checking units and transforms. Then use the
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >wall-thickness guide</a
   >
-  to review the resulting toolpath separately.
+  to decide whether a solid wall serves its purpose. The
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}">STL</a> and
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}">3MF</a> checkers
+  provide separate sampled ray estimates and coverage counts; neither turns this
+  visual clip into a complete section measurement.
 </p>
-<h2>Model cross-sections versus slicer layer preview</h2>
+
+<h2>Decide the next check</h2>
 <p>
-  A model cross-section helps you understand the source geometry before slicing.
-  It is useful when deciding whether the file contains the shapes you expect or
-  when choosing what to inspect next. A slicer layer preview is different: it
-  shows the toolpath generated using a particular printer, material,
-  orientation, support strategy and slicer profile.
-</p>
-<p>
-  Use both at their proper stages. Inspect the model first, validate the file,
-  then inspect the final G-code before starting the print.
+  If the opening or wall differs from source CAD, inspect mesh quality or
+  rebuild the export. If geometry matches, slice the final copy and inspect the
+  same region's actual paths. A clip alone cannot establish watertightness,
+  printability or functional strength.
 </p>
