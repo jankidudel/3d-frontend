@@ -137,6 +137,22 @@ describe('internal link validation', () => {
 });
 
 describe('registered guide links with section fragments', () => {
+  it('resolves an explicit example selection without leaving template text in public links', () => {
+    expect(
+      resolveGuideLinks(
+        '<a href="{{ GuideSlug.RouteStlSplitter }}?example=split-verification">Load</a>',
+        { RouteStlSplitter: 'stl-splitter' },
+        'split-guide.html',
+      ),
+    ).toBe('<a href="/stl-splitter?example=split-verification">Load</a>');
+    expect(() =>
+      resolveGuideLinks(
+        '<a href="{{ GuideSlug.RouteStlSplitter }}?url=private">Load</a>',
+        { RouteStlSplitter: 'stl-splitter' },
+        'split-guide.html',
+      ),
+    ).toThrow('unresolved route placeholder');
+  });
   it('resolves the existing repair route while retaining its anchor', () => {
     expect(
       resolveGuideLinks(

@@ -17,6 +17,20 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   or overlapping bodies. Shell count alone cannot prove corruption, completeness
   or a valid Boolean union.
 </p>
+<p>
+  Separating geometry that is already disconnected is different from cutting
+  through a connected body. A planar cut creates new boundary surfaces;
+  component selection changes which existing pieces are retained. Choose the
+  operation that matches the intended design. Use the
+  <a href="{{ GuideSlug.RouteHowToSplitAnStlFileFor3dPrinting }}"
+    >split workflow</a
+  >
+  only when a new seam is required; use the
+  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
+    >existing component review</a
+  >
+  to retain or remove already separate geometry in one exported STL.
+</p>
 <h2>One main body with two detached fragments</h2>
 <p>
   Download the generated

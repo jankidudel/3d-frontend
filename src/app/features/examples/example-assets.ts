@@ -1,5 +1,17 @@
 /** Canonical paths for downloadable public example files linked from pages and guides. */
 export const ExampleAsset = {
+  SplitAssemblySource: '/examples/split-assembly/generate-fixtures.mts',
+  SplitObservationsJson: '/examples/split-assembly/observations.json',
+  SplitCubeLowerStl: '/examples/split-assembly/cube-lower-z.stl',
+  SplitCubeUpperStl: '/examples/split-assembly/cube-upper-z.stl',
+  SplitPlaneCoordinatesSvg:
+    '/examples/split-assembly/split-plane-coordinates.svg',
+  AlignmentPinJointSvg: '/examples/split-assembly/alignment-pin-joint.svg',
+  SplitHollowChannelStl: '/examples/split-assembly/hollow-channel-20x20x20.stl',
+  AlignmentBlockAStl: '/examples/split-assembly/alignment-block-a.stl',
+  AlignmentBlockBStl: '/examples/split-assembly/alignment-block-b.stl',
+  AlignmentDowelStl: '/examples/split-assembly/alignment-dowel.stl',
+  SplitAssemblyManifestJson: '/examples/split-assembly/manifest.json',
   IntegralOverhangStl: '/examples/slicer-diagnosis/integral-overhang.stl',
   DetachedTetrahedronStl: '/examples/slicer-diagnosis/detached-tetrahedron.stl',
   TwoIntendedCubesStl: '/examples/slicer-diagnosis/two-intended-cubes.stl',

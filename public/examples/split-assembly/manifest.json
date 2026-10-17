@@ -1,0 +1,49 @@
+{
+  "licence": "Original InspectMesh analytical geometry; attribution requested.",
+  "unit": "coordinate units; examples use an explicit millimetre assumption",
+  "physicalTest": false,
+  "generatedBy": "scripts/generate-split-assembly-fixtures.mts",
+  "coupon": {
+    "block": [20, 20, 10],
+    "socketDiameter": 4.3,
+    "socketDepth": 7,
+    "dowelDiameter": 4,
+    "dowelLength": 12,
+    "intendedSeamGap": 0.2,
+    "intendedEngagementPerSide": 5.9,
+    "endClearancePerSocket": 1.1,
+    "assemblyTranslations": {
+      "blockA": [0, 0, 0],
+      "blockB": [0, 0, 10.2],
+      "dowel": [10, 10, 4.1]
+    }
+  },
+  "hollowChannel": {
+    "outside": [20, 20, 20],
+    "passage": [12, 12, 20],
+    "analyticMaterialVolume": 5120,
+    "analyticHalfVolumeAtZ10": 2560
+  },
+  "files": [
+    {
+      "name": "hollow-channel-20x20x20.stl",
+      "bytes": 1684,
+      "geometry": "Closed rectangular tube: outer 20 x 20, inner passage 12 x 12, height 20 coordinate units."
+    },
+    {
+      "name": "alignment-block-a.stl",
+      "bytes": 9684,
+      "geometry": "20 x 20 x 10 block with a 4.30-diameter blind socket, 7 deep, opening on +Z."
+    },
+    {
+      "name": "alignment-block-b.stl",
+      "bytes": 9684,
+      "geometry": "20 x 20 x 10 block with a 4.30-diameter blind socket, 7 deep, opening on -Z."
+    },
+    {
+      "name": "alignment-dowel.stl",
+      "bytes": 6484,
+      "geometry": "Separate 4.00-diameter, 12-long, 32-sided dowel."
+    }
+  ]
+}

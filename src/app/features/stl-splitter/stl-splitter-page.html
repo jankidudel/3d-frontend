@@ -2,17 +2,32 @@
   <p class="eyebrow">Printable STL parts</p>
   <h1>Split an STL File for 3D Printing</h1>
   <p class="lead">
-    Split a large STL model into two capped, printable parts that fit your
-    printer more easily.
+    Cut a supported STL along an X, Y or Z plane and download the resulting
+    capped exports. Review both files before slicing; this operation does not
+    design the assembly joint.
   </p>
   <div class="tool-content splitter-content">
+    <app-example-loader
+      [tool]="routeUrl.StlSplitter"
+      [active]="!!file()"
+      [current]="file()"
+      [busy]="submitting() || processing()"
+      [load]="loadExample"
+    />
     <section class="splitter-card card">
       <h2>Choose an STL and cut position</h2>
-      <p>Only closed, manifold STL files can be split safely.</p>
+      <p>
+        Opening a file reads it locally for the plane preview. Pressing the
+        split button uploads it for server processing. Choose a non-empty ASCII
+        or binary STL no larger than {{ fileLimitMiB }} MiB.
+      </p>
       <app-stl-file-picker
         [selectedFileFromParent]="file()"
         (fileSelected)="onFileSelected($event)"
       />
+      @if (reading()) {
+        <p role="status">Reading STL locally for the plane preview...</p>
+      }
       @if (selectedBounds(); as cutBounds) {
         <div class="split-controls">
           <label class="axis-field"
@@ -34,16 +49,26 @@
               min="0"
               max="100"
               [value]="position()"
+              [attr.aria-valuetext]="
+                position() +
+                '%; ' +
+                axis() +
+                '=' +
+                format(coordinate()) +
+                ' source coordinate units'
+              "
               (input)="setPosition(+$any($event.target).value)"
           /></label>
         </div>
         <div class="cut-helper-row">
           <span
             >{{ axis() }} range: {{ format(cutBounds.min) }} to
-            {{ format(cutBounds.max) }} model units</span
+            {{ format(cutBounds.max) }} source coordinate units</span
           >
           <span
-            >Selected cut: <strong>{{ format(coordinate()) }}</strong></span
+            >Selected plane:
+            <strong>{{ axis() }}={{ format(coordinate()) }}</strong> (minimum +
+            {{ position() }}% of the span)</span
           >
         </div>
       }
@@ -53,8 +78,17 @@
         [disabled]="!canSplit()"
         (click)="split()"
       >
-        {{ submitting() ? 'Creating job...' : 'Split into two parts' }}
+        {{
+          submitting()
+            ? 'Uploading and creating job...'
+            : 'Upload and split STL'
+        }}
       </button>
+      @if (submitting()) {
+        <p role="status">
+          Uploading the selected STL and submitting this cut...
+        </p>
+      }
       @if (error()) {
         <p class="status-panel status-panel-error splitter-error" role="alert">
           {{ error() }}
@@ -66,7 +100,8 @@
         <h2>Cut-plane preview</h2>
         <p>
           Blue is Part A, orange is Part B, and the yellow plane marks the
-          selected cut. Final caps are created and validated by the processor.
+          selected cut. This is a local plane preview, not evidence that capped
+          exports can be generated.
         </p>
         <app-object-viewer
           [object]="model.object"
@@ -93,12 +128,13 @@
         } @else if (currentJob.status === jobStatus.Failed) {
           <h2 id="split-result">Split could not run</h2>
           <p class="status-panel status-panel-error splitter-error">
-            {{
-              currentJob.failure?.error?.message ??
-                'The model could not be split safely.'
-            }}
+            {{ failureMessage() }}
           </p>
           <p>
+            <a [href]="guideRouteUrl.RouteStlSplitFailed"
+              >Diagnose the failure stage</a
+            >
+            ·
             <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
             <a [routerLink]="routeUrl.WatertightChecker">Watertight Checker</a>
             · <a [routerLink]="routeUrl.ManifoldChecker">Manifold Checker</a> ·
@@ -106,47 +142,74 @@
           </p>
         } @else if (report(); as result) {
           <div class="split-success" role="status">
-            <h2 id="split-result">Split completed</h2>
+            <h2 id="split-result">Exports generated - inspect both</h2>
             <p>
-              Cut along {{ result.split?.axis }} at
-              {{ result.split?.positionPercent }}%.
+              The processor cut along {{ result.split.axis }} at
+              {{ result.split.positionPercent }}%, source coordinate
+              {{ format(result.split.positionCoordinate) }}, then reopened both
+              exports and passed its supported validation screen.
             </p>
           </div>
           <div class="split-result-grid">
             @for (
-              part of [result.split?.partA, result.split?.partB];
+              part of [result.split.partA, result.split.partB];
               track part.fileName
             ) {
               <article class="part-card">
-                <h3>
-                  {{ part === result.split?.partA ? 'Part A' : 'Part B' }}
-                </h3>
+                <h3>{{ partLabel(part, result.split) }}</h3>
                 <p>
-                  {{ part.dimensions?.width }} × {{ part.dimensions?.height }} ×
-                  {{ part.dimensions?.depth }} model units
+                  {{ format(part.dimensions.width) }} ×
+                  {{ format(part.dimensions.height) }} ×
+                  {{ format(part.dimensions.depth) }} coordinate units
                 </p>
+                <p>Bounds: {{ boundsLabel(part) }}</p>
                 <p>
-                  {{ part.triangleCount }} triangles · Watertight · Manifold
+                  {{ part.triangleCount }} triangles
+                  @if (part.validation.connectedComponentCount; as count) {
+                    · {{ count }} connected
+                    {{ count === 1 ? 'region' : 'regions' }}
+                  }
+                  · closed and no over-shared edges
                 </p>
                 <a
                   class="button"
+                  target="_blank"
+                  rel="noopener"
                   [href]="
                     '/api/v1/jobs/' +
                     currentJob.id +
                     '/' +
-                    (part === result.split?.partA
+                    (part === result.split.partA
                       ? 'split-part-a'
                       : 'split-part-b')
                   "
                   (click)="
-                    downloadPart(part === result.split?.partA ? 'a' : 'b')
+                    downloadPart(part === result.split.partA ? 'a' : 'b')
                   "
                   >Download
-                  {{ part === result.split?.partA ? 'Part A' : 'Part B' }}</a
+                  {{
+                    part === result.split.partA
+                      ? 'lower-side export'
+                      : 'upper-side export'
+                  }}</a
                 >
               </article>
             }
           </div>
+          <p>
+            Each download opens separately so the cut settings remain here. If a
+            download fails, check the job again and retry the same export. Keep
+            the source unit assumption and add the side, axis and revision to
+            your saved filenames.
+          </p>
+          <button
+            class="button secondary"
+            type="button"
+            [disabled]="refreshing()"
+            (click)="refresh()"
+          >
+            {{ refreshing() ? 'Checking job...' : 'Check job status' }}
+          </button>
           <div class="report-actions">
             <button
               class="button secondary"
@@ -170,8 +233,11 @@
             </p>
           }
           <p>
-            The split does not add alignment pins or connectors. Test-fit the
-            parts before final assembly.
+            The split does not add alignment pins, sockets or connectors. Use
+            the
+            <a [href]="guideRouteUrl.RouteAlignmentPinsForSplit3dPrints"
+              >alignment-pin planning guide</a
+            >, then inspect each downloaded mesh and its native sliced paths.
           </p>
         }
       </section>
@@ -182,6 +248,9 @@
         <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>,
         <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a>,
         <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>,
+        <a [href]="guideRouteUrl.RouteHowToSplitAnStlFileFor3dPrinting"
+          >the complete split workflow</a
+        >,
         <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter"
           >printer fit guidance</a
         >, and
@@ -209,18 +278,21 @@
       claim that a physical assembly has been printed.
     </p>
     <p>
-      The splitter uploads the selected STL for server processing when you run
-      it. STL has no dependable stored unit, so keep the source unit assumption
-      with the outputs. A capped cut does not add adhesive allowance, alignment
-      pins, sockets or mating clearance. Do not scale pieces independently to
-      force them to fit.
+      The splitter uploads only when you explicitly run the cut. STL has no
+      dependable stored unit, so keep the source unit assumption with the
+      outputs. Part A retains coordinates at or below the plane and Part B
+      retains coordinates at or above it; the exports are not recentered. A
+      capped cut does not add adhesive allowance, alignment pins, sockets or
+      mating clearance. Do not scale pieces independently to force them to fit.
     </p>
     <p>
       Prefer source CAD when a cut must preserve a load path, avoid a hole, add
       fasteners or define a repeatable joint. Stop when either downloaded piece
       loses a required feature or the contour is rejected.
+      <a [href]="guideRouteUrl.RouteStlSplitFailed">Diagnose a rejected cut</a>,
+      or
       <a [href]="guideRouteUrl.RouteHowToSplitAnStlFileFor3dPrinting"
-        >Choose a joint and verify the assembly plan</a
+        >choose a seam and verify the assembly plan</a
       >
       before orienting and slicing each part.
     </p>

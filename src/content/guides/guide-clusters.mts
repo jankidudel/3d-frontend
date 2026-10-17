@@ -158,6 +158,8 @@ export const guideClusters: readonly GuideCluster[] = [
       'how-to-orient-an-stl-file-for-3d-printing',
       'how-to-arrange-multiple-parts-on-a-3d-printer-bed',
       'how-to-split-an-stl-file-for-3d-printing',
+      'stl-split-failed',
+      'alignment-pins-for-split-3d-prints',
       'how-to-inspect-stl-3mf-cross-sections',
       'how-to-hollow-an-stl-file-for-3d-printing',
     ],

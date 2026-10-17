@@ -7,6 +7,9 @@ import { publicExamples } from './example-registry';
 
 describe('explicit public example loading', () => {
   afterEach(() => vi.unstubAllGlobals());
+  const viewerAsset = publicExamples
+    .find((example) => example.tools.includes(PublicRouteUrl.Viewer))!
+    .files.find((asset) => asset.name.endsWith('.stl'))!;
   const setup = (tool: string = PublicRouteUrl.Viewer) => {
     TestBed.configureTestingModule({
       imports: [ExampleLoader],
@@ -47,7 +50,7 @@ describe('explicit public example loading', () => {
   it('announces replacement and awaits the real tool callback', async () => {
     const { fixture, load } = setup();
     fixture.componentRef.setInput('active', true);
-    const asset = publicExamples[0].files[0];
+    const asset = viewerAsset;
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(new Response(new Uint8Array(asset.bytes))),
@@ -78,7 +81,7 @@ describe('explicit public example loading', () => {
       'current',
       new File(['private'], 'private.stl'),
     );
-    finish(new Response(new Uint8Array(publicExamples[0].files[0].bytes)));
+    finish(new Response(new Uint8Array(viewerAsset.bytes)));
     await run;
     expect(load).not.toHaveBeenCalled();
     expect(fixture.componentInstance.error()).toContain(
@@ -96,9 +99,7 @@ describe('explicit public example loading', () => {
       'fetch',
       vi
         .fn()
-        .mockResolvedValue(
-          new Response(new Uint8Array(publicExamples[0].files[0].bytes)),
-        ),
+        .mockResolvedValue(new Response(new Uint8Array(viewerAsset.bytes))),
     );
     load.mockRejectedValueOnce(new Error('Actual tool failed'));
     await fixture.componentInstance.open();

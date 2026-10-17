@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "observedDate": "2026-10-17",
+  "method": "Local ProcessorApplication.SplitStl; serialized binary outputs reopened with ProcessorApplication.Process",
+  "revision": {
+    "baselineCommit": "1edf982",
+    "splitterSha256": "de6c55f9f951ce6cdda9a54b10a1e2e3317ff39dd8760c13a503cb04fcb24be5",
+    "applicationSha256": "1b3365b3ce2dbb78b73a0c057f570e7902b2c4a71829f53a47524282dd479ce6",
+    "runtime": "10.0.10"
+  },
+  "reproduction": "From 3d-processor: dotnet run --project tools/SplitEvidence -- ../3d-frontend/public/examples",
+  "unitAssumption": "millimetres; STL does not declare units",
+  "physicalTest": false,
+  "productionJob": false,
+  "runs": [
+    {
+      "name": "cube",
+      "input": "english-market-batch/closed-20mm-cube.stl",
+      "inputSha256": "06440b45372060a582e8898b0f522b2f8975f323ec421b19d7c04713e8293e6f",
+      "axis": "Z",
+      "positionPercent": 50,
+      "plane": 10,
+      "source": {
+        "triangleCount": 12,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 20
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "volume": 7999.999999999999,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "valid": true,
+        "issues": []
+      },
+      "outcome": "accepted",
+      "outputs": [
+        {
+          "path": "cube-lower-z.stl",
+          "sha256": "cebaf1c45dbc480b8b646e38106f284c3114ecf7da54c105cb75b913c0f9b1fb",
+          "observation": {
+            "triangleCount": 20,
+            "boundingBox": {
+              "minX": 0,
+              "minY": 0,
+              "minZ": 0,
+              "maxX": 20,
+              "maxY": 20,
+              "maxZ": 10
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 10
+            },
+            "volume": 4000,
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "valid": true,
+            "issues": []
+          }
+        },
+        {
+          "path": "cube-upper-z.stl",
+          "sha256": "e703182b66838b33d2ca2b4eff3af7637b79ea30160fa911d296e12faf8a57df",
+          "observation": {
+            "triangleCount": 20,
+            "boundingBox": {
+              "minX": 0,
+              "minY": 0,
+              "minZ": 10,
+              "maxX": 20,
+              "maxY": 20,
+              "maxZ": 20
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 10
+            },
+            "volume": 3999.9999999999995,
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "valid": true,
+            "issues": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "shifted-cube",
+      "input": "slicer-diagnosis/shifted-cube.stl",
+      "inputSha256": "be024dc68aa2878a26d9a12cc3d483e845f51c6468691ce1c573e023f611aeb1",
+      "axis": "Z",
+      "positionPercent": 50,
+      "plane": 5,
+      "source": {
+        "triangleCount": 12,
+        "boundingBox": {
+          "minX": 230,
+          "minY": 20,
+          "minZ": -5,
+          "maxX": 250,
+          "maxY": 40,
+          "maxZ": 15
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "volume": 8000,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "valid": true,
+        "issues": []
+      },
+      "outcome": "accepted",
+      "outputs": [
+        {
+          "path": "shifted-cube-lower-z.stl",
+          "sha256": "557faa50deb51a18912a9e4f714dd52182e09c27850cf48c0cbda28200a0ff85",
+          "observation": {
+            "triangleCount": 20,
+            "boundingBox": {
+              "minX": 230,
+              "minY": 20,
+              "minZ": -5,
+              "maxX": 250,
+              "maxY": 40,
+              "maxZ": 5
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 10
+            },
+            "volume": 4000.000000000001,
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "valid": true,
+            "issues": []
+          }
+        },
+        {
+          "path": "shifted-cube-upper-z.stl",
+          "sha256": "edd443ff9f1b32a21058875ac15875200017812b437ad78d602cac83a8413846",
+          "observation": {
+            "triangleCount": 20,
+            "boundingBox": {
+              "minX": 230,
+              "minY": 20,
+              "minZ": 5,
+              "maxX": 250,
+              "maxY": 40,
+              "maxZ": 15
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 10
+            },
+            "volume": 3999.999999999999,
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "valid": true,
+            "issues": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "open-cube",
+      "input": "english-market-batch/open-face-cube.stl",
+      "inputSha256": "bd250acc9586f6dd86438480ade08b113ea0edc898562180b4580a6139e18d67",
+      "axis": "Z",
+      "positionPercent": 50,
+      "plane": 10,
+      "source": {
+        "triangleCount": 10,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 20
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "volume": null,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 4,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "valid": false,
+        "issues": ["open_edge"]
+      },
+      "outcome": "rejected",
+      "localReason": "This STL must be closed, manifold and valid before it can be split. Check it with the STL Quality, Watertight or Manifold Checker, or use STL Repair where appropriate.",
+      "publicServiceCode": "split_could_not_be_capped_safely"
+    },
+    {
+      "name": "hollow-channel",
+      "input": "split-assembly/hollow-channel-20x20x20.stl",
+      "inputSha256": "076f55afdfd79f20f1dddd73990495533f3654580ca39bcc90579df8e5388f53",
+      "axis": "Z",
+      "positionPercent": 50,
+      "plane": 10,
+      "source": {
+        "triangleCount": 32,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 20
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "volume": 5120,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "valid": true,
+        "issues": []
+      },
+      "outcome": "rejected",
+      "localReason": "The cut could not be capped and validated safely; no output files were created.",
+      "publicServiceCode": "split_could_not_be_capped_safely"
+    }
+  ],
+  "coupons": [
+    {
+      "path": "alignment-block-a.stl",
+      "sha256": "50bd4167f2da7ba398579d67d402732938f68e0cc670960e482038738777f130",
+      "observation": {
+        "triangleCount": 192,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 10
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 10
+        },
+        "volume": 3899.5033005440378,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "valid": true,
+        "issues": []
+      }
+    },
+    {
+      "path": "alignment-block-b.stl",
+      "sha256": "1d39af543cde46af400ee418c354f135dc1a2ed5247479d8458085335da71a88",
+      "observation": {
+        "triangleCount": 192,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 10
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 10
+        },
+        "volume": 3899.503203195012,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "valid": true,
+        "issues": []
+      }
+    },
+    {
+      "path": "alignment-dowel.stl",
+      "sha256": "3591471e74851c604835419de91721798b49e7105713b4eaff0362891a855db4",
+      "observation": {
+        "triangleCount": 128,
+        "boundingBox": {
+          "minX": -2,
+          "minY": -2,
+          "minZ": 0,
+          "maxX": 2,
+          "maxY": 2,
+          "maxZ": 12
+        },
+        "dimensions": {
+          "width": 4,
+          "height": 4,
+          "depth": 12
+        },
+        "volume": 149.82936238417702,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "valid": true,
+        "issues": []
+      }
+    }
+  ]
+}

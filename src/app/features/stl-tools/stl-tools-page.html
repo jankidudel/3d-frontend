@@ -53,9 +53,15 @@
       </li>
       <li>
         Need an intentional cut between parts? Use the
-        <a [routerLink]="routeUrl.StlSplitter">STL Splitter</a> for that
-        deliberate separation; it is a different task from removing detached
-        fragments.
+        <a [routerLink]="routeUrl.StlSplitter">STL Splitter</a> for a supported
+        planar cut, then verify both exported meshes. Use the
+        <a [href]="guideRouteUrl.RouteStlSplitFailed">split diagnosis guide</a>
+        when the input, plane, contour or processing stage is rejected, or the
+        <a [href]="guideRouteUrl.RouteAlignmentPinsForSplit3dPrints"
+          >alignment-pin guide</a
+        >
+        when planning the separate assembly. An intentional cut is a different
+        task from removing detached fragments.
       </li>
       <li>
         File too large? The

@@ -5,6 +5,7 @@ import {
 } from '../src/app/features/stl-repair/disconnected-parts.ts';
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { JSDOM } from 'jsdom';
 import {
@@ -147,6 +148,103 @@ describe('published owned geometry controls', () => {
         height: 20,
         depth: 20,
       });
+    }
+  });
+  it('reopens the split and alignment controls with their published dimensions', async () => {
+    const tube = checkGeometry(
+      await readStl(await file('split-assembly/hollow-channel-20x20x20.stl')),
+      settings,
+    );
+    expect(tube.dimensionsMm).toEqual({ width: 20, height: 20, depth: 20 });
+    expect(tube.topology).toMatchObject({
+      shells: 1,
+      openEdges: 0,
+      nonManifoldEdges: 0,
+      volume: 5120,
+    });
+    for (const name of ['alignment-block-a.stl', 'alignment-block-b.stl']) {
+      const block = checkGeometry(
+        await readStl(await file(`split-assembly/${name}`)),
+        settings,
+      );
+      expect(block.dimensionsMm).toEqual({
+        width: 20,
+        height: 20,
+        depth: 10,
+      });
+      expect(block.topology).toMatchObject({
+        shells: 1,
+        openEdges: 0,
+        nonManifoldEdges: 0,
+      });
+    }
+    const dowel = checkGeometry(
+      await readStl(await file('split-assembly/alignment-dowel.stl')),
+      settings,
+    );
+    expect(dowel.dimensionsMm).toEqual({ width: 4, height: 4, depth: 12 });
+    expect(dowel.topology.openEdges).toBe(0);
+    const manifest = JSON.parse(
+      await readFile(resolve(root, 'split-assembly/manifest.json'), 'utf8'),
+    );
+    expect(manifest.physicalTest).toBe(false);
+    expect(manifest.coupon).toMatchObject({
+      socketDiameter: 4.3,
+      dowelDiameter: 4,
+      socketDepth: 7,
+    });
+    const translations = manifest.coupon.assemblyTranslations;
+    expect(translations.blockB[2] - 10).toBeCloseTo(0.2);
+    expect(10 - translations.dowel[2]).toBeCloseTo(5.9);
+    expect(translations.dowel[2] + 12 - translations.blockB[2]).toBeCloseTo(
+      5.9,
+    );
+    for (const [name, endZ] of [
+      ['alignment-block-a.stl', 3],
+      ['alignment-block-b.stl', 7],
+    ] as const) {
+      const mesh = await readStl(await file(`split-assembly/${name}`));
+      const socketPoints = Array.from(
+        { length: mesh.positions.length / 3 },
+        (_, index) =>
+          Array.from(mesh.positions.slice(index * 3, index * 3 + 3)),
+      ).filter(([x, y, z]) => z === endZ && Math.hypot(x - 10, y - 10) > 1);
+      expect(socketPoints.length).toBeGreaterThanOrEqual(24);
+      for (const [x, y] of socketPoints) {
+        expect(Math.hypot(x - 10, y - 10)).toBeCloseTo(2.15, 5);
+      }
+    }
+  });
+  it('ties published split observations to exact re-imported input and output bytes', async () => {
+    const evidence = JSON.parse(
+      await readFile(resolve(root, 'split-assembly/observations.json'), 'utf8'),
+    );
+    expect(evidence.productionJob).toBe(false);
+    expect(
+      evidence.runs.map((run: { outcome: string }) => run.outcome),
+    ).toEqual(['accepted', 'accepted', 'rejected', 'rejected']);
+    for (const run of evidence.runs) {
+      const input = await readFile(resolve(root, run.input));
+      expect(createHash('sha256').update(input).digest('hex')).toBe(
+        run.inputSha256,
+      );
+      for (const output of run.outputs ?? []) {
+        const bytes = await readFile(
+          resolve(root, 'split-assembly', output.path),
+        );
+        expect(createHash('sha256').update(bytes).digest('hex')).toBe(
+          output.sha256,
+        );
+        const reopened = await readStl(new File([bytes], output.path));
+        const check = checkGeometry(reopened, settings);
+        expect(check.dimensionsMm).toEqual({
+          width: 20,
+          height: 20,
+          depth: 10,
+        });
+        expect(check.topology.openEdges).toBe(0);
+        expect(check.topology.volume).toBeCloseTo(4000, 5);
+      }
     }
   });
   it('distinguishes source placement from the slicer-centred paths', async () => {
@@ -331,7 +429,7 @@ describe('visual diagnosis teaching controls', () => {
           example.group !== 'G-code evidence' &&
           example.group !== '3MF placements / export',
       ),
-    ).toHaveLength(21);
+    ).toHaveLength(23);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
     );

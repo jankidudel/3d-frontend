@@ -1,0 +1,263 @@
+---
+title: 'Alignment Pins for Split 3D Prints | InspectMesh'
+description: 'Plan alignment pins and sockets for split prints. Separate nominal clearance from measured error, check engagement and wall material, and test a small joint.'
+slug: alignment-pins-for-split-3d-prints
+eyebrow: Split-print assembly planning
+heading: 'Alignment Pins for Split 3D Prints: Plan and Test the Joint'
+---
+
+<p>
+  Alignment pins help locate printed sections during assembly. Choose the pin,
+  socket and insertion direction together, allow for measured printing error and
+  test a small joint before modifying the full model. A pin that aligns a seam
+  does not by itself establish the strength of the finished joint.
+</p>
+
+<h2>Choose what the connector needs to do</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Feature</th>
+      <th scope="col">Alignment purpose</th>
+      <th scope="col">Assembly direction and dimensional check</th>
+      <th scope="col">Choose another design when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Loose dowel</td>
+      <td>A separate part locates sockets on both printed sections.</td>
+      <td>
+        Insert along the socket axes; check dowel diameter, both socket
+        diameters, depth, end clearance and total length.
+      </td>
+      <td>
+        A separate piece can be lost, cannot be inserted, or the surrounding
+        material is insufficient.
+      </td>
+    </tr>
+    <tr>
+      <td>Integrated peg</td>
+      <td>Added geometry on one section locates a socket on the other.</td>
+      <td>
+        Insert along the peg axis; check peg root, diameter, engagement and
+        receiving depth.
+      </td>
+      <td>
+        The root creates a fragile feature, print orientation is poor, or a
+        replaceable locator is preferred.
+      </td>
+    </tr>
+    <tr>
+      <td>Keyed feature</td>
+      <td>Asymmetry constrains orientation as well as lateral position.</td>
+      <td>
+        Follow the one intended insertion direction; check every width, corner,
+        lead-in and engagement surface.
+      </td>
+      <td>
+        The key creates thin walls, traps support or needs force around a
+        corner.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  One symmetric round locator can permit rotation. Multiple locators can resist
+  rotation, but inconsistent spacing or position can make them bind. There is no
+  universal pin count. Treat
+  <a href="{{ GuideSlug.Route3dPrintHeatSetInsertHoleSizing }}"
+    >screws and inserts</a
+  >
+  and <a href="{{ GuideSlug.Route3dPrintSnapFitClearance }}">snap fits</a> as
+  separate hardware or flexure decisions.
+</p>
+
+<h2>Keep clearance and print error separate</h2>
+<p>
+  This fully worked example is illustrative and was not physically tested. The
+  selected design clearance is one input; printer, material, orientation and
+  profile error are another. A 0.30 mm diametral clearance is not a universal
+  recommendation.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Arithmetic</th>
+      <th scope="col">Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Designed diametral clearance</td>
+      <td>4.30 mm socket - 4.00 mm pin</td>
+      <td>0.30 mm</td>
+    </tr>
+    <tr>
+      <td>Ideal concentric radial clearance</td>
+      <td>0.30 mm ÷ 2</td>
+      <td>0.15 mm per side</td>
+    </tr>
+    <tr>
+      <td>Hypothetical measured pin</td>
+      <td>Designed 4.00 mm, read as 4.08 mm</td>
+      <td>4.08 mm</td>
+    </tr>
+    <tr>
+      <td>Hypothetical measured socket</td>
+      <td>Designed 4.30 mm, read as 4.18 mm</td>
+      <td>4.18 mm</td>
+    </tr>
+    <tr>
+      <td>Resulting measured diametral clearance</td>
+      <td>4.18 mm - 4.08 mm</td>
+      <td>0.10 mm, not the nominal 0.30 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Record hole error as produced hole minus designed hole and apply the same sign
+  convention used by the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >tolerance worksheet</a
+  >. Use the
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >hole-size compensation guide</a
+  >
+  for the full measurement and correction method.
+</p>
+
+<h2>Check engagement, depth and surrounding material</h2>
+<figure>
+  <img
+    src="{{ ExampleAsset.AlignmentPinJointSvg }}"
+    width="720"
+    height="360"
+    alt="Two blind sockets receive a separate dowel; pin diameter, socket diameter, insertion direction, engagement, end clearance and surrounding material are labelled."
+  />
+  <figcaption>
+    Original geometry diagram. Dimensions explain the workflow and are not a
+    strength or universal clearance recommendation.
+  </figcaption>
+</figure>
+<p>
+  A loose pin's length spans engagement on both sides plus any intended seam
+  gap. A blind socket can bottom out before the seam closes, so leave deliberate
+  end clearance. Chamfers and lead-ins can ease initial alignment, but they
+  consume geometry and do not correct a wrong diameter, depth or centre
+  position.
+</p>
+<p>
+  For ideal concentric geometry, a 10 mm outside boss around a 4.30 mm socket
+  leaves (10 - 4.30) ÷ 2 = 2.85 mm of radial material. That is geometry
+  arithmetic, not a strength recommendation. Also inspect edge distance, nearby
+  cavities, layer direction and the root of any integrated peg. Mesh dimensions
+  alone do not establish load capacity.
+</p>
+
+<h2>Design a small coupon before the full part</h2>
+<p>
+  The owned example uses two 20 × 20 × 10 coordinate-unit blocks, each with a
+  4.30-diameter, 7-deep blind socket, plus a separate 4.00-diameter, 12-long
+  dowel. Under its illustrative plan, a 0.2 seam gap and 5.9 engagement on each
+  side leave 1.1 end clearance in each socket. These are demonstration
+  dimensions, not calibrated production recommendations.
+</p>
+<ul>
+  <li>
+    <a href="{{ ExampleAsset.AlignmentBlockAStl }}" download
+      >Download block A STL</a
+    >
+  </li>
+  <li>
+    <a href="{{ ExampleAsset.AlignmentBlockBStl }}" download
+      >Download block B STL</a
+    >
+  </li>
+  <li>
+    <a href="{{ ExampleAsset.AlignmentDowelStl }}" download
+      >Download the separate dowel STL</a
+    >
+  </li>
+  <li>
+    <a href="{{ ExampleAsset.SplitAssemblyManifestJson }}" download
+      >Download the dimensions and source manifest</a
+    >
+  </li>
+</ul>
+<p>
+  Download the
+  <a href="{{ ExampleAsset.SplitAssemblySource }}" download
+    >editable geometry generator</a
+  >
+  and
+  <a href="{{ ExampleAsset.SplitObservationsJson }}" download
+    >software observations</a
+  >. The circular features are polygonal mesh approximations: 24 segments around
+  each socket and 32 around the dowel. The stated diameters describe their
+  design circles; the facets do not form mathematically smooth cylinders.
+</p>
+<p>
+  The established repository script generates the exact meshes from these
+  dimensions. Software verification reopened every STL as one closed component
+  with the stated bounds. No native CAD project or physical fit is claimed.
+</p>
+<ol>
+  <li>Slice and print with the intended material, orientation and profile.</li>
+  <li>Measure pin diameter, socket diameter and locator centre positions.</li>
+  <li>Dry-fit without forcing; record insertion, rotation and seam closure.</li>
+  <li>
+    Adjust the feature responsible for the observed error, not whole-part scale
+    by default.
+  </li>
+  <li>Repeat the coupon before applying the change to the full model.</li>
+</ol>
+
+<h2>Add connectors in the right application</h2>
+<p>
+  InspectMesh's splitter makes a supported X, Y or Z planar division and caps
+  the outputs. It does not generate pins, sockets or connector clearance unless
+  those features already exist in the input. Add them in source CAD or a tool
+  which explicitly supports connector design.
+</p>
+<p>
+  Prusa's official
+  <a href="https://help.prusa3d.com/article/cut-tool_1779">Cut tool guide</a>,
+  reviewed 17 October 2026, distinguishes plug, separate dowel and snap
+  connectors and documents their controls. That is a separate PrusaSlicer
+  workflow, not feature parity or evidence that InspectMesh can create those
+  connectors.
+</p>
+
+<h2>Verify the final pair and assembly</h2>
+<ol>
+  <li>
+    Reopen both final meshes and confirm common scale, unit assumption and
+    revision.
+  </li>
+  <li>
+    Check connector diameter, clearance, depth, engagement, centre position and
+    seam location.
+  </li>
+  <li>
+    Check each piece in its intended orientation with real support and brim
+    allowance.
+  </li>
+  <li>Review the native sliced paths around every socket, peg and seam.</li>
+  <li>
+    Dry-fit and assess the actual assembly separately from the geometry screen.
+  </li>
+</ol>
+<p>
+  A print-in-place joint is a different task from joining separately printed
+  sections; use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
+    >fit and clearance guidance</a
+  >
+  for that distinction. For the seam decision, return to the
+  <a href="{{ GuideSlug.RouteHowToSplitAnStlFileFor3dPrinting }}"
+    >complete split workflow</a
+  >. Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to inspect
+  each export before slicing.
+</p>

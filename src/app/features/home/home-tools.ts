@@ -108,7 +108,8 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
       },
       {
         title: 'STL Splitter',
-        description: 'Split a valid STL into two capped printable parts.',
+        description:
+          'Make a supported planar cut, then review both capped STL exports.',
         route: PublicRouteUrl.StlSplitter,
         icon: '◈',
         cta: 'Split an STL',

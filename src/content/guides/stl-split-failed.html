@@ -1,0 +1,234 @@
+---
+title: 'STL Split Failed? Causes and Next Steps | InspectMesh'
+description: 'Diagnose a rejected STL cut: check input geometry, cut position, unsupported contours and processing errors, then verify both exported parts.'
+slug: stl-split-failed
+eyebrow: STL splitting diagnosis
+heading: STL Split Failed? Diagnose the Cut Before Retrying
+---
+
+<p>
+  A failed STL split can come from the source mesh, the selected plane, an
+  unsupported cut contour or a processing problem. Read the actual error first.
+  Change one relevant condition and verify the saved outputs; repeating the same
+  cut or applying unrelated repair does not identify the cause.
+</p>
+<h2>Find the stage that failed</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">First check</th>
+      <th scope="col">Relevant next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>File cannot be read locally</td>
+      <td>Non-empty ASCII or binary STL, .stl name and 25 MiB limit</td>
+      <td>
+        Try the known cube below; resolve parsing before geometry diagnosis.
+      </td>
+    </tr>
+    <tr>
+      <td>Submission or job fails without a geometry finding</td>
+      <td>
+        Created, upload, processing or failed status and the displayed error
+      </td>
+      <td>
+        Preserve file, axis and percentage. Retry once when appropriate; do not
+        invent a mesh cause for a timeout.
+      </td>
+    </tr>
+    <tr>
+      <td>Input is rejected for mesh condition</td>
+      <td>
+        Open edges, over-shared edges, invalid coordinates, duplicate or
+        degenerate triangles and winding
+      </td>
+      <td>
+        Review the source in the relevant checker; correct only an understood
+        problem.
+      </td>
+    </tr>
+    <tr>
+      <td>Plane does not produce a usable division</td>
+      <td>Displayed source-coordinate plane against bounds and material</td>
+      <td>
+        Choose an interior plane that genuinely crosses material and leaves
+        geometry on both sides.
+      </td>
+    </tr>
+    <tr>
+      <td>Cap or contour is unsupported</td>
+      <td>The section shape and actual split error</td>
+      <td>
+        Inspect a nearby plane or return to CAD. A different plane is not
+        guaranteed to work.
+      </td>
+    </tr>
+    <tr>
+      <td>Job succeeds but one output is unusable</td>
+      <td>Both downloads, bounds, closure and intended features</td>
+      <td>
+        Reopen both exports. Job completion is not an assembly-ready
+        certificate.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The service currently distinguishes a split geometry rejection from a general
+  processing failure, but it does not expose a separate code for every row.
+  Preserve the real message. A generic processing failure or interrupted status
+  poll does not prove that the mesh or plane is at fault.
+</p>
+
+<h2>Replay one successful control</h2>
+<p>
+  Download the owned
+  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
+    >closed 20-coordinate-unit cube</a
+  >, then
+  <a href="{{ GuideSlug.RouteStlSplitter }}?example=split-verification"
+    >load it locally in the splitter</a
+  >. Choose Z at 50% and explicitly submit. The source Z bounds are 0..20, so
+  the actual plane is Z=10. Under an explicit millimetre assumption, the
+  designed span of each export is 20 × 20 × 10 mm.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Evidence</th>
+      <th scope="col">Lower Z export</th>
+      <th scope="col">Upper Z export</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Analytic expectation</td>
+      <td>X 0..20, Y 0..20, Z 0..10</td>
+      <td>X 0..20, Y 0..20, Z 10..20</td>
+    </tr>
+    <tr>
+      <td>Observed after binary write and re-import</td>
+      <td>20 × 20 × 10; stated bounds retained; validation passed</td>
+      <td>20 × 20 × 10; stated bounds retained; validation passed</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The current processor was exercised through the real split application path,
+  wrote both binary STL files, reopened them and checked its supported validity,
+  closure and edge-incidence conditions. Coordinates were preserved rather than
+  recentered. Cap triangulation can change, so triangle count is an observation,
+  not a required constant.
+</p>
+<p>
+  Download the exact local-run
+  <a href="{{ ExampleAsset.SplitCubeLowerStl }}" download>lower-Z output</a>,
+  <a href="{{ ExampleAsset.SplitCubeUpperStl }}" download>upper-Z output</a>
+  and
+  <a href="{{ ExampleAsset.SplitObservationsJson }}" download
+    >dated observations</a
+  >. The evidence records input and output hashes, settings, source revision and
+  reproduction command. These observations were made locally on 17 October 2026;
+  they do not certify the deployed service revision.
+</p>
+<figure>
+  <img
+    src="{{ ExampleAsset.SplitPlaneCoordinatesSvg }}"
+    width="720"
+    height="320"
+    alt="An origin cube cuts at Z ten, while a cube shifted to minus five through fifteen cuts at Z five."
+  />
+  <figcaption>
+    Deterministic coordinate diagram, not a screenshot of an executed server
+    job. Both 20-unit spans use minimum + 50% × span.
+  </figcaption>
+</figure>
+
+<h2>Compare a rejected input with a difficult plane</h2>
+<p>
+  The generated
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a>
+  has four boundary edges. The current precondition screen rejects it before
+  cutting because the input validation has an error. That differs from a file
+  which cannot be parsed: the open cube is readable geometry, but it is not an
+  accepted split source.
+</p>
+<p>
+  The
+  <a href="{{ ExampleAsset.SplitHollowChannelStl }}" download
+    >closed hollow-channel control</a
+  >
+  is a valid one-component boundary surface with no open or over-shared edges.
+  Its outer bounds are 20 × 20 × 20, its passage is 12 × 12, and its analytic
+  material volume is 5,120 cubic coordinate units. A central Z=10 cut produces
+  an outer and inner contour. The current splitter rejects these nested contours
+  instead of filling across the passage. This is an algorithm boundary, not an
+  open-mesh diagnosis.
+</p>
+<p>
+  Moving a plane can avoid a vertex, edge or coincident feature, but it changes
+  the seam and retained geometry. For example, moving a proposed plane from Z=10
+  to Z=9.8 shifts the seam by 0.2 source units; save the Z=10 setting for
+  comparison. It does not remove the tube's nested-contour condition, and a
+  nearby plane is not a promise of acceptance.
+</p>
+
+<h2>What not to change blindly</h2>
+<p>
+  Global scaling changes outside dimensions, holes, wall material and assembly
+  interfaces. It is not a neutral response to a contour rejection. Use the
+  <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
+    >scaling workflow</a
+  >
+  only when size is the intended change.
+</p>
+<p>
+  Removing disconnected pieces can delete intentional parts, locating features
+  or text. Use the
+  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+    >component interpretation guide</a
+  >
+  and retain every piece until its purpose is understood.
+</p>
+<p>
+  Filling holes may close an intended channel, drain, vent or socket. A cleaner
+  issue count does not establish design intent. Follow the
+  <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}">hole diagnosis</a>
+  and compare the result with the source design.
+</p>
+
+<h2>When to return to the source model</h2>
+<p>
+  Use source CAD or a suitable native-mesh workflow when the seam contains
+  complex openings, when interfaces or load paths are critical, when connectors
+  must be designed, or when the relationship between solids is ambiguous.
+  InspectMesh provides conservative axis-aligned planar cutting; it does not run
+  a general Boolean union, repair source intent or design a joint.
+</p>
+
+<h2>Verify the downloaded pair</h2>
+<ol>
+  <li>Open both files again rather than inspecting only one download.</li>
+  <li>Name the files with side, axis and model revision.</li>
+  <li>
+    Keep the physical unit assumption explicit because STL stores no unit.
+  </li>
+  <li>
+    Compare bounds, seam coordinate and retained features with the intended cut.
+  </li>
+  <li>
+    Check every required closed region; two exports need not mean exactly two
+    connected objects.
+  </li>
+  <li>Confirm an intended opening remains open.</li>
+  <li>Review final placement, supports and toolpaths in the target slicer.</li>
+</ol>
+<p>
+  If the two exports need a joining feature, continue with the
+  <a href="{{ GuideSlug.RouteAlignmentPinsForSplit3dPrints }}"
+    >alignment-pin planning and coupon workflow</a
+  >.
+</p>

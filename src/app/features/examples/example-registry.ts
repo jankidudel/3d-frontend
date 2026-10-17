@@ -21,6 +21,109 @@ export interface PublicExample {
   readonly tools: readonly string[];
   readonly provenance: string;
 }
+const splitAssemblyExamples: readonly PublicExample[] = [
+  {
+    id: 'split-verification',
+    name: 'Planar split verification',
+    group: 'Split / assembly',
+    question:
+      'Does the selected source-coordinate plane produce two supported exports?',
+    files: [
+      {
+        path: ExampleAsset.Closed20mmCubeStl,
+        name: 'closed-20mm-cube.stl',
+        bytes: 684,
+        label: 'Successful central cut',
+        reference:
+          'Z at 50% is coordinate 10; observed exports retain Z bounds 0..10 and 10..20.',
+      },
+      {
+        path: ExampleAsset.ShiftedCubeStl,
+        name: 'shifted-cube.stl',
+        bytes: 684,
+        label: 'Shifted source coordinates',
+        reference: 'Z bounds are -5..15, so Z at 50% is coordinate 5, not 10.',
+      },
+      {
+        path: ExampleAsset.OpenFaceCubeStl,
+        name: 'open-face-cube.stl',
+        bytes: 584,
+        label: 'Rejected source mesh',
+        reference:
+          'The precondition screen rejects the four-open-edge source before cutting.',
+      },
+      {
+        path: ExampleAsset.SplitHollowChannelStl,
+        name: 'hollow-channel-20x20x20.stl',
+        bytes: 1684,
+        label: 'Unsupported nested contour',
+        reference:
+          'The closed 20 x 20 x 20 tube is valid, but its nested mid-Z contours are rejected rather than capped across the passage.',
+      },
+    ],
+    preview: ExampleAsset.SplitPlaneCoordinatesSvg,
+    alt: 'A 20-unit cube at the origin cuts at Z ten, while the same span shifted to minus five through fifteen cuts at Z five.',
+    known:
+      'The cube and shifted cube are closed 20-unit controls. The open cube is missing one face. The closed tube has a 12 x 12 through-passage and analytic volume 5,120 cubic coordinate units.',
+    observed:
+      'Processor revision in this batch reopens valid cube exports at the original coordinates and rejects the open source and nested tube contour. Triangle counts are not treated as fixed.',
+    settings:
+      'Load locally, choose Z at 50%, confirm the displayed coordinate, then explicitly submit. Loading never starts a job.',
+    limitations:
+      'STL stores no unit. A passed geometry screen does not establish slicer placement, assembly fit or physical print success.',
+    guide: '/stl-split-failed',
+    tools: ['/stl-splitter'],
+    provenance:
+      'Original InspectMesh geometry and measured local processor results; no physical print test.',
+  },
+  {
+    id: 'alignment-coupon',
+    name: 'Alignment dowel coupon',
+    group: 'Split / assembly',
+    question:
+      'How can nominal pin and socket dimensions be checked before changing a full model?',
+    files: [
+      {
+        path: ExampleAsset.AlignmentBlockAStl,
+        name: 'alignment-block-a.stl',
+        bytes: 9684,
+        label: 'Block A, socket opens on +Z',
+      },
+      {
+        path: ExampleAsset.AlignmentBlockBStl,
+        name: 'alignment-block-b.stl',
+        bytes: 9684,
+        label: 'Block B, socket opens on -Z',
+      },
+      {
+        path: ExampleAsset.AlignmentDowelStl,
+        name: 'alignment-dowel.stl',
+        bytes: 6484,
+        label: 'Separate dowel',
+      },
+      {
+        path: ExampleAsset.SplitAssemblyManifestJson,
+        name: 'manifest.json',
+        bytes: 1459,
+        label: 'Dimensions and reproducibility manifest',
+      },
+    ],
+    preview: ExampleAsset.AlignmentPinJointSvg,
+    alt: 'Two blind sockets receive a separate dowel, with socket diameter, pin diameter, engagement and end clearance labelled.',
+    known:
+      'Each block is 20 x 20 x 10 with a 4.30-diameter, 7-deep blind socket. The separate 32-sided dowel is 4.00 in diameter and 12 long.',
+    observed:
+      'All three generated STL files reopen as one closed component with their stated bounds. This is software geometry verification only.',
+    settings:
+      'Open the meshes in the viewer, then slice and print with the intended material, orientation and profile before measuring or fitting.',
+    limitations:
+      'The 0.30 nominal diametral clearance is illustrative, not a recommendation. No coupon was physically printed.',
+    guide: '/alignment-pins-for-split-3d-prints',
+    tools: ['/stl-viewer'],
+    provenance:
+      'Original InspectMesh generated geometry with a machine-readable manifest; no physical fit or strength test.',
+  },
+];
 export const publicExamples: readonly PublicExample[] = [
   {
     id: 'quality-control-selection',
@@ -1178,6 +1281,7 @@ export const publicExamples: readonly PublicExample[] = [
     provenance:
       'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
   },
+  ...splitAssemblyExamples,
 ];
 /** Only registry IDs are accepted; unknown values never become fetch locations. */
 export function findPublicExample(

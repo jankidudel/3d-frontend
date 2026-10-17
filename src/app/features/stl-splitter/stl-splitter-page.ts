@@ -29,8 +29,14 @@ import { Job, JobStatus } from '../../models/job';
 import { MeshQualityPdfService } from '../../shared/mesh-quality-pdf.service';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
 import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
+import { ExampleLoader } from '../examples/example-loader';
+import {
+  getMaxFileUploadSizeLimit,
+  getMaxFileUploadSizeLimitMiB,
+} from '../../core/api/upload-limits';
 
-type Axis = 'X' | 'Y' | 'Z';
+const Axis = { X: 'X', Y: 'Y', Z: 'Z' } as const;
+type Axis = (typeof Axis)[keyof typeof Axis];
 type Bounds = Record<Axis, { min: number; max: number }>;
 interface SplitPartReport {
   readonly fileName: string;
@@ -40,27 +46,68 @@ interface SplitPartReport {
     readonly height: number;
     readonly depth: number;
   };
+  readonly boundingBox: {
+    readonly minX: number;
+    readonly minY: number;
+    readonly minZ: number;
+    readonly maxX: number;
+    readonly maxY: number;
+    readonly maxZ: number;
+  };
+  readonly validation: {
+    readonly isValid: boolean;
+    readonly isWatertight: boolean;
+    readonly isManifold: boolean;
+    readonly connectedComponentCount: number;
+  };
 }
 interface StlSplitReport {
   readonly split: {
     readonly axis: Axis;
     readonly positionPercent: number;
+    readonly positionCoordinate: number;
     readonly partA: SplitPartReport;
     readonly partB: SplitPartReport;
   };
 }
+
+export const SplitFailureCode = {
+  GeometryRejected: 'split_could_not_be_capped_safely',
+  ProcessingFailed: 'processing_failed',
+} as const;
+
+export function splitFailureMessage(job: Job): string {
+  const failure = job.failure?.error;
+  if (failure?.message) {
+    return failure.message;
+  }
+  if (failure?.code === SplitFailureCode.GeometryRejected) {
+    return 'The selected cut could not be capped safely.';
+  }
+  if (failure?.code === SplitFailureCode.ProcessingFailed) {
+    return 'The processing job failed. Retry once with the same settings; if it repeats, keep the file and settings for support.';
+  }
+  return 'The split did not complete. Keep the selected file and cut settings, then review the failure stage before retrying.';
+}
 @Component({
   selector: 'app-stl-splitter-page',
-  imports: [RouterLink, StlFilePicker, JobProgress, ObjectViewerComponent],
+  imports: [
+    RouterLink,
+    StlFilePicker,
+    JobProgress,
+    ObjectViewerComponent,
+    ExampleLoader,
+  ],
   templateUrl: './stl-splitter-page.html',
   styleUrl: './stl-splitter-page.scss',
 })
 export class StlSplitterPage {
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
+  readonly fileLimitMiB = getMaxFileUploadSizeLimitMiB();
   readonly jobStatus = JobStatus;
   readonly file = signal<File | null>(null);
-  readonly axis = signal<Axis>('Z');
+  readonly axis = signal<Axis>(Axis.Z);
   readonly position = signal(50);
   readonly bounds = signal<Bounds | null>(null);
   readonly preview = signal<{
@@ -69,6 +116,7 @@ export class StlSplitterPage {
   } | null>(null);
   readonly job = signal<Job | null>(null);
   readonly submitting = signal(false);
+  readonly reading = signal(false);
   readonly error = signal('');
   readonly refreshing = signal(false);
   readonly timedOut = signal(false);
@@ -82,6 +130,10 @@ export class StlSplitterPage {
   readonly report = computed(
     () => this.job()?.report as unknown as StlSplitReport | undefined,
   );
+  readonly failureMessage = computed(() => {
+    const job = this.job();
+    return job ? splitFailureMessage(job) : '';
+  });
   readonly selectedBounds = computed(
     () => this.bounds()?.[this.axis()] ?? null,
   );
@@ -97,7 +149,8 @@ export class StlSplitterPage {
       !!this.bounds() &&
       this.position() > 0 &&
       this.position() < 100 &&
-      !this.submitting(),
+      !this.submitting() &&
+      !this.processing(),
   );
   private readonly jobs = inject(JobsService);
   private readonly stlJobs = inject(StlJobService);
@@ -107,6 +160,9 @@ export class StlSplitterPage {
   private readonly picker = viewChild(StlFilePicker);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
+  private submission?: Subscription;
+  private operationRevision = 0;
+  private previewRevision = 0;
   private previewFactory: {
     three: typeof import('three');
     geometry: import('three').BufferGeometry;
@@ -117,31 +173,66 @@ export class StlSplitterPage {
     inject(SeoService).apply({
       title: 'STL Splitter - Split STL Files for 3D Printing | InspectMesh',
       description:
-        'Split a valid STL model into two capped printable parts along an X, Y or Z plane.',
+        'Cut a supported STL along an X, Y or Z plane, download both capped exports and inspect their dimensions before slicing.',
       path: PublicRouteUrl.StlSplitter,
     });
-    this.destroyRef.onDestroy(() => this.polling?.unsubscribe());
+    this.destroyRef.onDestroy(() => {
+      this.polling?.unsubscribe();
+      this.submission?.unsubscribe();
+    });
   }
   onFileSelected(file: File | null): void {
+    void this.selectFile(file);
+  }
+  readonly loadExample = async (files: readonly File[]): Promise<void> => {
+    const file = files[0];
+    if (!file) {
+      throw new Error('The example did not include an STL file.');
+    }
+    await this.selectFile(file);
+  };
+  private async selectFile(file: File | null): Promise<void> {
+    this.invalidateResult();
+    const previewRevision = ++this.previewRevision;
     this.file.set(file);
-    this.job.set(null);
     this.bounds.set(null);
     this.preview.set(null);
+    this.previewFactory = null;
     this.error.set('');
+    this.reading.set(false);
     if (file) {
+      if (!file.size || file.size > getMaxFileUploadSizeLimit()) {
+        this.error.set(
+          `Choose a non-empty STL no larger than ${this.fileLimitMiB} MiB.`,
+        );
+        return;
+      }
+      this.reading.set(true);
       this.analytics.trackSplitter(
         AnalyticsEvent.SplitterUploadStarted,
         file.size,
       );
-      void this.loadPreview(file);
+      await this.loadPreview(file, previewRevision);
+      if (previewRevision === this.previewRevision) {
+        this.reading.set(false);
+      }
     }
   }
   setAxis(value: Axis): void {
+    if (value === this.axis()) {
+      return;
+    }
+    this.invalidateResult();
     this.axis.set(value);
     this.updatePreview();
   }
   setPosition(value: number): void {
-    this.position.set(Math.max(0, Math.min(100, value)));
+    const next = Math.max(0, Math.min(100, value));
+    if (next === this.position()) {
+      return;
+    }
+    this.invalidateResult();
+    this.position.set(next);
     this.updatePreview();
   }
   split(): void {
@@ -149,25 +240,40 @@ export class StlSplitterPage {
     if (!file || !this.canSplit()) {
       return;
     }
+    this.polling?.unsubscribe();
+    this.submission?.unsubscribe();
+    const revision = ++this.operationRevision;
+    this.job.set(null);
+    this.timedOut.set(false);
     this.submitting.set(true);
     this.error.set('');
     this.analytics.trackSplitter(AnalyticsEvent.SplitterSplitStarted);
-    createAndUploadStlSplitJob(
+    this.submission = createAndUploadStlSplitJob(
       this.stlJobs,
       this.jobs,
       file,
       this.axis(),
       this.position(),
-      (job) => this.job.set(job),
+      (job) => {
+        if (revision === this.operationRevision) {
+          this.job.set(job);
+        }
+      },
     ).subscribe({
       next: () => {
+        if (revision !== this.operationRevision) {
+          return;
+        }
         this.submitting.set(false);
         const job = this.job();
         if (job) {
-          this.poll(job.id);
+          this.poll(job.id, revision);
         }
       },
       error: (error: unknown) => {
+        if (revision !== this.operationRevision) {
+          return;
+        }
         this.submitting.set(false);
         this.error.set(uploadErrorMessage(error));
         this.analytics.trackSplitter(AnalyticsEvent.SplitterFailed);
@@ -179,19 +285,39 @@ export class StlSplitterPage {
     if (!job) {
       return;
     }
+    const revision = this.operationRevision;
     this.refreshing.set(true);
     this.jobs
       .getJob(job.id)
-      .pipe(finalize(() => this.refreshing.set(false)))
+      .pipe(
+        finalize(() => {
+          if (revision === this.operationRevision) {
+            this.refreshing.set(false);
+          }
+        }),
+      )
       .subscribe({
         next: (value) => {
+          if (revision !== this.operationRevision || value.id !== job.id) {
+            return;
+          }
           this.job.set(value);
+          if (
+            value.status === JobStatus.Completed ||
+            value.status === JobStatus.Failed
+          ) {
+            this.timedOut.set(false);
+            this.error.set('');
+          }
           this.trackCompletion(value);
         },
-        error: () =>
-          this.error.set(
-            'We could not refresh this split job. Please try again.',
-          ),
+        error: () => {
+          if (revision === this.operationRevision) {
+            this.error.set(
+              'We could not refresh this split job. Please try again.',
+            );
+          }
+        },
       });
   }
   downloadPart(part: 'a' | 'b'): void {
@@ -240,13 +366,30 @@ export class StlSplitterPage {
       ? 'Not available'
       : new Intl.NumberFormat('en', { maximumFractionDigits: 3 }).format(value);
   }
-  private poll(id: string): void {
+  partLabel(part: SplitPartReport, result: StlSplitReport['split']): string {
+    return part === result.partA
+      ? `Lower ${result.axis} export`
+      : `Upper ${result.axis} export`;
+  }
+  boundsLabel(part: SplitPartReport): string {
+    const bounds = part.boundingBox;
+    return bounds
+      ? `X ${this.format(bounds.minX)}..${this.format(bounds.maxX)}, Y ${this.format(bounds.minY)}..${this.format(bounds.maxY)}, Z ${this.format(bounds.minZ)}..${this.format(bounds.maxZ)}`
+      : 'Bounds not available';
+  }
+  private poll(id: string, revision: number): void {
     this.polling = pollStlJob(this.jobs, id).subscribe({
       next: (job) => {
+        if (revision !== this.operationRevision || job.id !== id) {
+          return;
+        }
         this.job.set(job);
         this.trackCompletion(job);
       },
       error: (error) => {
+        if (revision !== this.operationRevision) {
+          return;
+        }
         this.timedOut.set(error instanceof PollingTimeoutError);
         this.error.set(
           'Automatic status updates were interrupted. Please refresh the result.',
@@ -261,7 +404,7 @@ export class StlSplitterPage {
       this.analytics.trackSplitter(AnalyticsEvent.SplitterFailed);
     }
   }
-  private async loadPreview(file: File): Promise<void> {
+  private async loadPreview(file: File, revision: number): Promise<void> {
     try {
       const [{ STLLoader }, three] = await Promise.all([
         import('three/examples/jsm/loaders/STLLoader.js'),
@@ -269,9 +412,16 @@ export class StlSplitterPage {
       ]);
       const geometry = new STLLoader().parse(await file.arrayBuffer());
       geometry.computeBoundingBox();
-      const box = geometry.boundingBox;
-      if (!box) {
+      const box = geometry.boundingBox?.clone();
+      if (
+        !box ||
+        geometry.getAttribute('position').count === 0 ||
+        ![...box.min.toArray(), ...box.max.toArray()].every(Number.isFinite)
+      ) {
         throw new Error('Missing bounds');
+      }
+      if (revision !== this.previewRevision || file !== this.file()) {
+        return;
       }
       const centre = box.getCenter(new three.Vector3());
       const size = box.getSize(new three.Vector3());
@@ -284,9 +434,11 @@ export class StlSplitterPage {
       this.previewFactory = { three, geometry, centre, size };
       this.updatePreview();
     } catch {
-      this.error.set(
-        'We could not read that STL file. Choose a valid ASCII or binary STL file.',
-      );
+      if (revision === this.previewRevision && file === this.file()) {
+        this.error.set(
+          'We could not read that STL file. Choose a valid ASCII or binary STL file.',
+        );
+      }
     }
   }
   private updatePreview(): void {
@@ -360,5 +512,16 @@ export class StlSplitterPage {
       object: group,
       extent: Math.max(size.x, size.y, size.z),
     });
+  }
+  private invalidateResult(): void {
+    this.operationRevision += 1;
+    this.polling?.unsubscribe();
+    this.submission?.unsubscribe();
+    this.job.set(null);
+    this.submitting.set(false);
+    this.refreshing.set(false);
+    this.timedOut.set(false);
+    this.reportDownloadError.set('');
+    this.error.set('');
   }
 }
