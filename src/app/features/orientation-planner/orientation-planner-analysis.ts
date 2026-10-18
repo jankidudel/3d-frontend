@@ -6,34 +6,47 @@ import {
 import { PrinterProfile } from '../../core/printer/printer-profile.service';
 import {
   analyseOverhangs,
+  OVERHANG_BUILD_DIRECTIONS,
   OverhangReport,
 } from '../shared/overhang/overhang-analysis';
 import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
 
 type Axis = 'x' | 'y' | 'z';
 
-interface BuildDirection {
-  readonly axis: Axis;
-  readonly label: string;
-  readonly vector: readonly [number, number, number];
-}
-
 export interface OrientationPlan {
+  readonly id: string;
   readonly label: string;
+  readonly sourceAxisUp: string;
+  readonly transform: string;
   readonly dimensions: ModelDimensions;
   readonly fit: ReturnType<typeof calculateBuildVolumeFit> | null;
   readonly overhang: OverhangReport;
   readonly bedContactArea: number;
 }
 
-const BUILD_DIRECTIONS: readonly BuildDirection[] = [
-  { axis: 'z', label: 'Current orientation (+Z)', vector: [0, 0, 1] },
-  { axis: 'z', label: 'Turn upside down (-Z)', vector: [0, 0, -1] },
-  { axis: 'x', label: 'Build along +X', vector: [1, 0, 0] },
-  { axis: 'x', label: 'Build along -X', vector: [-1, 0, 0] },
-  { axis: 'y', label: 'Build along +Y', vector: [0, 1, 0] },
-  { axis: 'y', label: 'Build along -Y', vector: [0, -1, 0] },
-];
+const ORIENTATION_TRANSFORMS = [
+  { axis: 'z', transform: 'Keep the source rotation' },
+  { axis: 'z', transform: 'Rotate 180° about source X' },
+  { axis: 'x', transform: 'Rotate +90° about source Y' },
+  { axis: 'x', transform: 'Rotate -90° about source Y' },
+  { axis: 'y', transform: 'Rotate -90° about source X' },
+  { axis: 'y', transform: 'Rotate +90° about source X' },
+] as const;
+
+export function printerProfileAfterEdgeAllowance(
+  profile: PrinterProfile,
+  allowance: number,
+): PrinterProfile | null {
+  if (!Number.isFinite(allowance) || allowance < 0) {
+    return null;
+  }
+  const width = profile.width - allowance * 2;
+  const height = profile.height - allowance * 2;
+  if (width <= 0 || height <= 0) {
+    return null;
+  }
+  return { ...profile, width, height };
+}
 
 function axisRanges(mesh: IndexedTriangleGeometry): Record<Axis, number> {
   const bounds = {
@@ -94,6 +107,7 @@ function bedContactArea(
   }
   const tolerance = Math.max((maximum - minimum) * 1e-6, 1e-6);
   let area = 0;
+  const countedTriangles = new Set<string>();
   for (let triangle = 0; triangle < mesh.indices.length; triangle += 3) {
     const a = mesh.indices[triangle] * 3;
     const b = mesh.indices[triangle + 1] * 3;
@@ -115,11 +129,25 @@ function bedContactArea(
     const ny = abz * acx - abx * acz;
     const nz = abx * acy - aby * acx;
     const magnitude = Math.hypot(nx, ny, nz);
+    if (!magnitude) {
+      continue;
+    }
+    const vertices = [a, b, c]
+      .map((offset) =>
+        [
+          mesh.positions[offset],
+          mesh.positions[offset + 1],
+          mesh.positions[offset + 2],
+        ].join(','),
+      )
+      .sort()
+      .join('|');
     if (
-      magnitude &&
       (nx * direction[0] + ny * direction[1] + nz * direction[2]) / magnitude <
-        -0.95
+        -0.95 &&
+      !countedTriangles.has(vertices)
     ) {
+      countedTriangles.add(vertices);
       area += magnitude / 2;
     }
   }
@@ -133,15 +161,19 @@ export function planOrientations(
   printerProfile: PrinterProfile | null,
 ): readonly OrientationPlan[] {
   const ranges = axisRanges(mesh);
-  return BUILD_DIRECTIONS.flatMap((direction) => {
-    const overhang = analyseOverhangs(mesh, threshold, direction.vector);
+  return OVERHANG_BUILD_DIRECTIONS.flatMap((direction, index) => {
+    const transform = ORIENTATION_TRANSFORMS[index];
+    const overhang = analyseOverhangs(mesh, threshold, direction.direction);
     if (!overhang) {
       return [];
     }
-    const dimensions = dimensionsFor(direction.axis, ranges);
+    const dimensions = dimensionsFor(transform.axis, ranges);
     return [
       {
+        id: direction.id,
         label: direction.label,
+        sourceAxisUp: direction.shortLabel,
+        transform: transform.transform,
         dimensions,
         fit: printerProfile
           ? calculateBuildVolumeFit(
@@ -156,14 +188,8 @@ export function planOrientations(
             )
           : null,
         overhang,
-        bedContactArea: bedContactArea(mesh, direction.vector),
+        bedContactArea: bedContactArea(mesh, direction.direction),
       },
     ];
-  }).sort(
-    (a, b) =>
-      Number(Boolean(a.fit && !a.fit.fits)) -
-        Number(Boolean(b.fit && !b.fit.fits)) ||
-      a.overhang.flaggedPercentage - b.overhang.flaggedPercentage ||
-      b.bedContactArea - a.bedContactArea,
-  );
+  });
 }

@@ -1,5 +1,16 @@
 /** Canonical paths for downloadable public example files linked from pages and guides. */
 export const ExampleAsset = {
+  OrientationSupportManifest: '/examples/orientation-support/manifest.json',
+  TiltedAsymmetricBlockStl:
+    '/examples/orientation-support/tilted-asymmetric-block.stl',
+  BridgeRoofStl: '/examples/orientation-support/bridge-roof.stl',
+  CantileverRoofStl: '/examples/orientation-support/cantilever-roof.stl',
+  StraightThroughChannelStl:
+    '/examples/orientation-support/straight-through-channel.stl',
+  NarrowAccessCavityStl:
+    '/examples/orientation-support/narrow-access-cavity.stl',
+  TranslatedRamp3mf: '/examples/orientation-support/translated-ramp.3mf',
+  RotatedRamp3mf: '/examples/orientation-support/rotated-ramp.3mf',
   SplitAssemblySource: '/examples/split-assembly/generate-fixtures.mts',
   SplitObservationsJson: '/examples/split-assembly/observations.json',
   SplitCubeLowerStl: '/examples/split-assembly/cube-lower-z.stl',

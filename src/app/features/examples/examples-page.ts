@@ -171,7 +171,7 @@ export class ExamplesPage {
       title:
         'Model and G-code Evidence Controls - Visual Diagnosis | InspectMesh',
       description:
-        'Download original known-geometry controls to explore units, open edges, winding, thin features, simplification, 3MF placements and nominal printer fit.',
+        'Download original known-geometry controls for orientation, bridge and overhang comparison, internal support access, 3MF transforms and mesh diagnosis.',
       path: '/examples',
     });
   }

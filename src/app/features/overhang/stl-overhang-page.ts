@@ -1,32 +1,38 @@
-import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
-import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
+import { ModelUnit } from '../../shared/model-dimensions';
+import { ExampleLoader } from '../examples/example-loader';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
 import {
   analyseOverhangs,
-  compareOverhangOrientations,
+  OVERHANG_BUILD_DIRECTIONS,
+  OverhangBuildDirection,
+  overhangBuildDirection,
+  OverhangProcessProfile,
   OverhangReport,
   validOverhangThreshold,
 } from '../shared/overhang/overhang-analysis';
 import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
+import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
 
 @Component({
   selector: 'app-stl-overhang-page',
-  imports: [ObjectViewerComponent],
+  imports: [ExampleLoader, ObjectViewerComponent],
   template: `<main class="page tool-page wall-thickness-page">
-    <p class="eyebrow">STL printability check</p>
+    <p class="eyebrow">STL geometry screen</p>
     <h1>STL Overhang Checker</h1>
     <p class="lead">
-      Find downward-facing STL geometry that exceeds a review threshold, locally
-      in your browser.
+      Screen triangles whose oriented faces point downward and exceed an
+      explicit angle from vertical. Use the result to choose the next slicer
+      check, not as a support or print-success verdict.
     </p>
     <section class="card viewer-tool">
-      <h2>Check your STL</h2>
+      <h2>Choose an STL</h2>
       <div class="drop-zone">
-        <p>Choose an STL file to analyse locally.</p>
+        <p>The file stays in this browser and is not modified.</p>
         <button class="button" type="button" (click)="openPicker(picker)">
           Choose STL file
         </button>
@@ -39,26 +45,52 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
         />
       </div>
       <p class="hint">
-        STL does not store units. Angle analysis is based on geometry direction,
-        not scale.
+        STL stores no authoritative unit. Select the intended unit before
+        interpreting surface area.
       </p>
+      <p role="status" aria-live="polite">{{ status() }}</p>
       @if (error()) {
         <p class="error" role="alert">{{ error() }}</p>
       }
     </section>
+    <app-example-loader
+      [tool]="routeUrl.StlOverhangChecker"
+      [active]="!!mesh()"
+      [current]="mesh()"
+      [busy]="loading()"
+      [load]="loadExample"
+    />
     @if (mesh()) {
       <section class="card">
-        <h2>Orientation and threshold</h2>
+        <h2>Build direction, unit and threshold</h2>
         <label
-          >Process profile
+          >Assumed STL unit
+          <select [value]="stlUnit()" (change)="setUnit($event)">
+            <option value="mm">Millimetres (mm)</option>
+            <option value="cm">Centimetres (cm)</option>
+            <option value="m">Metres (m)</option>
+            <option value="in">Inches (in)</option>
+          </select></label
+        >
+        <label
+          >Build direction
           <select
-            [value]="profile()"
-            (change)="profile.set($any($event.target).value)"
+            [value]="buildDirectionId()"
+            (change)="setBuildDirection($event)"
           >
-            <option value="FDM">FDM starting profile</option>
+            @for (option of buildDirections; track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select></label
+        >
+        <label
+          >Process context
+          <select [value]="profile()" (change)="setProfile($event)">
+            <option value="FDM">FDM review</option>
             <option value="Resin">Resin orientation review</option>
           </select></label
-        ><label
+        >
+        <label
           >Flag surfaces steeper than this angle from vertical
           <input
             type="number"
@@ -66,19 +98,18 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
             max="89.9"
             step="0.1"
             [value]="threshold()"
-            (input)="
-              threshold.set(+$any($event.target).value); report.set(null)
-            "
+            (input)="setThreshold($event)"
           />
           degrees</label
         >
         <p>
-          0 degrees means a vertical wall; 90 degrees means a downward-facing
-          horizontal surface.
+          0° is a vertical wall and 90° is a downward-facing horizontal
+          underside. A triangle is flagged only when its slope is strictly
+          greater than the selected threshold.
           {{
-            profile() === 'FDM'
-              ? '45 degrees is a starting point only: printer, nozzle, cooling, material, layer height and speed matter.'
-              : 'For resin, use this as an orientation and support-risk screen, not a universal support rule.'
+            profile() === processProfile.Fdm
+              ? 'The profile still decides bridge roles, supports and paths.'
+              : 'Resin orientation, peel, drainage and support decisions remain outside this screen.'
           }}
         </p>
         <button
@@ -87,106 +118,136 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
           [disabled]="!valid()"
           (click)="analyse()"
         >
-          Analyse overhang risk
+          Analyse downward-facing geometry
         </button>
       </section>
     }
     @if (report(); as result) {
       <section class="card result">
-        <h2>{{ headline(result) }}</h2>
-        <p>Slicers make the final support decision.</p>
+        <h2>Downward-facing geometry above your review threshold</h2>
+        <p>
+          Build direction: {{ selectedBuildDirection().label }} · threshold:
+          slope &gt; {{ result.threshold.toFixed(1) }}° from vertical.
+        </p>
         <dl class="metrics">
+          <div>
+            <dt>Nondegenerate triangles analysed</dt>
+            <dd>{{ result.analysedTriangleCount.toLocaleString() }}</dd>
+          </div>
+          <div>
+            <dt>Degenerate triangles skipped</dt>
+            <dd>{{ result.degenerateTriangleCount.toLocaleString() }}</dd>
+          </div>
+          <div>
+            <dt>Total analysed surface area</dt>
+            <dd>{{ result.totalArea.toFixed(2) }} {{ areaUnit() }}</dd>
+          </div>
           <div>
             <dt>Flagged triangles</dt>
             <dd>{{ result.flaggedCount.toLocaleString() }}</dd>
           </div>
           <div>
-            <dt>Flagged surface area</dt>
-            <dd>{{ result.flaggedArea.toFixed(2) }}</dd>
+            <dt>Flagged downward-facing area</dt>
+            <dd>{{ result.flaggedArea.toFixed(2) }} {{ areaUnit() }}</dd>
           </div>
           <div>
-            <dt>Flagged surface</dt>
-            <dd>{{ result.flaggedPercentage.toFixed(1) }}%</dd>
+            <dt>Flagged percentage</dt>
+            <dd>
+              {{ result.flaggedPercentage.toFixed(1) }}% of nondegenerate
+              analysed surface area
+            </dd>
           </div>
         </dl>
         <p class="legend">
-          Heatmap legend: red faces exceed the selected overhang threshold; teal
-          faces are not flagged.
+          Visual legend: red triangles are downward-facing and strictly exceed
+          the threshold; teal triangles do not meet both conditions. The text
+          metrics above provide the same result without relying on colour.
         </p>
         @if (heatmap(); as display) {
           <app-object-viewer
             [object]="display"
             [extent]="extent()"
             [preserveVertexColors]="true"
-            ariaLabel="STL overhang risk heatmap"
+            ariaLabel="STL downward-facing triangle heatmap"
           />
         }
       </section>
       <section class="card">
-        <h2>90-degree rotation comparison</h2>
-        <p>
-          This rotation reduces geometry flagged by the selected overhang
-          threshold. Review strength, visible surfaces, support access and
-          printer fit before choosing it.
-        </p>
-        <ul>
-          @for (candidate of comparisons(); track candidate.label) {
-            <li>
-              <strong>{{ candidate.label }}</strong
-              >: {{ candidate.report.flaggedArea.toFixed(2) }} area,
-              {{ candidate.report.flaggedPercentage.toFixed(1) }}% flagged
-            </li>
-          }
-        </ul>
+        <h2>What the screen supports</h2>
+        <div
+          class="table-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Overhang result interpretation table, scroll horizontally"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th>What you see</th>
+                <th>What it supports</th>
+                <th>Next check</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Flagged sloped underside</td>
+                <td>This face exceeds the chosen geometry threshold</td>
+                <td>
+                  Compare candidate orientation and native slicer supports
+                </td>
+              </tr>
+              <tr>
+                <td>Flagged horizontal roof</td>
+                <td>Downward face is present</td>
+                <td>Determine bridge anchors or support paths in the slicer</td>
+              </tr>
+              <tr>
+                <td>Unflagged vertical or upward faces</td>
+                <td>They do not meet this face-angle condition</td>
+                <td>Continue fit, contact, island and slicer review</td>
+              </tr>
+              <tr>
+                <td>Unexpected side highlighted</td>
+                <td>Winding or intended build direction may differ</td>
+                <td>Confirm topology and orientation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
       <section class="card">
-        <h2>Important limitations</h2>
+        <h2>Important limitations and next decisions</h2>
         <p>
-          This is geometry screening, not a slicer. It cannot reliably identify
-          bridges, calculate support volume or guarantee support-free printing.
-          Mesh errors, printer, material and slicer settings change real-world
-          results.
+          InspectMesh uses triangle vertices and winding to derive oriented face
+          normals; an STL's stored normal vector does not control this result.
+          The checker does not simulate bridge anchors, assign extrusion roles,
+          generate supports or determine whether support can be removed.
         </p>
         <p>
-          <a [href]="routeUrl.StlPrintPreflight">STL Print Preflight</a> ·
-          <a [href]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-          <a [href]="routeUrl.StlWallThicknessChecker"
-            >STL Wall Thickness Checker</a
+          <a [href]="guideRouteUrl.Route3dPrintBridgeVsOverhang"
+            >Bridge or overhang?</a
           >
-          · <a [href]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
-          <a [href]="routeUrl.StlSplitter">STL Splitter</a> ·
+          ·
+          <a [href]="guideRouteUrl.RouteSupportsInsideHolesAndChannels"
+            >Can internal support leave?</a
+          >
+          ·
+          <a [href]="routeUrl.OrientationPlanner">Compare six orientations</a> ·
           <a [href]="guideRouteUrl.Route3dPrintOverhangsAndSupportsGuide"
-            >Overhangs and Supports Guide</a
+            >Interpret the geometry screen</a
           >
         </p>
       </section>
     }
     <section class="content">
-      <h2>Angle convention and orientation</h2>
+      <h2>Area needs an explicit STL unit assumption</h2>
       <p>
-        This browser analysis visits nondegenerate triangles and uses their
-        oriented face normals. With the default positive Z build direction,
-        gravity acts toward negative Z. Only downward-facing faces are
-        candidates: a vertical wall has 0° slope from vertical and a downward
-        horizontal underside has 90°. A face is flagged when its slope is
-        strictly greater than the selected threshold. A face exactly on the
-        threshold is not flagged.
-      </p>
-      <p>
-        For a hypothetical downward 60° slope and a 45° threshold, expect a
-        flag; a correctly wound upward-facing roof is not an overhang in this
-        convention. Reversed winding can change that classification, so check
-        topology first. The display marks triangle locations, not manufactured
-        support-contact points or a simulated extrusion path.
-      </p>
-      <p>
-        Changing the build direction asks how another orientation changes the
-        same mesh. The method does not place supports or decide whether bridging
-        works for your material. Area percentages describe analysed geometry;
-        they are not probabilities of print failure. Confirm STL units for area
-        interpretation, inspect the final slicer layers, and stop if the
-        intended underside is misclassified by winding. Material, cooling, span,
-        layer height and support settings need a separate process decision.
+        Uniform positive scale leaves the angle classification unchanged but
+        changes surface area by the square of the scale. Non-uniform scaling can
+        also change normals and angles, so analyse the final transformed model
+        when that operation is part of the slicer project. A zero flagged result
+        does not establish bed contact, adhesion, bridges, islands or general
+        printability.
       </p>
     </section>
   </main>`,
@@ -195,42 +256,64 @@ import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
 export class StlOverhangPage {
   readonly routeUrl = PublicRouteUrl;
   readonly guideRouteUrl = GuideRouteUrl;
+  readonly buildDirections = OVERHANG_BUILD_DIRECTIONS;
+  readonly processProfile = OverhangProcessProfile;
   readonly mesh = signal<StlMesh | null>(null);
   readonly error = signal('');
+  readonly status = signal('');
+  readonly loading = signal(false);
+  readonly stlUnit = signal<ModelUnit>('mm');
   readonly threshold = signal(45);
-  readonly profile = signal('FDM');
+  readonly buildDirectionId = signal<OverhangBuildDirection>(
+    OverhangBuildDirection.PositiveZ,
+  );
+  readonly profile = signal<OverhangProcessProfile>(OverhangProcessProfile.Fdm);
   readonly report = signal<OverhangReport | null>(null);
+  private fileRevision = 0;
   readonly valid = computed(() => validOverhangThreshold(this.threshold()));
+  readonly selectedBuildDirection = computed(() =>
+    overhangBuildDirection(this.buildDirectionId()),
+  );
   readonly heatmap = computed(() =>
     this.mesh() && this.report()
       ? createOverhangHeatmap(this.mesh()!, this.report()!)
       : null,
   );
-  readonly comparisons = computed(() =>
-    this.mesh() && this.report()
-      ? compareOverhangOrientations(this.mesh()!, this.threshold())
-      : [],
-  );
   private readonly seo = inject(SeoService);
+
   constructor() {
     this.seo.apply({
-      title: 'STL Overhang Checker - Review Support Risk | InspectMesh',
+      title: 'STL Overhang Checker - Review Downward Geometry | InspectMesh',
       description:
-        'Check STL downward-facing geometry and compare 90-degree orientations locally before slicing.',
+        'Screen STL triangles by build direction and a strict angle-from-vertical threshold, with analysed area, skipped counts and explicit unit assumptions.',
       path: PublicRouteUrl.StlOverhangChecker,
     });
   }
+
   openPicker(input: HTMLInputElement): void {
     input.click();
   }
+
   async pick(event: Event): Promise<void> {
     const file = (event.target as HTMLInputElement).files?.item(0);
+    if (file) {
+      await this.loadFile(file);
+    }
+  }
+
+  readonly loadExample = async (files: readonly File[]): Promise<void> => {
+    const file = files[0];
+    if (file) {
+      await this.loadFile(file);
+    }
+  };
+
+  private async loadFile(file: File): Promise<void> {
+    const revision = ++this.fileRevision;
     this.error.set('');
+    this.status.set('');
     this.mesh.set(null);
     this.report.set(null);
-    if (!file) {
-      return;
-    }
     if (
       !file.name.toLowerCase().endsWith('.stl') ||
       file.size === 0 ||
@@ -239,27 +322,77 @@ export class StlOverhangPage {
       this.error.set('Choose a non-empty STL file up to 25 MiB.');
       return;
     }
+    this.loading.set(true);
+    this.status.set('Reading STL geometry locally…');
     try {
-      this.mesh.set(await readStl(file));
+      const mesh = await readStl(file);
+      if (revision !== this.fileRevision) {
+        return;
+      }
+      this.mesh.set(mesh);
+      this.status.set('STL geometry is ready. Choose settings, then analyse.');
     } catch {
-      this.error.set('We could not read that STL file.');
+      if (revision === this.fileRevision) {
+        this.error.set('We could not read that STL file.');
+        this.status.set('');
+      }
+    } finally {
+      if (revision === this.fileRevision) {
+        this.loading.set(false);
+      }
     }
   }
+
+  setThreshold(event: Event): void {
+    this.threshold.set(Number((event.target as HTMLInputElement).value));
+    this.invalidateResult();
+  }
+
+  setUnit(event: Event): void {
+    this.stlUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
+    this.invalidateResult();
+  }
+
+  setBuildDirection(event: Event): void {
+    this.buildDirectionId.set(
+      (event.target as HTMLSelectElement).value as OverhangBuildDirection,
+    );
+    this.invalidateResult();
+  }
+
+  setProfile(event: Event): void {
+    this.profile.set(
+      (event.target as HTMLSelectElement).value as OverhangProcessProfile,
+    );
+  }
+
   analyse(): void {
     const mesh = this.mesh();
     if (mesh && this.valid()) {
-      this.report.set(analyseOverhangs(mesh, this.threshold()));
+      this.report.set(
+        analyseOverhangs(
+          mesh,
+          this.threshold(),
+          this.selectedBuildDirection().direction,
+        ),
+      );
+      this.status.set('Downward-facing geometry analysis complete.');
     }
   }
+
   extent(): number {
     const values = this.mesh()?.positions ?? [];
     return values.length ? Math.max(...values) - Math.min(...values) : 1;
   }
-  headline(result: OverhangReport): string {
-    return result.flaggedPercentage > 30
-      ? 'Large unsupported downward-facing area'
-      : result.flaggedCount
-        ? 'Overhangs to review before slicing'
-        : 'Low overhang risk at this threshold';
+
+  areaUnit(): string {
+    return `${this.stlUnit()}²`;
+  }
+
+  private invalidateResult(): void {
+    if (this.report()) {
+      this.status.set('Settings changed. Run the analysis again.');
+    }
+    this.report.set(null);
   }
 }

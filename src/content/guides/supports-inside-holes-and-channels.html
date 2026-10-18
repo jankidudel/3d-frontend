@@ -1,0 +1,162 @@
+---
+title: '3D Print Supports Inside Holes and Channels | InspectMesh'
+description: Inspect internal holes and channels before printing. Check whether support is generated, reachable and removable without damaging a critical surface.
+slug: supports-inside-holes-and-channels
+eyebrow: Internal support planning
+heading: 'Supports Inside Holes and Channels: Check Access Before Printing'
+---
+
+<p>
+  Support inside a hole or channel is useful only if it can perform its job and
+  be removed without trapping material or damaging the part. Inspect the
+  internal cross-section, slice the actual orientation and trace a removal path
+  before committing to the print.
+</p>
+
+<h2>Separate four different questions</h2>
+<ol>
+  <li>
+    <strong
+      >Does the internal surface need support under the chosen profile?</strong
+    >
+    A geometry threshold alone cannot answer this.
+  </li>
+  <li>
+    <strong
+      >Did the slicer actually generate support or bridge paths there?</strong
+    >
+    Inspect the first affected layers.
+  </li>
+  <li>
+    <strong>Can tools or hands reach the support after printing?</strong> A
+    narrow turn or enclosed cavity can block removal.
+  </li>
+  <li>
+    <strong>Will removal damage a mating, sealing or cosmetic surface?</strong>
+    Accessibility does not guarantee an acceptable finish.
+  </li>
+</ol>
+
+<h2>Compare a through-channel with a narrow-access cavity</h2>
+<figure>
+  <img
+    src="/examples/orientation-support/support-access.svg"
+    alt="Straight channel open at both ends beside a larger chamber reached through a narrow access neck"
+  />
+  <figcaption>
+    Cross-section diagram of geometry and intended removal directions, not a
+    reach simulation.
+  </figcaption>
+</figure>
+<p>
+  The watertight straight-channel control is 40 × 20 × 20 mm with a 40 × 8 × 8
+  mm passage open along source X. It has 64 triangles, one component and zero
+  open edges. The narrow-access control is a 40 × 30 × 24 mm body with a 26 × 20
+  × 14 mm chamber reached through an 8 mm long, 4 × 4 mm neck. It has 284
+  triangles, one component and zero open edges. A watertight surface can enclose
+  an internal void or define a through-channel; “open passage” does not mean
+  “open mesh.”
+</p>
+<p>
+  The
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >InspectMesh cross-section viewer</a
+  >
+  can expose those openings and material boundaries. Clipping does not simulate
+  tool reach, support breakaway force or post-processing damage. Load the
+  control in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">local STL Viewer</a> to inspect its
+  clipped geometry before opening the same file in the slicer.
+</p>
+
+<h2>Inspect the support path in the slicer</h2>
+<ol>
+  <li>Orient the model as intended.</li>
+  <li>Slice with a recorded printer, material and profile.</li>
+  <li>Locate the first roof/underside inside the channel.</li>
+  <li>
+    Confirm whether model bridge lines or support/interface lines are generated.
+  </li>
+  <li>
+    Step through the channel and identify continuous support, gaps and access
+    openings.
+  </li>
+  <li>
+    Record the intended physical removal direction and smallest opening from
+    source geometry.
+  </li>
+</ol>
+<p>
+  In retained preview-only PrusaSlicer 2.9.6 exports, bridge support was allowed
+  with a 45° support threshold, 0.4 mm nozzle, 0.45 mm extrusion width, 0.2 mm
+  layers, two perimeters and 15% infill. The straight channel generated support
+  material from Z=0.2 to 10.8 mm and interface paths from Z=4.6 to 11.8 mm. The
+  narrow-access cavity generated support material from Z=0.2 to 16.8 mm and
+  interface paths from Z=4.6 to 17.6 mm. The native slicer preview is
+  authoritative for these labels. The G-code is retained as software evidence,
+  not offered as printer-ready output, and no physical removal was tested.
+</p>
+
+<h2>Choose a geometry-level alternative</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Constraint</th>
+      <th>Geometry-level option to evaluate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Support has a straight removal path</td>
+      <td>Keep the path open and verify tool clearance and critical faces</td>
+    </tr>
+    <tr>
+      <td>Support would turn a corner or pass a narrow neck</td>
+      <td>
+        Change orientation, enlarge a deliberate access opening, split or
+        redesign
+      </td>
+    </tr>
+    <tr>
+      <td>Internal roof can use controlled bridge paths</td>
+      <td>Test the intended span and profile with a representative coupon</td>
+    </tr>
+    <tr>
+      <td>Critical seal or mating face would be contacted</td>
+      <td>
+        Move the interface, split on a safer plane or redesign the surface
+      </td>
+    </tr>
+    <tr>
+      <td>Compatible multi-material system is available</td>
+      <td>
+        Follow printer and material guidance for breakaway or dissolvable
+        support
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  “Support everywhere” is not a complete plan if the support cannot leave the
+  finished part. For a deliberate split, use the
+  <a href="{{ GuideSlug.RouteHowToSplitAnStlFileFor3dPrinting }}"
+    >split-model workflow</a
+  >. Resin drainage and hollowing are separate decisions covered by the
+  <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
+    >hollowing guide</a
+  >.
+</p>
+
+<h2>Verify the final decision</h2>
+<p>
+  Retain the source and slicer project; check the internal section; check actual
+  support/bridge paths; verify access/removal direction; protect critical faces;
+  and test a representative section when the full part is costly or important. A
+  geometry control does not prove successful physical removal. Use the
+  <a href="{{ GuideSlug.Route3dPrintOverhangsAndSupportsGuide }}"
+    >broad support-risk guide</a
+  >
+  and
+  <a href="{{ GuideSlug.Route3dPrintBridgeVsOverhang }}">bridge comparison</a>
+  for the preceding decisions.
+</p>

@@ -1,0 +1,168 @@
+---
+title: '3D Print Bridge vs Overhang: What Is the Difference? | InspectMesh'
+description: Compare bridges and overhangs using known models and slicer layers. Check anchors, span, direction and support before changing orientation or settings.
+slug: 3d-print-bridge-vs-overhang
+eyebrow: Support-risk diagnosis
+heading: '3D Print Bridge vs Overhang: Identify the Geometry First'
+---
+
+<p>
+  A bridge spans open space between supported anchors. An overhang extends
+  outward from material supported mainly on one side or by the previous layer.
+  The same downward-facing surface can look similar in a mesh view, so confirm
+  the generated layer paths and their anchors before choosing bridge settings or
+  supports.
+</p>
+
+<h2>Compare the load path, not only the face angle</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>Geometry below the new line</th>
+      <th>What the mesh angle screen can show</th>
+      <th>What must be checked in the slicer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bridge</td>
+      <td>Established anchors at both ends of a span</td>
+      <td>Downward-facing underside may be flagged</td>
+      <td>Bridge classification, direction, span and anchor placement</td>
+    </tr>
+    <tr>
+      <td>Overhang</td>
+      <td>Previous layer supports part of a line from one side/below</td>
+      <td>Sloped downward-facing triangles may be flagged</td>
+      <td>Layer overlap, perimeter order and need for support</td>
+    </tr>
+    <tr>
+      <td>Floating island</td>
+      <td>First extrusion starts without model below</td>
+      <td>Geometry may be connected elsewhere or a separate component</td>
+      <td>First affected layer and generated support paths</td>
+    </tr>
+    <tr>
+      <td>Supported underside</td>
+      <td>Support interface lies below the model</td>
+      <td>Same model face remains downward-facing</td>
+      <td>Contact/interface paths, gap and removal access</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  InspectMesh's triangle-normal checker does not simulate bridge anchors or
+  decide the slicer's extrusion role. A flagged downward horizontal underside
+  can become bridge paths, supported paths or an unsupported failure depending
+  on surrounding geometry and the profile. Use the
+  <a href="{{ GuideSlug.RouteStlOverhangChecker }}">STL Overhang Checker</a>
+  to reproduce the geometry screen, then apply the
+  <a href="{{ GuideSlug.Route3dPrintOverhangsAndSupportsGuide }}"
+    >broad support-risk interpretation</a
+  >.
+</p>
+
+<h2>Compare two owned roof controls</h2>
+<figure>
+  <img
+    src="/examples/orientation-support/bridge-overhang.svg"
+    alt="Bridge roof with anchors at both ends beside a matched cantilever roof with one root"
+  />
+  <figcaption>
+    Labels distinguish anchors, span direction, previous-layer material and the
+    cantilever root.
+  </figcaption>
+</figure>
+<p>
+  The bridge STL has two 10 × 10 × 10 mm pillars separated by a 16 mm gap and a
+  2 mm roof. It has 44 triangles, bounds 36 × 10 × 12 mm and one connected
+  component. The cantilever has one 10 mm cube and the same 16 mm horizontal
+  roof extension; it has 28 triangles, bounds 26 × 10 × 12 mm and one connected
+  component. Both have a 160 mm² roof underside. At +Z and a strict 45°
+  vertical-reference threshold, the current checker reports 360 mm² flagged for
+  the bridge and 260 mm² for the cantilever because other downward base faces
+  also belong to each closed mesh.
+</p>
+<p>
+  Retained preview-only PrusaSlicer 2.9.6 exports used a 0.4 mm nozzle, 0.45 mm
+  extrusion width, 0.2 mm layers, two perimeters and 15% infill. Both first
+  produced bridge-labelled paths at Z=10.2 mm. The bridge run warned about long
+  bridging extrusions. The cantilever warned about floating bridge anchors,
+  loose extrusions and long bridging extrusions. These are software
+  observations, not physical-print results or printer-ready G-code.
+</p>
+
+<h2>Read the first affected layer</h2>
+<ol>
+  <li>Find the first underside layer.</li>
+  <li>
+    Trace both ends of each span and compare them with the previous layer.
+  </li>
+  <li>Inspect the bridge direction rather than only the top-down mesh view.</li>
+  <li>
+    Check whether support and interface paths replace or sit below the span.
+  </li>
+  <li>
+    Step through the following layers and look for recovery or continuing loose
+    paths.
+  </li>
+</ol>
+
+<h2>Choose the matching next action</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Observation</th>
+      <th>Reasonable next experiment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Short bridge with clear anchors</td>
+      <td>
+        Compare the native bridge preview/profile and a representative coupon
+      </td>
+    </tr>
+    <tr>
+      <td>Long or poorly anchored bridge</td>
+      <td>
+        Reorient, add a deliberate intermediate support/design feature, split or
+        redesign
+      </td>
+    </tr>
+    <tr>
+      <td>Gradual overhang</td>
+      <td>
+        Compare orientation and overhang/support settings in the intended
+        profile
+      </td>
+    </tr>
+    <tr>
+      <td>Island beginning above empty space</td>
+      <td>
+        Add verified support, change orientation or correct the source/placement
+        cause
+      </td>
+    </tr>
+    <tr>
+      <td>Critical visible underside</td>
+      <td>
+        Compare support contact, bed-facing alternatives or a deliberate split
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  There is no universal maximum bridge length, angle or cooling prescription.
+  Material, cooling, speed, extrusion width, span and machine all matter. Check
+  the exact slicer version and profile; Prusa's
+  <a href="https://help.prusa3d.com/article/poor-bridging_1802"
+    >poor bridging guidance</a
+  >
+  and
+  <a href="https://help.prusa3d.com/article/support-material_1698"
+    >support material documentation</a
+  >
+  are primary references for the tested slicer family.
+</p>

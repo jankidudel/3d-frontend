@@ -1,12 +1,16 @@
-import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
+import { ExampleLoader } from '../examples/example-loader';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
 import {
   analyseOverhangs,
-  compareOverhangOrientations,
+  OVERHANG_BUILD_DIRECTIONS,
+  OverhangBuildDirection,
+  overhangBuildDirection,
+  OverhangProcessProfile,
   OverhangReport,
   validOverhangThreshold,
 } from '../shared/overhang/overhang-analysis';
@@ -18,18 +22,18 @@ import {
 
 @Component({
   selector: 'app-three-mf-overhang-page',
-  imports: [ObjectViewerComponent],
+  imports: [ExampleLoader, ObjectViewerComponent],
   template: `<main class="page tool-page wall-thickness-page">
-    <p class="eyebrow">3MF printability check</p>
+    <p class="eyebrow">3MF geometry screen</p>
     <h1>3MF Overhang Checker</h1>
     <p class="lead">
-      Resolve the complete 3MF print build, including repeated items and
-      transforms, then review downward-facing geometry locally.
+      Resolve the placed 3MF build, then screen transformed triangles whose
+      oriented faces point downward and exceed an explicit angle from vertical.
     </p>
     <section class="card viewer-tool">
-      <h2>Check your 3MF build</h2>
+      <h2>Choose a 3MF build</h2>
       <div class="drop-zone">
-        <p>Choose a 3MF file to resolve and analyse locally.</p>
+        <p>The package stays in this browser and is not modified.</p>
         <button class="button" type="button" (click)="openPicker(picker)">
           Choose 3MF file
         </button>
@@ -41,28 +45,55 @@ import {
           (change)="pick($event)"
         />
       </div>
+      <p role="status" aria-live="polite">{{ status() }}</p>
       @if (error()) {
         <p class="error" role="alert">{{ error() }}</p>
       }
     </section>
+    <app-example-loader
+      [tool]="routeUrl.ThreeMfOverhangChecker"
+      [active]="!!resolved()"
+      [current]="resolved()"
+      [busy]="loading()"
+      [load]="loadExample"
+    />
     @if (resolved(); as model) {
       <section class="card">
-        <h2>Orientation and threshold</h2>
+        <h2>Resolved build and angle settings</h2>
         <p>
-          Declared unit: {{ model.declaredUnit }} · resolved build:
-          {{ model.buildItemCount }} build items and
-          {{ model.resolvedMeshCount }} mesh instances.
+          Declared unit: {{ model.declaredUnit
+          }}{{ model.declaredUnitExplicitly ? '' : ' (3MF default)' }} ·
+          combined scope: {{ model.buildItemCount }} build items and
+          {{ model.resolvedMeshCount }} resolved mesh instances · bounds:
+          {{ model.bounds.spans[0].toFixed(2) }} ×
+          {{ model.bounds.spans[1].toFixed(2) }} ×
+          {{ model.bounds.spans[2].toFixed(2) }} mm.
+        </p>
+        <p>
+          Nested component transforms, repeated build items, rotations,
+          translations and supported non-uniform transforms are applied before
+          normals and physical areas are calculated. Results combine the placed
+          scene; the resolver retains per-build-item identity for other tools.
         </p>
         <label
-          >Process profile
+          >Build direction
           <select
-            [value]="profile()"
-            (change)="profile.set($any($event.target).value)"
+            [value]="buildDirectionId()"
+            (change)="setBuildDirection($event)"
           >
-            <option value="FDM">FDM starting profile</option>
+            @for (option of buildDirections; track option.id) {
+              <option [value]="option.id">{{ option.label }}</option>
+            }
+          </select></label
+        >
+        <label
+          >Process context
+          <select [value]="profile()" (change)="setProfile($event)">
+            <option value="FDM">FDM review</option>
             <option value="Resin">Resin orientation review</option>
           </select></label
-        ><label
+        >
+        <label
           >Flag surfaces steeper than this angle from vertical
           <input
             type="number"
@@ -70,16 +101,19 @@ import {
             max="89.9"
             step="0.1"
             [value]="threshold()"
-            (input)="
-              threshold.set(+$any($event.target).value); report.set(null)
-            "
+            (input)="setThreshold($event)"
           />
           degrees</label
         >
         <p>
-          0 degrees means a vertical wall; 90 degrees means a downward-facing
-          horizontal surface. Slicers make the final support decision. Resin
-          support needs also depend on orientation, peel forces and drainage.
+          0° is a vertical wall and 90° is a downward-facing horizontal
+          underside. A triangle is flagged only when its slope is strictly
+          greater than the selected threshold.
+          {{
+            profile() === processProfile.Fdm
+              ? 'The slicer still decides bridge roles, supports and paths.'
+              : 'Resin orientation, peel, drainage and support decisions remain outside this screen.'
+          }}
         </p>
         <button
           class="button"
@@ -87,115 +121,138 @@ import {
           [disabled]="!valid()"
           (click)="analyse()"
         >
-          Analyse overhang risk
+          Analyse downward-facing geometry
         </button>
       </section>
     }
     @if (report(); as result) {
       <section class="card result">
-        <h2>{{ headline(result) }}</h2>
+        <h2>Downward-facing geometry above your review threshold</h2>
+        <p>
+          Build direction: {{ selectedBuildDirection().label }} · threshold:
+          slope &gt; {{ result.threshold.toFixed(1) }}° from vertical.
+        </p>
         <dl class="metrics">
+          <div>
+            <dt>Nondegenerate triangles analysed</dt>
+            <dd>{{ result.analysedTriangleCount.toLocaleString() }}</dd>
+          </div>
+          <div>
+            <dt>Degenerate triangles skipped</dt>
+            <dd>{{ result.degenerateTriangleCount.toLocaleString() }}</dd>
+          </div>
+          <div>
+            <dt>Total analysed surface area</dt>
+            <dd>{{ result.totalArea.toFixed(2) }} mm²</dd>
+          </div>
           <div>
             <dt>Flagged triangles</dt>
             <dd>{{ result.flaggedCount.toLocaleString() }}</dd>
           </div>
           <div>
-            <dt>Flagged surface area</dt>
+            <dt>Flagged downward-facing area</dt>
             <dd>{{ result.flaggedArea.toFixed(2) }} mm²</dd>
           </div>
           <div>
-            <dt>Flagged surface</dt>
-            <dd>{{ result.flaggedPercentage.toFixed(1) }}%</dd>
+            <dt>Flagged percentage</dt>
+            <dd>
+              {{ result.flaggedPercentage.toFixed(1) }}% of nondegenerate
+              analysed surface area
+            </dd>
           </div>
         </dl>
         <p class="legend">
-          Heatmap legend: red faces exceed the selected overhang threshold; teal
-          faces are not flagged.
+          Visual legend: red triangles are downward-facing and strictly exceed
+          the threshold; teal triangles do not meet both conditions. The text
+          metrics above provide the same result without relying on colour.
         </p>
         @if (heatmap(); as display) {
           <app-object-viewer
             [object]="display"
             [extent]="resolved()!.extent"
             [preserveVertexColors]="true"
-            ariaLabel="3MF overhang risk heatmap"
+            ariaLabel="Resolved 3MF downward-facing triangle heatmap"
           />
         }
       </section>
       <section class="card">
-        <h2>90-degree rotation comparison</h2>
-        <p>
-          This rotation reduces geometry flagged by the selected overhang
-          threshold. Review strength, visible surfaces, support access and
-          printer fit before choosing it.
-        </p>
-        <ul>
-          @for (candidate of comparisons(); track candidate.label) {
-            <li>
-              <strong>{{ candidate.label }}</strong
-              >: {{ candidate.report.flaggedArea.toFixed(2) }} mm²,
-              {{ candidate.report.flaggedPercentage.toFixed(1) }}% flagged
-            </li>
-          }
-        </ul>
+        <h2>What the screen supports</h2>
+        <div
+          class="table-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Overhang result interpretation table, scroll horizontally"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th>What you see</th>
+                <th>What it supports</th>
+                <th>Next check</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Flagged sloped underside</td>
+                <td>This face exceeds the chosen geometry threshold</td>
+                <td>
+                  Compare candidate orientation and native slicer supports
+                </td>
+              </tr>
+              <tr>
+                <td>Flagged horizontal roof</td>
+                <td>Downward face is present</td>
+                <td>Determine bridge anchors or support paths in the slicer</td>
+              </tr>
+              <tr>
+                <td>Unflagged vertical or upward faces</td>
+                <td>They do not meet this face-angle condition</td>
+                <td>Continue fit, contact, island and slicer review</td>
+              </tr>
+              <tr>
+                <td>Unexpected side highlighted</td>
+                <td>
+                  Winding, transform or intended build direction may differ
+                </td>
+                <td>Confirm placed geometry and orientation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
       <section class="card">
-        <h2>Important limitations</h2>
+        <h2>Important limitations and next decisions</h2>
         <p>
-          This is geometry screening, not a slicer. It cannot reliably identify
-          bridges, calculate support volume or guarantee support-free printing.
-          Mesh errors, printer, material and slicer settings change real-world
-          results.
+          InspectMesh resolves supported geometry transforms, but does not
+          interpret support settings, colour or private application extensions.
+          It does not simulate bridge anchors, assign extrusion roles, generate
+          supports or determine whether support can be removed.
         </p>
         <p>
-          <a [href]="routeUrl.ThreeMfPrintPreflight">3MF Print Preflight</a> ·
-          <a [href]="routeUrl.ThreeMfQualityCheck">3MF Quality Checker</a> ·
-          <a [href]="routeUrl.ThreeMfWallThicknessChecker"
-            >3MF Wall Thickness Checker</a
+          <a [href]="guideRouteUrl.Route3dPrintBridgeVsOverhang"
+            >Bridge or overhang?</a
           >
           ·
-          <a [href]="routeUrl.ThreeMfDimensionsChecker"
-            >3MF Dimensions Checker</a
+          <a [href]="guideRouteUrl.RouteSupportsInsideHolesAndChannels"
+            >Can internal support leave?</a
           >
           ·
+          <a [href]="routeUrl.OrientationPlanner">Compare six orientations</a> ·
           <a [href]="guideRouteUrl.Route3dPrintOverhangsAndSupportsGuide"
-            >Overhangs and Supports Guide</a
+            >Interpret the geometry screen</a
           >
         </p>
       </section>
     }
     <section class="content">
-      <h2>Build transforms come before the angle check</h2>
+      <h2>Transforms come before the screen</h2>
       <p>
-        This page resolves the supported 3MF build locally, including repeated
-        instances and component placements, before examining oriented triangle
-        normals. It uses the complete combined build rather than a selectable
-        single resource. A rotated instance can therefore produce different
-        downward-facing triangles from its unplaced mesh definition. Declared
-        units determine physical area, while uniform unit conversion does not
-        change face angles.
-      </p>
-      <p>
-        The default build direction is positive Z; downward faces have a slope
-        measured from vertical. A downward horizontal underside is 90° and a
-        vertical wall is 0°. The threshold comparison is strict: slope must
-        exceed the selected angle. Rotating the build direction changes the
-        question; it does not modify or export a new slicer project.
-      </p>
-      <p>
-        Open the declared-inch example in the viewer to confirm its 25.4 mm
-        spans and transformed placement, then inspect the same build here.
-        Translation alone must not change face slopes. A profile label is a
-        starting review aid, not verification of resin supports or a particular
-        FDM material. Unsupported or unresolved packages stop with an error;
-        colour, printer settings and private project data are not interpreted as
-        support instructions.
-      </p>
-      <p>
-        Check build-item count, winding and highlighted undersides before
-        accepting a low flagged percentage. It cannot prove adhesion, strength
-        or absence of bridging problems. Return to the actual receiving slicer
-        for support locations and layer preview, especially if the imported
-        build orientation differs.
+        Translation alone does not change a face angle. Rotation can change
+        which triangles point downward, and non-uniform scaling can change
+        normals and angles. Declared-unit conversion changes physical area but
+        uniform positive scale does not change angle classification. A low or
+        zero flagged result does not establish adhesion, bridges, islands or
+        general printability.
       </p>
     </section>
   </main>`,
@@ -204,42 +261,63 @@ import {
 export class ThreeMfOverhangPage {
   readonly routeUrl = PublicRouteUrl;
   readonly guideRouteUrl = GuideRouteUrl;
+  readonly buildDirections = OVERHANG_BUILD_DIRECTIONS;
+  readonly processProfile = OverhangProcessProfile;
   readonly resolved = signal<ResolvedThreeMfGeometry | null>(null);
   readonly error = signal('');
+  readonly status = signal('');
+  readonly loading = signal(false);
   readonly threshold = signal(45);
-  readonly profile = signal('FDM');
+  readonly buildDirectionId = signal<OverhangBuildDirection>(
+    OverhangBuildDirection.PositiveZ,
+  );
+  readonly profile = signal<OverhangProcessProfile>(OverhangProcessProfile.Fdm);
   readonly report = signal<OverhangReport | null>(null);
+  private fileRevision = 0;
   readonly valid = computed(() => validOverhangThreshold(this.threshold()));
+  readonly selectedBuildDirection = computed(() =>
+    overhangBuildDirection(this.buildDirectionId()),
+  );
   readonly heatmap = computed(() =>
     this.resolved() && this.report()
       ? createOverhangHeatmap(this.resolved()!.geometry, this.report()!)
       : null,
   );
-  readonly comparisons = computed(() =>
-    this.resolved() && this.report()
-      ? compareOverhangOrientations(this.resolved()!.geometry, this.threshold())
-      : [],
-  );
   private readonly seo = inject(SeoService);
+
   constructor() {
     this.seo.apply({
-      title: '3MF Overhang Checker - Review Support Risk | InspectMesh',
+      title: '3MF Overhang Checker - Review Placed Geometry | InspectMesh',
       description:
-        'Check resolved 3MF-build downward-facing geometry and compare 90-degree orientations locally before slicing.',
+        'Resolve 3MF units, items and transforms before screening downward-facing triangles by build direction and a strict angle-from-vertical threshold.',
       path: PublicRouteUrl.ThreeMfOverhangChecker,
     });
   }
+
   openPicker(input: HTMLInputElement): void {
     input.click();
   }
+
   async pick(event: Event): Promise<void> {
     const file = (event.target as HTMLInputElement).files?.item(0);
+    if (file) {
+      await this.loadFile(file);
+    }
+  }
+
+  readonly loadExample = async (files: readonly File[]): Promise<void> => {
+    const file = files[0];
+    if (file) {
+      await this.loadFile(file);
+    }
+  };
+
+  private async loadFile(file: File): Promise<void> {
+    const revision = ++this.fileRevision;
     this.error.set('');
+    this.status.set('');
     this.resolved.set(null);
     this.report.set(null);
-    if (!file) {
-      return;
-    }
     if (
       !file.name.toLowerCase().endsWith('.3mf') ||
       file.size === 0 ||
@@ -248,25 +326,65 @@ export class ThreeMfOverhangPage {
       this.error.set('Choose a non-empty 3MF file up to 25 MiB.');
       return;
     }
+    this.loading.set(true);
+    this.status.set('Resolving placed 3MF build geometry locally…');
     try {
-      this.resolved.set(
-        await resolveThreeMfWallGeometry(await file.arrayBuffer()),
+      const resolved = await resolveThreeMfWallGeometry(
+        await file.arrayBuffer(),
       );
+      if (revision !== this.fileRevision) {
+        return;
+      }
+      this.resolved.set(resolved);
+      this.status.set('3MF build is resolved. Choose settings, then analyse.');
     } catch {
-      this.error.set('We could not resolve this 3MF build locally.');
+      if (revision === this.fileRevision) {
+        this.error.set('We could not resolve this 3MF build locally.');
+        this.status.set('');
+      }
+    } finally {
+      if (revision === this.fileRevision) {
+        this.loading.set(false);
+      }
     }
   }
+
+  setThreshold(event: Event): void {
+    this.threshold.set(Number((event.target as HTMLInputElement).value));
+    this.invalidateResult();
+  }
+
+  setBuildDirection(event: Event): void {
+    this.buildDirectionId.set(
+      (event.target as HTMLSelectElement).value as OverhangBuildDirection,
+    );
+    this.invalidateResult();
+  }
+
+  setProfile(event: Event): void {
+    this.profile.set(
+      (event.target as HTMLSelectElement).value as OverhangProcessProfile,
+    );
+  }
+
   analyse(): void {
     const geometry = this.resolved()?.geometry;
     if (geometry && this.valid()) {
-      this.report.set(analyseOverhangs(geometry, this.threshold()));
+      this.report.set(
+        analyseOverhangs(
+          geometry,
+          this.threshold(),
+          this.selectedBuildDirection().direction,
+        ),
+      );
+      this.status.set('Downward-facing geometry analysis complete.');
     }
   }
-  headline(result: OverhangReport): string {
-    return result.flaggedPercentage > 30
-      ? 'Large unsupported downward-facing area'
-      : result.flaggedCount
-        ? 'Overhangs to review before slicing'
-        : 'Low overhang risk at this threshold';
+
+  private invalidateResult(): void {
+    if (this.report()) {
+      this.status.set('Settings changed. Run the analysis again.');
+    }
+    this.report.set(null);
   }
 }

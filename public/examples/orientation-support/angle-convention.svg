@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" role="img" aria-labelledby="title desc">
+  <title id="title">InspectMesh vertical-reference overhang angle</title>
+  <desc id="desc">A build plate, upward build direction, downward face normal and labelled angle from vertical.</desc>
+  <rect width="760" height="340" fill="#f8fafc"/>
+  <line x1="90" y1="280" x2="690" y2="280" stroke="#334155" stroke-width="8"/>
+  <text x="500" y="315" font-family="sans-serif" font-size="20" fill="#0f172a">horizontal build plane</text>
+  <line x1="250" y1="270" x2="250" y2="60" stroke="#2563eb" stroke-width="6"/>
+  <path d="M250 45 l-12 24 h24 z" fill="#2563eb"/>
+  <text x="275" y="82" font-family="sans-serif" font-size="20" fill="#1d4ed8">build direction (+Z)</text>
+  <polygon points="250,180 560,110 580,150 270,220" fill="#fdba74" stroke="#9a3412" stroke-width="4"/>
+  <line x1="400" y1="165" x2="335" y2="65" stroke="#dc2626" stroke-width="6"/>
+  <path d="M327 52 l4 27 22-14 z" fill="#dc2626"/>
+  <text x="410" y="72" font-family="sans-serif" font-size="20" fill="#991b1b">wound face normal</text>
+  <path d="M250 125 A55 55 0 0 1 294 147" fill="none" stroke="#7c3aed" stroke-width="5"/>
+  <text x="292" y="128" font-family="sans-serif" font-size="20" fill="#5b21b6">vertical-reference angle</text>
+  <text x="95" y="325" font-family="sans-serif" font-size="18" fill="#475569">Diagram explains the convention; it is not a slicer support prediction.</text>
+</svg>

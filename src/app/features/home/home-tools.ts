@@ -102,7 +102,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '↘',
         title: 'STL Overhang Checker',
         description:
-          'Highlight downward-facing geometry that exceeds your chosen overhang review threshold.',
+          'Screen wound STL triangles by build direction and a strict angle-from-vertical threshold, with explicit assumed area units.',
         route: PublicRouteUrl.StlOverhangChecker,
         cta: 'Check overhang risk',
       },
@@ -233,7 +233,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '↘',
         title: '3MF Overhang Checker',
         description:
-          'Review resolved 3MF build geometry for downward-facing overhang risk before slicing.',
+          'Resolve 3MF units, build items and transforms before screening downward-facing triangles and reporting analysed area.',
         route: PublicRouteUrl.ThreeMfOverhangChecker,
         cta: 'Check overhang risk',
       },
@@ -276,7 +276,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '↻',
         title: '3D Print Orientation Planner',
         description:
-          'Compare six sensible STL or 3MF build directions for printer fit, downward-facing geometry and estimated bed contact.',
+          'Compare six axis-aligned STL or 3MF directions for rotated envelope, nominal fit, downward-facing area and estimated coplanar contact.',
         route: PublicRouteUrl.OrientationPlanner,
         cta: 'Plan an orientation',
       },

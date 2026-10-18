@@ -9,11 +9,14 @@ export interface OverhangFace {
 
 export interface OverhangReport {
   readonly faces: readonly OverhangFace[];
+  readonly analysedTriangleCount: number;
+  readonly degenerateTriangleCount: number;
   readonly flaggedCount: number;
   readonly flaggedArea: number;
   readonly totalArea: number;
   readonly flaggedPercentage: number;
   readonly threshold: number;
+  readonly buildDirection: readonly [number, number, number];
 }
 
 export interface OrientationComparison {
@@ -21,11 +24,87 @@ export interface OrientationComparison {
   readonly report: OverhangReport;
 }
 
-const BUILD_DIRECTIONS = [
-  { label: 'Current orientation (+Z build direction)', direction: [0, 0, 1] },
-  { label: 'Rotate 90 degrees about X', direction: [0, 1, 0] },
-  { label: 'Rotate 90 degrees about Y', direction: [1, 0, 0] },
+export const OverhangProcessProfile = {
+  Fdm: 'FDM',
+  Resin: 'Resin',
+} as const;
+
+export type OverhangProcessProfile =
+  (typeof OverhangProcessProfile)[keyof typeof OverhangProcessProfile];
+
+export const OverhangBuildDirection = {
+  PositiveZ: 'positive-z',
+  NegativeZ: 'negative-z',
+  PositiveX: 'positive-x',
+  NegativeX: 'negative-x',
+  PositiveY: 'positive-y',
+  NegativeY: 'negative-y',
+} as const;
+
+export type OverhangBuildDirection =
+  (typeof OverhangBuildDirection)[keyof typeof OverhangBuildDirection];
+
+export interface OverhangBuildDirectionOption {
+  readonly id: OverhangBuildDirection;
+  readonly label: string;
+  readonly shortLabel: string;
+  readonly direction: readonly [number, number, number];
+}
+
+export const OVERHANG_BUILD_DIRECTIONS: readonly OverhangBuildDirectionOption[] =
+  [
+    {
+      id: OverhangBuildDirection.PositiveZ,
+      label: '+Z up (source orientation)',
+      shortLabel: '+Z',
+      direction: [0, 0, 1],
+    },
+    {
+      id: OverhangBuildDirection.NegativeZ,
+      label: '-Z up',
+      shortLabel: '-Z',
+      direction: [0, 0, -1],
+    },
+    {
+      id: OverhangBuildDirection.PositiveX,
+      label: '+X up',
+      shortLabel: '+X',
+      direction: [1, 0, 0],
+    },
+    {
+      id: OverhangBuildDirection.NegativeX,
+      label: '-X up',
+      shortLabel: '-X',
+      direction: [-1, 0, 0],
+    },
+    {
+      id: OverhangBuildDirection.PositiveY,
+      label: '+Y up',
+      shortLabel: '+Y',
+      direction: [0, 1, 0],
+    },
+    {
+      id: OverhangBuildDirection.NegativeY,
+      label: '-Y up',
+      shortLabel: '-Y',
+      direction: [0, -1, 0],
+    },
+  ] as const;
+
+const COMPARISON_DIRECTIONS = [
+  OVERHANG_BUILD_DIRECTIONS[0],
+  OVERHANG_BUILD_DIRECTIONS[4],
+  OVERHANG_BUILD_DIRECTIONS[2],
 ] as const;
+
+export function overhangBuildDirection(
+  id: OverhangBuildDirection,
+): OverhangBuildDirectionOption {
+  return (
+    OVERHANG_BUILD_DIRECTIONS.find((candidate) => candidate.id === id) ??
+    OVERHANG_BUILD_DIRECTIONS[0]
+  );
+}
 
 export function validOverhangThreshold(value: number): boolean {
   return Number.isFinite(value) && value >= 0 && value < 90;
@@ -48,7 +127,11 @@ export function analyseOverhangs(
   if (length === 0) {
     return null;
   }
-  const [dx, dy, dz] = buildDirection.map((value) => value / length);
+  const [dx, dy, dz] = buildDirection.map((value) => value / length) as [
+    number,
+    number,
+    number,
+  ];
   const faces: OverhangFace[] = [];
   let flaggedArea = 0;
   let totalArea = 0;
@@ -82,11 +165,14 @@ export function analyseOverhangs(
   }
   return {
     faces,
+    analysedTriangleCount: faces.length,
+    degenerateTriangleCount: mesh.indices.length / 3 - faces.length,
     flaggedCount: faces.filter((face) => face.flagged).length,
     flaggedArea,
     totalArea,
     flaggedPercentage: totalArea ? (flaggedArea / totalArea) * 100 : 0,
     threshold,
+    buildDirection: [dx, dy, dz],
   };
 }
 
@@ -94,7 +180,7 @@ export function compareOverhangOrientations(
   mesh: IndexedTriangleGeometry,
   threshold: number,
 ): readonly OrientationComparison[] {
-  return BUILD_DIRECTIONS.flatMap(({ label, direction }) => {
+  return COMPARISON_DIRECTIONS.flatMap(({ label, direction }) => {
     const report = analyseOverhangs(mesh, threshold, direction);
     return report ? [{ label, report }] : [];
   });

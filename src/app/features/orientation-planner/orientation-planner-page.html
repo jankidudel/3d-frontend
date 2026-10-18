@@ -2,9 +2,9 @@
   <p class="eyebrow">Print preparation</p>
   <h1>3D Print Orientation Planner</h1>
   <p class="lead">
-    Compare sensible STL and 3MF orientations locally before slicing. Review
-    printer fit, downward-facing geometry and estimated first-layer contact in
-    one place.
+    Compare six axis-aligned STL or 3MF directions locally. Review the rotated
+    envelope, nominal printer fit, downward-facing area and estimated coplanar
+    bed contact without treating one metric as a universal winner.
   </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose a model</h2>
@@ -20,17 +20,45 @@
       (change)="chooseFile($event)"
     />
     @if (analysing()) {
-      <p role="status">{{ progress() }}</p>
+      <p role="status" aria-live="polite">{{ progress() }}</p>
+    } @else if (progress()) {
+      <p role="status" aria-live="polite">{{ progress() }}</p>
     }
     @if (error()) {
       <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
 
+  <app-example-loader
+    [tool]="routeUrl.OrientationPlanner"
+    [active]="!!mesh()"
+    [current]="mesh()"
+    [busy]="analysing()"
+    [load]="loadExample"
+  />
+
   @if (mesh()) {
     <section class="card" aria-labelledby="settings-title">
-      <h2 id="settings-title">Comparison settings</h2>
-      @if (format() === 'stl') {
+      <h2 id="settings-title">Input and comparison settings</h2>
+      <p>
+        <strong>Detected format:</strong>
+        {{ format() === '3mf' ? '3MF' : 'STL' }}.
+        @if (sourcePlan(); as source) {
+          Source envelope: {{ formatNumber(source.dimensions.width) }} ×
+          {{ formatNumber(source.dimensions.height) }} ×
+          {{ formatNumber(source.dimensions.depth) }}
+          {{ format() === '3mf' ? 'mm' : stlUnit() }} on source X/Y/Z.
+        }
+      </p>
+      @if (resolvedThreeMf(); as resolved) {
+        <p>
+          Declared 3MF unit: {{ resolved.declaredUnit }} · resolved combined
+          build: {{ resolved.buildItemCount }} build items and
+          {{ resolved.resolvedMeshCount }} mesh instances. Supported transforms
+          and declared units are applied before comparison; instance identity is
+          retained in the resolver but the planner compares the combined scene.
+        </p>
+      } @else {
         <label
           >Assumed STL unit
           <select [value]="stlUnit()" (change)="setStlUnit($event)">
@@ -41,8 +69,8 @@
           </select>
         </label>
         <p>
-          STL does not declare units. This assumption affects printer-fit
-          comparison, not the angle screen.
+          STL does not declare units. This assumption affects area labels and
+          printer-fit comparison, not the angle screen.
         </p>
       }
       <label
@@ -59,9 +87,10 @@
       </label>
       @if (printerProfile(); as profile) {
         <p>
-          Using your saved printer profile: {{ formatNumber(profile.width) }} ×
-          {{ formatNumber(profile.height) }} × {{ formatNumber(profile.depth) }}
-          {{ profile.unit }}.
+          Using your saved rectangular printer envelope: X
+          {{ formatNumber(profile.width) }} × Y
+          {{ formatNumber(profile.height) }} × Z
+          {{ formatNumber(profile.depth) }} {{ profile.unit }}.
           <a
             [routerLink]="
               format() === '3mf'
@@ -71,9 +100,27 @@
             >Edit profile</a
           >.
         </p>
+        <label
+          >Edge allowance on each X and Y side
+          <input
+            type="number"
+            min="0"
+            step="0.1"
+            [value]="edgeAllowance()"
+            (input)="setEdgeAllowance($event)"
+          />
+          {{ profile.unit }}
+        </label>
+        <p>
+          Fit uses X {{ formatNumber(profile.width - edgeAllowance() * 2) }} × Y
+          {{ formatNumber(profile.height - edgeAllowance() * 2) }} × Z
+          {{ formatNumber(profile.depth) }} {{ profile.unit }} after this
+          allowance. It does not model circular-bed corners, excluded zones,
+          brims, supports, purge structures or machine clearances.
+        </p>
       } @else {
         <p>
-          Save your usable build volume in the
+          Save your usable X/Y/Z build volume in the
           <a
             [routerLink]="
               format() === '3mf'
@@ -82,58 +129,92 @@
             "
             >Dimensions Checker</a
           >
-          to include printer fit.
+          to include nominal rectangular-envelope fit.
         </p>
       }
     </section>
 
-    @if (recommended(); as plan) {
-      <section class="card" aria-labelledby="recommendation-title">
-        <h2 id="recommendation-title">First orientation to review</h2>
+    @if (selectedPlan(); as plan) {
+      <section class="card" aria-labelledby="selection-title">
+        <h2 id="selection-title">Selected candidate handoff</h2>
         <p>
-          <strong>{{ plan.label }}</strong> has the lowest flagged
-          downward-facing area among the compared orientations{{
-            plan.fit && !plan.fit.fits
-              ? ', but it does not fit the saved printer profile'
-              : ''
-          }}.
+          <strong>{{ plan.label }}</strong
+          >: {{ plan.transform }}. Recreate that source-axis rotation in the
+          receiving slicer, place the intended face on the bed, then recheck the
+          X/Y/Z envelope and slice.
         </p>
         <p>
-          This is a review priority, not a support plan or a guarantee of print
-          success.
+          The planner does not modify or export the model. Save the slicer
+          project if you want the final rotation and profile to be reproducible.
         </p>
       </section>
     }
 
     <section class="card" aria-labelledby="comparison-title">
-      <h2 id="comparison-title">Orientation comparison</h2>
-      <div class="table-scroll">
+      <h2 id="comparison-title">Six source-axis-up candidates</h2>
+      <div
+        class="table-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Orientation comparison table, scroll horizontally"
+      >
         <table>
           <thead>
             <tr>
               <th>Orientation</th>
+              <th>Rotated X/Y/Z envelope</th>
               <th>Printer fit</th>
-              <th>Flagged surface</th>
-              <th>Estimated bed contact</th>
+              <th>Flagged downward-facing area</th>
+              <th>Estimated coplanar bed contact</th>
+              <th>Inspect</th>
             </tr>
           </thead>
           <tbody>
-            @for (plan of plans(); track plan.label) {
+            @for (plan of plans(); track plan.id) {
               <tr>
                 <th scope="row">{{ plan.label }}</th>
+                <td>
+                  {{ formatNumber(plan.dimensions.width) }} ×
+                  {{ formatNumber(plan.dimensions.height) }} ×
+                  {{ formatNumber(plan.dimensions.depth) }}
+                  {{ format() === '3mf' ? 'mm' : stlUnit() }}
+                </td>
                 <td>
                   {{
                     plan.fit
                       ? plan.fit.fits
-                        ? 'Fits profile'
-                        : 'Does not fit profile'
-                      : 'Add a printer profile'
+                        ? 'Fits entered rectangular envelope and allowance'
+                        : 'Does not fit entered rectangular envelope and allowance'
+                      : 'Add a valid printer profile and allowance'
                   }}
                 </td>
-                <td>{{ formatNumber(plan.overhang.flaggedPercentage) }}%</td>
                 <td>
-                  {{ formatNumber(plan.bedContactArea) }}
-                  {{ format() === '3mf' ? 'mm²' : stlUnit() + '²' }}
+                  {{ formatNumber(plan.overhang.flaggedArea) }}
+                  {{ areaUnit() }} ({{
+                    formatNumber(plan.overhang.flaggedPercentage)
+                  }}% of nondegenerate surface area; slope &gt;
+                  {{ formatNumber(threshold()) }}° from vertical)
+                </td>
+                <td>
+                  {{ formatNumber(plan.bedContactArea) }} {{ areaUnit() }}
+                  @if (
+                    plan.bedContactArea > 0 &&
+                    plan.bedContactArea === largestContactArea()
+                  ) {
+                    <span>
+                      - largest estimate among the six checked directions</span
+                    >
+                  }
+                </td>
+                <td>
+                  <button
+                    class="text-button"
+                    type="button"
+                    (click)="selectPlan(plan.id)"
+                    [attr.aria-pressed]="selectedPlanId() === plan.id"
+                  >
+                    {{ selectedPlanId() === plan.id ? 'Selected' : 'Select' }}
+                  </button>
                 </td>
               </tr>
             }
@@ -141,30 +222,40 @@
         </table>
       </div>
       <p>
-        Bed contact estimates only faces lying on the initial build plane.
-        Brims, rafts, supports, strength, visible surfaces, material and slicer
-        settings can change the best practical choice.
+        Contact is the summed triangle surface area for downward-oriented,
+        near-coplanar faces whose three vertices lie within max(range × 10⁻⁶,
+        10⁻⁶ coordinate units) of the lowest build coordinate. Exact duplicate
+        triangles and degenerate triangles are excluded. This is not projected
+        footprint area, adhesion or a warping prediction.
+      </p>
+      <p>
+        Low flagged area does not establish bridgeability, finish or support
+        removability. Large contact does not establish adhesion. Geometry cannot
+        infer the most important cosmetic face or load path.
       </p>
     </section>
     <section class="card">
       <h2>Next checks</h2>
       <p>
+        <a [href]="guideRouteUrl.RouteHowToLayAnStlFlatOnPrintBed"
+          >Lay an imported STL flat deliberately</a
+        >
+        ·
+        <a [href]="guideRouteUrl.Route3dPrintBridgeVsOverhang"
+          >Distinguish bridges from overhangs</a
+        >
+        ·
+        <a [href]="guideRouteUrl.RouteSupportsInsideHolesAndChannels"
+          >Plan internal support access</a
+        >
+        ·
         <a
           [routerLink]="
             format() === '3mf'
               ? routeUrl.ThreeMfOverhangChecker
               : routeUrl.StlOverhangChecker
           "
-          >Inspect overhang risk</a
-        >
-        ·
-        <a
-          [routerLink]="
-            format() === '3mf'
-              ? routeUrl.ThreeMfWallThicknessChecker
-              : routeUrl.StlWallThicknessChecker
-          "
-          >Check wall thickness</a
+          >Inspect downward-facing geometry</a
         >
         ·
         <a [routerLink]="routeUrl.GcodePreflightChecker"
@@ -177,39 +268,32 @@
   <section class="card">
     <h2>What this planner can and cannot decide</h2>
     <p>
-      It compares six axis-aligned build directions. It does not test every
-      angled rotation, generate supports, predict warping or replace slicer
-      preview. Confirm the chosen orientation with the intended printer,
-      material and slicer settings.
+      It compares +Z, -Z, +X, -X, +Y and -Y as source-axis-up directions. The +Z
+      candidate preserves the source rotation. It does not test every face or
+      arbitrary angle, generate supports, simulate bridge paths, predict warping
+      or calculate strength. Confirm the selected candidate in the intended
+      slicer, printer, material and profile.
     </p>
   </section>
   <app-tool-evidence
-    [completed]="!!recommended()"
+    [completed]="!!selectedPlan()"
     [page]="routeUrl.OrientationPlanner"
   />
   <section class="content">
-    <h2>Compare six candidates, then choose for the actual job</h2>
+    <h2>Compare candidates, then choose for the actual job</h2>
     <p>
-      The local planner compares six axis directions, nominal bounding-box fit,
-      downward-facing geometry and estimated bed contact. It does not search
-      every arbitrary rotation, generate supports or calculate material
-      strength. STL uses your unit assumption; supported 3MF build geometry is
-      resolved before analysis.
-    </p>
-    <p>
-      For a hypothetical 100 x 60 x 20 mm box on an 80 x 80 x 120 mm envelope,
-      the original direction exceeds width. Placing the 100 mm axis vertically
-      gives a 60 x 20 mm footprint and nominal fit. That geometric advantage can
-      reduce bed contact and change load direction or support needs.
+      The local planner exposes each supported metric rather than compressing
+      them into an overall score. STL uses your unit assumption; supported 3MF
+      build geometry is resolved to physical millimetres before analysis.
     </p>
     <p>
       Keep intended strength, surface finish and support removal as separate
-      decisions. Review the candidate in your slicer, include brim/support
-      allowances and compare the exported orientation with the original. See
+      decisions. Review the selected candidate in your slicer and include every
+      brim, support and machine allowance. See
       <a [href]="guideRouteUrl.RouteHowToOrientAnStlFileFor3dPrinting"
         >the orientation procedure</a
       >
-      for those tradeoffs.
+      for the full trade-off.
     </p>
   </section>
 </main>

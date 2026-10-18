@@ -41,6 +41,30 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: 'how-to-lay-an-stl-flat-on-print-bed',
+    group: GuideGroupId.Stl,
+    order: 209,
+    enabled: true,
+    publishDate: '2026-10-18',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: '3d-print-bridge-vs-overhang',
+    group: GuideGroupId.General,
+    order: 14,
+    enabled: true,
+    publishDate: '2026-10-18',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: 'supports-inside-holes-and-channels',
+    group: GuideGroupId.General,
+    order: 15,
+    enabled: true,
+    publishDate: '2026-10-18',
+    checkEditorialTargets: true,
+  },
+  {
     slug: 'extract-part-from-3mf',
     group: GuideGroupId.ThreeMf,
     order: 310,
@@ -205,6 +229,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 206,
     enabled: true,
     publishDate: '2026-10-15',
+    updatedDate: '2026-10-18',
     checkEditorialTargets: true,
   },
   {
@@ -370,7 +395,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 9,
     enabled: true,
-    updatedDate: '2026-10-16',
+    updatedDate: '2026-10-18',
     publishDate: '2026-09-12',
     checkEditorialTargets: false,
   },
@@ -389,6 +414,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 6,
     enabled: true,
     publishDate: '2026-09-09',
+    updatedDate: '2026-10-18',
     checkEditorialTargets: false,
   },
   {
@@ -486,7 +512,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-17',
+    updatedDate: '2026-10-18',
   },
   {
     slug: 'how-to-check-stl-for-errors',
@@ -695,7 +721,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Stl,
     order: 200,
     enabled: true,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-18',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },

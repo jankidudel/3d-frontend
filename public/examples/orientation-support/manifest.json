@@ -1,0 +1,78 @@
+{
+  "generated": "2026-10-18",
+  "licence": "Original InspectMesh mathematical geometry, reusable with attribution.",
+  "physicalTesting": false,
+  "unit": "millimetre assumption for STL; declared millimetre for 3MF",
+  "controls": {
+    "tilted-asymmetric-block.stl": {
+      "designedDimensions": [40, 25, 12],
+      "intendedBase": "40 x 25 mm source Z=0 face",
+      "marker": "4 mm chamfer at the source +X/+Z edge",
+      "transformDegreesXYZ": [20, -15, 10],
+      "translation": [8, -4, 3],
+      "triangles": 16,
+      "bytes": 884,
+      "bounds": {
+        "min": [-0.4203011314990075, -8.548685468143859, 3.0],
+        "max": [46.05004970256791, 25.460375662291842, 31.468718316708973]
+      }
+    },
+    "bridge-roof.stl": {
+      "pillarDimensions": [10, 10, 10],
+      "gap": 16,
+      "roofThickness": 2,
+      "roofUndersideArea": 160,
+      "triangles": 44,
+      "bytes": 2284,
+      "bounds": {
+        "min": [0, 0, 0],
+        "max": [36, 10, 12]
+      }
+    },
+    "cantilever-roof.stl": {
+      "baseDimensions": [10, 10, 10],
+      "unsupportedSpan": 16,
+      "roofThickness": 2,
+      "roofUndersideArea": 160,
+      "triangles": 28,
+      "bytes": 1484,
+      "bounds": {
+        "min": [0, 0, 0],
+        "max": [26, 10, 12]
+      }
+    },
+    "straight-through-channel.stl": {
+      "outerDimensions": [40, 20, 20],
+      "channelDimensions": [40, 8, 8],
+      "removalDirection": "straight through source X",
+      "triangles": 64,
+      "bytes": 3284,
+      "bounds": {
+        "min": [0, 0, 0],
+        "max": [40, 20, 20]
+      }
+    },
+    "narrow-access-cavity.stl": {
+      "outerDimensions": [40, 30, 24],
+      "chamberDimensions": [26, 20, 14],
+      "accessOpening": [4, 4],
+      "accessDirection": "source -X through an 8 mm long 4 x 4 mm neck",
+      "triangles": 284,
+      "bytes": 14284,
+      "bounds": {
+        "min": [0, 0, 0],
+        "max": [40, 30, 24]
+      }
+    },
+    "translated-ramp.3mf": {
+      "transform": "translation only: +30 mm X",
+      "triangles": 12,
+      "bytes": 1050
+    },
+    "rotated-ramp.3mf": {
+      "transform": "180 degrees about X, then translated to positive Y/Z",
+      "triangles": 12,
+      "bytes": 1053
+    }
+  }
+}

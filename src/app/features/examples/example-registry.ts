@@ -1281,6 +1281,149 @@ export const publicExamples: readonly PublicExample[] = [
     provenance:
       'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
   },
+  {
+    id: 'axis-orientation-control',
+    name: 'Tilted asymmetric orientation control',
+    group: 'Orientation / support access',
+    question:
+      'Which source axis and face should become the base after a tilted import?',
+    files: [
+      {
+        path: ExampleAsset.TiltedAsymmetricBlockStl,
+        name: 'tilted-asymmetric-block.stl',
+        bytes: 884,
+        reference:
+          'Designed as a 40 × 25 × 12 mm chamfered block, then rotated X 20°, Y -15°, Z 10° and translated by (8, -4, 3).',
+      },
+    ],
+    preview: '/examples/orientation-support/lay-flat-control.svg',
+    alt: 'A designed base, tilted imported model and face-aligned result shown as separate observations.',
+    known:
+      'The intended base is the source Z=0 face. A 4 mm chamfer distinguishes the source +X/+Z edge, so 90-degree alternatives do not look equivalent.',
+    observed:
+      'The published Float32 STL has 16 triangles and bounds about X -0.4203..46.0500, Y -8.5487..25.4604 and Z 3..31.4687 coordinate units.',
+    settings:
+      'Load locally in the orientation planner, assume millimetres, and compare all six source-axis-up rows at a 45° threshold.',
+    limitations:
+      'This mathematical control is not a physical adhesion test. The planner does not export a transformed STL.',
+    guide: '/how-to-lay-an-stl-flat-on-print-bed',
+    tools: ['/3d-print-orientation-planner', '/stl-viewer'],
+    provenance:
+      'Original InspectMesh geometry generated 18 October 2026; exact transform is retained in the public manifest.',
+  },
+  {
+    id: 'bridge-overhang-pair',
+    name: 'Matched bridge and cantilever roofs',
+    group: 'Orientation / support access',
+    question:
+      'Does the same 16 mm underside have two anchors or only one root?',
+    files: [
+      {
+        path: ExampleAsset.BridgeRoofStl,
+        name: 'bridge-roof.stl',
+        bytes: 2284,
+        label: 'Two-anchor bridge',
+        reference:
+          'Two 10 × 10 × 10 mm pillars, a 16 mm gap and a 2 mm roof; 44 triangles and 36 × 10 × 12 mm bounds.',
+      },
+      {
+        path: ExampleAsset.CantileverRoofStl,
+        name: 'cantilever-roof.stl',
+        bytes: 1484,
+        label: 'One-root cantilever',
+        reference:
+          'One 10 × 10 × 10 mm base and the same 16 × 10 mm underside under a 2 mm roof; 28 triangles and 26 × 10 × 12 mm bounds.',
+      },
+    ],
+    preview: '/examples/orientation-support/bridge-overhang.svg',
+    alt: 'A roof with anchors at both ends compared with the same span extending from one root.',
+    known:
+      'Both controls are closed, one-component meshes with a 160 mm² horizontal roof underside under an explicit millimetre assumption.',
+    observed:
+      'At +Z and a 45° vertical-reference threshold, the current checker reports 360 mm² flagged for the bridge and 260 mm² for the cantilever. Each includes the same 160 mm² roof underside; the extra base bottoms differ, and the result does not identify anchors.',
+    settings:
+      'Load each file locally in the STL Overhang Checker with millimetres, +Z up and a 45° threshold, then inspect the first underside layer in a native slicer.',
+    limitations:
+      'No physical bridge length or finish is claimed. Slicer-path observations depend on the retained software profile.',
+    guide: '/3d-print-bridge-vs-overhang',
+    tools: ['/stl-overhang-checker', '/stl-viewer'],
+    provenance:
+      'Original InspectMesh mathematical geometry generated 18 October 2026; no physical print test.',
+  },
+  {
+    id: 'internal-support-access',
+    name: 'Through-channel and narrow-access chamber',
+    group: 'Orientation / support access',
+    question:
+      'Can internal support leave through a direct opening or only through a narrow neck?',
+    files: [
+      {
+        path: ExampleAsset.StraightThroughChannelStl,
+        name: 'straight-through-channel.stl',
+        bytes: 3284,
+        label: 'Straight 8 × 8 mm channel',
+        reference:
+          'Closed 40 × 20 × 20 mm material boundary with an 8 × 8 mm passage open through source X.',
+      },
+      {
+        path: ExampleAsset.NarrowAccessCavityStl,
+        name: 'narrow-access-cavity.stl',
+        bytes: 14284,
+        label: 'Chamber behind a 4 × 4 mm neck',
+        reference:
+          'Closed 40 × 30 × 24 mm material boundary with a 26 × 20 × 14 mm chamber reached through an 8 mm long 4 × 4 mm opening.',
+      },
+    ],
+    preview: '/examples/orientation-support/support-access.svg',
+    alt: 'A direct through-channel is compared with a larger internal chamber behind a narrow neck.',
+    known:
+      'Both files describe closed material surfaces. An open passage inside a watertight surface is not an open mesh.',
+    observed:
+      'Cross-section exposes both void boundaries and their openings. It does not simulate tool reach, support breakaway force or surface damage.',
+    settings:
+      'Open locally in the STL Viewer, move the clipping plane through the void, then slice the intended orientation with a recorded profile.',
+    limitations:
+      'The 4 × 4 mm access dimension is source geometry, not proof that generated support can be removed physically.',
+    guide: '/supports-inside-holes-and-channels',
+    tools: ['/stl-viewer', '/stl-overhang-checker'],
+    provenance:
+      'Original InspectMesh mathematical geometry generated 18 October 2026; no physical removal test.',
+  },
+  {
+    id: 'transformed-overhang-3mf',
+    name: 'Translated and rotated 3MF ramp',
+    group: 'Orientation / support access',
+    question:
+      'Does a placed 3MF rotation change the downward-facing area before analysis?',
+    files: [
+      {
+        path: ExampleAsset.TranslatedRamp3mf,
+        name: 'translated-ramp.3mf',
+        bytes: 1050,
+        label: 'Translation only',
+      },
+      {
+        path: ExampleAsset.RotatedRamp3mf,
+        name: 'rotated-ramp.3mf',
+        bytes: 1053,
+        label: '180° X rotation',
+      },
+    ],
+    preview: '/examples/orientation-support/transformed-3mf.svg',
+    alt: 'Translation preserves the ramp face directions while rotation changes which face points downward.',
+    known:
+      'Each millimetre-declared package places one 12-triangle asymmetric ramp. One item is translated; the other is rotated 180° about X and translated.',
+    observed:
+      'The current resolver reports one build item and one mesh instance for each package. At +Z and 45°, translation keeps the 200 mm² base downward while rotation makes the approximately 215.41 mm² sloped face downward.',
+    settings:
+      'Load each package locally in the 3MF Overhang Checker with +Z up and a 45° threshold.',
+    limitations:
+      'The combined-scene checker does not interpret support settings, colour or private extension semantics.',
+    guide: '/3d-print-overhangs-and-supports-guide',
+    tools: ['/3mf-overhang-checker', '/3mf-viewer'],
+    provenance:
+      'Original InspectMesh 3MF controls generated 18 October 2026; no physical print test.',
+  },
   ...splitAssemblyExamples,
 ];
 /** Only registry IDs are accepted; unknown values never become fetch locations. */

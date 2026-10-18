@@ -143,10 +143,10 @@ export const guideClusters: readonly GuideCluster[] = [
   },
   {
     id: 'geometry',
-    label: 'Wall thickness, orientation and printer fit',
+    label: 'Orientation, overhangs and support access',
     description:
-      'Check practical geometry, bed fit and layout decisions before printing.',
-    pillar: '3d-print-wall-thickness-guide',
+      'Choose an orientation, interpret downward geometry and plan support access before printing.',
+    pillar: 'how-to-orient-an-stl-file-for-3d-printing',
     slugs: [
       '3d-print-wall-thickness-guide',
       'how-to-check-stl-wall-thickness-for-3d-printing',
@@ -156,6 +156,10 @@ export const guideClusters: readonly GuideCluster[] = [
       'stl-model-off-build-plate',
       'how-to-rotate-a-3d-model-to-fit-your-printer',
       'how-to-orient-an-stl-file-for-3d-printing',
+      'how-to-lay-an-stl-flat-on-print-bed',
+      '3d-print-overhangs-and-supports-guide',
+      '3d-print-bridge-vs-overhang',
+      'supports-inside-holes-and-channels',
       'how-to-arrange-multiple-parts-on-a-3d-printer-bed',
       'how-to-split-an-stl-file-for-3d-printing',
       'stl-split-failed',
@@ -231,7 +235,6 @@ export const guideClusters: readonly GuideCluster[] = [
 
       'how-to-compensate-for-3d-print-shrinkage',
       '3d-print-tolerance-and-clearance-guide',
-      '3d-print-overhangs-and-supports-guide',
     ],
   },
 ];

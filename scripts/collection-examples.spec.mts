@@ -111,6 +111,38 @@ describe('published owned geometry controls', () => {
       expect(analysed.bounds.max).toEqual(max);
     }
   });
+  it('checks orientation and support controls against topology and area observations', async () => {
+    for (const [name, bytes, triangles, dimensions] of [
+      ['bridge-roof.stl', 2284, 44, [36, 10, 12]],
+      ['cantilever-roof.stl', 1484, 28, [26, 10, 12]],
+      ['straight-through-channel.stl', 3284, 64, [40, 20, 20]],
+      ['narrow-access-cavity.stl', 14284, 284, [40, 30, 24]],
+    ] as const) {
+      const sample = await file(`orientation-support/${name}`);
+      const mesh = await readStl(sample);
+      const result = checkGeometry(mesh, settings);
+      expect(sample.size).toBe(bytes);
+      expect(mesh.indices.length / 3).toBe(triangles);
+      expect(result.topology).toMatchObject({
+        shells: 1,
+        openEdges: 0,
+        nonManifoldEdges: 0,
+      });
+      expect(Object.values(result.dimensionsMm)).toEqual(dimensions);
+    }
+    const bridge = analyseOverhangs(
+      await readStl(await file('orientation-support/bridge-roof.stl')),
+      45,
+    )!;
+    const cantilever = analyseOverhangs(
+      await readStl(await file('orientation-support/cantilever-roof.stl')),
+      45,
+    )!;
+    expect(bridge.flaggedArea).toBe(360);
+    expect(cantilever.flaggedArea).toBe(260);
+    expect(bridge.degenerateTriangleCount).toBe(0);
+    expect(cantilever.degenerateTriangleCount).toBe(0);
+  });
   it('recomputes support and clear-channel findings from retained slicer moves', async () => {
     const off = await gcode('integral-overhang-no-support.gcode');
     const on = await gcode('integral-overhang-support.gcode');
@@ -429,7 +461,7 @@ describe('visual diagnosis teaching controls', () => {
           example.group !== 'G-code evidence' &&
           example.group !== '3MF placements / export',
       ),
-    ).toHaveLength(23);
+    ).toHaveLength(27);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
     );
@@ -695,6 +727,7 @@ import {
   analyseWallThickness,
   WallThicknessUnit,
 } from '../src/app/features/shared/wall-thickness/wall-thickness-analysis.ts';
+import { analyseOverhangs } from '../src/app/features/shared/overhang/overhang-analysis.ts';
 import {
   convertThreeMfToStl,
   CoordinatePolicy,
@@ -707,6 +740,36 @@ const domForParts = () => {
   return dom;
 };
 describe('3MF identity, scope and exact derivative bytes', () => {
+  it('applies translation and rotation before the 3MF overhang screen', async () => {
+    const dom = domForParts();
+    const translated = await resolveThreeMfWallGeometry(
+      await (
+        await file('orientation-support/translated-ramp.3mf')
+      ).arrayBuffer(),
+    );
+    const rotated = await resolveThreeMfWallGeometry(
+      await (await file('orientation-support/rotated-ramp.3mf')).arrayBuffer(),
+    );
+    const translatedReport = analyseOverhangs(translated.geometry, 45)!;
+    const rotatedReport = analyseOverhangs(rotated.geometry, 45)!;
+    expect(translated).toMatchObject({
+      buildItemCount: 1,
+      resolvedMeshCount: 1,
+      declaredUnit: 'millimeter',
+    });
+    expect(rotated).toMatchObject({
+      buildItemCount: 1,
+      resolvedMeshCount: 1,
+      declaredUnit: 'millimeter',
+    });
+    expect(translatedReport.flaggedArea).toBeCloseTo(200, 4);
+    expect(rotatedReport.flaggedArea).toBeCloseTo(Math.hypot(20, 8) * 10, 4);
+    expect(rotatedReport.flaggedArea).not.toBeCloseTo(
+      translatedReport.flaggedArea,
+      4,
+    );
+    dom.window.close();
+  });
   it('resolves both placed wall scales before a combined-scene sampled screen', async () => {
     const dom = domForParts();
     const resolved = await resolveThreeMfWallGeometry(

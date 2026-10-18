@@ -1,175 +1,139 @@
 ---
 title: '3D Print Overhangs and Supports: Check a Model Before Slicing | InspectMesh'
-description: 'Learn what 3D printing overhangs are, why support needs depend on orientation and settings, and how to check STL and 3MF models for unsupported geometry before slicing.'
+description: Learn what a downward-facing geometry screen establishes, how its angle convention works and what must still be checked in the native slicer.
 slug: 3d-print-overhangs-and-supports-guide
 eyebrow: 3D print preparation guide
 heading: '3D Print Overhangs and Supports: How to Check a Model Before Slicing'
-faq:
-  - question: What is an overhang in 3D printing?
-    answer: An overhang is geometry that extends outward from the layers below it. If the surface becomes too horizontal for the selected process and settings, it may sag or need support.
-  - question: Does every overhang need support?
-    answer: No. The result depends on printer capability, material, cooling, layer height, speed, bridge length, orientation and the surface quality you need. Use a threshold check as a screen, then confirm in your slicer.
-  - question: Is the 45-degree rule always correct?
-    answer: No. It is a useful FDM starting point, not a universal rule. Some printer and material combinations can handle steeper angles, while others need more conservative settings.
-  - question: Can rotating a model reduce supports?
-    answer: Often, yes. Rotation can reduce downward-facing surfaces, but it can also affect part strength, visible surface quality, build height, printer fit and the ease of support removal.
 ---
 
 <p>
-  A model can be watertight, correctly scaled and still print poorly because
-  part of its geometry has little or no support from the layers below.
+  An overhang result identifies downward-facing geometry under an angle
+  convention. It does not decide whether the slicer will bridge, support or
+  successfully print the region.
 </p>
 
-<h2>Use a small validation model when the tradeoff matters</h2>
+<h2>1. Understand the angle convention</h2>
+<figure>
+  <img
+    src="/examples/orientation-support/angle-convention.svg"
+    alt="Vertical-reference overhang angle measured from build direction to a downward-facing surface"
+  />
+  <figcaption>
+    InspectMesh uses the angle from vertical build direction; some slicer
+    documentation describes the complementary angle from the horizontal build
+    plane.
+  </figcaption>
+</figure>
 <p>
-  When a long job depends on an unfamiliar angle, material or finish, print a
-  small coupon that uses the same layer height, extrusion width, cooling and
-  intended overhang direction. Label the angle convention: some tools describe
-  an angle from the vertical wall, while others describe it from the horizontal
-  build plane. A value without that reference can reverse the apparent meaning.
-</p>
-<p>
-  Review the underside, edge curl, dimensional change and the point where lines
-  stop bonding cleanly. Repeat only one changed setting at a time. A coupon does
-  not guarantee the full model because large thermal mass, long perimeters and
-  local airflow can differ, but it gives better evidence than importing a
-  generic threshold from another printer.
+  InspectMesh calculates a wound triangle normal, keeps downward-facing faces
+  relative to the selected build direction and measures their slope from
+  vertical. It flags a face only when the value is strictly greater than the
+  selected threshold. A horizontal downward face is 90° by this convention.
+  Always identify the reference because another tool may quote the complementary
+  angle from the build plane.
 </p>
 
-<h2>Plan support removal as part of orientation</h2>
+<h2>2. Read the checker as a screen</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Output</th>
+      <th>What it establishes</th>
+      <th>What it does not establish</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Build direction and threshold</td>
+      <td>The coordinate frame and strict geometry condition</td>
+      <td>A slicer support threshold with identical semantics</td>
+    </tr>
+    <tr>
+      <td>Analysed and skipped triangles</td>
+      <td>Nondegenerate faces used and degenerate faces excluded</td>
+      <td>Watertightness, islands or intended outside</td>
+    </tr>
+    <tr>
+      <td>Total and flagged area</td>
+      <td>
+        Triangle surface area and its flagged share in the selected or defined
+        unit
+      </td>
+      <td>Support volume, projected footprint or bridge span</td>
+    </tr>
+    <tr>
+      <td>Highlighted faces</td>
+      <td>Where the normal condition occurs</td>
+      <td>Needs support, will fail or will have a particular finish</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  Support that is easy to generate may be impossible to remove from an enclosed
-  channel. Inspect access for tools, contact marks on critical faces and whether
-  detached support could remain trapped. Consider splitting the model, changing
-  orientation or redesigning the region when removal would damage a mating face
-  or leave inaccessible material.
+  STL has no authoritative unit, so its area label follows your explicit unit
+  assumption. Supported 3MF units and placed transforms resolve to millimetres
+  before normal and area calculation. Vertex winding controls the face
+  direction; an STL's stored normal is not treated as authoritative.
 </p>
+
+<h2>3. Distinguish bridge, overhang and island</h2>
 <p>
-  In the final slicer preview, step through the first layer of every island,
-  support interface layers and the transition back to model material. Confirm
-  that the chosen support style is actually generated where expected and that
-  bridges are not misclassified. Save the project or profile details needed to
-  reproduce the decision.
-</p>
-<h2>Validate the angle in the slicer</h2>
-<p>
-  Overhang angle is measured from a chosen reference and its practical limit
-  depends on the printer, material, cooling, line width and feature length. A
-  bridge is supported at both ends and deserves separate testing. Rotate a copy
-  to reduce support on visible faces, then inspect the preview rather than
-  treating a nominal angle as a guarantee.
-</p>
-<p>
-  That geometry is usually described as an <strong>overhang</strong>. The useful
-  question is which surfaces are difficult in this orientation, and whether they
-  are acceptable for your printer, material and slicer settings.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlOverhangChecker }}">STL Overhang Checker</a> or
-  <a href="{{ GuideSlug.Route3mfOverhangChecker }}">3MF Overhang Checker</a> to
-  find geometry that deserves review before you slice.
-</p>
-<p>
-  After slicing, use the
-  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
-    >G-code Preflight Checker</a
+  A bridge has established anchors across open space. An overhang grows from
+  material on one side or below. An island begins without model material below
+  its first extrusion. All can include downward-facing mesh triangles, so use
+  the
+  <a href="{{ GuideSlug.Route3dPrintBridgeVsOverhang }}"
+    >bridge-versus-overhang procedure</a
   >
-  to review the final parsed toolpath before printing.
+  and inspect the first affected layer rather than inferring the path from a
+  mesh screenshot.
 </p>
-<h2>What makes an overhang difficult to print?</h2>
+
+<h2>4. Choose an orientation and support strategy</h2>
 <p>
-  Layer-by-layer printers need each new layer to be supported by the layer below
-  it, support material or a bridge across a gap. As a surface becomes more
-  horizontal, more of each new layer extends beyond the material below.
-</p>
-<p>
-  For FDM, 45 degrees from vertical is a useful starting point for review, not a
-  guarantee. Resin needs a different mindset: orientation and supports affect
-  peel forces, surface finish, drainage and print stability.
-</p>
-<h2>Understand the angle convention</h2>
-<p>InspectMesh uses <strong>surface slope from vertical</strong>:</p>
-<ul>
-  <li><code>0°</code> means a vertical wall;</li>
-  <li><code>45°</code> means a diagonal surface;</li>
-  <li><code>90°</code> means a downward-facing horizontal surface.</li>
-</ul>
-<p>
-  The checker flags surfaces steeper than the threshold you choose. Raising the
-  threshold is less conservative; lowering it highlights more geometry for
-  review.
-</p>
-<h2>Use the result as a screen, not a verdict</h2>
-<p>
-  The checkers identify faces that exceed your chosen geometry threshold and
-  show how much surface area is flagged. A mesh analyser cannot reliably decide
-  whether an overhang is a manageable bridge, which support pattern you will
-  use, or whether a surface defect is acceptable.
-</p>
-<h2>Try a different orientation</h2>
-<p>
-  Rotation can reduce downward-facing surfaces, but lower overhang risk does not
-  automatically mean the best print orientation. It can change strength, visible
-  layer lines, support contact marks, build height, warping and printer fit.
-</p>
-<h2>Check mesh health and wall thickness</h2>
-<p>
-  Inspect important mesh warnings with the
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-    >STL Print Preflight Checker</a
+  Compare flagged area with bed contact, critical visible/mating faces, support
+  removal and printer fit. The
+  <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
+    >orientation planner</a
   >
-  or
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
-    >3MF Print Preflight Checker</a
-  >. Overhangs are not wall-thickness problems, so also check the
-  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
-    >STL Wall Thickness Checker</a
-  >
-  or
-  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
-    >3MF Wall Thickness Checker</a
-  >.
+  exposes six axis-aligned candidates without calling one universally best. The
+  native slicer still owns the support style, interface gap, bridge direction
+  and actual toolpaths.
 </p>
-<h2>A practical before-slicing workflow</h2>
+
+<h2>5. Plan support removal before slicing</h2>
+<p>
+  Support that is easy to generate may be trapped in a chamber or reachable only
+  through a narrow turn. Inspect the opening and intended removal direction
+  before accepting a support-heavy orientation. Use the
+  <a href="{{ GuideSlug.RouteSupportsInsideHolesAndChannels }}"
+    >internal support-access workflow</a
+  >
+  for through-channels, blind cavities and critical internal faces.
+</p>
+
+<h2>6. Use a representative coupon when the trade-off matters</h2>
+<p>
+  For an unfamiliar material, finish or angle, print a small coupon with the
+  same layer height, extrusion width, cooling and intended direction. Label the
+  angle convention, change one setting at a time and examine underside bonding,
+  edge curl and dimensional change. A coupon is stronger evidence than copying a
+  generic threshold, but it still does not reproduce the full model's thermal
+  mass, long paths or local airflow.
+</p>
+
+<h2>7. Finish in the native slicer</h2>
 <ol>
-  <li>Inspect the model visually.</li>
-  <li>Run print preflight and confirm printer fit.</li>
-  <li>Check overhang risk in the likely orientation.</li>
-  <li>Compare a sensible rotation if flagged area is large.</li>
-  <li>Choose orientation and supports in the slicer.</li>
+  <li>Use the intended printer, material and process profile.</li>
+  <li>
+    Inspect actual support and interface paths, including the gap to the model.
+  </li>
+  <li>Find the first affected layer and compare it with the layer below.</li>
+  <li>Check bridge classification, anchors and direction separately.</li>
+  <li>Verify removal access and contact on critical faces.</li>
+  <li>Save the slicer project/profile and record the chosen compromise.</li>
 </ol>
-
-<h2>Separate overhangs from bridges</h2>
 <p>
-  An overhang extends outward from material in the layer below; a bridge spans
-  between two supported endpoints. The distinction matters because a bridge can
-  cross open space by stretching lines between anchors, while the same span
-  printed from only one side is an overhang. A roof over a rectangular opening
-  may therefore need bridge settings rather than support beneath every line.
-</p>
-<p>
-  Inspect the slicer preview layer by layer. For an overhang, confirm where each
-  new perimeter starts and how much it overlaps the preceding layer. For a
-  bridge, confirm that both endpoints land on established geometry and review
-  the slicer's bridge direction. Short bridges and gradual overhangs are often
-  easier than a single threshold suggests, but cooling, material, layer height,
-  extrusion width and speed all affect the outcome.
-</p>
-
-<h2>Compare orientations before adding support</h2>
-<p>
-  Suppose a bracket has one broad cosmetic face and two mounting holes. Laying
-  the cosmetic face on the bed may protect the holes from support but leave a
-  visible first-layer texture. Standing it upright may improve that face while
-  creating a tall, less stable print and moving layer lines across the loaded
-  section. Compare support volume, contact marks, bed contact, strength
-  direction and printer fit together. The best orientation is the acceptable
-  compromise, not simply the one with the smallest highlighted overhang area.
-</p>
-<p>
-  Final support placement belongs in the actual slicer profile. Use its preview
-  to check unsupported islands, bridge regions and support interfaces before
-  exporting G-code. A geometry screen cannot predict whether a particular
-  printer, material and cooling setup will reproduce an angle successfully.
+  FDM bridge and overhang guidance does not create a universal resin support
+  rule. Use the documentation for the selected process, machine, material and
+  slicer rather than transferring one angle uncritically.
 </p>

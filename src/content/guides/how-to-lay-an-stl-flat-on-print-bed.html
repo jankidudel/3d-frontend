@@ -1,0 +1,159 @@
+---
+title: 'How to Lay an STL Flat on the Print Bed | InspectMesh'
+description: Correct a tilted or incorrectly imported STL, choose a deliberate bed-contact face and verify height, contact, overhangs and slicer placement before printing.
+slug: how-to-lay-an-stl-flat-on-print-bed
+eyebrow: STL orientation guide
+heading: How to Lay an STL Flat on the Print Bed
+---
+
+<p>
+  To lay an STL flat, choose the face that should contact the bed and rotate
+  that face onto the build plane. Then verify that the model's lowest point is
+  at the bed, the contact region is intentional and the new orientation does not
+  create a worse support, fit or strength problem. “Flat” describes placement;
+  it does not automatically mean “best orientation.”
+</p>
+
+<h2>First decide what “flat” should mean</h2>
+<table>
+  <thead>
+    <tr>
+      <th>User observation</th>
+      <th>What it may mean</th>
+      <th>First check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Model imports on its side</td>
+      <td>Source axes differ from intended build axes</td>
+      <td>Identify the intended base face</td>
+    </tr>
+    <tr>
+      <td>One corner touches but a broad face appears tilted</td>
+      <td>Rotation is not aligned to that face</td>
+      <td>Use a face-alignment operation in the target slicer</td>
+    </tr>
+    <tr>
+      <td>Model looks flat but sits above/below the bed</td>
+      <td>Placement/origin differs from orientation</td>
+      <td>Inspect minimum Z and the slicer's drop-to-bed result</td>
+    </tr>
+    <tr>
+      <td>Largest face is on the bed but critical holes/supports worsen</td>
+      <td>The easiest base is not the best print choice</td>
+      <td>Compare at least one alternative orientation</td>
+    </tr>
+    <tr>
+      <td>Curved model has no obvious flat face</td>
+      <td>No single planar face defines a stable base</td>
+      <td>
+        Use source CAD, a designed base, supports or a different orientation
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Rotating and moving are separate operations. A shifted cube can have the
+  correct orientation while its source coordinates still put minimum Z below or
+  above the build plane. See the
+  <a href="{{ GuideSlug.RouteStlModelOffBuildPlate }}"
+    >shifted-cube placement control</a
+  >
+  for the difference between source position and final slicer placement.
+</p>
+
+<h2>Use a known tilted control</h2>
+<figure>
+  <img
+    src="/examples/orientation-support/lay-flat-control.svg"
+    alt="Labelled tilted asymmetric block showing its intended 40 by 25 millimetre base and a face-alignment rotation"
+  />
+  <figcaption>
+    Deterministic geometry diagram, not a printed specimen.
+  </figcaption>
+</figure>
+<ul>
+  <li>
+    <strong>Designed geometry:</strong> a 40 × 25 × 12 mm asymmetric block with
+    the 40 × 25 mm source Z=0 face as its intended base and a 4 mm chamfer
+    marking the source +X/+Z edge.
+  </li>
+  <li>
+    <strong>Imported observation:</strong> the supplied STL applies source
+    rotations X=20°, Y=-15°, Z=10° and translation (8, -4, 3). Its measured
+    bounds are approximately X=-0.420..46.050, Y=-8.549..25.460 and Z=3..31.469
+    coordinate units, so its minimum Z is 3 rather than zero.
+  </li>
+  <li>
+    <strong>Slicer operation:</strong> PrusaSlicer 2.9.6's documented Place on
+    Face operation aligns the selected plane with the bed. The final bed
+    placement and all resulting layers still need review.
+  </li>
+</ul>
+<p>
+  The official
+  <a href="https://help.prusa3d.com/article/place-on-face-tool_1781"
+    >Prusa Place on Face documentation</a
+  >
+  was checked on 18 October 2026. Other slicers may name or implement the action
+  differently. InspectMesh's orientation planner compares six axis-aligned
+  candidates; it does not change or export the model.
+</p>
+
+<h2>Compare the base face with the actual decision</h2>
+<p>
+  The largest flat face is a candidate base, not an automatic recommendation. A
+  large contact estimate may improve stability but can put a cosmetic face on
+  the bed, change a bore's build direction, increase overhangs elsewhere or
+  align a loaded feature poorly across layers. Use the
+  <a href="{{ GuideSlug.RouteHowToOrientAnStlFileFor3dPrinting }}"
+    >full orientation workflow</a
+  >
+  and distinguish
+  <a href="{{ GuideSlug.Route3dPrintBridgeVsOverhang }}"
+    >bridges from overhangs</a
+  >
+  before choosing only by contact.
+</p>
+
+<h2>Verify after placing on the face</h2>
+<ol>
+  <li>
+    Confirm physical scale from a known dimension; STL does not declare units.
+  </li>
+  <li>
+    Select the intended planar face in the target slicer and use its documented
+    face-alignment operation.
+  </li>
+  <li>Confirm minimum Z/bed placement and the resulting X/Y/Z envelope.</li>
+  <li>
+    Inspect contact, brims/supports, overhangs, bridges and critical visible or
+    mating faces.
+  </li>
+  <li>Slice and inspect the first layer and first unsupported feature.</li>
+  <li>
+    Save the slicer project/profile so the chosen rotation is reproducible.
+  </li>
+</ol>
+
+<h2>When a face-alignment tool is not enough</h2>
+<p>
+  Curved surfaces, tiny facets and noisy scanned meshes may not offer one useful
+  plane. A multi-part assembly can also need a shared coordinate system, and the
+  intended base may not exist as a planar mesh face. Correct the source CAD or
+  use a measured manual rotation and verify the sliced layers. Do not flatten
+  geometry or delete triangles merely to make a face selectable.
+</p>
+<p>
+  Next, compare the six candidates in the
+  <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
+    >orientation planner</a
+  >, apply the broader
+  <a href="{{ GuideSlug.RouteHowToOrientAnStlFileFor3dPrinting }}"
+    >orientation decision</a
+  >, and confirm
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >printer fit and allowances</a
+  >.
+</p>

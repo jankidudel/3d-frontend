@@ -40,32 +40,31 @@
   </section>
   @if (!hasSearchQuery()) {
     <section class="card wall-guides" aria-labelledby="wall-guides-title">
-      <h2 id="wall-guides-title">Start with wall thickness</h2>
+      <h2 id="wall-guides-title">Orientation, overhangs and support access</h2>
       <p>
-        <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
-          >Decide what a wall observation means</a
+        <a [href]="guideRouteUrl.RouteHowToOrientAnStlFileFor3dPrinting"
+          >Choose an orientation from the requirement that matters most</a
         >
-        for a solid feature, empty gap, process and intended use.
+        before confirming the actual layers in the target slicer.
       </p>
       <ul>
         <li>
-          <a [href]="guideRouteUrl.RouteHowToCheckStlWallThicknessFor3dPrinting"
-            >STL units and sampled-result workflow</a
+          <a [href]="guideRouteUrl.RouteHowToLayAnStlFlatOnPrintBed"
+            >Lay an imported STL flat deliberately</a
           >
-          — confirm an assumed unit and compare the saved copy with sliced
-          layers.
+          - separate face alignment from final bed placement.
         </li>
         <li>
-          <a [href]="guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting"
-            >3MF placed-build workflow</a
+          <a [href]="guideRouteUrl.Route3dPrintBridgeVsOverhang"
+            >Distinguish a bridge from an overhang</a
           >
-          — check declared units, repeated instances and transforms.
+          - inspect anchors and the first affected layer.
         </li>
         <li>
-          <a [href]="guideRouteUrl.RouteHowToInspectStl3mfCrossSections"
-            >Visual cross-section inspection</a
+          <a [href]="guideRouteUrl.RouteSupportsInsideHolesAndChannels"
+            >Plan support access inside holes and channels</a
           >
-          — distinguish material boundaries from empty clearance.
+          - confirm the support can leave without damaging a critical face.
         </li>
       </ul>
     </section>
