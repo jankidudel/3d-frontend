@@ -40,7 +40,11 @@ export class CookieConsentService {
   changeChoice(): void {
     this.choice.set(null);
     if (this.isBrowser) {
-      localStorage.removeItem(STORAGE_KEY);
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // The in-memory consent choice remains usable when storage is denied.
+      }
     }
   }
 
@@ -48,16 +52,24 @@ export class CookieConsentService {
     if (!this.isBrowser) {
       return null;
     }
-    const storedChoice = localStorage.getItem(STORAGE_KEY);
-    return storedChoice === 'accepted' || storedChoice === 'rejected'
-      ? storedChoice
-      : null;
+    try {
+      const storedChoice = localStorage.getItem(STORAGE_KEY);
+      return storedChoice === 'accepted' || storedChoice === 'rejected'
+        ? storedChoice
+        : null;
+    } catch {
+      return null;
+    }
   }
 
   private saveChoice(choice: CookieConsentChoice): void {
     this.choice.set(choice);
     if (this.isBrowser) {
-      localStorage.setItem(STORAGE_KEY, choice);
+      try {
+        localStorage.setItem(STORAGE_KEY, choice);
+      } catch {
+        // Consent lasts in this tab only when browser storage is unavailable.
+      }
     }
   }
 }

@@ -43,6 +43,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    path: PublicRoutePath.QuoteGenerator,
+    renderMode: RenderMode.Prerender,
+  },
+  {
     path: PublicRoutePath.FilamentLengthCalculator,
     renderMode: RenderMode.Prerender,
   },

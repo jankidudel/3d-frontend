@@ -1,0 +1,186 @@
+.quotation-page {
+  --accent: #8a3f14;
+}
+.quote-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+.quote-editor,
+.customer-preview {
+  min-width: 0;
+}
+.customer-preview {
+  position: sticky;
+  top: 1rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface, #fff);
+}
+.editor-section {
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.field {
+  min-width: 0;
+}
+.field.wide {
+  grid-column: 1/-1;
+}
+label {
+  display: block;
+  margin-block: 0.6rem 0.35rem;
+  font-weight: 650;
+}
+input:not([type='checkbox']),
+select,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface, #fff);
+}
+textarea {
+  resize: vertical;
+}
+[aria-invalid='true'] {
+  border-color: #a22e20;
+}
+.field-error {
+  color: #9c281f;
+  font-size: 0.92rem;
+}
+.actions,
+.preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-block: 1rem;
+}
+.button {
+  white-space: normal;
+}
+.notice,
+.local-notice,
+.tax-notice,
+.draft-warning {
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1rem;
+  background: #fbf3e9;
+  color: #422b1d;
+}
+.source-label {
+  font-weight: 700;
+}
+.example-badge {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  color: #473013;
+  background: #f6e6b6;
+  border: 1px solid #96752b;
+  border-radius: 0.3rem;
+  font-weight: 700;
+}
+.editor-logo,
+.document-logo {
+  display: block;
+  max-width: min(100%, 12rem);
+  max-height: 6rem;
+  object-fit: contain;
+  margin-block: 0.75rem;
+}
+.customer-document {
+  overflow-wrap: anywhere;
+}
+.customer-document h3 {
+  margin-top: 1.7rem;
+}
+dl {
+  margin: 0;
+}
+dt {
+  font-weight: 700;
+}
+dd {
+  margin: 0.2rem 0 0.9rem;
+}
+.charges {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+.total {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.preserve-text {
+  white-space: pre-wrap;
+}
+.review-checkbox {
+  display: flex;
+  align-items: start;
+  gap: 0.6rem;
+}
+.review-checkbox input {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex-shrink: 0;
+}
+.preview-only {
+  display: block;
+  max-width: 52rem;
+  margin-inline: auto;
+}
+.preview-only .customer-preview {
+  position: static;
+}
+.tool-explanation {
+  max-width: 65ch;
+  margin-top: 4rem;
+}
+.tool-explanation section {
+  margin-top: 2rem;
+}
+@media (max-width: 900px) {
+  .quote-workspace {
+    grid-template-columns: 1fr;
+  }
+  .customer-preview {
+    position: static;
+  }
+}
+@media (max-width: 480px) {
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media print {
+  .editor-only,
+  .quote-editor,
+  .preview-actions,
+  .tool-explanation,
+  [role='status'],
+  [role='alert'] {
+    display: none !important;
+  }
+  .quote-workspace {
+    display: block;
+  }
+  .customer-preview {
+    position: static;
+    border: 0;
+  }
+}

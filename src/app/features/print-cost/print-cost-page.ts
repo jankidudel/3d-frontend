@@ -11,7 +11,7 @@ import {
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { DOCUMENT } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { JobCreationService } from '../../core/api/job-creation.service';
@@ -51,6 +51,8 @@ import {
   styleUrl: './print-cost-page.scss',
 })
 export class PrintCostPage {
+  private readonly planningSession = inject(JobPlanningSession);
+  private readonly router = inject(Router);
   readonly jobMode = signal(
     inject(JobPlanningSession).hasOffer(PlanningDestination.Cost),
   );
@@ -219,6 +221,21 @@ export class PrintCostPage {
         this.error.set(uploadErrorMessage(error));
       },
     });
+  }
+  async sendProductionCost(): Promise<void> {
+    const result = this.result();
+    if (!result) {
+      return;
+    }
+    this.planningSession.offer({
+      destination: PlanningDestination.Price,
+      value: result.totalCost,
+      currency: this.currency(),
+      plannedQuantity: 1,
+      basis:
+        'Complete single-print production cost, including entered allowances once. Use job-total mode without another quantity multiplication or failure uplift.',
+    });
+    await this.router.navigateByUrl(PublicRouteUrl.PrintPriceCalculator);
   }
   format(value: number | null): string {
     if (value === null || !Number.isFinite(value)) {

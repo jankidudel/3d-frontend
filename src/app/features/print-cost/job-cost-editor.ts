@@ -198,6 +198,7 @@ export class JobCostEditor {
     this.session.offer({
       destination: PlanningDestination.Price,
       value: record.result.total,
+      plannedQuantity: record.inputs.requestedQuantity,
       basis:
         'Explicit job production total. No quantity multiplication or additional failure uplift.',
       currency: this.input().currency,

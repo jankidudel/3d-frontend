@@ -9,7 +9,10 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { ContactService } from '../../core/api/contact.service';
-import { TurnstileService } from '../../core/contact/turnstile.service';
+import {
+  responsiveTurnstileSize,
+  TurnstileService,
+} from '../../core/contact/turnstile.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SITE_CONFIG } from '../../core/site/site-config';
@@ -208,6 +211,7 @@ export class ContactPage implements AfterViewInit {
       const turnstile = await this.turnstile.load();
       this.captchaWidgetId = turnstile.render(element, {
         sitekey: this.captchaSiteKey,
+        size: responsiveTurnstileSize(window.innerWidth),
         callback: (token) => this.captchaToken.set(token),
         'expired-callback': () => this.captchaToken.set(''),
         'error-callback': () =>

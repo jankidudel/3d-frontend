@@ -475,7 +475,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 31,
     enabled: true,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-20',
     publishDate: '2026-09-18',
     checkEditorialTargets: false,
   },

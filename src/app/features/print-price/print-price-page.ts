@@ -1,3 +1,5 @@
+import { QuotationSession } from '../quotation/quotation-session';
+import { localCalendarDay, moneyCents } from '../quotation/quotation';
 import {
   PlannerCurrency,
   chosenCurrency,
@@ -5,7 +7,7 @@ import {
 } from '../repeat-workflows/currency-preference';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal, OnDestroy } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { createPdf } from '../../shared/pdf-engine';
@@ -35,6 +37,8 @@ import {
 })
 export class PrintPricePage implements OnDestroy {
   private readonly session = inject(JobPlanningSession);
+  private readonly quotations = inject(QuotationSession);
+  private readonly router = inject(Router);
   readonly guides = GuideRouteUrl;
   readonly sourceSummary = computed(() => {
     const record = this.sourceRecord();
@@ -48,7 +52,7 @@ export class PrintPricePage implements OnDestroy {
   readonly sellingFee = signal(0);
   readonly fixedFee = signal(0);
   readonly feesInCost = signal(false);
-  readonly pending = signal(this.session.take(PlanningDestination.Price));
+  readonly pending = signal(this.session.peek(PlanningDestination.Price));
   readonly sourceRecord = signal(this.session.priceSource ?? null);
   readonly copyFallback = signal('');
   readonly formula = computed(() =>
@@ -74,7 +78,8 @@ export class PrintPricePage implements OnDestroy {
   readonly margin = signal(30);
   readonly minimumOrder = signal(0);
   readonly reference = signal('');
-  readonly quoteDate = signal(new Date().toISOString().slice(0, 10));
+  readonly quoteDate = signal(localCalendarDay());
+  readonly description = signal('');
   readonly finishing = signal(0);
   readonly packaging = signal(0);
   readonly extra = signal(0);
@@ -160,6 +165,7 @@ export class PrintPricePage implements OnDestroy {
       this.pricingMethod.set(draft['pricingMethod'] as PricingMethod);
       this.feesInCost.set(draft['feesAlreadyInCost'] === true);
       this.reference.set(String(draft['reference'] ?? ''));
+      this.description.set(String(draft['description'] ?? ''));
       this.quoteDate.set(String(draft['quoteDate'] ?? ''));
       this.currency.set(draft['currency'] as PlannerCurrency);
     }
@@ -176,6 +182,7 @@ export class PrintPricePage implements OnDestroy {
     this.session.priceDraft = {
       ...this.inputs(),
       reference: this.reference(),
+      description: this.description(),
       quoteDate: this.quoteDate(),
       currency: this.currency(),
     };
@@ -216,10 +223,49 @@ export class PrintPricePage implements OnDestroy {
       this.currency.set(offer.currency as PlannerCurrency);
     }
     this.sourceRecord.set(offer.record ?? null);
+    if (offer.plannedQuantity) {
+      this.quantity.set(offer.plannedQuantity);
+    }
+    this.session.take(PlanningDestination.Price);
     this.pending.set(null);
     this.exportMessage.set(
-      'Applied job production total. Current reference, quantity and pricing choices are preserved. Quantity does not multiply K.',
+      'Applied job production total and planned quantity when supplied. Reference and pricing choices are retained. Quantity does not multiply K.',
     );
+  }
+  dismissJob(): void {
+    this.session.take(PlanningDestination.Price);
+    this.pending.set(null);
+  }
+  readonly canCreateQuotation = computed(() => {
+    const price = this.result();
+    return (
+      !!price &&
+      price.orderQuote > 0 &&
+      moneyCents(price.orderQuote) !== null &&
+      this.reference().length <= 200 &&
+      this.description().length <= 200
+    );
+  });
+  async createCustomerQuotation(): Promise<void> {
+    const price = this.result();
+    if (!price || !this.canCreateQuotation()) {
+      this.exportMessage.set(
+        'Enter valid pricing inputs and a positive final order price first.',
+      );
+      return;
+    }
+    this.quotations.offer({
+      schemaVersion: 1,
+      sourceRoute: PublicRouteUrl.PrintPriceCalculator,
+      timestamp: new Date().toISOString(),
+      currency: this.currency(),
+      finalOrderPrice: price.orderQuote,
+      quantity: this.quantity(),
+      reference: this.reference(),
+      description: this.description(),
+      assumptions: structuredClone(this.inputs()),
+    });
+    await this.router.navigateByUrl(PublicRouteUrl.QuoteGenerator);
   }
   async copyQuote(): Promise<void> {
     const result = this.result();
@@ -258,8 +304,10 @@ export class PrintPricePage implements OnDestroy {
       pdf.text(line, 14, y);
       y += 5;
     }
-    pdf.save('inspectmesh-quote.pdf');
-    this.exportMessage.set('Printable quote PDF download requested.');
+    pdf.save('inspectmesh-internal-pricing-worksheet.pdf');
+    this.exportMessage.set(
+      'Internal pricing worksheet PDF download requested.',
+    );
   }
   printWorksheet(): void {
     window.print();

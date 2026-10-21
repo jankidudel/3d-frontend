@@ -8,7 +8,10 @@ import {
   signal,
 } from '@angular/core';
 import { SubscriptionService } from '../../api/subscription.service';
-import { TurnstileService } from '../../contact/turnstile.service';
+import {
+  responsiveTurnstileSize,
+  TurnstileService,
+} from '../../contact/turnstile.service';
 import { SITE_CONFIG } from '../../site/site-config';
 import { SubscriptionPreferencesService } from './subscription-preferences.service';
 
@@ -157,6 +160,7 @@ export class SubscriptionFormComponent {
       const turnstile = await this.turnstile.load();
       this.captchaWidgetId = turnstile.render(element, {
         sitekey: this.captchaSiteKey,
+        size: responsiveTurnstileSize(window.innerWidth),
         callback: (token) => {
           this.captchaToken.set(token);
           this.error.set('');

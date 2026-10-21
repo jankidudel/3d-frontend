@@ -236,4 +236,40 @@ describe('AnalyticsService', () => {
     ]);
     expect(JSON.stringify(events)).not.toContain('model.3mf');
   });
+  it('tracks quotation categories only after consent and excludes all document fields', () => {
+    const document = TestBed.inject(DOCUMENT);
+    const analytics = TestBed.inject(AnalyticsService);
+    const consent = TestBed.inject(CookieConsentService);
+    TestBed.flushEffects();
+    analytics.trackQuotation(
+      AnalyticsEvent.QuoteOpened,
+      'manual',
+      false,
+      false,
+    );
+    expect(queuedCommands(document)).toEqual([]);
+    consent.accept();
+    TestBed.flushEffects();
+    analytics.trackQuotation(
+      AnalyticsEvent.QuotePdfExported,
+      'example',
+      true,
+      true,
+    );
+    expect(queuedCommands(document)).toContainEqual([
+      'event',
+      'quotation_pdf_exported',
+      { source_type: 'example', reviewed: 'yes', sample: 'yes' },
+    ]);
+    consent.reject();
+    TestBed.flushEffects();
+    const previous = queuedCommands(document).length;
+    analytics.trackQuotation(
+      AnalyticsEvent.QuoteReviewed,
+      'calculator',
+      true,
+      false,
+    );
+    expect(queuedCommands(document)).toHaveLength(previous);
+  });
 });

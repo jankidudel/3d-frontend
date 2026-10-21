@@ -394,6 +394,14 @@
       }
     </section>
     <section class="content">
+      <button
+        class="button"
+        type="button"
+        [disabled]="!result()"
+        (click)="sendProductionCost()"
+      >
+        Use this production cost in the price calculator
+      </button>
       <p>
         Need to quote a customer? Use the
         <a [routerLink]="routeUrl.PrintPriceCalculator"

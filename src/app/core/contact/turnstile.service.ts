@@ -1,11 +1,25 @@
 import { DOCUMENT } from '@angular/common';
 import { inject, Injectable } from '@angular/core';
 
+export const TurnstileSize = {
+  Normal: 'normal',
+  Flexible: 'flexible',
+  Compact: 'compact',
+} as const;
+export type TurnstileSize = (typeof TurnstileSize)[keyof typeof TurnstileSize];
+const COMPACT_MAX_VIEWPORT_WIDTH = 332;
+export function responsiveTurnstileSize(viewportWidth: number): TurnstileSize {
+  return viewportWidth <= COMPACT_MAX_VIEWPORT_WIDTH
+    ? TurnstileSize.Compact
+    : TurnstileSize.Flexible;
+}
+
 interface Turnstile {
   render(
     container: HTMLElement,
     options: {
       sitekey: string;
+      size?: TurnstileSize;
       callback: (token: string) => void;
       'expired-callback': () => void;
       'error-callback': () => void;

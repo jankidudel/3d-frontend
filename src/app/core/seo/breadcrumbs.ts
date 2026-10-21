@@ -78,6 +78,15 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
       },
     ];
   }
+  if (normalizedPath === PublicRouteUrl.QuoteGenerator) {
+    return [
+      { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
+      {
+        label: '3D Printing Quote Generator',
+        href: PublicRouteUrl.QuoteGenerator,
+      },
+    ];
+  }
   if (normalizedPath === PublicRouteUrl.PrintPriceCalculator) {
     return [
       { label: 'All 3D tools', href: PublicRouteUrl.AllTools },

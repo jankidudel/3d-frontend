@@ -1,0 +1,530 @@
+<main class="page quotation-page">
+  <header class="editor-only">
+    <p class="eyebrow">Customer quotation builder</p>
+    <h1>3D Printing Quote Generator</h1>
+    <p class="lead">
+      Prepare a customer-facing quotation using a price you have reviewed. Add
+      your business details, the agreed print specification and a model
+      reference, then download a PDF to send yourself.
+    </p>
+    <p class="local-notice">
+      Your draft stays in this tab unless you choose to save it in this browser
+      or download it. This tool does not send quotes, store customer files
+      online or record customer acceptance.
+    </p>
+  </header>
+  @if (previewOnly()) {
+    <div class="preview-actions">
+      <button class="button" type="button" (click)="previewOnly.set(false)">
+        Back to editor
+      </button>
+      <button
+        class="button"
+        type="button"
+        [disabled]="busy() || issues().length > 0"
+        (click)="downloadPdf()"
+      >
+        Download quotation PDF
+      </button>
+    </div>
+  }
+  <div class="quote-workspace" [class.preview-only]="previewOnly()">
+    <div class="quote-editor" [hidden]="previewOnly()">
+      <p class="source-label">{{ sourceLabel() }}</p>
+      @if (draft().fictionalExample) {
+        <p class="example-badge">Fictional example</p>
+      }
+      @if (pending()) {
+        <aside class="notice">
+          <p>
+            A new order price is available from the price calculator. It will
+            not overwrite this draft until you choose to apply it.
+          </p>
+          <button type="button" class="button" (click)="applyPrice()">
+            Use the imported order price
+          </button>
+        </aside>
+      }
+      <button
+        class="button button-secondary"
+        type="button"
+        (click)="loadExample()"
+      >
+        Try a fictional example
+      </button>
+      <p>
+        The example contains invented business details and a hypothetical price.
+        It is not a market rate or a physical print test.
+      </p>
+      @for (section of sections; track section.title) {
+        <section class="editor-section">
+          <h2>{{ section.title }}</h2>
+          @if (section.title === 'Model reference') {
+            <p>{{ modelStatus }}</p>
+            <p>
+              These are operator-entered references. No model file is uploaded,
+              embedded or approved.
+            </p>
+          }
+          @if (section.title === 'Scope and terms') {
+            <p>
+              Describe the work and terms you intend to offer. InspectMesh does
+              not supply or validate your business terms.
+            </p>
+          }
+          <div class="field-grid">
+            @for (field of section.fields; track field.key) {
+              <div class="field" [class.wide]="field.multiline">
+                <label [for]="field.key">{{ field.label }}</label>
+                @if (field.multiline) {
+                  <textarea
+                    [id]="field.key"
+                    [formField]="fields[field.key]"
+                    rows="4"
+                    (input)="edited()"
+                    [attr.aria-invalid]="!!fieldError(field.key)"
+                    [attr.aria-describedby]="
+                      fieldError(field.key) ? field.key + '-error' : null
+                    "
+                  ></textarea>
+                } @else {
+                  <input
+                    [id]="field.key"
+                    [type]="
+                      field.key === 'businessEmail' ||
+                      field.key === 'customerEmail'
+                        ? 'email'
+                        : 'text'
+                    "
+                    [formField]="fields[field.key]"
+                    (input)="edited()"
+                    [attr.aria-invalid]="!!fieldError(field.key)"
+                    [attr.aria-describedby]="
+                      fieldError(field.key) ? field.key + '-error' : null
+                    "
+                  />
+                }
+                @if (fieldError(field.key)) {
+                  <p class="field-error" [id]="field.key + '-error'">
+                    {{ fieldError(field.key) }}
+                  </p>
+                }
+              </div>
+            }
+          </div>
+          @switch (section.title) {
+            @case ('Business and customer') {
+              <label for="quote-logo"
+                >Optional business logo (PNG/JPEG, at most 1 MiB and 4
+                megapixels)</label
+              >
+              <input
+                id="quote-logo"
+                type="file"
+                accept="image/png,image/jpeg"
+                (change)="addLogo($event)"
+              />
+              @if (draft().logo; as logo) {
+                <img
+                  class="editor-logo"
+                  [src]="logo.dataUrl"
+                  alt="Business logo selected for the quotation"
+                /><button type="button" (click)="removeLogo()">
+                  Remove logo
+                </button>
+              }
+            }
+            @case ('Quotation details') {
+              <div class="field-grid">
+                <div class="field">
+                  <label for="issueDate">Issue date</label
+                  ><input
+                    id="issueDate"
+                    type="date"
+                    [formField]="fields.issueDate"
+                    (input)="edited()"
+                    [attr.aria-invalid]="!!fieldError('issueDate')"
+                    aria-describedby="issueDate-error"
+                  />
+                  <p class="field-error" id="issueDate-error">
+                    {{ fieldError('issueDate') }}
+                  </p>
+                </div>
+                <div class="field">
+                  <label for="validUntil">Valid until (optional)</label
+                  ><input
+                    id="validUntil"
+                    type="date"
+                    [formField]="fields.validUntil"
+                    (input)="edited()"
+                    [attr.aria-invalid]="!!fieldError('validUntil')"
+                    aria-describedby="validUntil-error"
+                  />
+                  <p class="field-error" id="validUntil-error">
+                    {{ fieldError('validUntil') }}
+                  </p>
+                </div>
+                <div class="field">
+                  <label for="quote-currency">Currency</label
+                  ><select
+                    id="quote-currency"
+                    [formField]="fields.currency"
+                    (change)="edited()"
+                  >
+                    @for (code of currencies; track code) {
+                      <option [value]="code">{{ code }}</option>
+                    }
+                  </select>
+                  <p>Currency relabels amounts; it does not convert them.</p>
+                </div>
+              </div>
+            }
+            @case ('Job specification') {
+              <label for="quantity">Quantity (positive whole number)</label
+              ><input
+                id="quantity"
+                type="text"
+                inputmode="numeric"
+                [formField]="fields.quantity"
+                (input)="edited()"
+                [attr.aria-invalid]="!!fieldError('quantity')"
+                aria-describedby="quantity-help quantity-error"
+              />
+              <p id="quantity-help">
+                Quantity describes this job. It does not multiply the order
+                price again.
+              </p>
+              <p class="field-error" id="quantity-error">
+                {{ fieldError('quantity') }}
+              </p>
+            }
+            @case ('Customer price') {
+              <p>
+                Use a reviewed selling price, not your production cost. Tax is
+                not calculated here; resolve any applicable tax requirements
+                before sending.
+              </p>
+              <label for="orderPrice">Selected order selling price</label
+              ><input
+                id="orderPrice"
+                type="text"
+                inputmode="decimal"
+                [formField]="fields.orderPrice"
+                (input)="edited()"
+                [attr.aria-invalid]="!!fieldError('orderPrice')"
+                aria-describedby="orderPrice-error"
+              />
+              <p class="field-error" id="orderPrice-error">
+                {{ fieldError('orderPrice') }}
+              </p>
+              <label for="deliveryMode">Delivery charge basis</label
+              ><select
+                id="deliveryMode"
+                [formField]="fields.deliveryMode"
+                (change)="edited()"
+              >
+                <option [value]="deliveryModes.Included">
+                  Included in order price
+                </option>
+                <option [value]="deliveryModes.Additional">
+                  Additional delivery charge
+                </option>
+              </select>
+              <p>
+                Check whether your selling price already covers delivery before
+                adding another charge.
+              </p>
+              @if (draft().deliveryMode === deliveryModes.Additional) {
+                <label for="deliveryAmount">Additional delivery amount</label
+                ><input
+                  id="deliveryAmount"
+                  type="text"
+                  inputmode="decimal"
+                  [formField]="fields.deliveryAmount"
+                  (input)="edited()"
+                  [attr.aria-invalid]="!!fieldError('deliveryAmount')"
+                  aria-describedby="deliveryAmount-error"
+                />
+                <p class="field-error" id="deliveryAmount-error">
+                  {{ fieldError('deliveryAmount') }}
+                </p>
+              }
+              @if (charges(); as amounts) {
+                <p class="quoted-total">
+                  Total quoted charges:
+                  <strong>{{
+                    money(amounts.totalCents, draft().currency)
+                  }}</strong>
+                </p>
+              }
+              <p class="tax-notice">{{ taxNotice }}</p>
+            }
+          }
+        </section>
+      }
+      <section class="editor-section">
+        <h2>Review and export</h2>
+        @if (draft().source === sources.Calculator) {
+          <label class="review-checkbox"
+            ><input
+              id="reviewed"
+              type="checkbox"
+              [checked]="draft().reviewed"
+              (change)="reviewed($event)"
+              [attr.aria-invalid]="!!fieldError('reviewed')"
+              aria-describedby="reviewed-error"
+            />I have reviewed this selling price and job scope</label
+          >
+          <p class="field-error" id="reviewed-error">
+            {{ fieldError('reviewed') }}
+          </p>
+        }
+        <p>
+          Check the customer preview before downloading. Changes to the model,
+          quantity or specification may require a revised quotation.
+        </p>
+        @if (issues().length) {
+          <p class="notice">
+            Complete the highlighted details before preview or PDF export.
+            Editable drafts can be saved before all customer details are
+            complete.
+          </p>
+        }
+        <div class="actions">
+          <button class="button" type="button" (click)="showPreview()">
+            Preview customer quotation</button
+          ><button
+            class="button"
+            type="button"
+            [disabled]="busy() || issues().length > 0"
+            (click)="downloadPdf()"
+          >
+            Download quotation PDF
+          </button>
+        </div>
+        <p class="draft-warning">
+          Editable drafts can contain customer details and internal pricing.
+          Keep them private.
+        </p>
+        <div class="actions">
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="downloadDraft()"
+          >
+            Download editable draft</button
+          ><button
+            class="button button-secondary"
+            type="button"
+            (click)="save()"
+          >
+            Save draft in this browser</button
+          ><button
+            class="button button-secondary"
+            type="button"
+            (click)="clear()"
+          >
+            Clear this draft
+          </button>
+        </div>
+        <label for="quote-import"
+          >Import editable draft (quotation JSON, maximum 1 MiB)</label
+        ><input
+          id="quote-import"
+          type="file"
+          accept=".json,application/json"
+          (change)="importDraft($event)"
+        />
+        @if (hasSaved()) {
+          <p>
+            Stored in this browser only.
+            @if (savedAt()) {
+              Saved: {{ savedAt() }}
+            }
+          </p>
+          <button
+            type="button"
+            class="button button-secondary"
+            (click)="reopen()"
+          >
+            Reopen saved draft
+          </button>
+        }
+        <p>
+          <a [routerLink]="routes.PrintPriceCalculator"
+            >Return to price calculator</a
+          >. Your calculator and quotation drafts remain separate snapshots in
+          this tab.
+        </p>
+      </section>
+    </div>
+    <aside class="customer-preview" aria-labelledby="customer-preview-heading">
+      <h2 id="customer-preview-heading" tabindex="-1">
+        Customer quotation preview
+      </h2>
+      @if (preview(); as quote) {
+        <article class="customer-document">
+          @if (quote.logo) {
+            <img
+              class="document-logo"
+              [src]="quote.logo.dataUrl"
+              alt="Business logo"
+            />
+          }
+          @if (quote.fictionalExample) {
+            <p class="example-badge">Fictional example</p>
+          }
+          <h3>{{ quote.businessName }}</h3>
+          <p class="preserve-text">
+            {{ quote.businessEmail || 'Contact email not supplied' }}<br />{{
+              quote.address
+            }}
+          </p>
+          <h3>Customer</h3>
+          <p>{{ quote.customerName }}<br />{{ quote.customerEmail }}</p>
+          <h3>Quotation details</h3>
+          <p>
+            Reference: {{ quote.reference }}<br />Issue date:
+            {{ quote.issueDate }}
+            @if (quote.validUntil) {
+              <br />Valid until: {{ quote.validUntil }}
+            }
+            <br />Currency: {{ quote.currency }}
+          </p>
+          <h3>Job specification</h3>
+          <dl>
+            <dt>Job</dt>
+            <dd>{{ quote.jobTitle }}</dd>
+            <dt>Quantity</dt>
+            <dd>{{ quote.quantity }} (one order-level charge)</dd>
+            <dt>Material</dt>
+            <dd>{{ quote.material || 'To be agreed' }}</dd>
+            <dt>Colour</dt>
+            <dd>{{ quote.colour || 'To be agreed' }}</dd>
+            <dt>Finish</dt>
+            <dd>{{ quote.finish || 'To be agreed' }}</dd>
+            <dt>Agreed scope</dt>
+            <dd class="preserve-text">
+              {{ quote.agreedScope || 'To be agreed' }}
+            </dd>
+            <dt>Indicative lead time</dt>
+            <dd>{{ quote.leadTime || 'To be agreed' }}</dd>
+            <dt>Delivery scope</dt>
+            <dd>{{ quote.deliveryScope || 'To be agreed' }}</dd>
+          </dl>
+          <h3>Model reference</h3>
+          <p>{{ quote.modelStatus }}</p>
+          <dl>
+            <dt>Filename</dt>
+            <dd>{{ quote.modelFilename || 'Not supplied' }}</dd>
+            <dt>Revision</dt>
+            <dd>{{ quote.revision || 'Not supplied' }}</dd>
+            <dt>Declared units / metadata</dt>
+            <dd>{{ quote.units || 'Not supplied' }}</dd>
+          </dl>
+          @if (quote.reviewNotes) {
+            <p class="preserve-text">{{ quote.reviewNotes }}</p>
+          }
+          <p>
+            Operator-entered reference. No model file is embedded or verified.
+          </p>
+          <h3>Customer charges</h3>
+          <dl class="charges">
+            <dt>One order-level print charge</dt>
+            <dd>{{ money(quote.orderCents, quote.currency) }}</dd>
+            <dt>
+              {{
+                quote.deliveryMode === deliveryModes.Included
+                  ? 'Delivery included in order price'
+                  : 'Additional delivery charge'
+              }}
+            </dt>
+            <dd>
+              {{
+                quote.deliveryMode === deliveryModes.Included
+                  ? 'Included'
+                  : money(quote.deliveryCents, quote.currency)
+              }}
+            </dd>
+            <dt>Total quoted charges</dt>
+            <dd class="total">{{ money(quote.totalCents, quote.currency) }}</dd>
+          </dl>
+          @if (quote.includedWork) {
+            <h3>Included work</h3>
+            <p class="preserve-text">{{ quote.includedWork }}</p>
+          }
+          @if (quote.exclusions) {
+            <h3>Exclusions</h3>
+            <p class="preserve-text">{{ quote.exclusions }}</p>
+          }
+          @if (quote.paymentInstructions) {
+            <h3>Payment instructions</h3>
+            <p class="preserve-text">{{ quote.paymentInstructions }}</p>
+          }
+          <p class="tax-notice">{{ quote.taxNotice }}</p>
+          <p>{{ quote.acceptanceNotice }}</p>
+        </article>
+      } @else {
+        <p>
+          Complete the quotation details, then choose Preview customer
+          quotation. The customer preview contains no internal costs, margins or
+          pricing worksheet.
+        </p>
+      }
+    </aside>
+  </div>
+  <p role="status">{{ message() }}</p>
+  <p role="alert" class="field-error">{{ error() }}</p>
+  <div class="tool-explanation" [hidden]="previewOnly()">
+    <section>
+      <h2>Calculate the price before preparing the document</h2>
+      <p>
+        Use the
+        <a [routerLink]="routes.PrintCostCalculator"
+          >3D Print Cost Calculator</a
+        >
+        to establish your production cost, then the
+        <a [routerLink]="routes.PrintPriceCalculator"
+          >3D Printing Price Calculator</a
+        >
+        to choose a selling price. This generator presents the reviewed amount
+        to a customer; it does not calculate print time or prove that a job is
+        profitable.
+      </p>
+    </section>
+    <section>
+      <h2>Keep the model reference with the quote</h2>
+      <p>
+        Record the filename, revision, units and agreed print specification. If
+        you revise the geometry, make a revised quotation and retain the
+        matching file yourself. A typed filename is a reference, not
+        verification of the file or approval of its design.
+      </p>
+    </section>
+    <section>
+      <h2>What happens after download?</h2>
+      <p>
+        Send the quotation using your normal business process. Customer
+        acceptance, payment and production scheduling happen outside
+        InspectMesh. Download an editable draft if you want to reopen the
+        details later.
+      </p>
+    </section>
+    <section>
+      <h2>Frequently asked questions</h2>
+      <h3>Does this send a quotation to my customer?</h3>
+      <p>No. Download the document and send it yourself.</p>
+      <h3>Does the quotation include my profit margin?</h3>
+      <p>
+        The customer document shows the selling price and the scope you enter.
+        Your internal cost, margin and fee assumptions are excluded.
+      </p>
+      <h3>Can I reopen my quotation?</h3>
+      <p>
+        Yes. Import a draft downloaded from this tool, or reopen a draft you
+        explicitly saved in the same browser. Browser storage can be cleared and
+        does not provide cloud backup.
+      </p>
+    </section>
+  </div>
+</main>

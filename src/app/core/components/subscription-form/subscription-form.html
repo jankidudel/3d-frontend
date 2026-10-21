@@ -27,6 +27,7 @@
   @if (captchaAvailable) {
     <div
       class="verification"
+      role="group"
       [attr.aria-labelledby]="idPrefix() + '-captcha-label'"
     >
       <span [id]="idPrefix() + '-captcha-label'"

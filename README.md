@@ -149,3 +149,15 @@ The frontend sends allow-listed categories and aggregate buckets only. It does
 not send filenames, job IDs, report contents, raw geometry or calculator values,
 storage paths, or server error messages. Events no-op before consent and after
 consent is withdrawn.
+
+## Customer quotation workflow
+
+`/3d-printing-quote-generator` prepares a customer document from a reviewed order selling price. Production cost is transferred to `/3d-printing-price-calculator` in job-total mode once; planned quantity is context, not a second multiplier. The calculator retains the authoritative margin/markup, fee and minimum formulas and its separate internal pricing worksheet. Quotation handoffs are cloned historical snapshots held in `QuotationSession` memory.
+
+The quotation editor uses Angular signal forms. `customerQuotation()` is the only public document projection; preview and PDF take that projection, never the raw draft or internal assumptions. Charges round to integer cents once per displayed order/delivery charge. No tax, unit-price allocation, model inspection or acceptance is inferred. The source status remains unverified and sample status persists in the document.
+
+Drafts are in tab memory by default. Browser storage uses `inspectmesh-customer-quotation-v1` only after Save; Reopen is explicit and Clear removes only that key. Downloaded editable JSON can include private pricing and customer details. Imports validate the version, 1 MiB budget, bounded text, supported currencies, dates, quantities, money and historical pricing assumptions before replacing state. PNG/JPEG logos are signature-checked, decoded and constrained to 1 MiB / 4 megapixels; imported and saved logos are decoded again before use. Combined drafts exceeding 1 MiB are rejected. No remote logo, SVG or model upload is accepted.
+
+The existing jsPDF engine generates selectable customer text using bundled Liberation Sans fonts under their included OFL license. Unsupported font characters produce an actionable export error rather than corrupt output. PDF export keeps totals together, wraps long text and repeats continued-section labels and page numbers. Consent-gated quotation events contain only source category, reviewed state and sample status. No quotation values, names, filenames, JSON or form contents are sent to analytics. This editor does not wrap its fields in an auto-submitting form, and GA automatic form interaction collection is disabled in configuration.
+
+Run `npm run verify` for the existing regression suite, including quotation projection, rounding, handoffs, draft bounds, storage failure and inert rendering tests. A browser acceptance run must additionally open real PDFs and reparse downloaded JSON, check sample/manual/imported flows, local save/reopen/clear and denied storage, narrow layouts and long multi-page text with a logo. This local builder does not provide paid plans, hosted approval, accounts or production management.

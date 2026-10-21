@@ -124,6 +124,13 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
+    path: PublicRoutePath.QuoteGenerator,
+    loadComponent: () =>
+      import('./features/quotation/quotation-page').then(
+        (m) => m.QuotationPage,
+      ),
+  },
+  {
     path: PublicRoutePath.PrintPriceCalculator,
     loadComponent: () =>
       import('./features/print-price/print-price-page').then(

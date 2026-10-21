@@ -18,11 +18,15 @@
         <p>{{ offer.value }} {{ offer.currency }}. {{ offer.basis }}</p>
         <button type="button" (click)="applyJob()">
           Apply job total and its currency</button
-        ><button type="button" (click)="pending.set(null)">
-          Dismiss offer
-        </button>
+        ><button type="button" (click)="dismissJob()">Dismiss offer</button>
       </section>
     }
+    <label
+      >Optional job description<input
+        maxlength="200"
+        [value]="description()"
+        (input)="description.set($any($event.target).value)"
+    /></label>
     <div class="fields">
       <label
         >Optional quote/project reference<input
@@ -286,7 +290,7 @@
     </p>
     @if (result(); as price) {
       <section class="results" aria-live="polite">
-        <h2>Quote worksheet</h2>
+        <h2>Internal pricing worksheet</h2>
         <p class="quote-reference">
           {{ reference() || 'No reference' }} - {{ quoteDate() }} -
           {{ currency() }}
@@ -366,12 +370,12 @@
         </p>
         <div class="quote-actions">
           <button class="button" type="button" (click)="downloadPdf()">
-            Download quote PDF
+            Download internal pricing worksheet PDF
           </button>
           <button class="button" type="button" (click)="printWorksheet()">
-            Print worksheet</button
+            Print internal pricing worksheet</button
           ><button class="button" type="button" (click)="exportWorksheet()">
-            Download worksheet JSON</button
+            Download internal pricing worksheet JSON</button
           ><button class="button" type="button" (click)="copyQuote()">
             Copy quote summary
           </button>
@@ -382,6 +386,27 @@
         Use finite non-negative costs, positive whole quantity, and a valid fee
         denominator. Fees already in K require zero separate fees. Margin + fee
         must be below 100%; markup fee must be below 100%.
+      </p>
+    }
+    <div class="quote-actions">
+      <button
+        class="button"
+        type="button"
+        [disabled]="!canCreateQuotation()"
+        (click)="createCustomerQuotation()"
+        aria-describedby="customer-quote-help"
+      >
+        Create customer quotation
+      </button>
+    </div>
+    <p id="customer-quote-help">
+      Carry this order price into a customer document. Your internal cost and
+      margin stay out of the customer PDF.
+    </p>
+    @if (!canCreateQuotation()) {
+      <p class="error">
+        Correct the pricing inputs above and choose a positive final order price
+        to create a customer quotation.
       </p>
     }
     <p role="status">{{ exportMessage() }}</p>

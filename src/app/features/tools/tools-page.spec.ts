@@ -34,6 +34,7 @@ describe('ToolsPage', () => {
       'Planning and functional tools',
       'G-code and print workflow',
       'Collections and next-job planning',
+      'Prepare customer paperwork',
     ]);
     expect(
       fixture.nativeElement.querySelector('nav[aria-label="Breadcrumb"]'),

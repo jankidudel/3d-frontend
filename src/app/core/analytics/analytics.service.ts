@@ -1,3 +1,4 @@
+import type { QuoteSource } from '../../features/quotation/quotation';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { effect, inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
@@ -17,6 +18,10 @@ export type AnalyticsMaterial =
 
 export const AnalyticsEvent = {
   WorkflowCtaClicked: 'workflow_cta_clicked',
+  QuoteOpened: 'quotation_opened',
+  QuoteReviewed: 'quotation_reviewed',
+  QuotePreviewed: 'quotation_previewed',
+  QuotePdfExported: 'quotation_pdf_exported',
   ToolStarted: 'tool_started',
   ToolCompleted: 'tool_completed',
   ExampleLoaded: 'example_loaded',
@@ -454,6 +459,7 @@ export class AnalyticsService {
       allow_google_signals: false,
       anonymize_ip: true,
       send_page_view: false,
+      form_interactions: false,
     });
     this.initialised = true;
     this.trackPageView();
@@ -482,6 +488,22 @@ export class AnalyticsService {
     return url.split(/[?#]/, 1)[0] || '/';
   }
 
+  trackQuotation(
+    event:
+      | typeof AnalyticsEvent.QuoteOpened
+      | typeof AnalyticsEvent.QuoteReviewed
+      | typeof AnalyticsEvent.QuotePreviewed
+      | typeof AnalyticsEvent.QuotePdfExported,
+    source: QuoteSource,
+    reviewed: boolean,
+    fictionalExample: boolean,
+  ): void {
+    this.sendEvent(event, {
+      source_type: source,
+      reviewed: reviewed ? 'yes' : 'no',
+      sample: fictionalExample ? 'yes' : 'no',
+    });
+  }
   trackWorkflow(
     event: AnalyticsEventName,
     tool: string,

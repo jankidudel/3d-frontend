@@ -7,6 +7,7 @@ import { SubscriptionFormComponent } from './subscription-form';
 describe('SubscriptionFormComponent', () => {
   it('keeps Subscribe disabled until CAPTCHA verification succeeds', async () => {
     let verify: ((token: string) => void) | undefined;
+    let widgetSize: string | undefined;
     TestBed.configureTestingModule({
       imports: [SubscriptionFormComponent],
       providers: [
@@ -22,9 +23,13 @@ describe('SubscriptionFormComponent', () => {
               render: vi.fn(
                 (
                   _element: HTMLElement,
-                  options: { callback: (token: string) => void },
+                  options: {
+                    callback: (token: string) => void;
+                    size: string;
+                  },
                 ) => {
                   verify = options.callback;
+                  widgetSize = options.size;
                   return 'captcha-widget';
                 },
               ),
@@ -45,6 +50,7 @@ describe('SubscriptionFormComponent', () => {
     expect(fixture.nativeElement.textContent).toContain(
       'Complete verification to enable Subscribe.',
     );
+    expect(widgetSize).toBe('flexible');
 
     verify?.('verified-token');
     fixture.detectChanges();

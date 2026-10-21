@@ -13,6 +13,7 @@ export interface PlanningOffer {
   value: number;
   basis: string;
   currency?: string;
+  plannedQuantity?: number;
   gcodeSource?: boolean;
   sliced?: { hours: number | null; grams: number | null };
   record?: NonNullable<ReturnType<typeof jobRecord>>;
