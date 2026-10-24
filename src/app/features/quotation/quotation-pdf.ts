@@ -152,8 +152,9 @@ export async function createQuotationPdf(
   );
   paragraph(
     'Quotation details',
-    `Reference: ${document.reference}\nIssue date: ${document.issueDate}${document.validUntil ? `\nValid until: ${document.validUntil}` : ''}\nCurrency: ${document.currency}`,
+    `Reference: ${document.reference}\nQuotation version: ${document.versionNumber}${document.parentVersionNumber ? `\nRevises version: ${document.parentVersionNumber}` : ''}\nIssue date: ${document.issueDate}${document.validUntil ? `\nValid until: ${document.validUntil}` : ''}\nCurrency: ${document.currency}`,
   );
+  paragraph('What changed?', document.changeSummary);
   paragraph(
     'Job specification',
     `${document.jobTitle}\nQuantity: ${document.quantity} (job specification; the order charge is not multiplied again)\nMaterial: ${document.material || 'To be agreed'}\nColour: ${document.colour || 'To be agreed'}\nFinish: ${document.finish || 'To be agreed'}\nAgreed scope: ${document.agreedScope || 'To be agreed'}\nIndicative lead time: ${document.leadTime || 'To be agreed'}\nDelivery scope: ${document.deliveryScope || 'To be agreed'}`,

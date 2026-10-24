@@ -1,3 +1,4 @@
+import type { QuotationFamily } from './quotation-versions';
 import { Injectable } from '@angular/core';
 import {
   type QuotationDraft,
@@ -9,6 +10,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class QuotationSession {
   draft: QuotationDraft | null = null;
+  family: QuotationFamily | null = null;
   private pending: QuoteHandoff | null = null;
   offer(value: QuoteHandoff): void {
     this.pending = validateHandoff(value);

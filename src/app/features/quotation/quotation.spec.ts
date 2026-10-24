@@ -1,12 +1,5 @@
+import { quotationOffer } from './quotation-test-fixtures';
 import { describe, expect, it } from 'vitest';
-import { PublicRouteUrl } from '../../core/seo/public-routes';
-import { PlannerCurrency } from '../repeat-workflows/currency-preference';
-import {
-  calculatePrintPrice,
-  PricingMethod,
-  ProductionBasis,
-  type PrintPriceInputs,
-} from '../print-price/print-price';
 import {
   DeliveryMode,
   MAX_DRAFT_BYTES,
@@ -19,52 +12,17 @@ import {
   parseQuotation,
   quotationFromPrice,
   quotationIssues,
-  sampleQuotation,
+  sampleQuotation as unreviewedSampleQuotation,
   saveQuotation,
   serializeQuotation,
   loadQuotation,
   validateHandoff,
-  type QuoteHandoff,
 } from './quotation';
 
-export function quotationPricingInput(minimum = 0): PrintPriceInputs {
-  return {
-    productionBasis: ProductionBasis.JobTotal,
-    jobProductionCost: 39.192,
-    pricingMethod: PricingMethod.Margin,
-    sellingFeePercent: 5,
-    fixedSellingFee: 0,
-    feesAlreadyInCost: false,
-    materialPricePerKg: 20,
-    materialUsedGrams: 0,
-    wastePercent: 0,
-    printHours: 0,
-    printerWatts: 0,
-    electricityPricePerKwh: 0,
-    machineWearPerHour: 0,
-    labourHours: 0,
-    labourRate: 0,
-    fixedOrderOverhead: 0,
-    failurePercent: 0,
-    quantity: 5,
-    targetMarginPercent: 30,
-    minimumOrderCharge: minimum,
-  };
+function sampleQuotation() {
+  return { ...unreviewedSampleQuotation(), reviewed: true };
 }
-export function quotationOffer(minimum = 0): QuoteHandoff {
-  const assumptions = quotationPricingInput(minimum);
-  return {
-    schemaVersion: 1,
-    sourceRoute: PublicRouteUrl.PrintPriceCalculator,
-    timestamp: '2026-10-20T12:00:00Z',
-    currency: PlannerCurrency.GBP,
-    finalOrderPrice: calculatePrintPrice(assumptions)!.orderQuote,
-    quantity: 5,
-    reference: 'QUOTE-1',
-    description: 'Five spacers',
-    assumptions,
-  };
-}
+
 describe('customer quotations', () => {
   it('uses the local calendar day rather than UTC date serialization', () => {
     const date = new Date(2026, 9, 20, 0, 1);
@@ -216,7 +174,9 @@ describe('customer quotations', () => {
     const draft = parseQuotation(
       serializeQuotation({ ...sampleQuotation(), reviewNotes: text }),
     );
-    expect(customerQuotation(draft)?.reviewNotes).toBe(text);
+    expect(customerQuotation({ ...draft, reviewed: true })?.reviewNotes).toBe(
+      text,
+    );
   });
   it('does not claim a failed storage write succeeded or replace earlier saved state', () => {
     let previous = 'prior saved draft';

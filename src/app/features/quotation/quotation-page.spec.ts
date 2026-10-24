@@ -1,3 +1,6 @@
+import { quotationFamily } from './quotation-versions';
+import { quotationOffer } from './quotation-test-fixtures';
+import { PlannerCurrency } from '../repeat-workflows/currency-preference';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { QuotationPage } from './quotation-page';
@@ -68,6 +71,7 @@ it('shows an inert customer-only preview and preserves sample status after editi
   const page = fixture.componentInstance;
   page.draft.set({
     ...sampleQuotation(),
+    reviewed: true,
     reviewNotes: '<script>bad()</script>',
   });
   page.showPreview();
@@ -80,5 +84,44 @@ it('shows an inert customer-only preview and preserves sample status after editi
   expect(document.textContent).toContain('Fictional example');
   page.edited();
   expect(page.draft().fictionalExample).toBe(true);
-  expect(customerQuotation(page.draft())?.totalCents).toBe(6030);
+  expect(page.draft().reviewed).toBe(false);
+  expect(customerQuotation(page.draft())).toBeNull();
+});
+
+it('reviews repeated calculator offers, preserves customer/model fields, and acknowledges currency changes', () => {
+  const page = TestBed.createComponent(QuotationPage).componentInstance;
+  page.draft.set({ ...sampleQuotation(), reviewed: true });
+  page.family.set(quotationFamily(page.draft()));
+  page.keepVersion();
+  page.pending.set({
+    ...quotationOffer(),
+    currency: PlannerCurrency.USD,
+    quantity: 5,
+  });
+  page.applyPrice();
+  expect(page.priceConfirmation()).toBe(true);
+  expect(page.draft().currency).toBe(PlannerCurrency.GBP);
+  page.applyPrice(true);
+  expect(page.error()).toContain('does not convert');
+  expect(page.draft().currency).toBe(PlannerCurrency.GBP);
+  page.currencyAcknowledged.set(true);
+  page.applyPrice(true);
+  expect(page.draft().currency).toBe(PlannerCurrency.USD);
+  expect(page.draft().businessName).toBe('Example Print Studio');
+  expect(page.draft().customerName).toBe('Example Customer');
+  expect(page.draft().modelFilename).toBe('spacer-r2.stl');
+  expect(page.draft().reviewed).toBe(false);
+  expect(page.family().versions[0].customer.currency).toBe(PlannerCurrency.GBP);
+});
+
+it('keeps current draft and snapshots on malformed file import, with a specific rejection', async () => {
+  const page = TestBed.createComponent(QuotationPage).componentInstance;
+  page.draft.set({ ...sampleQuotation(), reviewed: true });
+  const before = structuredClone(page.draft());
+  const input = { files: [{ size: 1, text: async () => '{' }], value: 'file' };
+  await page.importDraft({ target: input } as unknown as Event);
+  expect(page.draft()).toEqual(before);
+  expect(page.error()).toContain(
+    'This file could not be imported. Your current draft has not changed.',
+  );
 });

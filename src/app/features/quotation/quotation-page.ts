@@ -1,3 +1,26 @@
+import { GuideSlug } from '../guides/generated/guide-slug.generated';
+import {
+  ARCHIVE_SCHEMA,
+  FAMILY_STORAGE_KEY,
+  MAX_FAMILY_BYTES,
+  keepQuotation,
+  parseArchive,
+  quotationFamily,
+  quotationPdfFilename,
+  reviseQuotation,
+  saveFamily,
+  serializeArchive,
+  type QuotationFamily,
+  type RetainedQuotation,
+} from './quotation-versions';
+import {
+  PROFILE_STORAGE_KEY,
+  applyProfile,
+  changedProfileFields,
+  parseProfile,
+  saveProfile,
+  type BusinessProfile,
+} from './quotation-profile';
 import {
   afterNextRender,
   Component,
@@ -22,7 +45,6 @@ import { decodeQuoteLogo, validateDraftLogo } from './quotation-logo';
 import {
   ACCEPTANCE_NOTICE,
   DeliveryMode,
-  MAX_DRAFT_BYTES,
   MODEL_STATUS,
   QUOTE_STORAGE_KEY,
   QuoteSource,
@@ -30,6 +52,7 @@ import {
   blankQuotation,
   customerQuotation,
   formatQuoteMoney,
+  moneyCents,
   loadQuotation,
   parseQuotation,
   populatedQuotation,
@@ -65,11 +88,31 @@ export class QuotationPage {
   private readonly analytics = inject(AnalyticsService);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly routes = PublicRouteUrl;
+  readonly guideSlug = GuideSlug;
   readonly draft = signal<QuotationDraft>(
     this.session.draft
       ? structuredClone(this.session.draft)
       : blankQuotation(''),
   );
+  readonly family = signal<QuotationFamily>(
+    this.session.family
+      ? structuredClone(this.session.family)
+      : quotationFamily(this.draft()),
+  );
+  readonly partialHistory = computed(
+    () =>
+      this.draft().versionNumber > 1 &&
+      this.family().versions.every(
+        (version) => version.draft.versionNumber > 1,
+      ),
+  );
+  readonly retained = signal<RetainedQuotation | null>(null);
+  readonly profile = signal<BusinessProfile | null>(null);
+  readonly profileConfirmation = signal<string[] | null>(null);
+  readonly priceConfirmation = signal(false);
+  readonly currencyAcknowledged = signal(false);
+  readonly specificationChanged = signal(false);
+  readonly hasSavedFamily = signal(false);
   readonly fields = form(this.draft, (path) => {
     for (const key of Object.keys(textLimits) as QuoteTextKey[]) {
       maxLength(path[key], textLimits[key]);
@@ -119,7 +162,10 @@ export class QuotationPage {
     },
     {
       title: 'Quotation details',
-      fields: [{ key: 'reference', label: 'Quote reference' }],
+      fields: [
+        { key: 'reference', label: 'Quote reference' },
+        { key: 'changeSummary', label: 'What changed?', multiline: true },
+      ],
     },
     {
       title: 'Job specification',
@@ -172,22 +218,39 @@ export class QuotationPage {
     });
     effect(() => {
       this.session.draft = structuredClone(this.draft());
+      this.session.family = {
+        ...structuredClone(this.family()),
+        current: structuredClone(this.draft()),
+      };
     });
     afterNextRender(() => {
       if (!this.draft().issueDate) {
-        this.draft.set(blankQuotation());
+        this.setDraft(blankQuotation(), true);
       }
       if (this.pending() && !populatedQuotation(this.draft())) {
         this.applyPrice();
       }
       this.refreshSaved();
+      this.refreshLocalRecords();
       this.track(AnalyticsEvent.QuoteOpened);
     });
   }
   fieldError(key: string): string {
     return this.issues().find((issue) => issue.field === key)?.message ?? '';
   }
-  edited(): void {
+  edited(field = ''): void {
+    if (
+      [
+        'quantity',
+        'material',
+        'finish',
+        'modelFilename',
+        'revision',
+        'units',
+      ].includes(field)
+    ) {
+      this.specificationChanged.set(true);
+    }
     this.draft.update((draft) => ({ ...draft, reviewed: false }));
     this.preview.set(null);
     this.error.set('');
@@ -222,12 +285,43 @@ export class QuotationPage {
       )
     );
   }
-  applyPrice(): void {
+  applyPrice(confirmed = false): void {
     const offer = this.pending();
-    if (!offer || !this.replaceAllowed()) {
+    if (!offer) {
       return;
     }
-    this.draft.set(quotationFromPrice(offer));
+    const populated = populatedQuotation(this.draft());
+    if (populated && !confirmed) {
+      this.priceConfirmation.set(true);
+      this.currencyAcknowledged.set(false);
+      return;
+    }
+    if (
+      populated &&
+      offer.currency !== this.draft().currency &&
+      !this.currencyAcknowledged()
+    ) {
+      this.error.set(
+        'Acknowledge that changing currency does not convert amounts.',
+      );
+      return;
+    }
+    const previous = this.draft();
+    this.setDraft(
+      populated
+        ? {
+            ...previous,
+            source: QuoteSource.Calculator,
+            internal: structuredClone(offer),
+            currency: offer.currency,
+            quantity: String(offer.quantity),
+            orderPrice: (moneyCents(offer.finalOrderPrice)! / 100).toFixed(2),
+            reviewed: false,
+          }
+        : quotationFromPrice(offer),
+      !populated,
+    );
+    this.priceConfirmation.set(false);
     this.session.take();
     this.pending.set(null);
     this.preview.set(null);
@@ -239,7 +333,7 @@ export class QuotationPage {
     if (!this.replaceAllowed()) {
       return;
     }
-    this.draft.set(sampleQuotation());
+    this.setDraft(sampleQuotation(), true);
     this.preview.set(null);
     this.message.set(
       'Fictional example loaded. No customer details are needed to try it.',
@@ -257,6 +351,7 @@ export class QuotationPage {
         ?.focus();
       return;
     }
+    this.retained.set(null);
     this.preview.set(customer);
     this.previewOnly.set(true);
     this.error.set('');
@@ -270,7 +365,8 @@ export class QuotationPage {
     );
   }
   async downloadPdf(): Promise<void> {
-    const customer = customerQuotation(this.draft());
+    const customer =
+      this.retained()?.customer ?? customerQuotation(this.draft());
     if (!customer || this.busy()) {
       this.showPreview();
       return;
@@ -279,9 +375,12 @@ export class QuotationPage {
     this.error.set('');
     try {
       const pdf = await createQuotationPdf(customer);
-      await pdf.save('inspectmesh-customer-quotation.pdf', {
-        returnPromise: true,
-      });
+      await pdf.save(
+        quotationPdfFilename(customer.reference, customer.versionNumber),
+        {
+          returnPromise: true,
+        },
+      );
       this.message.set(
         'Customer quotation PDF downloaded. Send it using your own business process.',
       );
@@ -299,14 +398,7 @@ export class QuotationPage {
   downloadDraft(): void {
     try {
       const text = serializeQuotation(this.draft());
-      const url = URL.createObjectURL(
-        new Blob([text], { type: 'application/json' }),
-      );
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = 'inspectmesh-editable-quotation.json';
-      anchor.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      this.downloadJson(text, 'inspectmesh-editable-quotation.json');
       this.message.set(
         'Editable draft downloaded. It can contain customer details and internal pricing; keep it private.',
       );
@@ -322,38 +414,53 @@ export class QuotationPage {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     input.value = '';
+    this.message.set('');
     if (!file) {
       return;
     }
     try {
-      if (file.size > MAX_DRAFT_BYTES) {
-        throw new Error(
-          'Editable drafts must be at most 1 MiB, including the logo.',
-        );
+      if (file.size > MAX_FAMILY_BYTES) {
+        throw new Error('Quotation archives must be 4 MiB or smaller.');
       }
-      const next = parseQuotation(await file.text());
-      await validateDraftLogo(next.logo);
-      if (!this.replaceAllowed()) {
-        return;
+      const text = await file.text();
+      const envelope = JSON.parse(text) as { schema?: string } | null;
+      if (envelope?.schema === ARCHIVE_SCHEMA) {
+        const family = parseArchive(text);
+        await this.validateFamilyLogos(family);
+        if (
+          (populatedQuotation(this.draft()) || this.family().versions.length) &&
+          !window.confirm(
+            `Import quotation archive for ${family.current.reference || 'unnamed quotation'} with ${family.versions.length} retained versions? This replaces the current quotation family.`,
+          )
+        ) {
+          return;
+        }
+        this.family.set(family);
+        this.setDraft(family.current);
+      } else {
+        const next = parseQuotation(text);
+        await validateDraftLogo(next.logo);
+        if (!this.replaceAllowed()) {
+          return;
+        }
+        this.setDraft(next, true);
       }
-      this.draft.set(next);
-      this.preview.set(null);
       this.error.set('');
       this.message.set(
         'Editable draft imported locally. Review its details before export.',
       );
     } catch (error: unknown) {
       this.error.set(
-        error instanceof Error
-          ? error.message
-          : 'This editable draft could not be imported. The current draft was kept.',
+        `This file could not be imported. Your current draft has not changed. ${error instanceof Error ? error.message : 'Invalid quotation file.'}`,
       );
     }
   }
+
   async addLogo(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     input.value = '';
+    this.message.set('');
     if (!file) {
       return;
     }
@@ -415,7 +522,7 @@ export class QuotationPage {
       if (!this.replaceAllowed()) {
         return;
       }
-      this.draft.set(saved.draft);
+      this.setDraft(saved.draft, true);
       this.preview.set(null);
       this.error.set('');
       this.savedAt.set(saved.savedAt);
@@ -428,22 +535,27 @@ export class QuotationPage {
   }
   clear(): void {
     if (
-      (populatedQuotation(this.draft()) || this.hasSaved()) &&
+      (populatedQuotation(this.draft()) ||
+        this.hasSaved() ||
+        this.hasSavedFamily() ||
+        this.family().versions.length) &&
       !window.confirm(
-        'Clear this draft and this quotation tool’s saved draft in this browser? This cannot be undone unless you downloaded a copy.',
+        'Clear the current quotation family, draft and saved quotation records in this browser? Download a private archive first to keep a copy. The business profile and other tools are not changed.',
       )
     ) {
       return;
     }
     try {
       localStorage.removeItem(QUOTE_STORAGE_KEY);
+      localStorage.removeItem(FAMILY_STORAGE_KEY);
     } catch {
       this.error.set(
         'Saved data could not be cleared. The current draft was kept; check browser storage permissions.',
       );
       return;
     }
-    this.draft.set(blankQuotation());
+    this.setDraft(blankQuotation(), true);
+    this.hasSavedFamily.set(false);
     this.session.take();
     this.pending.set(null);
     this.preview.set(null);
@@ -453,6 +565,199 @@ export class QuotationPage {
       'Quotation draft cleared. Other InspectMesh data was not changed.',
     );
     this.error.set('');
+  }
+  private setDraft(draft: QuotationDraft, resetFamily = false): void {
+    this.draft.set(structuredClone(draft));
+    if (resetFamily) {
+      this.family.set(quotationFamily(draft));
+    }
+    this.returnToDraft();
+    this.specificationChanged.set(false);
+  }
+  returnToDraft(): void {
+    this.retained.set(null);
+    this.preview.set(null);
+    this.previewOnly.set(false);
+  }
+  private runLocal(action: () => void): void {
+    this.message.set('');
+    try {
+      action();
+      this.error.set('');
+    } catch (error: unknown) {
+      this.error.set(
+        error instanceof Error
+          ? error.message
+          : 'Browser storage is unavailable. Your current draft has not changed.',
+      );
+    }
+  }
+  keepVersion(): void {
+    this.runLocal(() => {
+      this.family.set(keepQuotation(this.family(), this.draft()));
+      this.message.set(
+        'Kept locally in this tab. This does not record customer receipt or acceptance.',
+      );
+    });
+  }
+  createRevision(): void {
+    this.runLocal(() => {
+      const family = reviseQuotation(this.family(), this.draft());
+      this.family.set(family);
+      this.setDraft(family.current);
+      this.message.set(
+        'Revised quotation created. Describe what changed and review dates, scope and selling price.',
+      );
+    });
+  }
+  viewVersion(version: RetainedQuotation): void {
+    this.retained.set(structuredClone(version));
+    this.preview.set(structuredClone(version.customer));
+    this.previewOnly.set(true);
+    setTimeout(
+      () =>
+        this.host.nativeElement
+          .querySelector<HTMLElement>('#customer-preview-heading')
+          ?.focus(),
+      0,
+    );
+  }
+  private downloadJson(text: string, filename: string): void {
+    const url = URL.createObjectURL(
+      new Blob([text], { type: 'application/json' }),
+    );
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  downloadArchive(): void {
+    this.runLocal(() =>
+      this.downloadJson(
+        serializeArchive(this.family(), this.draft()),
+        'inspectmesh-quotation-archive.json',
+      ),
+    );
+  }
+  saveVersions(): void {
+    this.runLocal(() => {
+      saveFamily(localStorage, this.family(), this.draft());
+      this.hasSavedFamily.set(true);
+      this.message.set(
+        'Quotation versions saved in this browser. Later edits are not automatically saved. Browser storage is not a backup.',
+      );
+    });
+  }
+  async reopenVersions(): Promise<void> {
+    try {
+      const text = localStorage.getItem(FAMILY_STORAGE_KEY);
+      if (!text) {
+        throw new Error('No saved quotation versions in this browser.');
+      }
+      const family = parseArchive(text);
+      await this.validateFamilyLogos(family);
+      if (!this.replaceAllowed()) {
+        return;
+      }
+      this.family.set(family);
+      this.setDraft(family.current);
+      this.error.set('');
+      this.message.set(
+        'Saved quotation versions reopened. Review the current draft before export.',
+      );
+    } catch (error: unknown) {
+      this.error.set(
+        `The saved versions could not be reopened. Your current draft has not changed. ${error instanceof Error ? error.message : 'Browser storage unavailable.'}`,
+      );
+    }
+  }
+  private async validateFamilyLogos(family: QuotationFamily): Promise<void> {
+    for (const draft of [
+      family.current,
+      ...family.versions.map((version) => version.draft),
+    ]) {
+      await validateDraftLogo(draft.logo);
+    }
+  }
+  private refreshLocalRecords(): void {
+    try {
+      const text = localStorage.getItem(PROFILE_STORAGE_KEY);
+      this.profile.set(text ? parseProfile(text) : null);
+      this.hasSavedFamily.set(!!localStorage.getItem(FAMILY_STORAGE_KEY));
+    } catch {
+      this.message.set(
+        'Browser storage could not be read. You can continue in this tab and download private editable files.',
+      );
+    }
+  }
+  saveBusinessProfile(): void {
+    this.runLocal(() => {
+      this.profile.set(saveProfile(localStorage, this.draft()));
+      this.message.set('Business profile saved in this browser');
+    });
+  }
+  async applyBusinessProfile(confirmed = false): Promise<void> {
+    try {
+      const profile = this.profile();
+      if (!profile) {
+        throw new Error('No saved business profile.');
+      }
+      await validateDraftLogo(profile.logo);
+      const changed = changedProfileFields(this.draft(), profile);
+      if (changed.length && !confirmed) {
+        this.profileConfirmation.set(
+          changed.map(
+            (field) =>
+              ({
+                businessName: 'Business name',
+                businessEmail: 'Business email',
+                address: 'Business address',
+                logo: 'Business logo',
+                paymentInstructions: 'Payment instructions',
+              })[field] ?? field,
+          ),
+        );
+        return;
+      }
+      const next = applyProfile(this.draft(), profile);
+      this.draft.set(next);
+      this.preview.set(null);
+      this.profileConfirmation.set(null);
+      this.message.set(
+        'Business profile applied. Customer details and job prices have not changed.',
+      );
+      this.error.set('');
+    } catch (error: unknown) {
+      this.error.set(
+        error instanceof Error
+          ? error.message
+          : 'The business profile could not be applied.',
+      );
+    }
+  }
+  removeBusinessProfile(): void {
+    if (
+      !window.confirm(
+        'Remove the saved business profile? This does not remove quotations or change the current editor.',
+      )
+    ) {
+      return;
+    }
+    this.runLocal(() => {
+      localStorage.removeItem(PROFILE_STORAGE_KEY);
+      this.profile.set(null);
+      this.profileConfirmation.set(null);
+      this.message.set(
+        'Saved business profile removed. Quotations and the current editor have not changed.',
+      );
+    });
+  }
+  acknowledgeCurrency(event: Event): void {
+    this.currencyAcknowledged.set((event.target as HTMLInputElement).checked);
+  }
+  localDate(value: string): string {
+    return new Date(value).toLocaleString();
   }
   money(cents: number, currency: PlannerCurrency): string {
     return formatQuoteMoney(cents, currency);

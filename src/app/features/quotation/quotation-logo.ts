@@ -58,6 +58,22 @@ export async function decodeQuoteLogo(blob: Blob): Promise<QuoteLogo> {
   }
   const bytes = new Uint8Array(await blob.arrayBuffer());
   const dimensions = imageDimensions(bytes);
+  if (blob.type && blob.type !== dimensions.type) {
+    throw new Error(
+      'The logo MIME type does not match its PNG or JPEG image bytes.',
+    );
+  }
+  if (
+    blob instanceof File &&
+    !(
+      (dimensions.type === 'image/png' && /\.png$/i.test(blob.name)) ||
+      (dimensions.type === 'image/jpeg' && /\.jpe?g$/i.test(blob.name))
+    )
+  ) {
+    throw new Error(
+      'The logo filename extension must match its PNG or JPEG image bytes.',
+    );
+  }
   if (
     !dimensions.width ||
     !dimensions.height ||

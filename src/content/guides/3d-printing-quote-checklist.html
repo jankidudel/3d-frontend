@@ -1,0 +1,152 @@
+---
+title: '3D Printing Quote Checklist: Scope, Files and Revisions | InspectMesh'
+description: Check the model reference, quantity, print specification, delivery scope and revision details before sending a 3D printing quotation.
+slug: 3d-printing-quote-checklist
+eyebrow: Customer quotation workflow
+heading: 3D Printing Quote Checklist
+faq:
+  - question: Does a quotation version verify the model?
+    answer: No. It records a version of your quotation. A typed model reference does not verify file contents or customer approval.
+  - question: Should I multiply the old price when quantity changes?
+    answer: Review the production job first. Shared setup, plate layout, material consumption and print time may change differently, so the previous total is not automatically a unit price.
+  - question: Does saving a quotation mean the customer accepted it?
+    answer: No. Record customer acceptance through your own business process and keep it with the matching quotation version.
+---
+
+<p>
+  A useful quotation identifies the work and the price clearly enough for the
+  customer to review them together. Before exporting, check that the quantity,
+  model reference, material, finish and delivery scope describe the same job you
+  priced. Keep an earlier version when a change needs a revised quotation.
+</p>
+
+<h2>Identify the file and the intended job</h2>
+
+<p>
+  Record the filename, model revision and relevant unit assumption. STL
+  coordinates do not carry a declared unit, so a filename alone cannot establish
+  the intended size. Describe any dimensions or fit requirements that still need
+  agreement. If you repaired or replaced the supplied model, keep the proposed
+  revision alongside the quotation instead of treating a clean mesh report as
+  customer approval.
+</p>
+
+<p>
+  A quotation version and a model revision answer different questions. Quotation
+  version 2 may change only delivery or price while still referring to model
+  revision r2. Conversely, a new model export may require fresh slicing even if
+  the customer's requested quantity has not changed.
+</p>
+
+<h2>Separate production assumptions from customer scope</h2>
+
+<p>
+  Use complete slicer estimates and your own business costs before choosing a
+  selling price. The internal worksheet can retain material use, machine time,
+  labour, allowances and profit assumptions. The customer quotation should
+  present the work offered and the customer charges. Sending an editable
+  internal draft can expose information that the customer PDF deliberately
+  omits.
+</p>
+
+<p>
+  State the number of parts, exact material and colour where agreed, finishing
+  work and any included design changes or prototype iterations. ‘To be agreed’
+  is useful during preparation, but review every unresolved field before
+  treating the document as ready to send. A clean STL does not establish
+  material suitability, successful fit or the cost of finishing.
+</p>
+
+<h2>Check delivery, validity and exclusions</h2>
+
+<p>
+  Say whether delivery is included in the order price or added separately. Do
+  not charge it a second time because a production-cost worksheet already
+  contains a shipping entry. Check the issue date, optional expiry and
+  indicative lead time yourself. Software cannot establish your available
+  production capacity or a carrier's delivery promise.
+</p>
+
+<p>
+  Write the work you include and any exclusions in ordinary language. If
+  additional CAD work, testing, inserts or a replacement prototype would be
+  charged separately, make that scope visible before sending the quote.
+  InspectMesh does not calculate tax or validate your commercial terms; resolve
+  any applicable tax requirements before using the document with a customer.
+</p>
+
+<h2>Keep the earlier quotation when the job changes</h2>
+
+<p>
+  Retain the original and create a revised version when quantity, material,
+  model, finishing or delivery changes. Summarise the change, review its effect
+  on production and reconsider the selling price. Changing quantity in the
+  quotation generator does not rerun your slicer or multiply the order price
+  automatically.
+</p>
+
+<p>
+  For a hypothetical example, version 1 offers five PLA prototype spacers for an
+  order price of £60.30 with delivery included. The customer requests ten parts
+  in PETG. Version 2 should describe that new job and record the change. It
+  should not assume that £60.30 remains appropriate or that doubling it produces
+  the right price: setup, layout, material use and machine time may change
+  differently. Re-slice and review the costs before entering the revised selling
+  price. These figures illustrate document handling, not recommended market
+  rates.
+</p>
+
+<h2>Review the document you will actually send</h2>
+
+<p>
+  Open the exported PDF and check the customer, reference, version, model note,
+  specification and charges. Read long scope text on every page and confirm that
+  the total matches the included and additional charges. Keep the editable
+  archive privately if you need to revisit earlier versions. Browser storage can
+  be cleared and is not a backup.
+</p>
+
+<p>
+  Send the PDF through your normal business process. Saving a version or
+  downloading a document does not establish customer receipt, acceptance or
+  payment. Keep the customer's response with the matching quotation and model in
+  your own records.
+</p>
+
+<h2>Before you send: a practical checklist</h2>
+<ul>
+  <li>Customer and quote reference</li>
+  <li>Quote version and change summary</li>
+  <li>Model reference and units</li>
+  <li>Agreed quantity, material and finish</li>
+  <li>Reviewed price</li>
+  <li>Delivery basis</li>
+  <li>Dates and indicative lead time</li>
+  <li>Scope and exclusions</li>
+  <li>Resolved tax requirements</li>
+  <li>Actual PDF inspected</li>
+  <li>Private archive retained separately</li>
+</ul>
+<p>
+  These are practical workflow instructions, not legal advice or a universal
+  contract template. The five-part example uses invented details and
+  hypothetical prices, not physical test results or recommended market rates.
+</p>
+<p>
+  <a href="{{ GuideSlug.Route3dPrintingQuoteGenerator }}"
+    >Prepare the customer document</a
+  >. Review the
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">production cost</a> and
+  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}">selling price</a>
+  first. The
+  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}">pricing guide</a>
+  explains margin, fees and minimum prices.
+</p>
+<h2>Workflow basis and limitations</h2>
+<p>
+  InspectMesh editorial workflow, 24 October 2026. This checklist describes the
+  local quotation generator and its distinction between customer documents and
+  private editable records. Model references are operator-entered. No physical
+  fit, production capacity, customer receipt or legal acceptance has been tested
+  or certified by this checklist.
+</p>

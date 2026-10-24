@@ -212,6 +212,7 @@ export const guideClusters: readonly GuideCluster[] = [
       '3d-print-lead-time-vs-print-time',
 
       'how-much-to-charge-for-3d-prints',
+      '3d-printing-quote-checklist',
       'how-much-filament-does-a-3d-print-use',
       'how-many-metres-in-1kg-filament',
       'how-to-estimate-filament-weight-from-a-3mf-file',

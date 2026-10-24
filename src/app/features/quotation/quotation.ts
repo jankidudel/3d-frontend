@@ -5,7 +5,8 @@ import {
   type PrintPriceInputs,
 } from '../print-price/print-price';
 
-export const QUOTE_SCHEMA = 'inspectmesh-customer-quotation-v1';
+export const PREVIOUS_QUOTE_SCHEMA = 'inspectmesh-customer-quotation-v1';
+export const QUOTE_SCHEMA = 'inspectmesh-customer-quotation-v2';
 export const QUOTE_STORAGE_KEY = 'inspectmesh-customer-quotation-v1';
 export const MAX_DRAFT_BYTES = 1024 * 1024;
 export const MAX_LOGO_PIXELS = 4_000_000;
@@ -43,6 +44,7 @@ export interface QuoteLogo {
   height: number;
 }
 export const textLimits = {
+  changeSummary: 2000,
   businessName: 200,
   businessEmail: 200,
   address: 1000,
@@ -68,6 +70,11 @@ export type QuoteTextKey = keyof typeof textLimits;
 export type QuoteText = Record<QuoteTextKey, string>;
 export interface QuotationDraft extends QuoteText {
   schema: typeof QUOTE_SCHEMA;
+  familyId: string;
+  versionId: string;
+  versionNumber: number;
+  parentVersionId: string | null;
+  parentVersionNumber: number | null;
   issueDate: string;
   validUntil: string;
   currency: PlannerCurrency;
@@ -94,6 +101,11 @@ export function blankQuotation(date = localCalendarDay()): QuotationDraft {
       Object.keys(textLimits).map((key) => [key, '']),
     ) as QuoteText),
     schema: QUOTE_SCHEMA,
+    familyId: crypto.randomUUID(),
+    versionId: crypto.randomUUID(),
+    versionNumber: 1,
+    parentVersionId: null,
+    parentVersionNumber: null,
     issueDate: date,
     validUntil: '',
     currency: PlannerCurrency.GBP,
@@ -275,7 +287,13 @@ export function quotationIssues(
         'Enter a finite non-negative delivery amount, using digits and a decimal point.',
     });
   }
-  if (final && draft.source === QuoteSource.Calculator && !draft.reviewed) {
+  if (final && draft.versionNumber > 1 && !draft.changeSummary.trim()) {
+    issues.push({
+      field: 'changeSummary',
+      message: 'Describe what changed before exporting a revised quotation.',
+    });
+  }
+  if (final && !draft.reviewed) {
     issues.push({
       field: 'reviewed',
       message: 'Review this selling price and job scope before export.',
@@ -302,6 +320,8 @@ export function quotationCharges(
 }
 // Explicit customer projection: internal handoff and edit metadata cannot reach preview or PDF.
 export interface CustomerQuotation extends QuoteText {
+  versionNumber: number;
+  parentVersionNumber: number | null;
   issueDate: string;
   validUntil: string;
   currency: PlannerCurrency;
@@ -327,6 +347,8 @@ export function customerQuotation(
     ...(Object.fromEntries(
       Object.keys(textLimits).map((key) => [key, draft[key as QuoteTextKey]]),
     ) as QuoteText),
+    versionNumber: draft.versionNumber,
+    parentVersionNumber: draft.parentVersionNumber,
     issueDate: draft.issueDate,
     validUntil: draft.validUntil,
     currency: draft.currency,
@@ -426,22 +448,51 @@ export function validateHandoff(value: unknown): QuoteHandoff {
   ) {
     throw new Error('Invalid internal pricing assumptions.');
   }
-  return structuredClone(offer) as unknown as QuoteHandoff;
+  const allowedInputs = [
+    ...numericFields,
+    'jobProductionCost',
+    'sellingFeePercent',
+    'fixedSellingFee',
+    'productionBasis',
+    'pricingMethod',
+    'feesAlreadyInCost',
+  ];
+  const assumptions = Object.fromEntries(
+    allowedInputs
+      .filter((key) => Object.hasOwn(inputs, key))
+      .map((key) => [key, inputs[key]]),
+  ) as unknown as PrintPriceInputs;
+  return {
+    schemaVersion: 1,
+    sourceRoute: PublicRouteUrl.PrintPriceCalculator,
+    timestamp: offer['timestamp'],
+    currency: offer['currency'] as PlannerCurrency,
+    finalOrderPrice: offer['finalOrderPrice'],
+    quantity: Number(offer['quantity']),
+    reference: offer['reference'],
+    description: offer['description'],
+    assumptions,
+  } as QuoteHandoff;
 }
-export function parseQuotation(text: string): QuotationDraft {
+export function parseQuotation(text: string, retained = false): QuotationDraft {
   if (new TextEncoder().encode(text).length > MAX_DRAFT_BYTES) {
-    throw new Error(
-      'Editable drafts must be at most 1 MiB, including the logo.',
-    );
+    throw new Error('Draft files must be 1 MiB or smaller.');
   }
   const value = record(JSON.parse(text) as unknown);
-  if (value['schema'] !== QUOTE_SCHEMA) {
-    throw new Error(
-      'This draft version is not supported. Import a draft from this quotation tool.',
-    );
+  if (
+    value['schema'] !== QUOTE_SCHEMA &&
+    value['schema'] !== PREVIOUS_QUOTE_SCHEMA
+  ) {
+    throw new Error('Unsupported draft version');
   }
   const draft = blankQuotation();
   for (const field of Object.keys(textLimits) as QuoteTextKey[]) {
+    if (
+      field === 'changeSummary' &&
+      value['schema'] === PREVIOUS_QUOTE_SCHEMA
+    ) {
+      continue;
+    }
     if (typeof value[field] !== 'string') {
       throw new Error(`The draft is missing a valid ${field} field.`);
     }
@@ -459,6 +510,32 @@ export function parseQuotation(text: string): QuotationDraft {
     }
     draft[field] = value[field];
   }
+  if (value['schema'] === QUOTE_SCHEMA) {
+    const id = (v: unknown): v is string =>
+      typeof v === 'string' && /^[A-Za-z0-9-]{1,80}$/.test(v);
+    if (
+      !id(value['familyId']) ||
+      !id(value['versionId']) ||
+      !Number.isSafeInteger(value['versionNumber']) ||
+      Number(value['versionNumber']) < 1 ||
+      Number(value['versionNumber']) > 10 ||
+      (value['versionNumber'] === 1
+        ? value['parentVersionId'] !== null ||
+          value['parentVersionNumber'] !== null
+        : !id(value['parentVersionId']) ||
+          !Number.isSafeInteger(value['parentVersionNumber']) ||
+          Number(value['parentVersionNumber']) < 1 ||
+          Number(value['parentVersionNumber']) >=
+            Number(value['versionNumber']))
+    ) {
+      throw new Error('Invalid quotation version details.');
+    }
+    draft.familyId = value['familyId'];
+    draft.versionId = value['versionId'];
+    draft.versionNumber = Number(value['versionNumber']);
+    draft.parentVersionId = value['parentVersionId'] as string | null;
+    draft.parentVersionNumber = value['parentVersionNumber'] as number | null;
+  }
   draft.currency = value['currency'] as PlannerCurrency;
   draft.deliveryMode = value['deliveryMode'] as DeliveryMode;
   if (
@@ -472,8 +549,7 @@ export function parseQuotation(text: string): QuotationDraft {
   draft.fictionalExample =
     value['fictionalExample'] || draft.source === QuoteSource.Example;
   // Reopened imported pricing always needs a fresh operator review.
-  draft.reviewed =
-    draft.source === QuoteSource.Calculator ? false : value['reviewed'];
+  draft.reviewed = retained && value['reviewed'];
   draft.internal =
     value['internal'] === null ? null : validateHandoff(value['internal']);
   if (draft.source === QuoteSource.Calculator && !draft.internal) {
@@ -547,7 +623,8 @@ export function loadQuotation(
   }
   const saved = record(JSON.parse(text) as unknown);
   if (
-    saved['schema'] !== QUOTE_SCHEMA ||
+    (saved['schema'] !== QUOTE_SCHEMA &&
+      saved['schema'] !== PREVIOUS_QUOTE_SCHEMA) ||
     typeof saved['savedAt'] !== 'string' ||
     !Number.isFinite(Date.parse(saved['savedAt']))
   ) {
@@ -565,8 +642,9 @@ export function populatedQuotation(draft: QuotationDraft): boolean {
     draft.internal !== null ||
     Object.keys(draft).some(
       (key) =>
+        !['familyId', 'versionId'].includes(key) &&
         JSON.stringify(draft[key as keyof QuotationDraft]) !==
-        JSON.stringify(blank[key as keyof QuotationDraft]),
+          JSON.stringify(blank[key as keyof QuotationDraft]),
     )
   );
 }

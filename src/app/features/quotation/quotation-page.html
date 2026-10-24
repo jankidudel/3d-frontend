@@ -15,13 +15,13 @@
   </header>
   @if (previewOnly()) {
     <div class="preview-actions">
-      <button class="button" type="button" (click)="previewOnly.set(false)">
-        Back to editor
+      <button class="button" type="button" (click)="returnToDraft()">
+        Return to current draft
       </button>
       <button
         class="button"
         type="button"
-        [disabled]="busy() || issues().length > 0"
+        [disabled]="busy() || (!retained() && issues().length > 0)"
         (click)="downloadPdf()"
       >
         Download quotation PDF
@@ -56,6 +56,194 @@
         The example contains invented business details and a hypothetical price.
         It is not a market rate or a physical print test.
       </p>
+      <section
+        class="editor-section"
+        aria-labelledby="business-profile-heading"
+      >
+        <h2 id="business-profile-heading">Business profile</h2>
+        <p>
+          Save your business details in this browser and apply them to another
+          quotation. Customer details and job prices are not part of the
+          business profile.
+        </p>
+        <p>
+          Optional storage on this browser only. Clearing browser data removes
+          the saved profile.
+        </p>
+        <div class="actions">
+          <button
+            class="button button-secondary"
+            type="button"
+            (click)="saveBusinessProfile()"
+          >
+            Save business profile
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            [disabled]="!profile()"
+            (click)="applyBusinessProfile()"
+          >
+            Apply business profile
+          </button>
+          <button
+            class="button button-secondary"
+            type="button"
+            [disabled]="!profile()"
+            (click)="removeBusinessProfile()"
+          >
+            Remove saved business profile
+          </button>
+        </div>
+        @if (profile(); as saved) {
+          <p>Saved: {{ localDate(saved.savedAt) }}</p>
+        }
+        @if (profileConfirmation(); as changes) {
+          <aside class="notice" aria-label="Confirm business profile changes">
+            <p>
+              Applying the profile will replace these populated business fields:
+              {{ changes.join(', ') }}.
+            </p>
+            <button
+              type="button"
+              class="button"
+              (click)="applyBusinessProfile(true)"
+            >
+              Apply profile
+            </button>
+            <button
+              type="button"
+              class="button button-secondary"
+              (click)="profileConfirmation.set(null)"
+            >
+              Keep current details
+            </button>
+          </aside>
+        }
+      </section>
+      <section
+        class="editor-section"
+        id="quotation-versions"
+        aria-labelledby="quotation-versions-heading"
+      >
+        <h2 id="quotation-versions-heading">Quotation versions</h2>
+        @if (partialHistory()) {
+          <p class="notice">
+            This standalone draft does not include earlier retained versions.
+            Import a quotation archive to restore the earlier records. No
+            historical snapshots have been invented.
+          </p>
+        }
+        <p>
+          Keep an earlier quotation while preparing a revised version. These
+          records do not show whether a customer received or accepted a quote.
+        </p>
+        <p>
+          Up to ten versions and 4 MiB per family. Records stay in this tab
+          until you explicitly save or download them. Each editable draft must
+          fit within 1 MiB.
+        </p>
+        <div class="actions">
+          <button type="button" class="button" (click)="keepVersion()">
+            Keep this version
+          </button>
+          <button type="button" class="button" (click)="createRevision()">
+            Create revised quotation
+          </button>
+          <button
+            type="button"
+            class="button button-secondary"
+            (click)="saveVersions()"
+          >
+            Save quotation versions in this browser
+          </button>
+          <button
+            type="button"
+            class="button button-secondary"
+            (click)="downloadArchive()"
+          >
+            Download quotation archive
+          </button>
+          @if (hasSavedFamily()) {
+            <button
+              type="button"
+              class="button button-secondary"
+              (click)="reopenVersions()"
+            >
+              Reopen saved quotation versions
+            </button>
+          }
+        </div>
+        <p>
+          Editable files can contain customer details and internal pricing. Keep
+          them private. Later edits are never saved automatically. Browser
+          storage is not a backup.
+        </p>
+        @for (version of family().versions; track version.draft.versionId) {
+          <article class="retained-version">
+            <h3>
+              {{ version.draft.reference }} - version
+              {{ version.draft.versionNumber }}
+            </h3>
+            <p>
+              {{ localDate(version.recordedAt) }} - Kept locally in this tab
+            </p>
+            <button
+              type="button"
+              class="button button-secondary"
+              (click)="viewVersion(version)"
+            >
+              View retained version {{ version.draft.versionNumber }}
+            </button>
+          </article>
+        }
+      </section>
+      @if (specificationChanged()) {
+        <aside class="notice" role="status">
+          <p>
+            The job specification changed. The selling price has not been
+            recalculated. Review it before exporting.
+          </p>
+          <a [routerLink]="routes.PrintPriceCalculator"
+            >Review in price calculator</a
+          >
+          <p>
+            Enter and review your production cost basis in the calculator. The
+            quotation order price is a selling price and is not transferred as
+            production cost.
+          </p>
+        </aside>
+      }
+      @if (priceConfirmation() && pending(); as offer) {
+        <aside class="notice" aria-label="Review imported order price">
+          <h2>Review imported order price</h2>
+          <p>
+            Currency: {{ draft().currency }} to {{ offer.currency }}. Quantity:
+            {{ draft().quantity }} to {{ offer.quantity }}. Order price:
+            {{ draft().orderPrice }} to {{ offer.finalOrderPrice }}.
+          </p>
+          @if (draft().currency !== offer.currency) {
+            <label
+              ><input
+                type="checkbox"
+                [checked]="currencyAcknowledged()"
+                (change)="acknowledgeCurrency($event)"
+              />I understand that changing currency does not convert any
+              amounts, including delivery.</label
+            >
+          }
+          <button type="button" class="button" (click)="applyPrice(true)">
+            Apply imported order price
+          </button>
+          <button
+            type="button"
+            class="button button-secondary"
+            (click)="priceConfirmation.set(false)"
+          >
+            Keep current price
+          </button>
+        </aside>
+      }
       @for (section of sections; track section.title) {
         <section class="editor-section">
           <h2>{{ section.title }}</h2>
@@ -72,6 +260,14 @@
               not supply or validate your business terms.
             </p>
           }
+          @if (section.title === 'Quotation details') {
+            <p>
+              Quotation version: <output>{{ draft().versionNumber }}</output>
+            </p>
+            @if (draft().parentVersionNumber) {
+              <p>Revises version: {{ draft().parentVersionNumber }}</p>
+            }
+          }
           <div class="field-grid">
             @for (field of section.fields; track field.key) {
               <div class="field" [class.wide]="field.multiline">
@@ -81,7 +277,7 @@
                     [id]="field.key"
                     [formField]="fields[field.key]"
                     rows="4"
-                    (input)="edited()"
+                    (input)="edited(field.key)"
                     [attr.aria-invalid]="!!fieldError(field.key)"
                     [attr.aria-describedby]="
                       fieldError(field.key) ? field.key + '-error' : null
@@ -97,7 +293,7 @@
                         : 'text'
                     "
                     [formField]="fields[field.key]"
-                    (input)="edited()"
+                    (input)="edited(field.key)"
                     [attr.aria-invalid]="!!fieldError(field.key)"
                     [attr.aria-describedby]="
                       fieldError(field.key) ? field.key + '-error' : null
@@ -186,7 +382,7 @@
                 type="text"
                 inputmode="numeric"
                 [formField]="fields.quantity"
-                (input)="edited()"
+                (input)="edited('quantity')"
                 [attr.aria-invalid]="!!fieldError('quantity')"
                 aria-describedby="quantity-help quantity-error"
               />
@@ -264,21 +460,19 @@
       }
       <section class="editor-section">
         <h2>Review and export</h2>
-        @if (draft().source === sources.Calculator) {
-          <label class="review-checkbox"
-            ><input
-              id="reviewed"
-              type="checkbox"
-              [checked]="draft().reviewed"
-              (change)="reviewed($event)"
-              [attr.aria-invalid]="!!fieldError('reviewed')"
-              aria-describedby="reviewed-error"
-            />I have reviewed this selling price and job scope</label
-          >
-          <p class="field-error" id="reviewed-error">
-            {{ fieldError('reviewed') }}
-          </p>
-        }
+        <label class="review-checkbox"
+          ><input
+            id="reviewed"
+            type="checkbox"
+            [checked]="draft().reviewed"
+            (change)="reviewed($event)"
+            [attr.aria-invalid]="!!fieldError('reviewed')"
+            aria-describedby="reviewed-error"
+          />I have reviewed this selling price and job scope</label
+        >
+        <p class="field-error" id="reviewed-error">
+          {{ fieldError('reviewed') }}
+        </p>
         <p>
           Check the customer preview before downloading. Changes to the model,
           quantity or specification may require a revised quotation.
@@ -303,8 +497,8 @@
           </button>
         </div>
         <p class="draft-warning">
-          Editable drafts can contain customer details and internal pricing.
-          Keep them private.
+          Editable files can contain customer details and internal pricing. Keep
+          them private.
         </p>
         <div class="actions">
           <button
@@ -328,7 +522,8 @@
           </button>
         </div>
         <label for="quote-import"
-          >Import editable draft (quotation JSON, maximum 1 MiB)</label
+          >Import editable draft (v1/v2 JSON, maximum 1 MiB) or quotation
+          archive (v1 JSON, maximum 4 MiB)</label
         ><input
           id="quote-import"
           type="file"
@@ -362,6 +557,12 @@
       <h2 id="customer-preview-heading" tabindex="-1">
         Customer quotation preview
       </h2>
+      @if (retained()) {
+        <p class="notice">
+          Read-only retained version. The current editable draft has not
+          changed.
+        </p>
+      }
       @if (preview(); as quote) {
         <article class="customer-document">
           @if (quote.logo) {
@@ -384,13 +585,22 @@
           <p>{{ quote.customerName }}<br />{{ quote.customerEmail }}</p>
           <h3>Quotation details</h3>
           <p>
-            Reference: {{ quote.reference }}<br />Issue date:
+            Reference: {{ quote.reference }}<br />Quotation version:
+            {{ quote.versionNumber }}<br />
+            @if (quote.parentVersionNumber) {
+              Revises version: {{ quote.parentVersionNumber }}<br />
+            }
+            Issue date:
             {{ quote.issueDate }}
             @if (quote.validUntil) {
               <br />Valid until: {{ quote.validUntil }}
             }
             <br />Currency: {{ quote.currency }}
           </p>
+          @if (quote.changeSummary) {
+            <h3>What changed?</h3>
+            <p class="preserve-text">{{ quote.changeSummary }}</p>
+          }
           <h3>Job specification</h3>
           <dl>
             <dt>Job</dt>
@@ -502,6 +712,17 @@
       </p>
     </section>
     <section>
+      <h2>Preparing a revised quotation?</h2>
+      <p>
+        Keep an earlier version, describe what changed and review the selling
+        price against the new specification. Read the
+        <a [routerLink]="'/' + guideSlug.Route3dPrintingQuoteChecklist"
+          >quotation checklist</a
+        >
+        before sending the PDF.
+      </p>
+    </section>
+    <section>
       <h2>What happens after download?</h2>
       <p>
         Send the quotation using your normal business process. Customer
@@ -521,8 +742,10 @@
       </p>
       <h3>Can I reopen my quotation?</h3>
       <p>
-        Yes. Import a draft downloaded from this tool, or reopen a draft you
-        explicitly saved in the same browser. Browser storage can be cleared and
+        Yes. Import a private editable draft or quotation archive, or reopen a
+        draft or quotation family you explicitly saved in this browser. Business
+        profiles are saved separately and applied only when you choose. Later
+        edits are not automatically saved. Browser storage can be cleared and
         does not provide cloud backup.
       </p>
     </section>

@@ -41,6 +41,14 @@ export const guideGroups = {
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
   {
+    slug: '3d-printing-quote-checklist',
+    group: GuideGroupId.General,
+    order: 16,
+    enabled: true,
+    publishDate: '2026-10-24',
+    checkEditorialTargets: true,
+  },
+  {
     slug: 'how-to-lay-an-stl-flat-on-print-bed',
     group: GuideGroupId.Stl,
     order: 209,
@@ -475,8 +483,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 31,
     enabled: true,
-    updatedDate: '2026-10-20',
     publishDate: '2026-09-18',
+    updatedDate: '2026-10-24',
     checkEditorialTargets: false,
   },
   {
