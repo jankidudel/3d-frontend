@@ -6,6 +6,35 @@
     practical preflight details before printing. This G-code Preflight Checker
     only reads the file; it never uploads, runs, sends or changes G-code.
   </p>
+  <section class="card viewer-tool">
+    <h2>Open a G-code file locally</h2>
+    <div class="drop-zone">
+      <p>
+        Choose a plain-text .gcode, .gco or .gc file up to 25 MiB. A source line
+        over 4,096 characters is unavailable.
+      </p>
+      <button class="button" type="button" (click)="openPicker(picker)">
+        Choose G-code file
+      </button>
+      <input
+        #picker
+        type="file"
+        accept=".gcode,.gco,.gc,text/plain"
+        aria-label="Choose G-code file"
+        (change)="pick($event)"
+      />
+      <p class="hint">
+        Read-only browser inspection — your file is not uploaded.
+      </p>
+    </div>
+    @if (parsing()) {
+      <p role="status">Reading G-code locally…</p>
+      <button class="button button-secondary" type="button" (click)="cancel()">
+        Cancel review
+      </button>
+    }
+  </section>
+
   @if (file() || loadingSlicerExample()) {
     <p>
       Loading a slicer example replaces the current file and result. Preserve
@@ -80,34 +109,7 @@
     [busy]="parsing()"
     [load]="loadExample"
   />
-  <section class="card viewer-tool">
-    <h2>Open a G-code file locally</h2>
-    <div class="drop-zone">
-      <p>
-        Choose a plain-text .gcode, .gco or .gc file up to 25 MiB. A source line
-        over 4,096 characters is unavailable.
-      </p>
-      <button class="button" type="button" (click)="openPicker(picker)">
-        Choose G-code file
-      </button>
-      <input
-        #picker
-        type="file"
-        accept=".gcode,.gco,.gc,text/plain"
-        aria-label="Choose G-code file"
-        (change)="pick($event)"
-      />
-      <p class="hint">
-        Read-only browser inspection — your file is not uploaded.
-      </p>
-    </div>
-    @if (parsing()) {
-      <p role="status">Reading G-code locally…</p>
-      <button class="button button-secondary" type="button" (click)="cancel()">
-        Cancel review
-      </button>
-    }
-  </section>
+
   @if (report(); as result) {
     <section class="card" id="gcode-result">
       <h2>G-code viewer summary</h2>

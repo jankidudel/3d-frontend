@@ -5,17 +5,6 @@
     Check whether your STL is a closed surface, with open edges and possible
     holes surfaced first.
   </p>
-  <p>
-    Known controls: the
-    <a [href]="exampleAsset.OpenFaceCubeStl" download
-      >20 mm cube with one face removed</a
-    >
-    has 10 triangles and four boundary edges; the
-    <a [href]="exampleAsset.Closed20mmCubeStl" download>closed 20 mm cube</a>
-    has 12 triangles and zero. The open control has no reliable solid-volume
-    result. These counts show what this check detects, not which opening should
-    be capped.
-  </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL</h2>
     <p>Upload an STL file up to 25 MiB.</p>
@@ -35,6 +24,19 @@
       <p class="error" role="alert">{{ message }}</p>
     }
   </section>
+
+  <p>
+    Known controls: the
+    <a [href]="exampleAsset.OpenFaceCubeStl" download
+      >20 mm cube with one face removed</a
+    >
+    has 10 triangles and four boundary edges; the
+    <a [href]="exampleAsset.Closed20mmCubeStl" download>closed 20 mm cube</a>
+    has 12 triangles and zero. The open control has no reliable solid-volume
+    result. These counts show what this check detects, not which opening should
+    be capped.
+  </p>
+
   @if (job(); as currentJob) {
     <section
       class="tool-result results card"

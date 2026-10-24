@@ -6,6 +6,35 @@
     and vertex-connected pieces. The result helps locate a topology question; it
     cannot infer the intended solid or detect every spatial intersection.
   </p>
+  <section class="checker card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Check your STL topology</h2>
+    <p>
+      Choosing and submitting a file uploads it for server analysis. The guest
+      limit is 25 MiB. Download the public controls below without uploading your
+      own model.
+    </p>
+    <app-stl-file-picker
+      #filePicker
+      [selectedFileFromParent]="selectedFile()"
+      (fileSelected)="onFileSelected($event)"
+    />
+    <button
+      class="button submit"
+      type="button"
+      (click)="checkManifold()"
+      [disabled]="!selectedFile() || submitting()"
+      [class.is-loading]="submitting()"
+    >
+      @if (submitting()) {
+        <span class="spinner" aria-hidden="true"></span>
+      }
+      {{ submitting() ? 'Creating job…' : 'Check manifold geometry' }}
+    </button>
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+  </section>
+
   <section class="content" aria-labelledby="reports-title">
     <h2 id="reports-title">What this check reports</h2>
     <table>
@@ -52,6 +81,7 @@
       report two components with no edge defect.
     </p>
   </section>
+
   <app-example-loader
     [tool]="routeUrl.ManifoldChecker"
     [active]="!!selectedFile()"
@@ -59,34 +89,7 @@
     [busy]="submitting()"
     [load]="loadPublicExample"
   />
-  <section class="checker card" aria-labelledby="upload-title">
-    <h2 id="upload-title">Check your STL topology</h2>
-    <p>
-      Choosing and submitting a file uploads it for server analysis. The guest
-      limit is 25 MiB. Download the public controls above without uploading your
-      own model.
-    </p>
-    <app-stl-file-picker
-      #filePicker
-      [selectedFileFromParent]="selectedFile()"
-      (fileSelected)="onFileSelected($event)"
-    />
-    <button
-      class="button submit"
-      type="button"
-      (click)="checkManifold()"
-      [disabled]="!selectedFile() || submitting()"
-      [class.is-loading]="submitting()"
-    >
-      @if (submitting()) {
-        <span class="spinner" aria-hidden="true"></span>
-      }
-      {{ submitting() ? 'Creating job…' : 'Check manifold geometry' }}
-    </button>
-    @if (error(); as message) {
-      <p class="error" role="alert">{{ message }}</p>
-    }
-  </section>
+
   @if (job(); as currentJob) {
     <section
       class="tool-result results card"

@@ -7,13 +7,6 @@
     design the assembly joint.
   </p>
   <div class="tool-content splitter-content">
-    <app-example-loader
-      [tool]="routeUrl.StlSplitter"
-      [active]="!!file()"
-      [current]="file()"
-      [busy]="submitting() || processing()"
-      [load]="loadExample"
-    />
     <section class="splitter-card card">
       <h2>Choose an STL and cut position</h2>
       <p>
@@ -95,6 +88,14 @@
         </p>
       }
     </section>
+    <app-example-loader
+      [tool]="routeUrl.StlSplitter"
+      [active]="!!file()"
+      [current]="file()"
+      [busy]="submitting() || processing()"
+      [load]="loadExample"
+    />
+
     @if (preview(); as model) {
       <section class="splitter-card preview-card card">
         <h2>Cut-plane preview</h2>

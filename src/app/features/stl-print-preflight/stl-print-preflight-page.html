@@ -29,12 +29,6 @@
     fit, sampled wall thickness, complexity and whether a volume estimate is
     meaningful.
   </p>
-  <p>
-    Read the report by check: STL units are an assumption, printer fit is
-    skipped until a profile is selected, and wall thickness is sampled rather
-    than exhaustive. A skipped or incomplete item stays unknown; it does not
-    turn the whole report green.
-  </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Run an STL preflight</h2>
     <div
@@ -66,6 +60,14 @@
       <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
+
+  <p>
+    Read the report by check: STL units are an assumption, printer fit is
+    skipped until a profile is selected, and wall thickness is sampled rather
+    than exhaustive. A skipped or incomplete item stays unknown; it does not
+    turn the whole report green.
+  </p>
+
   <app-example-loader
     tool="/stl-print-preflight"
     [active]="file() !== null"

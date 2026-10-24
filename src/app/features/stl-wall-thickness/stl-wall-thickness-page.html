@@ -6,18 +6,6 @@
     coordinate unit, choose a review threshold and inspect flagged locations
     before checking important features in CAD and your slicer.
   </p>
-  <app-example-loader
-    [tool]="routeUrl.StlWallThicknessChecker"
-    [active]="!!file()"
-    [current]="file()"
-    [busy]="analysing()"
-    [load]="loadExample"
-  />
-  <p>
-    <a [href]="exampleAsset.ThinWallBarsStl" download
-      >Download the thin-bar STL control</a
-    >
-  </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose an STL</h2>
     <div class="drop-zone">
@@ -40,6 +28,20 @@
       <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
+
+  <app-example-loader
+    [tool]="routeUrl.StlWallThicknessChecker"
+    [active]="!!file()"
+    [current]="file()"
+    [busy]="analysing()"
+    [load]="loadExample"
+  />
+  <p>
+    <a [href]="exampleAsset.ThinWallBarsStl" download
+      >Download the thin-bar STL control</a
+    >
+  </p>
+
   @if (mesh(); as mesh) {
     <section class="card">
       <h2>Unit and review threshold</h2>

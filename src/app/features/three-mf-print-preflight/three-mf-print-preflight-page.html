@@ -31,6 +31,21 @@
     dimensions, printer fit, mesh integrity, sampled wall thickness, complexity
     and whether a volume estimate is meaningful.
   </p>
+  <section class="card" aria-labelledby="upload-title">
+    <h2 id="upload-title">Run a local 3MF preflight</h2>
+    <p>Your selected file stays in this browser. It is not uploaded.</p>
+    <app-three-mf-file-picker
+      [selectedFileFromParent]="file()"
+      (fileSelected)="onFileSelected($event)"
+    />
+    @if (analysing()) {
+      <p role="status">{{ progress() }}</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+  </section>
+
   <p>
     Need the broader workflow first? Read
     <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
@@ -53,20 +68,7 @@
     After slicing, inspect the final file with the
     <a [href]="routeUrl.GcodePreflightChecker">G-code Preflight Checker</a>.
   </p>
-  <section class="card" aria-labelledby="upload-title">
-    <h2 id="upload-title">Run a local 3MF preflight</h2>
-    <p>Your selected file stays in this browser. It is not uploaded.</p>
-    <app-three-mf-file-picker
-      [selectedFileFromParent]="file()"
-      (fileSelected)="onFileSelected($event)"
-    />
-    @if (analysing()) {
-      <p role="status">{{ progress() }}</p>
-    }
-    @if (error()) {
-      <p class="error" role="alert">{{ error() }}</p>
-    }
-  </section>
+
   <app-example-loader
     tool="/3mf-print-preflight"
     [active]="file() !== null"

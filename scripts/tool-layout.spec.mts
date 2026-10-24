@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -54,6 +54,35 @@ const primaryQualityCheckTemplates = [
 ];
 
 describe('tool page layout', () => {
+  it('places file selection before examples and supporting content on upload tools', async () => {
+    const features = join(projectRoot, 'src/app/features');
+    const files = await readdir(features, { recursive: true });
+    for (const file of files.filter((file) => file.endsWith('-page.html'))) {
+      const template = await readFile(join(features, file), 'utf8');
+      if (!template.includes('tool-page')) {
+        continue;
+      }
+      const picker = template.search(
+        /<app-(?:stl|three-mf)-file-picker\b|<input\b[^>]*type="file"/s,
+      );
+      if (picker < 0) {
+        continue;
+      }
+      for (const supporting of [
+        '<app-example-loader',
+        '<section class="content',
+      ]) {
+        const position = template.indexOf(supporting);
+        if (position >= 0) {
+          expect(
+            picker,
+            `${file}: file selection must precede ${supporting}`,
+          ).toBeLessThan(position);
+        }
+      }
+    }
+  });
+
   it('uses the shared full-width lead rule for every interactive tool page', async () => {
     const styles = await readFile(join(projectRoot, 'src/styles.scss'), 'utf8');
 

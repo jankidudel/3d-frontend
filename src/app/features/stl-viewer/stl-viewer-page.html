@@ -24,10 +24,6 @@
   }
   <p class="eyebrow">Private browser-based STL inspection</p>
   <h1>Free STL Viewer Online</h1>
-  <p>
-    <a [routerLink]="routeUrl.StlPrintPreflight">Run STL Print Preflight</a> for
-    mesh, size, fit and sampled wall-thickness checks before slicing.
-  </p>
   <p class="lead">
     Open an STL locally, rotate it freely, inspect its dimensions and measure
     the distance between visible model features.
@@ -63,6 +59,11 @@
       <p class="error" role="alert">{{ message }}</p>
     }
   </section>
+  <p>
+    <a [routerLink]="routeUrl.StlPrintPreflight">Run STL Print Preflight</a> for
+    mesh, size, fit and sampled wall-thickness checks before slicing.
+  </p>
+
   <app-example-loader
     tool="/stl-viewer"
     [active]="model() !== null"

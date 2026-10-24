@@ -5,12 +5,6 @@
     Find your model’s width, height and depth, interpret its design unit, and
     calculate a proportional scale for the size you want to print.
   </p>
-  <p class="unit-explanation">
-    STL geometry is stored as unitless coordinates, so STL files do not reliably
-    contain unit metadata. You choose how those coordinates should be
-    interpreted after measurement.
-  </p>
-
   <section class="upload card" aria-labelledby="upload-title">
     <h2 id="upload-title">Measure your STL</h2>
     <p>Upload an STL to measure its width, height and depth.</p>
@@ -35,6 +29,12 @@
       <p class="error" role="alert">{{ message }}</p>
     }
   </section>
+
+  <p class="unit-explanation">
+    STL geometry is stored as unitless coordinates, so STL files do not reliably
+    contain unit metadata. You choose how those coordinates should be
+    interpreted after measurement.
+  </p>
 
   <section class="content" aria-labelledby="viewer-title">
     <h2 id="viewer-title">See the model while you measure</h2>
