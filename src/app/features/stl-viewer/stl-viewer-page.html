@@ -120,13 +120,17 @@
             <dd>{{ formatValue(current.depth) }} model units</dd>
           </div>
         </dl>
-        <p>
+        <p id="stl-measurement-unit-help">
           STL coordinates do not reliably contain a declared unit. Choose the
           intended interpretation before measuring in a real-world unit.
         </p>
-        <label for="stl-measurement-unit">Measurement unit</label>
+        <label class="unit-label" for="stl-measurement-unit"
+          >Measurement unit</label
+        >
         <select
+          class="select-control"
           id="stl-measurement-unit"
+          aria-describedby="stl-measurement-unit-help"
           [value]="selectedUnit()"
           (change)="onUnitChange($event)"
         >

@@ -54,6 +54,7 @@ export async function fetchPublicExample(
       <label
         >Question to explore
         <select
+          class="select-control"
           [value]="selected().id"
           (change)="choose($event)"
           [disabled]="loading() || busy()"
@@ -68,6 +69,7 @@ export async function fetchPublicExample(
       <label
         >Example file {{ tool() === '/stl-compare' ? '(after revision)' : '' }}
         <select
+          class="select-control"
           [value]="chosenIndex()"
           (change)="chooseFile($event)"
           [disabled]="loading() || busy()"
@@ -131,37 +133,7 @@ export async function fetchPublicExample(
       </p>
     </section>
   `,
-  styles: `
-    :host {
-      display: block;
-      margin: 1.5rem 0;
-    }
-    .example-loader {
-      border: 1px solid #9aafbd;
-      border-radius: 12px;
-      padding: 1rem;
-      background: #f3f7fa;
-      color: #173348;
-    }
-    label {
-      display: block;
-      margin: 0.8rem 0;
-    }
-    select {
-      display: block;
-      width: 100%;
-      max-width: 42rem;
-      padding: 0.6rem;
-      font: inherit;
-    }
-    p {
-      overflow-wrap: anywhere;
-    }
-    a {
-      color: #165675;
-      text-decoration: underline;
-    }
-  `,
+  styleUrl: './example-loader.scss',
 })
 export class ExampleLoader {
   readonly routeUrl = PublicRouteUrl;
