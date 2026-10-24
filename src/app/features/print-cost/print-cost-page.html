@@ -414,6 +414,31 @@
         to check a material profile with a single-wall test.
       </p>
       <h2>Plan with slicer values</h2>
+      <h3>A complete illustrative production subtotal</h3>
+      <p>
+        For a sliced job using 100 g from a 1,000 g spool costing £20, material
+        is £2. Five hours at an assumed average 120 W and £0.25/kWh adds £0.15.
+        Fifteen minutes of active work at £12/hour adds £3. The subtotal is
+        £5.15 with machine allocation, extra parts, packaging, shipping and
+        failure allowance set to zero. These are illustrative inputs, including
+        the power assumption, rather than measured printer consumption or a
+        recommended labour rate. Select GBP to reproduce this display; other
+        currencies use the rates you enter without conversion.
+      </p>
+      <p>
+        A 10% failure allowance adds £0.515 to this subtotal, giving £5.665
+        before display rounding. The calculator applies the percentage to all
+        entered production and overhead costs, including packaging and shipping.
+        It is a budgeting uplift, not a statistical expected-retry model. Do not
+        add material waste twice if the slicer total already includes it.
+      </p>
+      <p>
+        Next, choose margin and fees in the price calculator. Once the customer
+        charge is agreed,
+        <a [routerLink]="routeUrl.QuoteGenerator">prepare a quotation</a>
+        with its scope and revision. Neither profit nor sales tax belongs in
+        this production subtotal.
+      </p>
       <p>
         Your slicer is the best source for filament usage and print time. Learn
         more in

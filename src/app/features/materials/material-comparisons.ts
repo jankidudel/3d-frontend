@@ -7,6 +7,11 @@ export type MaterialComparison = Readonly<{
   materialAId: MaterialId;
   materialBId: MaterialId;
   summary: string;
+  criteria: readonly Readonly<{
+    requirement: string;
+    left: string;
+    right: string;
+  }>[];
   scenarioTitle: string;
   scenario: string;
   reversals: string;
@@ -16,10 +21,30 @@ export type MaterialComparison = Readonly<{
   chooseBWhen: readonly string[];
   lastReviewedAt: string;
 }>;
-const reviewed = '2026-10-09';
+const reviewed = '2026-10-24';
 export const materialComparisons: readonly MaterialComparison[] = [
   {
     slug: MaterialComparisonSlug.PlaVsPetg,
+    criteria: [
+      {
+        requirement: 'Visual fit prototype',
+        left: 'A candidate for a stiff, tidy indoor fit model.',
+        right:
+          'A candidate when the same prototype must also tolerate repeated handling.',
+      },
+      {
+        requirement: 'Repeated bending or knocks',
+        left: 'Do not carry a rigid fit result forward as impact or fatigue evidence.',
+        right:
+          'Investigate the exact grade and printed orientation for the required toughness.',
+      },
+      {
+        requirement: 'Warm surface or sustained load',
+        left: 'The initial low-heat fit choice needs a separate service qualification.',
+        right:
+          'A toughness shortlist still needs creep and temperature evidence; PETG is not an automatic load upgrade.',
+      },
+    ],
     scenarioTitle: 'A cable holder needs stiffness before it needs toughness',
     scenario:
       'An indoor cable holder with a 30 mm arm and a 200 g cable bundle is a hypothetical design brief. Begin with PLA for a visual fit prototype; compare PETG if repeated knocks or bending matter. The 200 g input describes the job, not a safe load for either polymer. Print the intended layer direction and check deflection under the actual sustained load.',
@@ -56,6 +81,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PlaVsAbs,
+    criteria: [
+      {
+        requirement: 'First room-temperature fit',
+        left: 'Start with the simpler fit prototype when heat is irrelevant.',
+        right:
+          'Enclosure and warping preparation add work that the fit question may not need.',
+      },
+      {
+        requirement: 'Warm service cover',
+        left: 'Do not infer thermal service capability from a successful fit.',
+        right:
+          'Investigate exact loaded service data before choosing an ABS grade.',
+      },
+      {
+        requirement: 'Print environment',
+        left: 'An established PLA profile can answer a visual prototype question.',
+        right:
+          'Plan enclosure, surface preparation and manufacturer safety guidance.',
+      },
+    ],
     scenarioTitle: 'A fit prototype and a warm cover ask different questions',
     scenario:
       'Suppose a 60 x 40 mm cover is first used to confirm screw positions at room temperature. PLA can answer that fit question with less warping preparation. If the final cover sits next to a warm motor, record the measured operating temperature and duration, then obtain exact ABS grade data before choosing it. The example contains no measured heat or load result.',
@@ -91,6 +136,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsAbs,
+    criteria: [
+      {
+        requirement: 'Indoor bracket',
+        left: 'A practical candidate when avoiding enclosure preparation matters.',
+        right:
+          'Consider the extra process burden only when its properties meet a real requirement.',
+      },
+      {
+        requirement: 'Heater-adjacent use',
+        left: 'Confirm the grade against measured temperature and duration.',
+        right:
+          'Evaluate grade-level heat evidence; a family label does not qualify the bracket.',
+      },
+      {
+        requirement: 'Hole spacing after cooling',
+        left: 'Measure mating features on the intended PETG profile.',
+        right:
+          'Account for warping and dimensional change with the actual enclosed process.',
+      },
+    ],
     scenarioTitle:
       'Choose the print environment only after defining the service temperature',
     scenario:
@@ -125,6 +190,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.AbsVsAsa,
+    criteria: [
+      {
+        requirement: 'Protected cabinet part',
+        left: 'An existing ABS workflow may meet an indoor brief.',
+        right:
+          'Outdoor-oriented properties may not justify switching an already qualified indoor job.',
+      },
+      {
+        requirement: 'Sun-exposed sensor mount',
+        left: 'Review degradation and any coating for the actual exposure.',
+        right:
+          'A UV-resistance candidate; verify formulation, colour and exposure conditions.',
+      },
+      {
+        requirement: 'Water and mounting loads',
+        left: 'Test joints, drainage and loaded service separately.',
+        right:
+          'UV suitability alone does not establish a waterproof enclosure or fastener retention.',
+      },
+    ],
     scenarioTitle:
       'Sunlight exposure is a separate requirement from indoor toughness',
     scenario:
@@ -159,6 +244,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsAsa,
+    criteria: [
+      {
+        requirement: 'Sheltered prototype',
+        left: 'A candidate when straightforward functional prototyping is the main task.',
+        right:
+          'Enclosure and warp control may add unnecessary prototype preparation.',
+      },
+      {
+        requirement: 'Sustained sunlight',
+        left: 'Check the exact product evidence before extending a prototype into outdoor service.',
+        right:
+          'Investigate a UV-resistant formulation with the intended colour and exposure.',
+      },
+      {
+        requirement: 'Loaded outdoor cover',
+        left: 'Check mounting creep and actual surface temperature.',
+        right:
+          'Check the same service conditions plus the documented printing environment.',
+      },
+    ],
     scenarioTitle:
       'An outdoor cover needs more than a weather-resistance label',
     scenario:
@@ -193,6 +298,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PlaVsTpu,
+    criteria: [
+      {
+        requirement: 'Locate an assembly',
+        left: 'Rigid PLA geometry is a starting point for positioning.',
+        right:
+          'Compliance may allow movement that defeats the locating function.',
+      },
+      {
+        requirement: 'Compress a bumper',
+        left: 'A rigid fit model does not establish cushioning performance.',
+        right:
+          'Choose a defined hardness and measure loaded thickness and recovery.',
+      },
+      {
+        requirement: 'Feed and support access',
+        left: 'Use the normal supported PLA profile for the exact geometry.',
+        right:
+          'Verify flexible-filament feed support and whether supports can actually be removed.',
+      },
+    ],
     scenarioTitle:
       'A locating plate and a bumper have opposite deformation goals',
     scenario:
@@ -228,6 +353,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsTpu,
+    criteria: [
+      {
+        requirement: 'Firm outer housing',
+        left: 'A candidate for a firmer shell and stable locating surfaces.',
+        right:
+          'A flexible case can allow movement; define the permitted displacement.',
+      },
+      {
+        requirement: 'Cushioning insert',
+        left: 'A thin part can flex, but that does not establish controlled compression.',
+        right:
+          'Investigate a hardness-specific insert under the real load and recovery requirement.',
+      },
+      {
+        requirement: 'One piece or assembly',
+        left: 'Can pair with a separately made compliant insert.',
+        right:
+          'An integrated flexible case changes insertion, support-removal and alignment requirements.',
+      },
+    ],
     scenarioTitle: 'Separate a firm housing from the compressible insert',
     scenario:
       'A hypothetical 70 mm housing holds a removable 2 mm cushioning insert. PETG is a candidate for the firm shell, while TPU is a candidate for the insert. Check insertion clearance in the shell and compression/rebound of the insert at the actual load. The dimensions are design inputs, not measured fit tolerances.',
@@ -261,6 +406,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsNylon,
+    criteria: [
+      {
+        requirement: 'Accessible fit prototype',
+        left: 'A candidate for checking the basic geometry with a familiar process.',
+        right:
+          'Drying and conditioning add variables before the fit result is meaningful.',
+      },
+      {
+        requirement: 'Repeated sliding',
+        left: 'Validate the exact sliding contact and required duty.',
+        right:
+          'A wear-oriented candidate; choose PA chemistry, reinforcement and mating-surface evidence.',
+      },
+      {
+        requirement: 'Humidity and final dimensions',
+        left: 'Record the service conditions and exact grade.',
+        right:
+          'Measure in a defined conditioned state; PA6, PA12 and filled grades are different cases.',
+      },
+    ],
     scenarioTitle: 'A sliding guide requires moisture and wear evidence',
     scenario:
       'For a 50 mm sliding guide, PETG can be a candidate for an accessible fit prototype. A nylon grade becomes worth evaluating when repeated sliding, wear or toughness dominate. Record the mating surface and humidity conditions; measure the guide after printing and after conditioning for service. No wear cycle count is claimed here.',
@@ -294,6 +459,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.NylonVsPolycarbonate,
+    criteria: [
+      {
+        requirement: 'Service requirement',
+        left: 'Investigate a grade when wear and toughness motivate the choice.',
+        right:
+          'Investigate a grade when loaded thermal service is the deciding requirement.',
+      },
+      {
+        requirement: 'Dimensional evidence',
+        left: 'Define moisture conditioning before accepting measured fit.',
+        right:
+          'Define the blend, thermal process and cooled measurement state.',
+      },
+      {
+        requirement: 'Available printer',
+        left: 'Verify drying, feed path and any abrasive reinforcement requirements.',
+        right:
+          'Verify the exact documented nozzle, bed and enclosure environment; hotend temperature alone is insufficient.',
+      },
+    ],
     scenarioTitle: 'An engineering cover needs a grade-level qualification',
     scenario:
       'A hypothetical 90 mm protective cover may require toughness, heat stability and accurate mounts. Nylon and PC are candidate families; compare exact datasheets at the operating temperature, moisture state and load. Print a dimensional coupon and final mounting geometry before choosing. Neither a family label nor a coupon certifies the assembled cover.',
@@ -327,6 +512,26 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PolypropyleneVsPetg,
+    criteria: [
+      {
+        requirement: 'Integral hinge',
+        left: 'A candidate to investigate for repeated flex; specify radius, orientation and cycles.',
+        right:
+          'A separate mechanical hinge may fit a firmer enclosure design better.',
+      },
+      {
+        requirement: 'Rigid box',
+        left: 'Low density does not establish enough stiffness for the designed wall.',
+        right:
+          'A candidate when a firmer general-purpose shell is the main need.',
+      },
+      {
+        requirement: 'Bed preparation',
+        left: 'Confirm a PP-compatible surface and warp-control procedure.',
+        right:
+          'Use the exact PETG surface and separation routine instead of transferring the PP setup.',
+      },
+    ],
     scenarioTitle:
       'A hinged lid and a rigid box should not share one selection rule',
     scenario:

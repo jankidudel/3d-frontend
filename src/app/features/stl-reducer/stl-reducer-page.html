@@ -486,6 +486,72 @@
       preferred percentage was reached.
     </p>
     <h3>Verify a smaller export</h3>
+    <p>
+      A second owned control adds a curved wall and a small recessed key. The
+      original has 512 triangles and 25,684 bytes. The independently generated
+      75% and 50% candidates reopen with 384 triangles / 19,284 bytes and 256
+      triangles / 12,884 bytes respectively. The 75% copy retains 20 x 20 x 10
+      coordinate spans; the 50% copy measures approximately 19.975908 x
+      19.987954 x 10, shrinking X by 0.024092 and Y by 0.012046 coordinate
+      units. Bounds alone cannot establish preservation of the key or curvature.
+      These are observed software outputs, not physical print results.
+    </p>
+    <ul>
+      <li>
+        <a href="/examples/quality-evidence/keyed-cylinder-100.stl" download
+          >Original curved control</a
+        >
+      </li>
+      <li>
+        <a href="/examples/quality-evidence/keyed-cylinder-75.stl" download
+          >Actual 75% candidate</a
+        >
+      </li>
+      <li>
+        <a href="/examples/quality-evidence/keyed-cylinder-50.stl" download
+          >Actual 50% candidate</a
+        >
+      </li>
+      <li>
+        <a href="/examples/quality-evidence/provenance.json" download
+          >Exact bytes, bounds, versions and reproduction</a
+        >
+      </li>
+    </ul>
+    <p>
+      Compare the
+      <a href="/examples/quality-evidence/keyed-cylinder-100.svg" download
+        >original triangle projection</a
+      >
+      with the
+      <a href="/examples/quality-evidence/keyed-cylinder-50.svg" download
+        >50% projection at the same scale and view</a
+      >. These projections are generated from the saved triangle records, not
+      screenshots. Reopen both files above and inspect the key at the same zoom
+      before accepting either derivative.
+    </p>
+    <div class="control-projections">
+      <figure>
+        <img
+          ngSrc="/examples/quality-evidence/keyed-cylinder-100.svg"
+          width="330"
+          height="370"
+          alt="Top projection of the actual 512-triangle curved control and recessed key."
+        />
+        <figcaption>Original serialized triangles, viewed from +Z.</figcaption>
+      </figure>
+      <figure>
+        <img
+          ngSrc="/examples/quality-evidence/keyed-cylinder-50.svg"
+          width="330"
+          height="370"
+          alt="Matching top projection of the actual 256-triangle candidate, showing changed triangulation at the curved edge and key."
+        />
+        <figcaption>
+          Actual 50% candidate in the same frame and scale.
+        </figcaption>
+      </figure>
+    </div>
     <ol>
       <li>
         Keep the original and confirm its units and functional dimensions.

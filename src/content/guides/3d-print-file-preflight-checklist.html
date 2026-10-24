@@ -16,242 +16,143 @@ faq:
 ---
 
 <p>
-  Use this checklist as the last file-level sweep before slicing an STL or 3MF.
-  It produces three outcomes: <strong>pass</strong> when the property is
-  understood, <strong>warn</strong> when it needs slicer or design review, and
-  <strong>fail</strong> when scale, geometry or intended content is unknown. For
-  explanations and repair routes, use the
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
-    >complete print-readiness guide</a
+  Print this page or download the blank record below. Mark one state per row:
+  <strong>Pass</strong> means the stated property was checked against a known
+  requirement; <strong>Review</strong> means a finding needs a decision;
+  <strong>Unknown</strong> includes skipped, unsupported and failed checks. An
+  unknown row never inherits another check's pass.
+</p>
+<p>
+  <a href="/examples/checklists/model-preflight.csv" download
+    >Download the editable preflight record (CSV)</a
   >.
 </p>
-
-<h2>1. File and visual sanity</h2>
-<ul>
-  <li>
-    <strong>Pass:</strong> the expected objects open and their visible shape is
-    plausible.
-  </li>
-  <li>
-    <strong>Warn:</strong> placement or orientation looks unusual but can be
-    checked in the slicer.
-  </li>
-  <li>
-    <strong>Fail:</strong> objects are missing, empty, badly corrupted or
-    unexplained.
-  </li>
-</ul>
 <p>
-  Open the copy you will actually slice. Use the
-  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, but remember that a
-  normal-looking surface can still contain topology faults.
+  File / revision: ____________________ Reviewer / date: ____________________
 </p>
-
-<h2>2. Dimensions, units and printer fit</h2>
-<ul>
-  <li>
-    <strong>Pass:</strong> X, Y and Z match a known reference and fit the usable
-    build space.
-  </li>
-  <li>
-    <strong>Warn:</strong> a tested rotation is needed or space for a brim,
-    supports or exclusion area is tight.
-  </li>
-  <li>
-    <strong>Fail:</strong> the unit assumption is unknown or a required axis
-    exceeds the usable limit.
-  </li>
-</ul>
 <p>
-  Check the bounding box with the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  or
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
-  >. STL does not declare a physical unit, so a 25.4-times error often indicates
-  an inch/millimeter mismatch. The
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >printer-fit guide</a
-  >
-  covers rotations and usable-volume caveats.
+  Source unit / expected size: ____________________ Printer / profile:
+  ____________________
 </p>
-
-<h2>3. Mesh integrity</h2>
-<ul>
-  <li>
-    <strong>Pass:</strong> findings are understood and consistent with the
-    intended model.
-  </li>
-  <li>
-    <strong>Warn:</strong> the slicer must be checked for a localized or
-    intentional condition.
-  </li>
-  <li>
-    <strong>Fail:</strong> open, non-manifold, inverted or intersecting geometry
-    makes the intended solid ambiguous.
-  </li>
-</ul>
-<p>
-  Run the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> or
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>.
-  Watertightness, manifold topology and face orientation answer different
-  questions. Do not repair every warning automatically: locate it, compare it
-  with the source, and decide whether it changes slicing or function.
-</p>
-
-<h2>4. Thickness and complexity</h2>
-<ul>
-  <li>
-    <strong>Pass:</strong> critical walls have been reviewed for the intended
-    process and detail level is useful.
-  </li>
-  <li>
-    <strong>Warn:</strong> sampled thin regions or a high triangle count need
-    closer inspection.
-  </li>
-  <li>
-    <strong>Fail:</strong> required walls disappear in preview or the file
-    cannot be handled reliably.
-  </li>
-</ul>
-<p>
-  Use the relevant
-  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}">STL wall-thickness</a>
-  or
-  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}">3MF wall-thickness</a>
-  check as a screen, then verify perimeters and layers in the slicer. Triangle
-  count is not a quality score; reduce geometry only for a demonstrated workflow
-  problem and check for lost curvature or features afterward.
-</p>
-
-<h2>5. Verify every changed copy</h2>
-<p>
-  Preserve the original. After repair, scaling, conversion or reduction, reopen
-  the saved result and repeat only the affected checks plus a visual comparison.
-  Confirm dimensions, object count, topology and triangle count where relevant.
-  A successful save message does not establish that design intent survived.
-</p>
-<h2>Read pass, warning, skipped and incomplete separately</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Report state</th>
-      <th scope="col">What it establishes</th>
-      <th scope="col">What remains to do</th>
+      <th scope="col">Check and evidence to record</th>
+      <th scope="col">Mark one</th>
+      <th scope="col">Finding / next action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Completed, no issue detected</td>
-      <td>The named check ran and found no reported issue within its method</td>
-      <td>
-        Review unsupported checks and design intent; then inspect slicer layers
-      </td>
+      <th scope="row">
+        Input opens as the intended complete geometry; identify STL or supported
+        3MF package.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
     </tr>
     <tr>
-      <td>Warning or finding</td>
-      <td>
-        A measured condition needs interpretation, such as four boundaries on
-        the open-cube control
-      </td>
-      <td>
-        Confirm the affected region and decide whether it is intentional before
-        editing
-      </td>
+      <th scope="row">
+        Units and a known reference span agree. For 3MF, verify declared units
+        and placed items.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
     </tr>
     <tr>
-      <td>Skipped</td>
-      <td>
-        No result was calculated; printer fit is skipped when no profile is
-        selected
-      </td>
-      <td>Supply the missing input or leave fit explicitly unchecked</td>
+      <th scope="row">
+        Every required item is present; separate intended shells from unwanted
+        fragments.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
     </tr>
     <tr>
-      <td>Sampled or incomplete</td>
-      <td>A bounded subset was measured or the analysis could not finish</td>
-      <td>
-        Do not treat an unobserved area as passing; retry within limits or
-        inspect in the authoring/slicer application
-      </td>
+      <th scope="row">
+        Topology findings are understood: boundaries, over-shared edges,
+        duplicates and winding.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Nominal dimensions fit the usable bed in the intended orientation, with
+        brim/support space.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Critical walls and detail have a verification method; sampled values
+        leave unsampled areas unknown.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        The actual saved derivative reopens with intended bounds, surfaces and
+        components.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Native slicer layers retain required features, cavities and supports
+        under the intended profile.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Material, calibration, support removal and any functional/load
+        requirement have a separate plan.
+      </th>
+      <td>□ Pass<br />□ Review<br />□ Unknown</td>
+      <td>____________________</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A useful owned control is the
-  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a>: its
-  preflight can complete the boundary check (four edges) while withholding
-  closed-solid volume and skipping printer fit without a saved profile. A
-  completed report can therefore contain unavailable or skipped metrics. Units
-  for STL remain user assumptions, and wall-thickness results are samples, not
-  an exhaustive minimum or proof of printability.
-</p>
-
-<h2>Stop conditions</h2>
-<p>
-  Do not move to slicing when the intended unit is unknown, a required object is
-  missing, the model exceeds the usable build space, or a repair changed a
-  functional surface without a reliable reference. Return to the author or
-  source CAD when design intent cannot be recovered from the mesh. If the file
-  passes geometry checks but the slicer drops regions or produces unexplained
-  toolpaths, preserve the file and investigate the slicer-specific result rather
-  than repeatedly applying mesh repairs.
+  Decision: proceed to the recorded next stage / clarify / return to source:
+  ____________________
 </p>
 <p>
-  A warning can proceed only when its consequence is understood and the next
-  validation step is named. “The slicer accepts it” is insufficient when a
-  required feature, dimension or material region may have been discarded.
+  Unresolved checks and owner: ____________________ Recheck after revision:
+  ____________________
 </p>
-
-<h2>Before you slice</h2>
-<ul>
-  <li>The file contains the expected geometry.</li>
-  <li>Dimensions and unit assumptions are confirmed.</li>
-  <li>The model fits the usable printer volume with required allowances.</li>
-  <li>Mesh findings are understood rather than merely hidden.</li>
-  <li>Critical thickness and complexity concerns were reviewed.</li>
-  <li>Any modified copy was inspected again.</li>
-</ul>
+<h2>Use the right evidence for each row</h2>
 <p>
-  Keep a small record beside important jobs: source filename and revision,
-  expected overall dimension, printer/profile, checks that produced warnings and
-  any transformation applied. This turns the checklist into a repeatable handoff
-  rather than a memory test. When another person reviews the job, they can see
-  which assumptions were verified and which remain for the slicer or printer.
+  Run
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a>
+  for supported geometry screens. Record the actual method and settings. STL
+  requires an assumed unit; a 3MF resource count is not the placed-item count.
+  No printer profile means fit is unknown, not passed.
 </p>
 <p>
-  Re-run preflight when the source file changes, even if the filename does not.
-  A revised mesh can restore an old scale, remove a component or change
-  topology. Do not carry a prior pass forward based only on visual similarity.
+  A <a href="{{ GuideSlug.RouteBatchStlChecker }}">collection report</a>
+  can retain completed, failed and cancelled files separately. Do not average a
+  failed input into a clean collection score. A new revision needs a new check,
+  even if its filename matches an earlier one.
 </p>
+<h2>Stop and choose a specific next action</h2>
 <p>
-  File preflight cannot guarantee a successful print. Orientation, supports,
-  adhesion, process settings, material behaviour, calibration and structural use
-  still belong in slicer and engineering review.
-</p>
-
-<h2>Turn a collection into a reproducible handoff</h2>
-<p>
-  A useful handoff records what was checked, what was assumed and what was left
-  unresolved. The
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}">built-in mixed collection</a>
-  demonstrates three outcomes: a closed 20 mm cube with screened volume of 8,000
-  mm³; an open cube with four boundary edges and unavailable volume; and
-  malformed input that fails independently. A single bad file does not erase the
-  successful results.
-</p>
-<p>
-  Export settings with findings: check schema/version, STL unit assumption or
-  3MF declared unit, selected nominal printer, wall-review threshold, sampling
-  method and unsupported checks. Explain that sample count describes coverage,
-  not accuracy. File names and customer notes belong in your own local report,
-  not analytics events.
-</p>
-<p>
-  Sort actionable findings first and name the next action: inspect size, correct
-  an export, review a thin region, or request clarification. A local saved
-  report is browser history rather than a cloud project. Keep original files
-  unchanged; repairs should generate a separate copy and receive their own
-  verification.
+  Stop when intended scale, geometry or required parts cannot be established.
+  Inspect an opening before filling it and identify a disconnected part before
+  removing it. Preserve the original and recheck the saved result after a
+  supported change. Use the
+  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
+    >STL finding interpretation guide</a
+  >
+  for diagnostic branches, or the
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
+    >cross-format readiness guide</a
+  >
+  for the reasoning behind each stage. This checklist records the decision; it
+  does not duplicate that explanation or certify a physical print.
 </p>

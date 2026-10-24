@@ -27,6 +27,35 @@ faq:
   Use the 3MF quality report to locate the affected object, then return to
   source CAD when the intended join is unclear.
 </p>
+<h2>Trace the finding to a resource or a placement</h2>
+<p>
+  Start with the
+  <a href="/examples/collection-review/two-placed-cubes.3mf" download
+    >owned repeated-item build</a
+  >. One cube resource is placed twice; its retained server report completes
+  with two components and no listed mesh issues. Do not remove the second placed
+  cube merely to obtain one component. Now compare the
+  <a href="/examples/cad-export/duplicate-face-cube.3mf" download
+    >repeated-face resource</a
+  >: the redundant triangle creates one duplicate finding and three over-shared
+  edges. This calls for a resource-level correction, not deletion of a
+  legitimate build item.
+</p>
+<p>
+  Keep
+  <a href="/examples/quality-evidence/two-item-report.json" download
+    >the valid two-item report</a
+  >
+  and
+  <a href="/examples/quality-evidence/duplicate-report.json" download
+    >the defective-resource report</a
+  >
+  beside the source packages. The server checks build items independently; local
+  combined-build methods can interpret coincident placements differently.
+  Inspect the actual selected method rather than treating either component count
+  as a universal assembly judgement. Vertex-only and crossing-surface cases need
+  further review beyond an edge-incidence result.
+</p>
 <h2>Recognize the main topology cases</h2>
 <ul>
   <li>

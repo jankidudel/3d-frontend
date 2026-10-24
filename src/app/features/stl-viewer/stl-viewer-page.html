@@ -177,6 +177,14 @@
     </ol>
     <h2>What the Viewer shows</h2>
     <p>
+      Try the owned curved control linked below: with a millimetre assumption,
+      its overall bounds are 20 x 20 x 10 mm, but a vertical side edge spans
+      only 10 mm. Two picked mesh points answer a different question from the
+      full bounding box. The small recessed key also shows why a rounded
+      silhouette and matching outer size cannot establish that all detail
+      survived.
+    </p>
+    <p>
       The viewer calculates the model's bounding dimensions and triangle count
       directly from its geometry. STL coordinates have no native unit, so
       confirm scale in your slicer.
@@ -191,6 +199,13 @@
       for a practical workflow.
     </p>
     <h2>Inspect a cross-section</h2>
+    <p>
+      On that 10 mm-high control, a Z cut at 5 mm hides one half of the
+      displayed solid. Rotate the view to inspect the exposed boundary. The
+      display does not add a measured cap or calculate a section area; the
+      original file stays unchanged. A clipped-open view is not an open-edge
+      finding in the stored mesh.
+    </p>
     <p>
       Choose <strong>Inspect cross-section</strong> below the viewer, choose an
       X, Y or Z cut axis, then move the cut position through the displayed

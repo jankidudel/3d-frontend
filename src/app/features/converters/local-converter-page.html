@@ -347,6 +347,30 @@
       </p>
     } @else {
       <h2>Verify a geometry-only export</h2>
+      <dl>
+        <dt>Geometry and supported transforms</dt>
+        <dd>
+          The selected placed build or item is flattened into triangles.
+          Overlapping shells are not Boolean-unioned.
+        </dd>
+        <dt>Units</dt>
+        <dd>
+          Physical coordinates are converted to millimetres; STL stores no unit
+          declaration. Open the saved STL with a millimetre assumption.
+        </dd>
+        <dt>Object identities and editable placements</dt>
+        <dd>
+          Separate resource and build-item records are lost. Selection chooses
+          one top-level item, not an automatic ZIP of separate STL parts.
+        </dd>
+        <dt>Colours and material assignments</dt>
+        <dd>Not preserved in this binary STL export.</dd>
+        <dt>Printer and slicer settings</dt>
+        <dd>
+          Not exported. Keep the original project and use its producing slicer
+          for settings.
+        </dd>
+      </dl>
       <p>
         The converter resolves supported build geometry, applies component and
         build transforms, converts physical coordinates to millimetres and

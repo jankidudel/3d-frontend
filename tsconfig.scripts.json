@@ -8,5 +8,8 @@
     "types": ["node"]
   },
   "include": ["scripts/**/*.mts"],
-  "exclude": ["scripts/collection-examples.spec.mts"]
+  "exclude": [
+    "scripts/collection-examples.spec.mts",
+    "scripts/recovery-evidence.spec.mts"
+  ]
 }

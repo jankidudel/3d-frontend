@@ -132,6 +132,9 @@ For more information on using the Angular CLI, including detailed command refere
 
 # Product analytics events
 
+SEO ownership, the 195-URL evidence ledger, production GET checks and release
+measurement are documented in [SEO operations](docs/SEO_OPERATIONS.md).
+
 With analytics-cookie consent, the existing GA4 integration records these
 privacy-limited product events:
 

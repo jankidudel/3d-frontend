@@ -4,7 +4,7 @@ import {
 } from './printer-spec-format';
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { PrinterSlug, PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import {
   CuratedComparison,
@@ -20,6 +20,7 @@ import { PrinterRecord } from './printer-catalogue';
   styleUrl: './printer-pair-page.scss',
 })
 export class PrinterPairPage {
+  readonly printerSlug = PrinterSlug;
   readonly routeUrl = PublicRouteUrl;
   readonly comparison: CuratedComparison;
   readonly printers: readonly [PrinterRecord, PrinterRecord];

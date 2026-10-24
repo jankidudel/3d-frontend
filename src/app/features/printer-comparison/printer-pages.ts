@@ -10,7 +10,7 @@ import {
 } from '../repeat-workflows/product-link';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { PrinterSlug, PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { curatedComparisons } from './comparison-catalogue';
 import { printers, printersBySlug } from './printer-catalogue';
@@ -115,6 +115,16 @@ export class PrinterHubPage {
     </p>
     <section>
       <h2>Material compatibility guidance</h2>
+      @if (printer().slug === printerSlug.BambuLabP1S) {
+        <p>
+          The source specification distinguishes ideal material families from PA
+          and PC capability. The conservative list below additionally asks
+          whether the exact formulation and installed hardware are documented.
+          An unknown verdict is a request for that evidence, not a claim that
+          the specification forbids the family. Filled variants and automatic
+          filament feeding need their own checks.
+        </p>
+      }
       <p>
         These are conservative, evidence-led starting points. They do not
         promise compatibility with every formulation, filled variant or spool.
@@ -272,6 +282,7 @@ export class PrinterHubPage {
   </main>`,
 })
 export class PrinterDetailPage {
+  readonly printerSlug = PrinterSlug;
   readonly formatDimensions = formatPrinterDimensions;
   readonly formatNumber = formatPrinterNumber;
   readonly fitExample = computed(() => {

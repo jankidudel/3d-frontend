@@ -1,0 +1,63 @@
+{
+  "method": "Actual browser algorithms run locally in Vitest; no selected printer; 1.2 mm wall review threshold; not physical-print evidence.",
+  "controls": [
+    {
+      "name": "closed-20mm-cube.stl",
+      "assumedUnit": "mm",
+      "triangles": 12,
+      "dimensions": {
+        "width": 20,
+        "height": 20,
+        "depth": 20
+      },
+      "topology": {
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": 8000,
+        "volumeReliable": true
+      },
+      "walls": {
+        "attempted": 12,
+        "measured": 12,
+        "unmeasured": 0,
+        "minimum": 19.99999,
+        "belowThreshold": 0,
+        "threshold": 1.2
+      },
+      "printerFit": null
+    },
+    {
+      "name": "open-face-cube.stl",
+      "assumedUnit": "mm",
+      "triangles": 10,
+      "dimensions": {
+        "width": 20,
+        "height": 20,
+        "depth": 20
+      },
+      "topology": {
+        "openEdges": 4,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": null,
+        "volumeReliable": false
+      },
+      "walls": {
+        "attempted": 10,
+        "measured": 8,
+        "unmeasured": 2,
+        "minimum": 19.99999,
+        "belowThreshold": 0,
+        "threshold": 1.2
+      },
+      "printerFit": null
+    }
+  ]
+}

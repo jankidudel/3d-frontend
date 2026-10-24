@@ -26,6 +26,33 @@ faq:
   a workflow cost, not a print-quality score. Simplify only a copy, then compare
   silhouette, critical dimensions and the final build layout before slicing.
 </p>
+<h2>Investigate the archive, not just its displayed count</h2>
+<p>
+  Compare the
+  <a href="/examples/collection-review/one-placed-cube.3mf" download
+    >one-item package</a
+  >
+  with the
+  <a href="/examples/collection-review/two-placed-cubes.3mf" download
+    >repeated-item package</a
+  >. Work on copies. A ZIP reader can inspect <code>3D/3dmodel.model</code> in
+  these specific fixtures: both store one object with 12 triangle records, while
+  their build sections contain one and two references respectively. The second
+  reference applies a 40 mm X translation; it does not store another 12 faces.
+</p>
+<pre><code>&lt;item objectid="1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/&gt;
+&lt;item objectid="1" transform="1 0 0 0 1 0 0 0 1 40 0 0"/&gt;</code></pre>
+<p>
+  The retained
+  <a href="/examples/quality-evidence/two-item-report.json" download
+    >server report</a
+  >
+  observes 24 resolved triangles and a 60 mm overall X span. This distinguishes
+  a repeated placement from a second mesh resource. In a different package,
+  follow its root model relationship rather than assuming this fixture's model
+  filename. Unplaced resources and nested components need separate tracing;
+  counting every XML triangle once does not establish the placed build count.
+</p>
 <h2>Why three counts can differ</h2>
 <p>
   A 3MF package may contain object resources that are never placed, components

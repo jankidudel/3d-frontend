@@ -1,0 +1,71 @@
+# SEO evidence and release operations
+
+The workspace's [SEO strategy](../../docs/SEO_STRATEGY.md) is authoritative. This document explains how to maintain evidence, not how to manufacture an indexed-page target. Preserve existing useful pages and source dates. Routine new SEO publication is paused during the recovery review; necessary product and factual fixes can continue.
+
+## URL ledger
+
+Maintain [seo-url-ledger.json](seo-url-ledger.json) as the canonical URL decision and measurement record. Its starting inventory is the 195-route sitemap from 24 October 2026. Each route has an assigned family, primary task, retained-content evidence, a reason for its disposition, local checks, independent live delivery fields, Google fields and release fields. Null means unknown. A local pass is neither a production GET nor evidence of Google indexing.
+
+After a production build, run:
+
+```sh
+npm run seo:audit -- --write
+```
+
+The audit checks complete ledger/sitemap coverage, initial self-canonical/H1/metadata/content, robots directives, crawlable links, contextual inlinks and shortest link depth. It records content hashes and preserves prior local evidence when the answer changes. This checks presence and consistency; it cannot assess helpfulness from text length or establish equivalence to Google's rendering. Review page-specific task/evidence manually. Keep per-page unchanged dates unchanged.
+
+From an environment with production access, run:
+
+```sh
+npm run seo:audit:production -- --write
+```
+
+This makes bounded read-only GET requests, without spoofing Googlebot or changing hosting. Review canonical URLs, each redirect hop, HTTP robots, content type and alternate host/slash/index/query forms. An intentionally missing route must return a real 404. Add every exported redirect-error URL to the variant investigation; the built-in samples do not identify Google's affected URLs. Do not replace a previous successful observation with an invented status when access fails.
+
+Raw GET and browser-rendered checks remain separate. Compare canonical, robots, title, H1, explanatory content and links after hydration. Inspect mobile and desktop uploads, long result lists, focus visibility, horizontal tables, error/cancel states and real downloads. Capture only public fixture states for technical evidence. Browser inspection that cannot run is an unverified check, not an inferred pass.
+
+## Search Console and protected pages
+
+Import dated Page indexing examples, indexed URLs, Sitemaps and Performance exports from the correct property. Retain the original exports as research. Populate each row's `google` object with its actual status/reason, selected canonical, last crawl and page/query/country/device window. Record export/property scope. Preserve requested URL variants in `additionalUrls`; do not collapse them into canonical rows without retaining their original identity. A historical impression is not proof of current indexing.
+
+Identify the existing indexed cohort before approving any consolidation or exclusion. Inspect affected URLs and their historic performance, direct usage and links. Missing credentials or exports leave those fields unknown; do not assign the screenshot's sitewide count to invented URLs. Check Manual actions, Security issues and Crawl Stats in the authenticated property. A successful live inspection is not an indexing decision.
+
+Record any proposed move, redirect, removal or noindex separately in `indexationChanges`, with destination, rationale, preserved unique content, evidence, review and rollback. The starting value is an empty list. Overlap candidates stay accessible pending evidence; neither an appendix suggestion nor an unindexed label approves a removal. Existing host normalization is distinct from a new content redirect.
+
+## Reproduce examples
+
+From the frontend root:
+
+```sh
+node --experimental-strip-types scripts/generate-recovery-evidence.mts
+npm run test:seo-recovery
+```
+
+To intentionally refresh the local preflight observation after reviewing an algorithm change:
+
+```sh
+INSPECTMESH_REFRESH_EVIDENCE=1 npm run test:seo-recovery
+```
+
+From `3d-processor`:
+
+```sh
+dotnet run --project tools/RecoveryEvidence -- ../3d-frontend/public/examples
+dotnet test 3d-processor.slnx --nologo
+```
+
+The runner checks the one/repeated-item 3MF build, defective resource and reopened STL cleanup. `public/examples/quality-evidence/provenance.json` records input hashes, reduction outputs, versions, rights and scope. The keyed-cylinder SVGs are projections of serialized geometry, not browser screenshots. New analytical geometry is CC0. Existing fixtures retain their provenance. Samples and local processor observations do not establish production deployment, slicer compatibility or a physical print outcome.
+
+Keep .NET's socket-based test runner limitation distinct from a test failure or successful run. A successful direct evidence runner checks its listed controls, not the full test suite.
+
+## Release and measurement
+
+Before an authorized deployment, complete `npm run verify`, the processor checks for relevant changes, editorial/source review and representative browser review. Resolve demonstrated failures. Identify exact changed canonical URLs, meaningful dates and source changes. Use the ledger's previous content hash and source Git history as the baseline, and store deployment/recrawl dates only after observing them.
+
+Implementation does not authorize a push, deployment, production object deletion or cache invalidation. This workflow adds no AWS resource, log stream, alarm, WAF rule or managed service. Production crawl requests use the site's ordinary request/data-transfer allowance; deployment and any invalidation need their own cost review and authorization. Do not change edge rules solely because a local network cannot reach the site.
+
+After deployment, verify actual GETs, rendered state, fixtures, sitemap and Google live tests. Request indexing only for selected substantively changed priority URLs where appropriate. Review technical regressions promptly, then relevant page/query impressions, clicks, CTR and privacy-respecting task completion weekly. Compare comparable periods and actual post-update crawl dates; follow the strategy's full 28-day evaluation convention before another broad overlapping release. Do not repeatedly rewrite pages that Google has not fetched yet. Indexing and useful customer activity are separate outcomes.
+
+## Documentation maintenance
+
+Audit tracked Markdown case-insensitively in the workspace and each component. Keep active instructions, durable architecture/testing/setup/operations and user-owned research. Preserve ambiguous files for review. The ledger's documentation audit records those classifications and evidence; do not delete a file because its name suggests scratch work. Remove a batch input only after its implementation and validation are complete, and update references if a file is removed. Never retain a new completion-report Markdown file in place of the final task response.

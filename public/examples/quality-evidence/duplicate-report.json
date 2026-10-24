@@ -1,0 +1,170 @@
+{
+  "reportVersion": "1.0",
+  "fileName": "duplicate-face-cube.3mf",
+  "fileFormat": "3mf",
+  "sourceUnit": "millimeter",
+  "modelObjectCount": 1,
+  "buildItemCount": 1,
+  "fileSizeBytes": 935,
+  "triangleCount": 13,
+  "boundingBox": {
+    "minX": 0,
+    "minY": 0,
+    "minZ": 0,
+    "maxX": 20,
+    "maxY": 20,
+    "maxZ": 20
+  },
+  "dimensions": {
+    "width": 20,
+    "height": 20,
+    "depth": 20
+  },
+  "surfaceArea": 2600,
+  "volume": null,
+  "topology": {
+    "connectedComponentCount": 1,
+    "openEdgeCount": 0,
+    "nonManifoldEdgeCount": 3,
+    "hasInconsistentOrientation": false
+  },
+  "validation": {
+    "issues": [
+      {
+        "code": "duplicate_triangle",
+        "message": "duplicate triangle found in 3MF build items.",
+        "count": 1,
+        "severity": "error"
+      },
+      {
+        "code": "non_manifold_edge",
+        "message": "non manifold edge found in 3MF build items.",
+        "count": 3,
+        "severity": "error"
+      }
+    ],
+    "topology": {
+      "connectedComponentCount": 1,
+      "openEdgeCount": 0,
+      "nonManifoldEdgeCount": 3,
+      "hasInconsistentOrientation": false
+    },
+    "isValid": false
+  },
+  "issueHighlights": {
+    "samples": {
+      "duplicate_triangle": [
+        {
+          "a": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "b": {
+            "x": 20,
+            "y": 20,
+            "z": 0
+          },
+          "c": {
+            "x": 20,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "non_manifold_edge": [
+        {
+          "a": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "b": {
+            "x": 20,
+            "y": 20,
+            "z": 0
+          },
+          "c": null
+        },
+        {
+          "a": {
+            "x": 20,
+            "y": 0,
+            "z": 0
+          },
+          "b": {
+            "x": 20,
+            "y": 20,
+            "z": 0
+          },
+          "c": null
+        },
+        {
+          "a": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "b": {
+            "x": 20,
+            "y": 0,
+            "z": 0
+          },
+          "c": null
+        }
+      ]
+    }
+  },
+  "issueGeometry": {
+    "version": "1.0",
+    "openEdges": {
+      "totalCount": 0,
+      "returnedCount": 0,
+      "truncated": false,
+      "segments": []
+    },
+    "nonManifoldEdges": {
+      "totalCount": 3,
+      "returnedCount": 3,
+      "truncated": false,
+      "segments": [
+        {
+          "start": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "end": {
+            "x": 20,
+            "y": 20,
+            "z": 0
+          }
+        },
+        {
+          "start": {
+            "x": 20,
+            "y": 0,
+            "z": 0
+          },
+          "end": {
+            "x": 20,
+            "y": 20,
+            "z": 0
+          }
+        },
+        {
+          "start": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "end": {
+            "x": 20,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ]
+    }
+  }
+}

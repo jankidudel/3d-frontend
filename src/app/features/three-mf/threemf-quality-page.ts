@@ -30,6 +30,7 @@ import {
 } from '../../shared/mesh-validation-issues';
 import { MeshQualityPdfService } from '../../shared/mesh-quality-pdf.service';
 import { ModelFileFormat } from '../../core/formats/model-file-format';
+import { ExampleAsset } from '../examples/example-assets';
 
 type ReportRecord = Record<string, unknown>;
 @Component({
@@ -39,6 +40,7 @@ type ReportRecord = Record<string, unknown>;
   styleUrl: '../shared/model-checker-page.scss',
 })
 export class ThreeMfQualityPage {
+  readonly qualityExamples = ExampleAsset;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobStatus = JobStatus;

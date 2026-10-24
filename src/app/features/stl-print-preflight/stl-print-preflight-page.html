@@ -75,6 +75,43 @@
     [current]="file()"
     [load]="loadPublicExample"
   />
+  <details class="card">
+    <summary>Read a reproducible sample report before choosing a file</summary>
+    <p>
+      These are actual local-algorithm observations of the public closed and
+      missing-face cube controls, interpreted as millimetres, with a 1.2 mm wall
+      review threshold and no printer profile. They are separate from your file.
+    </p>
+    <dl>
+      <dt>Completed topology: closed control</dt>
+      <dd>
+        12 triangles; no open or non-manifold edges; screened volume 8,000 mm³.
+      </dd>
+      <dt>Review finding: missing-face control</dt>
+      <dd>
+        10 triangles; four open edges; volume unavailable rather than zero.
+      </dd>
+      <dt>Completed samples do not cover every wall</dt>
+      <dd>
+        The closed cube measured 12 of 12 attempted rays. The open cube measured
+        8 of 10; two were unmeasured. Neither had a measured ray below the
+        chosen threshold. That does not turn unmeasured or unsampled areas into
+        passes.
+      </dd>
+      <dt>Skipped: nominal printer fit</dt>
+      <dd>
+        No selected profile means no fit decision, even on the closed cube.
+      </dd>
+      <dt>Unsupported: other acceptance questions</dt>
+      <dd>
+        Self-intersections, material behaviour, slicer settings and physical
+        print success were not established.
+      </dd>
+    </dl>
+    <a href="/examples/quality-evidence/local-preflight.json" download
+      >Download the exact sample results</a
+    >.
+  </details>
   @if (mesh(); as model) {
     <section class="card" aria-labelledby="report-title">
       <h2 id="report-title">Preflight report</h2>
@@ -329,6 +366,14 @@
     </p>
     <h2>How this check works</h2>
     <p>
+      Local preflight and the server Quality Checker are different methods. This
+      browser screen joins exactly matching vertices and counts connected shells
+      through vertex connectivity; the loose-part removal tool uses full shared
+      edges. The server applies its own edge-based topology checks and keeps
+      independent 3MF build items separate. A component count from one workflow
+      should not silently replace another's interpretation.
+    </p>
+    <p>
       The report parses the STL once in your browser, counts topology findings,
       calculates bounds and tests practical right-angle orientations against
       your saved custom printer profile. Without a saved profile, fit is
@@ -351,10 +396,11 @@
     </p>
     <h2>Example workflow</h2>
     <p>
-      An oversized model with open edges and sampled thin areas should be
-      repaired first, rechecked, then scaled or split only after the mesh is
-      understood. The report points to each relevant tool instead of treating
-      those different problems as one score.
+      Inspect each finding before changing the file. An opening may be intended,
+      and disconnected pieces can be a valid assembly. Confirm the source units
+      and intended geometry, choose a supported correction only when needed,
+      then reopen the saved copy and compare the affected region. Review scale,
+      fit and the actual slicer layers separately.
     </p>
     <h2>Preflight FAQ</h2>
     <h3>Can a preflight check tell me an STL is printable?</h3>

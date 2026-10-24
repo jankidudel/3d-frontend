@@ -112,14 +112,6 @@ for (const guide of catalogue.guides) {
   const entry = registry.find((candidate) => candidate.slug === guide.slug)!;
   const document = new JSDOM(guide.html).window.document;
   const checksEditorialTargets = entry.checkEditorialTargets !== false;
-  if (guide.faqs.length === 1)
-    report(
-      'ERROR',
-      source,
-      route,
-      'faq-count',
-      'Use at least two substantive FAQ entries when a guide has an FAQ section, or omit the section.',
-    );
   if (guide.title.trim().length < 15 || guide.description.trim().length < 50)
     report(
       'ERROR',
@@ -210,24 +202,15 @@ for (const guide of catalogue.guides) {
         `Do not link to disabled or scheduled route ${href}.`,
       );
   }
-  if (wordCount < 350 && checksEditorialTargets)
-    report(
-      'ERROR',
-      source,
-      route,
-      'thin-new-content',
-      'Supply at least 350 useful words or explicitly classify a short reference page.',
-    );
-  if (wordCount < 700)
+  if (wordCount < 350) {
     report(
       'WARNING',
       source,
       route,
-      checksEditorialTargets
-        ? 'content-depth-target'
-        : 'editorial-target-skipped',
-      'Expand only with completed authored editorial content when available.',
+      'short-content-review',
+      'Review task completeness and unique value. Length alone is not a quality gate; retain concise complete answers.',
     );
+  }
   if (guide.title.length < 35 || guide.title.length > 65)
     report(
       'WARNING',
@@ -419,13 +402,13 @@ async function checkGeneratedOutput(): Promise<void> {
         }
       }
     }
-  } catch {
+  } catch (error) {
     report(
-      'WARNING',
+      'ERROR',
       'generated output',
       '-',
       'output-not-present',
-      'Run npm run build before checking rendered production HTML.',
+      `Unable to validate built HTML: ${String(error)}. Run npm run build and resolve the failure.`,
     );
   }
 }

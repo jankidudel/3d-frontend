@@ -1,3 +1,5 @@
+@use 'quality-results';
+
 .checker {
   max-width: 58rem;
   margin-top: 2rem;
@@ -52,7 +54,6 @@ app-three-mf-file-picker {
   font-weight: 700;
 }
 
-.repair-guidance-note,
 .no-issues {
   margin-top: 1rem;
 }
@@ -116,5 +117,29 @@ app-three-mf-file-picker {
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation: none;
+  }
+}
+.interpretation-table {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-block: 1rem;
+
+  table {
+    width: 100%;
+    min-width: 36rem;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #0369a1;
+    outline-offset: 3px;
   }
 }

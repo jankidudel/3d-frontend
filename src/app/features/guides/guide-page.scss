@@ -98,6 +98,10 @@
   min-width: 36rem;
 }
 @media print {
+  .guide-page .guide-body tr {
+    break-inside: avoid;
+  }
+
   .guide-page .guide-body .guide-table-scroll {
     overflow: visible;
   }

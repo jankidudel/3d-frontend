@@ -1,4 +1,5 @@
 import { DestroyRef } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import {
   displayNumber,
   displayVector,
@@ -56,7 +57,7 @@ interface PreviewModel {
 
 @Component({
   selector: 'app-stl-reducer-page',
-  imports: [ExampleLoader, RouterLink, ObjectViewerComponent],
+  imports: [NgOptimizedImage, ExampleLoader, RouterLink, ObjectViewerComponent],
   templateUrl: './stl-reducer-page.html',
   styleUrl: './stl-reducer-page.scss',
 })

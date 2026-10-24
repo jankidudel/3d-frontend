@@ -2,12 +2,16 @@
   <p class="eyebrow">3MF mesh preflight</p>
   <h1>3MF Quality Checker</h1>
   <p class="lead">
-    3MF preserves a declared unit and build structure, but its mesh geometry can
-    still contain print-affecting problems.
+    Check supported mesh problems in a 3MF build before choosing a repair.
+    Review the geometry and declared units; this is not a full package or
+    slicer-settings validator.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose your 3MF file</h2>
-    <p>Upload a 3MF file up to 25 MiB.</p>
+    <p>
+      Choose a 3MF file up to 25 MiB. Pressing Check 3MF quality uploads it to
+      InspectMesh for server analysis.
+    </p>
     <app-three-mf-file-picker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
@@ -134,16 +138,23 @@
               <span aria-hidden="true">✓</span> No mesh validation issues found.
             </p>
           } @else if (issues(value).length > 0) {
-            <ul>
-              @for (issue of issues(value); track $index) {
-                <li>
-                  <strong>{{ issue.label }}</strong>
-                  @if (issue.detail) {
-                    <span>{{ issue.detail }}</span>
-                  }
-                </li>
-              }
-            </ul>
+            <div
+              class="issues-scroll"
+              role="region"
+              aria-labelledby="issues-title"
+              tabindex="0"
+            >
+              <ul>
+                @for (issue of issues(value); track $index) {
+                  <li>
+                    <strong>{{ issue.label }}</strong>
+                    @if (issue.detail) {
+                      <span>{{ issue.detail }}</span>
+                    }
+                  </li>
+                }
+              </ul>
+            </div>
           } @else {
             <p>
               The model failed validation, but no issue details were supplied.
@@ -206,68 +217,208 @@
         >Run 3MF Print Preflight</a
       >.
     </p>
-    <h2>What a 3MF quality check looks for</h2>
+    <h2>What the report means</h2>
+    <div
+      class="interpretation-table"
+      role="region"
+      aria-label="3MF finding interpretation"
+      tabindex="0"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Finding</th>
+            <th scope="col">Interpretation</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Could not analyse this 3MF file</th>
+            <td>
+              No completed mesh result. A corrupt archive, unresolved reference
+              or unsupported package feature can prevent analysis.
+            </td>
+            <td>
+              Open the original in its producing application; re-export a
+              supported mesh package. A failed check is not zero findings.
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Open edge</th>
+            <td>
+              An exposed boundary was found in a placed mesh. It can be a
+              missing surface or an intended sheet.
+            </td>
+            <td>
+              Inspect the boundary against the source design before closing it.
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Non-manifold edge</th>
+            <td>
+              More than two faces share an edge. Repeated faces can cause this
+              too.
+            </td>
+            <td>
+              Review duplicate findings and the affected region; distinguish
+              redundant faces from intersecting solids.
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Duplicate or degenerate triangle</th>
+            <td>A repeated face or face with no useful area was found.</td>
+            <td>
+              Use
+              <a [routerLink]="routeUrl.ThreeMfRepair">supported 3MF cleanup</a>
+              only for an understood change, then recheck the saved package.
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Inconsistent orientation</th>
+            <td>
+              Neighbouring triangle winding disagrees. This is different from a
+              display normal or an intentionally inward cavity wall.
+            </td>
+            <td>
+              Inspect the source surfaces and the reported location before
+              changing winding.
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">No mesh problems found</th>
+            <td>The completed supported checks returned no listed findings.</td>
+            <td>
+              Continue with size, wall, placement and sliced-layer review.
+              Self-intersections, strength and print success remain unchecked.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>One mesh resource can produce two placed parts</h2>
     <p>
-      The checker examines resolved mesh triangles for invalid coordinates,
-      degenerate faces, duplicate faces, open edges, non-manifold edges and
-      inconsistent orientation.
+      These owned packages were run through the local server processor on 24
+      October 2026. Both declare millimetres. The repeated build places the same
+      cube again at X + 40; it contains one stored mesh resource, two placed
+      items and 24 analysed triangles. Separate build items are checked
+      independently, so repeating a legitimate object is not itself a
+      duplicate-triangle error.
     </p>
-    <h2>Why 3MF units are more reliable than STL units</h2>
+    <div
+      class="interpretation-table"
+      role="region"
+      aria-label="Observed 3MF control reports"
+      tabindex="0"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Exact input</th>
+            <th scope="col">Observed output</th>
+            <th scope="col">Retained report</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">
+              <a [href]="qualityExamples.OnePlacedCube3mf" download
+                >One placed cube</a
+              >
+            </th>
+            <td>
+              1 resource, 1 item, 12 triangles, 20 x 20 x 20 mm, no listed mesh
+              findings.
+            </td>
+            <td>
+              <a href="/examples/quality-evidence/one-item-report.json" download
+                >JSON report</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              <a [href]="qualityExamples.TwoPlacedCubes3mf" download
+                >Two placed cubes</a
+              >
+            </th>
+            <td>
+              1 resource, 2 items, 24 triangles, 60 x 20 x 20 mm, no listed mesh
+              findings.
+            </td>
+            <td>
+              <a href="/examples/quality-evidence/two-item-report.json" download
+                >JSON report</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              <a [href]="qualityExamples.DuplicateFaceCube3mf" download
+                >Cube with a repeated face</a
+              >
+            </th>
+            <td>
+              13 triangles, 1 duplicate triangle and 3 non-manifold edges. These
+              findings describe the same redundant face from different checks.
+            </td>
+            <td>
+              <a
+                href="/examples/quality-evidence/duplicate-report.json"
+                download
+                >JSON report</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      3MF can declare its coordinate unit, so reported dimensions retain useful
-      scale information.
-    </p>
-    <h2>How build items and multiple parts affect a 3MF file</h2>
-    <p>
-      A 3MF can place multiple objects in one build. Separate parts are not
-      automatically invalid.
-    </p>
-    <p>
-      Want to inspect the loaded build geometry first?
-      <a [routerLink]="routeUrl.ThreeMfViewer">View this format in 3D</a>.
-    </p>
-    <p>
-      Need dimensions and printer fit?
-      <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
-        >Measure this 3MF file</a
+      The reports are reproducible software observations, not physical print
+      tests or evidence that the deployed server is running this revision.
+      <a href="/examples/quality-evidence/provenance.json" download
+        >Inputs, hashes and reproduction details</a
+      >. For size, nominal fit and sampled wall checks, use
+      <a [routerLink]="routeUrl.ThreeMfPrintPreflight"
+        >browser-local 3MF Print Preflight</a
       >.
     </p>
+    <h2>Questions about this check</h2>
+    <h3>Does this validate my slicer settings?</h3>
     <p>
-      Having trouble slicing? Read
-      <a [href]="guideRouteUrl.RouteWhyWontMy3mfFileSlice"
-        >Why Won’t My 3MF File Slice?</a
-      >
-      and
-      <a [href]="guideRouteUrl.Route3mfUnitsExplained">3MF Units Explained</a>.
+      No. It checks supported mesh geometry, not embedded printer profiles,
+      toolpaths, materials or every 3MF extension. Reopen the original project
+      in its native slicer for those settings.
     </p>
+    <h3>Which geometry did this report analyse?</h3>
     <p>
-      Need a focused closed-surface check?
-      <a [routerLink]="routeUrl.ThreeMfWatertightChecker"
-        >Check 3MF watertightness</a
-      >.
+      Supported placed build items, including their resolved component and build
+      transforms. Unplaced resources are not additional printed objects.
+      Separate placements retain independent topology analysis on the server;
+      browser-local combined-build checks can interpret coincident geometry
+      differently.
     </p>
+    <h3>What happens to units and placed items?</h3>
     <p>
-      Need a focused topology check?
-      <a [routerLink]="routeUrl.ThreeMfManifoldChecker"
-        >Check 3MF manifold geometry</a
-      >.
+      The report retains the declared source unit, or the format's millimetre
+      default, and measures resolved placements in that unit. It does not
+      rewrite the package. The local converter instead writes physical
+      millimetre coordinates into its STL derivative, which has no unit
+      declaration.
     </p>
-    <h2>FAQ</h2>
-    <h3>What is a 3MF file?</h3>
+    <h3>Why can volume be unavailable when the mesh check completes?</h3>
     <p>
-      A 3MF is a package format for 3D printing models and build information.
+      The server publishes volume only when its validity and single-component
+      screen passes. Two separate valid cubes can therefore have unavailable
+      volume without being invalid build items. Do not read an unavailable value
+      as zero material.
     </p>
-    <h3>Is 3MF better than STL for 3D printing?</h3>
-    <p>It can preserve more print-model information, including units.</p>
-    <h3>Does a valid 3MF guarantee a successful print?</h3>
-    <p>No. Printer, slicer, material and support settings still matter.</p>
-    <h3>Are my units stored in a 3MF file?</h3>
-    <p>3MF can declare a model unit, which this checker reports.</p>
-    <h3>Can InspectMesh repair a 3MF file?</h3>
+    <h3>Where is my file processed?</h3>
     <p>
-      <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair</a> can safely remove
-      certain duplicate and degenerate triangles; this checker itself does not
-      modify files.
+      Submitting this checker uploads the selected file for server processing.
+      Viewing a file locally or running local preflight is a separate action.
+      Read <a [routerLink]="routeUrl.Methods">the processing methods</a> before
+      choosing a workflow for confidential designs.
     </p>
   </section>
 </main>

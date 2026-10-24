@@ -1,3 +1,5 @@
+@use '../../shared/quality-results';
+
 .result {
   margin-top: 2rem;
   padding: clamp(1.25rem, 4vw, 2rem);
@@ -170,13 +172,6 @@ p {
 }
 .repair-guidance {
   margin-top: 2rem;
-}
-.repair-guidance-note {
-  padding: 0.8rem 1rem;
-  border-left: 0.25rem solid var(--primary);
-  border-radius: 0.6rem;
-  color: var(--muted);
-  background: var(--soft);
 }
 .repair-guidance-cards {
   display: grid;

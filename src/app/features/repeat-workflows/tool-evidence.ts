@@ -168,22 +168,15 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
       <h3>Interpret the result and choose the next step</h3>
       <p>{{ item.interpretation }}</p>
       <a [href]="item.next" (click)="track()">{{ item.cta }}</a>
-      <p>
-        <a [href]="exampleAsset.Closed20mmCubeStl" download
-          >Download the owned 20 mm cube sample</a
-        >, or
-        <a [href]="exampleAsset.DeclaredInchTransformed3mf" download
-          >the declared-inch 3MF sample</a
-        >. For a G-code preview, use the
-        <a [href]="exampleAsset.ThinArachneGcode" download
-          >actual Arachne slicer export</a
-        >. Model samples are illustrative geometry; the G-code is for inspection
-        and must not be sent to a printer.
-      </p>
-      <p>
-        Numerical scenarios are illustrative software examples, not physical
-        print tests.
-      </p>
+      @if (samples[page()]; as files) {
+        <ul>
+          @for (file of files; track file.href) {
+            <li>
+              <a [href]="file.href" download>{{ file.label }}</a>
+            </li>
+          }
+        </ul>
+      }
     </section>
   }`,
   styles: [
@@ -198,7 +191,69 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
   ],
 })
 export class ToolEvidenceComponent {
-  readonly exampleAsset = ExampleAsset;
+  readonly samples: Readonly<
+    Record<string, readonly { href: string; label: string }[]>
+  > = {
+    [PublicRouteUrl.Viewer]: [
+      {
+        href: '/examples/quality-evidence/keyed-cylinder-100.stl',
+        label: 'Owned curved measurement control (STL; assume mm)',
+      },
+    ],
+    [PublicRouteUrl.StlRepair]: [
+      {
+        href: ExampleAsset.DuplicateFaceCubeStl,
+        label: 'Owned cube with a repeated face',
+      },
+    ],
+    [PublicRouteUrl.ThreeMfRepair]: [
+      {
+        href: ExampleAsset.DuplicateFaceCube3mf,
+        label: 'Owned 3MF with a repeated face',
+      },
+    ],
+    [PublicRouteUrl.StlPrintPreflight]: [
+      {
+        href: ExampleAsset.Closed20mmCubeStl,
+        label: 'Closed 20-unit cube (STL; assume mm)',
+      },
+      {
+        href: ExampleAsset.OpenFaceCubeStl,
+        label: 'Same cube with a missing face',
+      },
+    ],
+    [PublicRouteUrl.ThreeMfPrintPreflight]: [
+      {
+        href: ExampleAsset.TwoPlacedCubes3mf,
+        label: 'One resource, two placed cubes',
+      },
+    ],
+    [PublicRouteUrl.DimensionsChecker]: [
+      {
+        href: ExampleAsset.EnglishMarketBatchPrinterFit250x210x180Stl,
+        label: 'Nominal-fit control: 250 x 210 x 180 coordinate spans',
+      },
+    ],
+    [PublicRouteUrl.PrinterFitChecker]: [
+      {
+        href: ExampleAsset.EnglishMarketBatchPrinterFit250x210x180Stl,
+        label: '250 x 210 x 180 nominal-fit control',
+      },
+    ],
+    [PublicRouteUrl.GcodePreflightChecker]: [
+      {
+        href: ExampleAsset.ThinArachneGcode,
+        label:
+          'Retained Arachne slicer export: inspect only, never run on a printer',
+      },
+    ],
+    [PublicRouteUrl.OrientationPlanner]: [
+      {
+        href: ExampleAsset.TiltedAsymmetricBlockStl,
+        label: 'Owned asymmetric orientation control',
+      },
+    ],
+  };
   readonly page = input.required<string>();
   readonly completed = input(false);
   readonly evidence = () => toolEvidence[this.page()];

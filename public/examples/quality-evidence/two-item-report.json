@@ -1,0 +1,59 @@
+{
+  "reportVersion": "1.0",
+  "fileName": "two-placed-cubes.3mf",
+  "fileFormat": "3mf",
+  "sourceUnit": "millimeter",
+  "modelObjectCount": 1,
+  "buildItemCount": 2,
+  "fileSizeBytes": 979,
+  "triangleCount": 24,
+  "boundingBox": {
+    "minX": 0,
+    "minY": 0,
+    "minZ": 0,
+    "maxX": 60,
+    "maxY": 20,
+    "maxZ": 20
+  },
+  "dimensions": {
+    "width": 60,
+    "height": 20,
+    "depth": 20
+  },
+  "surfaceArea": 4800,
+  "volume": null,
+  "topology": {
+    "connectedComponentCount": 2,
+    "openEdgeCount": 0,
+    "nonManifoldEdgeCount": 0,
+    "hasInconsistentOrientation": false
+  },
+  "validation": {
+    "issues": [],
+    "topology": {
+      "connectedComponentCount": 2,
+      "openEdgeCount": 0,
+      "nonManifoldEdgeCount": 0,
+      "hasInconsistentOrientation": false
+    },
+    "isValid": true
+  },
+  "issueHighlights": {
+    "samples": {}
+  },
+  "issueGeometry": {
+    "version": "1.0",
+    "openEdges": {
+      "totalCount": 0,
+      "returnedCount": 0,
+      "truncated": false,
+      "segments": []
+    },
+    "nonManifoldEdges": {
+      "totalCount": 0,
+      "returnedCount": 0,
+      "truncated": false,
+      "segments": []
+    }
+  }
+}

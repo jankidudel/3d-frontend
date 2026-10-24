@@ -1,0 +1,59 @@
+{
+  "reportVersion": "1.0",
+  "fileName": "one-placed-cube.3mf",
+  "fileFormat": "3mf",
+  "sourceUnit": "millimeter",
+  "modelObjectCount": 1,
+  "buildItemCount": 1,
+  "fileSizeBytes": 973,
+  "triangleCount": 12,
+  "boundingBox": {
+    "minX": 0,
+    "minY": 0,
+    "minZ": 0,
+    "maxX": 20,
+    "maxY": 20,
+    "maxZ": 20
+  },
+  "dimensions": {
+    "width": 20,
+    "height": 20,
+    "depth": 20
+  },
+  "surfaceArea": 2400,
+  "volume": 7999.999999999999,
+  "topology": {
+    "connectedComponentCount": 1,
+    "openEdgeCount": 0,
+    "nonManifoldEdgeCount": 0,
+    "hasInconsistentOrientation": false
+  },
+  "validation": {
+    "issues": [],
+    "topology": {
+      "connectedComponentCount": 1,
+      "openEdgeCount": 0,
+      "nonManifoldEdgeCount": 0,
+      "hasInconsistentOrientation": false
+    },
+    "isValid": true
+  },
+  "issueHighlights": {
+    "samples": {}
+  },
+  "issueGeometry": {
+    "version": "1.0",
+    "openEdges": {
+      "totalCount": 0,
+      "returnedCount": 0,
+      "truncated": false,
+      "segments": []
+    },
+    "nonManifoldEdges": {
+      "totalCount": 0,
+      "returnedCount": 0,
+      "truncated": false,
+      "segments": []
+    }
+  }
+}

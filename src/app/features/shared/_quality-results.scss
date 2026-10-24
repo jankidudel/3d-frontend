@@ -1,0 +1,33 @@
+.repair-guidance-note {
+  margin: 1rem 0 0;
+  padding: 1rem;
+  border-left: 0.25rem solid var(--primary);
+  border-radius: 0.6rem;
+  color: var(--muted);
+  background: var(--soft);
+}
+
+.issues-scroll {
+  max-height: min(24rem, 60vh);
+  padding: 0.75rem;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.issues-scroll:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.issues-scroll > ul {
+  margin: 0;
+}
+
+@media print {
+  .issues-scroll {
+    max-height: none;
+    overflow: visible;
+  }
+}

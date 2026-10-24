@@ -380,14 +380,16 @@ export class MaterialDetailPage {
             <thead>
               <tr>
                 <th scope="col">Requirement</th>
-                <th scope="col">What to check</th>
+                <th scope="col">{{ left().displayName }}</th>
+                <th scope="col">{{ right().displayName }}</th>
               </tr>
             </thead>
             <tbody>
-              @for (row of record.requirements; track row.label) {
+              @for (row of record.criteria; track row.requirement) {
                 <tr>
-                  <th scope="row">{{ row.label }}</th>
-                  <td>{{ row.check }}</td>
+                  <th scope="row">{{ row.requirement }}</th>
+                  <td>{{ row.left }}</td>
+                  <td>{{ row.right }}</td>
                 </tr>
               }
             </tbody>

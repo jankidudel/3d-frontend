@@ -137,16 +137,23 @@
           <span aria-hidden="true">✓</span> No mesh validation issues found.
         </p>
       } @else if (issues().length > 0) {
-        <ul>
-          @for (issue of issues(); track $index) {
-            <li>
-              <strong>{{ issue.label }}</strong>
-              @if (issue.detail) {
-                <span>{{ issue.detail }}</span>
-              }
-            </li>
-          }
-        </ul>
+        <div
+          class="issues-scroll"
+          role="region"
+          aria-labelledby="issues-title"
+          tabindex="0"
+        >
+          <ul>
+            @for (issue of issues(); track $index) {
+              <li>
+                <strong>{{ issue.label }}</strong>
+                @if (issue.detail) {
+                  <span>{{ issue.detail }}</span>
+                }
+              </li>
+            }
+          </ul>
+        </div>
       } @else {
         <p>The model failed validation, but no issue details were supplied.</p>
       }

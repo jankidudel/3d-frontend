@@ -26,6 +26,29 @@ faq:
   build scale have been resolved.
 </p>
 
+<h2>Check what an unavailable result means on a real two-item build</h2>
+<p>
+  The owned
+  <a href="/examples/collection-review/two-placed-cubes.3mf" download
+    >two-placed-cubes package</a
+  >
+  contains two separated 20 mm cubes. Their analytical sum is
+  <code>2 x 20 x 20 x 20 = 16,000 mm³</code>, but that arithmetic is not a
+  promise that every InspectMesh method will publish the sum as a reliable
+  solid. The retained
+  <a href="/examples/quality-evidence/two-item-report.json" download
+    >server report</a
+  >
+  completes with no listed mesh issues and leaves volume unavailable under its
+  single-component screen. It does not report zero material.
+</p>
+<p>
+  Separate the geometry question from the method's validity gate. If the
+  intended parts remain separate and disjoint, source-CAD volumes can be added
+  with that assumption recorded. If placements overlap, their independent sums
+  double-count material in the overlap; they are not a Boolean-union volume. Use
+  the slicer's complete consumption estimate for the actual print job.
+</p>
 <h2>Worked resolved-build example</h2>
 <p>
   Imagine a valid 3MF object whose closed mesh encloses 12,000 mm³. If the build

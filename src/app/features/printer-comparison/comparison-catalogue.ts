@@ -27,14 +27,14 @@ const pairDecisions: Readonly<
     verdict:
       'The P2S changes nozzle handling and monitoring, not the 256 mm build envelope. Compare the actual bundle cost with how often those workflow changes help your jobs.',
     analysis: [
-      'A 250 x 210 x 180 mm model fits both nominal cubes with only 6 mm total allowance on its longest axis. The P2S cannot rescue a footprint that exceeds the P1S envelope.',
+      'An illustrative 230 x 230 mm plate footprint with an 8 mm brim allowance on every side occupies 246 x 246 mm. That is inside either 256 mm nominal square, before excluded regions. A wider footprint needs a layout change on both printers; monitoring features do not create bed area.',
       'Bambu describes the P2S quick-swap hotend, five-inch interface and 1080p monitoring in its launch account. Compare those features with your maintenance routine; automatic detection is not a measured failure-rate improvement here.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question: 'Does the P2S give a P1S owner more nominal build space?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'No. Both catalogue envelopes are 256 mm cubes. Evaluate the nozzle-handling and monitoring workflow against its cost separately from fit.',
       },
     ],
   },
@@ -42,14 +42,14 @@ const pairDecisions: Readonly<
     verdict:
       'The A1 and P2S share nominal capacity. Choose by supported material environment, filament-handling system and access needs rather than treating an enclosure as extra build space.',
     analysis: [
-      'A 250 x 210 x 180 mm model fits both boxes, but a wide brim can consume the remaining 6 mm along the longest axis. A near-limit part still needs slicer review on either printer.',
+      'A 70 x 70 x 250 mm upright enclosure fits either nominal 256 mm cube and leaves only 6 mm of total height allowance. Choosing an enclosure changes the supported material environment, not that height limit. Review actual supports and top clearance in the slicer.',
       'The A1 uses AMS lite; the P2S Combo is described with AMS 2 Pro. Confirm the exact spool compatibility and bundle. A soft flexible spool and an automatic multi-filament workflow are separate compatibility questions.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question: 'Will the enclosed P2S fit a taller part than the A1?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'Their catalogue envelopes have the same nominal height. Choose by the exact material environment and accessory workflow after verifying the part and its supports.',
       },
     ],
   },
@@ -57,14 +57,15 @@ const pairDecisions: Readonly<
     verdict:
       'Choose the A1 when the intended parts exceed the Mini envelope. Choose the Mini when the smaller build and workspace suit the actual projects, after allowing for spool handling and bed motion.',
     analysis: [
-      'The 250 x 210 x 180 mm control exceeds every Mini axis in any right-angle placement but fits the A1 nominal cube. A 160 mm cube fits either nominally and changes the decision to workspace and configuration.',
+      'A 160 mm cube is inside either nominal envelope. A 190 x 120 x 80 mm part exceeds the Mini 180 mm cube in every right-angle permutation because its longest span is 190 mm, while remaining inside the A1 cube. Those two jobs lead to different size decisions without changing scale.',
       'Both are open-frame models using AMS lite. A larger build is useful only if the intended material and job can use it; neither is an enclosure substitute. Compare the physical printer and accessory space separately from build volume.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question:
+          'When does the A1 Mini envelope actually change the decision?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'When a required part exceeds 180 mm on an axis in every tested right-angle placement. A smaller part may fit both; then review workspace, material and accessories rather than choosing from maximum volume alone.',
       },
     ],
   },
@@ -72,14 +73,15 @@ const pairDecisions: Readonly<
     verdict:
       'Equal 256 mm capacity makes this a material-environment and accessory decision. An enclosed P1S can address a documented enclosure need; an A1 may suit a common-material workflow with direct access.',
     analysis: [
-      'A 250 mm-long part leaves 6 mm nominal allowance on either platform. That equality does not account for bed exclusions or supports, and a 260 mm axis exceeds both when kept in that axis order.',
+      "A 200 x 150 x 80 mm indoor cover is inside either nominal envelope. Geometry alone therefore does not resolve this pair: a documented enclosure requirement, service access and the intended filament system decide the next investigation. Do not turn a printer enclosure into a claim about the cover's heat resistance.",
       'Compare supported P-series AMS hardware with A1 AMS lite. Do not enclose the A1 as an assumed equivalent: follow its manufacturer guidance. For abrasive variants, check the installed nozzle and extrusion hardware even on the enclosed printer.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question:
+          'Does a P1S material capability listing qualify my exact spool?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'No. The manufacturer family listing and the conservative selector answer different questions. Confirm formulation, installed nozzle and extrusion hardware, profile and filament-feeding support.',
       },
     ],
   },
@@ -87,14 +89,15 @@ const pairDecisions: Readonly<
     verdict:
       'An existing P1P owner is deciding whether a supported enclosure upgrade is worth its full cost. A buyer comparing used P1P stock with a P1S must also account for condition and the dated end-of-sale notice.',
     analysis: [
-      'The same 250 x 210 x 180 mm control fits both nominal 256 mm cubes. Adding an enclosure changes the environment and external space, not the geometric capacity.',
+      'A 200 x 200 x 100 mm part is inside either nominal 256 mm cube. Adding an enclosure does not enlarge that envelope. For an existing P1P, list the supported upgrade parts, their installation work and the actual material requirement before comparing that total with a P1S.',
       'The P1P end-of-sale announcement is historical evidence, not a live stock report. Obtain the current kit list, firmware instructions and total regional price before assuming a used machine plus upgrade matches a factory P1S.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question:
+          'Should an existing P1P owner compare only the enclosure price?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'No. Include the complete supported kit, installation, cooling and firmware instructions, plus machine condition. Confirm current regional parts availability before treating an upgrade as equivalent to a factory model.',
       },
     ],
   },
@@ -102,14 +105,15 @@ const pairDecisions: Readonly<
     verdict:
       'These models share nominal capacity. Compare the X1 Carbon sensor workflow with the newer P2S hotend and monitoring workflow only where those features solve a defined task.',
     analysis: [
-      'The 250 x 210 x 180 mm control fits both nominal cubes. Premium sensors cannot expand the envelope; a larger functional housing may require splitting or a different machine instead.',
+      'Two illustrative 110 x 80 mm footprints with a 12 mm gap occupy 232 x 80 mm before brims or purge structures. Both nominal 256 mm beds contain that rectangle, but the final sliced plate and material changes determine whether the job is practical. Sensors are a separate workflow comparison.',
       'Bambu\u2019s P2S launch describes its quick-swap hotend and camera updates and identifies lidar in the X1 family. These are manufacturer feature descriptions, not proof of superior first layers or reliability. Verify the exact X1 Carbon and P2S accessory bundles.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question:
+          'Can a sensor or maximum-speed specification establish lower job cost?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'No. Compare the same complete sliced job, including material changes and purge, then measured operating inputs where available. This page does not supply hands-on failure-rate or throughput results.',
       },
     ],
   },
@@ -117,14 +121,14 @@ const pairDecisions: Readonly<
     verdict:
       'The CORE One is narrower in nominal depth but taller: 250 x 220 x 270 mm versus a 256 mm cube. Choose based on the actual axis constraints, then compare service documentation and accessory requirements.',
     analysis: [
-      'A 240 x 230 x 100 mm box exceeds CORE One depth in that placement but fits the P1S box. A 200 x 200 x 260 mm tower fits CORE One height but exceeds P1S height. Test other orientations before calling either a final fit.',
+      'An illustrative 230 x 215 x 265 mm upright part is inside the CORE One 250 x 220 x 270 mm nominal envelope, with 5 mm total depth and height allowance. Its 265 mm span exceeds every axis of the P1S 256 mm cube under right-angle placement. Supports, brim and arbitrary-rotation alternatives still need slicer review.',
       'The linked Prusa documentation refers to the original CORE One; CORE One+ and later upgrades are different configurations. Verify the installed revision and multicolour compatibility. Compare Prusa service procedures with the exact P1S AMS bundle, without inferring a reliability winner.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question: 'Which part makes the CORE One height distinction useful?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'A narrow part that needs more than 256 mm of height but stays within its 250 x 220 mm footprint. Check usable clearances and the exact CORE One hardware revision rather than extrapolating from a different model.',
       },
     ],
   },
@@ -132,14 +136,15 @@ const pairDecisions: Readonly<
     verdict:
       'The MK4S 250 x 210 x 220 mm envelope and A1 256 mm cube differ in depth and height. Match model size and the documented service/accessory workflow before comparing regional kit and assembled prices.',
     analysis: [
-      'The 250 x 210 x 180 mm control touches both nominal MK4S horizontal boundaries. It fits the A1 with 6 mm width and 46 mm depth allowance; brim and excluded-region checks still apply.',
+      'An illustrative 240 x 200 x 225 mm box fits the A1 256 mm cube but no tested right-angle placement in the MK4S 250 x 210 x 220 mm envelope. With 240 mm along its width, the remaining 225 mm span exceeds either available depth or height. This is a capacity decision, separate from serviceability and accessories.',
       'Both are open-frame printers. A Prusa kit entails assembly decisions that an assembled price does not capture. For multicolour compare exact MMU and AMS lite configurations and supported filaments; maximum temperatures do not establish equal spool support.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question:
+          'Can a right-angle rotation always rescue an over-height MK4S part?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'No. A rotated long span must fit another available axis while the other spans fit their remaining axes. Check all three dimensions and include the final supports and brim.',
       },
     ],
   },
@@ -147,14 +152,14 @@ const pairDecisions: Readonly<
     verdict:
       'The K1C 220 x 220 x 250 mm envelope is smaller than the P1S 256 mm cube. It is a candidate when that capacity is sufficient; a larger flat footprint can make the P1S relevant before any speed comparison.',
     analysis: [
-      'A 240 x 230 x 80 mm housing exceeds both horizontal K1C axes in that placement but fits the P1S box. Turning it vertically changes support and load direction; the fitting orientation may not be the intended print.',
+      'A 225 mm cube exceeds the K1C 220 mm horizontal dimensions in every right-angle placement, but is inside the P1S 256 mm cube. In contrast, a 210 x 210 x 245 mm upright part is inside both nominal envelopes. Capacity only separates this pair for particular jobs.',
       'The K1C manufacturer page distinguishes carbon-filament hardware. Confirm exact K1C revision and nozzle, and check the P1S installed hardware before comparing abrasive materials. AMS support on P1S is an accessory decision, not a consequence of enclosure alone.',
     ],
     faq: [
       {
-        question: 'What must be checked before using this nominal fit?',
+        question: 'Does an enclosed K1C imply the same job capacity as a P1S?',
         answer:
-          'Verify the final orientation, supports, brim and excluded bed regions in the exact slicer profile. The dimensions above are illustrative bounding boxes, not observed print results.',
+          'No. Enclosure describes the environment, while nominal build dimensions describe a different constraint. Check the required model and actual slicer reserves separately from material and nozzle preparation.',
       },
     ],
   },

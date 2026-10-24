@@ -18,6 +18,22 @@ faq:
   3D-printing terms, it gives the slicer a clearer closed boundary for
   determining the inside and outside of a part.
 </p>
+<h2>Use a closed-but-defective package as a counterexample</h2>
+<p>
+  The
+  <a href="/examples/cad-export/duplicate-face-cube.3mf" download
+    >owned repeated-face package</a
+  >
+  has no exposed boundary in the retained server check, but it has one duplicate
+  triangle and three over-shared edges. Read the
+  <a href="/examples/quality-evidence/duplicate-report.json" download
+    >actual report</a
+  >: zero open edges did not make this mesh free of findings. Establish the
+  intended cube surface before selecting duplicate cleanup. Repeating a whole
+  valid item in a build is a different case from repeating a triangle inside its
+  resource.
+</p>
+
 <h2>Read open edges in context</h2>
 <p>
   An open boundary may indicate a missing surface, but intentional shells and

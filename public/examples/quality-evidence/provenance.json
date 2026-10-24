@@ -1,0 +1,102 @@
+{
+  "observedDate": "2026-10-24",
+  "rights": "New keyed-cylinder geometry and projections are original InspectMesh controls, dedicated to the public domain under CC0-1.0.",
+  "software": {
+    "node": "v24.19.0",
+    "meshoptimizer": "1.2.0",
+    "processor": "Local .NET Processor with corrected 3MF row-vector transform reader; see tools/RecoveryEvidence."
+  },
+  "reproduction": [
+    "node --experimental-strip-types scripts/generate-recovery-evidence.mts",
+    "From 3d-processor: dotnet run --project tools/RecoveryEvidence -- ../3d-frontend/public/examples"
+  ],
+  "inputs": [
+    {
+      "path": "/examples/collection-review/one-placed-cube.3mf",
+      "sha256": "b6804efe1e31043d3aefc6b86bae0a47f1754f12549b9298700135feefbce3f2"
+    },
+    {
+      "path": "/examples/collection-review/two-placed-cubes.3mf",
+      "sha256": "9f34181aa4a38067dd689f6815ba7406f658435bc00ef35d93b5ec208709a382"
+    },
+    {
+      "path": "/examples/cad-export/duplicate-face-cube.3mf",
+      "sha256": "d246c124d89f5e5ab2c63fd01c3b7f311d00f6ee16ccc427525e46c0e887b61a"
+    }
+  ],
+  "reductions": [
+    {
+      "name": "keyed-cylinder-100.stl",
+      "requestedKeepPercent": 100,
+      "bytes": 25684,
+      "triangles": 512,
+      "bounds": [
+        {
+          "min": -10,
+          "max": 10,
+          "span": 20
+        },
+        {
+          "min": -10,
+          "max": 10,
+          "span": 20
+        },
+        {
+          "min": 0,
+          "max": 10,
+          "span": 10
+        }
+      ],
+      "sha256": "74081824ad1a3cce971ea9464c90adcfb1641adb5a44a305e4c1c8be383d1139"
+    },
+    {
+      "name": "keyed-cylinder-75.stl",
+      "requestedKeepPercent": 75,
+      "bytes": 19284,
+      "triangles": 384,
+      "bounds": [
+        {
+          "min": -10,
+          "max": 10,
+          "span": 20
+        },
+        {
+          "min": -10,
+          "max": 10,
+          "span": 20
+        },
+        {
+          "min": 0,
+          "max": 10,
+          "span": 10
+        }
+      ],
+      "sha256": "2adab52af884aa411802fb0340db1c87a1bffc434ad1c10a1478f506c349c3d7"
+    },
+    {
+      "name": "keyed-cylinder-50.stl",
+      "requestedKeepPercent": 50,
+      "bytes": 12884,
+      "triangles": 256,
+      "bounds": [
+        {
+          "min": -9.987954139709473,
+          "max": 9.987954139709473,
+          "span": 19.975908279418945
+        },
+        {
+          "min": -9.987954139709473,
+          "max": 10,
+          "span": 19.987954139709473
+        },
+        {
+          "min": 0,
+          "max": 10,
+          "span": 10
+        }
+      ],
+      "sha256": "30248488013b4e62245f79040d988afb38b014a3773925fdad4cca564d92a735"
+    }
+  ],
+  "scope": "Actual local software output from serialized and reopened files. Not a physical print, source-CAD accuracy claim, production-server observation or screenshot."
+}
