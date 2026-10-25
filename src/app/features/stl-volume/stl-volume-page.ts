@@ -140,9 +140,9 @@ export class StlVolumePage {
 
   constructor() {
     this.seo.apply({
-      title: 'STL Volume Calculator - Calculate STL Volume and Material Weight',
+      title: 'STL Volume Calculator: Units and Solid Mass | InspectMesh',
       description:
-        'Calculate an STL model’s volume, convert cubic units, and estimate approximate material weight for common 3D printing materials.',
+        'Interpret STL enclosed volume under an explicit unit assumption. Distinguish solid-mass arithmetic from sliced material consumption.',
       path: PublicRouteUrl.VolumeCalculator,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());

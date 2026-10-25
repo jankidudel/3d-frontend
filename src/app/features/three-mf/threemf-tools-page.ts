@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
@@ -13,14 +14,15 @@ import { HOME_TOOL_GROUPS } from '../home/home-tools';
 })
 export class ThreeMfToolsPage {
   readonly routeUrl = PublicRouteUrl;
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly tools =
     HOME_TOOL_GROUPS.find((group) => group.id === '3mf-tools')?.tools ?? [];
   private readonly seo = inject(SeoService);
   constructor() {
     this.seo.apply({
-      title: 'Free 3MF Tools for 3D Printing | InspectMesh',
+      title: '3MF Tools: Inspect Builds, Measure and Convert | InspectMesh',
       description:
-        'Free online 3MF tools for checking mesh quality, declared units and print-model geometry before slicing or 3D printing.',
+        'Choose a 3MF tool for viewing, mesh checks, build dimensions, volume or conversion. Understand declared units, placed items and processing limits.',
       path: PublicRouteUrl.ThreeMfTools,
     });
   }

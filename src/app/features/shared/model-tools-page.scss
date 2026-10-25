@@ -1,1 +1,25 @@
 @use '../home/home-page.scss';
+
+.decision-table {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.decision-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.decision-table th,
+.decision-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.decision-table a {
+  display: inline-block;
+  padding-block: 0.25rem;
+}
+.decision-table:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

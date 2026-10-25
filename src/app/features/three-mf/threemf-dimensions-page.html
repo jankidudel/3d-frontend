@@ -2,8 +2,9 @@
   <p class="eyebrow">3MF measurement and printer fit</p>
   <h1>3MF Dimensions Checker</h1>
   <p class="lead">
-    Measure the final dimensions of a 3MF build, keep its declared unit and
-    check whether it fits your 3D printer.
+    Measure the bounds of supported placed geometry in a 3MF build. Read the
+    declared unit alongside the result: several placed items can span a larger
+    region than any one stored mesh.
   </p>
   <section class="upload card" aria-labelledby="upload-title">
     <h2 id="upload-title">Measure your 3MF build</h2>
@@ -11,7 +12,15 @@
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
-    <p class="hint">.3mf only - maximum 25 MiB</p>
+    <p class="hint">
+      .3mf only - maximum 25 MiB (26,214,400 bytes). Pressing Measure 3MF
+      dimensions uploads the selected file for server processing.
+      <a [routerLink]="routeUrl.ThreeMfViewer"
+        >Inspect placed geometry locally in 3MF Viewer</a
+      >
+      instead, or read the
+      <a [routerLink]="routeUrl.Privacy">processing and privacy policy</a>.
+    </p>
     <button
       class="button submit"
       type="button"
@@ -93,6 +102,16 @@
         </section>
         <section class="tool-section" aria-labelledby="fit-title">
           <h3 id="fit-title">Printer fit</h3>
+          <p>
+            This is a nominal comparison of current axes and six right-angle
+            axis permutations, not an arbitrary rotation search. It does not
+            reserve space for support, brim or every excluded bed region. Check
+            the resolved placement in the intended slicer profile before
+            printing.
+            <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter"
+              >Review the printer-fit workflow</a
+            >.
+          </p>
           <p>
             Enter your printer's usable build volume. This is an axis-aligned
             size check, not a guarantee of printability. Valid values are saved
@@ -357,20 +376,22 @@
       <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>
       when working with STL files.
     </p>
-    <h2>Build items can change the final size</h2>
+    <h2>One resource, two placements, different bounds</h2>
     <p>
-      A 3MF package can contain several objects and place them into a build with
-      transforms. This checker measures the resolved build geometry after those
-      placements, rather than measuring only the first object stored in the
-      package. Separate parts are not automatically a problem, but their
-      combined bounds may be larger than any individual object.
+      A 20 mm cube placed at X = 0 spans 20 mm on that axis. Place another copy
+      at X + 40 mm and the combined bounds span 60 mm, including the 20 mm gap.
+      The wider build does not make either cube 60 mm wide. This is expected
+      geometry, not a retained observation of this deployed checker.
     </p>
-    <h2>Printer fit is a useful first check</h2>
     <p>
-      The printer-fit result compares the model's axis-aligned dimensions with
-      the build volume you enter. It does not account for printer margins,
-      orientation, supports, brim/raft, nozzle clearance or slicer settings.
-      Always confirm the final placement in your slicer.
+      Compare the owned
+      <a href="/examples/collection-review/one-placed-cube.3mf" download
+        >one-placement package</a
+      >
+      and
+      <a href="/examples/collection-review/two-placed-cubes.3mf" download
+        >two-placement package</a
+      >. Changing a display unit does not resize or re-export either package.
     </p>
     <p>
       For a focused closed-surface check, use the
@@ -386,9 +407,8 @@
     <h2>FAQ</h2>
     <h3>Does my 3MF file get uploaded?</h3>
     <p>
-      Yes. The checker uses the same secure processing flow as other InspectMesh
-      analysis tools to calculate the result. It is not a browser-only viewer.
-      For local viewing without upload, use the
+      Yes. Pressing Measure 3MF dimensions submits the selected file for server
+      processing. For local viewing without upload, use the
       <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a>.
     </p>
     <h3>Are the dimensions measured before or after build-item transforms?</h3>

@@ -2,8 +2,9 @@
   <p class="eyebrow">3MF volume and material estimate</p>
   <h1>3MF Volume Calculator</h1>
   <p class="lead">
-    Calculate resolved 3MF build volume after supported transforms and repeated
-    build items.
+    Request a volume result for supported placed geometry in a 3MF build. The
+    declared unit and transforms affect the measurement, while the processor's
+    validity conditions determine whether a value is available.
   </p>
   <section class="upload card">
     <h2>Calculate 3MF volume</h2>
@@ -12,7 +13,14 @@
       #filePicker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
-    /><button
+    />
+    <p>
+      Pressing Calculate 3MF volume uploads the selected file for server
+      processing. Read the
+      <a [routerLink]="routeUrl.Privacy">processing and privacy policy</a>. The
+      optional density arithmetic runs locally.
+    </p>
+    <button
       class="button submit"
       type="button"
       (click)="check()"
@@ -39,22 +47,33 @@
         <h2 id="results-title">We couldn’t analyse this 3MF file</h2>
         <p class="error">{{ jobFailureMessage(currentJob.failure) }}</p>
       } @else if (report(); as currentReport) {
-        <p class="eyebrow">Total resolved build volume</p>
+        <p class="eyebrow">Supported enclosed-volume result</p>
         <h2 id="results-title" class="primary-volume">
-          {{ format(volumeCm3()) }} <span>cm³</span>
+          @if (volumeCm3() !== null) {
+            {{ format(volumeCm3()) }} <span>cm³</span>
+          } @else {
+            Volume unavailable
+          }
         </h2>
         <p>
-          <strong
-            >This total includes all resolved build items, including repeated
-            placements and supported transforms.</strong
-          >
+          Several valid build items can still produce an unavailable volume
+          under this tool's current method. Review the result state rather than
+          treating missing volume as zero or assuming it equals the sum of
+          individual parts. The shared processor requires one connected
+          component with no open or over-shared edges, consistent winding and
+          valid coordinates.
         </p>
         <p>
           Declared 3MF unit: {{ currentReport['sourceUnit'] || 'millimeter' }} ·
           {{ format(currentReport['buildItemCount']) }} resolved build items /
           parts.
         </p>
-        @if (unreliable()) {
+        @if (volumeCm3() === null) {
+          <p role="status">
+            No supported volume was supplied. Solid mass is unavailable; this is
+            not zero material.
+          </p>
+        } @else if (unreliable()) {
           <div class="reliability warning" role="alert">
             <p>
               <strong>Volume may be unreliable.</strong> Open edges,
@@ -90,81 +109,64 @@
             ><span>Material density (g/cm³)</span
             ><input
               type="number"
+              [disabled]="volumeCm3() === null"
               min="0.01"
               step="0.01"
               value="1.24"
               (input)="setDensity($event)"
           /></label>
-          <p>
-            <strong>{{ format(weight()) }} g</strong> at
-            {{ format(density()) }} g/cm³ (PLA default).
-          </p>
+          @if (weight() !== null) {
+            <p>
+              <strong>{{ format(weight()) }} g</strong> at
+              {{ format(density()) }} g/cm³.
+            </p>
+          } @else {
+            <p>
+              Mass unavailable. Supply an available volume and a finite density
+              greater than zero.
+            </p>
+          }
         </section>
+      } @else {
+        <h2 id="results-title">Volume unavailable</h2>
+        <p>
+          The analysis finished without a report. Retry with a supported file.
+        </p>
       }
     </section>
   }
   <section class="content">
-    <h2>How 3MF volume differs from STL volume</h2>
+    <h2>How to use an available volume</h2>
     <p>
-      3MF declares a unit and build structure, so this calculator can convert
-      resolved geometry using the file’s declared unit.
+      3MF declares a coordinate unit; supported transforms resolve placed
+      geometry before measurement. The current method withholds volume for
+      multiple connected components. A count or dimensions result does not
+      establish that an enclosed-volume value is available. Optional solid mass
+      multiplies an available volume in cm³ by your density in g/cm³ locally; it
+      does not predict sliced consumption.
     </p>
-    <h2>Why build items and transforms matter</h2>
-    <p>
-      Placed copies and supported transforms are included in the total because
-      they belong to the print build.
-    </p>
-    <h2>Why watertightness affects volume accuracy</h2>
-    <p>Volume is most meaningful for closed, consistently oriented geometry.</p>
-    <h2>How the optional material estimate works</h2>
-    <p>
-      It multiplies solid-model volume in cubic centimetres by your local
-      density input; the input is not sent to analytics.
-    </p>
-    <h2>FAQ</h2>
-    <h3>Is the volume exact?</h3>
-    <p>
-      It is reliable only for suitable closed geometry; warnings identify known
-      concerns.
-    </p>
-    <h3>Does it include infill or supports?</h3>
-    <p>No.</p>
-    <h3>Does a 3MF with several parts work?</h3>
-    <p>Yes, resolved build items are aggregated.</p>
-    <p>
-      Estimate material, energy and print cost with the
-      <a [routerLink]="routeUrl.PrintCostCalculator">3D Print Cost Calculator</a
-      >.
-    </p>
-    <h3>Is the file uploaded?</h3>
-    <p>
-      Yes, through the same secure processing flow used by the other 3MF checks.
-    </p>
-  </section>
-  <section class="content">
     <h2>Worked build and density example</h2>
     <p>
-      One closed 20 mm cube encloses 8 cm³. Two separate placed copies enclose
-      16 cm³ in total. At an explicitly chosen density of 1.24 g/cm³, the solid
-      estimate is 16 x 1.24 = 19.84 g. This is arithmetic for full solid
-      geometry, not sliced filament consumption.
+      Illustrative arithmetic: two non-overlapping 20 mm cubes contain 16 cm³ in
+      total. At a chosen density of 1.24 g/cm³, their solid mass is 19.84 g.
+      This is not a claim that this endpoint reports a value for every two-item
+      build, and it is not sliced filament consumption.
     </p>
     <p>
       Declared inches convert linearly by 25.4 to millimetres, and volume
-      converts by 25.4³. Supported transforms are applied to placed instances.
-      Overlapping shells or inconsistent orientation can make summing solid
-      volumes inappropriate; review validity warnings rather than treating an
-      unreliable number as zero.
+      converts by 25.4³. A positive surface sum does not establish a Boolean
+      union of overlapping shells or the intended meaning of a cavity.
     </p>
     <p>
-      The 25 MiB limit means 26,214,400 bytes. The 3MF is uploaded for server
-      processing; the optional density input is calculated locally. Compare
+      Compare
       <a [href]="guideRouteUrl.RouteHowToCalculate3mfVolume">resolved volume</a>
       with
       <a [href]="guideRouteUrl.RouteHowToEstimateFilamentWeightFromA3mfFile"
         >solid weight versus slicer usage</a
-      >
-      before planning a spool or quote.
+      >.
+      <a [routerLink]="routeUrl.PrintCostCalculator"
+        >Estimate production cost from slicer totals</a
+      >: use complete material consumption from the final sliced job.
     </p>
   </section>
 </main>

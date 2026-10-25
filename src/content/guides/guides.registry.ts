@@ -529,7 +529,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-25',
   },
   {
     slug: 'how-to-make-an-stl-file-printable',
@@ -886,7 +886,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 120,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-24',
+    updatedDate: '2026-10-25',
     checkEditorialTargets: false,
   },
   {

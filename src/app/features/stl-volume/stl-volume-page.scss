@@ -183,6 +183,13 @@ app-three-mf-file-picker {
   font-weight: 800;
 }
 .weight-fields {
+  min-width: 0;
+  margin-inline: 0;
+  padding: 0;
+  border: 0;
+  legend {
+    margin-bottom: 0.75rem;
+  }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.85rem;

@@ -1,21 +1,83 @@
 <main class="page">
   <p class="eyebrow">InspectMesh</p>
-  <h1>Free STL Tools for 3D Printing</h1>
+  <h1>STL Tools for Inspection, Measurement and Repair</h1>
   <p class="lead">
-    InspectMesh checks STL files before slicing or printing, so you can
-    understand mesh health, size and complexity before committing material and
-    time.
+    Choose the question you need to answer about an STL file: what it contains,
+    which findings need attention, how large it is, or whether a deliberate
+    change is needed. Use a viewer or checker before changing geometry, and keep
+    the original when exporting a revised copy.
   </p>
   <section>
-    <h2>Choose a check for this format</h2>
+    <h2>Choose an STL tool by your next decision</h2>
+    <div
+      class="table-scroll decision-table"
+      role="region"
+      aria-label="Visitor’s question choices"
+      tabindex="0"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Visitor’s question</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>What is in this file?</td>
+            <td><a [href]="routeUrl.Viewer">Open the STL viewer</a></td>
+          </tr>
+          <tr>
+            <td>Where should I start before slicing?</td>
+            <td>
+              <a [href]="routeUrl.StlPrintPreflight">Run local STL preflight</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Which supported mesh findings exist?</td>
+            <td>
+              <a [href]="routeUrl.QualityCheck">Check STL mesh quality</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Is a surface open or an edge shared unexpectedly?</td>
+            <td>
+              <a [href]="guideRouteUrl.RouteHowToCheckStlForErrors"
+                >Interpret STL mesh findings</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Is the model the intended size?</td>
+            <td>
+              <a [href]="routeUrl.DimensionsChecker"
+                >Check STL dimensions and units</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Do I need to remove a disconnected piece or redundant face?</td>
+            <td>
+              <a [href]="routeUrl.StlRepair">Review STL repair options</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Is file size causing a handling problem?</td>
+            <td>
+              <a [href]="routeUrl.StlFileSizeReducer"
+                >Compare STL reduction options</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      STL contains a triangle surface without declared units, build instances or
-      editable CAD features. Confirm the coordinate unit before interpreting
-      dimensions and volume. Start with viewing for display, preflight for
-      diagnosis and a specialised tool when you know which finding needs
-      investigation.
+      STL does not declare a physical unit. Establish a known dimension before
+      interpreting size, volume or fit. Processing varies by action: local
+      viewing and preflight are different from explicitly submitting a file for
+      server analysis. Each tool identifies that boundary beside its controls.
     </p>
-    <a [href]="routeUrl.AllTools">Browse the complete tool directory</a>
   </section>
   <app-format-tools-grid heading="STL tools" [tools]="tools" />
   <p>
@@ -116,23 +178,5 @@
         >.
       </li>
     </ul>
-  </section>
-  <section class="content" aria-labelledby="faq-title">
-    <h2 id="faq-title">STL tool FAQ</h2>
-    <h3>What is an STL file?</h3>
-    <p>
-      An STL describes a model surface as a set of triangles. It is common in 3D
-      printing, but it does not reliably store design units.
-    </p>
-    <h3>Should I check an STL before slicing?</h3>
-    <p>
-      Yes. Open edges, non-manifold geometry and unexpected scale can lead to
-      confusing slicer results.
-    </p>
-    <h3>Does a clean check guarantee a successful print?</h3>
-    <p>
-      No. Printer calibration, supports, material and slicer settings still
-      affect the physical result.
-    </p>
   </section>
 </main>

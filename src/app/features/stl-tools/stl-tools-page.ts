@@ -20,9 +20,9 @@ export class StlToolsPage {
 
   constructor() {
     this.seo.apply({
-      title: 'Free STL Tools for 3D Printing | InspectMesh',
+      title: 'STL Tools: View, Check, Measure and Repair | InspectMesh',
       description:
-        'Free online STL tools to check mesh quality, verify watertight and manifold geometry, measure dimensions, count triangles and calculate volume for 3D printing.',
+        'Choose an STL viewer, checker, measurement or repair tool by the result you need. See which actions run locally and which upload your file.',
       path: PublicRouteUrl.Tools,
     });
   }

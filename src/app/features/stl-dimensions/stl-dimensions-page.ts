@@ -192,9 +192,9 @@ export class StlDimensionsPage {
 
   constructor() {
     this.seo.apply({
-      title: 'STL Dimensions Checker - Measure, Convert and Scale STL Files',
+      title: 'STL Dimensions Checker: Size, Units and Scale | InspectMesh',
       description:
-        'Measure STL width, height and depth, convert model units, calculate proportional scaling, and check whether a model fits a printer build volume.',
+        'Measure STL bounds, choose the intended coordinate unit and calculate proportional scale. Confirm final placement and allowances in your slicer.',
       path: PublicRouteUrl.DimensionsChecker,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());

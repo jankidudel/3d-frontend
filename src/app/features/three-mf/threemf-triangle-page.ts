@@ -16,9 +16,17 @@ import { ThreeMfQualityPage } from './threemf-quality-page';
 export class ThreeMfTrianglePage extends ThreeMfQualityPage {
   readonly exampleAsset = ExampleAsset;
   private readonly triangleSeo = inject(SeoService);
-  readonly complexity = computed(() => {
+  readonly triangleCount = computed(() => {
     const count = this.report()?.['triangleCount'];
-    if (typeof count !== 'number') {
+    return typeof count === 'number' &&
+      Number.isSafeInteger(count) &&
+      count >= 0
+      ? count
+      : null;
+  });
+  readonly complexity = computed(() => {
+    const count = this.triangleCount();
+    if (count === null) {
       return 'Not available';
     }
     return count < 50_000 ? 'Low' : count < 500_000 ? 'Moderate' : 'High';
@@ -26,9 +34,9 @@ export class ThreeMfTrianglePage extends ThreeMfQualityPage {
   constructor() {
     super();
     this.triangleSeo.apply({
-      title: '3MF Triangle Counter - Count 3MF Triangles Online | InspectMesh',
+      title: '3MF Triangle Counter: Resolved Build Count | InspectMesh',
       description:
-        'Count triangles in a 3MF print build online. Inspect resolved build geometry and understand mesh complexity before slicing.',
+        'Count triangles in a supported 3MF build and understand how repeated placed items affect the result. A count is not a print-quality score.',
       path: PublicRouteUrl.ThreeMfTriangleCounter,
     });
   }

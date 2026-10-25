@@ -11,6 +11,46 @@
     plan the print. Choose the question you need to answer before changing the
     model.
   </p>
+  <section class="guide-search">
+    <h2>Start with the problem you have</h2>
+    <ul>
+      <li>
+        Choose the next preparation stage:
+        <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
+          >Decide whether a model is ready for the next stage</a
+        >
+      </li>
+      <li>
+        Record checks for a particular revision:
+        <a [href]="guideRouteUrl.Route3dPrintFilePreflightChecklist"
+          >Use the printable preflight record</a
+        >
+      </li>
+      <li>
+        Interpret a mesh report:
+        <a [href]="guideRouteUrl.RouteHowToCheckStlForErrors"
+          >Diagnose an STL finding</a
+        >
+      </li>
+      <li>
+        Diagnose an import or slicing failure:
+        <a [href]="guideRouteUrl.RouteStlFileWontSlice"
+          >Investigate an STL that will not slice</a
+        >
+      </li>
+      <li>
+        Understand a surprising 3MF count:
+        <a [href]="guideRouteUrl.RouteHowToCheck3mfTriangleCount"
+          >Trace stored resources and placed items</a
+        >
+      </li>
+    </ul>
+    <p>
+      The readiness guide explains the decision. The checklist records it. A
+      diagnostic guide helps interpret a specific finding before you choose a
+      correction.
+    </p>
+  </section>
   <section class="guide-search" aria-labelledby="guide-search-title">
     <h2 id="guide-search-title">Find a guide</h2>
     <label class="field" for="guide-search-input">

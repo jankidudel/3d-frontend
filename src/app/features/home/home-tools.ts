@@ -78,7 +78,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '↔',
         title: 'STL Dimensions Checker',
         description:
-          'Measure an STL, convert units, calculate proportional scaling and check whether it fits your printer.',
+          'Measure STL bounds under an explicit unit assumption, propose a proportional scale and compare nominal printer fit.',
         route: PublicRouteUrl.DimensionsChecker,
         cta: 'Measure an STL file',
       },
@@ -109,7 +109,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
       {
         title: 'STL Splitter',
         description:
-          'Make a supported planar cut, then review both capped STL exports.',
+          'Make a supported planar cut, export separate copies and review the resulting surfaces before slicing.',
         route: PublicRouteUrl.StlSplitter,
         icon: '◈',
         cta: 'Split an STL',
@@ -118,7 +118,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '◈',
         title: 'STL Volume Calculator',
         description:
-          'Calculate your model’s volume, convert units and estimate approximate material weight.',
+          'Interpret supported STL enclosed volume under an explicit unit assumption and calculate optional solid mass.',
         route: PublicRouteUrl.VolumeCalculator,
         cta: 'Calculate STL volume',
       },
@@ -209,7 +209,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '↔',
         title: '3MF Dimensions Checker',
         description:
-          'Measure final 3MF build dimensions, confirm declared units and check printer fit.',
+          'Measure supported placed-build bounds, read declared units and compare nominal printer fit.',
         route: PublicRouteUrl.ThreeMfDimensionsChecker,
         cta: 'Measure a 3MF file',
       },
@@ -217,7 +217,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '◈',
         title: '3MF Volume Calculator',
         description:
-          'Calculate resolved 3MF build volume and estimate solid-model material weight.',
+          'Request supported enclosed volume, review availability limits and calculate optional solid mass.',
         route: PublicRouteUrl.ThreeMfVolumeCalculator,
         cta: 'Calculate 3MF volume',
       },

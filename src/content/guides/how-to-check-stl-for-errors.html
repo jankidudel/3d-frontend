@@ -1,26 +1,30 @@
 ---
-title: How to Check an STL File for Errors Before 3D Printing | InspectMesh
-description: 'Follow a cautious STL preflight workflow: inspect mesh integrity, units, printer fit and wall thickness before slicing or repair.'
+title: 'How to Check an STL File for Errors | InspectMesh'
+description: 'Interpret STL boundaries, over-shared edges, duplicate faces and winding findings. Choose a focused next step and verify any changed copy.'
 slug: how-to-check-stl-for-errors
 eyebrow: STL mesh guide
 heading: How to Check an STL File for Errors
 faq:
-  - question: What can an STL preflight check tell me?
-    answer: It can identify mesh, size, printer-fit and sampled wall-thickness concerns before slicing. It cannot guarantee a physical print because printer setup, material, orientation, supports and slicer settings also matter.
   - question: Can an STL look correct but still contain errors?
-    answer: Yes. A model can look normal in a 3D viewer while still containing topology problems that may affect slicing or printing.
-  - question: Does checking an STL repair it automatically?
-    answer: No. A checker identifies likely mesh problems. You can repair the file in a suitable modelling, mesh-repair or slicing tool and then check it again.
-  - question: Should I check every STL before printing?
-    answer: It is especially useful for downloaded, converted, edited or generated files, and whenever a slicer reports unexpected geometry.
+    answer: Yes. A viewer can show an ordinary silhouette while edge sharing, duplicate faces or winding need closer inspection.
 ---
 
 <p class="lead">
-  An STL file can look perfectly normal in a viewer and still contain mesh
-  problems, unexpected scale or thin features that lead to confusing slicing
-  results. A useful preflight checks each concern separately before repair.
+  An STL error report describes a finding, not the correction your design needs.
+  Start by identifying which check ran, where the finding occurs and whether the
+  affected surface or part is intentional. Then choose one focused action and
+  compare the saved result with the original.
 </p>
-
+<h2>Start with a completed result</h2>
+<p>
+  A failed parse, cancelled job or missing report is not a clean mesh result.
+  For a broad browser-local screen, use
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a>. For
+  the supported server mesh analysis, use
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
+  review its upload disclosure. Keep the method, unit assumption and settings
+  with the result; the two workflows need not group components identically.
+</p>
 <h2>Work through a known finding before editing your own model</h2>
 <figure>
   <img
@@ -58,7 +62,8 @@ faq:
     <tr>
       <td>One duplicate; three over-shared edges</td>
       <td>
-        13 facets overlap an existing facet; this is distinct from winding
+        13 facets in total; one overlaps an existing facet. This is distinct
+        from winding
       </td>
       <td>
         <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
@@ -131,190 +136,95 @@ faq:
     correction.
   </li>
 </ol>
-<h2>Interpret combinations, not isolated counts</h2>
+<h2>Read related findings together</h2>
 <p>
-  One open loop plus consistent orientation may indicate a simple missing cap.
-  Open edges combined with self-intersections and many disconnected fragments
-  suggest a more damaged export. Duplicate faces with opposite winding can
-  confuse inside/outside classification without changing the visible silhouette.
-  Use the pattern and location of findings to choose the next inspection.
+  Several counts can describe the same defect. An extra copy of one triangle can
+  create both a duplicate finding and edges shared by too many faces.
+  Conversely, separate closed pieces may be intentional assembly parts. Inspect
+  the affected region and the source design before deciding that a smaller count
+  represents an improvement.
 </p>
+<h2>Choose one next action</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Finding or state</th>
+      <th scope="col">First decision</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Exposed boundary</td>
+      <td>Should this surface be closed in the design?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlWatertightChecker }}"
+          >Inspect open boundaries</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Over-shared edge</td>
+      <td>Is there a redundant face or a more complex surface junction?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlManifoldChecker }}"
+          >Inspect edge sharing</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Duplicate or degenerate face</td>
+      <td>Is a supported cleanup appropriate for this file?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlRepair }}">Review conservative cleanup</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Disconnected component</td>
+      <td>Is it an intended object or an unwanted fragment?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlRepair }}"
+          >Review pieces before removal</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Unexpected physical size</td>
+      <td>Which unit and reference dimension were intended?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+          >Check size and units</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Missing or unsupported result</td>
+      <td>Which input or method is missing?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
+          >Review the broader preparation decision</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Verify the actual saved copy</h2>
 <p>
-  Compare component count and bounding dimensions with the source before repair.
-  A tool that reports zero errors after deleting a small disconnected component
-  may have removed intended geometry. Review the before/after silhouette,
-  cross-sections and sliced layers, and keep diagnostic work separate from the
-  end-to-end print-preparation workflow.
+  Reopen the downloaded or re-exported file, not the unchanged preview of the
+  original. Compare the affected surface, required parts and dimensions, then
+  repeat the relevant check. Finally inspect the sliced layers under the
+  intended profile. A successful export or lower issue count alone does not
+  establish that the required geometry survived.
 </p>
-
-<h2>Know when diagnosis must stop</h2>
+<h2>When to return to the source model</h2>
 <p>
-  Return to source CAD when a missing functional surface, overlapping solid or
-  internal partition has no unambiguous mesh-only repair. The checker can
-  describe topology but cannot infer design intent, tolerance or load path.
-  Record the finding and affected region so the source-model correction is
-  targeted.
-</p>
-
-<p>
-  Interpret each result in context: an open boundary identifies an edge with no
-  second face, while a non-manifold edge indicates an ambiguous face sharing
-  relationship. Neither count alone tells you whether an opening was deliberate
-  or what replacement surface the designer intended. Preserve the original and
-  inspect the reported location before choosing a repair.
-</p>
-<h2>Interpret findings before repairing</h2>
-<p>
-  Open edges, non-manifold edges, degenerate faces, duplicates and orientation
-  issues describe different mesh conditions. Use the report to choose a focused
-  repair or source-CAD route, preserve the original, and verify the changed copy
-  rather than applying every available cleanup automatically.
-</p>
-<p>A useful pre-print workflow is:</p>
-<ol>
-  <li>Inspect the model visually.</li>
-  <li>Check mesh integrity.</li>
-  <li>Confirm scale and printer fit.</li>
-  <li>Check wall thickness where it matters.</li>
-  <li>Repair only a problem you understand, then verify again.</li>
-  <li>Slice with printer and material-specific settings.</li>
-</ol>
-<p>
-  Start with the
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-    >STL Print Preflight Checker</a
-  >
-  when you want one local report with clear next actions. It does not use a
-  single score or claim that an STL is guaranteed printable.
-</p>
-<p>
-  For a format-neutral pre-slice checklist that also covers 3MF files, read
+  Stop when the intended surface, connection or cavity cannot be established
+  from the mesh. Send the finding and affected region back to the model author
+  rather than guessing a repair. Use the
   <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
-    >how to check if a 3D model is ready to print</a
-  >.
-</p>
-<p>
-  Mesh integrity is only one part of preparation. See the
-  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
-    >3D print file preflight checklist</a
+    >print-readiness guide</a
   >
-  for dimensions, printer fit, wall thickness and verification steps.
-</p>
-<h2>1. Inspect the STL visually</h2>
-<p>
-  Start by opening the model in a 3D viewer. Look for missing surfaces, visible
-  holes, disconnected pieces, unexpected thin geometry, or a model that appears
-  much larger or smaller than expected.
-</p>
-<h2>Check wall thickness where the part needs it</h2>
-<p>
-  Wall thickness depends on material, nozzle, orientation and the part's job.
-  The
-  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
-    >STL Wall Thickness Checker</a
-  >
-  samples the surface to flag areas worth reviewing, but does not replace a
-  slicer or material-specific requirement.
-</p>
-<p>
-  Visual inspection is useful, but it cannot reveal every topology problem. Use
-  the free <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to open an
-  STL locally in your browser and inspect its shape, dimensions and triangle
-  count.
-</p>
-<h2>2. Run an STL quality check</h2>
-<p>
-  Next, use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. It
-  checks for open edges, non-manifold edges, duplicate triangles, degenerate
-  triangles, inconsistent triangle orientation and invalid coordinates. These
-  checks examine the structure of the triangle mesh rather than just how the
-  model looks on screen.
-</p>
-<h2>3. Understand the results</h2>
-<h3>Open edges</h3>
-<p>
-  In a closed surface, an ordinary mesh edge is normally shared by two
-  triangles. If an edge belongs to only one triangle, it is an
-  <strong>open edge</strong>. Open edges commonly indicate a hole, gap or
-  incomplete surface. Use the
-  <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
-  to focus on whether the model forms a closed surface.
-</p>
-<h3>Non-manifold edges</h3>
-<p>
-  A <strong>non-manifold edge</strong> is typically shared by more than two
-  triangles. This creates geometry that does not describe a simple printable
-  solid and can confuse slicers or repair tools. Inspect these topology problems
-  with the
-  <a href="{{ GuideSlug.RouteStlManifoldChecker }}">STL Manifold Checker</a>.
-</p>
-<h3>Duplicate and degenerate triangles</h3>
-<p>
-  Duplicate triangles occupy the same position more than once. A degenerate
-  triangle has little or no usable area, for example because two vertices are
-  effectively in the same position. Both can be introduced during exporting,
-  conversion or editing and often indicate an inefficient or damaged mesh.
-</p>
-<h3>Inconsistent orientation</h3>
-<p>
-  Triangles have an orientation that helps software distinguish the inside of a
-  model from the outside. If neighbouring triangles point in inconsistent
-  directions, slicing or volume calculations can become unreliable.
-</p>
-<h2>4. Decide whether the STL needs repair</h2>
-<p>
-  A warning does not automatically mean that a print will fail. Repair is worth
-  considering when the model contains open or non-manifold geometry, many
-  repeated mesh errors, unexpected disconnected shells, missing surfaces or
-  geometry that slices incorrectly. Depending on the problem, repair the STL in
-  a slicer, modelling package or dedicated mesh-repair tool.
-</p>
-<h2>5. Check the repaired file again</h2>
-<p>
-  After repairing and exporting the STL, run the checks again. A repair
-  operation can solve one issue while changing another part of the mesh.
-</p>
-<p><strong>check - repair - export - check again - slice</strong></p>
-<h2>Also verify the model size</h2>
-<p>
-  A topologically valid STL can still be the wrong physical size. STL files do
-  not store an explicit unit, so a model exported in millimetres can sometimes
-  be interpreted as inches or vice versa. Use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  to inspect dimensions, convert units, calculate proportional scaling and check
-  printer fit.
-</p>
-<h2>Check your STL for errors</h2>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-    >STL Print Preflight Checker</a
-  >
-  for a practical first pass, then use its linked individual tools to
-  investigate a specific finding.
-</p>
-
-<h2>Read independent findings rather than one printable badge</h2>
-<p>
-  In the owned cube fixtures, deleting a whole square face creates four boundary
-  edges; adding a duplicate triangle creates three edges used by more than two
-  faces; adding a triangle with a repeated vertex creates a degenerate face.
-  These are different defects and call for different review. Two disjoint closed
-  cubes have two connected shells, which may be intentional parts rather than
-  one corrupt model.
-</p>
-<p>
-  Run <a href="{{ GuideSlug.RouteBatchStlChecker }}">the mixed collection</a> to
-  see independent success and failure states. Malformed input is a failed check,
-  not a mesh with zero findings. Review units and whether fit or walls were
-  skipped before interpreting a result as complete.
-</p>
-<p>
-  A clean edge-incidence screen does not detect every self-intersection or
-  validate material strength. Export the method and settings when sending
-  findings to someone else. Use
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">single-file preflight</a> for
-  focused follow-up, then compare a revised export rather than silently
-  overwriting the original.
+  for the wider process decisions and the
+  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}">checklist</a> to
+  record unresolved work.
 </p>

@@ -2,8 +2,9 @@
   <p class="eyebrow">STL measurement and scaling</p>
   <h1>STL Dimensions Checker</h1>
   <p class="lead">
-    Find your model’s width, height and depth, interpret its design unit, and
-    calculate a proportional scale for the size you want to print.
+    Measure the model's axis-aligned bounds, choose the unit intended for its
+    coordinates and calculate a proportional scale. Use a known source dimension
+    to establish units before deciding whether the part is the right size.
   </p>
   <section class="upload card" aria-labelledby="upload-title">
     <h2 id="upload-title">Measure your STL</h2>
@@ -13,6 +14,12 @@
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
+    <p>
+      Pressing Measure STL dimensions uploads the selected file for server
+      processing. For inspection without upload, use the
+      <a [routerLink]="routeUrl.Viewer">local STL Viewer</a>. Read the
+      <a [routerLink]="routeUrl.Privacy">processing and privacy policy</a>.
+    </p>
     <button
       class="button submit"
       type="button"
@@ -28,28 +35,6 @@
     @if (error(); as message) {
       <p class="error" role="alert">{{ message }}</p>
     }
-  </section>
-
-  <p class="unit-explanation">
-    STL geometry is stored as unitless coordinates, so STL files do not reliably
-    contain unit metadata. You choose how those coordinates should be
-    interpreted after measurement.
-  </p>
-
-  <section class="content" aria-labelledby="viewer-title">
-    <h2 id="viewer-title">See the model while you measure</h2>
-    <p>
-      <a [routerLink]="routeUrl.Viewer">Open in STL Viewer</a> to inspect the
-      shape, local dimensions and point-to-point feature measurements in your
-      browser.
-    </p>
-    <p>
-      Designing holes, pins or mating parts? Use the
-      <a [href]="routeUrl.ToleranceCalculator"
-        >3D Print Tolerance &amp; Clearance Calculator</a
-      >
-      before exporting the final STL.
-    </p>
   </section>
 
   @if (job(); as currentJob) {
@@ -163,6 +148,12 @@
 
         <section class="tool-section" aria-labelledby="scale-title">
           <h3 id="scale-title">Scale to a target size</h3>
+          <p>
+            This calculation proposes a scale; it does not by itself change the
+            uploaded file. To create a resized copy, use
+            <a [routerLink]="routeUrl.StlScaleTool">STL Scale</a> and reopen its
+            exported result.
+          </p>
           <p>
             Choose one target dimension. The other dimensions stay proportional.
           </p>
@@ -665,33 +656,82 @@
     </section>
   }
 
+  <p class="unit-explanation">
+    STL geometry is stored as unitless coordinates, so STL files do not reliably
+    contain unit metadata. You choose how those coordinates should be
+    interpreted after measurement.
+  </p>
+
+  <section class="content" aria-labelledby="viewer-title">
+    <h2 id="viewer-title">See the model while you measure</h2>
+    <p>
+      <a [routerLink]="routeUrl.Viewer">Open in STL Viewer</a> to inspect the
+      shape, local dimensions and point-to-point feature measurements in your
+      browser.
+    </p>
+    <p>
+      Designing holes, pins or mating parts? Use the
+      <a [href]="routeUrl.ToleranceCalculator"
+        >3D Print Tolerance &amp; Clearance Calculator</a
+      >
+      before exporting the final STL.
+    </p>
+  </section>
+
   <section class="content" aria-labelledby="how-title">
-    <h2 id="how-title">How STL sizing works</h2>
+    <h2 id="how-title">Distinguish four measurements</h2>
+    <div
+      class="table-scroll decision-table"
+      role="region"
+      aria-label="Value choices"
+      tabindex="0"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Value</th>
+            <th scope="col">Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Coordinate span</td>
+            <td>
+              Maximum minus minimum on a measured axis; it has no inherent
+              physical unit in STL.
+            </td>
+          </tr>
+          <tr>
+            <td>Interpreted size</td>
+            <td>
+              The span expressed under the unit assumption supported by your
+              source dimension.
+            </td>
+          </tr>
+          <tr>
+            <td>Proposed proportional scale</td>
+            <td>
+              Target span divided by current span; other axes change by the same
+              factor.
+            </td>
+          </tr>
+          <tr>
+            <td>Nominal printer comparison</td>
+            <td>
+              A comparison within the implemented orientation and bed
+              assumptions; the final sliced placement still needs review.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>A dimension is not a fit tolerance</h2>
     <p>
-      An STL records vertex coordinates but normally does not say whether a
-      value of 50 means 50 millimetres, centimetres, metres or inches. Select
-      the unit used by the design software, then use the conversions and
-      proportional scale calculator above to prepare the intended print size.
+      A bounding box describes the outer extents, not the diameter of a hole, a
+      mating clearance or the strength of a wall. Use feature measurements and
+      the source design for those requirements. Confirm supports, brim and
+      excluded bed regions in the slicer before accepting a close nominal fit.
     </p>
-    <h2>What the results mean</h2>
-    <p>
-      Use the displayed unit conversion to confirm scale before slicing.
-      Proportional scaling keeps the model shape intact, while the build-volume
-      comparison checks the current dimensions against your printer.
-    </p>
-    <h2>FAQ</h2>
-    <h3>Do STL files have units?</h3>
-    <p>
-      No reliable unit metadata is embedded, so use the unit from your modelling
-      software.
-    </p>
-    <h3>Can I convert millimetres to inches?</h3>
-    <p>
-      Yes. The checker converts the same measured coordinates for display
-      without changing your source file.
-    </p>
-    <h3>Will it fit my printer?</h3>
-    <p>Enter its usable build dimensions to compare it before slicing.</p>
     <p>
       <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
       <a [routerLink]="routeUrl.VolumeCalculator">STL Volume Calculator</a> ·

@@ -84,6 +84,26 @@ describe('StlVolumePage', () => {
     expect(text).toContain('Upload another file');
   });
 
+  it('keeps unavailable volume distinct from zero and disables dependent inputs', () => {
+    const fixture = render({
+      ...completedJob,
+      report: { volume: null, validation: { isValid: true } },
+    });
+    expect(fixture.componentInstance.estimate()).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Volume unavailable.');
+    expect(fixture.nativeElement.querySelector('.weight-output')).toBeNull();
+    expect(fixture.nativeElement.querySelector('fieldset').disabled).toBe(true);
+    fixture.componentInstance.job.set({
+      ...completedJob,
+      report: { volume: 0, validation: { isValid: true } },
+    });
+    fixture.detectChanges();
+    expect(fixture.componentInstance.estimate()?.solidMassGrams).toBe(0);
+    expect(fixture.nativeElement.querySelector('fieldset').disabled).toBe(
+      false,
+    );
+  });
+
   it('updates volume and mass when the model unit changes', () => {
     const fixture = render();
     fixture.componentInstance.modelUnit.set('cm');
@@ -118,7 +138,7 @@ describe('StlVolumePage', () => {
 
     expect(fixture.nativeElement.textContent).toContain('2 g');
     expect(fixture.nativeElement.textContent).toContain(
-      'Simplified infill-based estimate',
+      'Simplified mass scenario',
     );
 
     fixture.componentInstance.trackMaterialEstimate();

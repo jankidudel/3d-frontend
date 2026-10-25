@@ -27,9 +27,9 @@ export class GuidesPage {
 
   constructor() {
     this.seo.apply({
-      title: '3D Printing File Guides | InspectMesh',
+      title: '3D Printing File Guides and Troubleshooting | InspectMesh',
       description:
-        'Practical guides for checking, repairing and preparing STL files for 3D printing.',
+        'Find practical guides for STL and 3MF errors, units, dimensions, mesh changes and print preparation, with links to the relevant tools.',
       path: PublicRouteUrl.Guides,
     });
   }

@@ -152,7 +152,7 @@ export class ThreeMfDimensionsPage {
 
   constructor() {
     this.seo.apply({
-      title: '3MF Dimensions Checker - Measure 3MF Files Online | InspectMesh',
+      title: '3MF Dimensions Checker: Units and Build Bounds | InspectMesh',
       description:
         "Measure a 3MF file's final build dimensions, keep its declared unit, convert mm, cm and inches, and compare the model with your 3D printer volume.",
       path: PublicRouteUrl.ThreeMfDimensionsChecker,

@@ -27,7 +27,10 @@ export class ThreeMfVolumePage extends ThreeMfQualityPage {
     const value = this.report()?.['volume'];
     const unit = this.report()?.['sourceUnit'];
     const factor = typeof unit === 'string' ? millimetresPerUnit[unit] : 1;
-    return typeof value === 'number' && Number.isFinite(value) && factor
+    return typeof value === 'number' &&
+      Number.isFinite(value) &&
+      value >= 0 &&
+      factor
       ? value * (factor / 10) ** 3
       : null;
   });
@@ -51,10 +54,9 @@ export class ThreeMfVolumePage extends ThreeMfQualityPage {
   constructor() {
     super();
     this.volumeSeo.apply({
-      title:
-        '3MF Volume Calculator - Calculate 3MF Model Volume Online | InspectMesh',
+      title: '3MF Volume Calculator: Build Volume and Solid Mass | InspectMesh',
       description:
-        'Calculate 3MF model volume online. Review resolved build volume, units and an optional material-weight estimate before 3D printing.',
+        'Check supported 3MF volume results, understand unavailable values and calculate optional solid mass from density. Use slicer totals for consumption.',
       path: PublicRouteUrl.ThreeMfVolumeCalculator,
     });
   }

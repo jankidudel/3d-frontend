@@ -1,19 +1,92 @@
 <main class="page">
   <p class="eyebrow">InspectMesh</p>
-  <h1>Free 3MF Tools for 3D Printing</h1>
+  <h1>3MF Tools for Builds, Mesh Checks and Conversion</h1>
   <p class="lead">
-    3MF preserves useful print-model information, including a declared unit and
-    build structure.
+    A 3MF package can contain reusable geometry, declared units and several
+    placed items. Choose a tool for the build question you need to answer. A
+    supported mesh result does not validate every package extension or the
+    printer settings stored by a slicer.
   </p>
   <section>
-    <h2>Choose a check for this format</h2>
+    <h2>Choose the result you need</h2>
+    <div
+      class="table-scroll decision-table"
+      role="region"
+      aria-label="Question choices"
+      tabindex="0"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Question</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>What parts and placements are present?</td>
+            <td>
+              <a [href]="routeUrl.ThreeMfViewer">Inspect the 3MF locally</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Which preparation checks need review?</td>
+            <td>
+              <a [href]="routeUrl.ThreeMfPrintPreflight"
+                >Run local 3MF preflight</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Which mesh findings are supported?</td>
+            <td>
+              <a [href]="routeUrl.ThreeMfQualityCheck"
+                >Check 3MF mesh quality</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>What are the placed build’s bounds?</td>
+            <td>
+              <a [href]="routeUrl.ThreeMfDimensionsChecker"
+                >Measure 3MF build dimensions</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Why is the triangle count unexpected?</td>
+            <td>
+              <a [href]="guideRouteUrl.RouteHowToCheck3mfTriangleCount"
+                >Investigate stored and placed counts</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Is an enclosed-volume value available?</td>
+            <td>
+              <a [href]="routeUrl.ThreeMfVolumeCalculator"
+                >Calculate supported 3MF volume</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Do I need geometry in STL format?</td>
+            <td>
+              <a [href]="routeUrl.ThreeMfToStlConverter"
+                >Review 3MF-to-STL conversion</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      3MF declares units and can store resources, components, transforms and
-      build instances. Use a viewer to inspect the resolved build; compare
-      package/import findings before changing geometry. Converting to STL
-      flattens supported build geometry and discards other package information.
+      Reusing one mesh in two build items can increase placed triangle count and
+      overall bounds without storing a second mesh resource. Volume availability
+      has additional validity conditions; a count or dimensions result does not
+      establish that volume can be reported. Use the original slicer project to
+      review its printer and material settings.
     </p>
-    <a [href]="routeUrl.AllTools">Browse the complete tool directory</a>
   </section>
   <app-format-tools-grid heading="3MF tools" [tools]="tools" />
   <p>
@@ -32,17 +105,5 @@
     Need a broadly compatible geometry-only export?
     <a [routerLink]="routeUrl.ThreeMfToStlConverter">Convert 3MF to STL</a>.
   </p>
-  <section class="content">
-    <h2>What is 3MF?</h2>
-    <p>
-      3MF is a 3D-printing format that can store model units and multiple build
-      items, unlike basic STL geometry.
-    </p>
-    <h2>FAQ</h2>
-    <h3>Are STL tools still available?</h3>
-    <p>
-      Yes. <a [routerLink]="routeUrl.Tools">Browse STL tools</a> for
-      STL-specific checks.
-    </p>
-  </section>
+  <p><a [href]="routeUrl.Tools">Browse STL tools</a></p>
 </main>
