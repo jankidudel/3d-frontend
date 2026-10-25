@@ -6,23 +6,20 @@ import {
   MaterialComparisonRoutePath,
 } from '../src/app/core/seo/public-routes.ts';
 
-// One-time baseline for existing pages without a recorded revision date.
-// Keep this fixed; later material edits must update the individual page entry.
-const legacyLastModifiedDate = '2026-10-06';
-/** Recorded editorial dates and the explicit legacy baseline, never build time. */
+/** Recorded editorial dates for individual pages, never build time. */
 export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.Examples]: '2026-10-18',
   [PublicRouteUrl.Home]: '2026-10-24',
   [PublicRouteUrl.AllTools]: '2026-10-24',
   [PublicRouteUrl.Guides]: '2026-10-24',
-  [`/${MaterialRoutePath.Pla}`]: '2026-10-09',
-  [`/${MaterialRoutePath.Petg}`]: '2026-10-09',
-  [`/${MaterialRoutePath.Abs}`]: '2026-10-09',
-  [`/${MaterialRoutePath.Asa}`]: '2026-10-09',
-  [`/${MaterialRoutePath.Tpu}`]: '2026-10-09',
-  [`/${MaterialRoutePath.Nylon}`]: '2026-10-09',
-  [`/${MaterialRoutePath.Polycarbonate}`]: '2026-10-09',
-  [`/${MaterialRoutePath.Polypropylene}`]: '2026-10-09',
+  [`/${MaterialRoutePath.Pla}`]: '2026-10-25',
+  [`/${MaterialRoutePath.Petg}`]: '2026-10-25',
+  [`/${MaterialRoutePath.Abs}`]: '2026-10-25',
+  [`/${MaterialRoutePath.Asa}`]: '2026-10-25',
+  [`/${MaterialRoutePath.Tpu}`]: '2026-10-25',
+  [`/${MaterialRoutePath.Nylon}`]: '2026-10-25',
+  [`/${MaterialRoutePath.Polycarbonate}`]: '2026-10-25',
+  [`/${MaterialRoutePath.Polypropylene}`]: '2026-10-25',
   [`/${MaterialComparisonRoutePath.PlaVsPetg}`]: '2026-10-24',
   [`/${MaterialComparisonRoutePath.PetgVsAsa}`]: '2026-10-24',
   [`/${PrinterRoutePath.BambuLabA1Mini}`]: '2026-10-09',
@@ -31,7 +28,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [`/${PrinterRoutePath.PrusaMk4S}`]: '2026-10-09',
   [PublicRouteUrl.Materials]: '2026-10-09',
   [PublicRouteUrl.Printers]: '2026-10-09',
-  [PublicRouteUrl.StlPrintPreflight]: '2026-10-24',
+  [PublicRouteUrl.StlPrintPreflight]: '2026-10-25',
   [PublicRouteUrl.ThreeMfPrintPreflight]: '2026-10-24',
   [PublicRouteUrl.QualityCheck]: '2026-10-24',
   [PublicRouteUrl.DimensionsChecker]: '2026-10-24',
@@ -107,5 +104,5 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.ThreeMfTriangleCounter]: '2026-10-09',
   [PublicRouteUrl.ThreeMfVolumeCalculator]: '2026-10-09',
   [PublicRouteUrl.ThreeMfToStlConverter]: '2026-10-24',
-  [PublicRouteUrl.Contact]: legacyLastModifiedDate,
+  [PublicRouteUrl.Contact]: '2026-10-25',
 };

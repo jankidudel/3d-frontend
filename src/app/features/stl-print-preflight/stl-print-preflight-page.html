@@ -429,8 +429,10 @@
     [page]="routeUrl.StlPrintPreflight"
   />
   <p>
-    Self intersections and nested-shell solid interpretation are not checked. A
-    completed check is not a print-success claim. Confirm design intent and
+    Triangle surface intersections receive a bounded browser check. Review its
+    completed, skipped or incomplete state in the report; duplicate and coplanar
+    overlaps remain ambiguous. Nested-shell solid interpretation is not checked.
+    A completed check is not a print-success claim. Confirm design intent and
     review the intended slicer setup.
     <a [routerLink]="routeUrl.Methods">How these checks work</a>.
   </p>

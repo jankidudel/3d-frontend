@@ -1,5 +1,6 @@
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { materialDecisionExamples } from '../repeat-workflows/material-decision-examples';
+import { materialPreparation } from './material-preparation';
 import {
   ProductLinkComponent,
   ProductRecords,
@@ -182,11 +183,23 @@ export class MaterialHubPage {
       <section>
         <h2>Preparation for the exact spool</h2>
         <p><strong>Printing difficulty:</strong> {{ item.difficulty }}.</p>
+        <p>{{ preparation().setup }}</p>
+        <p>{{ preparation().surface }}</p>
         <p>
-          Set nozzle and bed temperatures from the exact spool manufacturer
-          profile rather than a family-wide range. Check the linked family
-          source for preparation context. Enclosure expectation:
-          {{ item.enclosure }}. Drying importance: {{ item.drying }}.
+          These starting points summarise the linked material-family guidance,
+          checked {{ preparation().reviewedAt }}. Use the exact spool and
+          printer profile for temperatures and drying instructions.
+        </p>
+      </section>
+      <section>
+        <h2>{{ preparation().question }}</h2>
+        <p>{{ preparation().decision }}</p>
+        <h3>A small check before the full part</h3>
+        <p>{{ preparation().trial }}</p>
+        <p>
+          This is a proposed check for your own process, not a test already
+          performed by InspectMesh. Record the product, orientation, settings
+          and observation before applying the result to a larger part.
         </p>
       </section>
       <section>
@@ -253,7 +266,11 @@ export class MaterialHubPage {
       </section>
       <section>
         <h2>Sources</h2>
-        <p>Last verified {{ item.lastVerifiedAt }}.</p>
+        <p>
+          Catalogue baseline {{ item.lastVerifiedAt }}. Preparation guidance
+          reviewed {{ preparation().reviewedAt }} against the linked family
+          source; no physical spool test is claimed.
+        </p>
         <ul>
           @for (source of sources(item); track source.id) {
             <li>
@@ -300,6 +317,9 @@ export class MaterialHubPage {
   </main>`,
 })
 export class MaterialDetailPage {
+  readonly preparation = computed(
+    () => materialPreparation[this.material()!.id],
+  );
   readonly decision = computed(
     () => materialDecisionExamples[this.material()!.id],
   );
