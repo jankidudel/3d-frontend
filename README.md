@@ -53,8 +53,11 @@ Every production sitemap entry includes a persistent `lastmod`. For a material c
 
 All public routes are prerendered and receive their title, description, robots
 directive, and (when configured) canonical URL through the central SEO service.
-Temporary and development deployments are deliberately noindexed and do not emit
-a canonical URL, so a CloudFront distribution URL cannot become a search result.
+Hosted deployment is production-only. Local development remains deliberately
+noindexed and does not emit a canonical URL. The development build remains available
+for local testing. The dormant `deployment-development` configuration and
+`build:deployment-development` script preserve the optimized, noindex hosted-development
+build for future use. Neither is used by the current deployment workflows.
 
 Before enabling production indexing, update
 `src/environments/site-config.production.json` with the final custom HTTPS origin
@@ -71,6 +74,11 @@ The production build then creates an absolute canonical for every public route,
 an `index, follow` robots directive, `robots.txt`, and `sitemap.xml`. Leave both
 settings as they are until the custom domain is live. The CloudFront URL must not
 be used as `siteUrl`.
+
+The manually dispatched `deploy-frontend` workflow uses the protected `prod` GitHub
+Environment. It runs `npm run verify` once and uploads that verified production
+build directly to S3, without rebuilding it or running a CDK bucket-deployment
+Lambda. Use `deploy-all` in `3d-infra` for coordinated application releases.
 
 ## Verify a deployed frontend release
 

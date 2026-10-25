@@ -9,14 +9,26 @@ const projectRoot = process.cwd();
 const runFile = promisify(execFile);
 
 describe('frontend deployment workflow', () => {
-  it('requires an explicit environment selection before deploying', async () => {
+  it('reuses the verified production build without another environment build', async () => {
+    const workflow = await readFile(
+      join(projectRoot, '.github/workflows/deploy-frontend.yml'),
+      'utf8',
+    );
+    expect(workflow.match(/run: npm run verify\s*$/gm)).toHaveLength(1);
+    expect(workflow).not.toContain('npm run build');
+    expect(workflow).toContain('environment: prod');
+    expect(workflow).toContain('STAGE: prod');
+    expect(workflow).not.toContain('inputs.environment');
+  });
+
+  it('requires a manual production deployment', async () => {
     const workflow = await readFile(
       join(projectRoot, '.github/workflows/deploy-frontend.yml'),
       'utf8',
     );
 
     expect(workflow).toContain('workflow_dispatch:');
-    expect(workflow).toContain('required: true');
+    expect(workflow).toContain('environment: prod');
     expect(workflow).not.toMatch(/^  push:/m);
     expect(workflow).not.toContain("github.event_name == 'push'");
   });
