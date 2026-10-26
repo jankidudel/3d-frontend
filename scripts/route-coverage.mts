@@ -246,6 +246,7 @@ export function auditRouteCoverage(
   for (const key of ['R-G', 'L-R', 'G-R'] as const) {
     failures.push(...diffs[key].map((path) => `${key}: ${path}`));
   }
+  const identityOwners = new Map<string, string>();
   const rows = policies.map((policy) => {
     const observation = observations.get(policy.path);
     const incoming = [...linked]
@@ -289,6 +290,14 @@ export function auditRouteCoverage(
         );
       }
       if (I.has(policy.path)) {
+        const previousOwner = identityOwners.get(observation.mainContentSha256);
+        if (previousOwner) {
+          errors.push(
+            `Identical initial main document to ${previousOwner}; inspect wrong-page output or duplicate content.`,
+          );
+        } else {
+          identityOwners.set(observation.mainContentSha256, policy.path);
+        }
         for (const fallback of ['/', '/404']) {
           const shell = observations.get(fallback);
           if (

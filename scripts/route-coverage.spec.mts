@@ -150,6 +150,45 @@ describe('exact XML sitemap membership', () => {
 });
 
 describe('built route/link evidence', () => {
+  it('rejects another tool document even when its canonical has been rewritten correctly', () => {
+    const policies = routeSearchPolicy.filter((p) =>
+      ['/', '/stl-viewer', '/3mf-viewer'].includes(p.path),
+    );
+    const pages = policies.map((p) => ({
+      route: p.path,
+      filePath: p.path + '/index.html',
+      html:
+        p.path === '/'
+          ? main(
+              '/',
+              '<a href="/stl-viewer">STL</a><a href="/3mf-viewer">3MF</a>',
+            )
+          : main('/stl-viewer').replace(
+              `href="${productionOrigin}/stl-viewer"`,
+              `href="${productionOrigin}${p.path}"`,
+            ),
+    }));
+    const report = auditRouteCoverage(
+      {
+        routes: policies.map((p) => ({
+          path: p.path,
+          source: 'fixture',
+          renderer: 'Component',
+        })),
+        patterns: [],
+      },
+      policies,
+      pages,
+      entries().filter((entry) =>
+        policies.some((p) => p.canonical === entry.loc),
+      ),
+    );
+    expect(
+      report.failures.some((failure) =>
+        failure.includes('Identical initial main document'),
+      ),
+    ).toBe(true);
+  });
   it('separates hub links, contextual links and query state without decoding reserved characters', () => {
     const links = pageLinks({
       route: '/',
@@ -321,11 +360,17 @@ describe('bounded production evidence', () => {
       }
       const policy = routeSearchPolicy.find((p) => p.path === url.pathname);
       const missing = url.pathname.includes('definitely-missing');
+      const bodyPath = ['/stl-viewer', '/3mf-viewer'].includes(url.pathname)
+        ? '/shared-wrong-tool'
+        : url.pathname;
       const html = main(
-        url.pathname,
+        bodyPath,
         url.pathname === '/'
           ? '<a href="/linked-only-public-tool">Linked tool</a><a href="/jobs/private-token">Private endpoint</a><a href="/3mf-repair?token=private">State</a>'
           : '',
+      ).replace(
+        `href="${productionOrigin}${bodyPath}"`,
+        `href="${productionOrigin}${url.pathname}"`,
       );
       return new Response(
         policy?.noindex
@@ -338,6 +383,9 @@ describe('bounded production evidence', () => {
           headers: {
             'content-type': 'text/html',
             'x-robots-tag': 'bingbot: noindex',
+            ...(url.pathname === '/3mf-repair'
+              ? { link: '<https://www.inspectmesh.com/wrong>; rel="canonical"' }
+              : {}),
           },
         },
       );
@@ -354,6 +402,14 @@ describe('bounded production evidence', () => {
     expect(result.failures).toContain(
       'Production links/sitemap discovered an unclassified public path: /linked-only-public-tool',
     );
+    expect(result.failures).toContain(
+      '/3mf-repair: HTTP Link canonical disagrees with policy.',
+    );
+    expect(
+      result.failures.some((failure) =>
+        failure.includes('identical initial main document'),
+      ),
+    ).toBe(true);
     expect(
       result.responses.find(
         (p) => p.requestedUrl === productionOrigin + '/3mf-repair',

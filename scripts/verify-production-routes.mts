@@ -3,8 +3,18 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { gunzipSync } from 'node:zlib';
-import { inspectDelivery } from './audit-production.mts';
+import {
+  DeliveryFailure,
+  inspectDelivery,
+  type DeliveryHop,
+} from './audit-production.mts';
 import { boundedBytes, maxDocumentBytes } from './http-documents.mts';
+import {
+  deliveryVariants,
+  headerCanonicals,
+  verifyCriticalAssets,
+  verifyVariants,
+} from './delivery-diagnostics.mts';
 import {
   compareSitemap,
   parseSitemapXml,
@@ -262,6 +272,7 @@ export async function verifyProduction(
     finalUrl: null;
     attempted: boolean;
     limitation: string;
+    hops: readonly DeliveryHop[];
   }[] = [];
   const pending = [
     '/',
@@ -292,9 +303,20 @@ export async function verifyProduction(
         finalUrl: null,
         attempted: path === '/',
         limitation,
+        hops:
+          path === '/' && error instanceof DeliveryFailure ? error.hops : [],
       })),
       failures: [limitation],
       skippedLinks,
+      variants: deliveryVariants.map((variant) => ({
+        ...variant,
+        status: null,
+        finalUrl: null,
+        attempted: false,
+        limitation,
+        hops: [],
+      })),
+      criticalAssets: { results: [], truncated: false, limitation },
     };
   }
   const robotsResult = await resource(
@@ -368,6 +390,15 @@ export async function verifyProduction(
         );
       }
       if (policy && response.raw) {
+        const httpCanonicals = headerCanonicals(
+          response.link,
+          response.finalUrl,
+        );
+        if (
+          httpCanonicals.some((canonical) => canonical !== policy.canonical)
+        ) {
+          failures.push(`${path}: HTTP Link canonical disagrees with policy.`);
+        }
         if (
           response.raw.canonical !== policy.canonical ||
           response.raw.canonicalCount !== (policy.canonical ? 1 : 0)
@@ -434,6 +465,7 @@ export async function verifyProduction(
         finalUrl: null,
         attempted: true,
         limitation: String(error),
+        hops: error instanceof DeliveryFailure ? error.hops : [],
       });
       failures.push(`${path}: GET unavailable: ${String(error)}`);
     }
@@ -476,13 +508,52 @@ export async function verifyProduction(
       }
     }
   }
+  const identities = new Map<string, string>();
+  for (const policy of policies.filter(
+    (p) => p.disposition === RouteDisposition.Indexable,
+  )) {
+    const raw = responses.get(policy.path)?.raw;
+    if (raw) {
+      const previous = identities.get(raw.mainContentSha256);
+      if (previous) {
+        failures.push(
+          `${policy.path}: identical initial main document to ${previous}; investigate wrong-page delivery or duplicate content.`,
+        );
+      } else {
+        identities.set(raw.mainContentSha256, policy.path);
+      }
+    }
+  }
+  const variants = await verifyVariants(request);
+  for (const variant of variants) {
+    failures.push(
+      ...variant.failures.map(
+        (failure) => `${variant.requestedUrl}: ${failure}`,
+      ),
+    );
+  }
+  const criticalAssets = await verifyCriticalAssets(
+    [...responses.values()].flatMap((response) => response.criticalAssets),
+    request,
+  );
+  for (const asset of criticalAssets.results) {
+    if (asset.failure) {
+      failures.push(`${asset.url}: ${asset.failure}`);
+    }
+  }
+  if (criticalAssets.truncated) {
+    failures.push('Critical asset verification truncated at the asset limit.');
+  }
   return {
     observedAt: new Date().toISOString(),
     complete:
       !truncated &&
       !unavailable.length &&
       !sitemap.failures.length &&
-      robots !== null,
+      robots !== null &&
+      !criticalAssets.truncated &&
+      variants.every((variant) => variant.status !== null) &&
+      criticalAssets.results.every((asset) => asset.status !== null),
     truncated,
     bounds: { maxPages, maxSitemaps, maxSitemapEntries, concurrency },
     robots: robotsResult
@@ -516,6 +587,8 @@ export async function verifyProduction(
     unavailable,
     failures,
     skippedLinks,
+    variants,
+    criticalAssets,
     limitation:
       'Read-only public initial HTTP documents. Browser hydration, production revision and Google indexing are not inferred.',
   };
@@ -527,6 +600,54 @@ export async function runProductionAudit() {
     const path = resolve(import.meta.dirname, '../docs/seo-url-ledger.json');
     const ledger = JSON.parse(await readFile(path, 'utf8'));
     ledger.productionRouteCoverage = result;
+    for (const page of ledger.pages) {
+      const response = result.responses.find(
+        (candidate) => candidate.requestedUrl === page.url,
+      );
+      if (response) {
+        const {
+          renderedCanonical: _canonical,
+          renderedRobots: _robots,
+          ...initialResponse
+        } = response;
+        page.live = { ...page.live, ...initialResponse };
+      }
+    }
+    ledger.additionalUrls ??= [];
+    for (const variant of result.variants) {
+      let row = ledger.additionalUrls.find(
+        (candidate: { requestedUrl: string }) =>
+          candidate.requestedUrl === variant.requestedUrl,
+      );
+      if (!row) {
+        row = {
+          requestedUrl: variant.requestedUrl,
+          discovery:
+            'Fixed public delivery diagnostic; not a known Google URL.',
+        };
+        ledger.additionalUrls.push(row);
+      }
+      row.latestAttempt = {
+        observedAt: result.observedAt,
+        attempted: 'attempted' in variant ? variant.attempted : true,
+        status: variant.status,
+        finalUrl: variant.finalUrl,
+        hops: variant.hops,
+        expectedStatus: variant.expectedStatus,
+        expectedCanonical: variant.expectedCanonical,
+        limitation: 'limitation' in variant ? variant.limitation : null,
+        failures: 'failures' in variant ? variant.failures : [],
+      };
+      if (variant.status !== null) {
+        Object.assign(row, {
+          status: variant.status,
+          finalUrl: variant.finalUrl,
+          hops: variant.hops,
+          observedAt: result.observedAt,
+          limitation: null,
+        });
+      }
+    }
     await writeFile(
       path,
       await format(JSON.stringify(ledger), {

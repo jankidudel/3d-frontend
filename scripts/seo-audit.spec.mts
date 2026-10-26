@@ -4,7 +4,12 @@ import {
   inspectPublicHtml,
   shortestPaths,
 } from './seo-audit.mts';
-import { inspectDelivery } from './audit-production.mts';
+import { DeliveryFailure, inspectDelivery } from './audit-production.mts';
+import {
+  headerCanonicals,
+  verifyCriticalAssets,
+  verifyVariants,
+} from './delivery-diagnostics.mts';
 
 describe('initial HTML evidence', () => {
   it('rejects a shared app shell with the wrong canonical and no answer', () => {
@@ -50,6 +55,80 @@ describe('initial HTML evidence', () => {
 });
 
 describe('production GET evidence', () => {
+  it('reads canonical HTTP links without mistaking preload or alternate links for canonicals', () => {
+    expect(
+      headerCanonicals(
+        '<chunk.js>; rel="preload", </wrong>; rel="canonical alternate"',
+        'https://www.inspectmesh.com/tool',
+      ),
+    ).toEqual(['https://www.inspectmesh.com/wrong']);
+  });
+  it('records host/path/query variants independently and detects lost queries', async () => {
+    const request: typeof fetch = async (input) =>
+      String(input).startsWith('http:')
+        ? new Response(null, {
+            status: 301,
+            headers: { location: 'https://www.inspectmesh.com/tool' },
+          })
+        : new Response(
+            '<link rel="canonical" href="https://www.inspectmesh.com/tool"><main><h1>Tool</h1></main>',
+            { headers: { 'content-type': 'text/html' } },
+          );
+    const result = await verifyVariants(request, [
+      {
+        requestedUrl: 'http://inspectmesh.com/tool?seo-audit=1',
+        expectedCanonical: 'https://www.inspectmesh.com/tool',
+        expectedStatus: 200,
+      },
+    ]);
+    expect(result[0].failures).toContain(
+      'Redirect changed the diagnostic query string.',
+    );
+    expect(result[0].status).toBe(200);
+  });
+  it('detects missing hashed resources and HTML masquerading as JavaScript', async () => {
+    const observation = await inspectDelivery(
+      'https://www.inspectmesh.com/tool',
+      async () =>
+        new Response(
+          '<script src="/main-abc.js"></script><link rel="stylesheet" href="/styles-abc.css"><script src="https://third-party.example/widget.js"></script>',
+          { headers: { 'content-type': 'text/html' } },
+        ),
+    );
+    expect(observation.criticalAssets).toEqual([
+      'https://www.inspectmesh.com/main-abc.js',
+      'https://www.inspectmesh.com/styles-abc.css',
+    ]);
+    let requests = 0;
+    const result = await verifyCriticalAssets(
+      [...observation.criticalAssets, ...observation.criticalAssets],
+      async (input) => {
+        requests++;
+        return String(input).endsWith('.js')
+          ? new Response('<h1>App fallback</h1>', {
+              headers: { 'content-type': 'text/html' },
+            })
+          : new Response('Not found', { status: 404 });
+      },
+    );
+    expect(requests).toBe(2);
+    expect(result.results.every((asset) => asset.failure)).toBe(true);
+    expect(result.truncated).toBe(false);
+  });
+  it('resolves relative bundles against the document base on deep routes', async () => {
+    const result = await inspectDelivery(
+      'https://www.inspectmesh.com/compare/printers',
+      async () =>
+        new Response(
+          '<base href="/"><script src="main-hash.js"></script><link rel="stylesheet" href="styles-hash.css">',
+          { headers: { 'content-type': 'text/html' } },
+        ),
+    );
+    expect(result.criticalAssets).toEqual([
+      'https://www.inspectmesh.com/main-hash.js',
+      'https://www.inspectmesh.com/styles-hash.css',
+    ]);
+  });
   it('records each hop and final HTTP robots independently of HTML', async () => {
     const request: typeof fetch = async (input) =>
       String(input).startsWith('http:')
@@ -76,5 +155,34 @@ describe('production GET evidence', () => {
     await expect(
       inspectDelivery('https://www.inspectmesh.com/tool', request),
     ).rejects.toThrow('Redirect loop');
+    const result = await verifyVariants(request, [
+      {
+        requestedUrl: 'https://www.inspectmesh.com/tool',
+        expectedCanonical: 'https://www.inspectmesh.com/tool',
+        expectedStatus: 200,
+      },
+    ]);
+    expect(result[0].hops).toHaveLength(1);
+    expect(result[0].status).toBeNull();
+  });
+  it('retains observed redirect hops when the next request fails', async () => {
+    const request: typeof fetch = async (input) => {
+      if (String(input).startsWith('http:')) {
+        return new Response(null, {
+          status: 301,
+          headers: { location: 'https://www.inspectmesh.com/tool' },
+        });
+      }
+      throw new Error('Network unavailable');
+    };
+    try {
+      await inspectDelivery('http://inspectmesh.com/tool', request);
+      expect.fail('Expected the fetch failure.');
+    } catch (error) {
+      expect(error).toBeInstanceOf(DeliveryFailure);
+      expect((error as DeliveryFailure).hops.map((hop) => hop.status)).toEqual([
+        301,
+      ]);
+    }
   });
 });
