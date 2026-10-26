@@ -342,6 +342,26 @@ describe('bounded production evidence', () => {
     expect(result.failures[0]).toContain('does not establish a site outage');
   });
   it('crawls a linked page absent from the sitemap, records response headers and verifies a true missing-route status', async () => {
+    // Exercise crawl behaviour with representative routes. Full inventory
+    // coverage is checked independently above and against every built page.
+    const policies = routeSearchPolicy.filter((policy) =>
+      [
+        '/',
+        '/tools',
+        '/guides',
+        '/stl-tools',
+        '/3mf-tools',
+        '/stl-viewer',
+        '/3mf-viewer',
+        '/3mf-repair',
+      ].includes(policy.path),
+    );
+    const sitemap = buildSitemap(
+      productionOrigin,
+      policies.map((policy) => policy.path),
+      editorialDates,
+      guideRegistry,
+    );
     const seen: string[] = [];
     const request: typeof fetch = async (input) => {
       const url = new URL(String(input));
@@ -354,11 +374,11 @@ describe('bounded production evidence', () => {
         );
       }
       if (url.pathname === '/sitemap.xml') {
-        return new Response(xml(), {
+        return new Response(sitemap, {
           headers: { 'content-type': 'application/xml' },
         });
       }
-      const policy = routeSearchPolicy.find((p) => p.path === url.pathname);
+      const policy = policies.find((p) => p.path === url.pathname);
       const missing = url.pathname.includes('definitely-missing');
       const bodyPath = ['/stl-viewer', '/3mf-viewer'].includes(url.pathname)
         ? '/shared-wrong-tool'
@@ -390,8 +410,9 @@ describe('bounded production evidence', () => {
         },
       );
     };
-    const result = await verifyProduction(request);
+    const result = await verifyProduction(request, policies);
     expect(seen).toContain('/linked-only-public-tool');
+    expect(seen).not.toContain('/stl-repair');
     expect(seen).not.toContain('/jobs/private-token');
     expect(
       result.responses.some(
