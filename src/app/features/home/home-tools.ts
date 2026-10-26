@@ -185,7 +185,7 @@ export const HOME_TOOL_GROUPS: readonly HomeToolGroup[] = [
         icon: '✦',
         title: '3MF Repair Tool',
         description:
-          'Safely remove duplicate and degenerate triangles from a 3MF package without rebuilding its resources.',
+          'Review selected duplicate and degenerate triangle removals locally, then save a separate 3MF package and recheck its build.',
         route: PublicRouteUrl.ThreeMfRepair,
         cta: 'Repair a 3MF file',
       },

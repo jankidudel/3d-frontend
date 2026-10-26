@@ -1,40 +1,26 @@
 ---
-title: 'How to Tell if a 3MF File Is Manifold | InspectMesh'
-description: Learn how to check whether a 3MF model is manifold, why non-manifold geometry affects slicing, and what to do when problems are found.
+title: '3MF Topology: Mesh Fault or Build Placement? | InspectMesh'
+description: 'Trace a finding to a mesh resource or build placement before editing repeated geometry.'
 slug: how-to-tell-if-a-3mf-file-is-manifold
 eyebrow: 3MF topology guide
-heading: How to Tell if a 3MF File Is Manifold
-faq:
-  - question: What does manifold mean in a 3MF model?
-    answer: A manifold mesh has a consistent surface topology that can describe a clear solid. Internal edges normally connect exactly two faces.
-  - question: Is manifold the same as watertight?
-    answer: No. A watertight mesh has no open edges, while a manifold mesh has consistent topology. A printable model should normally satisfy both checks.
-  - question: Can a 3MF Repair Tool fix all non-manifold problems?
-    answer: No. Complex non-manifold geometry often needs manual modelling work because automatic changes can alter the intended shape.
+heading: 'Check 3MF Topology: Mesh Fault or Build Placement?'
 ---
 
-<p>
-  A manifold 3MF model has mesh topology that describes one clear surface and,
-  usually, one clear solid. This helps a slicer decide where the outside of the
-  object ends and where printable material belongs.
-</p>
-<h2>Interpret the resolved build, not only a resource</h2>
-<p>
-  Check each build item after its transform is applied. Separate shells can be
-  intentional, but an edge shared by more than two faces, a T-junction or
-  overlapping solids can make inside and outside ambiguous. A manifold result is
-  useful topology evidence, not proof of wall thickness, printer fit or slicing.
-  Use the 3MF quality report to locate the affected object, then return to
-  source CAD when the intended join is unclear.
+<p class="lead">
+  A topology finding can belong to a stored mesh, while a visible conflict can
+  arise from how healthy meshes are placed. Trace that difference before
+  editing. Repeated items are not duplicate triangle records, and an
+  edge-sharing screen cannot settle every vertex or intersection question.
 </p>
 <h2>Trace the finding to a resource or a placement</h2>
 <p>
   Start with the
   <a href="/examples/collection-review/two-placed-cubes.3mf" download
     >owned repeated-item build</a
-  >. One cube resource is placed twice; its retained server report completes
-  with two components and no listed mesh issues. Do not remove the second placed
-  cube merely to obtain one component. Now compare the
+  >. One cube resource is placed twice; its retained local .NET processor report
+  (24 October 2026) completes with two components and no listed mesh issues. Do
+  not remove the second placed cube merely to obtain one component. Now compare
+  the
   <a href="/examples/cad-export/duplicate-face-cube.3mf" download
     >repeated-face resource</a
   >: the redundant triangle creates one duplicate finding and three over-shared
@@ -50,141 +36,99 @@ faq:
   <a href="/examples/quality-evidence/duplicate-report.json" download
     >the defective-resource report</a
   >
-  beside the source packages. The server checks build items independently; local
-  combined-build methods can interpret coincident placements differently.
-  Inspect the actual selected method rather than treating either component count
-  as a universal assembly judgement. Vertex-only and crossing-surface cases need
-  further review beyond an edge-incidence result.
+  beside the source packages. The server-method processor checks build items
+  independently; local combined-build methods can interpret coincident
+  placements differently. Inspect the actual selected method rather than
+  treating either component count as a universal assembly judgement. Vertex-only
+  and crossing-surface cases need further review beyond an edge-incidence
+  result.
 </p>
-<h2>Recognize the main topology cases</h2>
-<ul>
-  <li>
-    <strong>Open boundary:</strong> an edge belongs to only one triangle, so a
-    closed solid may be incomplete.
-  </li>
-  <li>
-    <strong>Over-shared edge:</strong> more than two faces meet at one edge,
-    making the local volume ambiguous.
-  </li>
-  <li>
-    <strong>Vertex-only connection:</strong> shells touch at a point without a
-    printable solid connection.
-  </li>
-  <li>
-    <strong>Internal or overlapping faces:</strong> multiple surfaces compete to
-    describe inside and outside.
-  </li>
-</ul>
-<h2>Account for resources, items and transforms</h2>
+
 <p>
-  The same object resource can be placed more than once. Check topology on the
-  object and review the resolved build for collisions or overlaps introduced by
-  placement. A per-object manifold result does not prove that two placed objects
-  form a clean combined solid, and separate manifold shells are not
-  automatically an error when the design intentionally contains multiple parts.
+  These retained observations run the repository processor, not an authenticated
+  production revision or physical print.
+  <a href="/examples/quality-evidence/provenance.json" download
+    >Evidence provenance</a
+  >
+  records fixture hashes and the reproduction command. The public
+  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a>
+  returns aggregate counts; it does not provide a per-resource diagnosis. Review
+  the source application's references and visible arrangement to identify the
+  affected resource.
 </p>
-<h2>Decide the next action</h2>
+<h2>Choose the narrow action for the observation</h2>
 <table>
   <thead>
     <tr>
-      <th>Result</th>
-      <th>Interpretation</th>
-      <th>Action</th>
+      <th scope="col">Observation</th>
+      <th scope="col">Question to resolve</th>
+      <th scope="col">Narrow action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>One closed shell</td>
-      <td>Topology supports a conventional solid</td>
-      <td>Continue with scale, thickness and slicer checks</td>
+      <td>One resource is defective and reused</td>
+      <td>Which placements reference this resource?</td>
+      <td>Review the effect of a resource edit on all references.</td>
     </tr>
     <tr>
-      <td>Several closed shells</td>
-      <td>May be intentional components or disconnected islands</td>
-      <td>Inspect placement and intended assembly</td>
+      <td>Several sound resources overlap when placed</td>
+      <td>
+        Is the overlap intentional, or is a placement/source-model correction
+        required?
+      </td>
+      <td>
+        Inspect in the source application; do not call an incidence result an
+        overlap detector.
+      </td>
     </tr>
     <tr>
-      <td>Open or over-shared edges</td>
-      <td>The affected object has ambiguous topology</td>
-      <td>Locate the region and repair or return to CAD</td>
+      <td>Separate closed parts have no listed edge findings</td>
+      <td>Are quantity, clearance and arrangement intended?</td>
+      <td>Keep intentional parts and verify the plate.</td>
+    </tr>
+    <tr>
+      <td>Open or over-shared edges are reported</td>
+      <td>Which surface should exist at that region?</td>
+      <td>
+        Locate the finding, then choose supported removal or source
+        reconstruction.
+      </td>
+    </tr>
+    <tr>
+      <td>Input or required feature is unsupported</td>
+      <td>Did this method complete the relevant test?</td>
+      <td>Preserve the package and use the producing application.</td>
     </tr>
   </tbody>
 </table>
+
+<h2>Do not infer a complete manifold proof from edge counts</h2>
 <p>
-  Manifoldness does not establish wall thickness, clearance, structural strength
-  or printer compatibility. Use it to route the geometry problem, then validate
-  the final build in the target slicer.
-</p>
-<h2>Worked interpretation</h2>
-<p>
-  If object A is one closed shell and object B contains an edge shared by three
-  faces, the package does not have one uniform answer: A supports a solid
-  interpretation while B needs diagnosis. If A is placed twice, both build items
-  reuse the same sound object, but their placement can still overlap. Report
-  results per object and then review the resolved plate.
+  The tool name describes the question visitors are investigating. Its actual
+  result is bounded by the implemented checks. State which edge, winding and
+  component tests ran; do not infer vertex-manifoldness, intersection clearance
+  or a correct physical connection from the absence of those findings.
 </p>
 <p>
-  After correction, compare object count and transforms, repeat the manifold
-  check and inspect affected slicer layers. Do not merge intentionally separate
-  parts merely to obtain a single-shell result.
+  The server method compares exact-coordinate edge endpoints within each
+  resolved build item, excluding invalid-coordinate and degenerate faces from
+  edge incidence. One face contributes a boundary; more than two contributes an
+  over-shared edge. Directed pairs also screen winding conflicts. Components
+  connect through shared vertex coordinates, so a point-only touch may count as
+  one component. Duplicate faces remain in the server incidence count, unlike
+  the local removal-plan screen. No distance-tolerance welding or spatial
+  intersection test is performed here.
 </p>
 <p>
-  A common non-manifold problem is an edge shared by more than two triangles.
-  Other examples include overlapping shells, internal faces and parts that touch
-  only at an edge or a point.
-</p>
-<h2>Run a manifold check</h2>
-<p>
-  Use the
-  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a> to
-  inspect the model’s topology. It reports non-manifold edges and related mesh
-  information.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
-  as well. A model can be watertight but non-manifold, or manifold in local
-  areas while still having open boundaries elsewhere.
-</p>
-<p>
-  For a broader report, use the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>.
-</p>
-<h2>Why it affects printing</h2>
-<p>
-  A slicer needs to convert surfaces into closed printable layers. Non-manifold
-  geometry can produce missing walls, unexpected filled regions, disconnected
-  fragments or unreliable infill.
-</p>
-<p>
-  Some slicers compensate for simple cases, but that does not mean the result
-  matches the intended part. Always inspect the layer preview after finding a
-  topology warning.
-</p>
-<h2>What to do next</h2>
-<p>
-  If the problem is limited to duplicate or degenerate triangles, the
-  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair Tool</a> may be able to
-  make conservative corrections.
-</p>
-<p>
-  For overlapping solids, internal faces or difficult non-manifold connections,
-  return to the original CAD model if possible. Rebuilding a clean solid is
-  usually safer than asking automated repair software to guess how the surfaces
-  should connect.
-</p>
-<p>
-  After repair or re-export, check the file again and confirm dimensions with
-  the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
-  before printing.
-</p>
-<h2>Limitations of the result</h2>
-<p>
-  A topology checker reports relationships between mesh elements; it does not
-  know whether two neighboring objects should be fused, whether an internal
-  shell is a cavity, or whether a thin connection can be manufactured. Use
-  object names, build structure, source CAD and cross-sections to supply that
-  context. Preserve the package before repair because flattening or exporting
-  one object can lose placement and properties unrelated to topology.
+  After correction, compare required items, transforms and dimensions, repeat
+  the relevant check and inspect affected slicer layers. Use
+  <a href="{{ GuideSlug.RouteHowToTellIfA3mfFileIsWatertight }}"
+    >boundary interpretation</a
+  >
+  for closure, <a href="{{ GuideSlug.Route3mfRepair }}">local repair</a> only
+  for supported removals, and
+  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">the repair guide</a> to
+  choose a route when a join or surface is uncertain. Keep intentional parts
+  separate rather than reducing a component count for its own sake.
 </p>

@@ -12,7 +12,7 @@
     "assets:fingerprint": "node --experimental-strip-types scripts/fingerprint-static-assets.mts",
     "prepare-build:development": "npm run generate:guides && npm run generate:build-info && npm run generate:seo:development",
     "prepare-build:production": "npm run generate:guides && npm run generate:build-info && npm run generate:seo:production",
-    "build": "npm run prepare-build:production && ng build && npm run assets:fingerprint && npm run seo:check",
+    "build": "npm run prepare-build:production && ng build && npm run assets:fingerprint && npm run seo:check && npm run check:route-coverage",
     "build:deployment-development": "npm run prepare-build:development && ng build --configuration deployment-development && npm run assets:fingerprint",
     "build:development": "npm run prepare-build:development && ng build --configuration development",
     "check:internal-links": "node --experimental-strip-types scripts/check-internal-links.mts",
@@ -23,7 +23,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run generate:guides && ng test --watch=false && npm run test:internal-links && npm run test:tool-layout && npm run test:material-page-styles && npm run test:deployment-workflow && npm run test:sitemap && npm run test:collection-examples && npm run test:seo-recovery",
+    "test": "npm run generate:guides && ng test --watch=false && npm run test:internal-links && npm run test:tool-layout && npm run test:material-page-styles && npm run test:deployment-workflow && npm run test:sitemap && npm run test:collection-examples && npm run test:seo-recovery && npm run test:route-coverage",
     "test:sitemap": "vitest run scripts/sitemap.spec.mts",
     "test:deployment-workflow": "vitest run scripts/deployment-workflow.spec.mts",
     "test:internal-links": "vitest run scripts/check-internal-links.spec.mts",
@@ -35,7 +35,10 @@
     "test:collection-examples": "vitest run scripts/collection-examples.spec.mts",
     "test:seo-recovery": "vitest run scripts/seo-audit.spec.mts scripts/recovery-evidence.spec.mts",
     "seo:audit": "node --experimental-strip-types scripts/seo-audit.mts",
-    "seo:audit:production": "node --experimental-strip-types scripts/audit-production.mts"
+    "seo:audit:production": "node --experimental-strip-types scripts/verify-production-routes.mts",
+    "check:route-coverage": "node --experimental-strip-types scripts/audit-route-coverage.mts",
+    "test:route-coverage": "vitest run scripts/route-coverage.spec.mts",
+    "seo:verify-production": "node --experimental-strip-types scripts/verify-production-routes.mts"
   },
   "private": true,
   "engines": {

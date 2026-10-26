@@ -2,17 +2,25 @@
   <p class="eyebrow">Closed-surface check</p>
   <h1>STL Watertight Checker</h1>
   <p class="lead">
-    Check whether your STL is a closed surface, with open edges and possible
-    holes surfaced first.
+    Check an STL for exposed mesh boundaries before deciding whether a surface
+    needs attention. A completed zero-boundary result does not establish every
+    property of a valid solid or determine whether an opening is intentional.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL</h2>
-    <p>Upload an STL file up to 25 MiB.</p>
+    <p>Choose an STL file up to 25 MiB.</p>
     <app-stl-file-picker
       #filePicker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
-    /><button
+    />
+    <p>
+      Pressing Check watertightness uploads this file for server analysis. File
+      selection alone does not submit it. Use
+      <a [routerLink]="routeUrl.Viewer">STL Viewer</a> to view locally, and
+      review <a [routerLink]="routeUrl.Privacy">the privacy policy</a>.
+    </p>
+    <button
       class="button submit"
       type="button"
       (click)="checkManifold()"
@@ -24,18 +32,6 @@
       <p class="error" role="alert">{{ message }}</p>
     }
   </section>
-
-  <p>
-    Known controls: the
-    <a [href]="exampleAsset.OpenFaceCubeStl" download
-      >20 mm cube with one face removed</a
-    >
-    has 10 triangles and four boundary edges; the
-    <a [href]="exampleAsset.Closed20mmCubeStl" download>closed 20 mm cube</a>
-    has 12 triangles and zero. The open control has no reliable solid-volume
-    result. These counts show what this check detects, not which opening should
-    be capped.
-  </p>
 
   @if (job(); as currentJob) {
     <section
@@ -57,97 +53,99 @@
         <p class="error" role="alert">
           {{ jobFailureMessage(currentJob.failure) }}
         </p>
+      } @else if (boundaryCount() === null) {
+        <h2 id="results-title">Boundary result unavailable</h2>
+        <p>
+          No completed boundary count is available. Missing analysis is not zero
+          findings; review the error or try a supported export.
+        </p>
       } @else if (report()) {
         <div
           class="primary"
-          [class.positive]="openEdges() === 0 && nonManifoldEdges() === 0"
-          [class.warning]="openEdges() > 0 || nonManifoldEdges() > 0"
+          [class.positive]="boundaryCount() === 0"
+          [class.warning]="boundaryCount() !== 0"
         >
           <p class="eyebrow">Watertight result</p>
           <h2 id="results-title">
             {{
-              openEdges() === 0 && nonManifoldEdges() === 0
-                ? 'Watertight'
-                : 'Not watertight'
+              boundaryCount() === 0
+                ? 'No exposed boundaries detected'
+                : 'Exposed boundaries found'
             }}
           </h2>
           <p>
             {{
-              openEdges() === 0 && nonManifoldEdges() === 0
-                ? 'No open or non-manifold edges were found. A watertight model is a closed surface, not a guarantee of a successful physical print.'
-                : 'Open or non-manifold edges mean the surface is not reliably closed.'
+              boundaryCount() === 0
+                ? 'No exposed boundary was detected. Review other topology findings separately; this is not a complete solid-validity or physical-print test.'
+                : 'At least one checked edge has only one incident face. Inspect whether the surface should be closed.'
             }}
           </p>
         </div>
         <dl class="metrics">
           <div>
             <dt>Open edges / possible holes</dt>
-            <dd>{{ formatNumber(openEdges()) }}</dd>
+            <dd>{{ formatNumber(boundaryCount()) }}</dd>
           </div>
           <div>
             <dt>Non-manifold edges</dt>
-            <dd>{{ formatNumber(nonManifoldEdges()) }}</dd>
+            <dd>{{ formatNumber(topology()?.['nonManifoldEdgeCount']) }}</dd>
           </div>
           <div>
             <dt>Connected shells</dt>
-            <dd>{{ formatNumber(shellCount()) }}</dd>
+            <dd>{{ formatNumber(topology()?.['connectedComponentCount']) }}</dd>
           </div>
         </dl>
       }
     </section>
   }
+
   <section class="content">
-    <h2>How it works</h2>
+    <h2>Compare the closed and open controls</h2>
     <p>
-      The checker examines how triangles meet. Open edges indicate an unsealed
-      boundary, while non-manifold edges can make a closed volume ambiguous.
-    </p>
-    <h2>What the results mean</h2>
-    <p>
-      Watertight means the mesh forms a closed surface. Separate shells can be
-      intentional, but should be checked in your design.
-    </p>
-    <h2>FAQ</h2>
-    <h3>Can a watertight model still fail to print?</h3>
-    <p>
-      Yes. Wall thickness, supports, material and printer setup are separate
-      concerns.
-    </p>
-    <h3>What should I do with open edges?</h3>
-    <p>
-      Repair the mesh in your modelling or mesh-repair software, then check it
-      again.
-    </p>
-    <p>
-      <a [routerLink]="routeUrl.ManifoldChecker">STL Manifold Checker</a> ·
-      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-      <a [routerLink]="routeUrl.WatertightStlGuide"
-        >How to Tell If an STL File Is Watertight</a
+      The
+      <a [href]="exampleAsset.OpenFaceCubeStl" download
+        >20 mm cube with one face removed</a
       >
-      ·
-      <a [routerLink]="routeUrl.Tools">All STL tools</a>
-    </p>
-  </section>
-  <section class="content">
-    <h2>A closed boundary is the question here</h2>
-    <p>
-      Use this check when you need to find exposed triangle boundaries. In the
-      <a [href]="exampleAsset.OpenFaceCubeStl" download>open-face cube</a>, a
-      missing square face leaves four open edges. The opening may be
-      intentional: inspect its location before accepting a repair that changes
-      the design.
+      has 10 triangles and four boundary edges; the
+      <a [href]="exampleAsset.Closed20mmCubeStl" download>closed 20 mm cube</a>
+      has 12 triangles, zero boundary edges and screened volume 8,000 mm³ under
+      the millimetre assumption. The open control's volume is unavailable, not
+      zero. These are owned geometry controls with retained
+      <a href="/examples/quality-evidence/local-preflight.json" download
+        >local algorithm observations</a
+      >; they are not a new production-endpoint observation.
     </p>
     <p>
-      The closed 20 mm control has zero detected boundaries and 8,000 mm³
-      screened volume. Volume on the open example is unavailable, not zero. Even
-      no detected open edges cannot establish a valid solid when orientation,
-      intersections or overlapping shells remain unresolved.
+      The missing-face control shows the boundary around a known absent square.
+      In an unknown model, a reported boundary still needs a design decision. Do
+      not close a designed passage merely to reduce the edge count. Use
+      <a [routerLink]="routeUrl.WatertightStlGuide">the watertight guide</a> to
+      interpret the opening and
+      <a [routerLink]="routeUrl.ManifoldChecker">the manifold checker</a> for
+      edge-sharing questions.
+    </p>
+    <h2>Read this method alongside the result</h2>
+    <p>
+      Server edge incidence matches exact endpoint coordinates without tolerance
+      welding. Invalid-coordinate and degenerate triangles are excluded;
+      duplicate triangles still contribute. An edge used by one triangle is a
+      boundary; more than two incident faces is a separate over-sharing finding.
+      Components connect through shared vertex coordinates, not necessarily
+      printable connections. This check does not prove vertex-manifoldness or
+      run a spatial intersection test.
     </p>
     <p>
-      Files are uploaded for server inspection. Use the
-      <a [href]="routeUrl.ManifoldChecker">manifold checker</a> for ambiguous
-      edge connections and shell interpretation, then confirm any changed
-      export. Watertightness does not determine supports or successful printing.
+      A completed zero-boundary result, an exposed boundary and unavailable
+      analysis are distinct outcomes. Volume can be withheld by separate
+      validity gates, including multi-component ambiguity; do not read
+      unavailable volume as an additional failed closure test.
+    </p>
+    <h2>Choose a deliberate correction</h2>
+    <p>
+      If a required surface is missing, restore it through a deliberate
+      source-model or mesh-editing workflow. Supported cleanup removes selected
+      existing triangles; it does not reconstruct a missing face. Reopen the
+      saved copy and inspect both topology and affected slicer layers.
     </p>
   </section>
 </main>

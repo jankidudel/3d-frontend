@@ -2,7 +2,9 @@
   <p class="eyebrow">3MF closed-surface check</p>
   <h1>3MF Watertight Checker</h1>
   <p class="lead">
-    Check resolved 3MF build geometry for open edges before slicing.
+    Check supported placed 3MF geometry for exposed mesh boundaries. Use the
+    result to investigate closure; zero detected boundaries does not establish
+    complete solid validity or a successful print.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your 3MF</h2>
@@ -10,7 +12,15 @@
     <app-three-mf-file-picker
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
-    /><button
+    />
+    <p>
+      Pressing Check 3MF watertightness uploads this file for server analysis.
+      Inspect it locally in
+      <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a> if you do not want
+      to submit it. Review
+      <a [routerLink]="routeUrl.Privacy">the privacy policy</a>.
+    </p>
+    <button
       class="button submit"
       type="button"
       (click)="check()"
@@ -42,9 +52,19 @@
         <p class="error" role="alert">
           {{ jobFailureMessage(currentJob.failure) }}
         </p>
+      } @else if (openEdges() === null) {
+        <h2 id="results-title">Boundary result unavailable</h2>
+        <p>
+          No completed boundary result is available. Missing analysis is not
+          zero findings. Review the error or use a supported export.
+        </p>
       } @else {
         <h2 id="results-title">
-          {{ openEdges() === 0 ? 'Watertight' : 'Open edges found' }}
+          {{
+            openEdges() === 0
+              ? 'No exposed boundaries detected'
+              : 'Exposed boundaries found'
+          }}
         </h2>
         <p>
           {{
@@ -63,7 +83,7 @@
             <dd>{{ format(report()?.['buildItemCount']) }}</dd>
           </div>
           <div>
-            <dt>Separate shells</dt>
+            <dt>Vertex-connected components (aggregate)</dt>
             <dd>{{ format(shellCount()) }}</dd>
           </div>
         </dl>
@@ -99,58 +119,80 @@
     </section>
   }
   <section class="content">
-    <h2>What watertight means for a 3MF mesh</h2>
+    <h2>Read the boundary result</h2>
+    <div
+      class="interpretation-table"
+      role="region"
+      aria-label="Boundary result interpretation"
+      tabindex="0"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Result</th>
+            <th scope="col">Interpretation</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>One or more exposed boundaries</td>
+            <td>
+              At least one checked edge has no adjacent face under this method.
+            </td>
+            <td>
+              Inspect whether the affected surface was intended to be closed.
+            </td>
+          </tr>
+          <tr>
+            <td>Zero exposed boundaries</td>
+            <td>No boundary was detected in the supported completed check.</td>
+            <td>
+              Review other findings and intended parts; do not infer that all
+              topology is valid.
+            </td>
+          </tr>
+          <tr>
+            <td>Failed or unsupported input</td>
+            <td>This operation has no completed boundary result.</td>
+            <td>Return to the producing application or a supported export.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      A watertight mesh has no open edges in the resolved build geometry.
-      Build-item and component transforms are included in this check.
+      The server checks each supported placed build item independently after
+      unit conversion and component/build transforms, then aggregates counts. It
+      matches exact endpoint coordinates, with no distance-tolerance welding.
+      Invalid-coordinate and degenerate triangles are excluded from edge
+      incidence; duplicate triangles remain included. Components connect at
+      shared vertex coordinates. No spatial intersection screen runs here.
     </p>
-    <h2>Why closed surfaces matter before slicing</h2>
     <p>
-      A closed surface gives a slicer a clearer inside and outside. Open edges
-      can lead to gaps or unexpected material regions.
+      A legitimate repeated build item is different from a repeated triangle
+      inside one mesh resource. A package may contain several closed parts.
+      Neither their quantity nor zero exposed boundaries establishes that their
+      placement or intersections are acceptable. Volume availability has
+      separate validity gates; unavailable volume is not another failed boundary
+      test.
     </p>
-    <h2>Separate parts may be intentional</h2>
-    <p>
-      A build can contain separate closed parts. Their presence does not
-      automatically make the result fail.
-    </p>
-    <h2>Watertightness is not a full quality check</h2>
-    <p>
-      Non-manifold edges, orientation, printer configuration and slicing remain
-      separate concerns.
-    </p>
-    <h2>FAQ</h2>
-    <h3>Does my 3MF file get uploaded?</h3>
-    <p>
-      Yes. It uses the same secure processing flow as other InspectMesh analysis
-      tools.
-    </p>
-    <h3>Can a 3MF contain multiple parts?</h3>
-    <p>Yes. Multiple separate closed parts can be intentional.</p>
-    <h3>Does watertight mean it will print?</h3>
-    <p>No. It checks surface closure, not every printing condition.</p>
-  </section>
-  <section class="content">
-    <h2>Check boundaries after resolving placements</h2>
-    <p>
-      A closed resource and an open resource can coexist in one 3MF build.
-      Inspect the resolved build rather than assuming the package extension
-      implies closed solids. Supported object transforms and repeated build
-      placements contribute to the inspected geometry.
-    </p>
+    <h2>Expected boundary arithmetic for repeated placements</h2>
     <p>
       A cube missing one square face has four boundary edges. Placing two
-      separate copies gives eight boundary edges; it does not repair the
-      resource. Decide whether the openings belong to the design before changing
-      either copy. These counts are a mathematical example, not a physical print
-      observation.
+      separate copies gives eight under independent per-item checking; it does
+      not repair the resource. This is expected mathematics, not an observation
+      from the production endpoint or a physical print.
     </p>
     <p>
-      This server check uploads your 3MF. No detected boundaries is a bounded
-      result, not proof against intersections or contradictory shell
-      orientation. Treat unreliable volume as unavailable evidence and use
-      <a [href]="routeUrl.ThreeMfManifoldChecker">3MF topology inspection</a>
-      for edge-sharing and shell questions.
+      Use
+      <a [href]="guideRouteUrl.RouteHowToTellIfA3mfFileIsWatertight"
+        >the 3MF closure guide</a
+      >
+      to interpret the boundary and
+      <a [routerLink]="routeUrl.ThreeMfManifoldChecker"
+        >the edge-sharing check</a
+      >
+      for topology questions.
     </p>
   </section>
 </main>

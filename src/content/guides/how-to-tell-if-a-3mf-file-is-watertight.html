@@ -1,22 +1,16 @@
 ---
-title: 'How to Tell if a 3MF File Is Watertight | InspectMesh'
-description: Learn how to check whether a 3MF file has a closed watertight surface, why open edges matter, and how separate build parts affect the result.
+title: 'Is Your 3MF Watertight? Interpret Open Edges | InspectMesh'
+description: 'Interpret exposed boundaries separately from duplicate faces, intended parts and other topology findings.'
 slug: how-to-tell-if-a-3mf-file-is-watertight
 eyebrow: 3MF mesh guide
 heading: How to Tell if a 3MF File Is Watertight
-faq:
-  - question: What does watertight mean for a 3MF file?
-    answer: It means the resolved mesh surface has no open edges, so it forms a closed surface. It does not verify every other printability condition.
-  - question: Do several separate parts make a 3MF non-watertight?
-    answer: No. Several separate closed parts can be intentional and each can be watertight on its own.
-  - question: Is a watertight 3MF always manifold?
-    answer: Not necessarily. A closed surface can still have non-manifold edges or other topology problems, so check manifold geometry separately when needed.
 ---
 
-<p>
-  A watertight 3MF has no open edges in its resolved mesh surface. In practical
-  3D-printing terms, it gives the slicer a clearer closed boundary for
-  determining the inside and outside of a part.
+<p class="lead">
+  Read the exposed-boundary result for the geometry the method actually checked.
+  Zero detected open edges supports a closure finding, but it does not establish
+  that a 3MF is free of duplicate faces, over-shared edges, intersections or
+  incorrect placement.
 </p>
 <h2>Use a closed-but-defective package as a counterexample</h2>
 <p>
@@ -24,155 +18,95 @@ faq:
   <a href="/examples/cad-export/duplicate-face-cube.3mf" download
     >owned repeated-face package</a
   >
-  has no exposed boundary in the retained server check, but it has one duplicate
-  triangle and three over-shared edges. Read the
+  has no exposed boundary in the retained local .NET processor check (24 October
+  2026), but it has one duplicate triangle and three over-shared edges. Read the
   <a href="/examples/quality-evidence/duplicate-report.json" download
-    >actual report</a
+    >retained local report</a
   >: zero open edges did not make this mesh free of findings. Establish the
   intended cube surface before selecting duplicate cleanup. Repeating a whole
   valid item in a build is a different case from repeating a triangle inside its
   resource.
 </p>
 
-<h2>Read open edges in context</h2>
 <p>
-  An open boundary may indicate a missing surface, but intentional shells and
-  separate objects exist too. Check the resolved build and the intended role of
-  each shell before repairing it. Watertightness supports a closed-volume
-  interpretation; it does not establish that walls are thick enough, parts are
-  properly joined, or a slicer will generate the desired toolpath. Preserve the
-  original package and validate repaired geometry in the target slicer.
+  The retained report comes from the repository processor method, not a verified
+  production endpoint revision. Its fixture hash, reproduction command and
+  method are retained in
+  <a href="/examples/quality-evidence/provenance.json" download
+    >the evidence provenance</a
+  >. Run the
+  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
+  separately to obtain a current server result; it uploads only after an
+  explicit check action.
 </p>
-<h2>Interpret open boundaries by object</h2>
+<h2>Decide what the opening represents</h2>
 <p>
-  An edge used by one triangle is an open boundary. On an object intended as a
-  closed solid, it can indicate a missing surface, failed export or incomplete
-  boolean. On an intentionally open surface or specialist workflow it may be
-  expected. Inspect the affected object and design intent before filling
+  An exposed mesh boundary and an opening in the shape are different things. A
+  thick-walled cup can have an open mouth while its inner and outer walls meet
+  around the rim as a closed material surface. An uncapped single sheet can have
+  exposed boundary edges. Inspect the intended surfaces before choosing to cap
   anything.
 </p>
-<h2>Multiple shells are a separate question</h2>
+<h2>Interpret separate parts independently from closure</h2>
 <p>
-  A 3MF build may contain several closed objects or one object with several
-  closed shells. Each can be watertight while the overall arrangement remains
-  disconnected or overlapping. Check whether shells represent separate printable
-  parts, internal cavities, accidental islands or intersecting solids. A single
-  yes/no closure result cannot decide that.
+  Several placed items can be valid separate parts. A zero-boundary result does
+  not say whether those parts should be joined or whether their placements
+  overlap. Preserve the required items and inspect their intended arrangement in
+  the source application.
 </p>
-<h2>Route the repair from the finding</h2>
+<p>
+  The server method checks each supported placed build item independently, using
+  exact endpoint coordinates after unit conversion and transforms, then
+  aggregates counts. Its aggregate report does not locate a defective resource
+  for you. Geometry sharing a point can belong to one vertex-connected component
+  without forming an acceptable solid connection. Local combined-build checks
+  can differ, so retain the method with the result.
+</p>
+<h2>Choose a correction only after that decision</h2>
 <table>
   <thead>
     <tr>
-      <th>Finding</th>
-      <th>Next action</th>
+      <th scope="col">Decision</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Small accidental opening with clear surrounding surface</td>
-      <td>Repair a copy, then re-check topology and dimensions</td>
+      <td>A required surface is missing and its shape is known</td>
+      <td>
+        Repair a copy in source CAD or an appropriate editor, then reopen and
+        recheck it.
+      </td>
     </tr>
     <tr>
-      <td>Large missing region or design detail</td>
-      <td>Return to source CAD</td>
+      <td>The intended surface cannot be established</td>
+      <td>Return to the author or producing application.</td>
     </tr>
     <tr>
-      <td>Several closed intended parts</td>
-      <td>Keep separate and verify build placement</td>
+      <td>The finding is a redundant triangle rather than a missing surface</td>
+      <td>
+        Review
+        <a href="{{ GuideSlug.Route3mfRepair }}">supported local 3MF cleanup</a
+        >; removing a face does not invent a missing one.
+      </td>
     </tr>
     <tr>
-      <td>Overlapping or ambiguous shells</td>
-      <td>Resolve the source boolean or use specialist mesh editing</td>
+      <td>No boundary was found but other findings remain</td>
+      <td>
+        Investigate those findings with the relevant topology or quality method.
+      </td>
     </tr>
   </tbody>
 </table>
-<h2>What watertightness does not prove</h2>
-<p>
-  A closed model can still have inverted regions, self-intersections, walls too
-  thin for the process, wrong units or unsuitable placement. After repair,
-  compare resolved dimensions and object count, run manifold and quality checks,
-  and inspect the target slicer's layers. Preserve the original 3MF because a
-  mesh-only repair may not retain every package property.
-</p>
-<h2>Worked shell example</h2>
-<p>
-  A package containing a closed enclosure and four separate closed feet may
-  report five watertight shells. That can be correct if they are separate
-  manufactured objects, questionable if the feet were meant to be fused, or
-  dangerous for volume totals if they overlap. Inspect structure and placement
-  before deciding that “watertight” means complete.
-</p>
 
 <p>
-  3MF files can contain more than one object and can place objects repeatedly in
-  a build. That means watertightness should be checked on the geometry prepared
-  for the print, not only on the first object stored inside the package.
-</p>
-
-<h2>Check the resolved build geometry</h2>
-
-<p>
-  Use the
-  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a
-  >. It checks the resolved build geometry for open edges, including supported
-  build-item and component transforms.
-</p>
-
-<p>
-  An open edge is used by only one triangle. It often indicates a hole, a
-  missing face or an incomplete surface. A closed result means no open edges
-  were found in the checked build geometry.
-</p>
-
-<h2>Separate parts can still be correct</h2>
-
-<p>
-  A 3MF build may contain several unrelated objects: for example, a lid and a
-  container, several copies of a small part, or a multi-part assembly arranged
-  on one build plate. Separate closed parts do not automatically make the file
-  fail. What matters is whether each intended surface is closed and whether the
-  parts are arranged as you expect.
-</p>
-
-<p>
-  Open the file in the
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> if you need to confirm
-  what the build contains before running checks.
-</p>
-
-<h2>Watertight is not the same as manifold</h2>
-
-<p>
-  A closed surface can still contain non-manifold edges, internal faces or
-  inconsistent orientation. These can make the surface ambiguous even when it
-  has no holes. If you need a broader topology assessment, run the
-  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a>.
-</p>
-
-<p>
-  Use the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> when
-  you want one report covering several common mesh issues, including invalid
-  coordinates, degenerate faces, duplicate faces, open edges, non-manifold edges
-  and orientation concerns.
-</p>
-
-<h2>What to do if the result finds open edges</h2>
-
-<ol>
-  <li>
-    Inspect the source model or the 3MF build to identify the intended part.
-  </li>
-  <li>
-    Repair the geometry in the source application or an appropriate mesh-repair
-    workflow.
-  </li>
-  <li>Save the repaired file under a new name.</li>
-  <li>Run the watertight and quality checks again before slicing.</li>
-</ol>
-
-<p>
-  InspectMesh reports mesh health but does not repair files. Even a watertight
-  result is not a guarantee of a successful print: wall thickness, supports,
-  orientation, printer setup and slicer settings still matter.
+  Reopen the saved package, confirm required items and dimensions, repeat the
+  relevant checks and inspect the affected slicer layers. A completed closure
+  check does not settle wall strength, supports or process settings. Use
+  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">the repair guide</a> when
+  selecting a correction and
+  <a href="{{ GuideSlug.RouteHowToTellIfA3mfFileIsManifold }}"
+    >the topology guide</a
+  >
+  when edge sharing is the concern.
 </p>

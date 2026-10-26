@@ -2,21 +2,29 @@
   <p class="eyebrow">Browser-local 3MF cleanup</p>
   <h1>Repair a 3MF File</h1>
   <p class="lead">
-    Inspect a 3MF package locally, make only clearly explained mesh clean-up
-    changes, then download a separate copy to verify.
+    Review supported triangle cleanup and save a separate 3MF copy to verify.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose a 3MF file</h2>
     <p>
-      Your file stays in this browser. Repair never overwrites or changes the
-      original.
+      Processing stays in this browser. Review the removal plan before saving a
+      separate copy. This tool removes supported triangle records; it does not
+      fill holes, weld vertices or correct winding. The original remains
+      unchanged.
     </p>
     <app-three-mf-file-picker
       [selectedFileFromParent]="file()"
       (fileSelected)="onFileSelected($event)"
     />
+    <p role="status" aria-live="polite">{{ planMessage() }}</p>
     @if (loading()) {
-      <p role="status">Reading and validating the 3MF package locally…</p>
+      <p role="status">
+        {{
+          analysis()
+            ? 'Creating and reopening a separate package locally...'
+            : 'Reading and validating the 3MF package locally...'
+        }}
+      </p>
     }
     @if (error()) {
       <p class="error" role="alert">{{ error() }}</p>
@@ -63,16 +71,24 @@
           <dd>{{ count(before.counts.inconsistentWindingEdges) }}</dd>
         </div>
       </dl>
+      <p>
+        Triangle records are counted in source mesh definitions, not once per
+        placement. The limited removal-plan edge screen uses source vertex
+        indexes and excludes duplicate and degenerate records. Recheck the saved
+        build separately; these counts are not a full topology report.
+      </p>
       <h3>Repair plan</h3>
       <p>
         Only selected actions with a non-zero count can run. Open edges,
-        non-manifold geometry, self-intersections, missing surfaces, and
-        ambiguous internal geometry are reported but not repaired.
+        non-manifold geometry and winding may remain. Self-intersections,
+        missing surfaces and ambiguous design intent are not detected or
+        reconstructed by this removal plan.
       </p>
       @if (before.counts.degenerateTriangles > 0) {
         <label
           ><input
             type="checkbox"
+            [disabled]="loading()"
             [checked]="plan().removeDegenerateTriangles"
             (change)="
               setPlan('removeDegenerateTriangles', $any($event.target).checked)
@@ -86,6 +102,7 @@
         <label
           ><input
             type="checkbox"
+            [disabled]="loading()"
             [checked]="plan().removeDuplicateTriangles"
             (change)="
               setPlan('removeDuplicateTriangles', $any($event.target).checked)
@@ -99,6 +116,7 @@
         <label
           ><input
             type="checkbox"
+            [disabled]="loading()"
             [checked]="plan().removeInvalidIndexTriangles"
             (change)="
               setPlan(
@@ -110,17 +128,6 @@
           Remove {{ count(before.counts.invalidIndexTriangles) }} invalid-index
           triangles</label
         >
-      }
-      @if (!canRepair()) {
-        <p>
-          <strong>{{
-            before.counts.openEdges || before.counts.nonManifoldEdges
-              ? 'Issue detected but not safely repairable'
-              : 'No supported repair needed'
-          }}</strong>
-        </p>
-      } @else {
-        <p><strong>Repair available</strong></p>
       }
       <button
         class="button"
@@ -135,7 +142,7 @@
   }
   @if (result(); as repaired) {
     <section class="tool-result results card" aria-labelledby="after-title">
-      <h2 id="after-title">Repair completed — verify the saved copy</h2>
+      <h2 id="after-title">Repair completed - verify the saved copy</h2>
       <p>
         Removed {{ count(repaired.applied.degenerateTriangles) }} degenerate,
         {{ count(repaired.applied.duplicateTriangles) }} duplicate, and
@@ -167,6 +174,15 @@
       <button class="button" type="button" (click)="download()">
         Download repaired 3MF
       </button>
+      <button
+        class="button button-secondary"
+        type="button"
+        [disabled]="copyingSummary()"
+        (click)="copySummary()"
+      >
+        Copy repair summary
+      </button>
+      <p role="status" aria-live="polite">{{ summaryFeedback() }}</p>
       <a
         class="button button-secondary"
         [routerLink]="routeUrl.ThreeMfPrintPreflight"
@@ -174,11 +190,36 @@
         >Verify repaired file in 3MF Print Preflight</a
       >
       <p class="hint">
-        Save the downloaded copy, then upload it to Preflight. Browser file
-        permissions do not let this page transfer the file automatically.
+        Save the downloaded copy, then choose it in local Preflight. These links
+        do not transfer the active file.
       </p>
     </section>
   }
+  <section class="content">
+    <h2>A duplicate-face example</h2>
+    <p>
+      Download the
+      <a [href]="exampleAsset.DuplicateFaceCube3mf" download
+        >duplicate-face cube package</a
+      >. It declares millimetres, one mesh and one build item. The retained
+      local repair control observes 13 source triangles and one duplicate. Leave
+      only duplicate removal selected, run the local repair and compare the
+      before/after counts: 13 to 12 triangles, with no intended dimension
+      change. Save the repaired package and open it again in 3MF Preflight and
+      your receiving slicer. This is generated mathematical geometry, not a
+      physical print test.
+    </p>
+    <p>
+      These observations use the browser repair implementation with duplicate
+      removal alone.
+      <a href="/examples/quality-evidence/repair-observation.json" download
+        >Retained repair evidence</a
+      >
+      records fixture/output hashes, settings, source revision and reopened
+      unit/build checks. This is not a production processor or receiving-slicer
+      observation.
+    </p>
+  </section>
   <section class="content">
     <p>
       <a [routerLink]="routeUrl.ThreeMfQualityCheck">3MF Quality Checker</a> ·
@@ -193,9 +234,8 @@
       <a [routerLink]="routeUrl.ThreeMfToStlConverter">3MF to STL Converter</a>
     </p>
   </section>
-  <app-tool-evidence [page]="routeUrl.ThreeMfRepair" />
   <section class="content interpretation-guide">
-    <h2>What changes inside the package</h2>
+    <h2>What a saved copy does and does not preserve</h2>
     <p>
       This browser tool removes selected duplicate, degenerate or invalid-index
       triangle elements from the relationship-selected model XML. It keeps
@@ -243,7 +283,7 @@
           Model + transforms
         </text>
         <text x="355" y="180" font-size="26" fill="#0f172a">
-          New ZIP; same build
+          Reopen saved build
         </text>
       </svg>
       <figcaption>
@@ -251,18 +291,6 @@
         build context are retained rather than flattened into STL.
       </figcaption>
     </figure>
-    <h3>A duplicate-face example</h3>
-    <p>
-      Download the
-      <a [href]="exampleAsset.DuplicateFaceCube3mf" download
-        >duplicate-face cube package</a
-      >. It declares millimetres, one mesh and one build item. Expect 13 source
-      triangles and one duplicate. Leave only duplicate removal selected, run
-      the local repair and compare the before/after counts: 13 to 12 triangles,
-      with no intended dimension change. Save the repaired package and open it
-      again in 3MF Preflight and your receiving slicer. This is generated
-      mathematical geometry, not a physical print test.
-    </p>
     <h3>Source mesh counts and placed geometry answer different questions</h3>
     <p>
       The removable-triangle plan examines mesh definitions in the model XML;
@@ -272,11 +300,31 @@
       count and dimensions before trusting the saved copy.
     </p>
     <p>
+      The removal-plan screen matches triangle vertex-index triples within each
+      mesh, ignoring order, and skips duplicate, degenerate and invalid-index
+      records before counting edges. Its edge keys use source indexes across the
+      model part, so these are limited plan diagnostics, not a per-resource or
+      placed-build topology proof. Invalid indexes that prevent the resolver
+      completing do not reach a repair plan. Recheck the saved build with a
+      separate method.
+    </p>
+    <p>
       Unsupported or unresolved packages produce an error rather than a
       flattened replacement. Open edges, non-manifold connectivity,
       self-intersections and missing surfaces are not reconstructed. This local
       plan does not correct winding. An empty plan means no supported removal is
       selected, not that every possible issue has been checked.
+    </p>
+    <p>
+      <a [href]="guideRouteUrl.RouteHowToRepairA3mfFile"
+        >Choose the right repair route</a
+      >
+      and
+      <a [routerLink]="routeUrl.ThreeMfPrintPreflight"
+        >recheck the saved build</a
+      >. Several placed items can reference one edited resource; confirm
+      quantity, transforms and bounds after saving. These links do not transmit
+      the selected file.
     </p>
     <p>
       Preserve the original project, especially where colours, textures or

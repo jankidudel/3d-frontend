@@ -272,6 +272,34 @@ faq:
   yourself. Example URLs carry only a public allowlisted ID and canonicals point
   to the clean tool page.
 </p>
+<h2>Local 3MF triangle cleanup</h2>
+<p>
+  3MF Repair accepts supported mesh packages up to the current 25 MiB file limit
+  and processes them in this browser. A package must resolve before a removal
+  plan is available; invalid indexes that stop resolution need a fresh source
+  export. Selected operations remove duplicate vertex-index triples (ignoring
+  order), relative-tolerance degenerate faces or supported invalid-index
+  triangle elements. It does not fill holes, weld vertices or correct winding.
+</p>
+<p>
+  Coordinates and surrounding model XML text remain while selected triangle
+  elements are removed. Decompressed payloads of other ZIP parts are retained;
+  the compressed archive is regenerated. Reopening through the local parser
+  checks supported resolution, not every extension or receiving-application
+  assignment. A shared resource edit can affect several placements. Review
+  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">the repair workflow</a> and
+  reopen the exact saved bytes in the target application.
+</p>
+<p>
+  The removal-plan screen skips duplicate, degenerate and invalid-index faces
+  for its source-index edge counts; edge keys span the selected model part and
+  are not isolated per resource. Treat these as plan diagnostics, not a complete
+  topology report. Server quality checks instead use exact-coordinate incidence
+  per placed build item, retaining duplicate-face incidence and summing counts.
+  Server and local 3MF preflight do not run a spatial intersection check; STL
+  local preflight has its separate bounded BVH screen. No method here certifies
+  full package or extension validity.
+</p>
 <h2>Read result states literally</h2>
 <ul>
   <li>

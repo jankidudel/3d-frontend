@@ -1,0 +1,54 @@
+{
+  "method": "Browser-local 3MF repair replayed in Vitest/JSDOM; exact saved bytes reopened through the existing resolver. Not receiving-slicer, production-endpoint or physical-print evidence.",
+  "observedDate": "2026-10-25",
+  "sourceRevision": "8a0e17c1cf1293e8d2045148bdfa34072fe0b0c6",
+  "sourceState": "Working tree with diagnosis/trust copy and UI edits; repair and resolver implementation unchanged from this revision.",
+  "repairImplementationSha256": "720a7155a0b9edfe0639eb0ca2c5946e46a0e87feec90fef24c4016527a6b5c0",
+  "reproduction": "npm run test:seo-recovery",
+  "limitations": "Removal-plan edge keys are source indexes across the model part and skip duplicate/degenerate/invalid-index records; they are not the server topology method. Reopen assignments/settings in the receiving application.",
+  "controls": {
+    "fixture": "/examples/cad-export/duplicate-face-cube.3mf",
+    "sourceSha256": "d246c124d89f5e5ab2c63fd01c3b7f311d00f6ee16ccc427525e46c0e887b61a",
+    "savedFile": "/examples/quality-evidence/duplicate-cleaned.3mf",
+    "savedSha256": "b277d408179087152038050c94b6d060d66b3a3fe7c7b135dbff096dcdcea537",
+    "settings": {
+      "removeDuplicateTriangles": true,
+      "removeDegenerateTriangles": false,
+      "removeInvalidIndexTriangles": false
+    },
+    "sourceCounts": {
+      "triangles": 13,
+      "degenerateTriangles": 0,
+      "duplicateTriangles": 1,
+      "invalidIndexTriangles": 0,
+      "openEdges": 0,
+      "nonManifoldEdges": 0,
+      "inconsistentWindingEdges": 0
+    },
+    "reopenedCounts": {
+      "triangles": 12,
+      "degenerateTriangles": 0,
+      "duplicateTriangles": 0,
+      "invalidIndexTriangles": 0,
+      "openEdges": 0,
+      "nonManifoldEdges": 0,
+      "inconsistentWindingEdges": 0
+    },
+    "applied": {
+      "degenerateTriangles": 0,
+      "duplicateTriangles": 1,
+      "invalidIndexTriangles": 0
+    },
+    "declaredUnit": "millimeter",
+    "buildItemsBefore": 1,
+    "buildItemsAfter": 1,
+    "unchangedCoordinates": true,
+    "unchangedNonTriangleXml": true,
+    "unchangedUnrelatedPayloads": true,
+    "repeatedResourceControl": {
+      "buildItems": 2,
+      "resourceDuplicateRemovals": 1,
+      "unchangedCoordinatesAndBuildXml": true
+    }
+  }
+}

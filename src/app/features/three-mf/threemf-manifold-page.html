@@ -1,9 +1,11 @@
 <main class="page tool-page manifold-page">
-  <p class="eyebrow">3MF topology check</p>
+  <p class="eyebrow">Supported edge-sharing checks</p>
   <h1>3MF Manifold Checker</h1>
   <p class="lead">
-    Check resolved 3MF build geometry for open and non-manifold edges before
-    slicing.
+    Inspect supported 3MF mesh relationships, including exposed and over-shared
+    edges. Read the method alongside the result: clean edge counts do not prove
+    every vertex is manifold, exclude spatial intersections or determine how
+    parts should be joined.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your 3MF</h2>
@@ -12,6 +14,12 @@
       [selectedFileFromParent]="selectedFile()"
       (fileSelected)="onFileSelected($event)"
     />
+    <p>
+      Pressing Check 3MF topology uploads this file for server analysis. Inspect
+      it locally in <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a> if
+      you do not want to submit it. Review
+      <a [routerLink]="routeUrl.Privacy">the privacy policy</a>.
+    </p>
     <button
       class="button submit"
       type="button"
@@ -44,17 +52,23 @@
         <p class="error" role="alert">
           {{ jobFailureMessage(currentJob.failure) }}
         </p>
+      } @else if (openEdges() === null || nonManifoldEdges() === null) {
+        <h2 id="results-title">Edge-sharing result unavailable</h2>
+        <p>
+          No completed edge-sharing result is available. Missing analysis is not
+          zero findings. Review the error or use a supported export.
+        </p>
       } @else {
         <h2 id="results-title">
           {{
-            closedAndManifold()
-              ? 'Closed and manifold'
+            noEdgeFindings()
+              ? 'No open or over-shared edges detected'
               : 'Topology issues found'
           }}
         </h2>
         <p>
           {{
-            closedAndManifold()
+            noEdgeFindings()
               ? 'No open or non-manifold edges were found in the analysed resolved geometry.'
               : 'Review the individual topology counts below before slicing.'
           }}
@@ -69,7 +83,7 @@
             <dd>{{ format(nonManifoldEdges()) }}</dd>
           </div>
           <div>
-            <dt>Separate shells</dt>
+            <dt>Vertex-connected components (aggregate)</dt>
             <dd>{{ format(shellCount()) }}</dd>
           </div>
         </dl>
@@ -111,58 +125,90 @@
     </section>
   }
   <section class="content">
-    <h2>Manifold versus watertight</h2>
+    <h2>What this method reports</h2>
+    <div
+      class="interpretation-table"
+      role="region"
+      aria-label="Supported topology findings"
+      tabindex="0"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Finding</th>
+            <th scope="col">Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Boundary edge</td>
+            <td>
+              An edge is used by one triangle under the implemented incidence
+              rule.
+            </td>
+          </tr>
+          <tr>
+            <td>Over-shared edge</td>
+            <td>
+              More than two triangles use an edge; the report labels this
+              non-manifold.
+            </td>
+          </tr>
+          <tr>
+            <td>Component count</td>
+            <td>
+              Vertex-connected groups within each placed build item, summed
+              across items; not a count of defective parts.
+            </td>
+          </tr>
+          <tr>
+            <td>Winding conflict</td>
+            <td>
+              Two incident triangles follow the shared edge in the same
+              direction. This does not establish the intended outside.
+            </td>
+          </tr>
+          <tr>
+            <td>Completed with no listed findings</td>
+            <td>
+              Supported checks completed without those findings; untested
+              properties remain unresolved.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      Watertight means no open edges. A closed and manifold result also requires
-      no non-manifold edges in the resolved build geometry.
+      Supported component and build transforms and source-unit conversion are
+      applied before each build item is inspected independently. Exact endpoint
+      coordinates define edges; there is no distance-tolerance welding.
+      Invalid-coordinate and degenerate faces do not contribute to edge
+      incidence; duplicate faces do. Components connect through any shared
+      vertex coordinate. The displayed counts aggregate placed-item results,
+      without per-resource localisation.
     </p>
-    <h2>What topology issues mean</h2>
     <p>
-      Open edges can indicate holes. Non-manifold edges are shared by more than
-      two faces and can make a surface ambiguous to downstream tools.
+      Edge incidence is one topology screen. A point-only contact or crossing
+      surface can require additional inspection even when no over-shared edge is
+      reported. Several intended closed parts should not be fused solely to make
+      a component count smaller. This method does not run spatial intersection
+      checks.
     </p>
-    <h2>How build transforms are handled</h2>
+    <h2>Choose the next investigation</h2>
     <p>
-      The checker analyses supported build-item and component transforms, rather
-      than only the first stored object.
-    </p>
-    <h2>What this tool does not verify</h2>
-    <p>
-      It does not check part clearance, overlap, printer configuration, supports
-      or every condition that affects printability.
-    </p>
-    <h2>FAQ</h2>
-    <h3>Can a 3MF contain separate parts?</h3>
-    <p>Yes. Separate closed parts are allowed and shown separately.</p>
-    <h3>Does this guarantee a successful print?</h3>
-    <p>
-      No. Use the full quality report and confirm the final setup in your
-      slicer.
-    </p>
-  </section>
-  <section class="content">
-    <h2>Inspect topology in the placed build</h2>
-    <p>
-      3MF resources can be referenced more than once. This check resolves
-      supported components, placements and transforms rather than treating every
-      stored object as a printed part. Units are normalised before geometric
-      inspection; unsupported package features can still need the originating
-      application.
-    </p>
-    <p>
-      One incident face means an open boundary, while more than two means
-      ambiguous edge sharing. An open-face cube placed twice contributes
-      boundaries from both copies. Translation does not close a missing face.
-      Separate placed shells can be intended, so review build items before
-      joining them.
-    </p>
-    <p>
-      The file is uploaded for analysis. Edge/orientation findings do not
-      establish every vertex or self-intersection property. Use
-      <a [href]="guideRouteUrl.RouteWhatIsNonManifoldGeometry"
-        >the topology guide</a
+      Use
+      <a [href]="guideRouteUrl.RouteHowToTellIfA3mfFileIsWatertight"
+        >boundary interpretation</a
       >
-      to interpret the finding and recheck the exported 3MF after correction.
+      for exposed edges,
+      <a [routerLink]="routeUrl.ThreeMfRepair">local triangle cleanup</a> for an
+      understood redundant-face removal, and
+      <a [href]="guideRouteUrl.RouteHowToTellIfA3mfFileIsManifold"
+        >the resource versus placement guide</a
+      >
+      for uncertain joins. A resource may be reused by several build items;
+      changing its triangles differs from removing a placement. Keep the
+      original and verify the saved package in the receiving slicer.
     </p>
   </section>
 </main>

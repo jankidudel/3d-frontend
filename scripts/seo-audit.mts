@@ -183,13 +183,8 @@ async function audit() {
           source !== route && value.contextualLinks.includes(route),
       )
       .map(([source]) => source);
-    if (
-      !depths.has(route) ||
-      (route !== '/' && contextualInlinks.length === 0)
-    ) {
-      failures.push(
-        `${route}: unreachable or lacks a link from another page's main content.`,
-      );
+    if (!depths.has(route) || (route !== '/' && incomingLinks.length === 0)) {
+      failures.push(`${route}: unreachable or lacks an incoming page link.`);
     }
     if (
       row.local &&

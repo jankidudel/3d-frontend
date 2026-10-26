@@ -198,7 +198,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
 
   {
     slug: 'how-inspectmesh-checks-files',
-    updatedDate: '2026-10-11',
+    updatedDate: '2026-10-25',
     group: GuideGroupId.General,
     order: 250,
     enabled: true,
@@ -810,6 +810,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-25',
   },
   {
     slug: 'how-to-tell-if-a-3mf-file-is-watertight',
@@ -817,7 +818,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-24',
+    updatedDate: '2026-10-25',
     checkEditorialTargets: false,
   },
   {
@@ -879,6 +880,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
+    updatedDate: '2026-10-25',
   },
   {
     slug: 'how-to-check-3mf-triangle-count',
@@ -895,7 +897,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 130,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-24',
+    updatedDate: '2026-10-25',
     checkEditorialTargets: false,
   },
   {

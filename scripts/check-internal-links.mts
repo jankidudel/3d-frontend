@@ -175,7 +175,7 @@ function validateLink(
   siteOrigin: string | null,
   routes: ReadonlyMap<string, GeneratedPage>,
 ): ValidationFailure | null {
-  if (!href || href.startsWith('#') || isIgnoredScheme(href)) {
+  if (!href || isIgnoredScheme(href)) {
     return null;
   }
   let target: URL;
@@ -237,7 +237,12 @@ function isDevelopmentHost(hostname: string): boolean {
 
 function hasAnchor(html: string, fragment: string): boolean {
   const document = new JSDOM(html).window.document;
-  const anchor = decodeURIComponent(fragment);
+  let anchor: string;
+  try {
+    anchor = decodeURIComponent(fragment);
+  } catch {
+    return false;
+  }
   return (
     document.getElementById(anchor) !== null ||
     Array.from(document.querySelectorAll('a[name]')).some(
@@ -251,7 +256,7 @@ function pageUrl(route: string): string {
 }
 
 function normalizeRoute(pathname: string): string {
-  const decoded = decodeURIComponent(pathname);
+  const decoded = pathname;
   return decoded === '/' ? '/' : '/' + decoded.replace(/^\/+|\/+$/g, '');
 }
 

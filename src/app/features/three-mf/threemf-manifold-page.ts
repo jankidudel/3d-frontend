@@ -28,16 +28,16 @@ export class ThreeMfManifoldPage extends ThreeMfQualityPage {
           true
       : false;
   });
-  readonly closedAndManifold = computed(
+  readonly noEdgeFindings = computed(
     () => this.openEdges() === 0 && this.nonManifoldEdges() === 0,
   );
 
   constructor() {
     super();
     this.manifoldSeo.apply({
-      title: '3MF Manifold Checker - Check 3MF Mesh Topology | InspectMesh',
+      title: '3MF Manifold Checker: Edge Sharing | InspectMesh',
       description:
-        'Check 3MF mesh topology for open edges, non-manifold edges and separate shells before slicing. See whether the resolved build geometry is closed and manifold.',
+        'Check supported 3MF edge relationships and interpret topology findings without treating clean counts as a complete solid-validity test.',
       path: PublicRouteUrl.ThreeMfManifoldChecker,
     });
   }
@@ -48,6 +48,8 @@ export class ThreeMfManifoldPage extends ThreeMfQualityPage {
       typeof topology === 'object' && topology !== null
         ? (topology as Record<string, unknown>)[name]
         : null;
-    return typeof count === 'number' && Number.isFinite(count) ? count : null;
+    return typeof count === 'number' && Number.isInteger(count) && count >= 0
+      ? count
+      : null;
   }
 }

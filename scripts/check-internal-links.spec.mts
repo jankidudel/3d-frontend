@@ -68,7 +68,7 @@ describe('internal link validation', () => {
     ]);
   });
 
-  it('ignores external, non-navigation, fragment-only and download links', () => {
+  it('ignores external, non-navigation and download links while resolving same-page fragments', () => {
     const failures = validateGeneratedPages([
       page(
         '/',
@@ -77,7 +77,7 @@ describe('internal link validation', () => {
           '<a href="tel:+441234">Call</a>' +
           '<a href="javascript:void(0)">Script</a>' +
           '<a href="data:text/plain,hello">Data</a>' +
-          '<a href="#here">Fragment</a>' +
+          '<h2 id="here">Target</h2><a href="#here">Fragment</a>' +
           '<a href="/file.pdf" download>Download</a>',
       ),
     ]);

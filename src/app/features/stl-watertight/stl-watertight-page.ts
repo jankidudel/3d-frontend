@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { JobProgress } from '../../core/components/job-progress/job-progress';
 import { SeoService } from '../../core/seo/seo.service';
@@ -14,12 +14,18 @@ import { StlFilePicker } from '../stl-quality/stl-file-picker/stl-file-picker';
 })
 export class StlWatertightPage extends StlManifoldPage {
   private readonly watertightSeo = inject(SeoService);
+  readonly boundaryCount = computed(() => {
+    const value = this.topology()?.['openEdgeCount'];
+    return typeof value === 'number' && Number.isInteger(value) && value >= 0
+      ? value
+      : null;
+  });
   constructor() {
     super();
     this.watertightSeo.apply({
-      title: 'STL Watertight Checker - Check for Holes and Open Edges',
+      title: 'STL Watertight Checker: Boundaries and Closure | InspectMesh',
       description:
-        'Check whether an STL file is watertight for 3D printing. Find open edges, holes, non-manifold geometry and separate shells online.',
+        'Check STL exposed boundaries and interpret a zero-open-edge result alongside other mesh findings. Inspect an opening before deciding to close it.',
       path: PublicRouteUrl.WatertightChecker,
     });
   }

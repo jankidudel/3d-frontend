@@ -20,7 +20,9 @@ export class ThreeMfWatertightPage extends ThreeMfQualityPage {
       return null;
     }
     const count = (topology as Record<string, unknown>)['openEdgeCount'];
-    return typeof count === 'number' && Number.isFinite(count) ? count : null;
+    return typeof count === 'number' && Number.isInteger(count) && count >= 0
+      ? count
+      : null;
   });
   readonly shellCount = computed(() => {
     const topology = this.report()?.['topology'];
@@ -28,15 +30,17 @@ export class ThreeMfWatertightPage extends ThreeMfQualityPage {
       typeof topology === 'object' && topology !== null
         ? (topology as Record<string, unknown>)['connectedComponentCount']
         : null;
-    return typeof count === 'number' && Number.isFinite(count) ? count : null;
+    return typeof count === 'number' && Number.isInteger(count) && count >= 0
+      ? count
+      : null;
   });
 
   constructor() {
     super();
     this.watertightSeo.apply({
-      title: '3MF Watertight Checker - Check 3MF Files Online | InspectMesh',
+      title: '3MF Watertight Checker: Open Boundaries | InspectMesh',
       description:
-        'Check whether a 3MF file has open edges or a closed watertight surface before slicing. Review build structure and continue to a full 3MF quality check.',
+        'Check supported 3MF build geometry for exposed boundaries. Interpret closure separately from edge sharing, volume availability and print preparation.',
       path: PublicRouteUrl.ThreeMfWatertightChecker,
     });
   }

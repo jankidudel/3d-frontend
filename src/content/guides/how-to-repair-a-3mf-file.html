@@ -1,78 +1,97 @@
 ---
-title: 'How to Repair a 3MF File for 3D Printing | InspectMesh'
-description: Learn which 3MF mesh errors can be repaired safely, what must be fixed in CAD, and how to validate a repaired 3MF before printing.
+title: 'How to Repair a 3MF Without Losing Build Context | InspectMesh'
+description: 'Choose a supported correction, preserve build context and compare the saved package with the original.'
 slug: how-to-repair-a-3mf-file
 eyebrow: 3MF repair guide
-heading: How to Repair a 3MF File for 3D Printing
-faq:
-  - question: Why can a 3MF open in a slicer but still have errors?
-    answer: Slicers can often display a model despite duplicate, degenerate, open or non-manifold mesh data. Displaying is not proof that every slice will be reliable.
-  - question: Does 3MF Repair fill holes?
-    answer: No. It removes only safe-to-remove triangles and can correct confidently determined orientation. It does not invent missing geometry.
-  - question: Will repair change my 3MF unit or build layout?
-    answer: No. The repair keeps the package unit, objects, build items and resources, updating only supported model mesh triangles.
+heading: How to Repair a 3MF File Without Losing Build Context
 ---
 
 <p class="lead">
-  A 3MF can retain units, colours and build structure while still containing
-  mesh errors. Start with a careful validation, make only safe edits, then
-  validate the repaired package again.
+  First decide what failed: opening the package, resolving its placed items, or
+  interpreting its mesh. InspectMesh's local 3MF Repair removes supported
+  defective triangle records; it does not reconstruct a missing surface or
+  correct winding. Keep the original and verify the saved package in the
+  application that will use it.
 </p>
-<h2>Repair the resolved build, then verify what remains</h2>
-<p>
-  A 3MF package can contain reusable object resources, transforms and build
-  items. A mesh repair may address a geometry fault without preserving every
-  package feature in another application. Inspect the resolved build first, keep
-  the original package, and verify object count, placement, dimensions and any
-  material or process information that matters after saving. The 3MF Core
-  Specification distinguishes resources from the build items selected for
-  manufacture, so an object existing in a package is not by itself evidence that
-  it belongs in the final build.
-</p>
-<h2>Separate package faults from mesh faults</h2>
+<h2>Identify the layer before selecting a repair</h2>
 <table>
   <thead>
     <tr>
-      <th>Failure</th>
-      <th>Likely layer</th>
-      <th>Next action</th>
+      <th scope="col">Observed problem</th>
+      <th scope="col">Appropriate next action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>The file will not open as a 3MF package</td>
-      <td>Container, relationships or required model part</td>
+      <td>Archive, model relationship or required resource cannot be read</td>
       <td>
-        Re-export from the source application or inspect with a 3MF-aware tool
+        Re-export from the producing application. Do not rebuild unknown
+        references through triangle cleanup.
       </td>
     </tr>
     <tr>
-      <td>An object exists but is missing from the plate</td>
-      <td>Build-item selection or transform</td>
-      <td>Inspect the resolved build and placement</td>
+      <td>Required item is absent or unexpectedly placed</td>
+      <td>
+        Inspect build references, transforms and the original project before
+        removing geometry.
+      </td>
     </tr>
     <tr>
-      <td>Dimensions are unexpected</td>
-      <td>Declared unit or transform</td>
-      <td>Confirm units and resolved dimensions before editing</td>
+      <td>Duplicate, degenerate or supported invalid-index triangle records</td>
+      <td>
+        Review the local removal plan and apply only an understood supported
+        change. Packages that fail resolution cannot reach this plan.
+      </td>
     </tr>
     <tr>
-      <td>Layers contain gaps or extra regions</td>
-      <td>Mesh topology or overlapping shells</td>
-      <td>Run geometry checks and repair the source object</td>
+      <td>Open surface, ambiguous join, winding problem or crossing solids</td>
+      <td>
+        Inspect the source model or a suitable editor. Local triangle removal is
+        not a reconstruction operation.
+      </td>
+    </tr>
+    <tr>
+      <td>Geometry is plausible but the slicer loses a required feature</td>
+      <td>
+        Compare the affected layers, profile and project support in the
+        producing/receiving applications.
+      </td>
     </tr>
   </tbody>
 </table>
-<h2>Choose a preservation-aware route</h2>
+
+<h2>Use local cleanup for a supported triangle change</h2>
 <p>
-  InspectMesh 3MF Repair edits supported mesh triangles inside the source model
-  part and copies the other package entries. It does not flatten the build or
-  intentionally change declared units, object references or placements. Its
-  output is still a regenerated ZIP/XML package, so reopen it and verify the
-  receiver's behaviour. Other mesh-export workflows can flatten transforms or
-  discard colours, materials and application settings. Record the object count,
-  plate layout, dimensions and properties that matter before changing any file.
+  Choose the original package in
+  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> and review its
+  proposed removals. The supported operation runs in your browser and creates a
+  separate package. It does not need the server quality-check action. An empty
+  removal plan means no selected supported operation is available; it does not
+  certify that the file is free of every mesh problem.
 </p>
+<p>
+  The removal plan identifies repeated vertex-index triples within a mesh,
+  ignoring their order, and near-zero-area triangles under its relative
+  tolerance. It does not weld coincident vertices. The package must first pass
+  the local geometry resolver; invalid indexes that prevent resolution require a
+  source export.
+</p>
+<h2>A shared resource can affect several placements</h2>
+<p>
+  A triangle edit belongs to a stored mesh resource. If several placed items
+  reference that resource, the edited mesh can appear in each placement.
+  Removing one redundant triangle from the resource is different from deleting a
+  build item. Confirm the required quantity and arrangement after saving.
+</p>
+<p>
+  The <a href="https://3mf.io/spec/">3MF Core specification</a> distinguishes
+  resources from build items selected for manufacture. This defines the format,
+  not a guarantee that this tool or a receiving application supports every
+  extension. The repair keeps coordinates and surrounding XML text while
+  removing selected triangle elements; decompressed payloads of unrelated ZIP
+  parts are copied. A regenerated ZIP is not byte-identical to the source.
+</p>
+<h2>Geometry and coordinate control, not a repair observation</h2>
 <p>
   To test unit and placement interpretation separately from repair, download the
   generated
@@ -87,109 +106,36 @@ faq:
   >
   for the actual reopened conversion outputs.
 </p>
-<h2>Use the least destructive repair</h2>
-<ol>
-  <li>Keep the original 3MF unchanged.</li>
-  <li>Confirm the package opens and identify the affected build item.</li>
-  <li>Fix placement or unit interpretation before editing triangles.</li>
+
+<h2>Compare the saved package with the original</h2>
+<ul>
   <li>
-    Apply mesh cleanup only to the faulty object and only when the result is
-    unambiguous.
-  </li>
-  <li>Re-export from source CAD when geometry would need reconstruction.</li>
-</ol>
-<h2>Revalidation checklist</h2>
-<p>
-  Open the repaired package in a second 3MF-aware application when portability
-  matters. Compare resolved dimensions, object count, transforms and visual
-  placement. Re-run quality, manifold and watertight checks, then inspect the
-  slicer preview. Confirm colours, materials and settings separately because
-  support varies by application and extension.
-</p>
-<p>
-  The <a href="https://3mf.io/spec/">3MF Consortium specification</a> is the
-  primary reference for core package, resource and build behavior. A repaired
-  file still requires printer- and slicer-specific validation.
-</p>
-<h2>Examples of preservation risk</h2>
-<p>
-  Extracting one mesh for repair can omit other build items. Flattening
-  transforms can preserve appearance while changing reusable object structure.
-  Exporting through an application that supports only core geometry can discard
-  optional properties. A slicer project stored in 3MF may also contain
-  application-specific settings that another program ignores.
-</p>
-<p>
-  For each repair, state what is allowed to change. If only one object's
-  topology is faulty, preserve the remaining package and replace that object
-  through a documented workflow. If the package itself is corrupt, re-export
-  from the authoring application instead of rebuilding relationships by
-  guesswork.
-</p>
-<h2>When to stop</h2>
-<p>
-  Stop when object identity is unclear, a repair changes plate placement,
-  critical properties disappear, or several applications resolve the build
-  differently. Return to the source model and known producing application. A
-  geometry checker cannot certify vendor-specific settings or restore package
-  information that was already lost.
-</p>
-<p>
-  Use the <a href="https://3mf.io/spec/">3MF Core Specification</a> for format
-  details, then rerun the 3MF quality and dimensions checks. If repair requires
-  inventing missing geometry or resolving overlapping design intent, return to
-  the source CAD rather than trusting an automatic result.
-</p>
-<p>
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> can
-  identify which mesh, fit and sampled-thickness concerns need attention before
-  choosing a conservative repair action.
-</p>
-<h2>Why a 3MF can still need repair</h2>
-<p>
-  A slicer may open a package and show a plausible preview even when a mesh has
-  duplicate or zero-area triangles, inconsistent winding, open boundaries or
-  non-manifold edges. Use the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> to
-  see those conditions before trusting a print preview.
-</p>
-<h2>What InspectMesh repairs safely</h2>
-<p>
-  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> removes degenerate
-  triangles, exact duplicate triangles and invalid triangle indexes when safe,
-  and corrects orientation only for closed, manifold regions where the result is
-  unambiguous. It preserves the 3MF unit, object IDs, build references, metadata
-  and unrelated package entries.
-</p>
-<h2>What it cannot safely fix</h2>
-<p>
-  The tool does not fill holes, reconstruct missing geometry, resolve
-  self-intersections, weld vertices, alter dimensions, or rebuild invalid object
-  and build references. Open and non-manifold edges can remain warnings. Return
-  to the original CAD model, or use a manual mesh editor, when the model needs
-  topology-changing work.
-</p>
-<h2>Safe before-and-after workflow</h2>
-<ol>
-  <li>
-    Inspect the file in the
-    <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> and run the quality
-    check.
+    Reopen the exact downloaded bytes and confirm the package still resolves.
   </li>
   <li>
-    Upload it to 3MF Repair and download the repaired package only if the report
-    says it completed safely.
+    Compare source units, required resource references, placed items, transforms
+    and build bounds.
   </li>
   <li>
-    Review the remaining warnings, then re-run the checker and confirm final
-    size with the
-    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
-      >3MF Dimensions Checker</a
-    >.
+    Review actual removal counts and remaining findings. Do not assume every
+    enabled operation was applied.
   </li>
-</ol>
+  <li>
+    Run
+    <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
+      >local preflight on the saved copy</a
+    >; choose server analysis separately if appropriate for the model's privacy
+    requirements.
+  </li>
+  <li>
+    Open the result in the target slicer and inspect affected layers, material
+    assignments and relevant project settings.
+  </li>
+</ul>
+<h2>Return to the source when the intended geometry is unknown</h2>
 <p>
-  If the same model repeatedly needs large repairs, fix the source design
-  instead. For format trade-offs, see
-  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a>.
+  Stop if the correction requires inventing a functional surface, identifying an
+  unknown part, or guessing which overlapping regions should remain. Return to
+  the source design or producing application. Keeping a package entry does not
+  establish that another application will interpret it as intended.
 </p>

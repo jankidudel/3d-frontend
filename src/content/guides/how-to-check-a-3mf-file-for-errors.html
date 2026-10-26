@@ -1,195 +1,131 @@
 ---
-title: 'How to Check a 3MF File for Errors Before Printing | InspectMesh'
-description: 'Check a 3MF print build before slicing: declared unit, resolved dimensions, printer fit, mesh integrity, sampled wall thickness and reliable volume.'
+title: 'Check a 3MF File: Find the First Failing Stage | InspectMesh'
+description: 'Identify the first failing 3MF stage, then choose package, build, mesh or slicer investigation.'
 slug: how-to-check-a-3mf-file-for-errors
 eyebrow: 3MF pre-print workflow
 heading: How to Check a 3MF File Before Slicing
-faq:
-  - question: Can a 3MF file be valid but still fail to print?
-    answer: Yes. A file can open correctly while one of its meshes contains holes, non-manifold edges, duplicate triangles or other geometry problems.
-  - question: What errors should I check before printing a 3MF?
-    answer: Check package structure, declared unit, resolved build dimensions, printer fit, open edges, non-manifold edges, degenerate faces, duplicate faces, sampled wall thickness and volume reliability.
-  - question: Can I repair a 3MF after checking it?
-    answer: Yes, but only some issues are safe to repair automatically. Use the 3MF Repair Tool for conservative repairs, then check the result again.
 ---
 
-<p>
-  A 3MF package can contain several objects, build items, component references
-  and transforms. Before slicing, check the final resolved print build rather
-  than trusting the first mesh resource or a reassuring-looking file name.
+<p class="lead">
+  Start with the first stage that fails: opening the package, resolving its
+  intended build, interpreting a mesh finding or generating the expected sliced
+  layers. Each stage needs different evidence. A supported geometry result does
+  not validate every 3MF extension or embedded slicer setting.
 </p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">First failing stage</th>
+      <th scope="col">What to establish</th>
+      <th scope="col">Next destination</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cannot read the package</td>
+      <td>Whether the original opens in its producing application</td>
+      <td>Source application; do not start triangle cleanup.</td>
+    </tr>
+    <tr>
+      <td>Opens, but items are missing or misplaced</td>
+      <td>
+        Intended resources, build references, supported transforms and units
+      </td>
+      <td>
+        <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+          >Missing-object investigation</a
+        >
+        or <a href="{{ GuideSlug.Route3mfViewer }}">local 3MF Viewer</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>Build resolves, mesh findings remain</td>
+      <td>
+        Which supported finding ran and what region/design decision it describes
+      </td>
+      <td>
+        <a href="{{ GuideSlug.Route3mfWatertightChecker }}">Closure check</a> or
+        <a href="{{ GuideSlug.Route3mfManifoldChecker }}">topology check</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>A bounded redundant-face change is appropriate</td>
+      <td>Exact selected removal and resource references affected</td>
+      <td><a href="{{ GuideSlug.Route3mfRepair }}">Local 3MF Repair</a>.</td>
+    </tr>
+    <tr>
+      <td>Geometry screens complete, slicing remains unexpected</td>
+      <td>Required features in actual profile and affected layers</td>
+      <td>Native slicer/source design.</td>
+    </tr>
+  </tbody>
+</table>
 
-<h2>Classify package, resource and build errors separately</h2>
+<h2>Choose a method deliberately</h2>
 <p>
-  A package error prevents required parts or relationships from being read. A
-  resource error concerns an object, mesh or referenced property inside the
-  model. A build error occurs when placed items reference missing objects, use
-  problematic transforms or resolve to an empty or implausible build. Keeping
-  those layers separate avoids flattening a healthy package merely because one
-  mesh is damaged.
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a>
+  resolves supported geometry locally and provides several preparation screens.
+  The <a href="{{ GuideSlug.Route3mfQualityChecker }}">server quality</a> and
+  specialist checks are separate explicit submissions. Compare method, settings
+  and supported scope when their outputs differ. An unsupported or failed check
+  is not zero findings.
 </p>
 <p>
-  Start with the earliest failing layer. Confirm the archive and required model
-  part can be read, enumerate resources, then resolve build items and
-  transforms. Only after that should mesh checks such as open boundaries,
-  non-manifold edges or orientation be interpreted on the actual instances
-  intended for printing.
-</p>
-
-<h2>Use specialist results for the next decision</h2>
-<p>
-  A broad quality report routes work; it does not replace focused inspection.
-  Send unit or dimension anomalies to the 3MF dimension workflow, closure
-  findings to watertight review, topology findings to manifold review and
-  unexpectedly heavy geometry to triangle analysis. Re-check the complete
-  resolved build after repair or re-export so a locally fixed object is not
-  accepted with broken placement or lost resources.
-</p>
-<h2>Check the package and geometry separately</h2>
-<p>
-  Review declared units, build items and transforms alongside mesh findings. A
-  valid resource not referenced by the build may not be part of the job, while a
-  clean mesh can still be placed at the wrong scale. Use the focused manifold,
-  watertightness and wall-thickness checks for next actions.
-</p>
-<p>
-  A file opening in a slicer is not proof that every mesh inside it is healthy.
-  The slicer may quietly compensate for a problem, or it may create unexpected
-  walls and gaps later in the layer preview.
-</p>
-<h2>Start with one resolved-build preflight</h2>
-<p>
-  Start with the
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
-    >3MF Print Preflight Checker</a
-  >. It resolves supported placed geometry locally, including repeated build
-  items and transforms, then brings together unit, size, printer fit, mesh,
-  sampled wall-thickness, complexity and volume guidance. Your selected file
-  stays in the browser.
-</p>
-<p>
-  A preflight result is not a printable/not-printable score. It identifies the
-  next useful check. Use the slicer profile and layer preview that will actually
-  make the part before committing material and machine time.
-</p>
-<p>
-  For a format-neutral pre-slice checklist that also covers STL files, read
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
-    >how to check if a 3D model is ready to print</a
-  >.
-</p>
-<h2>Confirm the unit and final build size</h2>
-<p>
-  Unlike STL, 3MF can declare a coordinate unit. Read that declaration, but
-  still compare the final resolved width, height and depth with the intended
-  physical part. Microns, metres and inches are not automatically mistakes; they
-  simply deserve a deliberate dimensions check in context.
-</p>
-<p>
-  Select your printer preset in preflight, then review a fit failure in the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
-  >. Try a right-angle rotation before changing scale. Scaling a functional part
-  can alter holes, clearances and wall thickness.
-</p>
-<h2>Check package and mesh health</h2>
-<p>The report can identify problems such as:</p>
-<ul>
-  <li>unreadable package or model data</li>
-  <li>missing or invalid object/build references</li>
-  <li>no usable mesh geometry</li>
-  <li>open edges</li>
-  <li>non-manifold edges</li>
-  <li>degenerate triangles</li>
-  <li>exact duplicate triangles</li>
-  <li>inconsistent orientation where it can be determined</li>
-</ul>
-<p>
-  Read the resolved-build result as well as package warnings. A multi-object 3MF
-  can contain one healthy resource and one placed part with serious issues.
-</p>
-<h2>Check whether the mesh is a clean solid</h2>
-<p>
-  Open edges usually mean the model has a hole or incomplete surface. Use the
-  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
-  when you specifically need to confirm that a model is closed.
-</p>
-<p>
-  Non-manifold geometry is different: the surface may be closed but still fail
-  to describe one clear solid. Use the
-  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a> to
-  investigate that type of topology problem.
-</p>
-<p>
-  For ordinary 3D printing, a model should normally be both watertight and
-  manifold.
-</p>
-<h2>Repair a 3MF file cautiously</h2>
-<p>
-  Some 3MF problems can be cleaned up automatically, but not every warning has a
-  safe one-click fix.
-</p>
-<p>
-  The <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair tool</a> is designed
-  for conservative clean-up. It can remove clearly invalid or duplicate mesh
-  data where that can be done without guessing what the original designer
-  intended. It does not claim to rebuild arbitrary missing surfaces, resolve
-  every non-manifold area or make a model guaranteed printable.
-</p>
-<p>
-  That distinction matters. A model with a few duplicate or zero-area triangles
-  may only need straightforward clean-up. A model with open surfaces,
-  self-intersections or ambiguous internal geometry may need inspection in
-  modelling software, because there can be several plausible ways to change it.
-</p>
-<p>A careful repair workflow is:</p>
-<ol>
-  <li>
-    run
-    <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> or
-    the
-    <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>;
-  </li>
-  <li>read which issues were found;</li>
-  <li>
-    use <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> only for
-    supported, clearly explained changes;
-  </li>
-  <li>download the repaired copy rather than replacing the original;</li>
-  <li>run Preflight again on the saved copy;</li>
-  <li>check dimensions, printer fit and wall thickness before slicing.</li>
-</ol>
-<p>
-  Repairing mesh data does not determine the final print orientation, supports,
-  material settings or whether a thin functional feature is strong enough. Those
-  remain separate preparation decisions.
-</p>
-<h2>Confirm size and slicing behaviour</h2>
-<p>
-  A clean mesh can still be the wrong size for your printer. Check width, height
-  and depth with the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
-  >, then inspect the layer preview in your slicer.
-</p>
-<p>
-  Look for missing perimeters, unexpected cavities, disconnected fragments and
-  geometry outside the build area. A successful quality check improves
-  confidence in the file; it does not replace normal print-preparation checks
-  such as wall thickness, supports and printer settings.
-</p>
-<h2>Screen wall thickness and volume carefully</h2>
-<p>
-  Preflight samples wall thickness at a bounded number of locations so that it
-  remains usable in a browser. A zero thin-sample count does not prove every
-  point is suitable. Investigate important regions with the
-  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
-    >3MF Wall Thickness Checker</a
+  Server topology is inspected per supported build item and aggregated; local
+  preflight inspects combined resolved geometry. Neither result certifies every
+  required extension, vendor project setting or intended physical connection.
+  Local 3MF preflight does not run the bounded intersection screen available in
+  STL preflight. Read
+  <a href="{{ GuideSlug.RouteHowInspectmeshChecksFiles }}"
+    >the method explanation</a
   >
-  and the intended material, nozzle and slicer preview.
+  when comparing reports.
+</p>
+<h2>Confirm size, build and sampled-check limits</h2>
+<p>
+  Read the source unit and compare resolved bounds with a known physical
+  dimension. Repeated references, nested components and transforms can change
+  the placed build without changing the stored resource. Use
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF dimensions</a> for a
+  focused size check. A nominal rectangular fit does not include every brim,
+  support or slicer reservation; scaling a functional part also changes its
+  clearances.
 </p>
 <p>
-  Treat volume as meaningful only for closed, manifold geometry. If the mesh has
-  open or non-manifold edges, repair or return to the source CAD model before
-  relying on a material estimate. The
-  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>
-  is useful after that structural question is resolved.
+  Wall thickness uses bounded samples, so zero thin samples does not prove every
+  region suitable. Use
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+    >sampled wall inspection</a
+  >
+  for important features and compare the target layer preview. Volume has its
+  own validity gates: it may be unavailable for several closed parts as well as
+  for open, duplicate, degenerate, over-shared or winding-conflicted geometry.
+  Unavailable is not zero. Follow
+  <a href="{{ GuideSlug.RouteHowToCalculate3mfVolume }}"
+    >the volume interpretation</a
+  >
+  before estimating material.
+</p>
+<h2>Retain a short investigation record</h2>
+<p>
+  Record the source revision, first failing stage, tool and method, unit/build
+  assumptions, finding and next action. Keep unresolved checks explicit. Use the
+  existing
+  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
+    >printable preflight record</a
+  >
+  rather than treating a complete mesh report as permission to skip slicer or
+  physical requirements.
+</p>
+<h2>Review the final sliced layers</h2>
+<p>
+  Reopen the saved copy, confirm required placements and inspect affected
+  perimeters, cavities, material assignments and profile settings in the
+  receiving application. Local triangle cleanup does not fill holes or correct
+  winding. When a missing surface or intended join is uncertain, use
+  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}"
+    >the repair decision guide</a
+  >
+  and return to the source model. A software check does not settle wall
+  strength, support removal or physical print success.
 </p>

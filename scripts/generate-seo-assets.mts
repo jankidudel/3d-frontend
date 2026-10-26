@@ -3,8 +3,9 @@ import { editorialDates } from './editorial-dates.mts';
 import { buildSitemap } from './sitemap.mts';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { canonicalPublicRoutePaths } from '../src/app/core/seo/public-routes.ts';
-import { guideRoutePaths } from '../src/app/features/guides/generated/guide-route-data.generated.ts';
+import { routeSearchPolicy, RouteDisposition } from './route-search-policy.mts';
+import { discoverRouter } from './router-source.mts';
+import { classificationFailures } from './route-coverage.mts';
 
 type BuildConfiguration = 'development' | 'production';
 interface SiteConfig {
@@ -12,6 +13,13 @@ interface SiteConfig {
   readonly indexingEnabled: unknown;
 }
 
+const coverageFailures = classificationFailures(
+  discoverRouter(),
+  routeSearchPolicy,
+);
+if (coverageFailures.length) {
+  throw new Error(coverageFailures.join('\n'));
+}
 const configuration = process.argv[2];
 if (configuration !== 'development' && configuration !== 'production') {
   throw new Error(
@@ -47,7 +55,9 @@ if (!indexingEnabled) {
     sitemapPath,
     buildSitemap(
       siteUrl!,
-      [...canonicalPublicRoutePaths, ...guideRoutePaths],
+      routeSearchPolicy
+        .filter((page) => page.disposition === RouteDisposition.Indexable)
+        .map((page) => page.path),
       editorialDates,
       guideRegistry,
     ),
