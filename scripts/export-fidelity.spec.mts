@@ -319,7 +319,12 @@ describe('owned export-fidelity evidence', () => {
       if (refresh) {
         await writeFile(path, content + '\n');
       }
-      expect((await readFile(path, 'utf8')).trim()).toBe(content.trim());
+      // Git can normalise the retained CSV to LF on checkout; the exporter uses CRLF.
+      // Compare the complete contents without treating record separators as a finding change.
+      const retained = (await readFile(path, 'utf8'))
+        .replaceAll('\r\n', '\n')
+        .trim();
+      expect(retained).toBe(content.replaceAll('\r\n', '\n').trim());
     }
     const release = {
       release: 'generated-box-controls-r01',
