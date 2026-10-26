@@ -1,0 +1,81 @@
+{
+  "release": "generated-box-controls-r01",
+  "preparedBy": null,
+  "observedDate": "2026-10-26",
+  "classification": "Generated box geometry, not a mechanically fitted enclosure or a ready-to-sell kit.",
+  "coordinateAssumption": "millimetres; STL has no unit declaration",
+  "intendedInventory": [
+    {
+      "file": "kit-base-r01.stl",
+      "revision": "r01",
+      "quantity": 1,
+      "bytes": 684,
+      "sha256": "2ed5096dadf3b28397083a787b0bb03bfa97e685a65fc085b4964244844c2cfc",
+      "spansXyzMm": [60, 40, 4],
+      "topology": {
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": 9600,
+        "volumeReliable": true
+      }
+    },
+    {
+      "file": "kit-cover-review-r01.stl",
+      "revision": "r01",
+      "quantity": 1,
+      "bytes": 584,
+      "sha256": "524a1b2c0cdc2fe0f9f649e47a2ca84fa95cd40894ba720d30ad72dd417722ad",
+      "spansXyzMm": [60, 40, 2],
+      "topology": {
+        "openEdges": 4,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": null,
+        "volumeReliable": false
+      }
+    },
+    {
+      "file": "kit-spacer-r01.stl",
+      "revision": "r01",
+      "quantity": 1,
+      "bytes": 684,
+      "sha256": "100d07335e73703d6c9e67b813944bbe6d3b7459b9d68c80513734237668fdf6",
+      "spansXyzMm": [8, 8, 12],
+      "topology": {
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": 768,
+        "volumeReliable": true
+      }
+    }
+  ],
+  "checks": {
+    "tool": "/batch-stl-checker",
+    "methodVersion": "collection-review-2",
+    "executionPath": "Actual existing collection functions in Vitest, not browser/deployed execution.",
+    "settings": {
+      "stlUnit": "mm",
+      "printer": null,
+      "thicknessThresholdMm": 1.2
+    },
+    "report": "/examples/export-fidelity/kit-collection-report.json",
+    "csv": "/examples/export-fidelity/kit-collection-report.csv"
+  },
+  "manualInventoryExample": "Selecting only base and cover omits the intended spacer. The remaining per-file results do not detect that omission automatically.",
+  "changesSincePriorRelease": null,
+  "slicerReview": null,
+  "physicalTesting": null,
+  "releaseDecision": "Hold unconditional release: the deliberately open-face cover has four boundary edges and unavailable volume. Review intended geometry and re-export from source; slicer/physical checks have not run.",
+  "unresolvedOwner": "Source model author/operator; no real operator identity assigned."
+}

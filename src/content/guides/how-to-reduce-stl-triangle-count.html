@@ -4,126 +4,28 @@ description: See how a requested STL triangle target can differ from actual outp
 slug: how-to-reduce-stl-triangle-count
 eyebrow: STL optimisation guide
 heading: How to Reduce STL Triangle Count
-faq:
-  - question: Does reducing STL triangle count reduce print quality?
-    answer: It can if the reduction is too aggressive. Use a conservative setting, then inspect curved surfaces, small features and fitting areas before printing.
-  - question: Is reducing triangle count the same as compressing an STL?
-    answer: No. Binary encoding preserves triangle records under Float32 storage; ASCII coordinates may round. Reducing triangles changes the mesh geometry to make the file smaller.
-  - question: What triangle reduction should I start with?
-    answer: There is no percentage that guarantees feature preservation. Compare the exact reopened candidate against the local features and topology that matter to your model.
 ---
 
 <p>
-  Large STL files are often difficult to share, slow to open and unnecessarily
-  heavy for a slicer. One common reason is a very high triangle count: the model
-  surface contains far more tiny faces than the intended print can show.
+  Simplify an STL only when fewer triangles solve a real handling problem and
+  the resulting surface still meets your requirements. Generate a separate
+  candidate from the original, reopen it and review critical features and mesh
+  findings before choosing it.
 </p>
-
-<h2>Compare the ridge before accepting unchanged bounds</h2>
-<figure>
-  <img
-    src="/examples/diagnosis/detail-loss.svg"
-    width="720"
-    height="260"
-    loading="lazy"
-    alt="Projected original and 75 percent coupon surfaces with the narrow raised ridge."
-  />
-  <figcaption>
-    Distributed 24- and 18-triangle geometry, independently framed for
-    inspection. Unchanged bounds do not establish local equivalence.
-  </figcaption>
-</figure>
+<h2>Start with a named constraint and feature</h2>
 <p>
-  Running the actual finite comparison on the original and 75% coupon in their
-  original frame, mm on both sides and 0.1 mm tolerance gives 5,000 samples per
-  direction: maximum sampled distance about 0.23290 mm, mean about 0.000512 mm,
-  and 25 of 10,000 samples above tolerance. The largest observed sample is not a
-  whole-surface maximum. A small mean can conceal a meaningful change on a
-  narrow ridge.
+  There is no starting percentage that protects every model. Use the least
+  geometry change that addresses the receiving constraint, compare the exact
+  saved candidate and keep the original when the required feature cannot be
+  verified. A preset is an input to an experiment, not an acceptance rule.
 </p>
 <p>
-  Use the paired loader in
-  <a href="{{ GuideSlug.RouteStlCompare }}">revision comparison</a> or load the
-  original in
-  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">the reducer</a> at 75%.
-  Download and reopen the derivative, check topology again and inspect named
-  small features rather than approving by count or bounding box. The existing
-  result table below records the separately verified 50% defect case; retain the
-  original if the feature requirement is unresolved.
-</p>
-<h2>What does STL triangle count mean?</h2>
-<p>
-  An STL represents a surface as triangles. Flat areas need only a few. Curved
-  areas need more triangles to appear smooth.
-</p>
-<p>
-  More triangles are not automatically better. Excessively dense meshes make
-  files larger and can slow browsers, modelling software and slicers.
-</p>
-<p>
-  Before reducing anything, check how dense the model is with the
-  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a>. A
-  high number is only a problem when it creates a practical issue, such as slow
-  slicing, a large upload or a file that is hard to share.
-</p>
-<h2>Triangle reduction versus storage encoding</h2>
-<p>
-  Binary STL stores triangle records compactly without intentionally removing
-  them. Float32 coordinates can round ASCII decimals; unchanged triangle count
-  does not establish exact decimal equality.
-</p>
-<p>
-  Triangle reduction, also called mesh simplification or decimation, removes and
-  rearranges triangles to create a lighter approximation of the original
-  surface. This can reduce file size far more, but it changes geometry.
-</p>
-<p>
-  If your file is ASCII, try binary conversion first. If it is already binary
-  and still too large, controlled triangle reduction is the next option.
-</p>
-<h2>Start conservatively</h2>
-<p>
-  Do not immediately reduce a model to 10% of its original triangles. Start by
-  keeping around 75% of triangles, then compare the result. Pay particular
-  attention to:
-</p>
-<ul>
-  <li>curved outer surfaces;</li>
-  <li>embossed text and logos;</li>
-  <li>thin walls;</li>
-  <li>sharp corners;</li>
-  <li>holes, clips and threads;</li>
-  <li>parts that must fit another printed or purchased component.</li>
-</ul>
-<h2>Check the result before printing</h2>
-<p>
-  A lower triangle count does not guarantee a better file. Inspect the
-  simplified model visually, then check it for mesh problems. If the reduced
-  output introduces warnings, use a gentler setting or keep the original.
-</p>
-<p>
-  The
-  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a>
-  shows the original and reduced model separately, along with the file size and
-  triangle count. For a separate mesh-health check, use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>.
-</p>
-<h2>Choose the right target for the job</h2>
-<p>
-  There is no ideal triangle count for every STL. The right amount depends on
-  print size, visible detail and the software you need to use. Keep the original
-  STL. Treat the reduced file as a separate working copy and only use it when
-  the reduction gives a practical benefit without sacrificing the details you
-  need.
-</p>
-
-<h2>Why small details change before the overall box does</h2>
-<p>
-  Decimation trades surface detail for a smaller triangle budget. Curvature,
-  holes, lettering and thin ribs have local requirements that a global
-  percentage cannot express. A small feature can collapse or acquire duplicate
-  faces while the outer spans remain unchanged. Retain named feature dimensions
-  and examine affected slicer layers, not just the file size.
+  If the issue is text storage rather than triangles, choose
+  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}"
+    >binary encoding without intentional triangle removal</a
+  >.
+  <a href="{{ GuideSlug.RouteHowToReduceStlFileSize }}">Method selection</a>
+  also includes source re-export and retaining the original.
 </p>
 <h2>Owned raised-ridge coupon: a reproducible comparison</h2>
 <p>
@@ -141,6 +43,18 @@ faq:
   × 0.5 mm ridge. This deliberately simple two-shell control is not a validated
   printable solid.
 </p>
+<figure>
+  <img
+    src="/examples/diagnosis/detail-loss.svg"
+    width="720"
+    height="260"
+    alt="Actual original and 75 percent coupon projections with the narrow raised ridge"
+  />
+  <figcaption>
+    Distributed 24- and 18-triangle geometry, independently framed for
+    inspection. Unchanged bounds do not establish local equivalence.
+  </figcaption>
+</figure>
 <table>
   <thead>
     <tr>
@@ -174,28 +88,7 @@ faq:
   promised final count. These observations do not establish that the 75% copy
   preserves every local detail or that any physical print succeeds.
 </p>
-<ol>
-  <li>
-    Inspect the narrow ridge in the original and reduced copies at close range.
-  </li>
-  <li>
-    Use <a href="{{ GuideSlug.RouteStlCompare }}">revision comparison</a> with
-    millimetres and original coordinates; finite area samples can miss a small
-    feature.
-  </li>
-  <li>
-    Recheck topology. Reject the 50% output in this control because new
-    duplicate/non-manifold findings appeared despite unchanged bounds.
-  </li>
-  <li>
-    Use a gentler reduction or retain the original. For a functional part,
-    return to CAD when feature preservation cannot be demonstrated.
-  </li>
-  <li>
-    Inspect the actual sliced ridge, holes and lettering at the chosen profile
-    before approving a reduced export.
-  </li>
-</ol>
+
 <p>
   The
   <a href="https://github.com/zeux/meshoptimizer/tree/v1.2"
@@ -208,6 +101,21 @@ faq:
   only when the resulting model meets your own named feature checks.
 </p>
 
+<p>
+  Running the actual finite comparison on the original and 75% coupon in their
+  original frame, mm on both sides and 0.1 mm tolerance gives 5,000 samples per
+  direction: maximum sampled distance about 0.23290 mm, mean about 0.000512 mm,
+  and 25 of 10,000 samples above tolerance. The largest observed sample is not a
+  whole-surface maximum. A small mean can conceal a meaningful change on a
+  narrow ridge.
+</p>
+<p>
+  The 75% candidate is an observed experiment, not an approval. Inspect the
+  ridge close-up and compare the exact downloaded output in
+  <a href="{{ GuideSlug.RouteStlCompare }}">the surface comparison tool</a>.
+  Original coordinates, both millimetre assumptions and tolerance belong in the
+  record. A low global mean does not establish local feature preservation.
+</p>
 <h2>Why a requested triangle target can remain unmet</h2>
 <p>
   The installed meshoptimizer 1.2.0 simplifier takes a target index count, not a
@@ -358,3 +266,49 @@ faq:
   Identical finding counts do not prove identical defect locations. Self
   intersections and physical print success remain unchecked.
 </p>
+<h2>Record the candidate decision</h2>
+<table>
+  <caption>
+    Candidate acceptance record - unresolved questions are not passes
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Record</th>
+      <th scope="col">Question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Receiving constraint</td>
+      <td>What practical problem did this candidate solve?</td>
+    </tr>
+    <tr>
+      <td>Candidate identity</td>
+      <td>Are these the exact bytes reopened and compared?</td>
+    </tr>
+    <tr>
+      <td>Requested / actual count</td>
+      <td>What was requested and what was produced?</td>
+    </tr>
+    <tr>
+      <td>Critical feature</td>
+      <td>Which named surface or opening must survive?</td>
+    </tr>
+    <tr>
+      <td>Findings before / after</td>
+      <td>What is new, retained, unmeasured or unsupported?</td>
+    </tr>
+    <tr>
+      <td>Comparison settings</td>
+      <td>Units, coordinate frame, tolerance and samples</td>
+    </tr>
+    <tr>
+      <td>Receiving application</td>
+      <td>Did this derivative open and retain relevant layers?</td>
+    </tr>
+    <tr>
+      <td>Decision</td>
+      <td>Use for the recorded stage, keep original or return to source</td>
+    </tr>
+  </tbody>
+</table>

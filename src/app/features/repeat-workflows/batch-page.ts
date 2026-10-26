@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { reportThumbnail } from './report-thumbnail';
 import { DecimalPipe } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
@@ -52,6 +53,7 @@ type BatchFilter = (typeof BatchFilter)[keyof typeof BatchFilter];
   styleUrl: '../planning/planning-page.scss',
 })
 export class BatchPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly reportFormats = ReportFormat;
   readonly limits = WorkflowLimits;

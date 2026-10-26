@@ -2,36 +2,57 @@
 title: 'Multiple STL Shells and Disconnected Parts | InspectMesh'
 description: 'Distinguish intentional separate parts, touching bodies, overlaps and fragments using known cube examples and a bounded inspection workflow.'
 slug: stl-multiple-shells-disconnected-parts
-faq:
-  - question: 'Should I delete every extra shell?'
-    answer: 'No. Identify intended separate parts and fragments before removing geometry. Shell count alone does not identify mistakes.'
-  - question: 'Do touching shells form a valid Boolean union?'
-    answer: 'No. Point or edge contact does not establish a valid single solid. Inspect the intended design and use an appropriate CAD operation when a union is required.'
 eyebrow: CAD export and mesh interpretation
 heading: 'Multiple STL Shells and Disconnected Parts'
 ---
 
 <p>
-  Multiple shells mean disconnected surface groups under the checker's
-  connectivity rule. They may be intentional separate parts, leftover fragments
-  or overlapping bodies. Shell count alone cannot prove corruption, completeness
-  or a valid Boolean union.
+  Separate surface groups can be intended parts, fragments or overlapping
+  bodies. Identify what belongs before choosing a connectivity method or
+  removing anything. A component count depends on the method; it cannot
+  establish a complete delivery or a Boolean union.
 </p>
+<h2>Identify intended pieces</h2>
 <p>
-  Separating geometry that is already disconnected is different from cutting
-  through a connected body. A planar cut creates new boundary surfaces;
-  component selection changes which existing pieces are retained. Choose the
-  operation that matches the intended design. Use the
-  <a href="{{ GuideSlug.RouteHowToSplitAnStlFileFor3dPrinting }}"
-    >split workflow</a
-  >
-  only when a new seam is required; use the
-  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
-    >existing component review</a
-  >
-  to retain or remove already separate geometry in one exported STL.
+  List the source revision and required parts, then open the complete geometry.
+  Keep a piece when it belongs to the intended model, even if it is small.
+  Remove it only after its role is understood. If the design needs intersecting
+  bodies to become one solid, return to the source model; choosing which pieces
+  to retain does not perform a Boolean union.
 </p>
-<h2>One main body with two detached fragments</h2>
+<h2>Choose the connectivity method for the question</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Question</th>
+      <th scope="col">Implemented method</th>
+      <th scope="col">Why counts can differ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Which triangles travel together in local STL Repair selection?</td>
+      <td>Exact complete shared edges after matching coordinate triples</td>
+      <td>Point contact does not join pieces under this rule</td>
+    </tr>
+    <tr>
+      <td>How does the server quality report group components?</td>
+      <td>Exact shared-vertex connectivity</td>
+      <td>
+        Point contact can connect groups that edge selection keeps separate
+      </td>
+    </tr>
+    <tr>
+      <td>Which regions begin unsupported in sliced layers?</td>
+      <td>Receiving slicer layer/toolpath interpretation</td>
+      <td>
+        A continuous mesh can contain a region unsupported at a particular layer
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Inspect the known controls before choosing a selection</h2>
+<h3>One main body with two detached fragments</h3>
 <p>
   Download the generated
   <a href="{{ ExampleAsset.CubePlusTwoFragmentsBinaryStl }}" download
@@ -57,7 +78,7 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   >
   shows a continuous overhang that needs a different decision.
 </p>
-<h2>Two similar parts can both be intentional</h2>
+<h3>Two similar parts can both be intentional</h3>
 <p>
   Compare the generated
   <a href="{{ ExampleAsset.TwoIntendedPartsBinaryStl }}" download
@@ -68,7 +89,7 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   Keep all / Reset selection restores both. Separate parts are not evidence of
   fragments; confirm the design before changing the retained set.
 </p>
-<h2>Repeated 3MF placements are a different question</h2>
+<h3>Repeated 3MF placements are a different question</h3>
 <p>
   Download the
   <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download>two placed cubes</a>.
@@ -86,7 +107,8 @@ heading: 'Multiple STL Shells and Disconnected Parts'
   shells. That explicit unavailable state does not mean the geometry has zero
   volume.
 </p>
-<h2>Overlaps need another question</h2>
+<h2>Distinguish contact, overlap and slicer regions</h2>
+<h3>Overlaps need another question</h3>
 <p>
   The
   <a href="{{ ExampleAsset.OverlappingCubesStl }}" download
@@ -110,81 +132,52 @@ heading: 'Multiple STL Shells and Disconnected Parts'
     prove that enclosed regions are disjoint.
   </figcaption>
 </figure>
-<h2>Touching bodies and tiny fragments</h2>
 <p>
-  Two bodies touching at a point or along an edge are not automatically a
-  printable single solid or a designed assembly. Exact-coordinate welding can
-  change the connectivity result when coordinates coincide. Near-coincident
-  vertices may remain disconnected; a connectivity algorithm's result depends on
-  its welding rule.
+  Near-coincident coordinates need not weld; exact contact does not prove a
+  valid manufactured assembly. The
+  <a href="{{ GuideSlug.RouteFloatingRegionsInSlicer }}"
+    >slicer-region counterexample</a
+  >
+  shows why unsupported-layer review is distinct from counting disconnected mesh
+  groups. Intersections and nested-solid interpretation remain unsupported in
+  the collection screen.
 </p>
-<p>
-  A tiny disconnected piece could be intended text, a locating tab or an export
-  fragment. Inspect its location and compare with the design before deleting it.
-  Surface groups have no intrinsic label saying which part is a mistake. A
-  missing object can even reduce shell count while making the model less
-  complete.
-</p>
-<h2>A decision sequence</h2>
+<h2>Select a justified next action</h2>
 <ol>
+  <li>Record intended parts, unit assumption and the report method.</li>
   <li>
-    Record intended parts, source unit and revision before counting shells.
+    Inspect every group and check boundary, winding and over-shared-edge
+    findings separately.
   </li>
   <li>
-    Open the complete build and inspect each visible region and its placement.
+    Use
+    <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair piece selection</a> only
+    for already separate geometry. Every piece starts kept; Keep largest part is
+    a reversible surface-area proposal, with a confirmation for similarly sized
+    leading pieces.
   </li>
   <li>
-    Check boundaries, winding and non-manifold edges independently of shell
-    count.
+    Use
+    <a href="{{ GuideSlug.RouteHowToSplitAnStlFileFor3dPrinting }}"
+      >the split workflow</a
+    >
+    only when a new cutting seam is intended. A design union belongs in source
+    CAD.
   </li>
   <li>
-    For overlaps or touching bodies, decide whether the design requires a union,
-    separation or an intentional assembly.
-  </li>
-  <li>
-    Re-export from source CAD when a geometric design operation is required,
-    then compare all intended parts and slicer layers.
+    Download a separate selected copy. Kept triangles retain their coordinates
+    and winding; removing an outer fragment can change whole-file bounds without
+    moving a kept part.
+    <a href="{{ GuideSlug.RouteHowToCompareStlRevisions }}"
+      >Compare that exact revision</a
+    >
+    and inspect the receiving slicer.
   </li>
 </ol>
 <p>
-  Stop if you cannot identify every disconnected piece or a supposed single
-  solid contains unresolved overlaps. Do not delete a shell simply to make a
-  counter read one. For related failures,
-  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
-    >check build-item resolution</a
-  >
-  and
-  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
-    >distinguish intersection from edge connectivity</a
-  >.
-</p>
-<p>
-  The <a href="https://3mf.io/spec/">3MF core specification</a> is the source
-  for mesh resources, build items and transforms; reviewed 8 October 2026. The
-  examples are generated mathematical geometry with known coordinates, not
-  physical assemblies.
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}"
-    >Run the local collection checker</a
-  >
-  to keep independent findings and unsupported checks in a report.
-</p>
-
-<h2>Use the piece control on the same upload</h2>
-<p>
-  On
-  <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts">STL Repair</a>,
-  Try the three-part example opens the review automatically. A user-selected STL
-  also opens review when analysis finds multiple pieces; a single-piece file
-  explains why no removal is offered. Every piece starts kept. Keep largest part
-  proposes retaining the greatest surface-area piece, with triangle count and
-  stable piece ID as tie-breaks. Review the preview and manually restore any
-  intended piece before downloading. Collapsing review leaves a visible pending
-  selection; Keep all / Reset selection restores the original set.
-</p>
-<p>
-  This local selection uses exact shared edges; point contact does not join
-  surfaces. It does not identify slicer support islands, generate supports or
-  run standard server cleanup. The saved selection preserves source coordinates
-  and winding under the source STL unit assumption. Verify the downloaded copy
-  in the slicer before treating any removed piece as an export fragment.
+  Method distinctions checked against the existing local selector and server
+  ComponentTracker source. The
+  <a href="https://3mf.io/spec/">3MF Core specification</a> supplies
+  resource/build context; retained generated controls are not physical
+  assemblies.
 </p>

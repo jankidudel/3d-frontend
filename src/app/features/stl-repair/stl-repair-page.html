@@ -236,14 +236,11 @@
         inner cavity surfaces and print-in-place mechanisms can also contain
         necessary disconnected shells.
       </p>
-      <h3>How are separate shells found?</h3>
+      <h3>What does a piece finding establish?</h3>
       <p>
-        A component is a group of triangles connected through complete shared
-        edges. Exact coordinate matches are used, even for STL triangle soups;
-        there is no tolerance welding. Point contacts, small gaps and
-        intersecting surfaces with no shared edges may remain separate.
-        Component counts do not establish defects or artistic intent. Open and
-        non-manifold components have area and bounds, but no inferred reliable
+        The connectivity method is described beside file selection above.
+        Component counts do not establish defects or design intent. Open and
+        non-manifold pieces have area and bounds, but no inferred reliable
         volume. Zero-area faces require an explicit standard repair first.
       </p>
       <h3>Can size identify unwanted pieces?</h3>
@@ -387,6 +384,21 @@
       still does not certify strength, fit or a physical print.
       <a [href]="routeUrl.StlCompare">Compare the revised surfaces</a> before
       accepting it.
+    </p>
+  </section>
+  <section class="content">
+    <h2>Review the saved revision</h2>
+    <p>
+      After local piece selection or explicit server cleanup, download the
+      changed copy and retain the original. Compare the exact files in original
+      coordinates using the same intended unit assumption.
+    </p>
+    <p>
+      <a [href]="guideRouteUrl.RouteHowToCompareStlRevisions"
+        >Review intended changes and named features</a
+      >
+      before replacing a workflow input. Cleanup does not reconstruct a missing
+      opening, establish design intent or perform a Boolean union.
     </p>
   </section>
 </main>

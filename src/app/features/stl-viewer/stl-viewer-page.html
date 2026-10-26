@@ -158,23 +158,31 @@
     </section>
   }
   <section class="content">
-    <h2>How to use the STL Viewer</h2>
+    <h2>Inspect an export before releasing it</h2>
     <ol>
-      <li>Choose or drop an STL file.</li>
+      <li>Confirm the intended revision and all visible required parts.</li>
+      <li>Establish the coordinate unit from a source reference.</li>
       <li>
-        Rotate with drag, zoom with the wheel or pinch, and pan with right drag
-        or two fingers.
-      </li>
-      <li>Review the model bounds and complexity.</li>
-      <li>
-        Choose the intended STL unit, activate Measure distance, then select two
-        visible mesh points.
+        Inspect a curve silhouette and a named opening or contact face. The
+        changed-square-hole and curve controls are available in the existing
+        example selector.
       </li>
       <li>
-        Use Inspect cross-section to move a cut through the displayed mesh and
-        look for internal geometry that is hard to see from the outside.
+        Choose
+        <a [routerLink]="routeUrl.QualityCheck">supported topology checking</a>
+        or
+        <a [href]="guideRouteUrl.RouteHowToCompareStlRevisions"
+          >revision review</a
+        >
+        for the remaining question.
       </li>
     </ol>
+    <p>
+      Rotate by dragging, zoom with the wheel or pinch, and pan with right drag
+      or two fingers. With the intended unit selected, Measure distance picks
+      two visible mesh points. Inspect cross-section moves a display cut through
+      the model; it does not alter the saved file.
+    </p>
     <h2>What the Viewer shows</h2>
     <p>
       Try the owned curved control linked below: with a millimetre assumption,

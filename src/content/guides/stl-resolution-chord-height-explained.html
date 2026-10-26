@@ -1,37 +1,23 @@
 ---
 title: 'STL Resolution: Chord Height and Angular Tolerance | InspectMesh'
-description: 'Understand chord deviation, angular tolerance and triangle count with a circular cross-section calculation and a practical export check.'
+description: 'Choose source tessellation settings using chord and angular limits. Inspect 24- and 72-segment curve controls with equal bounds and different approximations.'
 slug: stl-resolution-chord-height-explained
-faq:
-  - question: 'Does a chord tolerance certify a printed dimension?'
-    answer: 'No. It describes a mesh approximation setting; physical output also depends on the process and the particular exporter.'
-  - question: 'Do equal triangle counts mean equal curve accuracy?'
-    answer: 'No. Shape, triangle distribution, radius and export constraints determine approximation error. A count alone does not bound deviation.'
 eyebrow: CAD export and mesh interpretation
 heading: 'STL Resolution: Chord Height and Angular Tolerance'
 ---
 
 <p>
-  Chord height limits how far a straight mesh approximation departs from a
-  curved source. Angular tolerance limits changes in surface direction. Triangle
-  count is an outcome of those settings and the shape; it is not a universal
-  measure of dimensional accuracy.
+  Choose source tessellation settings from the curve you need to approximate,
+  then inspect the actual exported facets. Chord deviation, angular constraints
+  and triangle count describe mesh geometry; none certifies a printed dimension.
 </p>
-<h2>Verify the curve calculation, then inspect the actual export</h2>
+<h2>What each setting means</h2>
 <p>
-  The circular values below are independently checked by the fixture regression
-  suite: R = 10 mm gives 0.0855514 mm at 24 equal segments and 0.0095178 mm at
-  72. With a 0.01 mm target, 70 segments miss the ideal circular condition and
-  71 meet it. This verifies arithmetic, not an installed CAD export or a
-  physical tolerance.
-</p>
-<p>
-  After exporting, inspect a section through the actual curved feature and
-  compare its facet distribution with the CAD radius. Two exports with the same
-  total triangle count can distribute triangles differently.
-  <a href="{{ GuideSlug.RouteExamples }}">The detail-loss control</a> and
-  <a href="{{ GuideSlug.RouteStlCompare }}">sampled comparison</a> help
-  illustrate why a bound or global count cannot recover an exact analytic curve.
+  Chord height/deviation is a length between the source curve and its straight
+  approximation. Angular tolerance limits a change of direction. Other
+  constraints, such as minimum facet width, can alter the result. A total
+  triangle count does not specify where detail is distributed. Keep the
+  exporter's units and parameter meanings explicit.
 </p>
 <h2>A circular cross-section gives a checkable example</h2>
 <p>
@@ -85,6 +71,84 @@ heading: 'STL Resolution: Chord Height and Angular Tolerance'
   that idealized cross-section condition. It does not establish a 0.01 mm
   tolerance for an arbitrary three-dimensional export or a printed part.
 </p>
+<h2>Inspect the generated curve pair</h2>
+<figure>
+  <img
+    src="/examples/export-fidelity/curve-segments.svg"
+    width="760"
+    height="390"
+    alt="24 and 72 segment cross-sections against separate dashed ideal circles, at the same scale"
+  />
+  <figcaption>
+    Generated cross-sections with true gaps, not exaggerated. Dashed circles are
+    analytical references; no CAD export or print was observed.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Generated construction</th>
+      <th scope="col">Triangles</th>
+      <th scope="col">Binary bytes</th>
+      <th scope="col">Reopened X / Y / Z</th>
+      <th scope="col">Analytical circle gap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>24 segments; cap fans and side quads</td>
+      <td>96</td>
+      <td>4,884</td>
+      <td>20 × 20 × 20 mm</td>
+      <td>About 0.08555 mm</td>
+    </tr>
+    <tr>
+      <td>72 segments; same construction</td>
+      <td>288</td>
+      <td>14,484</td>
+      <td>20 × 20 × 20 mm</td>
+      <td>About 0.00952 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  These polygon controls reach the same outer X and Y bounds because both
+  include the axis-extreme vertices. Between those vertices, their flat facets
+  depart from the circle by different amounts. A matching bounding box cannot
+  verify curve accuracy.
+</p>
+<ol>
+  <li>
+    Download
+    <a href="/examples/export-fidelity/circle-24-segments.stl" download
+      >the 24-segment control</a
+    >
+    and
+    <a href="/examples/export-fidelity/circle-72-segments.stl" download
+      >the 72-segment control</a
+    >. Their designed circumradius is 10 mm and height is 20 mm; a vertex lies
+    on +X.
+  </li>
+  <li>
+    Open each in <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a>, assume
+    millimetres and look down Z. Compare the silhouette at the same scale.
+    Cross-section display can help inspect the intermediate facets; mesh point
+    picks do not recover an analytic cylinder.
+  </li>
+  <li>
+    Review
+    <a href="/examples/export-fidelity/observations.json" download
+      >the actual serialized/reopened observations</a
+    >. Independent edge-incidence, winding, bounds and count checks ran locally.
+    Sagitta remains an ideal-circle calculation, not a measured exporter setting
+    or physical result.
+  </li>
+  <li>
+    When exporting your own CAD, retain its radius, exact settings and
+    application version separately. These files were generated mathematically,
+    not by Fusion or Onshape.
+  </li>
+</ol>
 <h2>Why the settings remain separate</h2>
 <p>
   Chord deviation controls geometric departure; angular tolerance controls
@@ -105,57 +169,24 @@ heading: 'STL Resolution: Chord Height and Angular Tolerance'
     href="https://help.autodesk.com/view/fusion360/ENU/?contextId=MAKE-3D-PRINT-CMD"
     >Autodesk's mesh export help</a
   >
-  describes surface deviation and refinement controls. Reviewed 8 October 2026;
+  describes surface deviation and refinement controls. Reviewed 26 October 2026;
   installed CAD builds were not run. Check the labels and units in your exact
   version.
 </p>
-<h2>
-  Inspect two derivatives without confusing tessellation with print resolution
-</h2>
-<ol>
-  <li>Keep a CAD cylinder with a known radius and named length.</li>
-  <li>
-    Export two mesh derivatives with recorded settings and identical unit/body
-    selection.
-  </li>
-  <li>
-    Open both at the intended physical scale and inspect the faceted
-    cross-section.
-  </li>
-  <li>
-    Compare global bounds and important source dimensions, then inspect the
-    surfaces bidirectionally.
-  </li>
-  <li>Check the intended slicer's handling and layer preview.</li>
-</ol>
+<h2>Stop when the required source approximation cannot be verified</h2>
 <p>
-  More triangles can reduce curve approximation error while leaving the
-  printer's process limitations unchanged. A low triangle count on six flat
-  faces can exactly describe a cube, while the same count on a curved object is
-  coarse. File size also changes with ASCII versus binary encoding without
-  changing the intended surface.
-</p>
-<p>
-  Stop refining when the required source-shape approximation is met and the file
-  remains practical for the receiver. If a tight interface depends on an
-  analytic cylinder, keep the CAD dimension as the authority.
-  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">Mesh point measurements</a>
-  cannot recover the missing exact curve. Use
-  <a href="{{ GuideSlug.RouteStlCompare }}">surface comparison</a> to inspect
-  derivatives and
-  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">file reduction</a> only with
-  a feature-preservation check.
-</p>
-
-<h2>Later simplification does not inherit the CAD export guarantee</h2>
-<p>
-  The circular sagitta examples describe source tessellation. A later reduction
-  acts on triangles, not the original analytic curve; its target percentage and
-  error flag do not re-establish the CAD chord-height condition. Keep the source
-  export settings and review the actual derivative's surfaces and named
-  features.
-  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
-    >Requested versus actual ridge candidates</a
+  No universal chord tolerance or angular setting suits every shape. Return to
+  the analytic source when an interface depends on a cylinder or datum that the
+  mesh cannot establish.
+  <a href="{{ GuideSlug.RouteStlTriangleCountExplained }}"
+    >Count interpretation</a
   >
-  demonstrate a different operation from source meshing.
+  explains complexity;
+  <a href="{{ GuideSlug.RouteHowToCompareStlRevisions }}"
+    >revision comparison</a
+  >
+  separates finite surface samples from named-feature checks. Later
+  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}">simplification</a>
+  acts on triangles and does not inherit the original CAD tessellation
+  condition.
 </p>

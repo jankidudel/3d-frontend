@@ -1,160 +1,201 @@
 ---
 title: 'Compare STL Revisions With Geometry Controls | InspectMesh'
-description: 'Review a repaired or revised STL using known dimensions, original coordinates and sampled surface differences, with an unchanged retriangulation control.'
+description: 'Compare STL revisions with unchanged, widened and same-bounds changed-hole controls. Record coordinate assumptions, sampled findings and critical features.'
 slug: how-to-compare-stl-revisions
 eyebrow: Practical print workflow
 heading: 'How to Review STL Revisions Without Losing Intended Geometry'
-faq:
-  - question: 'Can different triangles describe the same STL surface?'
-    answer: 'Yes. The unchanged cube control changes a face diagonal while preserving the surface. Point-to-triangle sampling avoids treating different vertex placement alone as a shape change.'
-  - question: 'Should I centre both revisions automatically?'
-    answer: 'Start in the original coordinates. Explicit centre translation can help inspect shape when placement is intentionally irrelevant, but it can hide a meaningful move and does not register rotation or correct units.'
 ---
 
 <p>
-  A revision review asks whether the changes are the ones you intended. Start in
-  the original coordinate frame, confirm unit assumptions for both files, and
-  use a known control before interpreting a different export. File bytes,
-  triangle counts and bounding boxes answer different questions from surface
-  geometry.
+  Compare the revision against the change you intended. Confirm units and the
+  coordinate frame, inspect overall changes, then check the named features that
+  matter. Equal dimensions and triangle counts can conceal a changed opening.
 </p>
-<h2>A reproducible control and a known change</h2>
+<h2>State what should change and what must remain</h2>
 <p>
-  Open <a href="{{ GuideSlug.RouteStlCompare }}">the STL comparison tool</a> and
-  run the unchanged retriangulation control. Both models describe a 20 mm cube,
-  but one face uses the other diagonal. Triangle connectivity changes while the
-  surface stays the same. The bidirectional point-to-triangle samples should be
-  effectively zero apart from floating-point noise. A nearest-vertex method
-  could give misleading distances here.
+  Retain both exact filenames/revisions and optional local hashes. Name the
+  expected change and a feature that must remain: an opening width, contact
+  face, ridge or source datum. The tool does not automatically identify holes or
+  turn mesh picks into CAD feature measurements.
 </p>
+<h2>Choose units and the coordinate frame</h2>
 <p>
-  Then run the widened-cube example: before is 20 × 20 × 20 mm, after is 24 × 20
-  × 20 mm in the same frame. The moved outside face is 4 mm away from the old
-  face. Much of the original surface remains coincident; one average value
-  therefore cannot describe every local change.
+  Start with original coordinates and independently confirmed units. A
+  deliberate coordinate move is part of that comparison. Explicit bounding-box
+  centre alignment translates only; it can hide placement changes and cannot
+  rotate, rescale or register features. Record the applied translation when
+  placement is intentionally irrelevant.
 </p>
-<h2>Choose the review frame deliberately</h2>
+<h2>Run the unchanged and widened controls</h2>
+<p>
+  In <a href="{{ GuideSlug.RouteStlCompare }}">STL comparison</a>, the unchanged
+  retriangulation control changes one face diagonal on a 20 mm cube while
+  preserving its surface. The bidirectional point-to-triangle method gives
+  effectively zero apart from floating-point noise. The widened control changes
+  20 × 20 × 20 to 24 × 20 × 20 mm; the moved outer face is 4 mm from its old
+  location. A mean does not describe every local change.
+</p>
+<h2>Compare a changed hole with equal bounds and count</h2>
+<figure>
+  <img
+    src="/examples/export-fidelity/changed-hole.svg"
+    width="760"
+    height="390"
+    alt="Two 40 by 30 mm outer rectangles with visibly different 8 and 6 mm square openings at one scale"
+  />
+  <figcaption>
+    Deliberate mathematical revision viewed from above. The pair is not a
+    decimator result, CAD export or physical fit experiment.
+  </figcaption>
+</figure>
+<p>
+  These two generated files have the same outside dimensions, triangle count and
+  standard binary byte length. The square opening changes from 8 mm to 6 mm.
+  Count and bounds therefore cannot approve this revision. Compare the surfaces,
+  then verify the opening against the design requirement.
+</p>
 <table>
   <thead>
     <tr>
-      <th>Situation</th>
-      <th>First review</th>
+      <th scope="col">Property</th>
+      <th scope="col">Original</th>
+      <th scope="col">Deliberate revision</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Repair exported in the same coordinate frame</td>
-      <td>
-        Original coordinates; confirm that meaningful holes and ribs survive
-      </td>
+      <td>Opening</td>
+      <td>8 × 8 mm, through Z</td>
+      <td>6 × 6 mm, through Z</td>
     </tr>
     <tr>
-      <td>Export has a deliberate coordinate move</td>
-      <td>Keep the move visible; compare with the expected placement</td>
+      <td>Outer spans</td>
+      <td>40 × 30 × 10 mm</td>
+      <td>Identical</td>
     </tr>
     <tr>
-      <td>Only placement should be ignored</td>
-      <td>
-        Explicit centre translation; record the applied offset and inspect shape
-        again
-      </td>
+      <td>Triangles / standard binary bytes</td>
+      <td>32 / 1,684</td>
+      <td>32 / 1,684</td>
+    </tr>
+    <tr>
+      <td>Analytical enclosed volume</td>
+      <td>11,360 mm³</td>
+      <td>11,640 mm³</td>
     </tr>
   </tbody>
 </table>
 <p>
-  Centre translation is not automatic rigid registration. It can hide a
-  purposeful placement change and does not rotate or rescale a model. Do not
-  normalise both models to the same size to make an overlay look tidy.
+  <a href="/examples/export-fidelity/square-hole-8mm.stl" download
+    >Download the original</a
+  >
+  and
+  <a href="/examples/export-fidelity/square-hole-6mm.stl" download
+    >the revised opening</a
+  >. Both exact serialized files were independently reopened with closed,
+  consistently wound edge incidence, checked bounds and volumes. Actual existing
+  local comparison used original coordinates, millimetres on both sides, 0.1 mm
+  tolerance and 5,000 samples per direction:
 </p>
-<h2>Interpret a sampled result</h2>
-<p>
-  The tool distributes finite samples over surface area and measures nearest
-  points on target triangles in both directions. It displays the sample count,
-  tolerance, sampled maximum and samples over tolerance. A value below tolerance
-  is evidence about those points, not proof of geometric equality or a certified
-  maximum error. Small features can fall between samples.
-</p>
-<p>
-  For a repair handoff, retain the original file, revised file, unit
-  assumptions, selected alignment and report. Run
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}">batch topology checks</a> on
-  both, then verify the revised copy in your slicer. No Boolean difference, CAD
-  tolerance certification or physical testing is implied.
-</p>
-<h2>Technical basis</h2>
-<p>
-  The numerical controls are owned software fixtures generated from cube
-  vertices and explicitly changed face indices. The implementation uses triangle
-  queries from
-  <a href="https://github.com/gkjohnson/three-mesh-bvh">three-mesh-bvh</a>;
-  method details and tests are recorded with the application. These examples are
-  not scanned physical parts.
-</p>
-
-<h2>Bounds cannot identify a changed hole</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Output</th>
-      <th scope="col">What it answers</th>
-      <th scope="col">What it cannot establish</th>
+      <th scope="col">Direction</th>
+      <th scope="col">Maximum among samples</th>
+      <th scope="col">Mean sampled distance</th>
+      <th scope="col">Samples above tolerance</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Byte equality</td>
-      <td>Whether these files have exactly the same bytes</td>
-      <td>Different encoding or face order can preserve the same surface</td>
+      <td>Original to revision</td>
+      <td>1.412439 mm</td>
+      <td>0.074168 mm</td>
+      <td>392 / 5,000</td>
     </tr>
     <tr>
-      <td>Bounding dimensions</td>
-      <td>Whether outer axis spans changed</td>
-      <td>A smaller internal hole can leave every bound unchanged</td>
-    </tr>
-    <tr>
-      <td>Surface area / screened volume</td>
-      <td>Aggregate geometry changes under supported validity checks</td>
-      <td>The location or functional importance of a change</td>
-    </tr>
-    <tr>
-      <td>Bidirectional samples</td>
-      <td>
-        Nearest-triangle distances at finitely many area-distributed points
-      </td>
-      <td>Exhaustive local-feature equivalence or a certified maximum error</td>
+      <td>Revision to original</td>
+      <td>1.000000 mm</td>
+      <td>0.067143 mm</td>
+      <td>364 / 5,000</td>
     </tr>
   </tbody>
 </table>
 <p>
-  The implemented comparison does not perform automatic rotation registration, a
-  Boolean difference or a feature-by-feature CAD comparison. Translation changes
-  original-coordinate distances; explicit centre alignment can remove a
-  placement change but cannot correct a rotated export. A unit mismatch
-  multiplies every dimension. Confirm units before considering alignment and
-  keep the source revision names in the downloaded report.
+  <a href="/examples/export-fidelity/observations.json" download
+    >Download settings, hashes and actual local observations</a
+  >. These are local-function results, not a browser interaction,
+  deployed-server result or physical test. Finite samples can miss a critical
+  feature; their maximum is not a guaranteed bound over the whole surface.
+</p>
+<h2>Record the decision and check the receiving application</h2>
+<p>
+  A clean topology report and a low average surface distance answer different
+  questions. Neither confirms that an opening still fits the intended mating
+  part. Keep the design requirement in the review record and verify that feature
+  directly in the source or an appropriate measuring application.
+</p>
+<table>
+  <caption>
+    Blank revision review record
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Field</th>
+      <th scope="col">Record</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Before / after filenames and optional hashes</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Expected change and features to preserve</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Units on both sides</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Alignment and applied translation</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Sampling count and tolerance</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Observed changes</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Unresolved feature checks</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Next action</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  <a href="/examples/export-fidelity/revision-review-blank.csv" download
+    >Download the blank revision record (CSV)</a
+  >
 </p>
 <p>
-  Reproduce the 20-to-24 mm widened-cube control and unchanged retriangulation
-  control in <a href="{{ GuideSlug.RouteStlCompare }}">revision comparison</a>.
-  Tests verify the known 4 mm surface displacement and near-zero unchanged
-  surface. The results are software calculations, not measurements of printed
-  cubes.
-</p>
-
-<h2>Compare a reducer candidate without replacing this pair</h2>
-<p>
-  The <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">reducer</a> now offers
-  an explicit Compare selected candidate action. It runs inline with this tool's
-  shared bidirectional method, retaining the original and exact reopened
-  candidate bytes. It uses original coordinates, the same assumed unit on both
-  sides, 5,000 samples per direction and a user-entered millimetre tolerance.
-  Its selected-candidate report retains both directions, settings and
-  limitations.
-</p>
-<p>
-  For deliberate centre alignment or independent units, download the original
-  and selected candidate and open them here manually. No active comparison pair
-  is silently replaced. A source larger than 5 MiB or 100,000 triangles remains
-  outside the comparison budget; use another application rather than treating
-  unavailable evidence as success.
+  Recheck
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}">independent file findings</a>
+  and the actual receiving slicer layers. The
+  <a href="{{ GuideSlug.RouteStlFileSizeReducer }}"
+    >reducer's inline comparison</a
+  >
+  retains its original and exact reopened candidate, with explicit execution and
+  no silent replacement of this comparison pair. Its method has the same 5
+  MiB/100,000-triangle comparison budget. The
+  <a href="https://github.com/gkjohnson/three-mesh-bvh">triangle-BVH method</a>
+  is a bounded surface calculation, not Boolean difference or certified
+  metrology.
 </p>

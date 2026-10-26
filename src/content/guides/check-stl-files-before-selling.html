@@ -1,161 +1,218 @@
 ---
 title: 'Check STL Files Before Selling: File Handoff | InspectMesh'
-description: 'Prepare a repeatable model-file handoff with units, geometry findings, supported checks and known limits before distributing an STL collection.'
+description: 'Review the intended model inventory, retain per-file findings and prepare an exact-revision release record using a generated kit with an unresolved cover.'
 slug: check-stl-files-before-selling
 eyebrow: Practical print workflow
 heading: 'A Practical File-Quality Handoff for STL Model Sellers'
-faq:
-  - question: 'What should a model collection report include?'
-    answer: 'Record unit assumptions, dimensions, completed topology findings, sampled checks, skipped checks, settings and the next review action. A clean mesh screen is not a print guarantee.'
-  - question: 'Does a clean report establish permission to sell?'
-    answer: 'No. The report describes supported mesh checks only. Rights, licensing, suitability for a particular use and the actual sliced result require separate review.'
 ---
 
 <p>
-  Before releasing a model collection, verify that every intended component is
-  present, name the physical scale and keep a review record for the exact
-  delivered versions. A geometry report documents completed checks; it cannot
-  promise a successful print on every customer machine.
+  Deliver the intended model files, their coordinate interpretation and a review
+  record for those exact revisions. Check the inventory separately from mesh
+  findings: a clean base file cannot tell you that the required spacer is
+  missing.
 </p>
+<h2>Declare the intended delivery inventory</h2>
 <p>
-  Start with
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}">the mixed example collection</a
-  >, then select your own files using the same settings. The closed 20 mm cube,
-  open-face cube and malformed input demonstrate three independent outcomes.
-  These are generated software fixtures, without physical print testing.
+  This worked record uses the existing
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}"
+    >Try example kit collection action</a
+  >: one base, one deliberately open-face cover and one spacer. The generated
+  boxes are not a mechanically fitted enclosure, an executed CAD export or a
+  validated physical print. No operator identity or sales-ready release is
+  invented.
 </p>
-<h2>Worked release checklist: a three-file enclosure kit</h2>
-<p>
-  Hypothetical delivery: base, lid and spacer, all intended in millimetres.
-  Declare the expected overall bounds and the number of separate pieces before
-  reviewing. A missing spacer is a delivery error even if the base has no
-  topology findings.
-</p>
+<h2>Run the existing kit and inspect actual findings</h2>
 <table>
+  <caption>
+    Filled generated-kit record - unresolved cover remains visible
+  </caption>
   <thead>
     <tr>
-      <th scope="col">Stage</th>
-      <th scope="col">Record</th>
-      <th scope="col">Release decision</th>
+      <th scope="col">File / quantity / revision</th>
+      <th scope="col">Reference X / Y / Z</th>
+      <th scope="col">Serialized identity</th>
+      <th scope="col">Local topology observation</th>
+      <th scope="col">SHA-256</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Inventory</td>
-      <td>base-r03.stl, lid-r03.stl, spacer-r02.stl; one each</td>
-      <td>Compare actual package contents with this manifest</td>
-    </tr>
-    <tr>
-      <td>Scale</td>
-      <td>Base 80 × 60 × 20 mm; lid 80 × 60 × 3 mm; spacer 10 × 10 × 5 mm</td>
       <td>
-        Ask the author if the known dimension disagrees; do not guess from
-        appearance
+        <a href="/examples/export-fidelity/kit-base-r01.stl" download
+          >kit-base-r01.stl</a
+        >; one; r01
+      </td>
+      <td>60 × 40 × 4 mm</td>
+      <td>684 bytes; 12 triangles</td>
+      <td>0 boundary edges; volume 9600 mm³</td>
+      <td>
+        <code
+          >2ed5096dadf3b28397083a787b0bb03bfa97e685a65fc085b4964244844c2cfc</code
+        >
       </td>
     </tr>
     <tr>
-      <td>Mesh checks</td>
       <td>
-        Completed edge/winding checks, intended shells, wall threshold, skipped
-        fit
+        <a href="/examples/export-fidelity/kit-cover-review-r01.stl" download
+          >kit-cover-review-r01.stl</a
+        >; one; r01
       </td>
+      <td>60 × 40 × 2 mm</td>
+      <td>584 bytes; 10 triangles</td>
+      <td>4 boundary edges; volume unavailable</td>
       <td>
-        Review each result independently; failed and skipped are not passes
-      </td>
-    </tr>
-    <tr>
-      <td>Correction</td>
-      <td>Retain base-r02.stl and separately export base-r03.stl</td>
-      <td>
-        Compare original and corrected surfaces plus affected holes and mating
-        faces
+        <code
+          >524a1b2c0cdc2fe0f9f649e47a2ca84fa95cd40894ba720d30ad72dd417722ad</code
+        >
       </td>
     </tr>
     <tr>
-      <td>Slicing</td>
-      <td>Target profile, orientation and affected-layer observations</td>
       <td>
-        Verify the receiving slicer; label any physical testing separately
+        <a href="/examples/export-fidelity/kit-spacer-r01.stl" download
+          >kit-spacer-r01.stl</a
+        >; one; r01
       </td>
-    </tr>
-    <tr>
-      <td>Package</td>
+      <td>8 × 8 × 12 mm</td>
+      <td>684 bytes; 12 triangles</td>
+      <td>0 boundary edges; volume 768 mm³</td>
       <td>
-        Three named files, manifest, report, assembly note and applicable
-        licence
+        <code
+          >100d07335e73703d6c9e67b813944bbe6d3b7459b9d68c80513734237668fdf6</code
+        >
       </td>
-      <td>Reopen the delivered copies rather than only the working folder</td>
     </tr>
   </tbody>
 </table>
-<h2>Sample delivery manifest</h2>
-<pre>
-Project: example-enclosure-kit
-Release: 2026-10-07-r03
-STL coordinate assumption: millimetres
-Parts: base-r03.stl (1), lid-r03.stl (1), spacer-r02.stl (1)
-Design references: base width 80 mm; lid width 80 mm
-Review: collection-review-2 JSON + printable report
-Change: base hole corrected; compare r02 against r03
-Limitations: no physical print evidence; fit skipped without a profile
-Recipient action: verify mating features and sliced layers</pre>
 <p>
-  This manifest is a hypothetical template, not a measurement of a supplied kit.
-  Use the actual filenames, measured bounds and quantities. Keep geometry files
-  separate from the report history; browser-local reports can disappear when
-  browser data is cleared. Export the report needed for your release record.
-</p>
-<h2>Compare repaired exports before publishing</h2>
-<p>
-  <a href="{{ GuideSlug.RouteStlCompare }}">Compare STL revisions</a> in
-  original coordinates first. Triangle counts can change with retriangulation
-  while the surface remains the same; bounds can stay the same while a hole
-  changes. Record both STL unit assumptions, any centre translation and review
-  tolerance. Inspect functional details individually because surface sampling
-  can miss them.
+  All three files completed parsing/checking under a millimetre STL assumption,
+  1.2 mm sampled-wall review threshold and no selected printer. Completed
+  processing is not approval: the cover has four boundary edges and unavailable
+  volume. Nominal printer fit is skipped; intersections, nested-solid
+  interpretation, supports and physical performance are outside this screen.
 </p>
 <p>
-  Do not treat an intentional separate shell as something to delete. If the
-  intended cavity, joint or moving component is unclear, return to source CAD.
-  Recheck the exported correction and the final delivery package after changes.
-</p>
-<h2>Write customer-facing limitations</h2>
-<p>
-  Example note: “File findings were reviewed in millimetres using the attached
-  settings. Printer fit was skipped. Self intersections, supports, material
-  suitability and physical assembly are not certified by these checks. Confirm
-  the intended dimensions and review your slicer layers before printing.”
-  Replace this with what actually ran, including failures; rights to distribute
-  are a separate requirement.
-</p>
-<p>
-  For customer-supplied work, use
-  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
-    >the intake decision workflow</a
-  >. To begin a release,
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}"
-    >run a local collection review</a
-  >, export its findings and keep version names consistent.
-</p>
-
-<h2>File handoff versus physical production quote</h2>
-<p>
-  A model-file handoff includes the named revisions, units, manifest, licence
-  scope and bounded geometry evidence. It does not include physical parts,
-  sliced material, machine availability, finishing or a guaranteed delivery date
-  unless those are separately agreed and evidenced.
-</p>
-<p>
-  For physical production, resolve
-  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
-    >customer intake</a
+  The
+  <a href="/examples/export-fidelity/kit-collection-report.json" download
+    >actual collection JSON</a
   >
-  first, record
-  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}"
-    >the plate/order production scope</a
-  >, then use
-  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}"
-    >the pricing workflow</a
-  >. Keep these records distinct from the digital file-release manifest; do not
-  attach a per-part production price to file quality alone.
+  and
+  <a href="/examples/export-fidelity/kit-collection-report.csv" download
+    >CSV report</a
+  >
+  were generated through the existing local report functions. They retain
+  per-file findings, settings and skipped/review states. This is a reproducible
+  local-function observation, not a claim about the deployed UI.
+</p>
+<h2>Check inventory separately and verify saved revisions</h2>
+<p>
+  Select only base and cover to illustrate an omission: the human inventory
+  review notices the required spacer is absent; the checker does not know that
+  requirement. Remaining reports can be unchanged. Compare exact output names
+  and quantities with the intended release, preserve prior revisions and
+  <a href="{{ GuideSlug.RouteHowToCompareStlRevisions }}"
+    >compare a changed derivative</a
+  >
+  before replacing it.
+</p>
+<h2>Prepare the recipient record</h2>
+<table>
+  <caption>
+    Blank reusable release manifest - unanswered fields do not imply a pass
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Field</th>
+      <th scope="col">Record</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Project / release</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Prepared by / date</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Intended files and quantity</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Delivered filename / revision / SHA-256 where available</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>STL coordinate unit or relevant 3MF package note</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Named reference dimensions</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Required features / intended separate pieces</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Checks actually completed and method/settings</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Failed / skipped / unsupported / unresolved checks</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Changes since prior release</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Slicer review, if actually performed</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Physical testing, if actually performed</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Recipient's next action</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Release decision and unresolved owner</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  <a href="/examples/export-fidelity/kit-release-record.json" download
+    >Download the filled kit release record (JSON)</a
+  >
+  or
+  <a href="/examples/export-fidelity/model-release-blank.csv" download
+    >the separate blank manifest (CSV)</a
+  >. Keep original model files with the report: browser history contains
+  labels/findings, not geometry or a cloud backup. For general checks use
+  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
+    >the existing preflight record</a
+  >.
+</p>
+<h2>Release decision: hold the unresolved demonstration</h2>
+<p>
+  Do not release this kit as unconditionally ready to sell or print. The source
+  author/operator must resolve what the cover should contain and re-export if
+  the missing face is unintended. Slicer review and physical testing are
+  unperformed, not passed. The record's prepared-by and prior-release fields
+  remain unknown. A quotation or licence entitlement cannot be inferred from
+  mesh findings.
+</p>
+<p>
+  A model-file delivery differs from
+  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
+    >physical-production intake</a
+  >: production needs its own agreed material, sliced scope, work and pricing.
+  Keep rights/licence permissions and use suitability as separate
+  responsibilities; these generated controls establish neither a customer's
+  rights nor manufactured fit.
 </p>

@@ -75,6 +75,10 @@ export class ComparePage {
   readonly units = ModelUnits;
   readonly before = signal<Revision | null>(null);
   readonly after = signal<Revision | null>(null);
+  readonly exampleSource = computed(() => ({
+    before: this.before(),
+    after: this.after(),
+  }));
   readonly beforeUnit = signal<ModelUnits>(ModelUnits.Millimetres);
   readonly afterUnit = signal<ModelUnits>(ModelUnits.Millimetres);
   readonly alignment = signal<Alignment>(Alignment.Original);

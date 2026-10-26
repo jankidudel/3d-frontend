@@ -85,6 +85,18 @@
           [disabled]="busy()"
       /></label>
     </div>
+    <p>
+      This report describes the selected files. Compare their names and
+      quantities with your intended delivery inventory as well. A missing
+      required file can leave the remaining reports unchanged. The deliberately
+      open-face cover remains unresolved in the
+      <a href="/examples/export-fidelity/kit-release-record.json" download
+        >filled kit release record</a
+      >.
+      <a [href]="guideRouteUrl.RouteCheckStlFilesBeforeSelling"
+        >Prepare the recipient manifest</a
+      >.
+    </p>
     <div class="batch-actions">
       <button type="button" (click)="example()" [disabled]="busy()">
         Run mixed example collection

@@ -5,7 +5,7 @@ import {
   AnalyticsEvent,
   AnalyticsService,
 } from '../../core/analytics/analytics.service';
-import { findPublicExample, publicExamples } from './example-registry';
+import { findPublicExample, publicExampleChoices } from './example-registry';
 
 export async function fetchPublicExample(
   id: string,
@@ -96,7 +96,9 @@ export async function fetchPublicExample(
         Downloads this public control, then opens it locally.
         {{
           active()
-            ? 'Replaces your current model and result. Preserve any unsaved output first.'
+            ? tool() === '/stl-compare'
+              ? 'Replaces both revision slots and the result. Preserve any unsaved output first.'
+              : 'Replaces your current model and result. Preserve any unsaved output first.'
             : 'Your own file can still be chosen above.'
         }}
       </p>
@@ -108,7 +110,9 @@ export async function fetchPublicExample(
       >
         {{
           active()
-            ? 'Replace current model with example'
+            ? tool() === '/stl-compare'
+              ? 'Replace both revision slots with example'
+              : 'Replace current model with example'
             : 'Load example locally'
         }}
       </button>
@@ -144,9 +148,7 @@ export class ExampleLoader {
   readonly busy = input(false);
   readonly load =
     input.required<(files: readonly File[], id: string) => Promise<void>>();
-  readonly choices = computed(() =>
-    publicExamples.filter((example) => example.tools.includes(this.tool())),
-  );
+  readonly choices = computed(() => publicExampleChoices(this.tool()));
   private readonly requested =
     inject(ActivatedRoute).snapshot.queryParamMap.get('example') ?? '';
   readonly selectedId = signal('');

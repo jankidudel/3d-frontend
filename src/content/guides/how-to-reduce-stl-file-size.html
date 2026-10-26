@@ -4,19 +4,54 @@ description: Compare measured ASCII, binary and simplified STL outputs, then cho
 slug: how-to-reduce-stl-file-size
 eyebrow: STL transfer guide
 heading: How to Reduce STL File Size
-faq:
-  - question: Does ZIP create a smaller slicer-ready STL?
-    answer: No. ZIP can help transfer, but the receiver normally needs the extracted STL.
-  - question: Why can a 75% target output have a different triangle count?
-    answer: The target is a request to the simplifier. Its topology constraints and algorithm can produce a different count; reparse the exact export.
 ---
 
 <p>
-  If you need a smaller transferable STL, check its encoding first. Re-encode
-  ASCII as binary when the receiver accepts it; reduce triangles only when a
-  smaller mesh is still needed and local detail can be reviewed. Keep the
-  original until the receiving slicer opens the exact new file.
+  Identify what must become smaller: a transfer package, the STL's stored bytes
+  or the triangle workload in the receiving application. Those need different
+  operations. Preserve the original and accept a derivative only after the
+  receiver opens it and the required features survive review.
 </p>
+<h2>Choose by the receiving constraint</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Constraint</th>
+      <th scope="col">Operation</th>
+      <th scope="col">Verification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Only the transfer package is large</td>
+      <td>Archive compression, with the STL extracted by the receiver</td>
+      <td>
+        The intended STL reopens after extraction; no geometry improvement
+        claimed
+      </td>
+    </tr>
+    <tr>
+      <td>Readable text has excessive storage overhead</td>
+      <td>Binary encoding without intentional triangle removal</td>
+      <td>Reopen records under stated Float32 storage and unit assumptions</td>
+    </tr>
+    <tr>
+      <td>Curves have unnecessary source detail</td>
+      <td>Re-export from CAD with documented tessellation settings</td>
+      <td>Check the named source feature and exported cross-section</td>
+    </tr>
+    <tr>
+      <td>The actual triangle workload is the problem</td>
+      <td>Generate an independent simplified candidate</td>
+      <td>Review changed surfaces, supported findings and receiver handling</td>
+    </tr>
+    <tr>
+      <td>The limit cannot be met without unacceptable loss</td>
+      <td>Keep the original or use a suitable receiver/source workflow</td>
+      <td>Do not approve an unverified feature to satisfy a byte target</td>
+    </tr>
+  </tbody>
+</table>
 <h2>Two measured controls</h2>
 <p>
   The owned
@@ -53,79 +88,35 @@ faq:
   >
   owns the full ridge experiment and the rejected 50% alternative.
 </p>
-<h2>Choose by the receiving constraint</h2>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Need</th>
-      <th scope="col">First route</th>
-      <th scope="col">Check before use</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Smaller attachment or archive only</td>
-      <td>ZIP the original for transfer, then extract it.</td>
-      <td>
-        The slicer receives the extracted STL; ZIP is not a slicer-ready STL.
-      </td>
-    </tr>
-    <tr>
-      <td>Smaller STL from ASCII</td>
-      <td>
-        Use <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">the reducer</a> to
-        generate binary encoding.
-      </td>
-      <td>
-        Reopen the downloaded bytes and compare triangle records, bounds and
-        precision-sensitive dimensions.
-      </td>
-    </tr>
-    <tr>
-      <td>Binary STL still exceeds a size or import limit</td>
-      <td>Try a modest simplification on a copy.</td>
-      <td>
-        Compare actual count, topology, sampled deviation, named features and
-        slicer layers. Simplification is lossy.
-      </td>
-    </tr>
-    <tr>
-      <td>Editable CAD source exists</td>
-      <td>Re-export with a suitable tessellation tolerance.</td>
-      <td>
-        Check curves, holes, mating dimensions and the exact exported STL. The
-        CAD source remains authoritative.
-      </td>
-    </tr>
-    <tr>
-      <td>No known limit or detail cannot be sacrificed</td>
-      <td>Keep the original until the receiver's requirement is known.</td>
-      <td>Smaller bytes alone do not establish an acceptable print.</td>
-    </tr>
-  </tbody>
-</table>
-<h2>Review the exact candidate</h2>
+<p>
+  The ridge is a bounded simplifier experiment, not a generally suitable
+  percentage prescription.
+  <a href="{{ GuideSlug.RouteHowToReduceStlTriangleCount }}"
+    >The full candidate review</a
+  >
+  retains requested versus actual counts and the new-findings decision.
+  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}">The encoding owner</a> retains
+  the numerical Float32 experiment.
+</p>
+<h2>Review the exact candidate in the receiver</h2>
 <ol>
+  <li>Record the receiving limit and the named feature that must remain.</li>
   <li>
-    Record original bytes, triangle count and the feature that must remain.
+    Generate the chosen operation in
+    <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">the existing reducer</a>.
+    Nothing simplifies merely on choosing a source.
   </li>
   <li>
-    Generate one candidate from the original in the
-    <a href="{{ GuideSlug.RouteStlFileSizeReducer }}">STL File Size Reducer</a>.
-    Nothing simplifies on upload.
+    Retain the output filename and bytes. Reopen that exact derivative; compare
+    supported topology findings and important geometry against the original.
   </li>
   <li>
-    Open the serialized result and compare count, bounds and supported topology.
-    Treat unavailable checks as unknown.
+    Inspect the critical feature and intended slicer layers or receiving
+    operation. Record a successful reopen separately from feature acceptance.
   </li>
   <li>
-    For a reduced mesh, run the tool's explicit comparison and inspect relevant
-    ridges, holes and sliced layers in the receiving profile.
+    If a required feature cannot be verified, retain the original or return to
+    <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}">source export</a>. A
+    smaller download alone is not sufficient evidence.
   </li>
 </ol>
-<p>
-  For the representation difference and Float32 limits, see
-  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}">ASCII versus binary STL</a>.
-  This is a software and geometry comparison under a millimetre assumption for
-  discussion; no physical print was tested.
-</p>

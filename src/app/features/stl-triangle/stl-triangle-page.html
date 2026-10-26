@@ -7,7 +7,12 @@
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Count STL triangles</h2>
-    <p>Upload an STL file up to 25 MiB.</p>
+    <p>
+      STL files up to 25 MiB. Pressing Count STL triangles uploads this STL to
+      InspectMesh for server counting. Selecting a file alone does not submit
+      it. To inspect it locally first,
+      <a [routerLink]="routeUrl.Viewer">open the STL Viewer</a>.
+    </p>
     <app-stl-file-picker
       #filePicker
       [selectedFileFromParent]="selectedFile()"
@@ -73,56 +78,72 @@
     </section>
   }
   <section class="content">
-    <h2>How it works</h2>
+    <h2>What the count means</h2>
     <p>
-      The tool reads the uploaded STL mesh and reports how many triangular faces
-      it contains.
+      The server reports the triangle records parsed into this mesh, including
+      duplicate or degenerate records that later validation can flag. It does
+      not deduplicate them into unique faces or identify named CAD objects. A
+      count does not prove valid topology or preserved detail. Malformed input
+      and processing failures are not zero-triangle results.
     </p>
-    <h2>What the results mean</h2>
+    <h2>Choose the next review</h2>
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      aria-label="Triangle count next steps, scroll horizontally"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Question</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Curves look visibly coarse</td>
+            <td>
+              <a [routerLink]="routeUrl.StlResolutionGuide"
+                >Inspect source tessellation</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>High workload in the receiver</td>
+            <td>
+              <a [href]="guideRouteUrl.RouteHowToReduceStlFileSize"
+                >Choose the size-reduction method</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Count changed after reduction</td>
+            <td>
+              <a [href]="guideRouteUrl.RouteHowToReduceStlTriangleCount"
+                >Review the actual saved candidate</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>Same count across revisions</td>
+            <td>
+              <a [href]="guideRouteUrl.RouteHowToCompareStlRevisions"
+                >Check the intended local feature</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      More triangles can preserve curved detail, but also make files heavier and
-      may slow a slicer. The right count depends on model size and intended
-      detail.
-    </p>
-    <h2>FAQ</h2>
-    <h3>Is a high triangle count bad?</h3>
-    <p>
-      No. It is a trade-off between geometric detail and processing overhead.
-    </p>
-    <h3>Does triangle count measure print quality?</h3>
-    <p>Not on its own. Check geometry and dimensions alongside complexity.</p>
-    <p>
-      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
-      <a [routerLink]="routeUrl.StlTriangleCountGuide"
-        >STL Triangle Count Explained</a
+      <a [href]="guideRouteUrl.RouteAsciiVsBinaryStl"
+        >Binary encoding and coordinate precision</a
       >
-      ·
-      <a [routerLink]="routeUrl.Tools">All STL tools</a>
-    </p>
-  </section>
-  <section class="content">
-    <h2>Use the count to investigate complexity</h2>
-    <p>
-      The original
-      <a [href]="exampleAsset.Closed20mmCubeStl" download>20 mm cube</a>
-      needs 12 triangles for six flat faces. Scaling it leaves that count
-      unchanged. A curved surface may need many more faces to preserve its
-      intended outline; there is no universal good triangle count.
-    </p>
-    <p>
-      Binary STL uses an 84-byte header/count region plus 50 bytes per triangle,
-      so this 12-triangle control uses 684 bytes. ASCII encoding differs. Count
-      describes mesh complexity, not surface validity, visible accuracy or a
-      reliable slicing time.
-    </p>
-    <p>
-      This tool uploads the file for server counting. If complexity is
-      excessive, distinguish
-      <a [href]="guideRouteUrl.RouteAsciiVsBinaryStl">lossless encoding</a> from
-      <a [href]="guideRouteUrl.RouteHowToReduceStlTriangleCount"
-        >surface simplification</a
-      >. Compare changed details and dimensions after a reduction.
+      address storage representation;
+      <a [routerLink]="routeUrl.QualityCheck">mesh quality checks</a> address
+      supported findings. Neither supplies a universal recommended triangle
+      count.
     </p>
   </section>
 </main>

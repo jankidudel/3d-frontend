@@ -1,0 +1,298 @@
+{
+  "method": "Existing local parser/checkGeometry and bidirectional surfaceDifference; independent binary edge incidence and signed-volume checks.",
+  "observedDate": "2026-10-26",
+  "toolRoutes": ["/stl-compare", "/stl-viewer"],
+  "captureCommand": "INSPECTMESH_REFRESH_EVIDENCE=1 npx vitest run scripts/export-fidelity.spec.mts",
+  "executionPath": "Local functions in Vitest; not browser UI, deployed server, CAD export or physical print.",
+  "sourceRevision": "3bd76d856da9ea12c463f83f02269651d94059c7",
+  "controls": [
+    {
+      "name": "square-hole-8mm.stl",
+      "sha256": "cddc7eb789a1f06c45fe5ce01e9bd04d8601a34fc27e75eabd3928c24cf39ac0",
+      "bytes": 1684,
+      "analytical": {
+        "holeWidthMm": 8,
+        "triangles": 32,
+        "volumeMm3": 11360
+      },
+      "independentlyReopened": {
+        "count": 32,
+        "bounds": [
+          {
+            "min": 0,
+            "max": 40
+          },
+          {
+            "min": 0,
+            "max": 30
+          },
+          {
+            "min": 0,
+            "max": 10
+          }
+        ],
+        "signedVolume": 11360.000000000002
+      },
+      "localCheck": {
+        "dimensionsMm": {
+          "width": 40,
+          "height": 30,
+          "depth": 10
+        },
+        "triangles": 32,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 11360,
+          "volumeReliable": true
+        },
+        "fit": null,
+        "thickness": {
+          "method": "Bounded triangle-centroid normal rays",
+          "samples": 32,
+          "measured": 32,
+          "unmeasured": 0,
+          "belowThreshold": 0,
+          "minimumMm": 9.99999,
+          "thresholdMm": 1.2
+        },
+        "skipped": [
+          "Self intersections and nested-shell solid interpretation are not checked.",
+          "Slicer settings, supports, strength and actual print success are not checked.",
+          "Printer fit skipped: no printer selected."
+        ]
+      }
+    },
+    {
+      "name": "square-hole-6mm.stl",
+      "sha256": "3c2baec1967cacee89eb2a2aabb9ab19ad3590735f10235bd0f9a50e42bd16cc",
+      "bytes": 1684,
+      "analytical": {
+        "holeWidthMm": 6,
+        "triangles": 32,
+        "volumeMm3": 11640
+      },
+      "independentlyReopened": {
+        "count": 32,
+        "bounds": [
+          {
+            "min": 0,
+            "max": 40
+          },
+          {
+            "min": 0,
+            "max": 30
+          },
+          {
+            "min": 0,
+            "max": 10
+          }
+        ],
+        "signedVolume": 11640
+      },
+      "localCheck": {
+        "dimensionsMm": {
+          "width": 40,
+          "height": 30,
+          "depth": 10
+        },
+        "triangles": 32,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 11640,
+          "volumeReliable": true
+        },
+        "fit": null,
+        "thickness": {
+          "method": "Bounded triangle-centroid normal rays",
+          "samples": 32,
+          "measured": 32,
+          "unmeasured": 0,
+          "belowThreshold": 0,
+          "minimumMm": 9.99999,
+          "thresholdMm": 1.2
+        },
+        "skipped": [
+          "Self intersections and nested-shell solid interpretation are not checked.",
+          "Slicer settings, supports, strength and actual print success are not checked.",
+          "Printer fit skipped: no printer selected."
+        ]
+      }
+    }
+  ],
+  "comparison": {
+    "units": "mm",
+    "alignment": "original coordinates",
+    "translationMm": [0, 0, 0],
+    "toleranceMm": 0.1,
+    "samplesPerDirection": 5000,
+    "forward": {
+      "samples": 5000,
+      "maximumSampledMm": 1.412438826600542,
+      "meanSampledMm": 0.07416838644006189,
+      "samplesOverTolerance": 392
+    },
+    "reverse": {
+      "samples": 5000,
+      "maximumSampledMm": 1.0000000000000036,
+      "meanSampledMm": 0.06714301916152095,
+      "samplesOverTolerance": 364
+    },
+    "maximumSampledMm": 1.412438826600542,
+    "meanSampledMm": 0.07065570280079105,
+    "samplesOverTolerance": 756,
+    "limitation": "Finite area-distributed point-to-triangle samples; not a whole-surface bound or automatic hole recognition."
+  },
+  "curves": [
+    {
+      "name": "circle-24-segments.stl",
+      "sha256": "c1586cbca807323a87880a2f94afb0ce9b5f5599db1b8de0a256487017fb394c",
+      "bytes": 4884,
+      "segments": 24,
+      "analytical": {
+        "radiusMm": 10,
+        "heightMm": 20,
+        "sagittaMm": 0.08555138626189618,
+        "volumeMm3": 6211.657082460498
+      },
+      "independentlyReopened": {
+        "count": 96,
+        "bounds": [
+          {
+            "min": -10,
+            "max": 10
+          },
+          {
+            "min": -10,
+            "max": 10
+          },
+          {
+            "min": 0,
+            "max": 20
+          }
+        ],
+        "signedVolume": 6211.657101514176
+      },
+      "localCheck": {
+        "dimensionsMm": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "triangles": 96,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 6211.657101514171,
+          "volumeReliable": true
+        },
+        "fit": null,
+        "thickness": {
+          "method": "Bounded triangle-centroid normal rays",
+          "samples": 96,
+          "measured": 96,
+          "unmeasured": 0,
+          "belowThreshold": 0,
+          "minimumMm": 19.828886870225915,
+          "thresholdMm": 1.2
+        },
+        "skipped": [
+          "Self intersections and nested-shell solid interpretation are not checked.",
+          "Slicer settings, supports, strength and actual print success are not checked.",
+          "Printer fit skipped: no printer selected."
+        ]
+      }
+    },
+    {
+      "name": "circle-72-segments.stl",
+      "sha256": "0ea5178a999f12014889f1008e05b03da137ece0e590a20e86ce962b6c892a49",
+      "bytes": 14484,
+      "segments": 72,
+      "analytical": {
+        "radiusMm": 10,
+        "heightMm": 20,
+        "sagittaMm": 0.009517784181422018,
+        "volumeMm3": 6275.213477831388
+      },
+      "independentlyReopened": {
+        "count": 288,
+        "bounds": [
+          {
+            "min": -10,
+            "max": 10
+          },
+          {
+            "min": -10,
+            "max": 10
+          },
+          {
+            "min": 0,
+            "max": 20
+          }
+        ],
+        "signedVolume": 6275.213559930391
+      },
+      "localCheck": {
+        "dimensionsMm": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "triangles": 288,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 6275.213559930398,
+          "volumeReliable": true
+        },
+        "fit": null,
+        "thickness": {
+          "method": "Bounded triangle-centroid normal rays",
+          "samples": 288,
+          "measured": 288,
+          "unmeasured": 0,
+          "belowThreshold": 0,
+          "minimumMm": 19.980953869773966,
+          "thresholdMm": 1.2
+        },
+        "skipped": [
+          "Self intersections and nested-shell solid interpretation are not checked.",
+          "Slicer settings, supports, strength and actual print success are not checked.",
+          "Printer fit skipped: no printer selected."
+        ]
+      }
+    }
+  ],
+  "implementations": [
+    {
+      "source": "src/app/features/repeat-workflows/mesh-workflows.ts",
+      "sha256": "cf5cdca541537405fc148925329ed621f060c7f50b6b6c275716cbb53c9f1d66"
+    },
+    {
+      "source": "src/app/features/stl-reducer/stl-reducer.ts",
+      "sha256": "566ff7b88bf0501d48bff54934d9d4a0fa6ee8002612a2277c0c6f5ed055acc7"
+    },
+    {
+      "source": "src/app/features/stl-print-preflight/stl-print-preflight-analysis.ts",
+      "sha256": "486e156a0a52c5660cad3019b97b8368c7e7fe17843f201f624061a791fef6fe"
+    }
+  ],
+  "rights": "Original InspectMesh mathematical controls and diagrams, CC0-1.0. No physical validation."
+}

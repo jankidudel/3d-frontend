@@ -33,7 +33,7 @@
     "verify": "npm run format:check && npm run lint && npm run typecheck:scripts && npm test && npm run build && npm run check:internal-links && npm run seo:audit",
     "hooks:install": "git config core.hooksPath .githooks",
     "test:collection-examples": "vitest run scripts/collection-examples.spec.mts",
-    "test:seo-recovery": "vitest run scripts/seo-audit.spec.mts scripts/recovery-evidence.spec.mts scripts/sizing-evidence.spec.mts",
+    "test:seo-recovery": "vitest run scripts/seo-audit.spec.mts scripts/recovery-evidence.spec.mts scripts/sizing-evidence.spec.mts scripts/export-fidelity.spec.mts",
     "seo:audit": "node --experimental-strip-types scripts/seo-audit.mts",
     "seo:audit:production": "node --experimental-strip-types scripts/verify-production-routes.mts",
     "check:route-coverage": "node --experimental-strip-types scripts/audit-route-coverage.mts",

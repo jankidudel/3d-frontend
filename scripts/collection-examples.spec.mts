@@ -461,7 +461,7 @@ describe('visual diagnosis teaching controls', () => {
           example.group !== 'G-code evidence' &&
           example.group !== '3MF placements / export',
       ),
-    ).toHaveLength(27);
+    ).toHaveLength(31);
     expect(new Set(publicExamples.map((example) => example.id)).size).toBe(
       publicExamples.length,
     );

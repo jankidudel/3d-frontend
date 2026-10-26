@@ -138,6 +138,12 @@
           [disabled]="busy()"
       /></label>
     </div>
+    <p>
+      Original coordinates retain placement differences. Explicit centre
+      alignment translates bounding-box centres only; it does not rotate,
+      rescale or register features. Record its offset if placement is
+      intentionally irrelevant.
+    </p>
     <button type="button" (click)="example()" [disabled]="busy()">
       Replace revisions: compare 20 → 24 mm
     </button>
@@ -166,15 +172,14 @@
     }
     <p>
       Alignment: {{ alignment() }}. Applied after translation:
-      {{ offset().join(', ') }} mm. Centre translation can hide a deliberate
-      coordinate move; no rotation or rescaling is performed.
+      {{ offset().join(', ') }} mm.
     </p>
   </section>
   <app-example-loader
     tool="/stl-compare"
     [active]="before() !== null || after() !== null"
     [busy]="busy()"
-    [current]="before()"
+    [current]="exampleSource()"
     [load]="loadPublicExample"
   />
   @if (object(); as scene) {
@@ -260,137 +265,72 @@
       <button type="button" (click)="export()">Export revision summary</button>
     }
   </section>
-  <section class="card">
-    <h2>What this method can and cannot tell you</h2>
+  <section class="content interpretation-guide">
+    <h2>Read the comparison result</h2>
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      aria-label="Comparison outputs and next actions, scroll horizontally"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Output</th>
+            <th scope="col">What it answers</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Outer bounds</td>
+            <td>Overall span changes</td>
+            <td>Check expected scale and placement</td>
+          </tr>
+          <tr>
+            <td>Bidirectional sampled distances</td>
+            <td>Differences at the sampled surface locations</td>
+            <td>Inspect that region and unsampled critical features</td>
+          </tr>
+          <tr>
+            <td>Samples under tolerance</td>
+            <td>Those sampled points met the entered tolerance</td>
+            <td>Do not infer whole-model equality</td>
+          </tr>
+          <tr>
+            <td>Error, cancelled or unavailable attempt</td>
+            <td>No completed comparison for this attempt</td>
+            <td>Resolve the state or use another suitable application</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      Deterministic area-distributed points are measured against a triangle
-      acceleration structure in both directions. This is a genuine surface
-      comparison, rather than nearest-vertex matching. The unchanged
-      retriangulation control should give effectively zero distance; the
-      widened-cube example has a 4 mm changed surface.
+      Deterministic area-distributed points are measured against triangles in
+      both directions. Finite sampling can miss small features, and the sampled
+      maximum is not a guaranteed upper bound over the whole surface. Automatic
+      registration, hole recognition, Boolean difference and CAD acceptance are
+      not performed.
+    </p>
+    <h2>Same count and bounds, changed opening</h2>
+    <p>
+      The owned 40 × 30 × 10 mm pair has 32 triangles and 1,684 binary bytes on
+      each side, but its square opening changes from 8 to 6 mm. This is a
+      deliberate mathematical edit, not a decimator output or physical fit test.
     </p>
     <p>
-      Finite sampling can miss small features. A result under tolerance does not
-      prove equality, and the sampled maximum is not an upper bound for the
-      whole surface. This is not CAD tolerancing, certified metrology, automatic
-      feature identification or a Boolean solid difference.
+      Use the known-revision examples above, then inspect the opening directly.
+      The
+      <a [href]="guideRouteUrl.RouteHowToCompareStlRevisions">revision guide</a>
+      retains both measured directions, settings, downloads and a reusable
+      decision record.
     </p>
     <p>
       <a [routerLink]="routeUrl.StlPrintPreflight"
-        >Check mesh integrity before slicing</a
-      >, or
-      <a [routerLink]="routeUrl.BatchStlChecker"
-        >review a collection with consistent reports</a
-      >. Saved revision projects and cloud history are not available.
-    </p>
-  </section>
-  <section class="card">
-    <h2>Frequently asked comparison questions</h2>
-    <h3>Are unchanged dimensions enough?</h3>
-    <p>
-      No. Local holes and lettering can change while outer bounds remain.
-      <a [href]="guideRouteUrl.RouteHowToCompareStlRevisions"
-        >Interpret each comparison output</a
+        >Check supported mesh findings</a
       >
-      and inspect critical features.
-    </p>
-    <h3>Does centre alignment correct rotation or units?</h3>
-    <p>
-      No. It translates centres only. Confirm each source unit and any
-      intentional rotation; automatic registration and Boolean difference are
-      not implemented.
-    </p>
-    <h3>Does a low sampled maximum prove equality?</h3>
-    <p>
-      No. It describes finite sampled points, not a certified whole-surface
-      upper bound.
-      <a [href]="guideRouteUrl.RouteHowToReduceStlTriangleCount"
-        >Compare the raised-ridge example</a
-      >
-      and recheck topology as well.
-    </p>
-  </section>
-  <section class="content interpretation-guide">
-    <h2>Choose a coordinate frame before interpreting distance</h2>
-    <p>
-      Original coordinates compare where the two exports actually sit. Centre
-      alignment translates bounding-box centres only; it does not rotate,
-      rescale or register individual features. A 3 mm translation of an
-      unchanged cube is therefore visible in original coordinates and disappears
-      after centre alignment. Use original coordinates when placement is part of
-      the revision; centre alignment is useful only when translation is
-      irrelevant to your task.
-    </p>
-    <figure>
-      <svg
-        viewBox="0 0 640 220"
-        role="img"
-        aria-label="A widened cube has a real size change that centre alignment cannot undo"
-        style="max-width: 100%; height: auto"
-      >
-        <rect
-          x="1"
-          y="1"
-          width="638"
-          height="218"
-          rx="10"
-          fill="#f8fafc"
-          stroke="#64748b"
-        />
-        <path
-          d="M70 135 L170 135 L170 55 L70 55 Z M70 55 L120 20 L220 20 L170 55 M170 135 L220 100 L220 20"
-          fill="none"
-          stroke="#1e40af"
-          stroke-width="3"
-        />
-        <path
-          d="M400 135 L500 135 L500 55 L400 55 Z M400 55 L450 20 L550 20 L500 55 M500 135 L550 100 L550 20"
-          fill="none"
-          stroke="#1e40af"
-          stroke-width="3"
-        />
-        <path
-          d="M260 80 L350 80 M335 65 L350 80 L335 95"
-          stroke="#334155"
-          stroke-width="3"
-          fill="none"
-        />
-        <text x="30" y="180" font-size="26" fill="#0f172a">
-          20 mm original width
-        </text>
-        <text x="355" y="180" font-size="26" fill="#0f172a">
-          24 mm revised width
-        </text>
-      </svg>
-      <figcaption>
-        Widths are labelled mathematical examples. Translation can hide
-        placement changes but cannot undo a 4 mm width increase.
-      </figcaption>
-    </figure>
-    <h3>Read three different kinds of result</h3>
-    <p>
-      Bounds show overall spans; topology shows connectivity; sampled distances
-      compare points on each surface against triangles on the other. Equal
-      bounds can hide a removed ridge or changed hole. Equal triangle counts can
-      describe different shapes. A retriangulated planar face can have different
-      triangles yet essentially zero surface distance.
-    </p>
-    <p>
-      Run the unchanged, retriangulated and widened-cube examples. Keep the same
-      millimetre assumption on each side and original alignment first. The
-      widened export is 24 × 20 × 20 mm rather than 20 × 20 × 20 mm. In original
-      coordinates its moved outer surface is 4 mm away; the sampled maximum
-      describes only measured points, not a guaranteed upper bound everywhere.
-      Changing alignment changes the question, so record it with the tolerance
-      and sampling settings.
-    </p>
-    <p>
-      If a result looks unexpectedly perfect, inspect small lettering, holes and
-      contact faces manually. Finite area-distributed sampling can miss a tiny
-      feature even when every reported distance is under tolerance. Use source
-      CAD dimensions for design acceptance and
-      <a [href]="routeUrl.StlResolutionGuide">review tessellation error</a>
-      when comparing a curve with its mesh approximation.
+      separately, then review the exact saved derivative in the receiving
+      slicer.
     </p>
   </section>
 </main>

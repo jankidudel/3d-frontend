@@ -1,5 +1,17 @@
 /** Canonical paths for downloadable public example files linked from pages and guides. */
 export const ExampleAsset = {
+  Hole8Stl: '/examples/export-fidelity/square-hole-8mm.stl',
+  Hole6Stl: '/examples/export-fidelity/square-hole-6mm.stl',
+  Curve24Stl: '/examples/export-fidelity/circle-24-segments.stl',
+  Curve72Stl: '/examples/export-fidelity/circle-72-segments.stl',
+  RevisionOriginalStl: '/examples/export-fidelity/baseline-original.stl',
+  RevisionRetriangulatedStl:
+    '/examples/export-fidelity/baseline-retriangulated.stl',
+  RevisionWidenedStl: '/examples/export-fidelity/baseline-widened.stl',
+  ReleaseBaseStl: '/examples/export-fidelity/kit-base-r01.stl',
+  ReleaseCoverStl: '/examples/export-fidelity/kit-cover-review-r01.stl',
+  ReleaseSpacerStl: '/examples/export-fidelity/kit-spacer-r01.stl',
+
   OrientationSupportManifest: '/examples/orientation-support/manifest.json',
   TiltedAsymmetricBlockStl:
     '/examples/orientation-support/tilted-asymmetric-block.stl',

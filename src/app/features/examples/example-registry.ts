@@ -1425,6 +1425,158 @@ export const publicExamples: readonly PublicExample[] = [
       'Original InspectMesh 3MF controls generated 18 October 2026; no physical print test.',
   },
   ...splitAssemblyExamples,
+  {
+    group: 'Export fidelity / release',
+    settings:
+      'Use millimetres and original coordinates. Loading is local and replaces only after your explicit action; no server analysis is submitted.',
+    limitations:
+      'Generated software geometry; no CAD export, physical fit or whole-surface equivalence is certified.',
+    provenance:
+      'Original InspectMesh controls and actual local-function observations, 26 October 2026. Settings, hashes and independent checks are retained in /examples/export-fidelity/observations.json.',
+    id: 'revision-baselines',
+    name: 'Revision baselines: unchanged and widened',
+    question:
+      'Can different triangles describe the same surface, and can an outside face really move?',
+    files: [
+      {
+        path: '/examples/export-fidelity/baseline-original.stl',
+        name: 'baseline-original.stl',
+        bytes: 684,
+        label: 'Before: 20 mm cube',
+      },
+      {
+        path: '/examples/export-fidelity/baseline-retriangulated.stl',
+        name: 'baseline-retriangulated.stl',
+        bytes: 684,
+        label: 'After: unchanged surface, new face diagonal',
+      },
+      {
+        path: '/examples/export-fidelity/baseline-widened.stl',
+        name: 'baseline-widened.stl',
+        bytes: 684,
+        label: 'After: width becomes 24 mm',
+      },
+    ],
+    preview: '/examples/export-fidelity/revision-baselines.svg',
+    alt: 'Projected faces show a 20 mm square with its original and changed diagonal, followed by a 24 mm wide face.',
+    known:
+      'The existing cube factory supplies a 20 mm cube, an unchanged face retriangulation and a deliberate 24 mm width revision.',
+    observed:
+      'Existing comparison regressions retain near-zero unchanged surface samples and the known 4 mm outside-face displacement. This is local software evidence.',
+    guide: '/how-to-compare-stl-revisions',
+    tools: ['/stl-compare'],
+  },
+  {
+    group: 'Export fidelity / release',
+    settings:
+      'Use millimetres and original coordinates. Loading is local and replaces only after your explicit action; no server analysis is submitted.',
+    limitations:
+      'Generated software geometry; no CAD export, physical fit or whole-surface equivalence is certified.',
+    provenance:
+      'Original InspectMesh controls and actual local-function observations, 26 October 2026. Settings, hashes and independent checks are retained in /examples/export-fidelity/observations.json.',
+    id: 'changed-square-hole',
+    name: 'Same bounds and count, changed square opening',
+    question:
+      'Does the required opening survive when outside dimensions and triangle count stay unchanged?',
+    files: [
+      {
+        path: '/examples/export-fidelity/square-hole-8mm.stl',
+        name: 'square-hole-8mm.stl',
+        bytes: 1684,
+        label: 'Before: 8 mm square opening',
+      },
+      {
+        path: '/examples/export-fidelity/square-hole-6mm.stl',
+        name: 'square-hole-6mm.stl',
+        bytes: 1684,
+        label: 'After: 6 mm square opening',
+      },
+    ],
+    preview: '/examples/export-fidelity/changed-hole.svg',
+    alt: 'Top views at one scale show the same 40 by 30 mm exterior and square openings of 8 versus 6 mm.',
+    known:
+      'Both closed generated tubes span 40 × 30 × 10 mm and contain 32 triangles. Analytical volumes are 11,360 and 11,640 mm³.',
+    observed:
+      'Independent reopening confirms bounds, incidence, winding and volume. Existing two-way comparison at 0.1 mm reports 392 forward and 364 reverse samples above tolerance, out of 5,000 each.',
+    guide: '/how-to-compare-stl-revisions',
+    tools: ['/stl-compare', '/stl-viewer'],
+  },
+  {
+    group: 'Export fidelity / release',
+    settings:
+      'Use millimetres and original coordinates. Loading is local and replaces only after your explicit action; no server analysis is submitted.',
+    limitations:
+      'Generated software geometry; no CAD export, physical fit or whole-surface equivalence is certified.',
+    provenance:
+      'Original InspectMesh controls and actual local-function observations, 26 October 2026. Settings, hashes and independent checks are retained in /examples/export-fidelity/observations.json.',
+    id: 'curve-approximation',
+    name: 'Source curves: 24 versus 72 facets',
+    question:
+      'Can identical outer bounds hide a different curve approximation?',
+    files: [
+      {
+        path: '/examples/export-fidelity/circle-24-segments.stl',
+        name: 'circle-24-segments.stl',
+        bytes: 4884,
+        label: '24 polygon segments',
+      },
+      {
+        path: '/examples/export-fidelity/circle-72-segments.stl',
+        name: 'circle-72-segments.stl',
+        bytes: 14484,
+        label: '72 polygon segments',
+      },
+    ],
+    preview: '/examples/export-fidelity/curve-segments.svg',
+    alt: 'Polygon cross-sections with 24 and 72 edges against separate dashed analytical circles, at one scale.',
+    known:
+      'Circumradius 10 mm, height 20 mm, cap fans and side quads: 96 and 288 triangles. Both include axis extremes and span 20 × 20 × 20 mm.',
+    observed:
+      'Serialized files reopen with their designed closed edge incidence and bounds. Analytical ideal-circle sagitta is about 0.08555 versus 0.00952 mm; this is not a measured CAD-export setting.',
+    guide: '/stl-resolution-chord-height-explained',
+    tools: ['/stl-viewer', '/stl-compare'],
+  },
+  {
+    group: 'Export fidelity / release',
+    settings:
+      'Use Try example kit in the collection tool, or download all three files and select them deliberately. Compare the intended inventory manually.',
+    limitations:
+      'The checker cannot know a required file is absent. The cover remains unresolved; slicer and physical tests were not performed. No release approval or licence entitlement is inferred.',
+    provenance:
+      'Existing InspectMesh kit generator and collection-report functions replayed locally. Actual reports and release record: /examples/export-fidelity/kit-release-record.json.',
+    id: 'release-kit-record',
+    name: 'Three-file release kit with unresolved cover',
+    question:
+      'Does the delivery inventory match the checked files, and what remains unresolved?',
+    files: [
+      {
+        path: '/examples/export-fidelity/kit-base-r01.stl',
+        name: 'kit-base-r01.stl',
+        bytes: 684,
+        label: 'One 60 × 40 × 4 mm base',
+      },
+      {
+        path: '/examples/export-fidelity/kit-cover-review-r01.stl',
+        name: 'kit-cover-review-r01.stl',
+        bytes: 584,
+        label: 'One deliberately open 60 × 40 × 2 mm cover',
+      },
+      {
+        path: '/examples/export-fidelity/kit-spacer-r01.stl',
+        name: 'kit-spacer-r01.stl',
+        bytes: 684,
+        label: 'One 8 × 8 × 12 mm spacer',
+      },
+    ],
+    preview: '/examples/export-fidelity/kit-inventory.svg',
+    alt: 'Three separate labelled box controls, with an open face on the cover and an explicit unresolved release decision.',
+    known:
+      'Exact bytes are generated by the existing collection kit action, with one of each intended file. These boxes are not a mechanically fitted assembly.',
+    observed:
+      'Local collection functions report 9,600 mm³ for the base, four cover boundary edges and unavailable cover volume, and 768 mm³ for the spacer. Printer fit is skipped without a profile.',
+    guide: '/check-stl-files-before-selling',
+    tools: ['/batch-stl-checker'],
+  },
 ];
 /** Only registry IDs are accepted; unknown values never become fetch locations. */
 export function findPublicExample(
@@ -1434,4 +1586,24 @@ export function findPublicExample(
   return publicExamples.find(
     (example) => example.id === id && example.tools.includes(tool),
   );
+}
+
+/** Put known revision controls first without changing the ordering of other tool selectors. */
+export function publicExampleChoices(tool: string): readonly PublicExample[] {
+  const choices = publicExamples.filter((example) =>
+    example.tools.includes(tool),
+  );
+  if (tool !== '/stl-compare') {
+    return choices;
+  }
+  const preferred = [
+    'revision-baselines',
+    'changed-square-hole',
+    'curve-approximation',
+  ];
+  const rank = (id: string) => {
+    const index = preferred.indexOf(id);
+    return index < 0 ? preferred.length : index;
+  };
+  return choices.sort((a, b) => rank(a.id) - rank(b.id));
 }

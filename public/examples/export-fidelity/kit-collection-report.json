@@ -1,0 +1,273 @@
+{
+  "schema": "inspectmesh-mesh-check-1",
+  "methodVersion": "collection-review-2",
+  "generatedAt": "2026-10-26",
+  "reference": "Generated kit r01 - unresolved cover",
+  "settings": {
+    "stlUnit": "mm",
+    "printer": null,
+    "thicknessThresholdMm": 1.2
+  },
+  "progress": {
+    "total": 3,
+    "processed": 3,
+    "completed": 3,
+    "failed": 0,
+    "cancelled": 0,
+    "pending": 0
+  },
+  "status": "3 of 3 processed - 3 completed, 0 failed.",
+  "distanceUnit": "mm",
+  "volumeUnit": "mm³",
+  "method": "Exact-coordinate welding; edge incidence, winding and connected shells; bounded triangle-centroid wall rays; right-angle nominal bounding-box fit.",
+  "limitations": "Self intersections, nested-shell solid interpretation, supports, material behaviour and print success are not checked. No physical print testing is implied.",
+  "storage": "Files processed locally. Original geometry held only in this tab session; optional report history stores labels and findings in this browser, without geometry. No cloud backup.",
+  "files": [
+    {
+      "id": 1,
+      "name": "kit-base-r01.stl",
+      "state": "complete",
+      "error": "",
+      "result": {
+        "dimensionsMm": {
+          "width": 60,
+          "height": 40,
+          "depth": 4
+        },
+        "triangles": 12,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 9600,
+          "volumeReliable": true
+        },
+        "fit": null,
+        "thickness": {
+          "method": "Bounded triangle-centroid normal rays",
+          "samples": 12,
+          "measured": 12,
+          "unmeasured": 0,
+          "belowThreshold": 0,
+          "minimumMm": 3.99999,
+          "thresholdMm": 1.2
+        },
+        "skipped": [
+          "Self intersections and nested-shell solid interpretation are not checked.",
+          "Slicer settings, supports, strength and actual print success are not checked.",
+          "Printer fit skipped: no printer selected."
+        ]
+      },
+      "unit": "mm",
+      "warnings": [],
+      "durationMs": 0.3201249999999618,
+      "format": "STL",
+      "findings": [
+        {
+          "check": "Topology",
+          "status": "complete",
+          "severity": "information",
+          "detail": "0 boundary edges; 0 non-manifold edges; 0 degenerate triangles; 0 duplicate triangles; 0 winding conflicts; 1 shells."
+        },
+        {
+          "check": "Nominal printer fit",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "No printer selected."
+        },
+        {
+          "check": "Wall sampling",
+          "status": "complete",
+          "severity": "information",
+          "detail": "12 centroid-ray samples; 0 below 1.2 mm; 0 unmeasured. Small features can be missed."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Self intersections and nested-shell solid interpretation are not checked."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Slicer settings, supports, strength and actual print success are not checked."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Printer fit skipped: no printer selected."
+        }
+      ],
+      "nextAction": "Confirm dimensions, design intent and skipped checks, then review the sliced job with the intended printer and material profile."
+    },
+    {
+      "id": 2,
+      "name": "kit-cover-review-r01.stl",
+      "state": "complete",
+      "error": "",
+      "result": {
+        "dimensionsMm": {
+          "width": 60,
+          "height": 40,
+          "depth": 2
+        },
+        "triangles": 10,
+        "topology": {
+          "openEdges": 4,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        },
+        "fit": null,
+        "thickness": {
+          "method": "Bounded triangle-centroid normal rays",
+          "samples": 10,
+          "measured": 8,
+          "unmeasured": 2,
+          "belowThreshold": 0,
+          "minimumMm": 39.99999,
+          "thresholdMm": 1.2
+        },
+        "skipped": [
+          "Self intersections and nested-shell solid interpretation are not checked.",
+          "Slicer settings, supports, strength and actual print success are not checked.",
+          "Printer fit skipped: no printer selected."
+        ]
+      },
+      "unit": "mm",
+      "warnings": [],
+      "durationMs": 0.31058300000000827,
+      "format": "STL",
+      "findings": [
+        {
+          "check": "Topology",
+          "status": "review",
+          "severity": "warning",
+          "detail": "4 boundary edges; 0 non-manifold edges; 0 degenerate triangles; 0 duplicate triangles; 0 winding conflicts; 1 shells."
+        },
+        {
+          "check": "Nominal printer fit",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "No printer selected."
+        },
+        {
+          "check": "Wall sampling",
+          "status": "review",
+          "severity": "warning",
+          "detail": "10 centroid-ray samples; 0 below 1.2 mm; 2 unmeasured. Small features can be missed."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Self intersections and nested-shell solid interpretation are not checked."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Slicer settings, supports, strength and actual print success are not checked."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Printer fit skipped: no printer selected."
+        }
+      ],
+      "nextAction": "Inspect the highlighted findings and intended shells; correct a copy in source CAD where needed, compare revisions and recheck in the slicer."
+    },
+    {
+      "id": 3,
+      "name": "kit-spacer-r01.stl",
+      "state": "complete",
+      "error": "",
+      "result": {
+        "dimensionsMm": {
+          "width": 8,
+          "height": 8,
+          "depth": 12
+        },
+        "triangles": 12,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 768,
+          "volumeReliable": true
+        },
+        "fit": null,
+        "thickness": {
+          "method": "Bounded triangle-centroid normal rays",
+          "samples": 12,
+          "measured": 12,
+          "unmeasured": 0,
+          "belowThreshold": 0,
+          "minimumMm": 7.99999,
+          "thresholdMm": 1.2
+        },
+        "skipped": [
+          "Self intersections and nested-shell solid interpretation are not checked.",
+          "Slicer settings, supports, strength and actual print success are not checked.",
+          "Printer fit skipped: no printer selected."
+        ]
+      },
+      "unit": "mm",
+      "warnings": [],
+      "durationMs": 0.23620800000003328,
+      "format": "STL",
+      "findings": [
+        {
+          "check": "Topology",
+          "status": "complete",
+          "severity": "information",
+          "detail": "0 boundary edges; 0 non-manifold edges; 0 degenerate triangles; 0 duplicate triangles; 0 winding conflicts; 1 shells."
+        },
+        {
+          "check": "Nominal printer fit",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "No printer selected."
+        },
+        {
+          "check": "Wall sampling",
+          "status": "complete",
+          "severity": "information",
+          "detail": "12 centroid-ray samples; 0 below 1.2 mm; 0 unmeasured. Small features can be missed."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Self intersections and nested-shell solid interpretation are not checked."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Slicer settings, supports, strength and actual print success are not checked."
+        },
+        {
+          "check": "Method limitation",
+          "status": "skipped",
+          "severity": "information",
+          "detail": "Printer fit skipped: no printer selected."
+        }
+      ],
+      "nextAction": "Confirm dimensions, design intent and skipped checks, then review the sliced job with the intended printer and material profile."
+    }
+  ]
+}

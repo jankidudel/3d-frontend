@@ -202,7 +202,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
 
   {
     slug: 'how-inspectmesh-checks-files',
-    updatedDate: '2026-10-25',
+    updatedDate: '2026-10-26',
     group: GuideGroupId.General,
     order: 250,
     enabled: true,
@@ -215,6 +215,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 203,
     enabled: true,
     publishDate: '2026-10-08',
+    updatedDate: '2026-10-26',
     checkEditorialTargets: true,
   },
   {
@@ -224,7 +225,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-08',
     checkEditorialTargets: true,
-    updatedDate: '2026-10-11',
+    updatedDate: '2026-10-26',
   },
   {
     slug: 'stl-multiple-shells-disconnected-parts',
@@ -232,7 +233,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 205,
     enabled: true,
     publishDate: '2026-10-08',
-    updatedDate: '2026-10-17',
+    updatedDate: '2026-10-26',
     checkEditorialTargets: true,
   },
   {
@@ -295,7 +296,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 100,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-11',
+    updatedDate: '2026-10-26',
     checkEditorialTargets: true,
   },
   {
@@ -304,7 +305,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 101,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-10-26',
     checkEditorialTargets: true,
   },
   {
@@ -569,7 +570,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-11',
+    updatedDate: '2026-10-26',
   },
   {
     slug: 'why-stl-files-have-no-units',
@@ -605,7 +606,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-14',
+    updatedDate: '2026-10-26',
   },
   {
     slug: 'how-to-reduce-stl-triangle-count',
@@ -614,7 +615,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-06',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-11',
+    updatedDate: '2026-10-26',
   },
   {
     slug: 'how-to-repair-an-stl-file',
@@ -718,7 +719,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 180,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-11',
+    updatedDate: '2026-10-26',
     checkEditorialTargets: false,
   },
   {
