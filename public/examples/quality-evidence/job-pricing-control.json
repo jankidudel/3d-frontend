@@ -1,0 +1,215 @@
+{
+  "classification": "Fictional independent expected arithmetic, compared with local software; not production observations or market rates.",
+  "inputs": {
+    "reference": "Fictional five-part job",
+    "currency": "OTHER",
+    "requestedQuantity": 5,
+    "identicalParts": true,
+    "plates": [
+      {
+        "id": 1,
+        "label": "Plate A",
+        "source": "Hypothetical sliced inputs, not measurements",
+        "hours": 4,
+        "repeats": 1,
+        "unitsPerRun": 3,
+        "handlingMinutes": 10,
+        "wattsOverride": null,
+        "machineRateOverride": null,
+        "materials": [
+          {
+            "label": "Same filament / spool scope",
+            "grams": 90,
+            "additionalGrams": 0,
+            "spoolGrams": 1000,
+            "spoolPrice": 24,
+            "basis": "complete-slicer-total"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "label": "Plate B",
+        "source": "Hypothetical sliced inputs, not measurements",
+        "hours": 3,
+        "repeats": 1,
+        "unitsPerRun": 2,
+        "handlingMinutes": 10,
+        "wattsOverride": null,
+        "machineRateOverride": null,
+        "materials": [
+          {
+            "label": "Same filament / spool scope",
+            "grams": 70,
+            "additionalGrams": 0,
+            "spoolGrams": 1000,
+            "spoolPrice": 24,
+            "basis": "complete-slicer-total"
+          }
+        ]
+      }
+    ],
+    "watts": 120,
+    "electricityRate": 0.3,
+    "machineRate": 2,
+    "machineIncludesEnergy": false,
+    "labourRate": 18,
+    "preparationMinutes": 20,
+    "finishingMinutesPerPart": 5,
+    "packaging": 1.6,
+    "shipping": 0,
+    "hardware": 0,
+    "failurePercent": 0
+  },
+  "expected": {
+    "material": 3.84,
+    "energy": 0.252,
+    "machine": 14,
+    "preparation": 6,
+    "handling": 6,
+    "finishing": 7.5,
+    "packaging": 1.6,
+    "total": 39.192,
+    "average": 7.8384,
+    "uplift10Percent": 43.1112,
+    "prices": [
+      55.98857142857143, 50.9496, 60.29538461538462, 53.63115789473685, 65
+    ],
+    "minimumFee": 3.25,
+    "minimumProfit": 22.558,
+    "minimumMarginPercent": 34.70461538461539
+  },
+  "observed": {
+    "job": {
+      "plates": [
+        {
+          "label": "Plate A",
+          "runs": 1,
+          "plannedQuantity": 3,
+          "hours": 4,
+          "grams": 90,
+          "materialCost": 2.16,
+          "energy": 0.144,
+          "machine": 8,
+          "handling": 3,
+          "subtotal": 13.304
+        },
+        {
+          "label": "Plate B",
+          "runs": 1,
+          "plannedQuantity": 2,
+          "hours": 3,
+          "grams": 70,
+          "materialCost": 1.6800000000000002,
+          "energy": 0.108,
+          "machine": 6,
+          "handling": 3,
+          "subtotal": 10.788
+        }
+      ],
+      "plannedQuantity": 5,
+      "material": 3.8400000000000003,
+      "energy": 0.252,
+      "machine": 14,
+      "handling": 6,
+      "preparation": 6,
+      "finishing": 7.5,
+      "packaging": 1.6,
+      "shipping": 0,
+      "hardware": 0,
+      "subtotal": 39.192,
+      "failureAllowance": 0,
+      "total": 39.192,
+      "allocatedAverage": 7.8384,
+      "sequentialHours": 7,
+      "grams": 160
+    },
+    "prices": [
+      {
+        "productionCostForOrder": 39.192,
+        "sellingFeesForOrder": 0,
+        "realisedMarginPercent": 30.000000000000004,
+        "priceBeforeMinimum": 55.98857142857143,
+        "materialCostPerItem": 0,
+        "electricityCostPerItem": 0,
+        "machineCostPerItem": 0,
+        "labourCostPerItem": 0,
+        "overheadPerItem": 0,
+        "failureAllowancePerItem": 0,
+        "trueCostPerItem": 7.8384,
+        "recommendedPricePerItem": 11.197714285714287,
+        "orderQuote": 55.98857142857143,
+        "grossProfitPerItem": 3.3593142857142864,
+        "grossProfitForOrder": 16.796571428571433
+      },
+      {
+        "productionCostForOrder": 39.192,
+        "sellingFeesForOrder": 0,
+        "realisedMarginPercent": 23.07692307692308,
+        "priceBeforeMinimum": 50.949600000000004,
+        "materialCostPerItem": 0,
+        "electricityCostPerItem": 0,
+        "machineCostPerItem": 0,
+        "labourCostPerItem": 0,
+        "overheadPerItem": 0,
+        "failureAllowancePerItem": 0,
+        "trueCostPerItem": 7.8384,
+        "recommendedPricePerItem": 10.18992,
+        "orderQuote": 50.949600000000004,
+        "grossProfitPerItem": 2.3515200000000007,
+        "grossProfitForOrder": 11.757600000000004
+      },
+      {
+        "productionCostForOrder": 39.192,
+        "sellingFeesForOrder": 3.0147692307692315,
+        "realisedMarginPercent": 30.00000000000001,
+        "priceBeforeMinimum": 60.29538461538463,
+        "materialCostPerItem": 0,
+        "electricityCostPerItem": 0,
+        "machineCostPerItem": 0,
+        "labourCostPerItem": 0,
+        "overheadPerItem": 0,
+        "failureAllowancePerItem": 0,
+        "trueCostPerItem": 7.8384,
+        "recommendedPricePerItem": 12.059076923076926,
+        "orderQuote": 60.29538461538463,
+        "grossProfitPerItem": 3.617723076923079,
+        "grossProfitForOrder": 18.088615384615395
+      },
+      {
+        "productionCostForOrder": 39.192,
+        "sellingFeesForOrder": 2.6815578947368426,
+        "realisedMarginPercent": 21.92307692307694,
+        "priceBeforeMinimum": 53.63115789473685,
+        "materialCostPerItem": 0,
+        "electricityCostPerItem": 0,
+        "machineCostPerItem": 0,
+        "labourCostPerItem": 0,
+        "overheadPerItem": 0,
+        "failureAllowancePerItem": 0,
+        "trueCostPerItem": 7.8384,
+        "recommendedPricePerItem": 10.72623157894737,
+        "orderQuote": 53.63115789473685,
+        "grossProfitPerItem": 2.351520000000002,
+        "grossProfitForOrder": 11.75760000000001
+      },
+      {
+        "productionCostForOrder": 39.192,
+        "sellingFeesForOrder": 3.25,
+        "realisedMarginPercent": 34.70461538461539,
+        "priceBeforeMinimum": 60.29538461538463,
+        "materialCostPerItem": 0,
+        "electricityCostPerItem": 0,
+        "machineCostPerItem": 0,
+        "labourCostPerItem": 0,
+        "overheadPerItem": 0,
+        "failureAllowancePerItem": 0,
+        "trueCostPerItem": 7.8384,
+        "recommendedPricePerItem": 13,
+        "orderQuote": 65,
+        "grossProfitPerItem": 4.5116,
+        "grossProfitForOrder": 22.558
+      }
+    ]
+  }
+}

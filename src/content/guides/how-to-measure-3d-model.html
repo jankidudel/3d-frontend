@@ -1,201 +1,22 @@
 ---
 title: 'How to Measure a 3D Model: STL and 3MF Dimensions Explained | InspectMesh'
-description: 'Learn how to measure an STL or 3MF model before 3D printing. Compare overall dimensions with point-to-point measurements, understand units and check scale before slicing.'
+description: 'Choose overall bounds, mesh point picks, source CAD or physical measurement. See why rotating a model changes its envelope without changing its edges.'
 slug: how-to-measure-3d-model
 eyebrow: 3D model measurement guide
 heading: How to Measure a 3D Model Before 3D Printing
-faq:
-  - question: Can I measure the distance between two points on an STL file?
-    answer: Yes. Open the model in an STL viewer with measurement tools, select two visible points and review the direct distance and X, Y and Z differences.
-  - question: Are STL measurements automatically in millimetres?
-    answer: No. STL files usually store triangle coordinates without reliable unit metadata. You need to know or choose whether the original coordinates should be interpreted as millimetres, inches or another unit.
-  - question: What is the difference between model dimensions and point-to-point measurement?
-    answer: Overall dimensions describe the model’s full width, height and depth. Point-to-point measurement checks the distance between two selected features, such as an opening span or the length of a tab; surface picks do not establish analytic hole centres.
-  - question: Is measuring an STL viewer accurate enough for functional parts?
-    answer: It is useful for inspecting the mesh and checking intended dimensions. Accuracy still depends on the source mesh resolution, selected points and unit interpretation; use CAD or calibrated physical measurement for tighter requirements.
 ---
 
 <p>
-  Before printing a 3D model, you may need to know how big a specific feature
-  actually is. A bounding box gives the model's full width, height and depth,
-  but it cannot tell you the distance between two holes, the width of an opening
-  or the length of a tab.
+  Choose the measurement that answers your question. Overall bounds describe the
+  occupied envelope; two selected mesh points describe a distance between those
+  locations. Neither identifies an exact CAD hole centre or proves the
+  dimensions of a printed part.
 </p>
-
-<h2>Measure holes and curved features carefully</h2>
-<p>
-  Selecting two visible mesh vertices on a faceted circle does not necessarily
-  measure its nominal diameter or center. The export may not place vertices at
-  opposite extrema, and coarse tessellation can make the result depend on
-  viewing angle. Fit or inspect the underlying analytic feature in CAD when
-  diameter, concentricity or center distance controls assembly.
-</p>
-<p>
-  For an approximate mesh check, take several spans, inspect a cross-section and
-  compare with a known reference. State whether the value is a bounding extent,
-  vertex distance, estimated diameter or source-CAD dimension. Those labels make
-  apparently conflicting measurements easier to reconcile.
-</p>
-
-<h2>Separate intent, exported geometry and the physical part</h2>
-<p>
-  Source CAD owns nominal analytic diameter, centre spacing and datums. The
-  tessellated export owns faceted surfaces and resolved transforms. Physical
-  measurement owns the produced dimension under the recorded instrument/method
-  and conditioning. A file span cannot establish a printed bore diameter, and a
-  physical reading cannot identify whether its cause is CAD, export or process
-  without comparison.
-</p>
-<p>
-  After checking the file, record comparable produced dimensions and exclusions
-  in the
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a> or
-  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}">axis worksheet</a>.
-  Use direction- and height-labelled sets for bores; do not click two arbitrary
-  points and report them as fitted analytic centres.
-</p>
-
-<h2>Keep transformation state visible</h2>
-<p>
-  Measure the resolved object that will be printed. A slicer may show a
-  transformed instance while another viewer reports the unscaled resource. Note
-  any scale or rotation applied after import, reset accidental transforms before
-  comparing applications, and export a test copy only when the receiving
-  workflow requires baked geometry.
-</p>
-
-<h2>Worked measurement sequence</h2>
-<p>
-  Suppose a replacement cover must fit within a 120 × 80 × 25 mm envelope and
-  align two holes 64 mm apart. First read the axis-aligned bounding box and test
-  sensible rotations; a result of 118 × 78 × 28 mm fails height even though two
-  axes fit. Confirm the 64 mm analytic hole-centre spacing in source CAD;
-  surface picks in the mesh viewer cannot establish those centres. These are
-  different questions: the bounding box cannot confirm the hole spacing, and two
-  selected points cannot prove the overall envelope.
-</p>
-<p>
-  Record the assumed unit beside every number. If an STL intended as inches
-  opens as millimeters, a 4-inch span may appear as 4 mm; applying 25.4 gives
-  101.6 mm. For 3MF, verify the declared unit and resolved transform rather than
-  applying a guessed factor. Preserve more decimal places during calculation
-  than the manufacturing process can reproduce, then round only the communicated
-  result.
-</p>
-<p>
-  Mesh vertices approximate the exported surface, so a picked point may not be a
-  true CAD center, tangent or nominal diameter. Use the original CAD model for
-  tolerance-critical inspection. Use mesh measurement to screen size, placement
-  and obvious discrepancies, and validate final fit with the actual printer and
-  process assumptions.
-</p>
-<h2>Choose the measurement type</h2>
-<p>
-  A bounding box answers overall fit; point-to-point measurement answers a
-  feature size. Confirm units before comparing either value with a drawing or
-  printer volume. For example, a 120 x 80 x 40 mm box may fit a printer while a
-  critical 8 mm hole still needs a separate measurement and tolerance check.
-</p>
-<p>
-  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to open a model
-  locally, inspect it in 3D and measure the distance between two visible points.
-</p>
-<h2>Start with overall dimensions</h2>
-<p>
-  Check the complete size first. Overall dimensions are useful for confirming
-  printer fit and spotting an incorrect scale before you inspect individual
-  features.
-</p>
-<ul>
-  <li>
-    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
-      >STL Dimensions Checker</a
-    >
-  </li>
-  <li>
-    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
-      >3MF Dimensions Checker</a
-    >
-  </li>
-</ul>
-<p>
-  If a model is 250 mm wide and your usable build area is 220 mm wide, the fit
-  issue is clear without feature measurement.
-</p>
-<h2>Use point-to-point measurement for specific features</h2>
-<p>
-  Point-to-point measurement helps with a slot width, mounting tab, lip, flange
-  or protruding feature. Analytic hole-centre spacing belongs in source CAD,
-  because selecting two mesh surface points does not locate those centres. In
-  the Viewer, activate <strong>Measure distance</strong>, then select two
-  visible points on the mesh.
-</p>
-<p>
-  The result shows the direct distance and the difference along the X, Y and Z
-  axes. Direct distance helps with diagonal features; axis differences show how
-  far the feature changes in each direction.
-</p>
-<h2>Understand the limits of mesh measurement</h2>
-<p>
-  An STL or 3MF viewer measures the mesh you opened, not the original parametric
-  CAD design. Curves are represented by triangles, so a low-resolution source
-  can approximate the intended design. Your selected points also affect the
-  result.
-</p>
-<p>
-  Use viewer measurement as a practical inspection tool. For a tight mechanical
-  fit, return to the CAD model where possible, or print and measure a
-  calibration test using the intended printer, material and settings. For
-  tolerance planning, use the
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >3D Print Tolerance &amp; Clearance Calculator</a
-  >.
-</p>
-<h2>STL units need extra care</h2>
-<p>
-  STL usually stores triangle coordinates without reliable information about
-  whether values mean millimetres, inches, centimetres or another unit. A
-  measurement can be mathematically correct but physically interpreted
-  incorrectly. When using the
-  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a>, choose the intended
-  unit before treating a result as a real-world dimension, then confirm model
-  scale with the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
-  >.
-</p>
-<h2>3MF can provide more unit context</h2>
-<p>
-  3MF files can declare a package unit, which makes scale interpretation more
-  reliable when the package is valid and supported. The
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> shows its resolved
-  model and available unit information. Confirm the resulting physical
-  dimensions after conversion or when receiving files from an unfamiliar
-  workflow.
-</p>
-<h2>Measure, then verify</h2>
-<p>
-  Measuring one feature does not replace a complete pre-print check. Inspect the
-  model, check overall dimensions and printer fit, measure important visible
-  features, check mesh integrity and wall thickness where relevant, then run
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> on
-  the final file before slicing.
-</p>
-<h2>A measured model is easier to trust</h2>
-<p>
-  Point-to-point measurement does not turn a mesh viewer into a CAD package.
-  Combined with overall dimensions, unit checking and Preflight, it provides a
-  practical way to understand the file you received before material and print
-  time are committed.
-</p>
-
-<h2>Use four measurements for four different decisions</h2>
 <table>
   <thead>
     <tr>
-      <th>Measurement</th>
-      <th>What it answers</th>
+      <th scope="col">Measurement</th>
+      <th scope="col">What it answers</th>
     </tr>
   </thead>
   <tbody>
@@ -223,18 +44,80 @@ faq:
     </tr>
   </tbody>
 </table>
+<h2>Rotation changes an envelope without stretching a part</h2>
 <p>
-  A rotated 20 mm cube can have a larger axis-aligned span without changing its
-  edge length. A clicked point on a polygonal hole is on a facet, not
-  automatically its analytic centre. Repeat selections and inspect the camera
-  angle before interpreting a small difference as a design change.
+  The 40 × 20 × 10 mm control has a 40 mm long edge. Rotating it 45° around Z
+  gives an expected global axis-aligned envelope of about 42.43 × 42.43 × 10 mm.
+  Each planar span is (40 + 20) / √2. The longer envelope does not mean the part
+  stretched. Compare the same orientation and coordinate system when two
+  applications disagree.
+</p>
+<figure>
+  <img
+    src="/examples/quality-evidence/rotated-size-block.svg"
+    width="760"
+    height="360"
+    loading="lazy"
+    alt="Original 40 by 20 rectangle and its 45 degree rotation inside global axis-aligned bounding boxes"
+  />
+  <figcaption>
+    Mathematical schematic in the XY plane; Z stays 10 mm. Dashed boxes show
+    bounds, not changed edge lengths. No physical measurement.
+  </figcaption>
+</figure>
+<h2>Follow one measurement sequence</h2>
+<ol>
+  <li>
+    Confirm unit and transform state. STL needs a supported assumption from a
+    known dimension; a 3MF needs its unit and placed-item context. Record scale
+    or rotation already applied.
+  </li>
+  <li>
+    Read bounds in
+    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions</a> or
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions</a>.
+    Compare the intended object versus the full arrangement.
+  </li>
+  <li>
+    For approximate visible-feature checks, open
+    <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+    <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, activate Measure
+    distance and pick two visible surface points. Read direct distance and axis
+    differences.
+  </li>
+  <li>
+    Compare the source CAD requirements. A mounting-hole centre distance, datum
+    or exact cylinder needs its analytic definition rather than two surface
+    picks.
+  </li>
+  <li>
+    Record unresolved features and the next measurement method. A nominal bed
+    comparison still needs actual slicer placement, supports, brim and exclusion
+    checks.
+  </li>
+</ol>
+<h2>Know what a mesh pick cannot establish</h2>
+<p>
+  A faceted circle may not have vertices at opposite extrema. Viewing angle,
+  selected facets and
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >tessellation deviation</a
+  >
+  affect a picked distance. Repeat the selection or inspect a section when
+  useful, but do not relabel it as an analytic centre or a calibrated physical
+  dimension.
 </p>
 <p>
-  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
-    >Tessellation deviation</a
-  >
-  is another source of uncertainty: a mesh approximates curved CAD surfaces.
-  Stop using the viewer as the acceptance authority when the tolerance depends
-  on an exact cylinder or datum. Use the source dimension and a separate
-  physical inspection plan.
+  For example, a 118 × 78 × 28 mm envelope fails a 120 × 80 × 25 mm requirement
+  on height in that orientation. Even if another orientation fits, it says
+  nothing about a required 64 mm hole-centre spacing. Keep those two decisions
+  separate.
+</p>
+<h2>Pass physical questions to a physical record</h2>
+<p>
+  Use the source design for nominal dimensions and the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a> or
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}">axis worksheet</a>
+  for comparable produced-part readings and exclusions. State the instrument,
+  method and conditions. A file check cannot certify the resulting assembly.
 </p>

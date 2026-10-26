@@ -3,13 +3,13 @@
   <h1>{{ title }}</h1>
   @if (kind === 'stl-to-3mf') {
     <p class="lead">
-      Create a basic, standards-compliant 3MF from STL geometry without
-      uploading your file.
+      Package STL mesh geometry as a basic 3MF with the coordinate unit you
+      choose. Conversion runs in your browser and does not upload the file.
     </p>
   } @else {
     <p class="lead">
-      Export the final resolved geometry of a 3MF build as one binary STL
-      without uploading your file.
+      Export the entire supported placed 3MF build or one selected top-level
+      placed item as binary STL in millimetres, locally without upload.
     </p>
   }
   <section class="checker card" aria-labelledby="upload-title">
@@ -76,8 +76,9 @@
         }
       </select>
       <p>
-        This declares what the existing STL coordinates mean; it does not resize
-        the model.
+        Choose what the existing coordinates mean. For the same 20-coordinate
+        edge, millimetres describe 20 mm and inches describe 508 mm. This
+        selection does not resize the coordinates to a target dimension.
       </p>
     }
     @if (resolving()) {

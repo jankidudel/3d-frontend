@@ -1,151 +1,88 @@
 ---
-title: 'How to Estimate Filament Weight From a 3MF File | InspectMesh'
-description: Learn how to estimate material weight from a 3MF file’s volume, density and infill assumptions before preparing a 3D print.
+title: 'Estimate Solid-Model Mass from a 3MF | InspectMesh'
+description: 'Calculate solid-model-equivalent mass from meaningful 3MF volume and stated density. Keep this geometry estimate separate from sliced consumption.'
 slug: how-to-estimate-filament-weight-from-a-3mf-file
 eyebrow: 3MF volume guide
-heading: How to Estimate Filament Weight From a 3MF File
-faq:
-  - question: Is a 3MF volume calculation the same as filament used?
-    answer: No. Model volume describes the solid geometry. Actual filament use depends on infill, wall count, supports, brim and slicer settings.
-  - question: Which filament density should I use?
-    answer: Use the density for the material you plan to print. PLA, PETG, ABS and filled materials have different densities.
-  - question: Can a broken 3MF give an unreliable volume result?
-    answer: Yes. Holes, open surfaces and inconsistent orientation can prevent dependable enclosed-volume calculations.
+heading: 'Estimate Solid-Model Mass from a 3MF: Volume and Density'
 ---
 
 <p>
-  A 3MF file can help you estimate how much material a print may use, but the
-  result is an estimate—not a replacement for your slicer’s final filament
-  calculation.
+  A valid enclosed geometry volume and a chosen density give a
+  solid-model-equivalent mass. That value is useful for comparing geometry or
+  checking an implausible size; it is not the amount of filament your sliced job
+  will consume.
 </p>
-<h2>Use volume as a solid-model estimate</h2>
+<h2>Inputs: meaningful volume and a stated density</h2>
 <p>
-  For a closed model, mass is approximately volume multiplied by material
-  density. For example, a 20 cm3 solid volume at 1.24 g/cm3 is about 24.8 g
-  before any slicer decisions. A sliced print can be substantially lighter or
-  heavier because of infill, perimeters, supports, purge and process settings.
-  Use a slicer's material estimate for purchasing or quoting a real print, and
-  use this geometry estimate to compare designs or catch an implausible result.
-  It cannot guarantee production-run consumption.
+  Use
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">the 3MF volume checker</a>
+  to inspect the supported result and its limitations. Record resolved scope and
+  physical unit before converting volume. A unit error is cubed in a volume
+  calculation. Use a density documented for the actual formulation rather than
+  assuming a material-family label supplies an exact value.
 </p>
-<h2>The geometry-to-mass formula</h2>
+<h2>One volume-to-mass calculation</h2>
 <p>
-  For a valid closed model, estimated solid mass equals resolved volume
-  multiplied by material density. Keep units consistent: 1 cm³ equals 1,000 mm³.
-  Convert a reported mm³ volume to cm³ before applying a density stated in
-  g/cm³.
+  <strong>Mass in grams = volume in mm³ / 1,000 × density in g/cm³.</strong> A
+  reported 32,000 mm³ is 32 cm³. With an explicitly assumed density of 1.24
+  g/cm³, the calculated solid-model-equivalent mass is 39.68 g. Use a density
+  documented for your actual formulation when the result matters. The example is
+  analytical arithmetic; 1.24 is an assumption, not an InspectMesh measurement
+  or recommendation.
 </p>
-<h2>Worked density example</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Requires</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Solid-model-equivalent mass</td>
+      <td>Meaningful geometry volume and stated density</td>
+    </tr>
+    <tr>
+      <td>Complete sliced consumption</td>
+      <td>Actual profile, material scope and included process structures</td>
+    </tr>
+    <tr>
+      <td>Remaining usable spool</td>
+      <td>Measured gross mass, relevant tare and reserve</td>
+    </tr>
+    <tr>
+      <td>Financial material cost</td>
+      <td>Complete selected grams and the matching spool price basis</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Check validity and scope</h2>
 <p>
-  Suppose the resolved build volume is 32,000 mm³. That is 32 cm³. Using an
-  illustrative density of 1.24 g/cm³ gives 32 × 1.24 = 39.68 g for a completely
-  solid object. Use the density supplied for the actual material; formulation,
-  fillers and manufacturer data can differ, so the example is not a material
-  preset.
-</p>
-<h2>Why the sliced print differs</h2>
-<ul>
-  <li>
-    Infill replaces some solid interior with a chosen pattern and percentage.
-  </li>
-  <li>
-    Perimeters, top/bottom layers and thin-wall behavior change deposited
-    volume.
-  </li>
-  <li>Supports, brims, rafts, purge towers and tool changes add material.</li>
-  <li>
-    Slicer flow settings and filament diameter affect the length estimate.
-  </li>
-</ul>
-<p>
-  Use solid mass to compare model revisions or detect an implausible volume. Use
-  the target slicer's material report for a real print and add only material
-  absent from its complete report when purchasing or quoting.
-</p>
-<h2>Validity checks before calculating</h2>
-<p>
-  Confirm declared units, resolved item count and a volume-compatible closed
-  mesh. Open surfaces, self-intersections and overlapping build items can make
-  volume misleading. For multiple parts, decide whether you need each object's
-  mass or the entire resolved plate, and avoid double-counting overlapping
-  placements.
-</p>
-<h2>Use the estimate for the right decision</h2>
-<p>
-  Solid mass is useful for comparing two model revisions at the same assumed
-  density or checking whether the package scale is plausible. It is unsuitable
-  as a shipping, purchasing or customer-quote figure without sliced material,
-  waste and measured process allowances. State the density source and
-  calculation date so another person can reproduce the estimate.
+  Open surfaces, inconsistent orientation, overlapping shells or ambiguous
+  geometry can make enclosed volume unavailable or unsuitable for a material
+  sum. Unavailable volume is not zero. A multi-item 3MF is not automatically a
+  valid sum of distinct solids; overlapping placements are not Boolean-unioned.
+  Keep the original report and resolve ambiguity before treating the value as
+  material.
 </p>
 <p>
-  The starting point is model volume. A larger solid volume generally needs more
-  material, but actual filament use depends on the print settings you choose.
+  Use
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">local 3MF preflight</a> to
+  interpret supported geometry findings. Correct bounds or a visually plausible
+  model do not by themselves validate enclosed volume, physical density or
+  printability.
 </p>
-<h2>Calculate model volume</h2>
+<h2>Move to sliced consumption for a production decision</h2>
 <p>
-  Upload the file to the
-  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>.
-  It reports the volume of the resolved mesh geometry and can provide a
-  material-weight estimate.
-</p>
-<p>
-  Choose the correct unit and material density. The same model volume weighs
-  differently in PLA, PETG, ABS and filled filaments.
-</p>
-<h2>Understand the difference between volume and print weight</h2>
-<p>
-  A volume calculator works from the model’s solid geometry. Your slicer may
-  print that model partly hollow using infill.
-</p>
-<p>Actual material use depends on:</p>
-<ul>
-  <li>infill percentage and pattern</li>
-  <li>wall/perimeter count</li>
-  <li>top and bottom layers</li>
-  <li>supports</li>
-  <li>brim or raft</li>
-  <li>purge material for multi-colour printing</li>
-</ul>
-<p>
-  Use the calculator for an early estimate and your slicer for the final
-  print-planning figure.
-</p>
-<h2>Check mesh health first</h2>
-<p>
-  Volume is most dependable when the model forms a closed, consistently oriented
-  surface. Before relying on the result, use the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> and,
-  where relevant, the
-  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a
-  >.
-</p>
-<p>
-  A model with holes or non-manifold geometry can produce an unreliable
-  enclosed-volume calculation.
-</p>
-<h2>Use the estimate for planning</h2>
-<p>
-  A rough weight estimate is useful when deciding whether you have enough
-  filament, comparing design variants or estimating material cost before
-  slicing.
-</p>
-<p>
-  Then open the model in the
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, confirm its
-  dimensions and produce a final slice with your intended printer profile. The
-  slicer remains the best source for the actual material estimate because it
-  knows the print settings that will determine how much filament is deposited.
-</p>
-<h2>Replace geometry mass before a production job</h2>
-<p>
-  After slicing the actual plate, preserve its complete per-material
-  consumption, profile/version and repeat count. Do not transfer solid-model
-  mass as a complete job input. The
-  <a href="{{ GuideSlug.Route3dPrintSupportAndPurgeMaterialCost }}"
-    >material reconciliation guide</a
+  Slice the intended arrangement with the actual profile and use
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >complete per-material consumption</a
   >
-  owns inclusion;
-  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">the job calculator</a>
-  owns the selected production cost.
+  for spool planning and production costing. Read
+  <a href="{{ GuideSlug.Route3dPrintSupportAndPurgeMaterialCost }}"
+    >support and purge inclusion</a
+  >
+  before adding categories. Keep any reserve or financial uplift separate. A
+  geometry mass cannot confirm that a spool is sufficient or establish a final
+  customer quotation.
 </p>

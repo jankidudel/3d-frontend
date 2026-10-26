@@ -1,163 +1,91 @@
 ---
-title: 'STL Scale Factor Explained: Percentages, Target Sizes, and Units'
-description: 'Learn how STL scale factors work, how to resize a model to an exact dimension, and why STL unit assumptions can cause 3D-print size mistakes.'
+title: 'STL Scale Factor: Final Percentages and Exact Ratios | InspectMesh'
+description: 'Calculate a uniform factor and final percentage. Compare 150% with a 50% increase, and understand changes to area, volume and functional features.'
 slug: stl-scale-factor-explained
 eyebrow: STL printing guide
 heading: 'STL Scale Factor Explained: Percentages, Target Sizes, and Units'
-faq:
-  - question: What is an STL scale factor?
-    answer: It is the uniform multiplier applied to every STL coordinate. A factor of 0.5 halves each dimension and a factor of 2 doubles each dimension.
-  - question: Does an STL file declare its units?
-    answer: No. STL coordinate values do not identify whether they represent millimetres, centimetres, inches, or another unit, so confirm the intended size before printing.
 ---
 
-<p class="lead">
-  A scale factor is the number used to multiply every coordinate in a 3D model.
-  If the factor is <code>2</code>, the model becomes twice as large in width,
-  depth, and height. If it is <code>0.5</code>, it becomes half as large.
-</p>
 <p>
-  When communicating a factor, include both the decimal and final percentage so
-  another person can reproduce the entry without interpreting “increase by” as
-  “scale to.”
+  A uniform scale factor is target size divided by current size. Multiply the
+  factor by 100 to obtain the final scale percentage. Enter 150% to make a model
+  one and a half times its current size; 50% makes it half-size.
 </p>
-
-<h2>More scale-factor examples</h2>
+<h2>Calculate the factor and final percentage</h2>
+<p>
+  <strong
+    >Factor = target / current. Final percentage = factor × 100. Percentage
+    change = (factor - 1) × 100.</strong
+  >
+  Compare lengths in the same physical unit and use a finite current length
+  greater than zero. A 50% increase means a final 150%, not a final 50%.
+</p>
+<h2>Worked conversions</h2>
 <table>
   <thead>
     <tr>
-      <th>Current</th>
-      <th>Target</th>
-      <th>Factor</th>
-      <th>Percentage</th>
+      <th scope="col">Current to target</th>
+      <th scope="col">Factor</th>
+      <th scope="col">Final percentage</th>
+      <th scope="col">Change</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>80 mm</td>
-      <td>100 mm</td>
-      <td>100 / 80 = 1.25</td>
-      <td>125%</td>
+      <td>40 to 60 mm</td>
+      <td>1.5</td>
+      <td>150%</td>
+      <td>50% larger</td>
     </tr>
     <tr>
-      <td>125 mm</td>
-      <td>100 mm</td>
-      <td>100 / 125 = 0.8</td>
-      <td>80%</td>
+      <td>40 to 20 mm</td>
+      <td>0.5</td>
+      <td>50%</td>
+      <td>50% smaller</td>
     </tr>
     <tr>
-      <td>4 units</td>
-      <td>101.6 mm</td>
-      <td>25.4</td>
-      <td>2540%</td>
+      <td>508 to 20 mm</td>
+      <td>1 / 25.4</td>
+      <td>About 3.937007874%</td>
+      <td>Only after confirming an inch/mm error</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A 125% result means the final size is 125% of the original, which is a 25%
-  increase. A factor of 0.8 means the final size is 80% of the original, a 20%
-  decrease. Keeping those phrases separate prevents the common mistake of typing
-  25% when the slicer expects the final percentage.
+  Keep the exact ratio for the operation; round only its displayed explanation.
+  The last row is a correction hypothesis, not a rule for every oversized file.
+  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
+    >Establish the intended STL unit</a
+  >
+  before applying it.
+</p>
+<h2>What uniform scaling changes</h2>
+<p>
+  Uniform scaling changes every length by the factor, every area by its square
+  and the volume of unchanged closed geometry by its cube. A factor of 1.5
+  changes 8,000 mm³ to an expected 27,000 mm³. It does not imply the same ratio
+  for sliced material, supports or print time.
 </p>
 <p>
-  Calculate from a dependable dimension and retain extra precision until the
-  final entry. If a 37.46 mm feature must become 50.00 mm, the factor is about
-  1.3348; rounding immediately to 1.33 yields about 49.82 mm. Measurement
-  uncertainty and printer variation may exceed that difference, but premature
-  rounding should not add avoidable error. Verify another independent dimension
-  to detect a wrong unit assumption or non-uniform source distortion.
-</p>
-<h2>Work the factor before scaling</h2>
-<p>
-  Scale factor equals target dimension divided by current dimension. To change
-  40 mm to 50 mm, use 50/40 = 1.25, or 125%. Measure a reliable feature,
-  preserve proportions when appropriate, and re-check fit and wall thickness
-  because a scale change affects both.
+  Uniform scaling changes coordinates without reducing triangle count. It also
+  does not fill holes or remove overlapping faces. The geometric calculation
+  assumes the same closed shape; unavailable or ambiguous enclosed volume is not
+  a zero-volume result.
 </p>
 <p>
-  For 3D printing, scaling is useful when a downloaded part does not fit the
-  printer, a miniature needs to match a chosen scale, or a functional model
-  needs to match a known measurement. The important rule is to use
-  <strong>uniform scaling</strong> when you want to preserve the model’s
-  proportions.
+  A factor calculated from overall width also changes holes, walls and mating
+  clearances. If one dimension must change while a mounting feature stays fixed,
+  edit the design rather than scaling the entire mesh. Separate axis factors can
+  distort circles and are a different design operation.
 </p>
-<h2>What a scale factor changes</h2>
+<h2>Apply the operation and verify the saved copy</h2>
 <p>
-  An STL model is made from triangle vertices. Applying a uniform scale factor
-  multiplies every vertex position by the same amount. The shape stays the same,
-  but its dimensions change.
-</p>
-<p>For example, a 40 mm wide model scaled by:</p>
-<ul>
-  <li><code>0.5</code> becomes 20 mm wide</li>
-  <li><code>0.75</code> becomes 30 mm wide</li>
-  <li><code>1.25</code> becomes 50 mm wide</li>
-  <li><code>2</code> becomes 80 mm wide</li>
-</ul>
-<p>
-  Triangle count does not change when a model is scaled. Scaling also does not
-  repair mesh errors, add wall thickness, or make a part fit mechanically. It
-  changes size only.
-</p>
-<h2>Calculate a scale factor from a target dimension</h2>
-<p>Use this formula:</p>
-<p><code>scale factor = desired dimension ÷ current dimension</code></p>
-<p>If a bracket is currently 60 mm wide and you need it to be 45 mm wide:</p>
-<p><code>45 ÷ 60 = 0.75</code></p>
-<p>
-  Apply a <code>0.75</code> scale factor to reduce the entire model to 75% of
-  its original size.
-</p>
-<p>If a 12 mm feature must become 18 mm:</p>
-<p><code>18 ÷ 12 = 1.5</code></p>
-<p>The model should be scaled to 150%.</p>
-<p>
-  Choose a measurement that you understand and can verify. For a functional
-  part, use a known critical measurement rather than guessing from the overall
-  model height.
-</p>
-<h2>Why STL units cause size mistakes</h2>
-<p>
-  STL files store coordinate numbers but do not declare whether those numbers
-  represent millimetres, centimetres, inches, or another unit. A model designed
-  in inches may therefore appear about 25.4 times too small when software
-  assumes millimetres.
-</p>
-<p>
-  Before scaling, inspect the model’s dimensions and decide what the numbers
-  were intended to mean. In most 3D-printing slicers, millimetres are the
-  practical default. If a model that should be 2 inches wide appears as 2 mm
-  wide, converting the assumed inch values to millimetres requires a factor of
-  <code>25.4</code>.
-</p>
-<p>
-  Do not change units merely because a model looks unusual on screen. Compare it
-  with the designer’s stated dimensions, a known part, or a test print.
-</p>
-<h2>Keep scaling proportional</h2>
-<p>
-  Changing only one axis stretches the design. That can be useful for deliberate
-  modelling work, but it can make round holes oval, alter thread pitch, weaken
-  walls, and prevent parts from fitting together.
-</p>
-<p>
-  For ordinary print preparation, set one target dimension and let the other two
-  update automatically. Then check that the resized model fits your printer’s
-  build volume.
-</p>
-<h2>Check the model before printing</h2>
-<p>
-  After resizing, confirm the final dimensions and inspect the mesh. A correctly
-  sized model can still have holes, non-manifold edges, flipped surfaces, or
-  walls that are too thin for the printer.
-</p>
-<p>
-  Use the InspectMesh
-  <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale Tool</a> to calculate
-  and download a proportionally resized STL. Then use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  before slicing. If the model is too large even after sensible scaling, the
-  <a href="{{ GuideSlug.RouteStlSplitter }}">STL Splitter</a> can help divide it
-  into printable parts.
+  Use <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale</a> for the
+  operation. The
+  <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
+    >saved-copy scaling guide</a
+  >
+  owns the complete workflow and printable record. Neither entering a percentage
+  nor choosing a coordinate conversion adds a unit declaration to STL. Reopen
+  the exported bytes using the intended receiving convention.
 </p>

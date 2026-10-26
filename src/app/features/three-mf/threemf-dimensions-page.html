@@ -367,15 +367,22 @@
         before slicing.
       </li>
     </ol>
-    <h2>Why 3MF dimensions are more reliable than STL dimensions</h2>
+    <h2>Read the declared unit and the measured scope</h2>
     <p>
-      3MF can store a model unit, so a 3MF file carries more scale information
-      than a basic STL file. This checker uses that declared or effective 3MF
-      unit when displaying the final build dimensions. STL does not reliably
-      carry unit metadata; use the
-      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>
-      when working with STL files.
+      A unit declaration explains the coordinate convention. The measured bounds
+      describe the supported resolved build, including its placements. A wider
+      build can contain several unchanged small parts; it does not mean each
+      part grew to the overall width. The primary server result is displayed in
+      its declared/effective source unit; the conversion panel shows the
+      corresponding millimetres, centimetres and inches.
     </p>
+    <p>
+      To resize the project, use
+      <a [href]="guideRouteUrl.RouteHowToScaleA3mfFile"
+        >the application workflow in the scaling guide</a
+      >. Changing a display unit here does not save a resized 3MF.
+    </p>
+
     <h2>One resource, two placements, different bounds</h2>
     <p>
       A 20 mm cube placed at X = 0 spans 20 mm on that axis. Place another copy
@@ -420,12 +427,6 @@
     <p>
       No. It is a size comparison only. Your slicer, chosen orientation,
       supports, printer margins and print settings still matter.
-    </p>
-    <h3>Can I use this tool for STL files?</h3>
-    <p>
-      Use the
-      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a>.
-      STL coordinates do not reliably specify their intended unit.
     </p>
   </section>
 </main>

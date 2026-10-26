@@ -201,8 +201,9 @@
       @if (specificationChanged()) {
         <aside class="notice" role="status">
           <p>
-            The job specification changed. The selling price has not been
-            recalculated. Review it before exporting.
+            This change may require another slice and production estimate.
+            Review the new job and enter its revised order price; changing these
+            document fields does not price the work automatically.
           </p>
           <a [routerLink]="routes.PrintPriceCalculator"
             >Review in price calculator</a

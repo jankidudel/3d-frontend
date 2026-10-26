@@ -58,6 +58,7 @@ const guideSchema: Options = {
     'figure',
     'figcaption',
     'table',
+    'caption',
     'thead',
     'tbody',
     'tr',

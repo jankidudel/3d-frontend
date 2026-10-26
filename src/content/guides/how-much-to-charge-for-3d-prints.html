@@ -1,214 +1,121 @@
 ---
 title: 'How Much to Charge for 3D Prints: Cost and Quotes | InspectMesh'
-description: Learn how to price 3D printed parts by adding material, energy, labour, fees, packaging, delivery and profit to a clear customer quote.
+description: 'Price a reviewed order cost using margin or markup, entered selling fees and a minimum. Keep internal assumptions separate from the customer quotation.'
 slug: how-much-to-charge-for-3d-prints
 eyebrow: 3D printing pricing guide
 heading: How Much to Charge for 3D Prints
-faq:
-  - question: How do I work out a price for a 3D printed part?
-    answer: Start with slicer filament weight and print time, then add energy, machine use, labour, packaging, delivery, failure allowance and selling fees before choosing a margin.
-  - question: What is the difference between markup and margin?
-    answer: Markup is profit compared with cost. Margin is profit compared with the selling price. They are not the same percentage.
-  - question: Can a price calculator tell me what customers will pay?
-    answer: No. It can make your costs and target profit visible, but market demand, design value, competition and delivery expectations still determine whether a customer accepts a quote.
 ---
 
 <p>
-  Build a print quote from the actual work and an explicit profit method.
-  Material, machine time, preparation, finishing, failure allowance and minimum
-  order all need visible assumptions. A calculator can expose cost and margin;
-  it cannot tell you what customers will pay.
+  Start with a reviewed production cost, choose margin or markup deliberately,
+  and account for the selling fees you enter. The result explains your pricing
+  assumptions; it cannot establish what a customer will pay.
 </p>
-<p>
-  Use
-  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
-    >the editable price calculator</a
-  >
-  with your chosen currency. GBP, USD, CAD, AUD, NZD or EUR labels do not
-  convert prices or identify tax obligations. All figures below are hypothetical
-  currency units (CU), not market rates.
-</p>
-<h2>Price the shared fictional job</h2>
+<h2>Start with production cost K</h2>
 <p>
   The
-  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}"
-    >five-part, two-plate production record</a
-  >
-  has K = 39.192 CU. Enter or explicitly apply that complete order cost in the
-  price calculator. Job-total mode does not multiply K by quantity or add
-  another production failure budget. Any entered quantity remains a planned
-  count; mixed parts stay at order level.
-</p>
-<figure>
-  <img
-    src="/images/job-planning/cost-fee-price.svg"
-    alt="Production cost to selling price: K = 39.192 CU production cost - Entered job total, never quantity × K; m = 30%, f = 5%, F = 0 - Fee is on this modelled selling price P; P = K / (1 - m - f) - 60.295384… CU; displayed 60.30; Fee 3.014769…; profit 18.088615… - Profit / selling price = 30%"
-    width="360"
-    height="348"
-  />
-  <figcaption>
-    Original planning diagram; hypothetical inputs, not observed production.
-  </figcaption>
-</figure>
-<h2>Choose margin or markup explicitly</h2>
-<p>
-  Without fees, 30% target margin gives
-  <code>P = K / (1 - m) = 39.192 / 0.70 = 55.988571… CU</code>, displayed 55.99.
-  A 30% markup gives <code>P = K × (1 + u) = 50.9496 CU</code>, displayed 50.95.
-  Percentages become fractions. Margin is profit divided by price; markup in
-  this implementation targets profit u × K after entered fees.
-</p>
-<h2>Declare the exact selling-fee basis</h2>
-<p>
-  For fixed fee F once per order and percentage f on the calculator selling
-  price P, margin mode uses <code>P = (K + F) / (1 - m - f)</code>. With m =
-  0.30, f = 0.05 and F = 0, P is 60.295384… CU, displayed 60.30. Require m + f
-  &lt; 1. Markup mode uses <code>P = (K × (1 + u) + F) / (1 - f)</code>; 30%
-  markup and a 5% fee give 53.631157… CU, displayed 53.63. Require f &lt; 1.
-</p>
-<p>
-  This simplified fee scenario is implemented, but it is not a marketplace
-  tax/shipping model. Do not import a hardcoded fee table. If fees are already
-  incorporated in K, mark that basis and leave separate fees at zero. Tax and
-  unentered costs remain excluded; currency selection changes labels without
-  conversion.
-</p>
-<h2>Minimum price changes realised margin</h2>
-<p>
-  Apply the minimum order price after the chosen method. With a 65 CU minimum,
-  the fee-adjusted 60.295384… CU result becomes 65 CU. At the entered 5% fee,
-  fees are 3.25 CU; profit is 65 - 3.25 - 39.192 = 22.558 CU and realised margin
-  is 34.704615…%. The target remains 30%; the realised margin changes. The
-  calculator recomputes these outputs after the minimum.
-</p>
-<p>
-  Full precision is kept in calculations and JSON. Rounded unit values need not
-  multiply to the rounded order total. Do not quote mixed parts as if a single
-  average were their individual cost.
-</p>
-<h2>Make the inputs editable and retain the assumptions</h2>
-<ol>
-  <li>
-    Slice the agreed revision, material and orientation; copy complete material
-    and duration estimates.
-  </li>
-  <li>
-    Set your currency, actual material cost, machine allowance and hands-on
-    labour.
-  </li>
-  <li>
-    Add delivery, fees and tax treatment explicitly where relevant. Estimates
-    are not invoices or tax advice.
-  </li>
-  <li>
-    Choose margin or markup deliberately, then apply your stated minimum-order
-    policy.
-  </li>
-  <li>
-    Export the quote assumptions and retain
-    <a href="{{ GuideSlug.RouteBatchStlChecker }}">the file-review report</a>
-    alongside the approved revision.
-  </li>
-</ol>
-<h2>Share setup only when it is shared</h2>
-<p>
-  Record once-per-order work in the production job. Independent runs repeat
-  handling even if preparation was shared. Re-slice changed quantity or layout;
-  the batch guide owns those allocation decisions. An agreed minimum-order
-  policy is a price rule, separate from that cost scope.
-</p>
-<h2>Failure allowance and minimum order</h2>
-<p>
-  Use a fixed budget or an observed retry model and document which costs it
-  covers. Do not add an expected failure cost again if the entered machine rate
-  already includes it. With credible comparable-job data, dividing eligible
-  production cost by a success fraction is one scenario; it is not a predicted
-  failure rate for unfamiliar geometry.
-</p>
-<p>
-  A minimum order can cover administration that a small part still needs. In a
-  hypothetical policy with a 15 CU minimum, a calculated 9 CU quote becomes 15
-  CU; a 32.86 CU quote remains 32.86 CU. State this policy to the customer and
-  avoid counting the same setup twice.
-</p>
-<h2>Quote only after intake questions are resolved</h2>
-<p>
-  Record quantity, exact material/colour, functional dimensions, included design
-  changes, finish, delivery date and quote expiry. A customer-supplied file with
-  unresolved units or missing features needs
-  <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
-    >intake clarification</a
-  >
-  before an unconditional production quote. A clean mesh report does not price
-  support removal or establish material suitability.
-</p>
-<p>
-  Recalculate when quantity, process, revision or orientation changes. Use
   <a href="{{ GuideSlug.RouteHowToCalculate3dPrintingCost }}"
-    >the production-cost explanation</a
+    >five-part production baseline</a
   >
-  for the underlying inputs, then
-  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}">build your quote</a>
-  using your own values.
-</p>
-
-<h2>Price an agreed coupon or fit-validation iteration</h2>
-<p>
-  Offer a representative coupon or prototype when it resolves an agreed
-  functional requirement. Define the tested feature, counterpart,
-  process/profile, post-processing, measurement method and acceptance evidence
-  in
+  gives K = 39.192 currency units for the complete fictional order. K includes
+  the selected production scope before selling profit and entered selling fees.
+  If intake is unresolved, return to
   <a href="{{ GuideSlug.RouteInspectCustomerSuppliedPrintFiles }}"
-    >customer intake</a
-  >. A clean mesh is not assembly acceptance, and an iteration is not a promised
-  successful fit.
+    >the intake decision</a
+  >
+  before treating the scope as agreed.
 </p>
 <p>
-  Record one-time design/preparation as setup, coupon production as its own
-  material/machine work, and measuring, installation or finishing as hands-on
-  labour. If setup is already included, do not add it again to every coupon.
-  State the included iteration count or separately agreed scope; revised CAD or
-  a new profile can require additional work. The
+  If you bring in the complete order cost, do not multiply that total by
+  quantity again. Quantity can describe the planned order without turning an
+  order total into a per-item cost. Retain mixed-part costs at order level
+  unless you have an explicit allocation.
+</p>
+<h2>Choose margin or markup</h2>
+<p>
+  Define K = complete order production cost; P = selling price; m = target
+  margin fraction; u = markup fraction; f = fee fraction on P; F = fixed fee
+  once per order. Convert percentages to fractions before calculation.
+</p>
+<p>
+  <strong>Margin: P = (K + F) / (1 - m - f).</strong> Margin expresses profit
+  after entered fees as a fraction of selling price.
+  <strong>Markup: P = (K × (1 + u) + F) / (1 - f).</strong> Markup targets
+  profit equal to u × K after those fees.
+</p>
+<h2>Apply the entered fee basis</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Fictional scenario</th>
+      <th scope="col">Formula</th>
+      <th scope="col">Rounded price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>30% margin, no fees</td>
+      <td>39.192 / 0.70</td>
+      <td>55.99</td>
+    </tr>
+    <tr>
+      <td>30% markup, no fees</td>
+      <td>39.192 × 1.30</td>
+      <td>50.95</td>
+    </tr>
+    <tr>
+      <td>30% margin, 5% fee on P</td>
+      <td>39.192 / 0.65</td>
+      <td>60.30</td>
+    </tr>
+    <tr>
+      <td>30% markup, 5% fee on P</td>
+      <td>(39.192 × 1.30) / 0.95</td>
+      <td>53.63</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The percentage applies to this calculated selling price, and the fixed amount
+  applies once per order. Check the actual channel's fee basis separately. If
+  fees are already in K, separate fee inputs must be zero. Unentered taxes,
+  delivery charges and other fees remain outside the result.
+</p>
+<p>
+  The
   <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
-    >existing quote worksheet</a
+    >existing price calculator</a
   >
-  retains those assumptions, while
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >the measurement worksheet</a
-  >
-  records the fit calculation and user-entered outcome. No universal prototype
-  price follows from these calculators.
+  requires finite non-negative inputs and a positive whole quantity. Margin +
+  percentage fee must be below 100%; the markup fee must be below 100%.
+  Full-precision arithmetic is retained until presentation.
 </p>
-<h2>Record a quote worksheet after agreeing the work</h2>
+<h2>Apply a minimum and review realised margin</h2>
 <p>
-  Use the
-  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
-    >price calculator and printable worksheet</a
-  >
-  to separate once-per-order setup and packaging from per-part labour and
-  finishing. Choose a currency label, quantity and margin explicitly. Avoid
-  counting failure allowance twice if your machine rate already includes it. The
-  export retains calculation inputs locally until you deliberately download or
-  print it; it is an estimate, not an invoice or production acceptance.
+  Apply the minimum last. With a 65 minimum, the 60.295384615… margin/fee result
+  becomes 65.00. The 5% fee is then 3.25; profit after that fee is 22.558 and
+  realised margin is approximately 34.704615%. The target remains 30%, but the
+  minimum changes the realised result. These are fictional calculations, not
+  market rates.
 </p>
-
-<h2>Prepare the customer quotation</h2>
 <p>
-  Once you have reviewed the selling price, use the
+  Do not add a second failure budget after importing a reviewed K. If quantity,
+  material or layout changes, re-slice and revise production first. Shared
+  preparation and repeated run work can change differently; the old order total
+  is not automatically a unit price.
+</p>
+<h2>Prepare the customer document</h2>
+<p>
+  Retain the private pricing worksheet with its assumptions.
   <a href="{{ GuideSlug.Route3dPrintingQuoteGenerator }}"
-    >quotation generator</a
+    >Prepare the customer quotation</a
   >
-  to prepare the customer document. Include the job quantity, material, finish,
-  model revision, delivery scope and validity date. Keep your internal cost and
-  margin worksheet separately. Downloading a quotation does not record customer
-  acceptance.
-</p>
-
-<p>
-  If the customer changes the job,
-  <a href="{{ GuideSlug.Route3dPrintingQuoteGenerator }}#quotation-versions"
-    >retain the previous quotation</a
+  from the reviewed order price, then use
+  <a href="{{ GuideSlug.Route3dPrintingQuoteChecklist }}"
+    >the pre-send record</a
   >
-  and review the new specification before pricing again. A changed quantity is
-  not automatically a proportional change in production cost.
+  to check scope, references and the exported PDF. The customer document omits
+  internal cost/margin. Neither an estimate nor a quotation version records
+  customer acceptance. Currency selection relabels values; it does not perform
+  foreign exchange or calculate tax.
 </p>

@@ -1,0 +1,58 @@
+{
+  "observedDate": "2026-10-26",
+  "sourceRevision": "39cb34ff0ba25f8647b37f8e69ac9364997af514",
+  "sourceState": "Main checkout with page-clarity edits; existing geometry and conversion algorithms unchanged.",
+  "rights": "Owned numerical block derived from the InspectMesh cube control; CC0-1.0.",
+  "method": "Actual local STL scale/serialization and STL-to-3MF writer, followed by reopen through existing parsers. The converted package is generated output, not a hand-authored reference.",
+  "reproduction": "INSPECTMESH_REFRESH_EVIDENCE=1 npx vitest run scripts/sizing-evidence.spec.mts",
+  "software": {
+    "node": "v24.19.0",
+    "vitest": "4.1.11",
+    "three": "0.185.1"
+  },
+  "toleranceMm": 0.00001,
+  "limitations": "Designed millimetre assumption for unitless STL. Not a browser interaction, receiving-slicer, server or physical-print observation. Rotated and half-size values are analytical expectations separately checked against local geometry.",
+  "implementations": [
+    {
+      "path": "src/app/features/stl-scale/stl-scale.ts",
+      "sha256": "8e0eb6c7c48046d7f276491f45162f6a3ac992aab4648897c23b6ab35e254b13"
+    },
+    {
+      "path": "src/app/features/stl-reducer/stl-reducer.ts",
+      "sha256": "566ff7b88bf0501d48bff54934d9d4a0fa6ee8002612a2277c0c6f5ed055acc7"
+    },
+    {
+      "path": "src/app/features/converters/local-converter-page.ts",
+      "sha256": "6292118e938edd0f0f8923e275d8cadd7fed7d21bf35b3c373b4473b4047f838"
+    },
+    {
+      "path": "src/app/features/shared/wall-thickness/three-mf-wall-thickness.ts",
+      "sha256": "e6f347e34f635e694075da3ad4bddbd632ac3be0bdbaebf3b067bcccb06c8b30"
+    }
+  ],
+  "controls": {
+    "source": {
+      "path": "/examples/quality-evidence/size-block-original.stl",
+      "sha256": "2a7e649bb4749ebb2173066e0f01016b8e838d2a1bedc3e3d83bc61fca8af989",
+      "spansXyzMm": [40, 20, 10],
+      "triangles": 12,
+      "volumeMm3": 8000
+    },
+    "scaled": {
+      "path": "/examples/quality-evidence/size-block-scaled.stl",
+      "sha256": "ca17df8542a4ecd3d3dd1a36fc2a4699e8c5a6ca9f4f8e466209e21e3f803e76",
+      "factor": 1.5,
+      "spansXyzMm": [60, 30, 15],
+      "triangles": 12,
+      "volumeMm3": 27000
+    },
+    "converted": {
+      "path": "/examples/quality-evidence/size-block-converted.3mf",
+      "sha256": "2989fa50cc3bac79d700d9f8f5cdb3debc8494329dca8718726d27f80acfadbf",
+      "declaredUnit": "millimeter",
+      "placedItems": 1,
+      "spansXyzMm": [40, 20, 10],
+      "triangles": 12
+    }
+  }
+}

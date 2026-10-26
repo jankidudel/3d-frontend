@@ -37,7 +37,7 @@
   />
   @if (source(); as source) {
     <section class="card" aria-labelledby="file-title">
-      <h2 id="file-title">Uploaded model</h2>
+      <h2 id="file-title">Selected model</h2>
       <dl class="metrics">
         <div>
           <dt>File</dt>
@@ -56,17 +56,24 @@
           <dd>
             {{ format(sourceDimensions()!.width) }} ×
             {{ format(sourceDimensions()!.depth) }} ×
-            {{ format(sourceDimensions()!.height) }} mm
+            {{ format(sourceDimensions()!.height) }} coordinate units
           </dd>
         </div>
       </dl>
       <p class="unit-note">
-        STL files have no built-in units. Confirm the intended dimensions before
-        printing.
+        STL files have no built-in units. Initial dimensions use a millimetre
+        assumption; coordinate conversion uses the source convention you select.
+        Confirm the intended physical dimensions before printing.
       </p>
     </section>
     <section class="card controls" aria-labelledby="scale-title">
       <h2 id="scale-title">Scale proportionally</h2>
+      <p>
+        Percentage sets a final uniform size. Target dimension calculates one
+        factor and applies it to all axes. Coordinate conversion rescales the
+        saved coordinate values for a chosen receiving convention. None adds an
+        STL unit declaration.
+      </p>
       <fieldset>
         <legend>Scaling method</legend>
         <label
@@ -189,11 +196,11 @@
         <h2 id="result-title">Scaled model</h2>
         <dl class="metrics">
           <div>
-            <dt>Original dimensions</dt>
+            <dt>Original coordinate spans (X / Y / Z)</dt>
             <dd>
               {{ format(sourceDimensions()!.width) }} ×
               {{ format(sourceDimensions()!.depth) }} ×
-              {{ format(sourceDimensions()!.height) }} mm
+              {{ format(sourceDimensions()!.height) }} coordinate units
             </dd>
           </div>
           <div>
@@ -219,6 +226,10 @@
         <button class="button" type="button" (click)="download()">
           Download scaled STL
         </button>
+        <p>
+          Download and reopen this copy under the intended unit assumption.
+          Check the dimensions and important features before slicing.
+        </p>
         <p class="safety-note">
           Scaling changes size only. It does not repair holes, non-manifold
           edges, wall thickness, or orientation problems. Check the

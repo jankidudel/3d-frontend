@@ -4,51 +4,74 @@ description: Learn how to convert an STL file to a basic 3MF, choose the correct
 slug: how-to-convert-stl-to-3mf
 eyebrow: 3MF conversion guide
 heading: How to Convert STL to 3MF for 3D Printing
-faq:
-  - question: Does converting STL to 3MF improve model quality?
-    answer: No. Conversion preserves the existing mesh geometry; it cannot add detail or repair problems already present in the STL.
-  - question: Which unit should I choose when converting an STL?
-    answer: Choose the unit that the STL coordinates were originally intended to represent, commonly millimetres for 3D printing. Check the resulting dimensions before slicing.
-  - question: Does an STL to 3MF conversion include print settings?
-    answer: No. STL files do not contain slicer settings, material data or colours to carry into the new 3MF.
 ---
 
-<p class="lead">
-  Converting an STL to 3MF can make the intended unit explicit for compatible
-  slicers, but it does not turn a geometry-only file into a complete print
-  project.
-</p>
-<h2>Choose units and verify the converted build</h2>
 <p>
-  STL coordinates have no authoritative unit, so decide the intended physical
-  size before conversion. Converting a mesh does not recover original CAD
-  features, colours, material assignments or slicer settings that were never in
-  the STL. After conversion, open the 3MF, check resolved dimensions and object
-  count, then inspect it in the intended slicer. Keep the original STL and treat
-  the converted file as a new deliverable that needs its own preflight check.
+  Convert STL to a basic 3MF when you want to package an existing mesh with a
+  known coordinate unit. The conversion does not recover CAD features, repair
+  the mesh or create slicer settings that were absent from the STL. Keep the
+  source and verify the saved package.
 </p>
-<h2>Step-by-step conversion workflow</h2>
+<h2>Why choose this output?</h2>
+<p>
+  A compatible receiver can read an explicit coordinate unit from a basic 3MF.
+  That is useful when you already know what the STL coordinates mean; it does
+  not discover their intended physical size. Establish
+  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
+    >the unit interpretation</a
+  >
+  with a known dimension first.
+</p>
+<h2>Convert once, keeping the original</h2>
 <ol>
-  <li>Open the STL and confirm it contains the expected geometry.</li>
+  <li>Preserve the STL and establish its intended physical unit.</li>
   <li>
-    Measure a known feature and decide whether the coordinates represent
-    millimetres, inches or another design unit.
+    Check that the mesh represents the intended object. Conversion will carry
+    its existing surface problems into another container.
   </li>
   <li>
-    Run mesh checks before conversion so the new container does not hide an
-    existing fault.
-  </li>
-  <li>Convert locally and save the 3MF as a new file.</li>
-  <li>
-    Open the 3MF, confirm its declared unit, resolved dimensions and object
-    count.
+    Choose the STL in the
+    <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">local converter</a>. ASCII
+    and binary inputs up to 25 MiB are processed in the browser without upload.
   </li>
   <li>
-    Inspect the result in the target slicer before deleting or archiving
-    anything.
+    Select what the existing coordinates mean. Do not use unit selection as an
+    unverified resize operation.
   </li>
+  <li>Convert and download a separately named 3MF.</li>
+  <li>
+    Reopen it in <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> or
+    <a href="{{ GuideSlug.Route3mfPrintPreflight }}">local preflight</a>.
+    Compare physical dimensions, intended geometry and the basic build
+    structure.
+  </li>
+  <li>Check the receiving slicer before replacing a workflow input.</li>
 </ol>
-<h2>What conversion can and cannot preserve</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Chosen coordinate unit for a 20-coordinate edge</th>
+      <th scope="col">Expected physical edge</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Millimetres</td>
+      <td>20 mm</td>
+    </tr>
+    <tr>
+      <td>Inches</td>
+      <td>508 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Selecting inches is correct only when those coordinates were intended as
+  inches. The converter cannot discover that intent. If the required edge is 20
+  mm, declaring the same 20 coordinates as inches creates the wrong physical
+  size rather than fixing one.
+</p>
+<h2>Reopened comparison and information retained</h2>
 <table>
   <thead>
     <tr>
@@ -75,78 +98,30 @@ faq:
     </tr>
   </tbody>
 </table>
-<h2>Validate rather than trusting the extension</h2>
 <p>
-  Compare a known dimension, not only the overall shape. Check topology and
-  watertightness again, because conversion does not repair the source mesh
-  unless a documented repair step is performed. Confirm whether the output
-  contains one object or the intended set of shells and verify the layer preview
-  in the receiving slicer.
-</p>
-<p>
-  The primary benefit is an explicit, print-oriented package for the existing
-  mesh. It does not improve geometric accuracy or guarantee application-specific
-  settings will be added correctly.
-</p>
-<h2>Stop when scale is unknown</h2>
-<p>
-  If no known feature, drawing or author information establishes the intended
-  STL unit, conversion cannot resolve the ambiguity. Keep the coordinates
-  unchanged, label the assumption, or obtain the intended dimensions before
-  publishing the 3MF. Guessing a unit merely makes the guess explicit in a newer
-  container.
-</p>
-<h2>Why convert an STL to 3MF?</h2>
-<p>
-  STL is widely supported, but it stores triangles without declaring whether
-  their coordinates represent millimetres, inches or another unit. A basic 3MF
-  can declare that unit. This is useful when a receiving application understands
-  3MF and you want to reduce ambiguity about scale.
-</p>
-<h2>Identify the intended STL scale</h2>
-<p>
-  Start with the model’s documentation, CAD source or known intended
-  measurement. Millimetres are common for desktop printing, but they are not
-  guaranteed. Use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  to compare the coordinates with the expected physical size before selecting a
-  unit.
-</p>
-<h2>Convert locally in your browser</h2>
-<ol>
-  <li>
-    Open the
-    <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL to 3MF Converter</a>.
-  </li>
-  <li>Choose or drag in one ASCII or binary STL file.</li>
-  <li>Select the unit the existing coordinates were intended to represent.</li>
-  <li>Convert and download the generated 3MF.</li>
-  <li>
-    Open it in the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> and
-    check its dimensions before slicing.
-  </li>
-</ol>
-<h2>What the conversion preserves</h2>
-<p>
-  The generated 3MF contains the same triangle geometry and your chosen unit
-  declaration. Choosing a unit describes existing coordinates; it does not
-  automatically resize them. Conversion cannot add detail, repair defects or
-  infer information absent from the STL.
-</p>
-<h2>What STL cannot provide</h2>
-<p>
-  STL has no slicer settings, material assignments, colours or print profile to
-  transfer. The result is deliberately a basic 3MF mesh, not a recovered
-  original design or print setup.
-</p>
-<h2>Keep the original STL</h2>
-<p>
-  Keep the source STL as well as the converted file, especially when you may
-  need to compare imports, retry a different unit or trace the source geometry
-  later.
-</p>
-<p>
-  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}"
-    ><strong>Convert STL to 3MF locally</strong></a
+  The
+  <a href="/examples/quality-evidence/size-block-converted.3mf" download
+    >retained converted asymmetric block</a
   >
+  was generated by the current STL-to-3MF writer from the retained 40 × 20 × 10
+  STL with millimetres selected, then reopened through the local 3MF resolver.
+  It has one placed item, 12 triangles and the same physical spans. The
+  <a href="/examples/quality-evidence/sizing-observation.json" download
+    >provenance and hashes</a
+  >
+  identify the exact bytes and method. This is local software evidence, not a
+  hand-authored package labelled as a converter result, nor a receiving-slicer
+  test.
+</p>
+<h2>When to stop</h2>
+<p>
+  If the unit cannot be established, the expected object is missing or the
+  reopened size disagrees, keep the source and resolve the cause. Do not
+  repeatedly relabel or scale a file until it looks plausible. Use
+  <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
+    >the scaling workflow</a
+  >
+  only when an actual coordinate change is justified. A basic build cannot
+  recreate absent colours, material assignments, native CAD history or
+  application-specific print settings.
 </p>

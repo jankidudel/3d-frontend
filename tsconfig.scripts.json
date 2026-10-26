@@ -10,6 +10,7 @@
   "include": ["scripts/**/*.mts"],
   "exclude": [
     "scripts/collection-examples.spec.mts",
-    "scripts/recovery-evidence.spec.mts"
+    "scripts/recovery-evidence.spec.mts",
+    "scripts/sizing-evidence.spec.mts"
   ]
 }

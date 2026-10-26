@@ -1,178 +1,127 @@
 ---
 title: '3MF Units Explained: Millimetres, Inches and Scale | InspectMesh'
-description: Understand 3MF unit declarations, final dimensions and why checking scale still matters before 3D printing.
+description: 'Separate 3MF coordinate units from scale and placement transforms. Follow a declared-inch control into resolved dimensions and investigate disagreements.'
 slug: 3mf-units-explained
 eyebrow: 3MF format guide
 heading: '3MF Units Explained: Millimetres, Inches and Scale'
-faq:
-  - question: Does 3MF store units?
-    answer: Yes. A 3MF model can declare its unit, unlike STL coordinates that have no inherent unit.
-  - question: Which units can a 3MF declare?
-    answer: The specification includes millimetres, microns, metres, centimetres and inches, among other supported unit values.
-  - question: Can a unit declaration eliminate scale errors?
-    answer: No. Check final resolved dimensions and printer fit because exports and receiving applications can still create surprises.
 ---
 
-<p class="lead">
-  One practical advantage of 3MF over STL is that a 3MF model can declare the
-  units used by its coordinates. That makes scale more explicit, but it is not a
-  substitute for checking the dimensions of the final build.
+<p>
+  A 3MF model declares the unit used for its coordinates; the
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >Core specification</a
+  >
+  uses millimetres when that attribute is omitted. Read that unit together with
+  the supported component and build-item transforms. A declared unit gives
+  context, but the receiving application's resolved physical size still needs
+  checking.
 </p>
-
-<h2>Inch source, millimetre derivative</h2>
+<h2>Unit, coordinates and transforms are different inputs</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Action</th>
+      <th scope="col">What changes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Change only the unit declaration</td>
+      <td>Physical interpretation of the same numbers</td>
+    </tr>
+    <tr>
+      <td>Convert coordinates consistently with a unit change</td>
+      <td>
+        Numeric representation can change while physical size is preserved
+      </td>
+    </tr>
+    <tr>
+      <td>Apply a scale transform</td>
+      <td>Resolved placed geometry changes size</td>
+    </tr>
+    <tr>
+      <td>Change display units</td>
+      <td>
+        The displayed representation, if implemented as display conversion
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A resource definition is not a placed item. Components and build items can
+  transform reusable geometry. Measure the intended resolved scope rather than
+  treating one stored mesh as the whole build. InspectMesh supports a bounded
+  subset; the specification's permitted units and extensions are not a promise
+  that every package can be processed.
+</p>
+<h2>Follow one control from package to physical size</h2>
 <figure>
   <img
     src="/examples/part-inspection/inch-round-trip.svg"
     width="720"
     height="600"
     loading="lazy"
-    alt="Declared inch to millimetre STL: mathematical schematic."
+    alt="Declared inch to millimetre STL mathematical schematic"
   />
   <figcaption>
-    One inch becomes 25.4 mm once, including the source placement translation.
+    Unit and placement schematic; one inch becomes 25.4 mm once, including
+    translation.
   </figcaption>
 </figure>
 <p>
-  The declared-inch control spans one source unit and is translated two source
-  units on X. Expected resolved bounds are X=50.8..76.2 mm, Y/Z=0..25.4 mm, with
-  12 triangles. The generated STL reopens with nearby Float32 coordinates in
-  this same millimetre convention. It has no unit declaration; explicitly choose
-  millimetres in the receiving application. Use
-  <a href="{{ GuideSlug.Route3mfToStlWrongSizeOrPosition }}"
-    >derivative troubleshooting</a
+  The
+  <a href="{{ ExampleAsset.DeclaredInchTransformed3mf }}" download
+    >declared-inch control</a
   >
-  to distinguish a receiving assumption from a deliberate translation rather
-  than blindly applying a 25.4 correction.
-</p>
-<h2>Unit conversion example</h2>
-<p>
-  If a package declares inches and a resolved object spans 4 coordinate units,
-  its physical span is 4 inches, or 101.6 mm. If an importer incorrectly treats
-  the same coordinates as millimeters, the model appears 25.4 times too small.
-  Check the declared unit first, then apply build transforms and measure the
-  complete placed result. Do not scale the resource and its build item
-  separately, which would apply the correction twice.
+  contains a one-coordinate-unit cube translated two source units on X. Unit
+  resolution gives 25.4 mm spans and X bounds 50.8 to 76.2 mm, with 12
+  triangles. The converted STL reopens with nearby Float32 coordinates in the
+  same millimetre convention. STL has no unit declaration; choose millimetres in
+  the receiver.
 </p>
 <p>
-  When exporting a corrected copy, reopen it in the receiving application and
-  verify one known dimension. Preserve the original package and note whether the
-  workflow changed only unit interpretation or baked a scale into geometry.
-</p>
-
-<h2>Specification reference</h2>
-<p>
-  The <a href="https://3mf.io/spec/">3MF Consortium specification suite</a>
-  defines the core format and its unit choices. Use that reference when building
-  an importer or diagnosing a package whose declared unit is not handled as
-  expected. Application support still needs a real import test because
-  extensions and application-specific settings can travel differently from core
-  geometry.
-</p>
-<h2>Verify resolved dimensions</h2>
-<p>
-  3MF declares a unit, but a practical workflow still checks the final build
-  dimensions after import and transforms. The core format distinguishes reusable
-  resources from placed build items, so verify the object selection as well as
-  its numeric scale.
-</p>
-<p>
-  For one resolved-build view of unit, dimensions, printer fit and mesh
-  findings, start with
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a>.
-</p>
-<h2>The important difference from STL</h2>
-<p>
-  STL stores coordinate values but does not say whether a value of 10 means 10
-  millimetres, 10 inches or another distance. A slicer must make an assumption.
-  3MF has a unit declaration for model coordinates, allowing software to
-  interpret the numbers with more context. This is especially valuable when
-  files move between CAD, repair and slicing applications.
-</p>
-<h2>Common unit declarations</h2>
-<p>
-  The 3MF specification supports unit values including millimetres, microns,
-  metres, centimetres and inches. Millimetres are common in desktop 3D printing,
-  but common is not universal. A micron is one thousandth of a millimetre;
-  metres and centimetres can make sense for large designs; inches are common in
-  some design workflows. The declaration tells compatible software how to
-  interpret coordinates—it does not tell you whether the author intended the
-  final object to be the right physical size.
-</p>
-<h2>Inspect final resolved dimensions</h2>
-<p>
-  A 3MF package may contain multiple objects and build items placed with
-  transforms. The relevant dimensions for a print are the final resolved build
-  dimensions, not only the dimensions of an individual mesh before placement.
-  Use the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
-  to inspect width, height and depth, then compare them with the printer’s
-  usable area. Use the
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to see whether
-  multiple parts are arranged as expected.
-</p>
-<h2>Why scale errors still happen</h2>
-<p>
-  A correct declaration cannot prevent every problem. The source application may
-  export with an unintended unit; a user may import only one part instead of the
-  whole build; a receiving slicer may not support every optional 3MF feature; or
-  a transform can produce surprising placement. Compatibility also varies
-  between slicer versions. Treat the declared unit as valuable evidence, then
-  verify what the receiving application actually resolves.
-</p>
-<h2>Scaling a multi-part build</h2>
-<p>
-  When a complete build needs proportional scaling, scale it as a whole where
-  possible. This preserves the relative position and size of parts that were
-  designed to fit together. Scaling one object alone can change clearances,
-  alignment or a mating feature. After any scale change, save a new copy,
-  remeasure it and check printer fit. Read
-  <a href="{{ GuideSlug.RouteHowToScaleA3mfFile }}">How to Scale a 3MF File</a>
-  for the practical workflow.
-</p>
-<h2>Units are one check in a larger preflight</h2>
-<p>
-  Correct size does not guarantee printable geometry. Check topology when a file
-  comes from an uncertain source, has been converted or produces slicer
-  warnings. The
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> can
-  help identify mesh problems, while the
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >printer-fit guide</a
+  The existing
+  <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
+    >reopened conversion evidence</a
   >
-  covers the physical constraints that dimensions alone cannot answer.
+  checks the derivative rather than asserting a receiving-slicer result. The
+  source control and software observation are retained. Do not scale the
+  resource and its placement separately as two unit corrections.
 </p>
-<p>
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
-    ><strong>Check 3MF dimensions</strong></a
-  >
-  before committing to a print.
-</p>
-<h2>A short pre-print units checklist</h2>
+<h2>Investigate a disagreement before correcting it</h2>
 <ol>
   <li>
-    Read the declared unit in the source package where your software exposes it.
+    Keep the source and record its declared or default unit. Compare the same
+    package revision in both applications.
   </li>
-  <li>Measure the final resolved build, including every placed item.</li>
   <li>
-    Compare dimensions with the design’s intended physical size and printer
-    volume.
+    Check intended items versus
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">full build bounds</a>.
+    Two unchanged 20 mm cubes can span 60 mm because of their placements.
   </li>
-  <li>Save any scale correction as a separate copy.</li>
   <li>
-    Reopen that copy and inspect it in the slicer that will produce the job.
+    Compare supported component/build transforms, any later scaling, display
+    conversion and application versions.
+  </li>
+  <li>
+    Use
+    <a href="{{ GuideSlug.Route3mfToStlWrongSizeOrPosition }}"
+      >derivative troubleshooting</a
+    >
+    when source/export/reopened/receiver measurements differ. Record translation
+    separately from span.
+  </li>
+  <li>
+    If the actual project needs resizing, follow
+    <a href="{{ GuideSlug.RouteHowToScaleA3mfFile }}"
+      >the external-application scaling procedure</a
+    >
+    and save a new project. Reopen it and inspect the intended slicing profile.
   </li>
 </ol>
 <p>
-  This modest check is more dependable than relying on a filename, an assumption
-  about millimetres or a visual impression from a zoomed viewer.
-</p>
-<h2>When applications disagree</h2>
-<p>
-  If two applications show different sizes, compare their reported dimensions
-  before changing the file. Check that both are showing the complete build
-  rather than a selected object, that neither has applied a display-only scale,
-  and that their versions support the package features in use. Re-export from
-  the original authoring application only after recording those facts. A
-  carefully measured comparison is much safer than repeatedly scaling and
-  re-saving a file until it merely looks plausible on screen.
+  Core specification version 1.4.0, unit and transform definitions reviewed 26
+  October 2026. A valid unit declaration does not establish design intent,
+  physical fit or support for application-specific settings.
 </p>

@@ -130,3 +130,27 @@
     min-width: 0;
   }
 }
+
+.guide-page .guide-body caption {
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+@media print {
+  .guide-page .guide-body .guide-table-scroll table:has(caption) {
+    width: 100%;
+    table-layout: fixed;
+    font-size: 9pt;
+  }
+  .guide-page .guide-body table:has(caption) th,
+  .guide-page .guide-body table:has(caption) td {
+    overflow-wrap: anywhere;
+    padding: 0.4rem;
+  }
+  .guide-page .guide-body table:has(caption) td {
+    height: 1.8rem;
+  }
+  .guide-page .guide-body table:has(caption) thead {
+    display: table-header-group;
+  }
+}

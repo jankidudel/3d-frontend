@@ -212,10 +212,13 @@
         /></label>
       </div>
       <p>
-        K already includes the selected material, run costs, preparation,
-        finishing, order costs and failure budget. No other production inputs or
-        additional failure uplift apply in this mode. Keep mixed parts at order
-        level; quantity does not establish allocation or delivered outcomes.
+        K is the reviewed production cost for the whole order. Planned quantity
+        does not multiply K again. If quantity or layout changes, revise the
+        production job before relying on this price. K already includes the
+        selected material, run costs, preparation, finishing, order costs and
+        failure budget. No other production inputs or additional failure uplift
+        apply in this mode. Keep mixed parts at order level; quantity does not
+        establish allocation or delivered outcomes.
       </p>
     }
     <div class="fields">
@@ -400,8 +403,9 @@
       </button>
     </div>
     <p id="customer-quote-help">
-      Carry this order price into a customer document. Your internal cost and
-      margin stay out of the customer PDF.
+      Create the customer quotation from this reviewed order price. Your
+      internal cost, selected profit method and pricing assumptions remain in
+      the internal worksheet rather than the customer PDF.
     </p>
     @if (!canCreateQuotation()) {
       <p class="error">

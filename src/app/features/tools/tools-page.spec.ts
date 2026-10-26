@@ -12,7 +12,7 @@ describe('ToolsPage', () => {
     fixture.detectChanges();
 
     const calculatorLink = fixture.nativeElement.querySelector(
-      'main a[href="/3d-print-cost-calculator"]',
+      '.tool-card a[href="/3d-print-cost-calculator"]',
     ) as HTMLAnchorElement;
     const toleranceLink = fixture.nativeElement.querySelector(
       'main a[href="/3d-print-tolerance-calculator"]',
@@ -22,7 +22,7 @@ describe('ToolsPage', () => {
     expect(toleranceLink.textContent?.trim()).toBe('Calculate a fit');
     expect(
       fixture.nativeElement.querySelectorAll(
-        'main a[href="/3d-print-cost-calculator"]',
+        '.tool-card a[href="/3d-print-cost-calculator"]',
       ),
     ).toHaveLength(1);
     const headings = Array.from(

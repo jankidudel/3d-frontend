@@ -1,141 +1,115 @@
 ---
 title: 'How to Scale a 3MF File for 3D Printing | InspectMesh'
-description: Learn how to scale a 3MF file safely, check its units and dimensions, and confirm that it will fit your 3D printer before slicing.
+description: 'Scale the intended 3MF object or arrangement in a documented PrusaSlicer workflow. Separate linked instances, placement and saved-project verification.'
 slug: how-to-scale-a-3mf-file
 eyebrow: 3MF measurement guide
 heading: How to Scale a 3MF File for 3D Printing
-faq:
-  - question: Do 3MF files have units?
-    answer: Yes. 3MF can store unit information, which makes scale less ambiguous than in a typical STL file. You should still confirm the displayed dimensions.
-  - question: Can I scale a 3MF file proportionally?
-    answer: Yes. Proportional scaling changes every dimension by the same ratio and keeps the model shape consistent.
-  - question: Will scaling affect whether a functional part fits?
-    answer: Yes. Scaling changes hole sizes, clearances, wall thicknesses and mating features, so it should be used carefully for functional parts.
 ---
 
 <p>
-  Scaling a 3MF file changes its physical size. It can help a decorative model
-  fit a smaller printer, make a test part easier to handle or correct an export
-  that is obviously the wrong size.
+  Inspect the declared unit and placed dimensions before scaling a 3MF. Then
+  change the intended object or arrangement in a slicer or modelling application
+  and save a new project. InspectMesh's dimensions checker measures the build;
+  it does not become a 3MF editor because it links to this guide.
 </p>
-<h2>Scale the placed build with its unit context</h2>
+<h2>PrusaSlicer procedure: documentation-based, 2.9 family</h2>
 <p>
-  Check the declared unit and the resolved dimensions before changing a 3MF. A
-  build may reuse objects with transforms, so scaling one resource is not always
-  the same as scaling every placed item. For a 150 mm target from a 100 mm
-  current dimension, the factor is 1.5; verify all axes and multi-object spacing
-  after the change. Scaling changes wall thickness, clearances and printer fit,
-  so re-run those checks and inspect the slicer preview.
-</p>
-<h2>Declared units and transforms matter</h2>
-<p>
-  Read the model unit first, then resolve item and component transforms.
-  Changing the declared unit without converting coordinates can change the
-  physical interpretation, while applying an additional scale transform changes
-  placed geometry. Record whether you are changing metadata, object coordinates
-  or build placement so the operation is reproducible.
-</p>
-<h2>Worked proportional example</h2>
-<p>
-  If a resolved part is 80 mm wide and the required width is 120 mm, the uniform
-  factor is 120/80 = 1.5, or 150%. Its other dimensions and wall thicknesses
-  also become 1.5 times larger. A 0.4 mm clearance becomes 0.6 mm, which may no
-  longer match the intended assembly; proportional scaling is unsuitable when
-  some features must stay fixed.
-</p>
-<h2>Multi-object decisions</h2>
-<p>
-  Scaling every build item around a common origin changes both part size and the
-  distance between parts. Scaling each object around its own origin preserves a
-  different layout. Decide whether the package represents one assembly, repeated
-  parts or independent components, then inspect relative placement after the
-  operation.
-</p>
-<h2>Validation workflow</h2>
-<ol>
-  <li>Keep the original and record declared units and resolved dimensions.</li>
-  <li>Choose uniform or per-axis scaling from the design requirement.</li>
-  <li>Apply the change to the intended objects/build items only.</li>
-  <li>Re-check dimensions, spacing, wall thickness and printer fit.</li>
-  <li>Inspect every part and the layer preview in the target slicer.</li>
-</ol>
-<p>
-  Do not scale a dimension-critical assembly merely to make its bounding box
-  fit. Split or redesign it when holes, hardware interfaces or clearances must
-  remain at their original sizes.
-</p>
-<h2>Per-axis scaling needs extra caution</h2>
-<p>
-  Non-uniform scaling changes angles, circles, wall thickness and clearances
-  differently on each axis. Use it only when distortion is intended or derived
-  from controlled compensation evidence. For shrinkage correction, validate X, Y
-  and Z with a representative test instead of reshaping an unknown package to
-  match one measurement.
-</p>
-<p>
-  For functional parts, scaling needs care. A small percentage change can alter
-  screw holes, snap fits, bearing seats and clearances enough to make a part
-  unusable.
-</p>
-<h2>Check the current size first</h2>
-<p>
-  Use the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
-  to see the model’s width, height and depth before changing anything.
-</p>
-<p>
-  3MF can store units, which is an advantage over STL. Even so, verify that the
-  displayed dimensions match what you expected. A model designed as 50 mm should
-  not be scaled simply because a slicer interpreted it differently from the
-  source workflow.
-</p>
-<h2>Calculate a proportional scale</h2>
-<p>
-  To change a model from one width to another, divide the target size by the
-  current size.
-</p>
-<p>For example, if a model is 120 mm wide and you need it to be 90 mm wide:</p>
-<p><code>90 ÷ 120 = 0.75</code></p>
-<p>
-  Scale the model to 75%. Its height and depth will reduce by the same ratio.
-</p>
-<p>
-  Proportional scaling preserves the overall shape. Non-proportional scaling
-  stretches one axis differently and can distort circles, holes and mechanical
-  features.
-</p>
-<h2>Check printer fit before shrinking the model</h2>
-<p>
-  If a model does not fit your printer, try rotating it first. A different
-  orientation can reduce the required width or depth without changing its
-  intended size.
-</p>
-<p>
-  Use the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to inspect the
-  shape and compare possible orientations in your slicer. Then use the
-  Dimensions Checker to compare the result with your printer’s usable build
-  volume.
-</p>
-<p>
-  The
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >guide to checking printer fit</a
+  This procedure follows the official
+  <a href="https://help.prusa3d.com/article/object-manipulation-panel_1757"
+    >Object manipulation panel</a
   >
-  explains why the bed dimensions alone are not always the whole story.
+  and
+  <a href="https://help.prusa3d.com/article/copy-paste-instances_1769"
+    >linked-instance documentation</a
+  >, reviewed 26 October 2026. The consulted instance documentation is labelled
+  for the 2.9 legacy family. No installed application was exercised for this
+  article; confirm your version and control labels before use. No screenshot or
+  observed PrusaSlicer output is claimed.
 </p>
-<h2>Protect functional dimensions</h2>
+<ol>
+  <li>
+    Keep the original 3MF and note intended physical dimensions. Check
+    <a href="{{ GuideSlug.Route3mfUnitsExplained }}"
+      >unit and transform context</a
+    >
+    if the size is unexpected.
+  </li>
+  <li>
+    Open the package in its producing application or a compatible installed
+    PrusaSlicer version. Record that version.
+  </li>
+  <li>
+    Inspect the object list: identify independent objects, linked instances and
+    parts of one object. Determine which scope should change.
+  </li>
+  <li>
+    Select that scope. In the Object manipulation panel, use Scale factors or
+    Size with uniform scaling maintained. For an independent 40 × 20 × 10 mm
+    object, target a 60 mm X size or final 150% scale. Expected spans are 60 ×
+    30 × 15 mm.
+  </li>
+  <li>
+    Inspect every affected copy, placement and important feature. Linked
+    instances can share scaling; do not assume one selected copy is independent.
+    The official instance workflow describes separating an instance when an
+    independent change is required.
+  </li>
+  <li>
+    Save a new 3MF project. Reopen those saved bytes and confirm dimensions,
+    intended items and assignments.
+  </li>
+  <li>
+    Slice again with the intended profile. Check actual layers, support
+    footprint and usable bed space before accepting the job.
+  </li>
+</ol>
+<h2>Scaling an arrangement differs from scaling local objects</h2>
 <p>
-  Scale is usually safe for decorative figures, prototypes and visual models. It
-  is risky for parts designed to connect with something else.
+  Analytical illustration: two 20 mm cubes have local X = 0 to 20; the second
+  placement translates X by 40 mm. Overall X is 0 to 60 mm. These operations
+  differ:
 </p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Operation</th>
+      <th scope="col">Overall X bounds</th>
+      <th scope="col">Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Original arrangement</td>
+      <td>0 to 60 mm</td>
+      <td>Unchanged 20 mm cubes and a 40 mm placement offset</td>
+    </tr>
+    <tr>
+      <td>Whole resolved arrangement × 1.5 about origin</td>
+      <td>0 to 90 mm</td>
+      <td>Both geometry and the placement distance scale</td>
+    </tr>
+    <tr>
+      <td>Local cube coordinates × 1.5; translations unchanged</td>
+      <td>0 to 70 mm</td>
+      <td>Each cube becomes 30 mm; the second still starts at X = 40 mm</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  Before scaling a functional part, identify the dimensions that matter: hole
-  diameters, wall thickness, clearance gaps and mating surfaces. Often it is
-  better to edit the original CAD model than scale the exported 3MF.
+  These are calculations, not observations of a particular slicer pivot.
+  Preserving assembly relationships and resizing independent parts are different
+  requirements. Name the selected scope and observed application behaviour
+  separately;
+  <a href="{{ GuideSlug.Route3mfViewer }}">the placed-item viewer</a> helps
+  inspect the source.
 </p>
+<h2>Stop when a feature must stay fixed</h2>
 <p>
-  Finally, run the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>
-  before slicing. Correct dimensions do not guarantee a clean mesh, and a model
-  with holes or non-manifold edges can still produce unreliable layers.
+  A uniform transform changes holes, walls and mating clearances. If the outer
+  size must change while a mounting interface remains fixed, edit source CAD
+  rather than resizing the entire mesh. Nonuniform scaling can distort circles.
+  Use
+  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">the dimensions checker</a>
+  to measure the new supported build; it does not save edits or establish
+  printed fit.
 </p>

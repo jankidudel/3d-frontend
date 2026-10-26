@@ -678,13 +678,48 @@
     </p>
   </section>
 
-  <section class="content" aria-labelledby="how-title">
-    <h2 id="how-title">Distinguish four measurements</h2>
+  <section class="content">
+    <h2>What should I do with this size?</h2>
     <div
-      class="table-scroll decision-table"
-      role="region"
-      aria-label="Value choices"
+      class="table-scroll"
       tabindex="0"
+      role="region"
+      aria-label="Size decisions, scroll horizontally"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Result</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>The known reference dimension agrees</td>
+            <td>Continue with the intended orientation and usable-bed check</td>
+          </tr>
+          <tr>
+            <td>All dimensions differ by one plausible unit factor</td>
+            <td>Confirm the source unit before choosing a correction</td>
+          </tr>
+          <tr>
+            <td>One functional feature differs while overall size agrees</td>
+            <td>Inspect that feature or source CAD; do not globally resize</td>
+          </tr>
+          <tr>
+            <td>A nominal printer comparison is close</td>
+            <td>
+              Check actual supports, brim and bed exclusions in the slicer
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      aria-label="Coordinate and fit meanings, scroll horizontally"
     >
       <table>
         <thead>
@@ -725,26 +760,20 @@
         </tbody>
       </table>
     </div>
-    <h2>A dimension is not a fit tolerance</h2>
     <p>
-      A bounding box describes the outer extents, not the diameter of a hole, a
-      mating clearance or the strength of a wall. Use feature measurements and
-      the source design for those requirements. Confirm supports, brim and
-      excluded bed regions in the slicer before accepting a close nominal fit.
+      Coordinate spans have no inherent physical unit in STL. Interpreted size
+      follows your chosen assumption. A nominal printer comparison tests only
+      the implemented orientation and bed assumptions, not a physical fit
+      tolerance.
     </p>
     <p>
-      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-      <a [routerLink]="routeUrl.VolumeCalculator">STL Volume Calculator</a> ·
-      <a [routerLink]="routeUrl.StlUnitsGuide">Why STL Files Have No Units</a>
-      ·
-      <a [routerLink]="routeUrl.StlPrintPreflight"
-        >STL Print Preflight Checker</a
+      <a [href]="guideRouteUrl.RouteHowToScaleAnStlFileFor3dPrinting"
+        >Resize and reopen a separate copy</a
       >
-      ·
-      <a [href]="guideRouteUrl.RouteHowToMakeAnStlFilePrintable"
-        >How to Make an STL File Printable</a
-      >
-      · <a [routerLink]="routeUrl.Tools">All STL tools</a>
+      or
+      <a [href]="guideRouteUrl.RouteHowToMeasure3dModel"
+        >choose the appropriate measurement method</a
+      >.
     </p>
   </section>
   <app-tool-evidence

@@ -9,6 +9,8 @@
   },
   "include": [
     "scripts/collection-examples.spec.mts",
-    "scripts/recovery-evidence.spec.mts"
+    "scripts/recovery-evidence.spec.mts",
+    "scripts/sizing-evidence.spec.mts",
+    "src/types/jspdf-esm.d.ts"
   ]
 }

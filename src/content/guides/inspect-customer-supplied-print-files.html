@@ -4,81 +4,83 @@ description: 'Review supplied STL and 3MF files before quoting: verify dimension
 slug: inspect-customer-supplied-print-files
 eyebrow: Practical print workflow
 heading: 'How to Inspect Customer-Supplied 3D Print Files'
-faq:
-  - question: 'What should I confirm before quoting a supplied STL?'
-    answer: 'Confirm the intended dimensions, assumed unit and permitted changes, then inspect geometry, printer fit and the actual sliced process before using its consumption and time in a quote.'
-  - question: 'What should I ask a customer before changing scale?'
-    answer: 'Ask for a known physical dimension and the intended use. Record the original and proposed dimensions, preserve the supplied file, and obtain agreement on a consequential size change before printing.'
 ---
 
 <p>
-  Resolve customer intent and physical dimensions before deciding whether to
-  accept a print file. Keep mesh findings, manufacturing suitability and the
-  price quotation as separate decisions. A clean topology screen cannot
-  establish material performance or an acceptable functional fit.
+  Before accepting a file for production, establish the intended parts, physical
+  dimensions, permitted changes and manufacturing requirements. Record what is
+  known and what still needs clarification. A clean file report is one input to
+  that decision, not approval of the design or a production commitment.
 </p>
-<h2>Intake form example</h2>
-<pre>
-Customer/project reference: optional local label
-Files and revision: bracket-r04.stl, cap-r02.3mf
-Quantity: one bracket and two caps
-Known dimension: bracket mounting centres 40 mm
-STL assumption: millimetres; confirm with customer
-Process/printer: customer requirement or proposed machine
-Material/finish: exact requested grade and colour, or clarify
-Functional surfaces: mounting holes and mating cap face
-Use conditions: indoor/outdoor, load, temperature - clarify
-Delivery: required date, timezone, dispatch/collection scope
-Iterations: included coupons/prototypes and approval boundary
-Acceptance: quantity and functional/finish criteria
-Permitted design changes: record separately
-Approval needed: dimension, orientation and quote assumptions</pre>
+<h2>Record the received job</h2>
 <p>
-  This is a hypothetical intake record. Do not infer the load or tolerance from
-  the filename. Ask for a drawing or reference dimension when the use is
-  functional. Record whether you are providing file review only, a prototype or
-  a finished part with agreed requirements.
+  Keep the supplied revision and original files. Ask for a known physical
+  dimension, requested parts and quantity, process/material, fixed features and
+  permitted edits. Clarify the intended use and who provides acceptance
+  evidence. A filename cannot establish unit, load, tolerance or design intent.
 </p>
-<h2>Functional-fit intake checklist</h2>
-<ul>
-  <li>
-    Exact counterpart dimensions and whether it is fixed hardware or another
-    printed part.
-  </li>
-  <li>
-    Source datums, functional surfaces, nominal dimensions and required assembly
-    path.
-  </li>
-  <li>
-    Fit intent: permitted gap, locating behaviour, release or retention
-    requirement.
-  </li>
-  <li>
-    Printer/process, identified material and slicer version/profile; clarify
-    responsibility for source edits versus compensation.
-  </li>
-  <li>
-    Expected support removal, hole finishing, conditioning and insert
-    installation.
-  </li>
-  <li>
-    Acceptance evidence: instrument/method, representative test, agreed
-    load/reuse checks where relevant and who records the outcome.
-  </li>
-</ul>
+<table>
+  <caption>
+    Blank intake record - no customer data is uploaded or saved by this table.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Field</th>
+      <th scope="col">Known / unresolved evidence</th>
+      <th scope="col">Owner and next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Received file and revision</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Requested parts / quantity</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Known size and unit evidence</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Process / material / colour / finish</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Fixed features and counterpart dimensions</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Permitted edits</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Required acceptance evidence and method</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Unresolved question</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  Use the
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >fit measurement worksheet</a
-  >
-  to retain comparable readings. Mesh inspection accepts only its file-level
-  findings; it cannot accept the assembly. Agree prototype, measurement labour
-  and iterations before using
-  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}"
-    >the quote workflow</a
-  >.
+  For functional work, agree source datums, assembly path, permitted gap or
+  retention, conditioning, hardware and who records representative measurements.
+  The
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a>
+  keeps comparable physical readings; a mesh report cannot accept an assembly.
 </p>
-<h2>Accept, clarify or return to source CAD</h2>
+<h2>Choose accept for slicing review, clarify, or return to source</h2>
 <table>
   <thead>
     <tr>
@@ -125,137 +127,64 @@ Approval needed: dimension, orientation and quote assumptions</pre>
     </tr>
   </tbody>
 </table>
-<h2>Review a collection without hiding one failed file</h2>
 <p>
-  <a href="{{ GuideSlug.RouteBatchStlChecker }}">Run the example collection</a>
-  before inspecting customer files. The 20 mm closed cube completes; the
-  open-face cube has four boundary edges and unavailable volume; malformed text
-  fails independently. Use each file card to rerun or replace a corrected
-  export, then export all results with an optional project reference. Original
-  files stay in tab memory unless you explicitly choose a tool that uploads.
+  A nominal fit needs actual supports, brim and bed exclusions checked in the
+  slicer. Do not silently shrink a functional part to satisfy a bounding box.
+  Keep a warning and the chosen next action rather than treating every warning
+  as a rejection.
 </p>
+<h2>Record unresolved requirements</h2>
 <p>
-  Use the per-file handoff to
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL preflight</a> or
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a>. Review
-  destination settings separately. Reloading clears the browser-local file
-  context and requires reselection. Report history holds filenames and findings
-  only, not original geometry or cloud backups.
-</p>
-<h2>Keep the quote independent of mesh health</h2>
-<p>
-  A model with no completed-check findings can still need expensive supports,
-  repeated setup, finishing or a process you do not provide. A topology warning
-  may represent an intentional open surface. Explain the observed condition and
-  ask the customer rather than treating all warnings as rejection.
-</p>
-<p>
-  Hypothetical customer response: “The bracket is 80 mm wide under the supplied
-  millimetre assumption. One open boundary remains at the mounting face; please
-  provide a corrected source export. Printer fit and the quotation are pending.”
-  This gives an actionable decision without claiming the software knows the
-  intended repair.
-</p>
-<p>
-  Once the intake questions are resolved, use
-  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}"
-    >the quote workflow</a
-  >
-  and
-  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
-    >the price calculator</a
-  >. Keep the agreed material, quantity, revision and finishing scope with the
-  review report. For changed geometry,
-  <a href="{{ GuideSlug.RouteStlCompare }}"
-    >compare the original and revised STL</a
-  >
-  before approval.
-</p>
-
-<h2>Prepare a local quote worksheet</h2>
-<p>
-  Record the agreed file revision, requested material and unresolved findings
-  before preparing a quote. Use the
-  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}">pricing workflow</a>
-  to allocate setup, quantity and failure allowance; those calculations belong
-  after the customer intake decision.
-</p>
-
-<h2>Resolve production scope before committing a quote or date</h2>
-<p>
-  Confirm requested quantity by part, exact material/colour/grade, approved
-  revision, finish and inspection requirements, extra hardware, and included
-  test iterations. Planned units are not accepted or delivered units. Record
-  whether a changed file or failed coupon needs a separately agreed iteration.
-</p>
-<p>
-  Only then record actual sliced plates in
-  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
-    >the production job calculator</a
-  >. Confirm complete material and per-run work before
-  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}">pricing the order</a
-  >; use
-  <a href="{{ GuideSlug.Route3dPrintLeadTimeVsPrintTime }}"
-    >lead-time planning</a
-  >
-  to distinguish machine completion, ready-to-dispatch and requested arrival. A
-  clean file report alone cannot commit any of those outcomes.
-</p>
-
-<h2>Record whether only sliced instructions were supplied</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Received-file record</th>
-      <th>Evidence or unknown to retain</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Revision identity</td>
-      <td>
-        Supplier revision, received date and exact-byte hash when available;
-        filenames can be reused
-      </td>
-    </tr>
-    <tr>
-      <td>Source project/profile availability</td>
-      <td>
-        Original geometry, slicer project, application/version and generating
-        configuration, or explicitly unavailable
-      </td>
-    </tr>
-    <tr>
-      <td>Intended machine</td>
-      <td>
-        Exact printer, firmware/configuration, nozzle, tool/material mapping and
-        modifications
-      </td>
-    </tr>
-    <tr>
-      <td>Only G-code supplied?</td>
-      <td>Explicit yes/no and unresolved project/profile requests</td>
-    </tr>
-  </tbody>
-</table>
-<p>
-  Matching bed dimensions or a printer comment does not establish compatibility.
   Use
-  <a href="{{ GuideSlug.RouteCanYouUseGcodeFromAnotherPrinter }}"
-    >the supplied G-code worksheet</a
-  >; prefer source geometry/project and a known exact re-slice when provenance
-  is uncertain. A local hash matches bytes, not the author's identity. Record
-  supported declarations as one-run estimates with limitations, never as
-  measured consumption or approved production.
+  <a href="{{ GuideSlug.RouteBatchStlChecker }}">the collection checker</a> to
+  keep each file's completed, warning and failed states separate. Its known
+  closed cube completes; the open-face cube has four boundary edges and
+  unavailable volume; malformed text fails independently. Local file context
+  clears on reload; report history contains labels/findings rather than original
+  geometry or cloud backups.
 </p>
-
-<h2>Agree project versus geometry scope</h2>
 <p>
-  Ask whether the recipient needs the editable project, all placed geometry or
-  one placement. Keep the source, state millimetres for STL delivery and include
-  the scope report. Use
+  Pass one file deliberately to
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL preflight</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a> and review
+  destination settings. For changed geometry,
+  <a href="{{ GuideSlug.RouteStlCompare }}">compare original and revised STL</a>
+  before agreement.
+</p>
+<p>
+  If only G-code was supplied, use
+  <a href="{{ GuideSlug.RouteCanYouUseGcodeFromAnotherPrinter }}"
+    >the supplied-file provenance worksheet</a
+  >. A printer comment or matching bed dimensions does not establish
+  compatibility; request source geometry/project and the generating profile when
+  unknown. A byte hash identifies equality, not authorship.
+</p>
+<p>
+  If delivery scope is unclear, agree editable project versus
   <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
-    >combined versus individual placed-part delivery</a
+    >combined or individual geometry delivery</a
+  >. A flattened STL cannot replace project settings or editable placements.
+</p>
+<h2>Pass the agreed job to costing</h2>
+<p>
+  After the file and job requirements are agreed, slice the intended arrangement
+  and record complete per-material consumption and per-run time.
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
+    >Cost that production scope</a
+  >,
+  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}"
+    >choose a selling price</a
+  >, then
+  <a href="{{ GuideSlug.Route3dPrintingQuoteGenerator }}"
+    >prepare the customer quotation</a
+  >. Revisit intake when the model, quantity, material or required outcome
+  changes.
+</p>
+<p>
+  Agree included prototype iterations and use
+  <a href="{{ GuideSlug.Route3dPrintLeadTimeVsPrintTime }}"
+    >elapsed lead-time planning</a
   >
-  before replacing a project with a flattened derivative.
+  for schedule assumptions. Planned units are not accepted or delivered units; a
+  clean report cannot commit production capacity or a dispatch date.
 </p>

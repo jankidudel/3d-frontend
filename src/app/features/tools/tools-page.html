@@ -56,4 +56,18 @@
     </div>
   </section>
   <app-workflow-paths />
+  <section class="content">
+    <h2>From a production record to a customer document</h2>
+    <p>
+      <a [routerLink]="routes.PrintCostCalculator"
+        >Cost the complete production order</a
+      >,
+      <a [routerLink]="routes.PrintPriceCalculator"
+        >choose margin or markup and entered fees</a
+      >, then
+      <a [routerLink]="routes.QuoteGenerator"
+        >prepare the reviewed customer quotation</a
+      >. Keep internal assumptions with the production and pricing records.
+    </p>
+  </section>
 </main>

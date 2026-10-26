@@ -4,287 +4,154 @@ description: Estimate production cost from complete plate consumption, machine t
 slug: how-to-calculate-3d-printing-cost
 eyebrow: 3D printing cost guide
 heading: How to Calculate 3D Printing Cost
-faq:
-  - question: How do I calculate the filament cost of a 3D print?
-    answer: Divide the filament weight used by the spool weight, then multiply by the spool price. For example, 80 g from a 1,000 g spool costing £20 has a material cost of £1.60.
-  - question: Is filament the only cost of a 3D print?
-    answer: No. Electricity, printer wear, failed prints, labour, packaging and extra parts can matter, especially when you sell printed parts.
-  - question: Can an STL file tell me the exact cost to print?
-    answer: No. An STL can help estimate solid-model volume, but only your slicer knows the final infill, walls, supports, print time and filament used for a particular setup.
 ---
 
 <p>
-  A 3D print that uses only a few pounds of filament can still cost more than
-  its material alone. The real cost depends on how much plastic the slicer uses,
-  how long the printer runs, electricity, failed prints and, if you sell parts,
-  the time you spend preparing and finishing them.
+  Build production cost from complete sliced consumption, machine time and the
+  work actually included in the order. Keep shared setup separate from per-run
+  handling and per-part finishing. Production cost comes before profit margin
+  and customer selling fees.
 </p>
-
-<h2>Cost the correct scope</h2>
+<h2>Set the job scope</h2>
 <p>
-  Use complete sliced consumption and duration for each plate, multiply only
-  unchanged repeated runs, then add hands-on work by its actual scope.
-  Preparation/admin is once per order when shared; handling repeats each run;
-  finishing applies to the planned quantity. Requested quantity can differ from
-  planned quantity, and neither records delivered or accepted outcomes.
+  Record agreed model revision, material, profile and planned quantity. The
+  existing fictional five-identical-part job uses Plate A: three parts, 90 g,
+  four hours; Plate B: two parts, 70 g, three hours. Run each once. These are
+  hypothetical sliced inputs, not observed production or accepted quantities.
+  Re-slice when arrangement or quantity changes.
 </p>
 <figure>
   <img
     src="/images/job-planning/scope.svg"
-    alt="Part, plate and order scope: Part: intended output - Finishing occurs for each planned part; Plate: one sliced run - Material, machine time and run handling; Order: all selected plates - Preparation and packing occur once"
     width="360"
     height="278"
+    alt="Part finishing, plate run handling and once-per-order preparation have different cost scopes"
   />
   <figcaption>
-    Original planning diagram; hypothetical inputs, not observed production.
+    Original planning diagram with hypothetical inputs, not observed production.
   </figcaption>
 </figure>
-<h2>Shared worked baseline</h2>
+<h2>Work through the five-part baseline</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Component</th>
+      <th scope="col">Calculation</th>
+      <th scope="col">Currency units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Material</td>
+      <td>160 / 1,000 × 24</td>
+      <td>3.84</td>
+    </tr>
+    <tr>
+      <td>Energy</td>
+      <td>0.12 kW × 7 h × 0.30 /kWh</td>
+      <td>0.252</td>
+    </tr>
+    <tr>
+      <td>Machine allocation, excluding energy</td>
+      <td>7 h × 2 /h</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td>Shared preparation</td>
+      <td>20 / 60 h × 18 /h</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>Handling each run</td>
+      <td>2 × 10 / 60 h × 18 /h</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>Finishing each planned part</td>
+      <td>5 × 5 / 60 h × 18 /h</td>
+      <td>7.50</td>
+    </tr>
+    <tr>
+      <td>Packaging, once per order</td>
+      <td>Entered amount</td>
+      <td>1.60</td>
+    </tr>
+    <tr>
+      <td>Production order cost K</td>
+      <td>Sum; shipping, extra waste, tax and failure uplift = 0</td>
+      <td>39.192</td>
+    </tr>
+    <tr>
+      <td>Average per identical planned part</td>
+      <td>39.192 / 5</td>
+      <td>7.8384</td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  A fictional five-part job on two plates uses 160 g and seven sliced hours. At
-  the explicitly chosen 24 CU/kg, 120 W, 0.30 CU/kWh and 2 CU/hour machine
-  allowance excluding energy, material costs 3.84 CU, energy 0.252 CU and
-  machine use 14 CU. Preparation costs 6 CU, two handling tasks 6 CU, five
-  finishing tasks 7.50 CU and order packaging 1.60 CU: total 39.192 CU.
-</p>
-<p>
-  No shipping, extra waste, tax or failure budget is included in this baseline.
-  The full
-  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}"
-    >two-plate allocation example</a
-  >
-  owns its table and quantity-change explanation. Load the same fictional job in
+  Load this fictional job in
   <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
     >Several plates / one job</a
-  >, then offer its production total to the price calculator without multiplying
-  by quantity again.
+  >. The
+  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}">allocation guide</a>
+  retains its plate-level record. Material cost is complete grams / matching
+  spool grams × spool price; energy is assumed average kW × hours × tariff. Keep
+  full precision until display.
 </p>
-<h2>Choose rate and uncertainty assumptions</h2>
+<h2>Enter your own rates and included costs</h2>
 <p>
-  Power is an entered average, not a manufacturer maximum or a measurement made
-  by InspectMesh. A machine allowance may represent wear, upkeep or your chosen
-  capital allocation. State whether it includes energy; the job mode suppresses
-  separate energy if you confirm it does. Do not count included labour or
-  failure budget again. No universal rates or observed failure outcomes are
-  assumed.
-</p>
-<p>
-  The implemented job failure method is a percentage uplift of every selected
-  production cost including order work. It is a budget, not a
-  probability-of-success calculation. An expected retry model based on
-  comparable observations is a different method: it must identify eligible costs
-  and cannot be silently substituted for the calculator uplift. Actual
-  rejected/missing parts remain unknown.
+  State whether your machine rate already includes electricity or routine
+  labour. Do not add those components twice. Use an observed average power input
+  when available; 120 W in the example is an assumption, not a measured
+  recommendation. Job mode suppresses separate energy when you mark it included
+  in machine rates.
 </p>
 <p>
+  Use
   <a href="{{ GuideSlug.Route3dPrintSupportAndPurgeMaterialCost }}"
-    >Consumption inclusion</a
+    >consumption inclusion</a
   >
-  owns the complete-versus-subtotal reconciliation;
+  for support and purge reconciliation, and
   <a href="{{ GuideSlug.Route3dPrintLabourCostAndPostProcessing }}"
-    >active labour planning</a
+    >the active-work record</a
   >
-  owns the hands-on task record;
-  <a href="{{ GuideSlug.Route3dPrintLeadTimeVsPrintTime }}"
-    >elapsed lead-time planning</a
-  >
-  owns availability and process gaps.
+  for order/run/part scope. The example's 65 active minutes are distinct from
+  seven unattended machine hours. A currency choice labels values without
+  exchanging rates.
+</p>
+<h2>Handle uncertainty once</h2>
+<p>
+  The current calculator's failure allowance is an entered percentage budget
+  uplift on its defined subtotal. It is not a measured success probability. Keep
+  any expected-retry model separate and name the costs it covers. Do not add a
+  second allowance when the entered rate or imported total already includes it.
 </p>
 <p>
-  Primary context:
+  Simple mode applies the uplift to all entered direct and overhead production
+  costs; job mode applies it to all selected production costs including order
+  work. A hypothetical 10% uplift changes K to 43.1112. That is a different
+  scenario from the zero-uplift baseline, not an extra amount to add after
+  importing K.
+</p>
+<h2>Pass the reviewed cost to pricing</h2>
+<p>
+  Preserve this production record. Use the
+  <a href="{{ GuideSlug.Route3dPrintingPriceCalculator }}">price calculator</a>
+  for margin, markup, fees and minimum charge, then
+  <a href="{{ GuideSlug.Route3dPrintingQuoteGenerator }}"
+    >create a customer quotation</a
+  >
+  after the scope is agreed. Planned quantities do not establish delivered
+  outcomes or a schedule.
+</p>
+<p>
+  Retained primary context:
   <a href="https://blog.prusa3d.com/how-to-calculate-printing-costs_38650/"
     >Prusa costing methodology</a
   >
   and
   <a href="https://blog.prusa3d.com/3d-printing-price-calculator_38905/"
     >Prusa price calculator</a
-  >, reviewed 10 October 2026. Historical examples are not current rates or
-  InspectMesh physical evidence.
-</p>
-<p>The simplest useful calculation is:</p>
-<p>
-  <strong
-    >total print cost = material + electricity + machine use + labour + extras +
-    failure allowance</strong
-  >
-</p>
-<p>
-  For a quick estimate, start with the two values your slicer provides after you
-  prepare the model: filament weight in grams and estimated print time. Those
-  figures are normally more reliable than calculating from an STL alone because
-  the slicer accounts for infill, wall count, supports, layer height and
-  orientation.
-</p>
-<p>
-  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
-    >Use the 3D Print Cost Calculator</a
-  >
-  to add those values and see the full breakdown.
-</p>
-<h2>Calculate filament cost</h2>
-<p>You need three numbers:</p>
-<ol>
-  <li>Filament used for the print, in grams.</li>
-  <li>The net weight of the spool, usually 1,000 g.</li>
-  <li>The price you paid for that spool.</li>
-</ol>
-<p>Use this formula:</p>
-<p>
-  <strong>material cost = filament used ÷ spool weight × spool price</strong>
-</p>
-<p>If a 1 kg spool costs £20 and the slicer says the part uses 80 g:</p>
-<p><strong>80 ÷ 1,000 × £20 = £1.60</strong></p>
-<p>
-  This is the cost of the plastic used, not the cost of the print as a whole.
-  Use the complete slicer total when it includes supports and purge. If the
-  figure excludes them, add only the separately identified missing consumption
-  and record its basis. Leave unknown consumption unresolved until slicing.
-</p>
-<h3>Estimating weight from a model</h3>
-<p>
-  If you have a model but have not sliced it yet, volume can provide a useful
-  starting point. Material density converts a solid volume into a
-  solid-model-equivalent weight. PLA is commonly around 1.24 g/cm³, while PETG,
-  ABS and TPU differ.
-</p>
-<p>
-  However, a hollow or low-infill print contains much less material than the
-  solid model. Walls and supports work in the other direction. Treat this as a
-  planning estimate only, then replace it with slicer output before quoting a
-  customer.
-</p>
-<p>
-  InspectMesh can calculate model volume for
-  <a href="{{ GuideSlug.RouteStlVolumeCalculator }}">STL files</a> and
-  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF files</a>, or use the
-  combined
-  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
-    >3D Print Cost Calculator</a
-  >.
-</p>
-<h2>Add electricity cost</h2>
-<p>
-  Electricity is usually a modest cost for a small desktop print, but it should
-  not be ignored on long jobs or when you run several printers.
-</p>
-<p>Use:</p>
-<p>
-  <strong
-    >electricity cost = printer power in kW × print time in hours × electricity
-    price per kWh</strong
-  >
-</p>
-<p>
-  A printer averaging 120 W is 0.12 kW. If it runs for 10 hours and electricity
-  costs £0.30/kWh:
-</p>
-<p><strong>0.12 × 10 × £0.30 = £0.36</strong></p>
-<p>
-  Actual power draw changes during heating, movement and idle time. If you want
-  a closer figure, measure your own printer with a plug-in energy meter.
-  Otherwise, use a conservative average and treat it as an estimate.
-</p>
-<h2>Include machine use and maintenance</h2>
-<p>
-  Printers wear: nozzles, beds, belts, bearings, fans and occasional repairs all
-  have a cost. You do not need to predict every replacement part for a hobby
-  print, but an hourly machine-use allowance is sensible when pricing work for
-  customers.
-</p>
-<p>
-  For example, adding £0.25 per print hour to a 10-hour job adds £2.50. The
-  right figure depends on your machine, how heavily you use it and whether you
-  need to recover the printer purchase cost. Keep this separate from electricity
-  so you can adjust it later.
-</p>
-<h2>Include your time and extra parts</h2>
-<p>
-  For personal prints, you may choose to treat your own time as free. For
-  selling prints, do not.
-</p>
-<p>Include time spent on tasks such as:</p>
-<ul>
-  <li>repairing or checking the model;</li>
-  <li>slicing and preparing the printer;</li>
-  <li>removing supports and post-processing;</li>
-  <li>quality checking;</li>
-  <li>packing and communicating with the customer.</li>
-</ul>
-<p>
-  Also add the actual cost of inserts, magnets, screws, paint, packaging and
-  shipping materials. These are easy to forget because they are not part of the
-  slicer estimate.
-</p>
-<h2>Allow for failed prints</h2>
-<p>
-  A failure budget can reserve money for repeat work. It cannot establish how
-  often a job will fail or guarantee that the reserve covers a rejection.
-</p>
-<p>
-  Choose an explicit budget using comparable observations where available; there
-  is no standard percentage for a model or material. The calculator applies your
-  selected uplift to the full pre-failure subtotal, including order work. Record
-  that method rather than treating it as a retry probability.
-</p>
-<p>
-  Do not use a failure allowance to hide an uncertain quote. If the model is
-  risky, inspect it first for open edges, non-manifold geometry and other issues
-  with the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> or
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>.
-</p>
-<h2>Carry the production cost into pricing</h2>
-<p>
-  Keep production cost separate from the selling-price decision. The
-  <a href="{{ GuideSlug.RouteHowMuchToChargeFor3dPrints }}">pricing guide</a>
-  owns margin, markup, selling fees and minimum charges. Offer the completed job
-  total to the price calculator once, retaining its assumptions with the quote.
-</p>
-<h2>A practical workflow</h2>
-<ol>
-  <li>Check the model for obvious mesh problems.</li>
-  <li>Slice it using your real printer, material and settings.</li>
-  <li>Copy the slicer’s filament weight and print time.</li>
-  <li>Add electricity, machine use, labour and extras.</li>
-  <li>Record an explicit failure budget if one is selected.</li>
-  <li>Add margin only if you are preparing a selling price.</li>
-</ol>
-<p>
-  The
-  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
-    >3D Print Cost Calculator</a
-  >
-  keeps those inputs in one place and gives you a clear material, energy and
-  total-cost breakdown.
-</p>
-
-<h2>Count purge waste and reprints without hiding assumptions</h2>
-<p>
-  Consider an illustrative slicer estimate of 80 g for parts and supports plus a
-  separately reported 20 g purge tower. At 24 currency units per kilogram, the
-  100 g total material costs 2.40. Using only the 80 g figure would omit 0.48.
-  If the slicer already includes purge in its total, adding it again would
-  overstate cost.
-</p>
-<p>
-  A hypothetical 4-hour run at an assumed average 120 W uses 0.48 kWh. At 0.30
-  currency units per kWh, estimated electricity is 0.144. Nameplate watts and
-  maximum machine speed are not measured average consumption or elapsed time.
-  Record where your inputs came from: slicer, power meter, invoices or
-  explicitly chosen assumptions.
-</p>
-<p>
-  Failure allowances describe a planning model, not a prediction. A 10% uplift
-  on a 5.00 cost is 5.50; an independent 10% probability of repeating full
-  attempts gives expected attempt cost 5.00 / 0.90 = 5.56. Neither model covers
-  every failure pattern. State which you use, include labour actually repeated,
-  and replace assumptions with your own history when available.
-</p>
-<p>
-  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">Calculate the job cost</a
-  >, check
-  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
-    >spool sufficiency</a
-  >, then use the price calculator for the customer quote. No exchange rate or
-  country-specific energy price is implied.
+  >, previously reviewed 10 October 2026. Historical rates are not current
+  recommendations; the arithmetic above is an independent fictional example.
 </p>
