@@ -1,33 +1,127 @@
 ---
 title: '3MF Missing Objects After Import: Trace the Build | InspectMesh'
-description: 'Trace missing 3MF parts through resources, placed build items, transforms and application support using an owned two-part control.'
+description: 'Trace an expected 3MF placement through resource identity, isolation, coordinates and receiver state, using owned controls and a receiving record.'
 slug: 3mf-missing-objects-after-import
 eyebrow: File diagnosis with owned examples
 heading: 'Why Are Objects Missing After Importing a 3MF?'
 faq:
-  - question: 'Does one resource mean one visible part?'
-    answer: 'No. The build can place a reusable mesh more than once, or not place it at all. Compare build items and transforms with the original project.'
-  - question: 'Does conversion recover missing parts?'
-    answer: 'No. A geometry export resolves supported selected build geometry; it cannot recover missing intent or unsupported extension data.'
+  - question: 'Does one stored resource mean one visible part?'
+    answer: 'No. A resource can be placed more than once or remain unused. Compare expected build items and transforms with the original project.'
+  - question: 'Can conversion recover missing parts?'
+    answer: "No. It exports the supported chosen build geometry and cannot recover missing resources, unsupported semantics or the author\u2019s intent."
 ---
 
 <p>
-  A 3MF can store mesh resources that are not placed in its build, reuse one
-  resource for several placed items, or position a part outside the visible
-  area. Fewer visible parts after import therefore needs a build-and-placement
-  check before mesh repair. Hidden or disabled state in the authoring
-  application is another thing to verify; it is not a universal 3MF display
-  rule.
+  A 3MF can store resources without placing them, reuse a resource for several
+  build items or put geometry outside the current view. Investigate expected
+  inventory and placed-item identity before mesh repair. Hidden or disabled
+  state in an authoring application is another thing to verify; it is not a
+  universal 3MF visibility rule.
 </p>
-<h2>Use selection to trace the missing placement</h2>
+<h2>Start with the expected inventory</h2>
 <p>
-  The <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> panel lists
-  top-level placed items before triangles are flattened. Select build-1 and
-  build-2 of the repeated cube, isolate each, then show all. Both reference
-  resource 1; neither is a separate stored mesh definition. In the
-  unplaced-resource control, stored count rises to two but export remains 24
-  triangles with X=0..60 mm. Do not promote unplaced resources to the build or
-  infer identity from disconnected shells.
+  Keep the source revision and ask which placements the recipient expects. A
+  named part, resource definition, top-level build item and connected shell are
+  different concepts. A single placed item can contain nested components;
+  splitting shells cannot reliably reconstruct that identity.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Package control</th>
+      <th scope="col">Stored mesh resources / placements</th>
+      <th scope="col">Resolved reference</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One placed cube</td>
+      <td>1 / 1</td>
+      <td>12 triangles; 20 mm spans</td>
+    </tr>
+    <tr>
+      <td>Two placed cubes</td>
+      <td>1 / 2</td>
+      <td>24 triangles; X=0..60 mm; second item X=40..60 mm</td>
+    </tr>
+    <tr>
+      <td>Unplaced-resource control</td>
+      <td>2 / 2</td>
+      <td>
+        Stored count rises, but the build stays 24 triangles at X=0..60 mm
+      </td>
+    </tr>
+    <tr>
+      <td>Declared-inch transformed control</td>
+      <td>1 / 1</td>
+      <td>12 triangles; 25.4 mm spans; X=50.8..76.2 mm</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Trace the selected placement</h2>
+<ol>
+  <li>
+    Open the
+    <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
+      >two-placement package</a
+    >
+    in <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Both build-1 and
+    build-2 reference resource 1.
+  </li>
+  <li>
+    Select build-2, choose Isolate selected and Frame selected. Read its
+    X=40..60 mm bounds beside the all-build bounds.
+  </li>
+  <li>
+    Choose Show all, then compare the receiver's object/plate list and its
+    current framing, visibility and enabled state.
+  </li>
+  <li>
+    Record any receiving recentering, scale or below-bed movement. A part may
+    exist without appearing in the current view.
+  </li>
+</ol>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Placement record</th>
+      <th scope="col">Known reference</th>
+      <th scope="col">Receiving observation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>build-2 / source resource 1</td>
+      <td>
+        X=40..60, Y/Z=0..20 mm; visible when shown and isolated by its local row
+      </td>
+      <td>
+        External receiver untested; record app/version and actual visibility
+        separately
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The local resolver and exact saved-byte check were rerun on 27 October 2026;
+  see the
+  <a href="/examples/file-handoff/receiving-check-filled.json" download
+    >filled evidence record</a
+  >. Nested components remain one top-level selection. Viewer isolation changes
+  the preview, while converter scope remains a separate deliberate choice.
+</p>
+<h2>Stored but unplaced is different from unreadable</h2>
+<p>
+  Compare the
+  <a href="{{ ExampleAsset.OnePlacedCube3mf }}" download
+    >one-placement control</a
+  >
+  with the
+  <a href="{{ ExampleAsset.PartInspectionUnplacedResource3mf }}" download
+    >unplaced-resource control</a
+  >. A resource absent from the build contributes no build triangles. Do not
+  automatically promote stored resources or delete repeated placements as
+  duplicate meshes.
 </p>
 <figure>
   <img
@@ -35,176 +129,74 @@ faq:
     width="720"
     height="600"
     loading="lazy"
-    alt="One resource, two placements: mathematical schematic."
+    alt="One stored resource is referenced by two placements; an unused resource contributes no placed geometry."
   />
   <figcaption>
-    A resource can be placed twice. A stored but unplaced resource contributes
-    no build triangles.
+    Original mathematical schematic, not a receiving-application screenshot.
   </figcaption>
 </figure>
 <p>
-  A missing reference fails the load with a specific diagnostic; it cannot
-  silently omit the failed item and report a complete build. Required production
-  semantics and cross-part references remain unsupported in this bounded local
-  workflow. Review them in the original application.
+  A missing resource reference stops the bounded local load with a specific
+  diagnostic; it cannot silently omit the failed item and report complete-build
+  success. Required unsupported semantics, component cycles and cross-part
+  references also require the original application or a supported source export.
+  Do not assign an unreported corruption cause solely because a package failed
+  to open.
 </p>
-<h2>Read the resolved count beside the stored resource</h2>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Package control</th>
-      <th scope="col">Stored mesh resources / placed build items</th>
-      <th scope="col">Actual resolved geometry</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>One-placed cube</td>
-      <td>1 / 1</td>
-      <td>12 triangles; 20 × 20 × 20 mm</td>
-    </tr>
-    <tr>
-      <td>Two-placed cubes</td>
-      <td>1 / 2</td>
-      <td>24 triangles; 60 × 20 × 20 mm; two components</td>
-    </tr>
-    <tr>
-      <td>Declared-inch transformed control</td>
-      <td>1 / 1</td>
-      <td>12 triangles; 25.4 mm spans; X from 50.8 to 76.2 mm</td>
-    </tr>
-  </tbody>
-</table>
-<p>
-  The paired files below have verified bytes and are resolved through the actual
-  local implementation. Use the explicit loader in
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF viewing</a> or
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a>. Stored
-  resource count is not visible instance count; conversion/reopening preserves
-  the supported placed surfaces but flattens their object identity.
-  Multi-component volume remains unavailable in preflight rather than pretending
-  to know the intended solid union.
-  <a href="{{ GuideSlug.RouteExamples }}">Compare the controls in the library</a
-  >.
-</p>
-<h2>Count resources and placed instances separately</h2>
-<p>
-  The Core Specification separates reusable object resources from the build
-  items selected for manufacturing. A resource count is not the expected visible
-  part count. Components can reference resources, and transforms affect final
-  positions. A successful import of some geometry does not prove the receiving
-  application supports every extension or project setting.
-</p>
-<h2>Owned two-part example</h2>
-<p>
-  Download
-  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
-    >the two-placed-cubes control</a
-  >. One reusable 20 mm cube resource appears twice in the build: X = 0 and X =
-  40 mm. Expected resolved bounds are 60 × 20 × 20 mm and two disjoint shells. A
-  companion
-  <a href="{{ ExampleAsset.OnePlacedCube3mf }}" download
-    >one-placed-cube control</a
-  >
-  keeps the same resource but places it once: bounds 20 × 20 × 20 mm. These are
-  mathematical software fixtures, not printed parts.
-</p>
-<figure>
-  <img
-    src="/examples/collection-review/placed-items.svg"
-    width="720"
-    height="240"
-    alt="One stored cube resource is referenced by two build items, at X zero and X forty millimetres."
-    loading="lazy"
-  />
-  <figcaption>
-    Build items select instances; resource count alone cannot predict visible
-    part count. The schematic is illustrative, not a rendered import screenshot.
-  </figcaption>
-</figure>
-<ol>
-  <li>
-    Open the untouched package in its original application and record expected
-    placed parts and visibility.
-  </li>
-  <li>
-    Run <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a> or
-    <a href="{{ GuideSlug.RouteBatchStlChecker }}"
-      >the local collection checker</a
-    >
-    on both controls. Confirm the declared unit, resolved bounds and build-item
-    warnings.
-  </li>
-  <li>
-    If the receiving application shows fewer parts, zoom to the whole scene and
-    inspect its object/plate list, selection, visibility and disabled print
-    state.
-  </li>
-  <li>
-    Compare transforms and any recentering or below-bed placement. A part can
-    exist without being visible at the current view.
-  </li>
-  <li>
-    Check supported extensions and original application version. Re-export a
-    basic mesh-based build on a copy only when required.
-  </li>
-</ol>
-<h2>Choose the next action from the observation</h2>
+<h2>Interpret the actual receiver state</h2>
 <table>
   <thead>
     <tr>
       <th scope="col">Observation</th>
       <th scope="col">Interpretation to test</th>
-      <th scope="col">Action</th>
+      <th scope="col">Next action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>One resource, two build items</td>
-      <td>Resource reused as two instances</td>
-      <td>Check both placements; do not delete one as a duplicate</td>
+      <td>Expected item outside view</td>
+      <td>Transform, scale, camera framing or receiver movement</td>
+      <td>Compare its named interval and frame the complete scene</td>
     </tr>
     <tr>
-      <td>Resource present but absent from build</td>
-      <td>Stored geometry is not selected for this build</td>
-      <td>Ask the author whether it should be placed</td>
+      <td>Resource stored without a build item</td>
+      <td>Not selected for this build</td>
+      <td>Ask the source author whether it should be placed</td>
     </tr>
     <tr>
-      <td>Expected count but extreme bounds</td>
-      <td>Transform or scale moved a part</td>
-      <td>Compare original placement and known dimension</td>
+      <td>Required unsupported semantics</td>
+      <td>This importer cannot establish complete intended geometry</td>
+      <td>Use the original application and preserve the source</td>
     </tr>
     <tr>
-      <td>Unsupported extension reported</td>
-      <td>Importer may lack required geometry semantics</td>
+      <td>Geometry present but project differs</td>
+      <td>A separate property or setting was not retained</td>
       <td>
-        Return to original application or use a supported export; keep the
-        source
+        <a href="{{ GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings }}"
+          >Verify property portability</a
+        >
       </td>
     </tr>
   </tbody>
 </table>
 <p>
-  InspectMesh resolves supported mesh build geometry; it does not validate every
-  application-specific hidden state or extension. Two shells do not establish
-  two valid solids, and the collection volume is intentionally unavailable for
-  multiple-shell interpretation. For general import failures, use
-  <a href="{{ GuideSlug.RouteWhyWontMy3mfFileSlice }}">3MF slicing diagnosis</a
-  >; for geometry-only delivery,
-  <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
-    >review conversion losses</a
-  >
-  first.
+  For the initial opening sequence use
+  <a href="{{ GuideSlug.RouteHowToOpenA3mfFile }}">the 3MF opening guide</a>.
+  For a subsequent processing failure use
+  <a href="{{ GuideSlug.RouteWhyWontMy3mfFileSlice }}">slicing diagnosis</a>.
+  Resolved counts do not establish supported solid volume: the two disjoint
+  cubes still leave volume unavailable under the current single-component
+  screen.
 </p>
-<h2>Source and next step</h2>
 <p>
-  The
+  <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
+    >Choose a delivery scope</a
+  >
+  only after the inventory is understood. The derivative can retain placed
+  coordinates but flattens resource/build identity. Representation source
+  reviewed 27 October 2026:
   <a
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
-    >Core Specification resources and build sections</a
-  >
-  were reviewed on 7 October 2026. The controls use core mesh semantics and no
-  optional extension. Compare intended parts with the original project before
-  accepting a re-export; when design intent is uncertain, consult its author
-  rather than reconstructing missing objects.
+    >3MF Core Specification resources, components and build sections</a
+  >. No external receiver or physical test is inferred from the local controls.
 </p>

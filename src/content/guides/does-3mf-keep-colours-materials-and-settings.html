@@ -1,262 +1,202 @@
 ---
-title: 'Does 3MF Keep Colours, Materials and Settings? | InspectMesh'
-description: Learn which colours, materials and print settings a 3MF can carry, why support varies between programs, and when to keep the original project file.
+title: 'Does 3MF Preserve Colours, Materials and Settings? | InspectMesh'
+description: 'Separate 3MF property capability from actual receiver preservation. Use one portability matrix and record observed versus untested information.'
 slug: does-3mf-keep-colours-materials-and-settings
 eyebrow: 3MF file guide
-heading: Does 3MF Keep Colours, Materials and Print Settings?
+heading: 'Does 3MF Keep Colours, Materials and Print Settings?'
 faq:
-  - question: Does every 3MF file preserve slicer settings?
-    answer: No. A slicer may store settings in its own 3MF extensions, and another program can ignore or reinterpret them. Check the imported project before printing.
-  - question: Does converting a 3MF to STL keep colours?
-    answer: No. STL is a geometry-only format, so a converted STL cannot retain 3MF colours, materials, units, build items or print settings.
-  - question: Can 3MF store more than one object?
-    answer: Yes. A 3MF can include multiple objects, placements and component references, though support for every feature depends on the application opening it.
+  - question: 'Does every 3MF preserve slicer settings?'
+    answer: 'No. Project settings can be application-specific, ignored or mapped differently. Verify the exact receiver and intended printer/material.'
+  - question: 'Does an STL export keep placement?'
+    answer: 'Its vertex coordinates can retain resolved locations, but separate build transforms, resource identities and units are absent. STL is not a project backup.'
+  - question: 'Does a grey preview prove colour data is missing?'
+    answer: 'No. A geometry preview is not a full audit of source properties. Inspect the required appearance in a supporting receiving application.'
 ---
 
 <p>
-  3MF can keep much more context than STL, but it is not a promise that every
-  program will reproduce a print project exactly. The format can describe mesh
-  geometry, units, object placement, materials and colours. Slicers can also add
-  their own project information, which may only be fully understood by that
-  slicer or a compatible version.
+  A property can be present in a 3MF package, recognised by an application and
+  still be interpreted differently at the receiving step. Record what the
+  handoff requires and what was actually observed. A grey geometry preview is
+  not a complete audit of the source's appearance data.
 </p>
-<p>
-  For a repeatable handoff, name the authoring and receiving application
-  versions beside the test file. Compatibility is a property of that tested
-  path, not a permanent promise about every 3MF implementation.
-</p>
-<h2>Distribute a derivative without losing the project</h2>
-<p>
-  Selected-item STL export answers which placed geometry to send. It does not
-  selectively extract colours, material assignments or print settings. A report
-  records the chosen source placement and millimetre convention but cannot
-  reconstruct an editable hierarchy. Keep the original package for future
-  changes, review unsupported required semantics in its authoring application
-  and agree what the recipient needs. Use
-  <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
-    >the delivery decision table</a
-  >
-  to choose the original project, combined geometry or one placement.
-</p>
-<h2>Verify portability at the receiving application</h2>
+<h2>One property-portability matrix</h2>
 <table>
   <thead>
     <tr>
-      <th>Information</th>
-      <th>What to verify</th>
+      <th scope="col">Required information</th>
+      <th scope="col">Possible representation</th>
+      <th scope="col">What InspectMesh establishes</th>
+      <th scope="col">What the receiver must verify</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Geometry and units</td>
-      <td>Resolved dimensions and object placement</td>
+      <td>Core meshes, components and declared unit</td>
+      <td>
+        Supported local resolved surfaces, physical bounds and unit
+        interpretation
+      </td>
+      <td>Named dimensions and actual imported geometry</td>
     </tr>
     <tr>
-      <td>Colours and materials</td>
-      <td>Whether both applications support the relevant property extension</td>
+      <td>Build identity and placement</td>
+      <td>Resource definitions and build-item transforms</td>
+      <td>
+        Supported top-level identities before flattening; selected/all-build
+        bounds
+      </td>
+      <td>Expected inventory, coordinate location and any recentering</td>
     </tr>
     <tr>
-      <td>Process settings</td>
-      <td>Whether the receiving slicer imports, maps or ignores them</td>
+      <td>Display appearance</td>
+      <td>
+        Core base-material display colour or defined property/texture extensions
+      </td>
+      <td>
+        Geometry preview is not a complete property audit; appearance
+        preservation untested
+      </td>
+      <td>
+        Required face assignments, texture paths/orientation and visual
+        interpretation
+      </td>
+    </tr>
+    <tr>
+      <td>Requested manufactured material/colour</td>
+      <td>Supported property data plus agreed process mapping</td>
+      <td>Does not validate physical material or machine mapping</td>
+      <td>Actual material/tool assignments and process requirements</td>
+    </tr>
+    <tr>
+      <td>Preparation state</td>
+      <td>Application-specific settings, profiles and plate/support data</td>
+      <td>Does not certify slicer project or printer profile</td>
+      <td>
+        Exact application/version import and suitability of each required
+        setting
+      </td>
     </tr>
   </tbody>
 </table>
 <p>
-  3MF can carry richer information than STL, but a feature existing in a file
-  does not force every application to preserve or use it. Save an original,
-  inspect the receiving application's import report and preview, and check the
-  <a href="https://3mf.io/compatibility-matrix/">3MF compatibility matrix</a>
-  for self-reported support. Do not assume an imported profile is safe for a
-  different printer or material.
+  Core base-material entries can include display colour; appearance is not all
+  one universal extension. A rendering colour also does not promise the
+  manufactured part's colour or formulation. Optional unsupported properties,
+  required unsupported semantics and vendor-private project state need different
+  treatment. A successful geometry load cannot produce a global compatibility
+  score.
 </p>
-<h2>Feature-preservation matrix</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Feature</th>
-      <th>3MF can represent it?</th>
-      <th>Portability check</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Mesh geometry and declared units</td>
-      <td>Core format</td>
-      <td>Compare resolved dimensions and placement after import</td>
-    </tr>
-    <tr>
-      <td>Object and build structure</td>
-      <td>Core resources and build items</td>
-      <td>Check object count, transforms and plate layout</td>
-    </tr>
-    <tr>
-      <td>Colour, texture and material properties</td>
-      <td>Supported through defined properties/extensions</td>
-      <td>Confirm both applications support and map the same feature</td>
-    </tr>
-    <tr>
-      <td>Slicer or printer settings</td>
-      <td>May be application-specific or use extensions</td>
-      <td>Inspect the receiving profile; never assume it is portable</td>
-    </tr>
-  </tbody>
-</table>
-<h2>Why valid data may still disappear</h2>
+<h2>Record one real path, leave unknown properties unknown</h2>
 <p>
-  An application can support the 3MF core while ignoring an optional extension,
-  private namespace or vendor-specific setting. Exporters may also flatten a
-  build, omit unused resources or translate properties into their own model. A
-  successful open operation proves only that the package was accepted, not that
-  every feature was preserved.
-</p>
-<h2>A verification workflow</h2>
-<ol>
-  <li>Keep the source file and note which properties must survive.</li>
-  <li>Export 3MF, then reopen it in the producing application.</li>
-  <li>
-    Import it into the receiving application and compare dimensions, placement
-    and appearance.
-  </li>
-  <li>
-    Inspect material assignments and every safety-critical printer setting
-    manually.
-  </li>
-  <li>
-    Use a small test job when colour/material mapping affects physical output.
-  </li>
-</ol>
-<p>
-  The <a href="https://3mf.io/spec/">3MF specification suite</a> defines the
-  format, while the
-  <a href="https://3mf.io/compatibility-matrix/">3MF compatibility matrix</a>
-  summarizes vendor-reported application support. Neither replaces verification
-  of the exact application versions and workflow you use.
-</p>
-<h2>Do not treat printer settings as universal</h2>
-<p>
-  Even when a receiving slicer recognizes a stored profile, confirm printer
-  model, nozzle, build surface, material, temperatures and motion limits.
-  Settings appropriate to the producing system may be unsafe or simply wrong
-  elsewhere. Geometry portability and machine-profile portability are separate
-  acceptance checks.
-</p>
-<p>
-  For archival exchange, document the authoring application/version and keep
-  screenshots or a human-readable summary of critical assignments. That evidence
-  helps distinguish a missing property from a different visual interpretation.
-</p>
-
-<h2>What a 3MF can retain</h2>
-<p>
-  A well-supported 3MF can retain named objects, multiple build items, their
-  transforms, declared units, colour assignments and material information. This
-  makes it useful for colour-capable prints and builds with several parts. It
-  can also carry metadata that makes a project easier to identify later.
-</p>
-
-<h2>Why print settings are less portable</h2>
-<p>
-  Layer height, supports, infill, temperatures and printer profiles are often
-  specific to the slicer and printer that created the file. Another slicer may
-  open the geometry while ignoring those settings, substituting defaults, or
-  asking you to select a compatible printer. Treat an imported 3MF as a project
-  to review, not as a ready-to-run job.
-</p>
-
-<h2>Check before slicing</h2>
-<ol>
-  <li>Keep the original 3MF and note the slicer and printer it came from.</li>
-  <li>
-    Open it in the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to
-    inspect the resolved model and expected build items.
-  </li>
-  <li>
-    Check size and usable build volume with the
-    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
-      >3MF Dimensions Checker</a
-    >.
-  </li>
-  <li>
-    In your slicer, explicitly verify material, colour, supports and printer
-    profile.
-  </li>
-</ol>
-
-<h2>Do not use STL as a project backup</h2>
-<p>
-  Exporting an STL is useful for a geometry-only or legacy workflow, but it
-  flattens the resolved geometry and drops the surrounding 3MF information. Keep
-  the 3MF whenever you may need colours, material assignments, units, separate
-  parts or print settings. Read
-  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL for 3D Printing</a>
-  for the practical format trade-off.
-</p>
-
-<p>
-  <a href="{{ GuideSlug.Route3mfViewer }}"
-    ><strong>Open a 3MF locally before printing</strong></a
+  The
+  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
+    >two-placed-cubes control</a
   >
-</p>
-<h2>Use a small interoperability test</h2>
-<p>
-  Before transferring an important production package, test a small file using
-  the same colours, material regions and setting types. Export it, import it
-  into the receiver, and round-trip it if the workflow requires that. Record
-  which features remain, change or disappear. Repeat after major application
-  updates because extension and vendor-setting support can evolve independently
-  of the core format.
-</p>
-
-<h2>Model exchange or slicer project?</h2>
-<p>
-  The .3mf extension alone does not identify a portable printer project. Core
-  mesh resources, unit declarations and build placements answer geometry
-  questions. Application-specific profiles, plate state and process metadata
-  answer preparation questions, and require compatible applications. InspectMesh
-  resolves supported core mesh build data; it does not certify the stored
-  printer profile.
+  tests core geometry and placement. The 27 October 2026 local resolver → scoped
+  STL writer → reopened STL check retains the second placement at X=40..60 mm
+  and all-build X=0..60 mm. It verifies intended triangles under the converter's
+  Float32 basis, as recorded in the
+  <a href="/examples/file-handoff/receiving-check-filled.json" download
+    >filled evidence record</a
+  >.
 </p>
 <table>
   <thead>
     <tr>
-      <th>Recipient needs</th>
-      <th>Share</th>
-      <th>Acceptance check</th>
+      <th scope="col">Requirement</th>
+      <th scope="col">Reference / observation</th>
+      <th scope="col">Remaining check</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Geometry with units and placements</td>
-      <td>Supported model 3MF plus revision notes</td>
-      <td>Resolved count, dimensions and transforms</td>
+      <td>Second placement geometry</td>
+      <td>12 triangles; X=40..60 mm; local saved-byte verification passed</td>
+      <td>External receiver import options remain untested</td>
     </tr>
     <tr>
-      <td>Continue the same slicer project</td>
-      <td>Original project 3MF plus application/version</td>
-      <td>
-        Profiles, plates, supports and material assignments in that slicer
-      </td>
+      <td>Original build identity</td>
+      <td>Two placements reference one resource in 3MF</td>
+      <td>STL derivative has no editable resource/build records</td>
     </tr>
     <tr>
-      <td>A legacy mesh importer</td>
-      <td>STL derivative plus an explicit millimetre assumption</td>
+      <td>Appearance</td>
       <td>
-        All intended geometry and source-relative placement; retain original
-        project
+        No appearance preservation observation from this geometry-only path
       </td>
+      <td>Untested; use a representative property-bearing package</td>
+    </tr>
+    <tr>
+      <td>Printer profile / project state</td>
+      <td>Not tested by the internal derivative check</td>
+      <td>Review in the exact producing/receiving slicer</td>
     </tr>
   </tbody>
 </table>
+<h2>One receiving verification procedure</h2>
 <p>
-  Try the declared-inch transformed example: a one-unit cube resolves to 25.4 mm
-  spans and an X interval of 50.8 to 76.2 mm. That demonstrates unit/build
-  interpretation, not profile preservation. Open the original and a converted
-  STL in the receiver, compare geometry first, then review process settings
-  separately. Stop if required project settings disappear or the receiving
-  printer differs.
+  Use <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> for supported
+  local geometry and placement references, then inspect required appearance and
+  project properties in the actual receiving application.
+</p>
+<ol>
+  <li>
+    Keep the original project and name required properties and revision before
+    export.
+  </li>
+  <li>
+    Record producing/receiving application versions and exact operations. Reopen
+    the export in the producer when the workflow requires it.
+  </li>
+  <li>
+    Import into the receiver and compare named geometry references, placement,
+    appearance and required assignments.
+  </li>
+  <li>
+    For each property record preserved, changed, missing or untested with
+    evidence and import options. A missing entry remains unanswered.
+  </li>
+  <li>
+    Resolve unmapped project settings in the receiving slicer and inspect final
+    layers for the intended printer/material. Repeat a representative
+    interoperability check after relevant application changes.
+  </li>
+</ol>
+<p>
+  Use
+  <a href="{{ GuideSlug.RouteBestFileFormatFor3dPrinting }}"
+    >the shared receiving-file record</a
+  >
+  instead of creating another property form. The consortium
+  <a href="https://3mf.io/compatibility-matrix/">compatibility matrix</a>
+  supplies reported application-support context, not an observed test of your
+  file or versions.
+</p>
+<h2>Retain the original when distributing a derivative</h2>
+<p>
+  A geometry export can bake resolved placement into STL vertex coordinates. STL
+  lacks separate build transforms, resource identity, declared units, standard
+  colours/materials and preparation settings. The receiver can then move or
+  rescale it; record that operation. A millimetre convention must accompany
+  InspectMesh's STL download.
 </p>
 <p>
-  Reviewed 8 October 2026 against the
-  <a href="https://3mf.io/spec/">3MF Consortium specification suite</a>.
-  Compatibility remains application/version dependent.
+  <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
+    >Choose combined or individual placed geometry</a
+  >
+  when only those surfaces are required. Keep the original project for future
+  changes. A basic STL-to-3MF package cannot create missing colours, materials,
+  supports or profiles.
+  <a href="{{ GuideSlug.Route3mfVsStl }}">The format comparison</a> owns the
+  representation choice; this page owns verification of the required properties.
+</p>
+<p>
+  Reviewed 27 October 2026 against the
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core Specification 1.4.0</a
+  >
+  and <a href="https://3mf.io/spec/">specification suite</a>. No external
+  appearance, project or physical test is claimed for the cube control.
 </p>

@@ -1,5 +1,8 @@
 /** Canonical paths for downloadable public example files linked from pages and guides. */
 export const ExampleAsset = {
+  ObjCompanionBundle: '/examples/file-handoff/obj-companion-bundle.zip',
+  ReceivingCheckBlank: '/examples/file-handoff/receiving-check-blank.csv',
+  ReceivingCheckFilled: '/examples/file-handoff/receiving-check-filled.json',
   Hole8Stl: '/examples/export-fidelity/square-hole-8mm.stl',
   Hole6Stl: '/examples/export-fidelity/square-hole-6mm.stl',
   Curve24Stl: '/examples/export-fidelity/circle-24-segments.stl',

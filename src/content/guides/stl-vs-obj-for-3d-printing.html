@@ -1,164 +1,155 @@
 ---
-title: 'STL vs OBJ: Choose a 3D Printing File Format | InspectMesh'
-description: Compare STL and OBJ for 3D printing. Learn what each format stores, when OBJ is useful, and when STL or 3MF is the better choice.
+title: 'STL vs OBJ: Check the Complete Appearance Bundle | InspectMesh'
+description: 'Compare geometry-only STL with an OBJ appearance bundle. Download an original OBJ, MTL and texture control and test the receiving application.'
 slug: stl-vs-obj-for-3d-printing
 eyebrow: 3D file format guide
-heading: STL vs OBJ for 3D Printing
+heading: 'STL vs OBJ: Does the Complete Bundle Arrive?'
 faq:
-  - question: Is OBJ better quality than STL?
-    answer: Not automatically. Print quality depends mainly on the model geometry, export resolution and printer settings. OBJ can carry more visual information, but that does not make its shape inherently more accurate.
-  - question: Can I 3D print an OBJ file directly?
-    answer: Many slicers can import OBJ files, but support varies. Check your slicer and use STL or 3MF when you need the most straightforward printing workflow.
-  - question: Should I use STL or 3MF for a colour 3D print?
-    answer: Prefer 3MF when your slicer and printer support it. Unlike STL, it can preserve richer print information such as units, materials and build settings.
+  - question: 'Does OBJ guarantee better print quality?'
+    answer: 'No. Geometry, export approximation and the print process determine the result. Appearance references add information without guaranteeing a more accurate surface or manufactured colour.'
+  - question: 'Does InspectMesh open OBJ files?'
+    answer: 'No. Use suitable authoring or receiving software for OBJ. InspectMesh tools here accept STL and supported 3MF geometry.'
+  - question: 'Can an OBJ open without its texture?'
+    answer: 'An application may still display geometry while appearance is missing or replaced. Test the exact receiver and record the actual result.'
 ---
 
 <p>
-  STL and OBJ can both describe 3D models, but they were designed for different
-  jobs.
+  Choose STL for a geometry-only mesh handoff when the receiver accepts it.
+  Choose OBJ when required appearance or grouping data is supported by that
+  receiving workflow, and send every referenced companion file. Seeing the
+  geometry open does not prove that its material or texture references worked.
 </p>
-
-<h2>Verify an OBJ bundle before handoff</h2>
-<p>
-  Open the OBJ from a different folder or machine to reveal broken relative
-  paths to material or texture files. Confirm whether the receiving slicer uses
-  groups as separate objects, merges them, or ignores unsupported surface
-  attributes. Include every required companion file and avoid renaming only one
-  member of the bundle.
-</p>
-<p>
-  For a geometry-only print, compare dimensions and object count after import.
-  For a color workflow, also inspect face assignments and texture orientation.
-  If those attributes are lost, an STL conversion will not restore them; return
-  to the source or choose a tested richer handoff.
-</p>
-
-<h2>Attribute and support comparison</h2>
+<h2>What must survive?</h2>
 <table>
   <thead>
     <tr>
-      <th>Concern</th>
-      <th>STL</th>
-      <th>OBJ</th>
+      <th scope="col">Concern</th>
+      <th scope="col">STL</th>
+      <th scope="col">OBJ handoff</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Surface geometry</td>
-      <td>Triangles</td>
-      <td>Polygonal faces that applications may triangulate</td>
-    </tr>
-    <tr>
-      <td>Declared units</td>
-      <td>No standard unit field</td>
-      <td>Common workflows still require an agreed unit convention</td>
-    </tr>
-    <tr>
-      <td>Color/material references</td>
-      <td>Not part of standard STL</td>
-      <td>Can reference materials and textures through companion data</td>
-    </tr>
-    <tr>
-      <td>Single-file handoff</td>
-      <td>Usually one file</td>
+      <td>Surface representation</td>
+      <td>Triangle facets</td>
       <td>
-        Textures and material references may require several files and stable
-        paths
+        This example uses polygon faces; the receiver may triangulate them
       </td>
+    </tr>
+    <tr>
+      <td>Physical size</td>
+      <td>Agreed coordinate-unit convention</td>
+      <td>Also needs an agreed unit convention</td>
+    </tr>
+    <tr>
+      <td>Appearance</td>
+      <td>No standard texture/material data</td>
+      <td>Material assignment can refer to MTL and image assets</td>
+    </tr>
+    <tr>
+      <td>Delivery inventory</td>
+      <td>One geometry file</td>
+      <td>All referenced files with stable relative paths</td>
     </tr>
   </tbody>
 </table>
 <p>
-  Choose STL for a simple single-material mesh when the receiving printer
-  workflow is known to expect it. Choose OBJ when surface grouping, color or
-  texture data is useful and the receiver explicitly supports the complete
-  bundle. A geometry- only OBJ import does not prove that material references or
-  texture coordinates survived.
+  Richer appearance does not automatically improve geometric detail or printed
+  colour. Ask whether the intended application uses the relevant properties and
+  how they map to the actual manufacturing process.
+</p>
+<h2>Bundle anatomy: one original block</h2>
+<p>
+  <a href="/examples/file-handoff/obj-companion-bundle.zip" download
+    >Download the complete owned OBJ bundle</a
+  >. It contains sample.obj, sample.mtl, textures/checker.png and README.md. The
+  closed block spans X=0..20, Y=0..10 and Z=0..5 under the agreed millimetre
+  convention. It has eight coordinate vertices and six outward-wound quad faces.
+  The original blue/yellow checker image is 16 × 16 pixels. The assets are
+  CC0-1.0 mathematical/appearance controls, not a captured import or printed
+  specimen.
+</p>
+<figure>
+  <img
+    src="/examples/file-handoff/obj-bundle.svg"
+    width="720"
+    height="360"
+    loading="lazy"
+    alt="sample.obj references sample.mtl, whose checker material references textures/checker.png."
+  />
+  <figcaption>
+    Original reference diagram. Missing companion files can affect appearance
+    while geometry remains readable.
+  </figcaption>
+</figure>
+<p>
+  In sample.obj, <code>mtllib sample.mtl</code> names the library and
+  <code>usemtl checker</code> assigns its material to faces. The MTL defines
+  <code>newmtl checker</code> and <code>map_Kd textures/checker.png</code>. Each
+  face references valid vertex and texture-coordinate indices. Renaming only the
+  image breaks the relative image reference; omitting the MTL breaks the
+  material-library lookup earlier.
 </p>
 <p>
-  In either workflow, communicate units, verify dimensions and inspect the
-  imported object count and orientation. Keep source CAD or sculpt data
-  separately. For a modern multi-object print handoff, compare 3MF as well
-  because it packages richer print-oriented information without relying on loose
-  companion files, subject to application compatibility.
+  Focused asset validation checks the inventory, safe reference paths, indices,
+  UVs, closed outward edge incidence and analytical 1,000 mm³ material volume.
+  These structural checks do not establish a particular application's rendered
+  appearance. The
+  <a href="/examples/file-handoff/assets.json" download
+    >asset inventory and hashes</a
+  >
+  identify the distributed files.
 </p>
-<h2>Choose by delivery workflow</h2>
+<h2>Complete versus missing companion experiment</h2>
+<ol>
+  <li>
+    Extract the complete ZIP into a fresh directory, retaining
+    textures/checker.png at that relative path.
+  </li>
+  <li>
+    In an application that supports OBJ/MTL/image textures, record its name,
+    version and import options. Open sample.obj and inspect bounds, face
+    assignments and texture orientation.
+  </li>
+  <li>
+    Make a separate working copy and remove the texture. Record whether geometry
+    loads, a warning appears, or appearance falls back.
+  </li>
+  <li>
+    Restore the texture and remove the MTL instead. Record this different
+    missing-reference stage without overwriting the complete bundle.
+  </li>
+  <li>
+    Reopen the intact original and compare the actual required appearance.
+  </li>
+</ol>
 <p>
-  STL is a simple triangle-mesh exchange format. OBJ can carry richer
-  geometry-related references, but colour and material support depend on
-  accompanying files and the receiving software. Test import in the intended
-  slicer and retain the source format when those attributes matter.
+  <strong>Receiver appearance remains untested for this control.</strong> The
+  experiment is for the reader to execute; the diagram is not a software
+  observation. An illustrative swatch cannot prove import support or
+  manufactured colour.
 </p>
+<h2>Record acceptance and choose the next stage</h2>
 <p>
-  STL is the familiar format for straightforward 3D printing. It stores a
-  triangle mesh: the surface shape of the object. It does not reliably include
-  units, colours, materials, textures or printer settings.
-</p>
-<p>
-  OBJ is a broader 3D graphics format. It can store mesh geometry and can refer
-  to separate material and texture files. That makes it useful for visual
-  assets, colour models and rendering workflows.
-</p>
-<h2>When STL is the practical choice</h2>
-<p>
-  STL is a good choice when you are printing a single-colour model and want
-  broad compatibility. Most slicers and model libraries understand it, and it is
-  easy to inspect and share.
-</p>
-<p>
-  Before slicing, check the mesh with the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>. STL
-  is simple, but the geometry can still contain holes, non-manifold edges,
-  duplicate triangles or orientation issues.
-</p>
-<p>
-  Also check dimensions with the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
-  >. Because STL normally has no stored unit, you need to confirm whether the
-  coordinates were intended as millimetres, inches or another unit.
-</p>
-<h2>When OBJ can be useful</h2>
-<p>
-  OBJ is useful when the appearance of the model matters beyond its surface
-  shape. It can work well for textured visual models, colour artwork and
-  workflows that move between modelling, rendering and printing tools.
-</p>
-<p>
-  However, an OBJ often depends on accompanying material files and image
-  textures. Sending only the <code>.obj</code> file may not preserve the
-  intended colour or appearance.
+  Record source/derivative revision, required grouping or appearance, unit
+  convention, expected dimension, observed state and unresolved limitations in
+  <a href="{{ GuideSlug.RouteBestFileFormatFor3dPrinting }}"
+    >the receiving-file acceptance record</a
+  >. Leave unrun checks untested. Sending only sample.obj may still deliver
+  geometry while failing the appearance requirement.
 </p>
 <p>
-  For ordinary hobby FDM printing, OBJ’s additional visual information is often
-  not needed. A clean STL is usually simpler to handle.
-</p>
-<h2>What neither format solves</h2>
-<p>
-  Neither STL nor OBJ automatically guarantees a printable model. Both can
-  contain broken meshes, extremely dense geometry, thin walls or overlapping
-  parts.
+  InspectMesh's tools in this workflow accept STL and supported 3MF, not OBJ,
+  MTL, STEP or ZIP uploads. For a geometry-only derivative, export STL or
+  supported 3MF from suitable authoring software, then
+  <a href="{{ GuideSlug.RouteStlViewer }}">inspect the saved mesh</a>. An
+  STL-to-3MF conversion cannot recover discarded textures. Preserve the
+  appearance source when the job needs it.
 </p>
 <p>
-  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to inspect an
-  STL visually, then validate it before printing. If the file has simple
-  triangle-level defects, the
-  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> may be able to
-  make safe corrections.
-</p>
-<h2>Consider 3MF for modern print workflows</h2>
-<p>
-  If your slicer supports it, 3MF is often a better format for a complete
-  3D-printing workflow. It can preserve units, multiple objects, materials and
-  other printing-related information that STL cannot store.
-</p>
-<p>
-  Read <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a> for a direct
-  comparison. If you need to move a simple mesh into a 3MF workflow, use the
-  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL to 3MF Converter</a>.
-</p>
-<p>
-  The best file format is the one your modelling software, slicer and printer
-  all support while preserving the information you actually need. For a simple
-  printable shape, STL remains a sensible default. For richer print data, prefer
-  3MF. For visual assets with textures, OBJ may be the better fit.
+  Reviewed 27 October 2026 against the Library of Congress
+  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000507.shtml"
+    >Wavefront OBJ description and companion-material references</a
+  >. The bundle's own README documents reproduction and the agreed coordinate
+  convention.
 </p>

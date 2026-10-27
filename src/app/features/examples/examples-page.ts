@@ -74,12 +74,15 @@ import { publicExamples } from './example-registry';
                   }
                 </ul>
                 <p>
-                  <a
-                    [routerLink]="example.tools[0]"
-                    [queryParams]="{ example: example.id }"
-                    >Try in {{ toolName(example.tools[0]) }}</a
-                  >
-                  · <a [routerLink]="example.guide">Read the explanation</a>
+                  @if (example.tools.length > 0) {
+                    <a
+                      [routerLink]="example.tools[0]"
+                      [queryParams]="{ example: example.id }"
+                      >Try in {{ toolName(example.tools[0]) }}</a
+                    >
+                    ·
+                  }
+                  <a [routerLink]="example.guide">Read the explanation</a>
                 </p>
               </article>
             }

@@ -17,6 +17,7 @@ import { uploadErrorMessage } from '../../core/api/upload-error';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   createAndUploadStlJob,
   PollingTimeoutError,
@@ -43,6 +44,7 @@ type ReportRecord = Record<string, unknown>;
 })
 export class StlVolumePage {
   readonly exampleAsset = ExampleAsset;
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly jobFailureMessage = jobFailureMessage;
   readonly jobStatus = JobStatus;

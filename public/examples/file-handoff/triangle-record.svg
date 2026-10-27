@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title">
+<title id="title">One STL facet contains three coordinates and a normal</title><rect width="720" height="360" rx="12" fill="#f5f7fb"/>
+<g font-family="Arial, sans-serif" fill="#17283d">
+<text x="24" y="34" font-size="22">One flat facet, no shared-vertex topology record</text>
+<path d="M65 250 L300 250 L65 65 Z" fill="#dce9fb" stroke="#235a90" stroke-width="3"/>
+<text x="48" y="278" font-size="17">A (0,0,0)</text><text x="220" y="278" font-size="17">B (20,0,0)</text>
+<text x="40" y="55" font-size="17">C (0,20,0)</text>
+<text x="355" y="90" font-size="18">facet normal 0 0 1</text><text x="370" y="124" font-size="18">vertex 0 0 0</text>
+<text x="370" y="158" font-size="18">vertex 20 0 0</text><text x="370" y="192" font-size="18">vertex 0 20 0</text>
+<text x="355" y="238" font-size="17">Normal points along +Z, out of this view.</text>
+<text x="24" y="328" font-size="17">Illustrative ASCII fields. Adjacent facets repeat coordinates; tools infer joins.</text></g></svg>

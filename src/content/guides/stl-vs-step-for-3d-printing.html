@@ -1,167 +1,161 @@
 ---
-title: 'STL vs STEP: Editable CAD or Print Mesh? | InspectMesh'
-description: Compare STL and STEP files for 3D printing. Learn why STEP is better for editable CAD models and why STL remains useful for slicing and sharing.
+title: 'STL vs STEP: Design Authority and Mesh Delivery | InspectMesh'
+description: 'Choose engineering exchange or a faceted print derivative. Distinguish editable STEP bodies, native CAD history and the approved source revision.'
 slug: stl-vs-step-for-3d-printing
 eyebrow: 3D file format guide
-heading: STL vs STEP for 3D Printing
+heading: 'STL vs STEP: Which Revision and Editing Information Matter?'
 faq:
-  - question: Is STEP better than STL for 3D printing?
-    answer: STEP is usually better for preserving editable engineering geometry, while STL is commonly used to send a triangulated mesh to a slicer. The best choice depends on the workflow.
-  - question: Can I slice a STEP file directly?
-    answer: Some modern slicers can import STEP files, but support varies. Many workflows export a suitable mesh such as STL or 3MF before slicing.
-  - question: Can I edit an STL as easily as a STEP file?
-    answer: No. An STL is a triangle mesh and normally loses the original CAD features and precise surfaces that make STEP easier to edit.
+  - question: 'Does STEP retain native parametric history?'
+    answer: 'Not necessarily. A supported exchange can allow useful imported-body editing without recreating original sketches, constraints or the native feature timeline.'
+  - question: 'Can a slicer accept STEP?'
+    answer: 'Some receiving workflows accept it and perform tessellation. Verify the exact application and approve its derivative rather than assuming a universal import result.'
+  - question: 'Does InspectMesh parse STEP?'
+    answer: 'No. Export a supported STL or 3MF derivative in appropriate authoring software, then inspect the saved geometry.'
 ---
 
 <p>
-  STL and STEP files can both represent a 3D part, but they serve different
-  purposes.
+  STEP and STL usually serve different handoff stages. A suitable STEP exchange
+  can carry engineering geometry for another CAD workflow; STL carries a faceted
+  derivative. Keep the agreed design revision and distinguish editable imported
+  bodies from the original application's feature history.
 </p>
-
-<h2>Choose export tolerance deliberately</h2>
+<h2>Who needs to edit what?</h2>
 <p>
-  STEP can represent analytic and parametric surfaces that must be tessellated
-  before an STL handoff. A coarse chordal deviation can visibly facet cylinders;
-  an unnecessarily fine setting creates many triangles without restoring more
-  manufacturing accuracy than the process can use. Inspect the exported curve,
-  triangle distribution and file handling in the receiving slicer.
+  A recipient changing a hole position needs a different source from a recipient
+  slicing an approved mesh. Establish whether the handoff requires the native
+  application's sketches and constraints, editable imported geometry, or only a
+  reviewed triangle surface. A filename alone does not establish revision
+  authority.
+</p>
+<h2>Authority and retained information</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Delivery</th>
+      <th scope="col">Useful role</th>
+      <th scope="col">Acceptance boundary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Native CAD project</td>
+      <td>
+        Continue work with its supported sketches, constraints and feature
+        timeline
+      </td>
+      <td>
+        Requires the appropriate application/version; preserve dependencies and
+        agreed revision
+      </td>
+    </tr>
+    <tr>
+      <td>Suitable STEP exchange</td>
+      <td>Exchange engineering surfaces/bodies in a supported schema</td>
+      <td>
+        Imported bodies may support direct editing without recovering the
+        original timeline or constraints
+      </td>
+    </tr>
+    <tr>
+      <td>STL derivative</td>
+      <td>Deliver the chosen tessellated surface</td>
+      <td>
+        No analytic CAD feature definitions or standard unit declaration; verify
+        known dimensions and approximation
+      </td>
+    </tr>
+    <tr>
+      <td>Supported 3MF derivative</td>
+      <td>Deliver mesh geometry with units and build structure</td>
+      <td>
+        Does not recreate native CAD design history; verify required project
+        properties separately
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  STEP is neither a guarantee of the complete parametric master nor an
+  inherently uneditable file. Retained entities, assembly handling, units and
+  editing operations depend on the schema, exporter and receiver. A project may
+  agree that a particular STEP revision controls; another may keep native CAD
+  authoritative. Record that agreement before accepting downstream changes.
+</p>
+<h2>One source-to-derivative case</h2>
+<p>
+  <strong>Hypothetical requirement:</strong> a bracket has a named 40 mm
+  hole-centre spacing. Verify that dimension from its CAD references before
+  meshing. If a receiving CAD application offers direct body edits, changing the
+  imported holes still does not prove it recovered the original sketch
+  constraints.
 </p>
 <p>
-  Keep tolerance-sensitive dimensions in the STEP or native CAD source and use
-  the STL as a derived revision. If the recipient changes the mesh, those edits
-  are harder to reconcile with the design master. Agree which file controls and
-  identify the export settings or approved derivative in the handoff.
+  Export the approved revision with documented tessellation settings. The STL
+  can approximate the holes with facets while retaining overall bounds. Two
+  clicked triangle points do not establish the exact analytic centre spacing;
+  matching width does not prove the holes are unchanged. For a dimensional
+  revision, return to the agreed source rather than treating a mesh patch as an
+  undocumented master change.
 </p>
-
-<h2>Do not assume every STEP import is identical</h2>
 <p>
-  Applications can differ in supported entities, assembly handling, units and
-  tessellation defaults. Test the actual destination with a representative part,
-  then compare body count, units, dimensions and small features. If a print
-  service accepts STEP, ask whether it will return a mesh preview for approval.
+  Keep the source and delivery revisions linked, with export settings and a
+  named reference feature. If the recipient modifies the imported body, require
+  a revised authority decision and generate a new reviewed derivative. An old
+  STL should not remain silently attached to a changed source design.
 </p>
-
-<h2>Use a source-to-delivery workflow</h2>
-<p>
-  Keep STEP as the editable exchange master when downstream users may change
-  hole diameters, wall positions, fillets or assembly interfaces. Create STL
-  only for the mesh-based printing stage, using export tolerances appropriate to
-  the part. This avoids treating a faceted surface as though it still contained
-  analytic cylinders, design history or exact mating definitions.
-</p>
+<h2>Approve the receiving path</h2>
 <ol>
-  <li>Open and inspect the STEP model in a CAD application.</li>
-  <li>Confirm bodies, units and intended revision before export.</li>
   <li>
-    Choose mesh deviation and angular settings that preserve needed curvature
-    without excessive triangles.
+    Identify the authoritative revision, required bodies and intended editing
+    operations.
   </li>
-  <li>Export STL or 3MF for the receiving slicer.</li>
   <li>
-    Verify dimensions, triangle quality and mesh closure, then inspect sliced
-    layers.
+    Open the exchange in the receiving CAD application; record its version, unit
+    handling and any absent entities.
+  </li>
+  <li>
+    If the receiver accepts STEP for printing, ask how it tessellates and review
+    the resulting mesh or preview. Import support is application-specific.
+  </li>
+  <li>
+    Compare the actual saved derivative's critical geometry, dimensions and mesh
+    findings, then review the final sliced layers.
   </li>
 </ol>
 <p>
-  Sending both files can be appropriate: STEP supports review and controlled
-  edits, while the mesh records the intended print export. Name revisions
-  clearly so the receiver does not print an old derivative. If a vendor accepts
-  STEP directly, ask how it will be meshed and approve the resulting geometry
-  rather than assuming every importer uses the same tolerance.
+  Stop when a required body is absent, a unit differs or an intended edit cannot
+  be represented by the receiver. Counts and bounds are useful screening
+  observations, not proof of equivalent engineering geometry or physical fit.
 </p>
-<h2>They usually serve different stages</h2>
+<h2>Use the implementation owners</h2>
 <p>
-  STEP is commonly used for editable CAD solid exchange; STL is a tessellated
-  mesh delivery format for slicing. Export a suitable-resolution STL from a
-  verified CAD model for printing, but retain the STEP or native CAD source for
-  dimensional changes, holes and design repairs.
+  After a source application exports STL, open the saved derivative in
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to inspect visible
+  features and overall bounds locally. InspectMesh does not open the STEP
+  source.
 </p>
 <p>
-  STEP is a CAD exchange format. It usually preserves precise surfaces, solids
-  and engineering geometry much better than a mesh format. STL is a triangle
-  mesh intended for straightforward visualisation and 3D-printing workflows.
-</p>
-<h2>When STEP is the better choice</h2>
-<p>
-  Use STEP when you still need to edit the design. It is usually the better
-  format for:
-</p>
-<ul>
-  <li>functional mechanical parts</li>
-  <li>parts with precise holes, threads and mating features</li>
-  <li>collaboration between CAD systems</li>
-  <li>revisions to dimensions or design features</li>
-</ul>
-<p>
-  A STEP model can often be modified as a solid or surface model. That is much
-  more reliable than trying to reverse-engineer an editable part from thousands
-  of triangles.
-</p>
-<h2>When STL is the practical choice</h2>
-<p>
-  STL is useful when you need a simple mesh to share, inspect or send to a
-  slicer. It is widely supported by model libraries and printing workflows.
-</p>
-<p>
-  Before slicing an STL, use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  because STL does not reliably store units. Use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> to
-  find holes, non-manifold edges and other mesh problems.
-</p>
-<h2>Exporting from STEP to STL</h2>
-<p>
-  When you export a STEP model as STL, the CAD surfaces are converted into
-  triangles. Export settings determine how closely the triangles follow curves.
-</p>
-<p>
-  Too few triangles can make circles and curved surfaces visibly faceted. Too
-  many triangles can create unnecessarily large files and slow slicing without
-  improving the printed result.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlTriangleCounter }}">STL Triangle Counter</a> to
-  inspect the exported mesh, then view it at the intended print size. The right
-  resolution depends on the part, printer and required finish.
-</p>
-<h2>Consider 3MF too</h2>
-<p>
-  For modern print workflows, 3MF can be a useful alternative to STL because it
-  can preserve units and other print-related information. Read
-  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a> before choosing an
-  export format.
-</p>
-<p>
-  Keep the original STEP file whenever possible. Use it as the master design
-  file, then export STL or 3MF copies for printing. That way, if the print needs
-  a different hole size, wall thickness or overall dimension, you can edit the
-  real CAD geometry instead of trying to patch an exported mesh.
-</p>
-
-<h2>InspectMesh starts at the mesh handoff</h2>
-<p>
-  InspectMesh does not parse STEP. Open or edit STEP in a compatible CAD
-  application, inspect the body structure there, then export a mesh derivative.
-  STEP exchange is not the same as retaining the complete native feature
-  timeline: what remains editable depends on the producer, exporter and
-  receiving CAD system.
-</p>
-<p>
-  For a hypothetical bracket with a named 40 mm hole spacing, verify that
-  dimension in CAD before meshing. After export, check overall bounds and
-  inspect the holes, but do not claim a pair of clicked facet points proves the
-  exact analytic centre spacing. Keep the source as the authority for a
-  dimensional revision.
-</p>
-<p>
+  InspectMesh does not parse or convert STEP. Use
   <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}"
-    >Follow the CAD-to-STL export checklist</a
+    >the CAD-to-STL export checklist</a
   >
-  and
+  for application steps and
   <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
-    >choose chord and angle settings deliberately</a
+    >the chord-height and angle guide</a
   >
-  before accepting the mesh as the print derivative. Stop when an intended body
-  is absent, a unit differs or the recipient cannot preserve a required feature.
+  for tessellation decisions. Keep those operations separate from this choice of
+  revision authority.
+  <a href="{{ GuideSlug.RouteBestFileFormatFor3dPrinting }}"
+    >Record the receiving check</a
+  >
+  and <a href="{{ GuideSlug.Route3mfVsStl }}">compare STL with 3MF</a> if the
+  remaining decision concerns print geometry rather than CAD editing.
+</p>
+<p>
+  Technical context reviewed 27 October 2026: NIST's historical
+  <a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=821600"
+    >introduction to ISO 10303 STEP</a
+  >. It explains product-data exchange, not current importer compatibility or a
+  promise that every schema preserves native history. No named external CAD
+  import was executed for this example.
 </p>

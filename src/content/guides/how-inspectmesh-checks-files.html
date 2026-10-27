@@ -256,10 +256,11 @@ faq:
 </p>
 <p>
   The viewer's optional issue-analysis action explicitly uploads the selected
-  file to the quality-checker server workflow. Server quality checking and STL
-  repair have their own processing disclosure. Do not interpret the local
-  viewer's initial opening as server analysis, or assume the local methods are
-  the same as every server checker. Review
+  file to the quality-checker server workflow. Server quality, dimensions and
+  volume checking and STL repair have their own explicit submission and
+  processing disclosures. Do not interpret the local viewer's initial opening as
+  server analysis, or assume the local methods are the same as every server
+  checker. Review
   <a href="{{ GuideSlug.RoutePrivacy }}">the privacy policy</a> for policy and
   retention details before an upload.
 </p>
@@ -271,6 +272,24 @@ faq:
   reports can contain private filenames and findings; choose where to share them
   yourself. Example URLs carry only a public allowlisted ID and canonicals point
   to the clean tool page.
+</p>
+<p>
+  The server report builder withholds volume unless validation passes and its
+  topology screen finds one component, no open or over-shared edges and
+  consistent winding. Supported 3MF placements resolve first, but multiple valid
+  separated placements still leave volume unavailable. This method policy is
+  separate from an analytical sum or another application's solid operation. The
+  <a href="/examples/file-handoff/processor-observation.json" download
+    >local processor capture</a
+  >
+  and
+  <a href="/examples/file-handoff/interior-local-observation.json" download
+    >local collection capture</a
+  >
+  name their actual execution paths. Neither is a deployed endpoint test. See
+  <a href="{{ GuideSlug.RouteHowToCalculate3mfVolume }}"
+    >method-aware 3MF volume interpretation</a
+  >.
 </p>
 <h2>Local 3MF triangle cleanup</h2>
 <p>

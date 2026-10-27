@@ -126,6 +126,67 @@ const splitAssemblyExamples: readonly PublicExample[] = [
 ];
 export const publicExamples: readonly PublicExample[] = [
   {
+    id: 'passage-versus-boundary',
+    name: 'Intact passage versus missing face',
+    group: 'File handoff / interiors',
+    question: 'Can an empty through-passage have a closed material boundary?',
+    files: [
+      { path: ExampleAsset.Hole8Stl, name: 'square-hole-8mm.stl', bytes: 1684 },
+      {
+        path: ExampleAsset.OpenFaceCubeStl,
+        name: 'open-face-cube.stl',
+        bytes: 584,
+      },
+      {
+        path: ExampleAsset.Closed20mmCubeStl,
+        name: 'closed-20mm-cube.stl',
+        bytes: 684,
+      },
+    ],
+    preview: '/examples/file-handoff/passage-and-boundary.svg',
+    alt: 'Material surrounds an eight millimetre square passage, unlike an unfinished cube surface with a missing face.',
+    known:
+      'The 40 x 30 x 10 mm block has 32 triangles, an 8 mm square passage and analytical material volume 11,360 mm³. The open cube has 10 triangles and four boundary edges.',
+    observed:
+      '27 October 2026: local collection functions and the unchanged local .NET processor report zero open edges and approximately 11,360 mm³ for the passage block; the missing-face cube has four open edges and unavailable volume. Not a deployed endpoint observation.',
+    settings:
+      'Load the block locally, choose Inspect cross-section, Cut axis Z and Cut position 50%: its known 0..10 range puts the plane at Z=5 mm. Record the actual visible observation.',
+    limitations:
+      'Clipping is visual, not an extracted contour, hollowing service or proof of drainage, physical flow, access or strength. STL requires the agreed millimetre convention.',
+    guide: '/how-to-hollow-an-stl-file-for-3d-printing',
+    tools: ['/stl-viewer'],
+    provenance:
+      'Original CC0 InspectMesh geometry. Independent ground truth and method-labelled local captures are retained with the evidence assets.',
+  },
+  {
+    id: 'obj-companion-bundle',
+    name: 'Complete OBJ companion-file bundle',
+    group: 'File handoff / interiors',
+    question:
+      'Which appearance reference fails when an MTL or texture is missing?',
+    files: [
+      {
+        path: ExampleAsset.ObjCompanionBundle,
+        name: 'obj-companion-bundle.zip',
+        bytes: 2132,
+      },
+    ],
+    preview: '/examples/file-handoff/obj-bundle.svg',
+    alt: 'The OBJ names a material library, and the material library names the original checker texture.',
+    known:
+      'Eight vertices, six outward-wound quad faces and 20 x 10 x 5 coordinate spans under an agreed mm convention. OBJ, MTL, original texture PNG and README are packaged together.',
+    observed:
+      'Focused checks verify reference paths, inventory hashes, vertex/UV indices and closed outward geometry. Receiver appearance remains untested; no receiving-application appearance observation is retained.',
+    settings:
+      'Extract the whole ZIP, then open sample.obj in a suitable OBJ/MTL/texture application. Compare a separate working copy missing the texture or material file; record the actual application/version and result.',
+    limitations:
+      'Download-only illustration. InspectMesh STL/3MF tools do not accept OBJ, MTL or ZIP uploads. No external appearance or manufactured-colour result is claimed.',
+    guide: '/stl-vs-obj-for-3d-printing',
+    tools: [],
+    provenance:
+      'Original CC0-1.0 InspectMesh model and 16 x 16 checker image; deterministic generator and inventory retained.',
+  },
+  {
     id: 'quality-control-selection',
     name: 'Quality report controls',
     group: 'Boundaries / topology',

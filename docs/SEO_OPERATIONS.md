@@ -62,6 +62,37 @@ Keep .NET's socket-based test runner limitation distinct from a test failure or 
 
 ## Release and measurement
 
+### File handoff and interior evidence
+
+`python3 scripts/generate-handoff-assets.py` regenerates the owned OBJ/MTL/PNG
+bundle, its inventory, explanatory figures and blank receiving CSV. The fixed
+ZIP timestamps and blank evidence cells are intentional. Run
+`INSPECTMESH_REFRESH_EVIDENCE=1 npx vitest run scripts/file-handoff.spec.mts`
+to capture the existing scoped converter's saved bytes and local topology
+observations. Ordinary test runs compare the retained geometry and reports
+without changing dated observations. No runtime duration is part of equality.
+
+After building the existing processor, run
+`python3 scripts/capture-handoff-processor.py`. This separately captures the local
+processor code path on the one/two-placement cubes and closed/open/passage STL
+controls. It never submits a production job. The record retains source hashes,
+processor revision and method-source hashes. Analytical sums remain distinct
+from unavailable multi-component processor volume.
+
+The optional receiver experiment is
+`Blender --background --python scripts/capture-obj-receiver.py`, using a suitable
+Blender executable. It imports the complete bundle and a temporary copy missing
+the texture, and records actual imported-scene renders. Startup failed in this
+execution environment on 27 October 2026 before import, in Metal device
+initialisation. Accordingly, public receiver appearance remains untested; the
+reference diagram is not a screenshot or captured import. A later successful
+capture requires editorial review before publishing any receiver claim.
+
+The ledger's `fileHandoffReview` retains route obligations and a separately
+labelled six-page observation group. It does not replace `recoveryBaseline`,
+`clarityCohort` or prior release evidence. Release and Google fields remain
+unknown until observed after an authorized deployment.
+
 Before an authorized deployment, complete `npm run verify`, the processor checks for relevant changes, editorial/source review and representative browser review. Resolve demonstrated failures. Identify exact changed canonical URLs, meaningful dates and source changes. Use the ledger's previous content hash and source Git history as the baseline, and store deployment/recrawl dates only after observing them.
 
 Implementation does not authorize a push, deployment, production object deletion or cache invalidation. This workflow adds no AWS resource, log stream, alarm, WAF rule or managed service. Production crawl requests use the site's ordinary request/data-transfer allowance; deployment and any invalidation need their own cost review and authorization. Do not change edge rules solely because a local network cannot reach the site.

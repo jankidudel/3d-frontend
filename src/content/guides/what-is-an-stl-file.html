@@ -1,174 +1,152 @@
 ---
-title: 'What Is an STL File? 3D Printing Format Explained | InspectMesh'
-description: Learn what an STL file is, how it represents a 3D model with triangles, its limitations, and how to check an STL before 3D printing.
+title: 'What Is an STL File? Facets, Coordinates and Limits | InspectMesh'
+description: 'See what an STL facet stores, how tools infer connectivity, and why units, placement records and a valid solid need separate checks.'
 slug: what-is-an-stl-file
 eyebrow: STL file guide
-heading: What Is an STL File?
+heading: 'What Is an STL File?'
 faq:
-  - question: What does STL stand for?
-    answer: STL is commonly associated with stereolithography. In practice, it refers to a widely used 3D model file format made from triangular surface faces.
-  - question: Does an STL file contain colour or material information?
-    answer: Usually no. STL mainly stores surface geometry, not colours, textures, printer settings or reliable unit information.
-  - question: Is an STL file ready to print as soon as I download it?
-    answer: Not always. Check its dimensions and mesh health before slicing, especially for holes, non-manifold edges and unexpected scale.
+  - question: 'Does STL store how every triangle connects?'
+    answer: 'It records facet coordinates, not an indexed shared-vertex topology or assembly hierarchy. Software infers connections using its coordinate matching and connectivity rules.'
+  - question: 'Does STL contain units or printer settings?'
+    answer: 'Standard STL has no authoritative unit declaration or printer-profile record. Agree a coordinate convention and use the slicer for the intended printer job.'
+  - question: 'Does opening an STL prove it is a solid?'
+    answer: 'No. The missing-face cube still displays, but its unfinished boundary cannot support the same enclosed-volume interpretation as the closed control.'
 ---
 
 <p>
-  An STL file is one of the most common formats used in 3D printing. It
-  describes the outside surface of a 3D object using many small triangles.
+  An STL represents a surface with triangular facets. Each facet records three
+  corner coordinates and a normal vector. Software interprets how those
+  triangles meet and whether they form a usable solid; the file is not a CAD
+  feature tree or a printer job.
 </p>
-
-<h2>How triangles approximate a surface</h2>
+<h2>What one facet records</h2>
+<figure>
+  <img
+    src="/examples/file-handoff/triangle-record.svg"
+    width="720"
+    height="360"
+    loading="lazy"
+    alt="A flat triangle records three vertices and its plus-Z normal; adjacent facets repeat coordinates."
+  />
+  <figcaption>
+    Original illustrative facet and abbreviated ASCII fields, not a source CAD
+    feature or a software screenshot.
+  </figcaption>
+</figure>
 <p>
-  Each facet is flat. A plane can be represented with very few triangles, while
-  a curved surface needs enough small facets to keep deviation and visible
-  stepping acceptable. Export settings decide that approximation before the
-  slicer receives the file. Adding triangles later does not recover the exact
-  original curve; return to the source model for a better export.
-</p>
-<p>
-  Triangle normals may accompany the vertices, but applications can recompute
-  orientation from vertex winding. Conflicting, missing or inverted orientation
-  is one reason a mesh can display yet fail solid interpretation. STL also has
-  no standard object hierarchy, so multiple shells may arrive without names or
-  assembly meaning.
-</p>
-
-<h2>When STL is an appropriate final derivative</h2>
-<p>
-  Use it when the handoff needs a stable triangulated surface, the unit
-  convention is explicit and richer attributes are unnecessary. Include a known
-  dimension in the handoff, keep the editable source, and validate the exported
-  derivative. Choose another format when unit declaration, object placement,
-  color/material resources or CAD editability must survive.
-</p>
-
-<h2>ASCII and binary structure</h2>
-<p>
-  Both common STL encodings describe facets through a normal and three vertex
-  positions. ASCII writes labeled, human-readable text; binary stores a header,
-  triangle count and fixed-size records. They can represent the same
-  triangulated surface. Binary is usually smaller, while ASCII is easier to
-  inspect manually. Encoding does not add curves, units, materials or
-  manufacturing intent.
-</p>
-
-<h2>Strengths and weaknesses in a print workflow</h2>
-<p>
-  STL's strength is a simple, widely recognized surface handoff. Its limitations
-  are equally important: curves are already faceted, units must be agreed
-  outside the file, and standard STL does not preserve object names, build
-  placement, material assignments or editable CAD features. A valid-looking STL
-  can also contain open boundaries, flipped faces, self-intersections or
-  excessive detail.
+  In the illustrated facet, A=(0,0,0), B=(20,0,0) and C=(0,20,0). Their order
+  gives a +Z winding-derived normal. An adjacent facet writes its own three
+  positions rather than pointing to a shared-vertex table. A tool must match
+  coordinates under its connectivity rule to infer which edges and surfaces
+  meet.
 </p>
 <p>
-  Use STL when a receiver needs a straightforward single mesh and you can verify
-  the import. Keep the original CAD or modeling file as the master. Before
-  printing, confirm the assumed unit, bounding dimensions, topology and slicer
-  preview. Use 3MF when declared units or a richer multi-object print package
-  must travel together, while still testing support in the receiving
-  application.
+  The stored normal and the orientation derived from vertex order can disagree.
+  Applications may recompute normals; a smooth-looking preview does not
+  establish consistent winding or a closed surface. Follow
+  <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
+    >orientation diagnosis</a
+  >
+  for that separate finding.
 </p>
-<h2>Know what STL does not carry</h2>
+<h2>One cube explains surface versus solid</h2>
 <p>
-  STL represents a surface as triangles, typically in ASCII or binary encoding.
-  It does not provide an authoritative physical unit or a full CAD feature
-  history. That simplicity explains broad support, but it also means dimensions,
-  mesh health and print settings need separate checks.
-</p>
-<p>
-  A flat box may need only a small number of triangles. A curved object, such as
-  a figurine or rounded enclosure, needs more triangles to approximate smooth
-  surfaces. Together, those faces form the mesh that your slicer turns into
-  printable layers.
-</p>
-<h2>What an STL file stores</h2>
-<p>
-  An STL mainly stores geometry. It tells software where the triangle corners
-  are and how the surface is connected.
-</p>
-<p>It normally does not store:</p>
-<ul>
-  <li>reliable units such as millimetres or inches</li>
-  <li>colours or textures</li>
-  <li>material settings</li>
-  <li>printer settings</li>
-  <li>build-plate placement</li>
-  <li>the editable CAD history of the model</li>
-</ul>
-<p>
-  That simplicity is why STL remains widely compatible. It is easy for most
-  slicers, viewers and model-sharing sites to handle.
-</p>
-<h2>Why units matter</h2>
-<p>
-  An STL coordinate value has no dependable built-in unit. A model designed as
-  50 mm can appear much too large or small if the receiving software assumes a
-  different unit.
+  The owned
+  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
+    >closed 20-coordinate cube</a
+  >
+  has two triangles per face, or 12 facets. Its coordinates run from 0 to 20
+  along each axis. Interpreted as millimetres, a consistent closed material
+  boundary encloses 8,000 mm³. The file does not contain a cube feature, a
+  density or instructions for printing it.
 </p>
 <p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  to measure the model before slicing. If you are unsure why scale changes
-  between applications, read
+  Removing the two triangles from one square face gives the
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download
+    >10-triangle missing-face control</a
+  >. It still has 20-unit outer bounds, but four boundary edges leave its
+  surface unfinished. Local collection checks leave its enclosed volume
+  unavailable, rather than treating the displayed surface as a measured solid.
+</p>
+<figure>
+  <img
+    src="/examples/file-handoff/passage-and-boundary.svg"
+    width="720"
+    height="360"
+    loading="lazy"
+    alt="An intact surface around a square passage differs from an unfinished cube surface."
+  />
+  <figcaption>
+    Original explanatory geometry. A designed opening and an unclosed boundary
+    are different conditions.
+  </figcaption>
+</figure>
+<p>
+  A deliberately modelled tunnel can have complete material surfaces around its
+  opening and no exposed mesh edges. Zero open edges alone does not tell you
+  whether that tunnel matches the design, drains a cavity or prints
+  successfully.
+  <a href="{{ GuideSlug.RouteStlVolumeCalculationWrong }}"
+    >Volume interpretation</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
+    >cavity design</a
+  >
+  address those different questions.
+</p>
+<h2>Coordinates, units and information absent from STL</h2>
+<p>
+  STL coordinates define locations in a frame, so a surface can remain far from
+  the origin. It lacks a standard unit declaration and separate editable
+  placement records, named assembly hierarchy, standard textures/material
+  assignments and native CAD history. An off-origin location is different from a
+  retained build transform.
+</p>
+<p>
+  A coordinate of 50 could mean 50 mm or another agreed unit. Check a known
+  dimension before resizing. Use
   <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
-    >Why STL Files Have No Units</a
-  >.
-</p>
-<h2>Check the mesh before printing</h2>
-<p>
-  A model can look fine on screen while still containing mesh problems. Holes,
-  non-manifold edges, duplicate triangles and inconsistent orientation can make
-  slicing unreliable.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>
-  before printing an important model. If the file needs a basic clean-up, the
-  <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair Tool</a> can make
-  conservative repairs and report what changed.
-</p>
-<h2>STL compared with newer formats</h2>
-<p>
-  STL is useful for simple, widely compatible geometry. It is not always the
-  best choice for a complete modern print project.
-</p>
-<p>
-  The 3MF format can preserve units, multiple objects, materials and other
-  print-related information. Read
-  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a> to decide which format
-  fits your workflow.
-</p>
-<p>
-  An STL is not automatically printable just because it opens. Check its scale,
-  inspect its mesh and review the slicer preview before committing material and
-  printer time.
-</p>
-
-<h2>One cube explains the surface-versus-solid distinction</h2>
-<p>
-  The downloadable 20 mm cube uses two triangles per flat face, or 12 triangles
-  altogether. STL records those facets, not a cube feature, a material or a
-  manufacturing instruction. The closed, consistently oriented surface supports
-  an enclosed-volume interpretation of 8,000 mm³ when coordinates mean
-  millimetres. Removing two triangles from one face leaves an open surface;
-  drawing it on screen does not restore the missing face or a dependable solid.
-</p>
-<p>
-  ASCII and binary encode the same kind of surface information. Neither adds a
-  dependable unit declaration. Preserve a note of units and revision with an
-  STL. For geometry with explicit units and supported build placements, consider
-  3MF; for controlled engineering edits, keep native CAD or STEP. InspectMesh's
-  mesh tools do not parse STEP.
-</p>
-<p>
-  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
-    >Separate shells need an interpretation</a
+    >the unit interpretation guide</a
   >
-  beyond whether the file extension is correct.
-  <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}"
-    >Create and verify a derivative from CAD</a
+  and
+  <a href="{{ GuideSlug.RouteStlModelOffBuildPlate }}"
+    >the off-build-plate coordinate guide</a
   >
-  instead of treating an STL as the editable design master.
+  for these separate decisions.
+</p>
+<h2>Facets and encodings</h2>
+<p>
+  Each triangle is flat. A planar face can need few triangles; a curve is
+  already approximated by facets before import. Adding triangles later does not
+  recover the original analytic curve. Return to the source for a better export
+  when detail is missing.
+</p>
+<p>
+  ASCII and binary STL encode the same kind of facet data. ASCII is readable
+  text; binary uses a header, count and fixed-size records. Binary is often
+  smaller, but encoding is different from geometric simplification. See
+  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}">ASCII versus binary STL</a>
+  for the storage and precision basis.
+</p>
+<h2>Choose the next task</h2>
+<p>
+  Use <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> to display the
+  known cube or received surface locally before interpreting a specific finding.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteHowToOpenAnStlFile }}">Open the STL locally</a> to
+  see its surfaces and check size. Use
+  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}">the diagnostic guide</a>
+  for a specific finding. For design edits, preserve and return to the
+  <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}">source CAD workflow</a>.
+  A successful load is an inspection step, not certification of a physical
+  print.
+</p>
+<p>
+  Structure source reviewed 27 October 2026:
+  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000504.shtml"
+    >Library of Congress STL format description</a
+  >. The cube and passage are owned software controls; no physical tests are
+  implied.
 </p>

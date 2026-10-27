@@ -279,9 +279,37 @@
         >Use the 3MF Dimensions Checker</a
       >.
     </p>
+    <h2>Check the intended receiving geometry</h2>
+    <p>
+      Record the source revision, required top-level placements, declared unit
+      and a named resolved dimension or coordinate interval. For the two-cube
+      control, build-2 is X=40..60 mm while the all-build X interval is 0..60
+      mm. Selection and isolation help inspect those references; they do not
+      choose converter export scope.
+    </p>
+    <p>
+      This supported geometry preview does not audit all appearance data,
+      material assignments or project profiles. A default display colour does
+      not establish that source colour data was lost. Review required properties
+      in the authoring/receiving application. Read
+      <a [routerLink]="guideRouteUrl.RouteHowToOpenA3mfFile"
+        >the opening sequence</a
+      >,
+      <a [routerLink]="guideRouteUrl.Route3mfMissingObjectsAfterImport"
+        >trace a missing placement</a
+      >, or
+      <a
+        [routerLink]="guideRouteUrl.RouteDoes3mfKeepColoursMaterialsAndSettings"
+        >record property preservation</a
+      >.
+    </p>
     <h2>FAQ</h2>
     <h3>Does my 3MF file get uploaded?</h3>
-    <p>No. The file stays in your browser while it is viewed.</p>
+    <p>
+      Viewing stays local. Optional issue-location analysis uploads the selected
+      file only when you request it; separate server checkers have their own
+      explicit submission notices.
+    </p>
     <h3>Can a 3MF contain multiple parts?</h3>
     <p>Yes. The viewer displays the loaded build geometry.</p>
     <h3>Does viewing validate the model?</h3>

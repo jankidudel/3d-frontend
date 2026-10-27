@@ -1,163 +1,167 @@
 ---
-title: 'How to Open a 3MF File: Viewer or Slicer | InspectMesh'
-description: Learn how to open a 3MF file in a browser, slicer or modelling workflow, and what to do if the file will not open correctly.
+title: 'How to Open a 3MF File: Geometry or Project? | InspectMesh'
+description: 'Open supported 3MF geometry locally, inspect two placed cubes, diagnose unsupported packages and separate viewing from server analysis.'
 slug: how-to-open-a-3mf-file
 eyebrow: 3MF file guide
-heading: How to Open a 3MF File
+heading: 'How to Open a 3MF File'
 faq:
-  - question: What program opens 3MF files?
-    answer: Most modern 3D-printing slicers can open 3MF files. You can also inspect compatible files in the InspectMesh 3MF Viewer.
-  - question: Can I open a 3MF file without installing a slicer?
-    answer: Yes. Use the browser-based 3MF Viewer to inspect the model before deciding whether you need a full slicer workflow.
-  - question: Why does my 3MF file open but look wrong?
-    answer: It may contain unsupported slicer-specific features, multiple build items, missing resources or mesh errors. Check the file structure and geometry before printing.
+  - question: 'Is every 3MF a portable slicer project?'
+    answer: 'No. Core geometry and build data differ from application-specific preparation state. Open project settings in the producing or compatible receiving application.'
+  - question: 'Does opening a 3MF upload it?'
+    answer: 'The InspectMesh viewer resolves supported geometry locally. Optional issue-location and separate server checkers upload only through their explicit submitted actions.'
+  - question: 'Can another checker recover unsupported package semantics?'
+    answer: 'Do not assume so. Preserve the diagnostic and original package, then use its producing application or request a supported export.'
 ---
 
 <p>
-  A 3MF file is a 3D-printing project format. You can usually open it in a
-  modern slicer, but a browser viewer is often the quickest way to inspect the
-  model before you start changing print settings.
+  A 3MF can carry model geometry and build structure, and some applications also
+  use it to save a slicer project. Open it in a supported local viewer to
+  inspect geometry or in the producing/receiving slicer to review project
+  settings. Successful geometry display does not establish that the project was
+  preserved.
 </p>
-<h2>Inspect placements after opening</h2>
+<h2>Choose the opening task and processing boundary</h2>
 <p>
-  In <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, select a top-level
-  placed-item row or its geometry. Use Isolate selected, Show all and Frame
-  selected to inspect a repeated placement. The panel keeps all-build bounds
-  visible and shows the selected item separately, in millimetres. Keyboard users
-  can select and frame with the row controls. Nested components remain one
-  top-level selection.
+  The <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> resolves supported
+  geometry locally. Separate quality, dimensions and volume server actions have
+  their own explicit upload notices. Optional issue-location analysis in the
+  viewer also uploads only when deliberately requested. A local preview does not
+  grant permission for those actions or verify the package's printer profile.
 </p>
-<p>
-  Try the two-cube control: build-2 runs from X=40 to 60 mm; its span is 20 mm
-  while the complete build spans 60 mm. For the next task read
-  <a href="{{ GuideSlug.RouteExtractPartFrom3mf }}">extract one placed part</a>.
-  A supported geometry preview does not validate project settings or
-  printability.
-</p>
-<h2>Choose an opening route deliberately</h2>
-<p>
-  Use a 3MF-aware slicer when you need build preparation, a viewer for visual
-  inspection, or the source application when you need editable design intent. A
-  failure to open can indicate a damaged ZIP package, unsupported extension,
-  missing relationship or application-specific feature rather than a bad mesh.
-  InspectMesh reads files locally in the browser where supported; it does not
-  upload or execute the package. Confirm the resolved dimensions and object
-  count after any application opens it.
-</p>
-<h2>Choose the application by task</h2>
 <table>
   <thead>
     <tr>
-      <th>Task</th>
-      <th>Best opening route</th>
+      <th scope="col">Task</th>
+      <th scope="col">Opening route</th>
+      <th scope="col">What remains unknown</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Confirm objects, placement and dimensions</td>
-      <td>A 3MF-aware viewer or InspectMesh checker</td>
+      <td>Inspect placed geometry and physical bounds</td>
+      <td>Local 3MF Viewer</td>
+      <td>Unsupported properties and application-specific project state</td>
     </tr>
     <tr>
-      <td>Prepare supports and toolpaths</td>
-      <td>The target printer's slicer</td>
+      <td>Resume preparation or review settings</td>
+      <td>Original or compatible receiving slicer</td>
+      <td>
+        Whether mapped profiles and assignments suit this printer/material
+      </td>
     </tr>
     <tr>
-      <td>Edit parametric design intent</td>
-      <td>The original CAD/source application</td>
-    </tr>
-    <tr>
-      <td>Diagnose package structure or extensions</td>
-      <td>A 3MF-aware technical tool using the specification</td>
+      <td>Edit native design intent</td>
+      <td>Source CAD/modelling application</td>
+      <td>A model package does not recreate native feature history</td>
     </tr>
   </tbody>
 </table>
-<h2>Common package failure causes</h2>
-<p>
-  A `.3mf` file is a structured package, not merely a renamed mesh. A truncated
-  download, invalid package relationship, missing model part, malformed XML or
-  an unsupported required extension can prevent opening. If one application
-  fails, do not repeatedly overwrite the file. Preserve it, try the producing
-  application, and re-export from the source when possible.
-</p>
-<h2>Privacy and local inspection</h2>
-<p>
-  InspectMesh performs supported 3MF inspection in the browser and does not
-  upload the selected model for analysis. That makes it useful for a first local
-  check, but browser analysis is not a substitute for the slicer or source
-  application when settings, proprietary extensions or manufacturing behavior
-  matter.
-</p>
-<h2>Verify after opening</h2>
+<h2>Open the two-placement control locally</h2>
 <ol>
-  <li>Confirm the expected number of placed objects.</li>
-  <li>Check declared units and resolved X, Y and Z dimensions.</li>
-  <li>Inspect transforms, orientation and plate placement.</li>
-  <li>Review mesh warnings and any unsupported-feature message.</li>
-  <li>Open the job in the intended slicer and inspect its preview.</li>
+  <li>
+    Keep the original package and identify the expected source revision.
+    Download the
+    <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
+      >two-placed-cubes control</a
+    >.
+  </li>
+  <li>
+    Choose it in 3MF Viewer, or use its explicit example loader. The control
+    declares millimetres, reuses resource 1 and has two top-level build items.
+  </li>
+  <li>
+    Read the all-build bounds: X=0..60, Y/Z=0..20 mm. The empty gap contributes
+    to bounds, not material.
+  </li>
+  <li>
+    Select build-2 with the placed-item button, choose Isolate selected, then
+    Frame selected. Its X interval is 40..60 mm and its span remains 20 mm.
+  </li>
+  <li>
+    Choose Show all and compare the expected inventory. Nested component
+    geometry remains within its top-level selection; a shell count is a
+    different concept.
+  </li>
 </ol>
 <p>
-  If the geometry opens but the build differs between applications, compare
-  their supported 3MF features rather than assuming the package contains only
-  one mesh.
+  The local resolver and saved-byte export check on 27 October 2026 verify these
+  references in the
+  <a href="/examples/file-handoff/receiving-check-filled.json" download
+    >receiving evidence record</a
+  >. That execution is separate from testing an external slicer or physically
+  printing either cube. Record what the actual receiver displays before
+  accepting the handoff.
 </p>
-<h2>Open a 3MF file in your browser</h2>
+<h2>If the package cannot be opened</h2>
 <p>
-  Use the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to inspect the
-  model visually. It is useful when you want to confirm that the file contains
-  the expected object, check its shape or look for obvious problems before
-  opening a full slicer project.
-</p>
-<p>
-  A viewer is for inspection, not final print preparation. You still need a
-  slicer to choose a printer, layer height, material and supports.
-</p>
-<h2>Open a 3MF file in a slicer</h2>
-<p>
-  Most current slicers support 3MF because it can store more than a plain
-  triangle mesh. When opening the file, check:
-</p>
-<ul>
-  <li>whether all objects are present</li>
-  <li>whether the model scale looks correct</li>
-  <li>whether the build plate layout makes sense</li>
-  <li>whether colour/material assignments are retained</li>
-  <li>whether the selected printer profile is appropriate</li>
-</ul>
-<p>
-  Some 3MF files are tied closely to the slicer that created them. Another
-  slicer may open the geometry but ignore or reinterpret project-specific
-  settings.
-</p>
-<h2>If the file will not open</h2>
-<p>
-  First, download the file again or export it again from the source software. An
-  incomplete download can produce an unreadable 3MF package.
+  Preserve the failure message and original bytes. A 3MF is a structured
+  package: an incomplete ZIP, malformed XML, missing resource/model relationship
+  or unsupported required semantics can stop resolution before a mesh finding
+  exists. Try the producing application and request a supported export when
+  necessary. Another server checker is not a guaranteed bypass for unsupported
+  semantics or missing resources.
 </p>
 <p>
-  Then try the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>. It
-  can help distinguish between a damaged package, broken model references and a
-  file that is structurally readable but contains mesh problems.
+  A renamed mesh is not a valid 3MF package. Compare the received size and
+  revision with the sender. If the known control also fails, investigate the
+  opener's compatibility, resource limits and error before modifying the user
+  model.
+</p>
+<h2>Branch from the observation</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Next investigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Fewer expected placements or unexpected bounds</td>
+      <td>
+        <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+          >Trace resource and build-item identity</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Geometry opens but appearance or setup differs</td>
+      <td>
+        <a href="{{ GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings }}"
+          >Record property preservation in the receiver</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Required unsupported semantics</td>
+      <td>Return to the original application and preserve the full project</td>
+    </tr>
+    <tr>
+      <td>A specific mesh finding after resolution</td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToCheckA3mfFileForErrors }}"
+          >Choose a diagnostic checker after reading its processing notice</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  If the receiver needs geometry-only STL,
+  <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
+    >choose whole-build or single-placement scope</a
+  >
+  deliberately. Vertex coordinates can retain the resolved locations, but the
+  STL lacks separate placement records and a unit declaration. Keep the original
+  3MF for project revisions and inspect final layers and profile in the intended
+  slicer.
 </p>
 <p>
-  If the file opens in one tool but not another, the problem may be
-  compatibility rather than corruption. Updating the slicer or opening the file
-  in the software that created it may help.
-</p>
-<h2>Check the model before printing</h2>
-<p>
-  Once the file opens, confirm its dimensions with the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a
-  >. A 3MF can preserve units, but it is still worth checking printer fit.
-</p>
-<p>
-  If the slicer preview looks wrong, inspect mesh health with the Quality
-  Checker. For safely repairable triangle defects, use the
-  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair Tool</a>, then check the
-  repaired output again.
-</p>
-<p>
-  Keep the original 3MF file. Converting it to STL can help with simple
-  compatibility problems, but it can also discard information such as multiple
-  objects, units, colours and build settings.
+  Reviewed 27 October 2026 against the
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core Specification 1.4.0</a
+  >
+  and current InspectMesh action boundaries. Supported core geometry is
+  different from a universal project-compatibility guarantee.
 </p>

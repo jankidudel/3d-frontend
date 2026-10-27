@@ -1,0 +1,50 @@
+{
+  "observedDate": "2026-10-27",
+  "method": "Local readStl/checkGeometry functions in Vitest; not a browser or deployed endpoint.",
+  "sourceRevision": "359298a76e90f7063d6338cb2cdeb8a6862a2303",
+  "methodSourceSha256": "cf5cdca541537405fc148925329ed621f060c7f50b6b6c275716cbb53c9f1d66",
+  "observations": [
+    {
+      "name": "../english-market-batch/closed-20mm-cube.stl",
+      "sha256": "06440b45372060a582e8898b0f522b2f8975f323ec421b19d7c04713e8293e6f",
+      "topology": {
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": 8000,
+        "volumeReliable": true
+      }
+    },
+    {
+      "name": "../english-market-batch/open-face-cube.stl",
+      "sha256": "bd250acc9586f6dd86438480ade08b113ea0edc898562180b4580a6139e18d67",
+      "topology": {
+        "openEdges": 4,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": null,
+        "volumeReliable": false
+      }
+    },
+    {
+      "name": "../export-fidelity/square-hole-8mm.stl",
+      "sha256": "cddc7eb789a1f06c45fe5ce01e9bd04d8601a34fc27e75eabd3928c24cf39ac0",
+      "topology": {
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": 11360,
+        "volumeReliable": true
+      }
+    }
+  ]
+}

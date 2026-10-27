@@ -1,256 +1,270 @@
 ---
-title: 'Best 3D Printing File Format: STL, 3MF, OBJ or STEP | InspectMesh'
-description: 'Choose the right 3D printing file format. Compare STL, 3MF, OBJ and STEP for sharing, editing, slicer compatibility, units, colours and print preparation.'
+title: 'Best 3D Printing File Format for Your Handoff | InspectMesh'
+description: 'Choose STL, 3MF, OBJ or STEP by the information your recipient needs. Use a filled receiving check and a blank acceptance record.'
 slug: best-file-format-for-3d-printing
 eyebrow: 3D printing file guide
-heading: What Is the Best File Format for 3D Printing?
+heading: 'What Is the Best File Format for Your 3D Print Handoff?'
 faq:
-  - question: Is 3MF better than STL for 3D printing?
-    answer: Often, yes, when your slicer and workflow support it. 3MF can store units and structured build information, while STL usually stores only triangle geometry. STL remains useful for broad compatibility.
-  - question: Can I send a STEP file directly to a 3D printer?
-    answer: Usually not directly. STEP is a CAD exchange format rather than a typical slicer-ready mesh format. It is often exported or converted to a printable mesh or 3MF file first.
-  - question: Is OBJ good for 3D printing?
-    answer: OBJ can represent mesh geometry and may include colour or texture references, but support varies between slicers and workflows. It is not usually the simplest choice for a functional single-material print.
-  - question: Which file format should I use to share a 3D print model?
-    answer: Use 3MF when the recipient’s slicer supports it and the build information matters. Use STL when broad compatibility is more important and the model can be shared as triangle geometry alone.
+  - question: 'Which format should I send to an unknown recipient?'
+    answer: 'Ask which application and input it accepts and what information must survive. Confirm the required units, geometry, structure or project state before exporting.'
+  - question: 'Can a model file run a printer?'
+    answer: 'Not universally. Geometry exchange and slicer projects have different roles from a printer job; prepare and review the intended machine-specific output.'
 ---
 
 <p>
-  The best file format for 3D printing depends on what you need to preserve. STL
-  is widely accepted for a simple triangle mesh. 3MF can retain declared units,
-  structured build information and richer print-related data. STEP is useful
-  earlier in a CAD workflow, while OBJ can suit some visual or colour-based mesh
-  workflows.
+  Choose the file type for the next operation and the information that must
+  survive. Keep native CAD for controlled design work, use a suitable exchange
+  file when another CAD system needs the geometry, and use a supported mesh or
+  model package for print preparation. Confirm the receiver's requirements
+  before exporting.
 </p>
-
-<h2>Sources and format documentation</h2>
+<h2>What must the recipient do?</h2>
 <p>
-  Consult the <a href="https://3mf.io/spec/">3MF specification suite</a> for
-  core and extension capabilities, the Library of Congress
-  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000504.shtml"
-    >STL format description</a
-  >
-  for documented STL structure and limitations, and NIST's
-  <a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=821600"
-    >introduction to ISO 10303 STEP</a
-  >
-  for STEP's product-data role. Application compatibility still requires an
-  import/export test.
+  Ask which application, version and import operation will receive the file,
+  then name the required revision and information. An unknown recipient is a
+  reason to ask, rather than default to an extension. Keep the editable source
+  independently of any delivery copy.
 </p>
-
 <h2>Decision matrix by handoff stage</h2>
 <table>
   <thead>
     <tr>
-      <th>Handoff</th>
-      <th>Usually start with</th>
-      <th>Verify</th>
+      <th scope="col">Task</th>
+      <th scope="col">Candidate delivery</th>
+      <th scope="col">Information to verify / specialist guide</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Editable mechanical design</td>
-      <td>Native CAD or STEP</td>
-      <td>Bodies, units, features and revision authority</td>
+      <td>Continue engineering edits</td>
+      <td>Native CAD or suitable STEP exchange</td>
+      <td>
+        Agreed authority, bodies, units and editable information.
+        <a href="{{ GuideSlug.RouteStlVsStepFor3dPrinting }}"
+          >Compare engineering exchange with mesh delivery</a
+        >.
+      </td>
     </tr>
     <tr>
-      <td>Simple single-mesh print delivery</td>
-      <td>STL</td>
-      <td>Unit convention, dimensions and mesh health</td>
+      <td>Receive geometry alone</td>
+      <td>STL when accepted</td>
+      <td>
+        Unit convention, critical geometry and coordinate location.
+        <a href="{{ GuideSlug.Route3mfVsStl }}">Compare STL with 3MF</a>.
+      </td>
     </tr>
     <tr>
-      <td>Unit-aware multi-object print package</td>
-      <td>3MF</td>
-      <td>Resolved objects, placement and receiver support</td>
+      <td>Keep declared units and placed-item structure</td>
+      <td>Supported model 3MF</td>
+      <td>
+        Resource/build identity, resolved transforms and required semantics.
+        <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
+          >Choose whole-build or single-item scope</a
+        >.
+      </td>
     </tr>
     <tr>
-      <td>Polygon model with surface attributes</td>
-      <td>OBJ or a tested richer format</td>
-      <td>Companion materials, textures and grouping</td>
+      <td>Receive a textured polygon model</td>
+      <td>OBJ plus referenced MTL and images</td>
+      <td>
+        Bundle completeness and actual receiver appearance.
+        <a href="{{ GuideSlug.RouteStlVsObjFor3dPrinting }}"
+          >Inspect the OBJ companion-file demonstration</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <td>Resume a particular slicer project</td>
+      <td>Original project in a compatible application</td>
+      <td>
+        Profiles, plates and assignments in that exact workflow.
+        <a href="{{ GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings }}"
+          >Verify project properties</a
+        >.
+      </td>
     </tr>
   </tbody>
 </table>
 <p>
-  The table identifies a starting point, not a universal winner. A print service
-  may request STEP because it controls tessellation; an established machine may
-  accept only STL; two applications may support different 3MF extensions. Ask
-  what the receiver actually consumes and test one representative file before
-  moving a production library.
+  These are starting points, not universal importer promises. InspectMesh's mesh
+  tools accept STL and supported 3MF; they do not parse OBJ or STEP. A model or
+  CAD file is not universally printer-executable. Prepare and review the actual
+  job in the intended slicer and printer workflow.
 </p>
+<h2>What a successful open does not establish</h2>
 <p>
-  Keep the editable master independently of the delivery format. After
-  conversion or export, compare units, overall dimensions, object count, surface
-  attributes and critical geometry. A smaller or newer format is not better if
-  the receiving workflow silently discards information the job depends on.
+  Visible geometry does not prove correct units, all intended placements,
+  working appearance references or retained project settings. Counts and outer
+  dimensions alone cannot establish identical surfaces. Agree named reference
+  dimensions and features before export; reopen the saved derivative and inspect
+  what the receiving operation actually did.
 </p>
-<h2>Use a decision matrix, not a universal winner</h2>
+<figure>
+  <img
+    src="/examples/file-handoff/coordinates-and-records.svg"
+    width="720"
+    height="360"
+    loading="lazy"
+    alt="Two placed cubes retain coordinates in an STL while separate 3MF placement records are absent."
+  />
+  <figcaption>
+    Original explanatory schematic. Coordinates and editable placement records
+    are different information.
+  </figcaption>
+</figure>
+<h2>Filled receiving check: two placed cubes</h2>
 <p>
-  Choose STL for basic mesh delivery, 3MF for a print-oriented package with
-  units and supported metadata, OBJ when its attribute workflow is required, and
-  STEP when editable CAD exchange is the real need. Validate the intended
-  recipient's import path before sharing.
-</p>
-<p>
-  <strong
-    >A design file, a printable mesh and a slicer project are not always the
-    same thing.</strong
+  The original
+  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
+    >two-placed-cubes package</a
   >
-  Choose the format that preserves the information needed by the next tool, then
-  inspect the final file before slicing.
+  declares millimetres and places one 20 mm resource twice. On 27 October 2026
+  the existing local resolver and converter serializer ran in Vitest, then the
+  exact saved STL bytes were reopened by InspectMesh's STL reader. This is an
+  application-internal derivative check, with no external slicer or physical
+  test.
 </p>
-
-<h2>Quick answer</h2>
-<ul>
-  <li>
-    Use <strong>3MF</strong> when the slicer supports it and units or build
-    structure matter.
-  </li>
-  <li>Use <strong>STL</strong> for a simple, widely compatible mesh.</li>
-  <li>
-    Use <strong>STEP</strong> to exchange or continue editing a CAD design
-    before print preparation.
-  </li>
-  <li>
-    Use <strong>OBJ</strong> when a supported workflow needs mesh appearance,
-    colours or textures.
-  </li>
-</ul>
-<p>
-  A correct extension does not guarantee correct dimensions, clean geometry or
-  suitable wall thickness.
-</p>
-
-<h2>STL: simple and widely compatible</h2>
-<p>
-  STL describes a model as triangles. It works well when you need broad
-  compatibility, are sharing a simple mesh, and only geometry is needed for
-  slicing. Its main weakness is that it normally does not store reliable unit
-  information, and it does not preserve richer information such as colours,
-  materials, build-item structure or slicer settings.
-</p>
-<p>
-  Before printing an STL, use the
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-    >STL Print Preflight Checker</a
-  >
-  to inspect mesh condition, dimensions, fit, wall-thickness warnings and
-  complexity. For the focused comparison, see
-  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a>.
-</p>
-
-<h2>3MF: a richer print-focused format</h2>
-<p>
-  3MF is designed for additive-manufacturing workflows. A package can include a
-  declared unit and structured objects and build items; depending on the
-  software, it can carry more information than a plain triangle mesh. It is
-  particularly useful when a file represents more than a surface.
-</p>
-<p>
-  Choose 3MF when your slicer supports it, declared units matter, a build has
-  multiple objects or repeated items, or you are keeping work in a modern
-  supported workflow. Support is good but not universal, so a recipient with
-  older software may still need STL. Use
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
-    >3MF Print Preflight Checker</a
-  >
-  to inspect the resolved build, units, geometry, printer fit and wall
-  thickness.
-</p>
-
-<h2>STEP: editable CAD, not usually the final slicer file</h2>
-<p>
-  STEP exchanges precise CAD geometry between engineering and design programs.
-  It is useful when a part needs further editing, dimension changes or
-  manufacturing through another process. A typical consumer print workflow does
-  not simply treat STEP as a finished slicer file: open it in suitable CAD or
-  conversion software, then export a supported mesh or print-oriented format.
-  Inspect the resulting STL or 3MF; InspectMesh does not inspect, convert or
-  slice STEP files.
-</p>
-
-<h2>OBJ: useful in some visual mesh workflows</h2>
-<p>
-  OBJ can represent mesh geometry and can reference colours, materials or
-  textures. It can be useful where appearance matters and receiving software
-  confirms support for the OBJ and related assets. For a functional
-  single-material print, it is often less convenient than STL or 3MF because
-  related assets may not travel cleanly. InspectMesh does not inspect, convert
-  or slice OBJ files.
-</p>
-
-<h2>How to choose between STL and 3MF</h2>
 <table>
   <thead>
     <tr>
-      <th>Your situation</th>
-      <th>Better starting format</th>
+      <th scope="col">Recorded field</th>
+      <th scope="col">Observed evidence</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Maximum compatibility or an unknown recipient</td>
-      <td>STL</td>
+      <td>Source / derivatives</td>
+      <td>
+        two-placed-cubes.3mf; entire-build.stl; second-placement.stl. Exact
+        hashes, method/source revision and verification reports are in the
+        filled JSON record.
+      </td>
     </tr>
     <tr>
-      <td>Simple triangle geometry is enough</td>
-      <td>STL can be sufficient</td>
+      <td>Producing / receiving method</td>
+      <td>
+        InspectMesh supported 3MF resolver → scoped binary STL writer → local
+        STL reader; preserve resolved placement; no translation.
+      </td>
     </tr>
     <tr>
-      <td>Units and structured build information matter</td>
-      <td>3MF</td>
+      <td>Required reference</td>
+      <td>
+        Two placements; 20 mm cube spans; second X interval 40..60 mm. STL
+        interpreted as millimetres.
+      </td>
     </tr>
     <tr>
-      <td>Modern slicer workflow with supported build data</td>
-      <td>3MF</td>
+      <td>Observation</td>
+      <td>
+        Entire build: 24 triangles, X=0..60 mm. Second placement: 12 triangles,
+        X=40..60 mm. Both have Y/Z=0..20 mm. Existing exact-triangle
+        verification passes under its Float32 storage basis.
+      </td>
     </tr>
     <tr>
-      <td>Precise CAD editing continues before printing</td>
-      <td>STEP, then export to STL or 3MF</td>
+      <td>Unresolved / next action</td>
+      <td>
+        External appearance and project profiles: untested. Ask the actual
+        receiver to record its import options, units and placement before
+        accepting that handoff.
+      </td>
     </tr>
   </tbody>
 </table>
 <p>
-  The right format is the one that opens reliably in the next tool while
-  preserving the information you need. 3MF is not universally better;
-  compatibility can make STL the safer choice.
+  <a href="/examples/file-handoff/receiving-check-filled.json" download
+    >Download the filled record and source hashes</a
+  >,
+  <a href="/examples/file-handoff/entire-build.stl" download
+    >entire-build STL</a
+  >
+  or
+  <a href="/examples/file-handoff/second-placement.stl" download
+    >second-placement STL</a
+  >. Both STL downloads use a millimetre convention; STL itself declares no
+  unit.
 </p>
-
-<h2>Converting between STL and 3MF</h2>
+<h2 id="receiving-check">Blank receiving-file acceptance record</h2>
 <p>
-  Conversion can help, but it does not magically improve geometry. Use the
-  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL to 3MF Converter</a> when
-  you need a 3MF copy of an STL workflow. STL has no reliable stored unit, so
-  verify intended dimensions.
+  Record one specific handoff. Blank cells remain unanswered and do not indicate
+  success. Use preserved, changed, missing or untested for each required
+  property and attach the evidence.
+</p>
+<table>
+  <caption>
+    Blank printable record - nothing is saved or uploaded by this table.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Field</th>
+      <th scope="col">Recorded evidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Source and derivative</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Producing application</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Receiving application</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Required information</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Expected reference</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Observation</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Import options</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Unresolved limitation</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Next action</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  <a href="/examples/file-handoff/receiving-check-blank.csv" download
+    >Download the blank CSV</a
+  >. For packaging a full collection, use
+  <a href="{{ GuideSlug.RouteCheckStlFilesBeforeSelling }}"
+    >the separate seller release manifest</a
+  >. This record establishes only the named receiving check, not approval of a
+  complete job.
 </p>
 <p>
-  Use the
-  <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL Converter</a> when
-  a recipient needs geometry-only STL. It may not retain 3MF build data or
-  appearance-related information. After conversion, open the result in the
-  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
-  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> and inspect the new
-  file rather than assuming it is identical in every practical respect.
+  Inspect the supported placed inventory and named coordinate references in
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> before choosing a
+  derivative. Viewing stays local; optional issue analysis has a separate
+  explicit upload action.
 </p>
-
-<h2>Check the final file, not only the source format</h2>
+<h2>Technical sources</h2>
 <p>
-  Before slicing, confirm that the model opens and looks complete, dimensions
-  are expected, it fits the target printer, geometry warnings are understood,
-  and important walls or functional features are thick enough for the intended
-  print. Conversion, repair or scaling can change a model unexpectedly.
-</p>
-<p>
-  Use
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> or
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> as
-  the final file-level check.
-</p>
-
-<h2>The best format is part of a reliable workflow</h2>
-<p>
-  STL remains practical because it is simple and widely supported. 3MF is often
-  the stronger choice when a modern workflow can use its extra structure. STEP
-  is best kept for editable design exchange, while OBJ is more specialised.
-  Choose the format that fits the next stage, then inspect the actual file you
-  plan to slice.
+  Reviewed 27 October 2026:
+  <a href="https://3mf.io/spec/">3MF specifications</a>, the Library of Congress
+  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000504.shtml"
+    >STL description</a
+  >
+  and NIST's historical
+  <a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=821600"
+    >STEP introduction</a
+  >. They describe representation roles; application compatibility still
+  requires its own test.
 </p>

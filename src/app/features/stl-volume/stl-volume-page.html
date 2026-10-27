@@ -327,57 +327,99 @@
   }
 
   <section class="content" aria-labelledby="about-title">
-    <h2 id="about-title">When to use the number</h2>
+    <h2 id="about-title">Choose the next action from the volume state</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>Meaning</th>
+            <th>Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Available supported volume</td>
+            <td>
+              This method supplied an enclosed-volume value under its screens
+            </td>
+            <td>Confirm unit and intended solid scope</td>
+          </tr>
+          <tr>
+            <td>Unavailable</td>
+            <td>A validity or scope condition prevented a supported value</td>
+            <td>
+              <a [href]="routeUrl.StlVolumeWrongGuide"
+                >Diagnose the volume finding</a
+              >; do not substitute zero
+            </td>
+          </tr>
+          <tr>
+            <td>Processing error or missing report</td>
+            <td>No completed measurement from this attempt</td>
+            <td>Resolve the stated input or processing issue</td>
+          </tr>
+          <tr>
+            <td>Available volume plus density</td>
+            <td>Optional solid-mass arithmetic</td>
+            <td>Use complete sliced consumption for material planning</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      Read validation and availability before using volume. Open surfaces,
-      inconsistent winding or unsupported shell arrangements can prevent a
-      trustworthy enclosed-solid interpretation. A displayed magnitude does not
-      determine which nested surfaces should form a cavity or establish a
-      Boolean union of overlapping solids. The current server method requires a
-      single connected component, even when separate parts are individually
-      closed.
+      The current server method requires valid geometry, one connected
+      component, no open or over-shared edges and consistent winding. An
+      available magnitude does not determine the intended cavity or establish a
+      Boolean union of overlapping surfaces. Screens can miss intersections.
     </p>
+    <h2>Interpret a known control under its unit</h2>
     <p>
-      <a [routerLink]="routeUrl.QualityCheck">STL Quality Checker</a> ·
-      <a [routerLink]="routeUrl.DimensionsChecker">STL Dimensions Checker</a> ·
-      <a [routerLink]="routeUrl.PrintCostCalculator"
-        >Estimate production cost from slicer totals</a
-      >
-      ·
-      <a [routerLink]="routeUrl.Tools">All STL tools</a>
-    </p>
-  </section>
-  <section class="content interpretation-guide">
-    <h2>Read volume under the intended unit</h2>
-    <p>
-      The generated
+      The
       <a [href]="exampleAsset.Closed20mmCubeStl" download
-        >20-coordinate-unit cube</a
+        >closed 20-coordinate cube</a
       >
-      has 12 triangles. Interpreted as millimetres, its closed volume is 20³ =
-      8,000 mm³ = 8 cm³. If the same coordinates mean inches, each length
-      becomes 508 mm and the volume grows by 25.4³. Changing the unit
-      interpretation is different from intentionally scaling a correctly
-      interpreted part.
-    </p>
-    <h3>Volume is not filament consumption</h3>
-    <p>
-      Solid volume describes the enclosed shape, not the toolpaths. Multiplying
-      it by density estimates solid mass. A simple infill percentage does not
-      include separate perimeters, top/bottom layers, supports, purge or packing
-      strategy. Use the final slicer's complete material estimate when costing
-      production. Multiple separate parts require an explicit shell
-      interpretation; overlapping shells cannot simply be added as if a Boolean
-      union had been performed.
+      has 12 triangles and analytical volume 8,000 mm³ = 8 cm³ under a
+      millimetre assumption. With the same bytes interpreted as inches, its span
+      becomes 508 mm and volume increases by 25.4³. The result's unit selector
+      changes interpretation; it does not re-export a resized model.
     </p>
     <p>
-      Pressing Calculate volume uploads the file for server processing. The unit
-      selector interprets the returned raw geometry volume; it does not
-      re-export a resized model. If the job fails, the report is missing, or
-      validation is unreliable, stop and
+      A
+      <a [href]="exampleAsset.Hole8Stl" download
+        >40 × 30 × 10 block with an 8 mm square passage</a
+      >
+      can have zero exposed edges and analytical material volume 11,360 mm³. A
+      <a [href]="exampleAsset.OpenFaceCubeStl" download>missing-face cube</a>
+      instead leaves an unfinished boundary. The
+      <a href="/examples/file-handoff/processor-observation.json" download
+        >27 October 2026 local processor record</a
+      >
+      reports approximately 8,000 and 11,360 mm³ for the closed controls and
+      unavailable volume for the open cube. It is the processor code path run
+      locally, not a deployed endpoint test. Downloading an example never
+      submits a server job; choose the file above and press Calculate volume
+      deliberately.
+    </p>
+    <h2>Use sliced consumption for production planning</h2>
+    <p>
+      Density multiplied by available volume gives solid mass. A percentage
+      adjustment does not include the slicer's separate walls, top/bottom
+      layers, supports, purge or arrangement. Use the final job's complete
+      material estimate in the
+      <a [routerLink]="routeUrl.PrintCostCalculator"
+        >production cost calculator</a
+      >. Missing volume supplies no mass estimate.
+    </p>
+    <p>
+      For interior design use
+      <a [href]="guideRouteUrl.RouteHowToHollowAnStlFileFor3dPrinting"
+        >the cavity workflow</a
+      >; for result interpretation use
       <a [href]="routeUrl.StlVolumeWrongGuide"
-        >diagnose the units and solid-validity conditions</a
-      >. An unavailable result must not be treated as zero material.
+        >units and solid-validity diagnosis</a
+      >. Opening locally and submitting to this server calculator are separate
+      actions.
     </p>
   </section>
 </main>

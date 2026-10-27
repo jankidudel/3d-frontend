@@ -1,181 +1,176 @@
 ---
-title: 'How to Calculate 3MF Volume for 3D Printing | InspectMesh'
-description: Learn how to calculate 3MF model volume, understand repeated build items and transforms, and estimate solid-model material weight before 3D printing.
+title: 'Calculate 3MF Volume: Scope and Unavailable Results | InspectMesh'
+description: 'Interpret 3MF units, repeated placements and volume availability. Compare one- and two-cube processor reports without treating unavailable as zero.'
 slug: how-to-calculate-3mf-volume
 eyebrow: 3MF volume guide
-heading: How to Calculate 3MF Volume for 3D Printing
+heading: 'How to Calculate and Interpret 3MF Volume'
 faq:
-  - question: Does 3MF volume include infill and supports?
-    answer: No. Model volume describes solid geometry. Actual filament use also depends on infill, walls, supports, purge and slicer settings.
-  - question: Why can a 3MF volume be unreliable?
-    answer: Open, non-manifold or inconsistently oriented mesh geometry can make a calculated enclosed volume unreliable.
-  - question: Are repeated objects included in the total?
-    answer: Yes. The resolved build total includes placed copies and supported transforms because they are part of the print build.
+  - question: 'Are repeated objects included in a reported total?'
+    answer: 'Supported placements affect the resolved geometry, but a published volume is not guaranteed. The current processor withholds volume for multiple connected components.'
+  - question: 'Does an empty issue list establish usable volume?'
+    answer: 'No. The two-placement control completes with no listed mesh issues but its separate components still fail the volume availability gate.'
+  - question: 'Does model volume include infill and supports?'
+    answer: 'No. Available geometric volume and optional solid mass differ from the final sliced job consumption. Use complete slicer totals for material planning.'
 ---
 
 <p>
-  Volume is useful for comparing model sizes, estimating solid-model material
-  weight and checking whether repeated parts add up as expected. For 3MF, the
-  important detail is that a file can contain several objects, repeated build
-  items and transforms. The useful total is therefore the volume of the resolved
-  print build, not merely a number from the first stored object.
+  Resolve the intended 3MF build, establish its physical unit and check whether
+  the selected method can report an enclosed-volume value. Repeated placements
+  and transforms affect the geometry, but the current InspectMesh volume method
+  can withhold a result for multiple components. Unavailable does not mean zero.
 </p>
+<h2>Choose the build scope and unit</h2>
 <p>
-  Keep the unit in the result: 1,000 mm³ equals 1 cm³. A bare number copied from
-  an application is not comparable until both the declared package unit and any
-  build scale have been resolved.
-</p>
-
-<h2>Check what an unavailable result means on a real two-item build</h2>
-<p>
-  The owned
-  <a href="/examples/collection-review/two-placed-cubes.3mf" download
-    >two-placed-cubes package</a
+  A stored resource is not a placed instance. Identify the build that should be
+  measured and resolve its supported placements before comparing values.
+  Declared units and supported transforms affect physical geometry; unused
+  resources do not automatically contribute. Use
+  <a href="{{ GuideSlug.Route3mfViewer }}">the local viewer</a> to inspect
+  expected inventory and
+  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+    >trace a missing placement</a
   >
-  contains two separated 20 mm cubes. Their analytical sum is
-  <code>2 x 20 x 20 x 20 = 16,000 mm³</code>, but that arithmetic is not a
-  promise that every InspectMesh method will publish the sum as a reliable
-  solid. The retained
+  before requesting a measurement.
+</p>
+<p>
+  Compare volumes only after interpreting both units and scope. Divide mm³ by
+  1,000 to obtain cm³. A plain number copied from another method is not
+  comparable without its unit and the chosen surfaces.
+</p>
+<h2>Read the method's availability state</h2>
+<p>
+  Pressing Calculate 3MF volume in the
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">volume calculator</a>
+  uploads the selected file for server processing. Supported placements resolve
+  before its screen. The current report builder requires valid geometry, one
+  connected component, no open or over-shared edges and consistent orientation
+  before supplying volume. This method uses shared-vertex connectivity; the
+  local collection screen has its own topology policy. Neither method performs a
+  Boolean union by adding shell magnitudes.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">State</th>
+      <th scope="col">Interpretation</th>
+      <th scope="col">Next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Available supported value</td>
+      <td>The method supplied a value under its implemented screens</td>
+      <td>
+        Confirm physical unit, intended geometry and remaining unchecked
+        conditions
+      </td>
+    </tr>
+    <tr>
+      <td>Unavailable with a completed report</td>
+      <td>A solid/scope screen withheld the value; this is not zero</td>
+      <td>
+        Inspect topology and component scope; do not calculate mass from a
+        missing value
+      </td>
+    </tr>
+    <tr>
+      <td>Processing error or absent report</td>
+      <td>No completed volume measurement from this attempt</td>
+      <td>
+        Resolve the stated file/processing issue before using any estimate
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>One cube and two placed cubes</h2>
+<p>
+  These owned controls separate analytical geometry from actual software output.
+  Retained reports were produced by the local .NET ProcessorApplication code
+  path used by the server, not by a deployed endpoint or an external slicer.
+  Input hashes and the capture method/date are preserved in the
+  <a href="/examples/quality-evidence/provenance.json" download
+    >evidence provenance</a
+  >; the current local rerun is documented in the
+  <a href="/examples/file-handoff/processor-observation.json" download
+    >27 October processor record</a
+  >.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Control / scope</th>
+      <th scope="col">Analytical expectation</th>
+      <th scope="col">Actual processor result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One placed 20 mm cube</td>
+      <td>8,000 mm³ = 8 cm³</td>
+      <td>12 triangles; one component; approximately 8,000 mm³</td>
+    </tr>
+    <tr>
+      <td>Two disjoint placed 20 mm cubes</td>
+      <td>
+        16,000 mm³ = 16 cm³, assuming separate non-overlapping material regions
+      </td>
+      <td>
+        24 triangles; two components; completed report with no listed issues,
+        but volume null/unavailable
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Download the
+  <a href="{{ ExampleAsset.OnePlacedCube3mf }}" download>one-placement</a> and
+  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download>two-placement</a>
+  packages and retained
+  <a href="/examples/quality-evidence/one-item-report.json" download
+    >one-item report</a
+  >
+  /
   <a href="/examples/quality-evidence/two-item-report.json" download
-    >server report</a
+    >two-item report</a
+  >. The two-item arithmetic is not an observed endpoint total. A successful
+  parse and empty finding list do not override the volume availability rule.
+</p>
+<p>
+  For separate closed, disjoint bodies, a CAD or analytical sum needs its own
+  assumptions. Intersecting copies double-count overlapping regions if added
+  independently. Nested shells may have ambiguous solid meaning. Return to
+  suitable source solid operations when the intended material region is unclear.
+</p>
+<h2>Compare a derivative with the same scope</h2>
+<p>
+  An entire-build STL can contain both placements, while a selected-item export
+  contains only one. Preserve resolved coordinates, interpret the STL as
+  millimetres and compare named references. The
+  <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
+    >delivery-scope guide</a
   >
-  completes with no listed mesh issues and leaves volume unavailable under its
-  single-component screen. It does not report zero material.
+  explains this decision; the
+  <a href="{{ GuideSlug.RouteHowToScaleA3mfFile }}">3MF scale guide</a> owns
+  transform arithmetic. Comparing one exported cube with a two-cube build is a
+  scope change, not evidence of a faulty volume conversion.
+</p>
+<h2>Use geometry volume for geometry, sliced totals for consumption</h2>
+<p>
+  An available value can support geometric comparison or optional solid-mass
+  arithmetic using a stated density. No mass follows from an unavailable value.
+  Use
+  <a href="{{ GuideSlug.RouteHowToEstimateFilamentWeightFromA3mfFile }}"
+    >the solid-mass versus sliced-use guide</a
+  >
+  for density assumptions. Walls, infill, supports, purge and the actual
+  arrangement determine the production material total; use the final slicer
+  output for that job.
 </p>
 <p>
-  Separate the geometry question from the method's validity gate. If the
-  intended parts remain separate and disjoint, source-CAD volumes can be added
-  with that assumption recorded. If placements overlap, their independent sums
-  double-count material in the overlap; they are not a Boolean-union volume. Use
-  the slicer's complete consumption estimate for the actual print job.
-</p>
-<h2>Worked resolved-build example</h2>
-<p>
-  Imagine a valid 3MF object whose closed mesh encloses 12,000 mm³. If the build
-  contains two instances of that object with rigid placement transforms, the
-  resolved total is 24,000 mm³, or 24 cm³. A uniform scale of 150% changes
-  volume by the cube of the scale factor: one instance becomes
-  <code>12,000 × 1.5³ = 40,500 mm³</code>. Two such instances total 81,000 mm³.
-  This is why counting resource meshes without applying build transforms can
-  understate or overstate the placed build.
-</p>
-<p>
-  Add volumes only when the placed closed shells represent separate material
-  regions. Intersecting copies can double-count the overlap if they are summed
-  independently; open shells, reversed regions and self-intersections may not
-  define a trustworthy inside at all. InspectMesh reports what it can resolve
-  from the package, but it does not turn ambiguous geometry into a physical
-  solid.
-</p>
-<p>
-  Use the result for geometry comparison or a solid-mass estimate, then use the
-  slicer for actual filament consumption. Infill, perimeters, top and bottom
-  layers, supports, purge structures and process settings make sliced material
-  use different from the enclosed solid volume.
-</p>
-<h2>Check whether volume is meaningful</h2>
-<p>
-  Volume is most useful for a closed resolved build with intended units. Sum
-  selected build items deliberately and avoid treating overlapping, open or
-  self-intersecting geometry as reliable solid volume. A multi-object package
-  may contain reusable resources that are not all placed for manufacture.
-</p>
-<p>
-  Run
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> when
-  you need to establish that the resolved build is structurally suitable for a
-  meaningful volume estimate before calculating weight.
-</p>
-
-<h2>Use the resolved build volume</h2>
-
-<p>
-  Upload your file to the
-  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a>.
-  It calculates the aggregate volume of the resolved build geometry and uses the
-  3MF file's declared unit for display and conversion.
-</p>
-
-<p>
-  This total includes all resolved build items, including repeated placements
-  and supported transforms. For example, if a small part is placed four times in
-  one build, the total reflects all four placed instances.
-</p>
-
-<h2>Why 3MF volume can differ from an STL workflow</h2>
-
-<p>
-  An STL is normally a single set of unitless triangles. A 3MF can describe a
-  print build with a declared unit, multiple model objects and placement
-  information. That structure is useful, but it means volume must be calculated
-  after the build is resolved.
-</p>
-
-<p>
-  If you compare a 3MF with an exported STL, make sure you are comparing the
-  same intended build. An STL export may contain one object, while the 3MF
-  project may contain several placed copies.
-</p>
-
-<h2>Check whether the mesh can support a reliable volume</h2>
-
-<p>
-  Volume is most meaningful for a closed, consistently oriented surface. A mesh
-  with holes or ambiguous topology may still produce a number, but that number
-  might not represent the amount of enclosed material.
-</p>
-
-<p>
-  If the calculator warns that volume may be unreliable, check the model with
-  the
-  <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
-  and
-  <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a>.
-  For a broader assessment, use the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>.
-</p>
-
-<h2>Estimate solid-model material weight</h2>
-
-<p>
-  Once volume is shown in cubic centimetres, a simple solid-model estimate is:
-</p>
-
-<p>
-  <strong>weight in grams = volume in cm³ × material density in g/cm³</strong>
-</p>
-
-<p>
-  For example, a 20 cm³ fully solid model with a density of 1.24 g/cm³ has an
-  estimated solid-model weight of 24.8 g. Use the density supplied by your
-  filament manufacturer when possible.
-</p>
-
-<p>
-  This is not a slicer estimate or a price quote. Infill percentage, wall count,
-  top and bottom layers, supports, purge, brim and failed prints can all change
-  actual material use.
-</p>
-
-<h2>Use volume as part of a pre-print check</h2>
-
-<ol>
-  <li>
-    Calculate volume with the
-    <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF Volume Calculator</a
-    >.
-  </li>
-  <li>Check warnings about open or non-manifold geometry.</li>
-  <li>
-    Confirm the build size using the
-    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
-      >3MF Dimensions Checker</a
-    >.
-  </li>
-  <li>Use your slicer for the final filament and cost estimate.</li>
-</ol>
-
-<p>
-  Volume is a helpful planning metric. The slicer remains the source of truth
-  for the final print configuration.
+  Representation basis reviewed 27 October 2026:
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core Specification 1.4.0</a
+  >. Processor availability is an InspectMesh method policy, not a universal
+  rule for all 3MF software or proof of physical printability.
 </p>

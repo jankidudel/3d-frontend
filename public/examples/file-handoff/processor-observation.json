@@ -1,0 +1,462 @@
+{
+  "observedDate": "2026-10-27",
+  "executionPath": "Local ProcessorApplication CLI, the server processor code path; not a deployed endpoint, browser UI or physical test.",
+  "processorRevision": "a158281985e014755e3c9e2f0ce012d10bd23ccc",
+  "processorSources": [
+    {
+      "source": "src/Processor/Reporting/MeshQualityReportBuilder.cs",
+      "sha256": "a2f93d9823d2d45c088e379cb4207105c131f7e0ca03a0a5b2efce1f5db7465c"
+    },
+    {
+      "source": "src/Processor/Topology/MeshTopologyAnalyzer.cs",
+      "sha256": "4608930a1ec974cadfdd8a1c620297c091fc46c22cbed56abed5eda3596d2ff1"
+    }
+  ],
+  "reproduction": "dotnet build ../3d-processor/src/Processor/Processor.csproj && python3 scripts/capture-handoff-processor.py",
+  "observations": [
+    {
+      "file": "collection-review/one-placed-cube.3mf",
+      "sha256": "b6804efe1e31043d3aefc6b86bae0a47f1754f12549b9298700135feefbce3f2",
+      "report": {
+        "reportVersion": "1.0",
+        "fileName": "one-placed-cube.3mf",
+        "fileFormat": "3mf",
+        "sourceUnit": "millimeter",
+        "modelObjectCount": 1,
+        "buildItemCount": 1,
+        "fileSizeBytes": 973,
+        "triangleCount": 12,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 20
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "surfaceArea": 2400,
+        "volume": 7999.999999999999,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "validation": {
+          "issues": [],
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "isValid": true
+        },
+        "issueHighlights": {
+          "samples": {}
+        },
+        "issueGeometry": {
+          "version": "1.0",
+          "openEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          },
+          "nonManifoldEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          }
+        }
+      }
+    },
+    {
+      "file": "collection-review/two-placed-cubes.3mf",
+      "sha256": "9f34181aa4a38067dd689f6815ba7406f658435bc00ef35d93b5ec208709a382",
+      "report": {
+        "reportVersion": "1.0",
+        "fileName": "two-placed-cubes.3mf",
+        "fileFormat": "3mf",
+        "sourceUnit": "millimeter",
+        "modelObjectCount": 1,
+        "buildItemCount": 2,
+        "fileSizeBytes": 979,
+        "triangleCount": 24,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 60,
+          "maxY": 20,
+          "maxZ": 20
+        },
+        "dimensions": {
+          "width": 60,
+          "height": 20,
+          "depth": 20
+        },
+        "surfaceArea": 4800,
+        "volume": null,
+        "topology": {
+          "connectedComponentCount": 2,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "validation": {
+          "issues": [],
+          "topology": {
+            "connectedComponentCount": 2,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "isValid": true
+        },
+        "issueHighlights": {
+          "samples": {}
+        },
+        "issueGeometry": {
+          "version": "1.0",
+          "openEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          },
+          "nonManifoldEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          }
+        }
+      }
+    },
+    {
+      "file": "english-market-batch/closed-20mm-cube.stl",
+      "sha256": "06440b45372060a582e8898b0f522b2f8975f323ec421b19d7c04713e8293e6f",
+      "report": {
+        "reportVersion": "1.0",
+        "fileName": "closed-20mm-cube.stl",
+        "fileFormat": "stl",
+        "sourceUnit": null,
+        "modelObjectCount": null,
+        "buildItemCount": null,
+        "fileSizeBytes": 684,
+        "triangleCount": 12,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 20
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "surfaceArea": 2400,
+        "volume": 7999.999999999999,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "validation": {
+          "issues": [],
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "isValid": true
+        },
+        "issueHighlights": {
+          "samples": {}
+        },
+        "issueGeometry": {
+          "version": "1.0",
+          "openEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          },
+          "nonManifoldEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          }
+        }
+      }
+    },
+    {
+      "file": "english-market-batch/open-face-cube.stl",
+      "sha256": "bd250acc9586f6dd86438480ade08b113ea0edc898562180b4580a6139e18d67",
+      "report": {
+        "reportVersion": "1.0",
+        "fileName": "open-face-cube.stl",
+        "fileFormat": "stl",
+        "sourceUnit": null,
+        "modelObjectCount": null,
+        "buildItemCount": null,
+        "fileSizeBytes": 584,
+        "triangleCount": 10,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 20,
+          "maxY": 20,
+          "maxZ": 20
+        },
+        "dimensions": {
+          "width": 20,
+          "height": 20,
+          "depth": 20
+        },
+        "surfaceArea": 2000,
+        "volume": null,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 4,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "validation": {
+          "issues": [
+            {
+              "code": "open_edge",
+              "message": "Open edge [(0, 0, 0) - (20, 0, 0)] is used only by triangle 2.",
+              "count": 1,
+              "severity": "error"
+            },
+            {
+              "code": "open_edge",
+              "message": "Open edge [(0, 20, 0) - (20, 20, 0)] is used only by triangle 5.",
+              "count": 1,
+              "severity": "error"
+            },
+            {
+              "code": "open_edge",
+              "message": "Open edge [(0, 0, 0) - (0, 20, 0)] is used only by triangle 7.",
+              "count": 1,
+              "severity": "error"
+            },
+            {
+              "code": "open_edge",
+              "message": "Open edge [(20, 0, 0) - (20, 20, 0)] is used only by triangle 8.",
+              "count": 1,
+              "severity": "error"
+            }
+          ],
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 4,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "isValid": false
+        },
+        "issueHighlights": {
+          "samples": {
+            "open_edge": [
+              {
+                "a": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "b": {
+                  "x": 20,
+                  "y": 0,
+                  "z": 0
+                },
+                "c": null
+              },
+              {
+                "a": {
+                  "x": 0,
+                  "y": 20,
+                  "z": 0
+                },
+                "b": {
+                  "x": 20,
+                  "y": 20,
+                  "z": 0
+                },
+                "c": null
+              },
+              {
+                "a": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "b": {
+                  "x": 0,
+                  "y": 20,
+                  "z": 0
+                },
+                "c": null
+              },
+              {
+                "a": {
+                  "x": 20,
+                  "y": 0,
+                  "z": 0
+                },
+                "b": {
+                  "x": 20,
+                  "y": 20,
+                  "z": 0
+                },
+                "c": null
+              }
+            ]
+          }
+        },
+        "issueGeometry": {
+          "version": "1.0",
+          "openEdges": {
+            "totalCount": 4,
+            "returnedCount": 4,
+            "truncated": false,
+            "segments": [
+              {
+                "start": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "end": {
+                  "x": 20,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              {
+                "start": {
+                  "x": 0,
+                  "y": 20,
+                  "z": 0
+                },
+                "end": {
+                  "x": 20,
+                  "y": 20,
+                  "z": 0
+                }
+              },
+              {
+                "start": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "end": {
+                  "x": 0,
+                  "y": 20,
+                  "z": 0
+                }
+              },
+              {
+                "start": {
+                  "x": 20,
+                  "y": 0,
+                  "z": 0
+                },
+                "end": {
+                  "x": 20,
+                  "y": 20,
+                  "z": 0
+                }
+              }
+            ]
+          },
+          "nonManifoldEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          }
+        }
+      }
+    },
+    {
+      "file": "export-fidelity/square-hole-8mm.stl",
+      "sha256": "cddc7eb789a1f06c45fe5ce01e9bd04d8601a34fc27e75eabd3928c24cf39ac0",
+      "report": {
+        "reportVersion": "1.0",
+        "fileName": "square-hole-8mm.stl",
+        "fileFormat": "stl",
+        "sourceUnit": null,
+        "modelObjectCount": null,
+        "buildItemCount": null,
+        "fileSizeBytes": 1684,
+        "triangleCount": 32,
+        "boundingBox": {
+          "minX": 0,
+          "minY": 0,
+          "minZ": 0,
+          "maxX": 40,
+          "maxY": 30,
+          "maxZ": 10
+        },
+        "dimensions": {
+          "width": 40,
+          "height": 30,
+          "depth": 10
+        },
+        "surfaceArea": 3992,
+        "volume": 11360.000000000002,
+        "topology": {
+          "connectedComponentCount": 1,
+          "openEdgeCount": 0,
+          "nonManifoldEdgeCount": 0,
+          "hasInconsistentOrientation": false
+        },
+        "validation": {
+          "issues": [],
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "isValid": true
+        },
+        "issueHighlights": {
+          "samples": {}
+        },
+        "issueGeometry": {
+          "version": "1.0",
+          "openEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          },
+          "nonManifoldEdges": {
+            "totalCount": 0,
+            "returnedCount": 0,
+            "truncated": false,
+            "segments": []
+          }
+        }
+      }
+    }
+  ]
+}

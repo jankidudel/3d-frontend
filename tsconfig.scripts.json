@@ -12,6 +12,7 @@
     "scripts/collection-examples.spec.mts",
     "scripts/recovery-evidence.spec.mts",
     "scripts/sizing-evidence.spec.mts",
-    "scripts/export-fidelity.spec.mts"
+    "scripts/export-fidelity.spec.mts",
+    "scripts/file-handoff.spec.mts"
   ]
 }

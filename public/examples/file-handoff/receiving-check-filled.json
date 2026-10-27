@@ -1,0 +1,154 @@
+{
+  "observedDate": "2026-10-27",
+  "method": "InspectMesh local resolver -> serializeThreeMfScope -> exact saved STL reopened by readStl, in Vitest; application-internal derivative verification.",
+  "sourceRevision": "359298a76e90f7063d6338cb2cdeb8a6862a2303",
+  "implementations": [
+    {
+      "file": "src/app/features/converters/three-mf-stl-export.ts",
+      "sha256": "7bdcf64643c747357479f0524d6be82cdb93bfe417090fea2f75f0a97c5b4c6a"
+    },
+    {
+      "file": "src/app/features/shared/wall-thickness/three-mf-wall-thickness.ts",
+      "sha256": "e6f347e34f635e694075da3ad4bddbd632ac3be0bdbaebf3b067bcccb06c8b30"
+    },
+    {
+      "file": "src/app/features/stl-reducer/stl-reducer.ts",
+      "sha256": "566ff7b88bf0501d48bff54934d9d4a0fa6ee8002612a2277c0c6f5ed055acc7"
+    }
+  ],
+  "reproduction": "INSPECTMESH_REFRESH_EVIDENCE=1 npx vitest run scripts/file-handoff.spec.mts",
+  "externalReceiver": "untested",
+  "appearance": "untested",
+  "printerProfile": "untested",
+  "observation": {
+    "source": {
+      "name": "two-placed-cubes.3mf",
+      "sha256": "9f34181aa4a38067dd689f6815ba7406f658435bc00ef35d93b5ec208709a382",
+      "bytes": 979
+    },
+    "outputs": [
+      {
+        "name": "entire-build.stl",
+        "sha256": "81d01466616c42b747f7a286e5c59857e4d24b9f095885bb7892bd1390cf57e2",
+        "bytes": 1284,
+        "report": {
+          "methodVersion": "inspectmesh-3mf-export-1 / core-geometry-1 (3MF Core 1.4.0)",
+          "source": {
+            "name": "two-placed-cubes.3mf",
+            "bytes": 979,
+            "declaredUnit": "millimeter",
+            "displayedUnit": "millimetres",
+            "modelPart": "3D/3dmodel.model"
+          },
+          "resolutionStatus": "Complete supported geometry",
+          "limitations": [
+            "Optional colours, materials, metadata and project settings are outside this geometry check. Keep the original 3MF.",
+            "Bounds and triangle checks do not establish topology, solid unions or printability."
+          ],
+          "scope": "Entire supported placed build",
+          "placedItems": [
+            {
+              "id": "build-1",
+              "resourceId": "1",
+              "originalPlacement": [
+                1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+              ]
+            },
+            {
+              "id": "build-2",
+              "resourceId": "1",
+              "originalPlacement": [
+                1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 40, 0, 0, 1
+              ]
+            }
+          ],
+          "coordinatePolicy": "Preserve resolved placement",
+          "translationMm": [0, 0, 0],
+          "expectedBoundsMm": {
+            "min": [0, 0, 0],
+            "max": [60, 20, 20],
+            "spans": [60, 20, 20]
+          },
+          "exportedBoundsMm": {
+            "min": [0, 0, 0],
+            "max": [60, 20, 20],
+            "spans": [60, 20, 20]
+          },
+          "reopenedBoundsMm": {
+            "min": [0, 0, 0],
+            "max": [60, 20, 20],
+            "spans": [60, 20, 20]
+          },
+          "expectedTriangles": 24,
+          "reopenedTriangles": 24,
+          "verification": {
+            "passed": true,
+            "method": "Reopen exact serialized bytes with the repository STL parser; compare every oriented triangle after Float32 rounding, allowing cyclic vertex order. Count and bounds are also reported. Tolerance describes Float32 rounding, not a surface or printability guarantee.",
+            "toleranceMm": 0.0000019073486328125,
+            "maximumFloat32ErrorMm": 0,
+            "sourceFloat32ErrorMm": 0
+          },
+          "nextAction": "Retain the original 3MF. Reopen the downloaded STL in the destination application, select millimetres and check a known dimension and placement. STL has no unit declaration."
+        }
+      },
+      {
+        "name": "second-placement.stl",
+        "sha256": "a943c1f9e248813f21b3266235eb3f47af22173f78fae04b9aeefa8aa692a7d8",
+        "bytes": 684,
+        "report": {
+          "methodVersion": "inspectmesh-3mf-export-1 / core-geometry-1 (3MF Core 1.4.0)",
+          "source": {
+            "name": "two-placed-cubes.3mf",
+            "bytes": 979,
+            "declaredUnit": "millimeter",
+            "displayedUnit": "millimetres",
+            "modelPart": "3D/3dmodel.model"
+          },
+          "resolutionStatus": "Complete supported geometry",
+          "limitations": [
+            "Optional colours, materials, metadata and project settings are outside this geometry check. Keep the original 3MF.",
+            "Bounds and triangle checks do not establish topology, solid unions or printability."
+          ],
+          "scope": "One top-level placed item: build-2",
+          "placedItems": [
+            {
+              "id": "build-2",
+              "resourceId": "1",
+              "originalPlacement": [
+                1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 40, 0, 0, 1
+              ]
+            }
+          ],
+          "coordinatePolicy": "Preserve resolved placement",
+          "translationMm": [0, 0, 0],
+          "expectedBoundsMm": {
+            "min": [40, 0, 0],
+            "max": [60, 20, 20],
+            "spans": [20, 20, 20]
+          },
+          "exportedBoundsMm": {
+            "min": [40, 0, 0],
+            "max": [60, 20, 20],
+            "spans": [20, 20, 20]
+          },
+          "reopenedBoundsMm": {
+            "min": [40, 0, 0],
+            "max": [60, 20, 20],
+            "spans": [20, 20, 20]
+          },
+          "expectedTriangles": 12,
+          "reopenedTriangles": 12,
+          "verification": {
+            "passed": true,
+            "method": "Reopen exact serialized bytes with the repository STL parser; compare every oriented triangle after Float32 rounding, allowing cyclic vertex order. Count and bounds are also reported. Tolerance describes Float32 rounding, not a surface or printability guarantee.",
+            "toleranceMm": 0.0000019073486328125,
+            "maximumFloat32ErrorMm": 0,
+            "sourceFloat32ErrorMm": 0
+          },
+          "nextAction": "Retain the original 3MF. Reopen the downloaded STL in the destination application, select millimetres and check a known dimension and placement. STL has no unit declaration."
+        }
+      }
+    ]
+  },
+  "rights": "Original InspectMesh controls; CC0-1.0; no physical validation."
+}

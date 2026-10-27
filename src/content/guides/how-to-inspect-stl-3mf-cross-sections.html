@@ -61,6 +61,69 @@ heading: How to Inspect STL and 3MF Cross-Sections Before Printing
   </li>
 </ol>
 
+<h2>Record a known cut without treating it as a measurement</h2>
+<p>
+  For a bounded repeatable location, open the
+  <a href="{{ ExampleAsset.Hole8Stl }}" download
+    >40 × 30 × 10 square-through-opening block</a
+  >
+  as millimetres. Choose Cut axis Z and Cut position 50% across its 0..10 range:
+  the source-coordinate location is Z=5 mm. Move through nearby positions to
+  inspect the passage rather than accepting one picture. The
+  <a href="/examples/file-handoff/interior-local-observation.json" download
+    >local topology observation</a
+  >
+  reports zero exposed edges and supported material volume for this generated
+  block; it is separate from a browser clipping observation.
+</p>
+<table>
+  <caption>
+    Illustrative clip record - record actual observations for your own file.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Field</th>
+      <th scope="col">Known reference / remaining check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>File / unit / placed scope</td>
+      <td>square-hole-8mm.stl; agreed mm; whole STL geometry</td>
+    </tr>
+    <tr>
+      <td>Axis / UI position / coordinate</td>
+      <td>Z / 50% / Z=5 mm, derived from known 0..10 bounds</td>
+    </tr>
+    <tr>
+      <td>Intended feature</td>
+      <td>8 mm square empty passage, surrounded by material</td>
+    </tr>
+    <tr>
+      <td>Visible observation</td>
+      <td>
+        Record the actual exposed view and nearby positions; the schematic is
+        not a captured result
+      </td>
+    </tr>
+    <tr>
+      <td>Unresolved check</td>
+      <td>
+        All unsampled regions, physical access, process suitability and final
+        slicer layers remain separate
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  An interior opening in this clipped picture can belong to an intact material
+  boundary in the saved file. Inspect the full region and run the appropriate
+  mesh check before calling it a missing face. Use
+  <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
+    >the hollowing guide</a
+  >
+  for the design decision; this guide owns operating and interpreting the clip.
+</p>
 <h2>Identify material boundaries and empty space</h2>
 <p>
   Look for the two surfaces bounding a solid web or enclosure wall. A passage

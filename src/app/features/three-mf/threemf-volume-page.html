@@ -136,37 +136,58 @@
     </section>
   }
   <section class="content">
-    <h2>How to use an available volume</h2>
+    <h2>One placed cube versus a repeated build</h2>
     <p>
-      3MF declares a coordinate unit; supported transforms resolve placed
-      geometry before measurement. The current method withholds volume for
-      multiple connected components. A count or dimensions result does not
-      establish that an enclosed-volume value is available. Optional solid mass
-      multiplies an available volume in cm³ by your density in g/cm³ locally; it
-      does not predict sliced consumption.
-    </p>
-    <h2>Worked build and density example</h2>
-    <p>
-      Illustrative arithmetic: two non-overlapping 20 mm cubes contain 16 cm³ in
-      total. At a chosen density of 1.24 g/cm³, their solid mass is 19.84 g.
-      This is not a claim that this endpoint reports a value for every two-item
-      build, and it is not sliced filament consumption.
+      The
+      <a href="/examples/collection-review/one-placed-cube.3mf" download
+        >one-placement cube</a
+      >
+      declares millimetres and has 12 triangles. The
+      <a href="/examples/collection-review/two-placed-cubes.3mf" download
+        >two-placement control</a
+      >
+      reuses that 20 mm cube at X=0 and X=40 mm. Analytical volumes are 8,000
+      mm³ for one cube and 16,000 mm³ for two separate disjoint cubes.
     </p>
     <p>
-      Declared inches convert linearly by 25.4 to millimetres, and volume
-      converts by 25.4³. A positive surface sum does not establish a Boolean
-      union of overlapping shells or the intended meaning of a cavity.
+      The
+      <a href="/examples/file-handoff/processor-observation.json" download
+        >27 October 2026 local processor capture</a
+      >
+      reports approximately 8,000 mm³ for one placement but unavailable volume
+      for the two-component build, despite no listed mesh issues. This is the
+      server processor code path executed locally, not a deployed endpoint
+      observation. Supported placements resolve before the volume screen; their
+      count does not guarantee a published aggregate total.
     </p>
     <p>
-      Compare
-      <a [href]="guideRouteUrl.RouteHowToCalculate3mfVolume">resolved volume</a>
-      with
+      Downloading either example does not upload or calculate it. Select the
+      file above and press Calculate 3MF volume deliberately to request a server
+      result.
+    </p>
+    <h2>Use the result within its scope</h2>
+    <p>
+      Read the availability state first. Unavailable is not zero, and a failed
+      or reportless attempt provides no completed volume measurement. Declared
+      units and supported transforms affect physical geometry; an STL comparison
+      must use the same selected scope and its stated millimetre convention.
+      Separate shell sums do not perform a Boolean union or resolve an ambiguous
+      cavity.
+    </p>
+    <p>
+      Optional solid mass uses available cm³ and your density. Use
       <a [href]="guideRouteUrl.RouteHowToEstimateFilamentWeightFromA3mfFile"
-        >solid weight versus slicer usage</a
-      >.
+        >solid-mass guidance</a
+      >
+      for those assumptions and complete slicer consumption for actual material
+      planning. Follow
+      <a [href]="guideRouteUrl.RouteHowToCalculate3mfVolume"
+        >the method-aware volume guide</a
+      >
+      to interpret a missing or implausible value, then
       <a [routerLink]="routeUrl.PrintCostCalculator"
-        >Estimate production cost from slicer totals</a
-      >: use complete material consumption from the final sliced job.
+        >cost the actual sliced job</a
+      >.
     </p>
   </section>
 </main>

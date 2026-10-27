@@ -128,6 +128,85 @@ faq:
     </tr>
   </tbody>
 </table>
+<h2>Name the method and distinguish a passage from an unfinished surface</h2>
+<p>
+  Record which tool produced the value. The local collection screen and server
+  processor use their own connectivity and validity policies. Agreement on
+  dimensions does not imply both methods will publish the same volume state.
+  Neither a positive signed sum nor a closed boundary proves the intended solid
+  interpretation.
+</p>
+<figure>
+  <img
+    src="/examples/file-handoff/passage-and-boundary.svg"
+    width="720"
+    height="360"
+    loading="lazy"
+    alt="A complete material boundary surrounds an empty square passage; a cube with a removed face has four boundary edges."
+  />
+  <figcaption>
+    Original explanatory diagram, not a measured section or screenshot.
+  </figcaption>
+</figure>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Owned control, mm convention</th>
+      <th scope="col">Analytical expectation</th>
+      <th scope="col">Actual observations by method</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Closed 20 mm cube, 12 triangles</td>
+      <td>8,000 mm³</td>
+      <td>
+        Local collection: zero open edges, 8,000 mm³. Local server-processor
+        code path: zero open edges, approximately 8,000 mm³.
+      </td>
+    </tr>
+    <tr>
+      <td>Missing-face cube, 10 triangles</td>
+      <td>Unfinished material boundary</td>
+      <td>
+        Both named local methods: four boundary edges; volume unavailable.
+      </td>
+    </tr>
+    <tr>
+      <td>40 × 30 × 10 mm block, 8 mm square through-opening, 32 triangles</td>
+      <td>12,000 − 640 = 11,360 mm³ material</td>
+      <td>
+        Both named local methods: zero open edges; approximately 11,360 mm³
+        material volume.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Download the
+  <a href="{{ ExampleAsset.Hole8Stl }}" download>through-opening block</a> and
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>missing-face cube</a>.
+  Captured 27 October 2026:
+  <a href="/examples/file-handoff/interior-local-observation.json" download
+    >local collection functions</a
+  >
+  and
+  <a href="/examples/file-handoff/processor-observation.json" download
+    >local .NET processor</a
+  >. The latter is the server's processor code path run locally, not a deployed
+  endpoint observation. A designed passage is empty space bounded by intact
+  material surfaces, unlike a missing mesh face. These controls establish no
+  physical flow, drainage or strength.
+</p>
+<p>
+  For a designed cavity, follow
+  <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
+    >the hollow-design decision</a
+  >, then
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >inspect its interior with visual clipping</a
+  >. Do not subtract unsigned arbitrary shell volumes to infer a cavity.
+</p>
 <h2>Recheck after a correction</h2>
 <ol>
   <li>

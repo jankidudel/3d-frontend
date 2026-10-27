@@ -1,0 +1,39 @@
+{
+  "rights": "Original InspectMesh assets, CC0-1.0",
+  "createdDate": "2026-10-27",
+  "generator": "scripts/generate-handoff-assets.py",
+  "receiverAppearance": "untested",
+  "obj": {
+    "bounds": [
+      [0, 20],
+      [0, 10],
+      [0, 5]
+    ],
+    "vertices": 8,
+    "quadFaces": 6,
+    "analyticalVolumeMm3": 1000,
+    "coordinateConvention": "millimetres by agreement"
+  },
+  "bundleFiles": [
+    {
+      "name": "sample.obj",
+      "bytes": 339,
+      "sha256": "a7d18fba8743158bdf2aa5bbd3a9e23045ed69061c4af8d62c08f90e5ffe81e9"
+    },
+    {
+      "name": "sample.mtl",
+      "bytes": 94,
+      "sha256": "f9d40549842d417396bf5e09d7b774bd2c9b01ed7bfa5f2340ed8791694a0df2"
+    },
+    {
+      "name": "textures/checker.png",
+      "bytes": 93,
+      "sha256": "15e986afd204729ff26ff09f17c00cad5ce4ec72e190d8a9cab8542c700a1548"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1182,
+      "sha256": "254be574fe7e13cac3784e1006852028ccf8419b09cf979f9f66eff1f0f4a407"
+    }
+  ]
+}

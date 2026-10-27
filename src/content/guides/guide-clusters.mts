@@ -122,7 +122,7 @@ export const guideClusters: readonly GuideCluster[] = [
     id: '3mf',
     label: '3MF diagnosis and conversion',
     description:
-      'Work with 3MF packages, build items, units and format conversion limits.',
+      'Open supported geometry, trace placements and verify properties or conversion scope in the receiving application.',
     pillar: 'how-to-check-a-3mf-file-for-errors',
     slugs: [
       'extract-part-from-3mf',
@@ -187,7 +187,7 @@ export const guideClusters: readonly GuideCluster[] = [
     id: 'formats',
     label: 'Formats and file fundamentals',
     description:
-      'Choose a delivery format and understand the roles of mesh and CAD files.',
+      'Choose by required information, verify a complete appearance bundle and record the actual receiving-file check.',
     pillar: 'best-file-format-for-3d-printing',
     slugs: [
       GuideContentSlug.BestFileFormatFor3dPrinting,
@@ -202,7 +202,7 @@ export const guideClusters: readonly GuideCluster[] = [
     id: 'cost',
     label: 'Cost, filament and quoting',
     description:
-      'Estimate material, production cost and a transparent customer price.',
+      'Interpret available geometry volume, use complete sliced consumption and calculate production cost and customer price.',
     pillar: 'how-to-calculate-3d-printing-cost',
     slugs: [
       'how-to-calculate-3d-printing-cost',

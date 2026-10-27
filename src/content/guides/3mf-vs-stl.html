@@ -1,202 +1,179 @@
 ---
-title: '3MF vs STL: Choose a 3D Printing File Format | InspectMesh'
-description: Compare 3MF and STL for 3D printing. Learn what each format stores, when STL is enough, and why 3MF is often better for modern workflows.
+title: '3MF vs STL: What Must Survive the Handoff? | InspectMesh'
+description: 'Compare STL and 3MF units, placed coordinates, object identities and project properties using two cubes and an exact saved-output check.'
 slug: 3mf-vs-stl
 eyebrow: 3D printing file formats
-heading: '3MF vs STL: Which File Format Should You Use?'
+heading: '3MF vs STL: What Must Survive the Handoff?'
 faq:
-  - question: Is 3MF better than STL for 3D printing?
-    answer: For most modern workflows, yes. 3MF can preserve units, multiple objects and other print-related information that STL does not reliably store.
-  - question: Should I convert all of my old STL files to 3MF?
-    answer: Not necessarily. A clean STL remains widely compatible. Convert when you need a 3MF workflow or want to preserve information that STL cannot hold.
-  - question: Does 3MF make a model more detailed than STL?
-    answer: No. The mesh geometry determines surface detail. 3MF can preserve more surrounding information, but it does not add geometric detail by itself.
+  - question: 'Is 3MF always better than STL?'
+    answer: 'No. Choose by the information the actual receiver preserves. STL can satisfy a geometry-only handoff with explicit units; 3MF can carry declared units and supported build structure.'
+  - question: 'Does exporting STL lose all placement?'
+    answer: 'No. Vertex coordinates can retain resolved placement, but STL has no separate editable build transforms or unit declaration. Check what the receiver does on import.'
+  - question: 'Does converting STL to 3MF add detail?'
+    answer: 'No. Repackaging cannot restore source curves, textures, material assignments or native design history absent from the STL.'
 ---
 
 <p>
-  STL and 3MF can both be used for 3D printing, but they are built for different
-  generations of workflow.
+  Use STL when the recipient needs triangle geometry and can interpret its unit
+  convention correctly. Use a supported 3MF when declared units, placed-item
+  structure or other required properties must travel with the model. The useful
+  choice is the one the actual receiving path preserves.
 </p>
-
-<h2>Separate specification capability from application support</h2>
+<h2>Start with the required information</h2>
 <p>
-  Saying that 3MF can store a feature does not mean every application writes,
-  reads or preserves it. Core mesh geometry, declared units and build items are
-  different from optional extensions or vendor-specific print settings. Test the
-  exact authoring-to-receiving path with a small file containing the features
-  that matter, then inspect the imported objects rather than trusting the
-  filename extension.
+  List what the recipient must retain before converting. A single-colour knob
+  for a proven mesh importer may need only a surface and an agreed unit. A build
+  containing repeated placements needs its intended inventory and coordinate
+  locations checked. Neither requirement is answered by the age of the file
+  format.
 </p>
-<p>
-  STL has the opposite advantage and limitation: its narrow geometry model makes
-  the handoff easier to reason about, but missing context must be supplied
-  separately. State the expected unit and whether separate meshes are individual
-  parts. If either workflow requires later design changes, preserve the source
-  CAD or modeling project; neither delivery format restores parametric intent.
-</p>
-
-<h2>Side-by-side workflow decision</h2>
+<h2>One preservation comparison</h2>
 <table>
   <thead>
     <tr>
-      <th>Need</th>
-      <th>Prefer</th>
-      <th>Reason</th>
+      <th scope="col">Required information</th>
+      <th scope="col">STL</th>
+      <th scope="col">3MF</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Send one simple mesh to an older workflow</td>
-      <td>STL</td>
-      <td>Broad, simple mesh interchange</td>
-    </tr>
-    <tr>
-      <td>Keep declared units and several placed objects</td>
-      <td>3MF</td>
-      <td>The package can describe units, resources and build placement</td>
-    </tr>
-    <tr>
-      <td>Preserve editable CAD features</td>
-      <td>Neither</td>
-      <td>Keep the source CAD file; both are delivery formats</td>
-    </tr>
-    <tr>
-      <td>Exchange application-specific print setup</td>
-      <td>Test 3MF</td>
+      <td>Surface geometry</td>
+      <td>Triangular facets</td>
       <td>
-        3MF can carry richer data, but another application may not interpret
-        every extension or setting
+        Supported mesh resources and components; no detail is created by
+        repackaging
       </td>
+    </tr>
+    <tr>
+      <td>Physical unit</td>
+      <td>No standard unit declaration; agree the interpretation</td>
+      <td>Declared unit in core model data; verify resolved physical size</td>
+    </tr>
+    <tr>
+      <td>Coordinate location</td>
+      <td>Vertex coordinates can encode off-origin placements</td>
+      <td>Geometry plus separate supported build transforms</td>
+    </tr>
+    <tr>
+      <td>Resource / build identity</td>
+      <td>No named build-item hierarchy</td>
+      <td>Resources can be reused by distinct placed items</td>
+    </tr>
+    <tr>
+      <td>Appearance</td>
+      <td>No standard material or texture representation</td>
+      <td>
+        Core base-material display colour and other defined
+        properties/extensions, subject to support
+      </td>
+    </tr>
+    <tr>
+      <td>Project preparation state</td>
+      <td>No slicer profile or supports record</td>
+      <td>
+        May contain application-specific project data; exact receiving path must
+        be checked
+      </td>
+    </tr>
+    <tr>
+      <td>Native design history</td>
+      <td>Not retained</td>
+      <td>Mesh delivery does not recreate a native CAD feature timeline</td>
     </tr>
   </tbody>
 </table>
 <p>
-  For example, a single-color replacement knob sent to a proven legacy slicer
-  may gain little from 3MF. A build plate containing six named parts at
-  deliberate positions benefits more from 3MF because converting it to one STL
-  may bake the arrangement into a single mesh, while exporting six STL files
-  loses placement. The receiving application is part of the decision: test a
-  representative file before standardizing a team workflow.
+  A format's capability is different from an application's implementation. A
+  successful import does not prove every property was read or used. Keep source
+  CAD for design revisions and the original project when future preparation
+  changes matter.
 </p>
+<h2>Two placed cubes: coordinates survive without editable placements</h2>
 <p>
-  Do not treat a successful import as proof that everything survived. Confirm
-  dimensions, object count, placement, colors or material assignments, and any
-  settings that matter. Keep the editable source separately and regard the
-  chosen print format as a handoff artifact.
+  The owned
+  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download>two-cube 3MF</a>
+  stores one 20 mm mesh resource and places it at X=0 and X=40 mm. The resolved
+  build spans X=0..60 mm, including a 20 mm empty gap. It contains 24 triangles,
+  not one joined solid.
 </p>
-<h2>Choose the format by what must survive</h2>
+<figure>
+  <img
+    src="/examples/file-handoff/coordinates-and-records.svg"
+    width="720"
+    height="360"
+    loading="lazy"
+    alt="STL encodes two placed cube surfaces but has no unit declaration or independent build transforms."
+  />
+  <figcaption>
+    Mathematical schematic. The saved geometry check is separate from any
+    receiving slicer behaviour.
+  </figcaption>
+</figure>
 <p>
-  Use STL for simple, broadly compatible mesh delivery. Prefer 3MF when declared
-  units, build structure or supported properties need to travel with the job.
-  Confirm support in the receiving application; richer source data is not
-  automatically portable everywhere.
-</p>
-<p>
-  STL is the older, simple option. It stores a triangle surface and is supported
-  almost everywhere. 3MF is a newer manufacturing format that can store the
-  model plus useful context around it.
-</p>
-<p>
-  For a basic single-colour model, STL is often enough. For a modern slicer
-  project, multiple parts, colour information or reliable units, 3MF is usually
-  the better choice.
-</p>
-<p>
-  Whichever format you use, follow the
-  <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
-    >3D print file preflight checklist</a
-  >
-  before slicing.
-</p>
-<p>
-  For a wider decision guide covering STL, 3MF, OBJ and STEP roles, read
-  <a href="{{ GuideSlug.RouteBestFileFormatFor3dPrinting }}"
-    >the best file format for 3D printing guide</a
+  The application-internal saved-byte check on 27 October 2026 produced an
+  entire-build STL with 24 triangles at those positions and a
+  selected-second-placement STL with 12 triangles at X=40..60 mm. Both are
+  interpreted as millimetres. See the
+  <a href="/examples/file-handoff/receiving-check-filled.json" download
+    >exact-output record and hashes</a
   >.
 </p>
-<h2>What STL stores</h2>
 <p>
-  An STL describes the surface of an object as triangles. That makes it simple
-  to export, share and open in nearly any slicer.
+  Exporting separate STL files does not necessarily discard their coordinate
+  locations. This converter preserves resolved placement by default. STL lacks
+  the separate resource identity, build transform and unit declaration, while
+  the receiver may independently recenter, merge or rescale the geometry. Record
+  that import operation rather than attributing every later movement to the
+  export.
+</p>
+<h2>Accept the actual application path</h2>
+<ol>
+  <li>
+    Agree required surfaces, units, placement and properties for a named
+    revision.
+  </li>
+  <li>
+    Choose supported export scope deliberately; viewer isolation does not choose
+    converter scope.
+  </li>
+  <li>Reopen the exact saved file and compare the named references.</li>
+  <li>
+    Import into the receiver with recorded options and mark each property
+    preserved, changed, missing or untested.
+  </li>
+</ol>
+<p>
+  Use
+  <a href="{{ GuideSlug.RouteBestFileFormatFor3dPrinting }}"
+    >the receiving-file record</a
+  >
+  to retain those observations. This internal example verifies the derivative's
+  chosen triangles and coordinates, not external slicer compatibility, profile
+  preservation or physical printability.
+</p>
+<h2>Choose the next task</h2>
+<p>
+  For
+  <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
+    >entire-build versus selected-item delivery</a
+  >, use the scope guide. For
+  <a href="{{ GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings }}"
+    >colours, materials and project settings</a
+  >, verify those properties separately.
+  <a href="{{ GuideSlug.Route3mfToStlConverter }}">Convert a supported 3MF</a>
+  only when the recipient's geometry requirement is clear; an
+  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL-to-3MF package</a> cannot
+  restore lost textures or design intent.
 </p>
 <p>
-  Its main limitation is that it normally does not contain reliable unit
-  information. A coordinate value of <code>50</code> could be intended as 50 mm,
-  50 inches or something else. STL also does not preserve colours, materials,
-  build placement or printer settings.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a>
-  to confirm size before printing an STL. Use the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> to
-  check whether its mesh has holes, non-manifold edges or other common problems.
-</p>
-<h2>What 3MF stores</h2>
-<p>A 3MF file can store mesh geometry plus information such as:</p>
-<ul>
-  <li>units</li>
-  <li>multiple objects and build items</li>
-  <li>object placement</li>
-  <li>names and metadata</li>
-  <li>materials and colours where supported</li>
-  <li>slicer-related information in some workflows</li>
-</ul>
-<p>
-  This reduces the information lost when a model moves from CAD software to a
-  slicer.
-</p>
-<p>
-  A 3MF can still contain broken mesh geometry, so inspect it with the
-  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a>
-  before printing an important part.
-</p>
-<h2>When STL is the right choice</h2>
-<p>
-  Use STL when compatibility is your priority. It remains a sensible choice for:
-</p>
-<ul>
-  <li>simple single-part prints</li>
-  <li>sharing models on sites that expect STL</li>
-  <li>older slicer workflows</li>
-  <li>files where you only need the geometry</li>
-</ul>
-<p>STL is not obsolete. It is simply limited.</p>
-<h2>When 3MF is the better choice</h2>
-<p>
-  Choose 3MF when you want to preserve a more complete print project. It is
-  especially useful for multi-part builds, colour-capable workflows and models
-  where scale needs to remain clear.
-</p>
-<p>
-  Use the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> to inspect the
-  model and the
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF Dimensions Checker</a>
-  to confirm its size and printer fit.
-</p>
-<h2>Converting between the formats</h2>
-<p>
-  You can use the
-  <a href="{{ GuideSlug.RouteStlTo3mfConverter }}">STL to 3MF Converter</a> to
-  bring a simple STL mesh into a 3MF workflow.
-</p>
-<p>
-  Converting from 3MF to STL is possible too, but it can discard information
-  that STL cannot represent, such as multiple objects, units, colours and build
-  settings. Keep the original 3MF file whenever those details matter.
-</p>
-<p>
-  The best format is the one that your software supports while preserving the
-  information you need. For most new 3D-printing projects, start with 3MF where
-  possible; keep STL for broad compatibility and simple mesh sharing.
-</p>
-
-<p>
-  For an imported 3MF with fewer visible parts,
-  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
-    >check placed instances rather than resource count</a
-  >. For surprising STL estimates,
-  <a href="{{ GuideSlug.RouteStlVolumeCalculationWrong }}"
-    >verify unit scaling and volume validity</a
+  Representation basis reviewed 27 October 2026:
+  <a
+    href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
+    >3MF Core Specification 1.4.0</a
+  >
+  and the
+  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000504.shtml"
+    >Library of Congress STL description</a
   >.
 </p>
