@@ -1,3 +1,9 @@
+import {
+  browserSnapshotExpression,
+  pageReadyExpression,
+  isNavigationContextError,
+  logBrowserFindings,
+} from './seo-browser-diagnostics.mts';
 import { spawn } from 'node:child_process';
 import {
   access,
@@ -7,7 +13,7 @@ import {
   mkdir,
   writeFile,
 } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { tmpdir, cpus, totalmem } from 'node:os';
 import { resolve, extname } from 'node:path';
 import type { Readable, Writable } from 'node:stream';
 import { StringDecoder } from 'node:string_decoder';
@@ -90,6 +96,7 @@ export class DevTools {
     method: string,
     params: Record<string, unknown> = {},
     sessionId?: string,
+    timeoutMs = 25000,
   ): Promise<Record<string, unknown>> {
     const id = ++this.id;
     const result = new Promise<Record<string, unknown>>((resolve, reject) =>
@@ -103,7 +110,7 @@ export class DevTools {
         new Promise<never>((_, reject) => {
           timer = setTimeout(
             () => reject(new Error(`DevTools timeout: ${method}`)),
-            25000,
+            timeoutMs,
           );
         }),
       ]);
@@ -183,6 +190,21 @@ export async function auditRender() {
   const rows: Record<string, unknown>[] = [];
   let complete = false;
   let attempted = 0;
+  let captureCount = 0;
+  const debugPages: Record<string, unknown>[] = [];
+  const environment = {
+    node: process.version,
+    platform: process.platform,
+    arch: process.arch,
+    cpuCount: cpus().length,
+    memoryBytes: totalmem(),
+    ci: process.env['CI'] ?? null,
+    githubRunId: process.env['GITHUB_RUN_ID'] ?? null,
+    githubRunAttempt: process.env['GITHUB_RUN_ATTEMPT'] ?? null,
+    concurrency: 3,
+    readinessTimeoutMs: 20000,
+  };
+  console.log(`Browser audit environment: ${JSON.stringify(environment)}`);
   let chrome: ReturnType<typeof spawn> | undefined;
   let dev: DevTools | undefined;
   let profile: string | undefined;
@@ -246,6 +268,19 @@ export async function auditRender() {
       const send = (method: string, params: Record<string, unknown> = {}) =>
         client.send(method, params, session);
       const errors: string[] = [];
+      const pendingInterceptions = new Set<Promise<void>>();
+      const recentRequests: Record<string, unknown>[] = [];
+      let phase = 'setup';
+      let currentPath = 'about:blank';
+      let navigation: Record<string, unknown> | null = null;
+      let readinessExpression = '';
+      let diagnosticOnly = false;
+      function requestEvidence(item: Record<string, unknown>) {
+        recentRequests.push(item);
+        if (recentRequests.length > 60) {
+          recentRequests.shift();
+        }
+      }
       const requests = new Map<string, string>();
       client.listeners.push((message) => {
         if (message['sessionId'] !== session) {
@@ -253,13 +288,17 @@ export async function auditRender() {
         }
         const params = message['params'] as Record<string, unknown>;
         if (message['method'] === 'Runtime.exceptionThrown') {
-          errors.push(JSON.stringify(params));
+          if (!diagnosticOnly) {
+            errors.push(JSON.stringify(params));
+          }
         }
         if (
           message['method'] === 'Runtime.consoleAPICalled' &&
           params['type'] === 'error'
         ) {
-          errors.push(JSON.stringify(params['args']));
+          if (!diagnosticOnly) {
+            errors.push(JSON.stringify(params['args']));
+          }
         }
         if (message['method'] === 'Network.requestWillBeSent') {
           requests.set(
@@ -271,14 +310,27 @@ export async function auditRender() {
           message['method'] === 'Network.loadingFailed' &&
           requests.get(String(params['requestId']))?.startsWith(origin)
         ) {
-          errors.push(JSON.stringify(params));
+          requestEvidence({
+            kind: 'loading-failed',
+            url: requests.get(String(params['requestId'])),
+            ...params,
+          });
+          if (!diagnosticOnly) {
+            errors.push(JSON.stringify(params));
+          }
         }
         if (message['method'] === 'Fetch.requestPaused') {
           const url = String(
             (params['request'] as Record<string, unknown>)['url'],
           );
-          void (async () => {
+          const requestPath = currentPath;
+          const interception = (async () => {
             if (!url.startsWith(origin + '/')) {
+              requestEvidence({
+                kind: 'blocked-third-party',
+                url,
+                page: requestPath,
+              });
               await send('Fetch.failRequest', {
                 requestId: params['requestId'],
                 errorReason: 'BlockedByClient',
@@ -322,6 +374,14 @@ export async function auditRender() {
               status = 404;
               body = Buffer.from('Not found');
             }
+            requestEvidence({
+              kind: 'fulfilled',
+              url,
+              status,
+              contentType,
+              bytes: body.length,
+              page: requestPath,
+            });
             await send('Fetch.fulfillRequest', {
               requestId: params['requestId'],
               responseCode: status,
@@ -331,7 +391,23 @@ export async function auditRender() {
               ],
               body: body.toString('base64'),
             });
-          })().catch((error) => errors.push(String(error)));
+          })().catch((error) => {
+            requestEvidence({
+              kind: 'interception-error',
+              url,
+              page: requestPath,
+              error: String(error),
+            });
+            if (!diagnosticOnly) {
+              errors.push(
+                `Browser interception for ${url} on ${requestPath}: ${String(error)}`,
+              );
+            }
+          });
+          pendingInterceptions.add(interception);
+          void interception.finally(() =>
+            pendingInterceptions.delete(interception),
+          );
         }
       });
       await send('Page.enable');
@@ -354,14 +430,99 @@ export async function auditRender() {
       }
       async function waitFor(expression: string) {
         for (let attempt = 0; attempt < 200; attempt++) {
-          if (await evaluate(expression)) {
-            return;
+          readinessExpression = expression;
+          try {
+            if (await evaluate(expression)) {
+              return;
+            }
+          } catch (error) {
+            if (!isNavigationContextError(error)) {
+              throw error;
+            }
           }
           await delay(100);
         }
         throw new Error(`Browser readiness timeout: ${expression}`);
       }
-      const snapshot = `(()=>({title:document.title,canonical:document.querySelector('link[rel="canonical"]')?.getAttribute('href')??null,headings:[...document.querySelectorAll('h1')].map(e=>e.textContent.trim()),noindex:[...document.querySelectorAll('meta[name]')].some(e=>['robots','googlebot'].includes(e.name.toLowerCase())&&/(?:noindex|\\bnone\\b)/i.test(e.content)),vitals:window.__seoVitals,main:document.querySelector('main')?.textContent.replace(/\\s+/g,' ').trim()??'',overflow:document.documentElement.scrollWidth>innerWidth+1,images:[...document.images].filter(e=>!e.complete||!e.naturalWidth).map(e=>e.src),links:[...document.querySelectorAll('main a[href]')].map(e=>e.getAttribute('href'))}))()`;
+      const snapshot = browserSnapshotExpression;
+      async function captureFailure(
+        path: string,
+        selector: string,
+        pageFindings: Finding[],
+      ) {
+        const debug: Record<string, unknown> = {
+          url: productionOrigin + path,
+          phase,
+          selector,
+          navigation,
+          readinessExpression,
+          runtimeErrors: [...errors],
+          requests: [...recentRequests],
+          findings: pageFindings,
+        };
+        const fileId = `${String(debugPages.length + 1).padStart(3, '0')}-${path === '/' ? 'home' : path.slice(1).replaceAll('/', '--')}`;
+        const folder = resolve(reportDirectory, 'failed-pages');
+        try {
+          const response = await client.send(
+            'Runtime.evaluate',
+            { expression: snapshot, returnByValue: true },
+            session,
+            3000,
+          );
+          debug['page'] =
+            (response['result'] as Record<string, unknown>)?.['value'] ?? null;
+          debug['probeException'] = response['exceptionDetails'] ?? null;
+        } catch (error) {
+          debug['captureError'] = String(error);
+        }
+        if (captureCount < 8) {
+          captureCount++;
+          try {
+            await mkdir(folder, { recursive: true });
+            const response = await client.send(
+              'Runtime.evaluate',
+              {
+                expression: "document.documentElement?.outerHTML ?? ''",
+                returnByValue: true,
+              },
+              session,
+              3000,
+            );
+            const html = String(
+              (response['result'] as Record<string, unknown>)?.['value'] ?? '',
+            );
+            await writeFile(
+              resolve(folder, fileId + '.html'),
+              html.slice(0, 512 * 1024),
+            );
+            debug['html'] = 'failed-pages/' + fileId + '.html';
+            debug['htmlTruncated'] = html.length > 512 * 1024;
+            const screenshot = await client.send(
+              'Page.captureScreenshot',
+              { format: 'png', captureBeyondViewport: false },
+              session,
+              3000,
+            );
+            await writeFile(
+              resolve(folder, fileId + '.png'),
+              Buffer.from(String(screenshot['data']), 'base64'),
+            );
+            debug['screenshot'] = 'failed-pages/' + fileId + '.png';
+          } catch (error) {
+            debug['artifactCaptureError'] = String(error);
+          }
+        }
+        await mkdir(folder, { recursive: true });
+        await writeFile(
+          resolve(folder, fileId + '.json'),
+          JSON.stringify(debug, null, 2) + '\n',
+        );
+        debugPages.push(debug);
+        const observed = (debug['page'] ?? {}) as Record<string, unknown>;
+        console.error(
+          `[render:page] ${JSON.stringify({ url: debug['url'], phase, navigation, page: { href: observed['href'], readyState: observed['readyState'], appReady: observed['appReady'], title: observed['title'], headings: observed['headings'], viewport: observed['viewport'], mainExcerpt: String(observed['main'] ?? '').slice(0, 700) }, details: 'failed-pages/' + fileId + '.json' })}`,
+        );
+      }
       while (next < routeSearchPolicy.length) {
         const policy = routeSearchPolicy[next++];
         attempted++;
@@ -372,7 +533,17 @@ export async function auditRender() {
         const selector = expectedSelector(
           router.routes.find((route) => route.path === policy.path)!,
         );
+        // Finish responses from the preceding page before assigning errors to a new one.
+        await Promise.all([...pendingInterceptions]);
+        const findingStart = findings.length;
         errors.length = 0;
+        recentRequests.length = 0;
+        requests.clear();
+        currentPath = policy.path;
+        navigation = null;
+        readinessExpression = '';
+        phase = 'navigation';
+        diagnosticOnly = false;
         try {
           await send('Emulation.setDeviceMetricsOverride', {
             width: 390,
@@ -380,10 +551,17 @@ export async function auditRender() {
             deviceScaleFactor: 1,
             mobile: true,
           });
-          await send('Page.navigate', { url: origin + policy.path });
-          await waitFor(
-            `document.documentElement.dataset.appReady==='true' && !!document.querySelector(${JSON.stringify(selector)})`,
-          );
+          navigation = await send('Page.navigate', {
+            url: origin + policy.path,
+          });
+          if (navigation['errorText']) {
+            throw new Error(
+              `Page.navigate failed: ${String(navigation['errorText'])}`,
+            );
+          }
+          phase = 'readiness';
+          await waitFor(pageReadyExpression(policy.path, selector));
+          phase = 'mobile-snapshot';
           const rendered = (await evaluate(snapshot)) as Record<
             string,
             unknown
@@ -428,21 +606,10 @@ export async function auditRender() {
               ),
             );
           }
-          if (errors.length) {
-            findings.push(
-              finding(
-                'H07',
-                Severity.Error,
-                policy.path,
-                AuditStage.Render,
-                errors.join('\n'),
-                'no first-party runtime failures',
-              ),
-            );
-          }
           const family = policy.pageType;
           // One desktop page per independently declared template family.
           if (!rows.some((row) => row['desktopFamily'] === family)) {
+            phase = 'desktop-snapshot';
             await send('Emulation.setDeviceMetricsOverride', {
               width: 1280,
               height: 900,
@@ -480,6 +647,7 @@ export async function auditRender() {
             });
           }
           if (policy.path === PublicRouteUrl.Examples) {
+            phase = 'fragment-navigation';
             await send('Emulation.setDeviceMetricsOverride', {
               width: 390,
               height: 844,
@@ -494,11 +662,11 @@ export async function auditRender() {
                 `document.querySelector('a[href='+CSS.escape(${JSON.stringify(link.href)})+']').click()`,
               );
               await waitFor(
-                `location.pathname===${JSON.stringify(policy.path)} && location.hash===${JSON.stringify('#' + link.id)} && document.getElementById(${JSON.stringify(link.id)}).getBoundingClientRect().top<160 && document.getElementById(${JSON.stringify(link.id)}).getBoundingClientRect().bottom>0`,
+                `location.pathname===${JSON.stringify(policy.path)} && location.hash===${JSON.stringify('#' + link.id)} && document.getElementById(${JSON.stringify(link.id)})?.getBoundingClientRect().top<160 && document.getElementById(${JSON.stringify(link.id)})?.getBoundingClientRect().bottom>0`,
               );
               await send('Page.navigate', { url: origin + link.href });
               await waitFor(
-                `document.documentElement.dataset.appReady==='true' && document.getElementById(${JSON.stringify(link.id)}).getBoundingClientRect().top<160`,
+                `document.documentElement?.dataset.appReady==='true' && document.getElementById(${JSON.stringify(link.id)})?.getBoundingClientRect().top<160`,
               );
             }
             const history = await send('Page.getNavigationHistory');
@@ -530,6 +698,7 @@ export async function auditRender() {
           }
           // Actual client navigation across families must update page identity.
           if (policy.path === PublicRouteUrl.AllTools) {
+            phase = 'client-navigation';
             await evaluate(
               `document.querySelector('a[href='+CSS.escape(${JSON.stringify(PublicRouteUrl.Guides)})+']').click()`,
             );
@@ -558,6 +727,30 @@ export async function auditRender() {
               'complete usable direct-load/hydrated page',
             ),
           );
+        }
+        await Promise.all([...pendingInterceptions]);
+        if (errors.length) {
+          findings.push(
+            finding(
+              'H07',
+              Severity.Error,
+              policy.path,
+              AuditStage.Render,
+              errors.join('\n'),
+              'no first-party runtime or browser request failures',
+            ),
+          );
+        }
+        const pageFindings = findings.slice(findingStart);
+        if (pageFindings.length) {
+          diagnosticOnly = true;
+          try {
+            await captureFailure(policy.path, selector, pageFindings);
+          } catch (error) {
+            console.error(
+              `[render:diagnostics] ${JSON.stringify({ url: productionOrigin + policy.path, error: String(error) })}`,
+            );
+          }
         }
         if (rows.length % 25 === 0) {
           console.log(
@@ -601,12 +794,15 @@ export async function auditRender() {
     artifactSha256,
     sourceSha256,
     elapsedMs: Math.round(performance.now() - started),
+    environment,
+    debugPages,
     browser: version,
     optionalServices:
       'All third-party requests blocked; first-party failures remain blocking.',
     rows,
     findings,
   };
+  logBrowserFindings(findings);
   await writeReport('render', report);
   return report;
 }

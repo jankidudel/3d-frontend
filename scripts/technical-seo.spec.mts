@@ -1,3 +1,10 @@
+import {
+  browserSnapshot,
+  browserSnapshotExpression,
+  pageReadyExpression,
+  isNavigationContextError,
+  logBrowserFindings,
+} from './seo-browser-diagnostics.mts';
 import { describe, expect, it } from 'vitest';
 import { JSDOM } from 'jsdom';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
@@ -8,6 +15,8 @@ import {
   blocksIndexing,
   expectedSelector,
   Severity,
+  AuditStage,
+  finding,
 } from './technical-seo.mts';
 import { inspectPublicHtml } from './seo-audit.mts';
 import { PassThrough } from 'node:stream';
@@ -151,5 +160,94 @@ describe('Chrome pipe protocol', () => {
     input.end();
     await expect(request).rejects.toThrow('pipe closed');
     client.close();
+  });
+});
+
+describe('browser audit diagnostics and navigation probes', () => {
+  it('waits safely before the new document root exists and rejects the previous route', () => {
+    const window = new JSDOM('<app-examples-page></app-examples-page>', {
+      url: 'https://www.inspectmesh.com/examples',
+      runScripts: 'outside-only',
+    }).window;
+    window.document.documentElement.dataset['appReady'] = 'true';
+    expect(
+      window.eval(pageReadyExpression('/examples', 'app-examples-page')),
+    ).toBe(true);
+    expect(
+      window.eval(pageReadyExpression('/guides', 'app-examples-page')),
+    ).toBe(false);
+    window.document.documentElement.remove();
+    expect(
+      window.eval(pageReadyExpression('/examples', 'app-examples-page')),
+    ).toBe(false);
+    window.close();
+  });
+  it('uses the actual Chrome snapshot probe to normalize whitespace and restrictive directives', () => {
+    const window = new JSDOM(
+      '<meta name="googlebot" content="none"><main><h1>Guide</h1><h2>Two\n  words</h2><p>Useful   content</p></main>',
+      { url: 'https://www.inspectmesh.com/guide', runScripts: 'outside-only' },
+    ).window;
+    const result = window.eval(browserSnapshotExpression) as ReturnType<
+      typeof browserSnapshot
+    >;
+    expect(result.main).toContain('Two words');
+    expect(result.main).toContain('Useful content');
+    expect(result.noindex).toBe(true);
+    expect(result.href).toBe('https://www.inspectmesh.com/guide');
+    window.document.documentElement.remove();
+    expect(() => window.eval(browserSnapshotExpression)).not.toThrow();
+    window.close();
+  });
+  it('prints exact rules, URLs and escaped evidence without hiding failures', () => {
+    const messages: string[] = [];
+    const evidence = 'first line\n::error::second line';
+    logBrowserFindings(
+      [
+        finding(
+          'H03',
+          Severity.Error,
+          '/examples',
+          AuditStage.Render,
+          evidence,
+          'ready page',
+        ),
+        finding(
+          'H03',
+          Severity.Unknown,
+          '/',
+          AuditStage.Render,
+          'Chrome unavailable',
+          'browser',
+        ),
+      ],
+      (line) => messages.push(line),
+    );
+    expect(messages).toHaveLength(2);
+    expect(messages[0]).toContain(
+      '[render:H03] ERROR https://www.inspectmesh.com/examples',
+    );
+    expect(messages[0]).toContain('first line\\n::error::second line');
+    expect(messages[0]).not.toContain('\n');
+    expect(messages[1]).toContain('UNKNOWN');
+  });
+  it('only retries navigation execution-context turnover', () => {
+    expect(
+      isNavigationContextError(new Error('Execution context was destroyed.')),
+    ).toBe(true);
+    expect(
+      isNavigationContextError(
+        new Error('Cannot find context with specified id'),
+      ),
+    ).toBe(true);
+    expect(
+      isNavigationContextError(
+        new Error(
+          "TypeError: Cannot read properties of null (reading 'dataset')",
+        ),
+      ),
+    ).toBe(false);
+    expect(
+      isNavigationContextError(new Error('Real application bootstrap failure')),
+    ).toBe(false);
   });
 });

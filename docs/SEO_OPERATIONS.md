@@ -190,6 +190,29 @@ Both workflows remain manual and verify production after upload. A failed live
 audit makes deployment unhealthy; inspect evidence and use the existing reviewed
 redeployment process. Automatic deletion, rollback or invalidation is not added.
 
+### Debugging a failed browser audit
+
+The console prints every blocking finding with its rule, exact URL, observed
+value and expectation. `[render:page]` adds the phase, navigation result, loaded
+URL, document readiness, Angular readiness marker, heading, viewport and a short
+main-content excerpt. The environment line records Node/Chrome, OS/architecture,
+CPU/memory, worker count and GitHub run identity, without dumping environment
+variables. Compare these fields between local and CI runs.
+
+The existing `technical-seo-prod` workflow artifact includes `render.json`,
+`render.csv` and `failed-pages/`. Each failed page has a JSON diagnostic with
+recent fulfilled, blocked and failed requests and runtime errors. The first
+eight failed pages also receive a viewport PNG and up to 512 KiB of HTML.
+Only this isolated public build is captured; no private uploads or forms are
+submitted. The complete findings remain in JSON/CSV even when console evidence
+is abbreviated. Diagnostic capture failures do not turn a failed audit into a
+pass. Chrome startup failures still exit as incomplete.
+
+The readiness probe waits for the requested pathname and a non-null document
+root before reading the readiness marker. Execution-context turnover caused by
+navigation may be retried; application exceptions remain failures. This is a
+browser-runner correction, not a relaxation of the SEO checks.
+
 ### Hosting compression, caching and cost boundaries
 
 HTML used the managed caching-disabled policy, which did not negotiate gzip or
