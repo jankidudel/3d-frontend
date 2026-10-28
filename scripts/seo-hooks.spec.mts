@@ -28,9 +28,6 @@ describe('Git SEO snapshot contracts', () => {
       ),
     ).toEqual(['sha-A', 'sha-B', 'tag-commit']);
     expect(() => outgoingCommits('invalid', resolveCommit)).toThrow('Invalid');
-    expect(() =>
-      outgoingCommits('refs/notes/n a refs/notes/n b', resolveCommit),
-    ).toThrow('Unsupported');
   });
   it.each(['HEAD', 'HEAD~1', 'main', '0123456789abcdef'])(
     'accepts Git revision source %s and audits the supplied outgoing SHA',
@@ -48,17 +45,25 @@ describe('Git SEO snapshot contracts', () => {
       expect(resolved).toEqual(['outgoing-sha']);
     },
   );
-  it('checks the remote destination even when the local source is a normal branch', () => {
-    expect(() =>
+  it('audits the supplied commit regardless of destination name', () => {
+    const resolved: string[] = [];
+    expect(
       outgoingCommits(
         'refs/heads/main outgoing-sha refs/notes/custom old-sha',
-        () => {
-          throw new Error(
-            'Must reject unsupported destination before resolving',
-          );
+        (sha) => {
+          resolved.push(sha);
+          return 'resolved-outgoing-commit';
         },
       ),
-    ).toThrow('Unsupported outgoing destination: refs/notes/custom');
+    ).toEqual(['resolved-outgoing-commit']);
+    expect(resolved).toEqual(['outgoing-sha']);
+    expect(() =>
+      outgoingCommits('HEAD invalid-sha refs/notes/custom old-sha', () => {
+        throw new Error('Not a commit');
+      }),
+    ).toThrow('Not a commit');
+  });
+  it('skips deleted refs without resolving a commit', () => {
     expect(
       outgoingCommits(`(delete) ${zero} refs/heads/main old-sha`, () => {
         throw new Error('Deleted refs have no outgoing commit');

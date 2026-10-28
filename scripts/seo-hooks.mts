@@ -54,17 +54,9 @@ export function outgoingCommits(
         'Invalid pre-push ref input; cannot certify outgoing source.',
       );
     }
-    const [_localRef, sha, remoteRef] = fields;
+    const [, sha] = fields;
     if (zero.test(sha)) {
       continue;
-    }
-    // Git can supply HEAD, a SHA or another revision expression as the local
-    // source. Classify the destination and audit Git's supplied source SHA.
-    if (
-      !remoteRef.startsWith('refs/heads/') &&
-      !remoteRef.startsWith('refs/tags/')
-    ) {
-      throw new Error(`Unsupported outgoing destination: ${remoteRef}`);
     }
     // Annotated/lightweight commit tags are audited; tree/blob tags fail deliberately.
     commits.add(resolveCommit(sha));
