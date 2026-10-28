@@ -25,6 +25,39 @@ describe('Git SEO snapshot contracts', () => {
       outgoingCommits('refs/notes/n a refs/notes/n b', resolveCommit),
     ).toThrow('Unsupported');
   });
+  it.each(['HEAD', 'HEAD~1', 'main', '0123456789abcdef'])(
+    'accepts Git revision source %s and audits the supplied outgoing SHA',
+    (localRef) => {
+      const resolved: string[] = [];
+      expect(
+        outgoingCommits(
+          `${localRef} outgoing-sha refs/heads/main old-sha`,
+          (sha) => {
+            resolved.push(sha);
+            return 'resolved-outgoing-commit';
+          },
+        ),
+      ).toEqual(['resolved-outgoing-commit']);
+      expect(resolved).toEqual(['outgoing-sha']);
+    },
+  );
+  it('checks the remote destination even when the local source is a normal branch', () => {
+    expect(() =>
+      outgoingCommits(
+        'refs/heads/main outgoing-sha refs/notes/custom old-sha',
+        () => {
+          throw new Error(
+            'Must reject unsupported destination before resolving',
+          );
+        },
+      ),
+    ).toThrow('Unsupported outgoing destination: refs/notes/custom');
+    expect(
+      outgoingCommits(`(delete) ${zero} refs/heads/main old-sha`, () => {
+        throw new Error('Deleted refs have no outgoing commit');
+      }),
+    ).toEqual([]);
+  });
   it('checks outgoing source without requiring Chrome or certifying deployment', async () => {
     const pkg = JSON.parse(await readFile('package.json', 'utf8'));
     const commands: string[][] = [];
