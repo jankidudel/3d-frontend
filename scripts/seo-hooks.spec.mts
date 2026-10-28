@@ -1,5 +1,12 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtemp, readFile, writeFile, rm, mkdir } from 'node:fs/promises';
+import {
+  mkdtemp,
+  readFile,
+  writeFile,
+  rm,
+  mkdir,
+  chmod,
+} from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { describe, expect, it } from 'vitest';
@@ -58,6 +65,69 @@ describe('Git SEO snapshot contracts', () => {
       }),
     ).toEqual([]);
   });
+  it('accepts the real hook input produced by git push --dry-run to a disposable remote with HEAD', async () => {
+    const directory = await mkdtemp(
+      resolve(tmpdir(), 'inspectmesh-head-push-'),
+    );
+    const gitDirectory = execFileSync(
+      'git',
+      ['rev-parse', '--absolute-git-dir'],
+      { encoding: 'utf8' },
+    ).trim();
+    const commit = execFileSync('git', ['rev-parse', 'HEAD'], {
+      encoding: 'utf8',
+    }).trim();
+    const remote = resolve(directory, 'remote.git');
+    const hooks = resolve(directory, 'hooks');
+    const inputPath = resolve(directory, 'input');
+    const env = {
+      ...process.env,
+      GIT_DIR: undefined,
+      GIT_WORK_TREE: undefined,
+      GIT_INDEX_FILE: undefined,
+      GIT_OBJECT_DIRECTORY: undefined,
+      GIT_ALTERNATE_OBJECT_DIRECTORIES: undefined,
+      INSPECTMESH_TEST_PUSH_INPUT: inputPath,
+    };
+    try {
+      execFileSync('git', ['init', '--bare', '--initial-branch=main', remote], {
+        env,
+        stdio: 'pipe',
+      });
+      await mkdir(hooks);
+      await writeFile(
+        resolve(hooks, 'pre-push'),
+        '#!/bin/sh\ncat > "$INSPECTMESH_TEST_PUSH_INPUT"\n',
+      );
+      await chmod(resolve(hooks, 'pre-push'), 0o755);
+      execFileSync(
+        'git',
+        [
+          `--git-dir=${gitDirectory}`,
+          `--work-tree=${process.cwd()}`,
+          '-c',
+          `core.hooksPath=${hooks}`,
+          'push',
+          '--dry-run',
+          remote,
+          'HEAD',
+        ],
+        { env, stdio: 'pipe' },
+      );
+      const input = await readFile(inputPath, 'utf8');
+      expect(input.split(/\s+/)[0]).toBe('HEAD');
+      expect(outgoingCommits(input, (sha) => sha)).toEqual([commit]);
+      expect(
+        execFileSync('git', [`--git-dir=${remote}`, 'for-each-ref'], {
+          env,
+          encoding: 'utf8',
+        }),
+      ).toBe('');
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
+
   it('checks outgoing source without requiring Chrome or certifying deployment', async () => {
     const pkg = JSON.parse(await readFile('package.json', 'utf8'));
     const commands: string[][] = [];
