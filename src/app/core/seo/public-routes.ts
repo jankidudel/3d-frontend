@@ -10,11 +10,16 @@ export const PageType = {
 export type PageType = (typeof PageType)[keyof typeof PageType];
 
 export const PublicRouteSegment = {
+  Guide: 'guides',
   Compare: 'compare',
   Printers: '3d-printers',
-  Materials: '3d-printing-materials',
+  Materials: 'materials',
   MaterialComparisons: 'compare-materials',
 } as const;
+
+export function guideRoutePath(slug: string): `/guides/${string}` {
+  return `/${PublicRouteSegment.Guide}/${slug}`;
+}
 
 export const PrinterSlug = {
   BambuLabA1Mini: 'bambu-lab-a1-mini',
@@ -81,7 +86,7 @@ const toolRoute = <Path extends string>(path: Path) =>
   defineRoute(path, PageType.Tool);
 
 const guideRoute = <Path extends string>(path: Path) =>
-  defineRoute(path, PageType.Guide);
+  defineRoute(`${PublicRouteSegment.Guide}/${path}` as const, PageType.Guide);
 
 export const PublicRoutePath = {
   Home: defineRoute('', PageType.Home),
@@ -138,8 +143,8 @@ export const PublicRoutePath = {
   ThreeMfTriangleCounter: toolRoute('3mf-triangle-counter'),
   ThreeMfVolumeCalculator: toolRoute('3mf-volume-calculator'),
   ThreeMfToStlConverter: toolRoute('3mf-to-stl-converter'),
-  Guides: guideRoute('guides'),
-  Examples: guideRoute('examples'),
+  Guides: defineRoute('guides', PageType.Guide),
+  Examples: defineRoute('examples', PageType.Guide),
   Methods: guideRoute('how-inspectmesh-checks-files'),
   MissingThreeMfObjectsGuide: guideRoute('3mf-missing-objects-after-import'),
   StlVolumeWrongGuide: guideRoute('stl-volume-calculation-wrong'),

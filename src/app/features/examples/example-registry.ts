@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ExampleAsset } from './example-assets';
 export interface PublicExample {
   readonly id: string;
@@ -71,7 +72,7 @@ const splitAssemblyExamples: readonly PublicExample[] = [
       'Load locally, choose Z at 50%, confirm the displayed coordinate, then explicitly submit. Loading never starts a job.',
     limitations:
       'STL stores no unit. A passed geometry screen does not establish slicer placement, assembly fit or physical print success.',
-    guide: '/stl-split-failed',
+    guide: GuideRouteUrl.RouteStlSplitFailed,
     tools: ['/stl-splitter'],
     provenance:
       'Original InspectMesh geometry and measured local processor results; no physical print test.',
@@ -118,7 +119,7 @@ const splitAssemblyExamples: readonly PublicExample[] = [
       'Open the meshes in the viewer, then slice and print with the intended material, orientation and profile before measuring or fitting.',
     limitations:
       'The 0.30 nominal diametral clearance is illustrative, not a recommendation. No coupon was physically printed.',
-    guide: '/alignment-pins-for-split-3d-prints',
+    guide: GuideRouteUrl.RouteAlignmentPinsForSplit3dPrints,
     tools: ['/stl-viewer'],
     provenance:
       'Original InspectMesh generated geometry with a machine-readable manifest; no physical fit or strength test.',
@@ -153,7 +154,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Load the block locally, choose Inspect cross-section, Cut axis Z and Cut position 50%: its known 0..10 range puts the plane at Z=5 mm. Record the actual visible observation.',
     limitations:
       'Clipping is visual, not an extracted contour, hollowing service or proof of drainage, physical flow, access or strength. STL requires the agreed millimetre convention.',
-    guide: '/how-to-hollow-an-stl-file-for-3d-printing',
+    guide: GuideRouteUrl.RouteHowToHollowAnStlFileFor3dPrinting,
     tools: ['/stl-viewer'],
     provenance:
       'Original CC0 InspectMesh geometry. Independent ground truth and method-labelled local captures are retained with the evidence assets.',
@@ -181,7 +182,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Extract the whole ZIP, then open sample.obj in a suitable OBJ/MTL/texture application. Compare a separate working copy missing the texture or material file; record the actual application/version and result.',
     limitations:
       'Download-only illustration. InspectMesh STL/3MF tools do not accept OBJ, MTL or ZIP uploads. No external appearance or manufactured-colour result is claimed.',
-    guide: '/stl-vs-obj-for-3d-printing',
+    guide: GuideRouteUrl.RouteStlVsObjFor3dPrinting,
     tools: [],
     provenance:
       'Original CC0-1.0 InspectMesh model and 16 x 16 checker image; deterministic generator and inventory retained.',
@@ -224,7 +225,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Download controls without uploading. Explicitly submit one at a time to the Quality Checker for a server report.',
     limitations:
       'A clean report covers supported findings only. Parsing failure is not a zero-finding result.',
-    guide: '/how-to-check-stl-for-errors',
+    guide: GuideRouteUrl.RouteHowToCheckStlForErrors,
     tools: ['/stl-quality-checker'],
     provenance:
       'Original InspectMesh generated geometry and measured processor results; no physical print test.',
@@ -271,7 +272,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Load a public control locally. Press Check manifold geometry only if you want to submit it for a server report; selecting the file alone does not submit it.',
     limitations:
       'Edge counts do not establish design intent or detect every spatial crossing.',
-    guide: '/what-is-non-manifold-geometry',
+    guide: GuideRouteUrl.RouteWhatIsNonManifoldGeometry,
     tools: ['/stl-manifold-checker'],
     provenance:
       'Original InspectMesh geometry measured in the processor; no physical print test.',
@@ -298,7 +299,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Use 150% in Scale. In STL inspection explicitly choose mm or inches; a unit assumption changes interpretation, not file bytes.',
     limitations:
       'Check a known dimension in the receiving application. STL does not acquire unit metadata.',
-    guide: '/why-stl-files-have-no-units',
+    guide: GuideRouteUrl.RouteWhyStlFilesHaveNoUnits,
     tools: ['/stl-viewer', '/stl-scale-tool', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
@@ -328,7 +329,7 @@ export const publicExamples: readonly PublicExample[] = [
     settings: 'Load either cube into preflight; use a millimetre assumption.',
     limitations:
       'Confirm design intent before filling. A vessel with closed wall surfaces can have a mouth without surface boundary edges.',
-    guide: '/how-to-fix-holes-in-an-stl-file',
+    guide: GuideRouteUrl.RouteHowToFixHolesInAnStlFile,
     tools: ['/stl-viewer', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
@@ -365,7 +366,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Open locally in the STL Viewer; optional server quality analysis requires an explicit upload. No slicer output is claimed for these controls.',
     limitations:
       'STL has no unit. A vertical sheet has nonzero Z span while still lacking thickness. Edge counts do not measure arbitrary wall width.',
-    guide: '/zero-thickness-stl-surface',
+    guide: GuideRouteUrl.RouteZeroThicknessStlSurface,
     tools: ['/stl-viewer', '/stl-quality-checker'],
     provenance:
       'Original InspectMesh generated geometry and measured processor results; no physical print test.',
@@ -403,7 +404,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Use Inspect cross-section in the local viewer before deciding whether an internal surface belongs.',
     limitations:
       'The processor does not label design intent or test all spatial intersections. Do not delete an inner wall solely from its area.',
-    guide: '/internal-faces-in-stl',
+    guide: GuideRouteUrl.RouteInternalFacesInStl,
     tools: ['/stl-viewer', '/stl-quality-checker'],
     provenance:
       'Original InspectMesh generated geometry and measured processor results; no physical print test.',
@@ -446,7 +447,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Use millimetres. Preflight uses vertex winding; the STL stored normal vector is not this test.',
     limitations:
       'Preserve the original and correct a copy in CAD or a mesh editor. Consistent edge directions do not establish the intended outside.',
-    guide: '/how-to-fix-flipped-normals-in-an-stl-file',
+    guide: GuideRouteUrl.RouteHowToFixFlippedNormalsInAnStlFile,
     tools: ['/stl-print-preflight', '/stl-compare'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
@@ -477,7 +478,7 @@ export const publicExamples: readonly PublicExample[] = [
     settings: 'Run millimetre preflight on each file.',
     limitations:
       'Inspect intentional parts and crossing surfaces in the source design. InspectMesh does not detect self intersections; touching is also different from a boolean union.',
-    guide: '/how-to-fix-non-manifold-stl',
+    guide: GuideRouteUrl.RouteHowToFixNonManifoldStl,
     tools: ['/stl-viewer', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
@@ -515,7 +516,7 @@ export const publicExamples: readonly PublicExample[] = [
       'STL coordinate unit mm; review threshold 1.2 mm. Slicer experiment: 0.4 mm nozzle, 0.2 mm layers, 0.45 mm width, two perimeters, zero infill, thin-wall option off.',
     limitations:
       'Review measured and unmeasured rays and the native slicer preview. Preview-only G-code must not be run on a printer. No universal minimum wall is established.',
-    guide: '/3d-print-wall-thickness-guide',
+    guide: GuideRouteUrl.Route3dPrintWallThicknessGuide,
     tools: [
       '/stl-viewer',
       '/stl-print-preflight',
@@ -547,7 +548,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Declared unit: millimetre. Review threshold: 0.6 mm. Load locally, then run the sampled check.',
     limitations:
       'Combined-scene rays are not labelled by instance. The sample is a geometry control, not a print test.',
-    guide: '/how-to-check-3mf-wall-thickness-for-3d-printing',
+    guide: GuideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting,
     tools: ['/3mf-wall-thickness-checker'],
     provenance:
       'Original InspectMesh generated 3MF using scripts/generate-collection-examples.py; no physical print test.',
@@ -584,7 +585,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Reducer: triangle reduction at 75%. Compare: original coordinate frame, mm on both sides, 0.1 mm tolerance, 5,000 samples per direction.',
     limitations:
       'Recheck topology and small features. A target count is a request. Sampled distance is not a global maximum or proof of print equivalence.',
-    guide: '/how-to-reduce-stl-triangle-count',
+    guide: GuideRouteUrl.RouteHowToReduceStlTriangleCount,
     tools: ['/stl-file-size-reducer', '/stl-compare', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
@@ -622,7 +623,7 @@ export const publicExamples: readonly PublicExample[] = [
       '3MF uses declared units. Conversion offers entire-build or single placed-item scope in millimetres; generate and verify explicitly.',
     limitations:
       'Keep the original package/project. STL loses declared units, build identity, colours, materials and project settings; unsupported extensions are not validated.',
-    guide: '/3mf-missing-objects-after-import',
+    guide: GuideRouteUrl.Route3mfMissingObjectsAfterImport,
     tools: ['/3mf-viewer', '/3mf-print-preflight', '/3mf-to-stl-converter'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
@@ -649,7 +650,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Enter the custom box as X / Y / Z. Preflight labels width / height / depth as X / Y / Z; no allowance is added automatically.',
     limitations:
       'Confirm usable slicer space, excluded zones, supports and clearance. These hypothetical allowances are not a support strategy or general collision check.',
-    guide: '/how-to-check-if-a-3d-model-fits-your-printer',
+    guide: GuideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter,
     tools: ['/stl-viewer', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh generated geometry; software inspection controls, no physical print test.',
@@ -675,7 +676,7 @@ export const publicExamples: readonly PublicExample[] = [
     settings: 'Initial logical XYZ/E zero; millimetres; absolute XYZ/E.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/how-to-check-gcode-before-printing',
+    guide: GuideRouteUrl.RouteHowToCheckGcodeBeforePrinting,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -702,7 +703,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Explicit M83 after G90; no claim about every firmware mode transition.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/how-to-check-gcode-before-printing',
+    guide: GuideRouteUrl.RouteHowToCheckGcodeBeforePrinting,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -728,7 +729,7 @@ export const publicExamples: readonly PublicExample[] = [
     settings: 'Enter X/Y=0..220, Z=0..200; compare location as well as size.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/gcode-outside-print-bed',
+    guide: GuideRouteUrl.RouteGcodeOutsidePrintBed,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -755,7 +756,7 @@ export const publicExamples: readonly PublicExample[] = [
     settings: 'Hypothetical X/Y=0..220, Z=0..200; no collision conclusion.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/gcode-outside-print-bed',
+    guide: GuideRouteUrl.RouteGcodeOutsidePrintBed,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -782,7 +783,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Arcs and macro effects are omitted; later points are not complete machine-space geometry.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/gcode-preview-incomplete',
+    guide: GuideRouteUrl.RouteGcodePreviewIncomplete,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -809,7 +810,7 @@ export const publicExamples: readonly PublicExample[] = [
       'No verified single-run duration or single-filament grams format.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/gcode-preview-incomplete',
+    guide: GuideRouteUrl.RouteGcodePreviewIncomplete,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -836,7 +837,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Malformed numeric input is separate from an incomplete but readable path.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/gcode-preview-incomplete',
+    guide: GuideRouteUrl.RouteGcodePreviewIncomplete,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -861,7 +862,7 @@ export const publicExamples: readonly PublicExample[] = [
     settings: 'A comments-only file is not a valid simulated empty print.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/gcode-preview-incomplete',
+    guide: GuideRouteUrl.RouteGcodePreviewIncomplete,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -889,7 +890,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Hand-authored metadata-format control, not a slicer export or measured consumption.',
     limitations:
       'Never execute this incomplete snippet on a printer. Initial state is a parser assumption. No physical print, firmware execution or compatibility test.',
-    guide: '/how-to-check-gcode-before-printing',
+    guide: GuideRouteUrl.RouteHowToCheckGcodeBeforePrinting,
     tools: ['/gcode-preflight-checker'],
     provenance:
       'Original hand-authored InspectMesh parser control, 10 October 2026. Downloaded bytes are exercised by regression tests; not generated by a slicer.',
@@ -916,7 +917,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose the named control, select scope explicitly; STL receiving convention is millimetres.',
     limitations:
       'Original mathematical software control. Invalid/unsupported packages are deliberately diagnostic-only; no physical print, full schema or slicer compatibility test.',
-    guide: '/extract-part-from-3mf',
+    guide: GuideRouteUrl.RouteExtractPartFrom3mf,
     tools: ['/3mf-viewer', '/3mf-to-stl-converter', '/3mf-print-preflight'],
     provenance:
       'Original InspectMesh deterministic generator scripts/generate-collection-examples.py, 11 October 2026; independent coordinate regression tests.',
@@ -943,7 +944,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose the named control, select scope explicitly; STL receiving convention is millimetres.',
     limitations:
       'Original mathematical software control. Invalid/unsupported packages are deliberately diagnostic-only; no physical print, full schema or slicer compatibility test.',
-    guide: '/extract-part-from-3mf',
+    guide: GuideRouteUrl.RouteExtractPartFrom3mf,
     tools: ['/3mf-viewer', '/3mf-to-stl-converter', '/3mf-print-preflight'],
     provenance:
       'Original InspectMesh deterministic generator scripts/generate-collection-examples.py, 11 October 2026; independent coordinate regression tests.',
@@ -969,7 +970,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose the named control, select scope explicitly; STL receiving convention is millimetres.',
     limitations:
       'Original mathematical software control. Invalid/unsupported packages are deliberately diagnostic-only; no physical print, full schema or slicer compatibility test.',
-    guide: '/3mf-to-stl-combined-or-separate-parts',
+    guide: GuideRouteUrl.Route3mfToStlCombinedOrSeparateParts,
     tools: ['/3mf-viewer', '/3mf-to-stl-converter', '/3mf-print-preflight'],
     provenance:
       'Original InspectMesh deterministic generator scripts/generate-collection-examples.py, 11 October 2026; independent coordinate regression tests.',
@@ -1001,7 +1002,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose the named control, select scope explicitly; STL receiving convention is millimetres.',
     limitations:
       'Original mathematical software control. Invalid/unsupported packages are deliberately diagnostic-only; no physical print, full schema or slicer compatibility test.',
-    guide: '/why-wont-my-3mf-file-slice',
+    guide: GuideRouteUrl.RouteWhyWontMy3mfFileSlice,
     tools: ['/3mf-viewer', '/3mf-to-stl-converter', '/3mf-print-preflight'],
     provenance:
       'Original InspectMesh deterministic generator scripts/generate-collection-examples.py, 11 October 2026; independent coordinate regression tests.',
@@ -1026,7 +1027,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose the named control, select scope explicitly; STL receiving convention is millimetres.',
     limitations:
       'Original mathematical software control. Invalid/unsupported packages are deliberately diagnostic-only; no physical print, full schema or slicer compatibility test.',
-    guide: '/why-wont-my-3mf-file-slice',
+    guide: GuideRouteUrl.RouteWhyWontMy3mfFileSlice,
     tools: ['/3mf-viewer', '/3mf-to-stl-converter', '/3mf-print-preflight'],
     provenance:
       'Original InspectMesh deterministic generator scripts/generate-collection-examples.py, 11 October 2026; independent coordinate regression tests.',
@@ -1051,7 +1052,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose the named control, select scope explicitly; STL receiving convention is millimetres.',
     limitations:
       'Original mathematical software control. Invalid/unsupported packages are deliberately diagnostic-only; no physical print, full schema or slicer compatibility test.',
-    guide: '/why-wont-my-3mf-file-slice',
+    guide: GuideRouteUrl.RouteWhyWontMy3mfFileSlice,
     tools: ['/3mf-viewer', '/3mf-to-stl-converter', '/3mf-print-preflight'],
     provenance:
       'Original InspectMesh deterministic generator scripts/generate-collection-examples.py, 11 October 2026; independent coordinate regression tests.',
@@ -1087,7 +1088,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose an operation explicitly. Inline comparison: original coordinates, same units, 0.1 mm tolerance, 5,000 samples per direction.',
     limitations:
       'Touching shells are not a Boolean solid; no physical validation. Finite samples can miss the narrow rib.',
-    guide: '/ascii-vs-binary-stl',
+    guide: GuideRouteUrl.RouteAsciiVsBinaryStl,
     tools: ['/stl-file-size-reducer', '/stl-compare'],
     provenance:
       'Original InspectMesh generated geometry. No customer models or physical testing.',
@@ -1113,7 +1114,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose an operation explicitly. Inline comparison: original coordinates, same units, 0.1 mm tolerance, 5,000 samples per direction.',
     limitations:
       'Touching shells are not a Boolean solid; no physical validation. Finite samples can miss the narrow rib.',
-    guide: '/ascii-vs-binary-stl',
+    guide: GuideRouteUrl.RouteAsciiVsBinaryStl,
     tools: ['/stl-file-size-reducer', '/stl-compare'],
     provenance:
       'Original InspectMesh generated geometry. No customer models or physical testing.',
@@ -1145,7 +1146,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose an operation explicitly. Inline comparison: original coordinates, same units, 0.1 mm tolerance, 5,000 samples per direction.',
     limitations:
       'Touching shells are not a Boolean solid; no physical validation. Finite samples can miss the narrow rib.',
-    guide: '/how-to-reduce-stl-triangle-count',
+    guide: GuideRouteUrl.RouteHowToReduceStlTriangleCount,
     tools: ['/stl-file-size-reducer', '/stl-compare'],
     provenance:
       'Original InspectMesh generated geometry. No customer models or physical testing.',
@@ -1178,7 +1179,7 @@ export const publicExamples: readonly PublicExample[] = [
       'On STL Repair, choose the generated example to open review automatically, press Keep largest part, inspect the reversible selection, then download the STL with kept pieces. Millimetres are assumed, not stored in STL.',
     limitations:
       'The example defines which body is intended. Real files require design review; cavity boundaries and lettering can be necessary. Removal does not generate supports or establish printability.',
-    guide: '/stl-multiple-shells-disconnected-parts',
+    guide: GuideRouteUrl.RouteStlMultipleShellsDisconnectedParts,
     tools: ['/stl-repair', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh generated mathematical geometry, reproduced by scripts/generate-floating-parts-fixtures.mts. No physical print evidence.',
@@ -1205,7 +1206,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Choose the file on STL Repair. Review each piece; manual selections and the largest-area proposal are reversible before explicit download.',
     limitations:
       'A size-based shortcut cannot identify artistic or assembly intent. STL units are assumed; the files do not prove physical assembly or printability.',
-    guide: '/stl-multiple-shells-disconnected-parts',
+    guide: GuideRouteUrl.RouteStlMultipleShellsDisconnectedParts,
     tools: ['/stl-repair'],
     provenance:
       'Original InspectMesh generated mathematical geometry, reproduced by scripts/generate-floating-parts-fixtures.mts. No physical print evidence.',
@@ -1252,7 +1253,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Default 200 × 200 mm bed; centred at 100,100; 0.4 mm nozzle, 0.45 mm width, 0.2 mm layer and first layer, two perimeters, 15% infill.',
     limitations:
       'Software paths are not physical print evidence. The support outcome depends on profile and orientation.',
-    guide: '/floating-regions-in-slicer',
+    guide: GuideRouteUrl.RouteFloatingRegionsInSlicer,
     tools: ['/stl-print-preflight', '/stl-repair'],
     provenance:
       'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
@@ -1285,7 +1286,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Default 200 × 200 mm bed; 0.4 mm nozzle, 0.45 mm width, 0.2 mm layers, two perimeters and 100% rectilinear infill.',
     limitations:
       'The diagram represents source bounds and the tested placement, not a universal import rule or machine safety check.',
-    guide: '/stl-model-off-build-plate',
+    guide: GuideRouteUrl.RouteStlModelOffBuildPlate,
     tools: ['/stl-dimensions-checker', '/stl-viewer'],
     provenance:
       'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
@@ -1337,7 +1338,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Default 200 × 200 mm bed; 0.4 mm nozzle, 0.45 mm width, 0.2 mm layers, two perimeters and 100% rectilinear infill.',
     limitations:
       'One profile and layer comparison cannot establish physical hole accuracy or diagnose an arbitrary customer file.',
-    guide: '/slicer-fills-hole-in-stl',
+    guide: GuideRouteUrl.RouteSlicerFillsHoleInStl,
     tools: ['/stl-viewer', '/stl-print-preflight'],
     provenance:
       'Original InspectMesh geometry and retained PrusaSlicer G-code generated 14 October 2026.',
@@ -1367,7 +1368,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Load locally in the orientation planner, assume millimetres, and compare all six source-axis-up rows at a 45° threshold.',
     limitations:
       'This mathematical control is not a physical adhesion test. The planner does not export a transformed STL.',
-    guide: '/how-to-lay-an-stl-flat-on-print-bed',
+    guide: GuideRouteUrl.RouteHowToLayAnStlFlatOnPrintBed,
     tools: ['/3d-print-orientation-planner', '/stl-viewer'],
     provenance:
       'Original InspectMesh geometry generated 18 October 2026; exact transform is retained in the public manifest.',
@@ -1406,7 +1407,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Load each file locally in the STL Overhang Checker with millimetres, +Z up and a 45° threshold, then inspect the first underside layer in a native slicer.',
     limitations:
       'No physical bridge length or finish is claimed. Slicer-path observations depend on the retained software profile.',
-    guide: '/3d-print-bridge-vs-overhang',
+    guide: GuideRouteUrl.Route3dPrintBridgeVsOverhang,
     tools: ['/stl-overhang-checker', '/stl-viewer'],
     provenance:
       'Original InspectMesh mathematical geometry generated 18 October 2026; no physical print test.',
@@ -1445,7 +1446,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Open locally in the STL Viewer, move the clipping plane through the void, then slice the intended orientation with a recorded profile.',
     limitations:
       'The 4 × 4 mm access dimension is source geometry, not proof that generated support can be removed physically.',
-    guide: '/supports-inside-holes-and-channels',
+    guide: GuideRouteUrl.RouteSupportsInsideHolesAndChannels,
     tools: ['/stl-viewer', '/stl-overhang-checker'],
     provenance:
       'Original InspectMesh mathematical geometry generated 18 October 2026; no physical removal test.',
@@ -1480,7 +1481,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Load each package locally in the 3MF Overhang Checker with +Z up and a 45° threshold.',
     limitations:
       'The combined-scene checker does not interpret support settings, colour or private extension semantics.',
-    guide: '/3d-print-overhangs-and-supports-guide',
+    guide: GuideRouteUrl.Route3dPrintOverhangsAndSupportsGuide,
     tools: ['/3mf-overhang-checker', '/3mf-viewer'],
     provenance:
       'Original InspectMesh 3MF controls generated 18 October 2026; no physical print test.',
@@ -1524,7 +1525,7 @@ export const publicExamples: readonly PublicExample[] = [
       'The existing cube factory supplies a 20 mm cube, an unchanged face retriangulation and a deliberate 24 mm width revision.',
     observed:
       'Existing comparison regressions retain near-zero unchanged surface samples and the known 4 mm outside-face displacement. This is local software evidence.',
-    guide: '/how-to-compare-stl-revisions',
+    guide: GuideRouteUrl.RouteHowToCompareStlRevisions,
     tools: ['/stl-compare'],
   },
   {
@@ -1559,7 +1560,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Both closed generated tubes span 40 × 30 × 10 mm and contain 32 triangles. Analytical volumes are 11,360 and 11,640 mm³.',
     observed:
       'Independent reopening confirms bounds, incidence, winding and volume. Existing two-way comparison at 0.1 mm reports 392 forward and 364 reverse samples above tolerance, out of 5,000 each.',
-    guide: '/how-to-compare-stl-revisions',
+    guide: GuideRouteUrl.RouteHowToCompareStlRevisions,
     tools: ['/stl-compare', '/stl-viewer'],
   },
   {
@@ -1594,7 +1595,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Circumradius 10 mm, height 20 mm, cap fans and side quads: 96 and 288 triangles. Both include axis extremes and span 20 × 20 × 20 mm.',
     observed:
       'Serialized files reopen with their designed closed edge incidence and bounds. Analytical ideal-circle sagitta is about 0.08555 versus 0.00952 mm; this is not a measured CAD-export setting.',
-    guide: '/stl-resolution-chord-height-explained',
+    guide: GuideRouteUrl.RouteStlResolutionChordHeightExplained,
     tools: ['/stl-viewer', '/stl-compare'],
   },
   {
@@ -1635,7 +1636,7 @@ export const publicExamples: readonly PublicExample[] = [
       'Exact bytes are generated by the existing collection kit action, with one of each intended file. These boxes are not a mechanically fitted assembly.',
     observed:
       'Local collection functions report 9,600 mm³ for the base, four cover boundary edges and unavailable cover volume, and 768 mm³ for the spacer. Printer fit is skipped without a profile.',
-    guide: '/check-stl-files-before-selling',
+    guide: GuideRouteUrl.RouteCheckStlFilesBeforeSelling,
     tools: ['/batch-stl-checker'],
   },
 ];

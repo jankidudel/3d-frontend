@@ -1,7 +1,10 @@
 import { PlannerKind } from './features/planning/planner-kind';
 import { Routes } from '@angular/router';
 import { BreadcrumbPageLayout } from './core/components/breadcrumb-page-layout/breadcrumb-page-layout';
-import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
+import {
+  PublicRouteSegment,
+  PublicRoutePathValue as PublicRoutePath,
+} from './core/seo/public-routes';
 import { guideCanMatch } from './features/guides/guide-route';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 import { printers } from './features/printer-comparison/printer-catalogue';
@@ -386,7 +389,7 @@ const breadcrumbRoutes: Routes = [
       ),
   },
   {
-    path: ':guideSlug',
+    path: `${PublicRouteSegment.Guide}/:guideSlug`,
     canMatch: [guideCanMatch],
     loadComponent: () =>
       import('./features/guides/guide-page').then((m) => m.GuidePage),

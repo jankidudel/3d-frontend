@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import { JSDOM } from 'jsdom';
 import {
   canonicalPublicRoutePaths,
+  guideRoutePath,
   PublicRouteUrl,
 } from '../src/app/core/seo/public-routes.ts';
 import {
@@ -97,18 +98,18 @@ const navigableUtilities = new Set<string>([
 const knownRoutes = new Set([
   ...navigableUtilities,
   ...canonicalPublicRoutePaths.map((path) => `/${path}`),
-  ...registry.map((entry) => `/${entry.slug}`),
+  ...registry.map((entry) => guideRoutePath(entry.slug)),
 ]);
 const publicRoutes = new Set([
   ...canonicalPublicRoutePaths.map((path) => `/${path}`),
-  ...catalogue.guides.map((guide) => `/${guide.slug}`),
+  ...catalogue.guides.map((guide) => guideRoutePath(guide.slug)),
 ]);
 const removedGuideRoute = '/why-wont-my-stl-file-slice';
 const titles = new Map<string, string>();
 const descriptions = new Map<string, string>();
 for (const guide of catalogue.guides) {
   const source = sourceBySlug.get(guide.slug) ?? 'unknown';
-  const route = `/${guide.slug}`;
+  const route = guideRoutePath(guide.slug);
   const entry = registry.find((candidate) => candidate.slug === guide.slug)!;
   const document = new JSDOM(guide.html).window.document;
   const checksEditorialTargets = entry.checkEditorialTargets !== false;

@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, inject, input } from '@angular/core';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { ExampleAsset } from '../examples/example-assets';
@@ -35,7 +36,7 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
       'Standard STL cleanup explicitly uploads your selected file, up to the current 25 MiB guest limit, for server processing. Disconnected-piece detection and selection-only export run locally and never silently combine with that action. STL has no declared unit. Review the actual removal counts and skipped reasons, download the separate copy, then reselect it for preflight and revision comparison. No unconditional printability claim is made.',
     next: PublicRouteUrl.StlCompare,
     cta: 'Compare input and cleaned STL surfaces',
-    guide: '/how-to-repair-an-stl-file',
+    guide: GuideRouteUrl.RouteHowToRepairAnStlFile,
     guideLabel: 'Choose a repair and protect intentional openings',
   },
   [PublicRouteUrl.ThreeMfRepair]: {
@@ -73,7 +74,7 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     cta: 'Check supported 3MF collections',
   },
   [PublicRouteUrl.DimensionsChecker]: {
-    guide: '/how-to-check-if-a-3d-model-fits-your-printer',
+    guide: GuideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter,
     guideLabel: 'Check brims, excluded areas and placement after nominal fit',
     heading: 'Reproduce a unit error and a fit decision',
     example:

@@ -3,6 +3,7 @@ import {
   getPublicRouteForUrl,
 } from '../src/app/core/seo/public-routes.ts';
 import { guideRoutePaths } from '../src/app/features/guides/generated/guide-route-data.generated.ts';
+import { guideRoutePath } from '../src/app/core/seo/public-routes.ts';
 import { guideRegistry } from '../src/content/guides/guides.registry.ts';
 import { editorialDates } from './editorial-dates.mts';
 
@@ -43,7 +44,9 @@ const policies: readonly RouteSearchPolicy[] = [
     ...canonicalPublicRoutePaths.map((path) => `/${path}`),
     ...guideRoutePaths,
   ].map((path) => {
-    const guide = guideRegistry.find((entry) => `/${entry.slug}` === path);
+    const guide = guideRegistry.find(
+      (entry) => guideRoutePath(entry.slug) === path,
+    );
     return {
       id: path === '/' ? 'home' : path.slice(1),
       path,

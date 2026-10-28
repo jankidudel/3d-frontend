@@ -144,7 +144,7 @@ export function scoreMaterial(
                 </li>
               }
             </ul>
-            <a [routerLink]="['/3d-printing-materials', score.material.slug]"
+            <a [routerLink]="[routeUrl.Materials, score.material.slug]"
               >Read the full guide</a
             >
           </article>
@@ -347,11 +347,11 @@ export class MaterialSelectorPage {
         </table>
       </div>
       <p>
-        <a [routerLink]="['/3d-printing-materials', left().slug]"
+        <a [routerLink]="[routeUrl.Materials, left().slug]"
           >{{ left().displayName }} guide</a
         >
         ·
-        <a [routerLink]="['/3d-printing-materials', right().slug]"
+        <a [routerLink]="[routeUrl.Materials, right().slug]"
           >{{ right().displayName }} guide</a
         >
       </p>
@@ -359,6 +359,7 @@ export class MaterialSelectorPage {
   </main>`,
 })
 export class MaterialComparisonPage {
+  readonly routeUrl = PublicRouteUrl;
   readonly materialComparisonUrl = MaterialComparisonRouteUrl;
   readonly materialIds = MaterialId;
   readonly materialList = materials;

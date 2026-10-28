@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { vi } from 'vitest';
 import { routes } from './app.routes';
 import { App } from './app';
@@ -14,6 +14,40 @@ describe('App', () => {
 
   it('creates the application shell', () => {
     expect(TestBed.createComponent(App).componentInstance).toBeTruthy();
+  });
+
+  it('links the Tools label to the directory independently of the dropdown toggle', async () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const link = fixture.nativeElement.querySelector(
+      '.tools-link',
+    ) as HTMLAnchorElement;
+    const toggle = fixture.nativeElement.querySelector(
+      '.tools-trigger',
+    ) as HTMLButtonElement;
+    expect(link.getAttribute('href')).toBe('/tools');
+    expect(toggle.getAttribute('aria-label')).toBe('Toggle tools menu');
+    toggle.click();
+    fixture.detectChanges();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(TestBed.inject(Router).url).toBe('/');
+    link.click();
+    await fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe('/tools');
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('links Materials to /materials', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const links = [
+      ...fixture.nativeElement.querySelectorAll('nav > a'),
+    ] as HTMLAnchorElement[];
+    expect(
+      links
+        .find((link) => link.textContent?.trim() === 'Materials')
+        ?.getAttribute('href'),
+    ).toBe('/materials');
   });
 
   it('places the newsletter signup inside the site footer', () => {

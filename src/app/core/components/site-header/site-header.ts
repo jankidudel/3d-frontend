@@ -23,7 +23,6 @@ import {
 
 const MOBILE_NAVIGATION_MEDIA_QUERY = '(max-width: 48rem)';
 const TOOLS_MENU_CLOSE_DELAY_MS = 1_000;
-const TOOLS_MENU_OPEN_GRACE_PERIOD_MS = 1_000;
 
 @Component({
   selector: 'app-site-header',
@@ -48,7 +47,6 @@ export class SiteHeaderComponent {
   protected toolsMenuOpen = false;
   protected readonly toolsActive = signal(false);
   private toolsMenuCloseTimeout?: number;
-  private toolsMenuOpenedAt?: number;
 
   constructor() {
     this.toolsActive.set(this.isToolsRoute(this.router.url));
@@ -72,13 +70,6 @@ export class SiteHeaderComponent {
 
   protected toggleToolsMenu(): void {
     this.cancelToolsMenuClose();
-    if (
-      this.toolsMenuOpen &&
-      !this.isMobileNavigation() &&
-      this.isWithinToolsMenuOpenGracePeriod()
-    ) {
-      return;
-    }
     this.setToolsMenuOpen(!this.toolsMenuOpen);
   }
 
@@ -139,20 +130,7 @@ export class SiteHeaderComponent {
   }
 
   private setToolsMenuOpen(open: boolean): void {
-    if (open && !this.toolsMenuOpen) {
-      this.toolsMenuOpenedAt = Date.now();
-    }
-    if (!open) {
-      this.toolsMenuOpenedAt = undefined;
-    }
     this.toolsMenuOpen = open;
-  }
-
-  private isWithinToolsMenuOpenGracePeriod(): boolean {
-    return (
-      this.toolsMenuOpenedAt !== undefined &&
-      Date.now() - this.toolsMenuOpenedAt < TOOLS_MENU_OPEN_GRACE_PERIOD_MS
-    );
   }
 
   private isMobileNavigation(): boolean {

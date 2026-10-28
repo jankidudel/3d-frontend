@@ -122,7 +122,9 @@ describe('explicit public example loading', () => {
     expect(component.choices().map((item) => item.id)).toEqual([
       'topology-edge-controls',
     ]);
-    expect(component.selected().guide).toBe('/what-is-non-manifold-geometry');
+    expect(component.selected().guide).toBe(
+      '/guides/what-is-non-manifold-geometry',
+    );
     const assets = component.selected().files;
     expect(assets.map((asset) => asset.label)).toEqual([
       'Missing face',
@@ -153,7 +155,7 @@ describe('explicit public example loading', () => {
       '/examples#topology-edge-controls',
     );
     expect(links.map((link) => link.getAttribute('href'))).toContain(
-      '/what-is-non-manifold-geometry',
+      '/guides/what-is-non-manifold-geometry',
     );
   });
 });

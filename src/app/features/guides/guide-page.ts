@@ -1,4 +1,12 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { guideRoutePath } from '../../core/seo/public-routes';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  ViewEncapsulation,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import { Guide, guideBySlug } from './generated/guides.generated';
@@ -12,44 +20,48 @@ import { Guide, guideBySlug } from './generated/guides.generated';
 export class GuidePage {
   private readonly seo = inject(SeoService);
   private readonly route = inject(ActivatedRoute);
-  protected readonly guide: Guide = this.guideForRoute();
+  private readonly params = toSignal(this.route.paramMap, {
+    initialValue: this.route.snapshot.paramMap,
+  });
+  protected readonly guide = computed(() => this.guideForRoute());
 
   constructor() {
-    this.seo.apply({
-      title: this.guide.title,
-      description: this.guide.description,
-      path: this.guide.slug,
-      openGraphType: 'article',
-      structuredData: this.structuredData(),
+    effect(() => {
+      const guide = this.guide();
+      this.seo.apply({
+        title: guide.title,
+        description: guide.description,
+        path: guideRoutePath(guide.slug),
+        openGraphType: 'article',
+        structuredData: this.structuredData(guide),
+      });
     });
   }
 
   private guideForRoute(): Guide {
-    const slug = this.route.snapshot.paramMap.get('guideSlug');
+    const slug = this.params().get('guideSlug');
     if (slug && slug in guideBySlug) {
       return guideBySlug[slug];
     }
     throw new Error('A guide route must resolve to a known guide.');
   }
 
-  private structuredData(): Record<string, unknown> {
+  private structuredData(guide: Guide): Record<string, unknown> {
     return {
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'Article',
-          headline: this.guide.heading,
-          description: this.guide.description,
-          datePublished: this.guide.publishDate,
-          ...(this.guide.updatedDate
-            ? { dateModified: this.guide.updatedDate }
-            : {}),
+          headline: guide.heading,
+          description: guide.description,
+          datePublished: guide.publishDate,
+          ...(guide.updatedDate ? { dateModified: guide.updatedDate } : {}),
         },
-        ...(this.guide.faqs.length
+        ...(guide.faqs.length
           ? [
               {
                 '@type': 'FAQPage',
-                mainEntity: this.guide.faqs.map((faq) => ({
+                mainEntity: guide.faqs.map((faq) => ({
                   '@type': 'Question',
                   name: faq.question,
                   acceptedAnswer: { '@type': 'Answer', text: faq.answer },

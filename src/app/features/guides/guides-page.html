@@ -133,7 +133,9 @@
         @if (group.pillar) {
           <p>
             Start with:
-            <a [href]="'/' + group.pillar">{{ pillarHeading(group.pillar) }}</a
+            <a [href]="guidePath(group.pillar)">{{
+              pillarHeading(group.pillar)
+            }}</a
             >.
           </p>
         }
@@ -142,7 +144,7 @@
         @for (guide of group.guides; track guide.slug) {
           <li>
             <h3 class="guide-card-title">
-              <a [href]="'/' + guide.slug">{{ guide.heading }}</a>
+              <a [href]="guidePath(guide.slug)">{{ guide.heading }}</a>
             </h3>
             <p>{{ guide.description }}</p>
           </li>

@@ -22,7 +22,7 @@ describe('sitemap editorial dates', () => {
       '<loc>https://www.inspectmesh.com/stl-viewer</loc><lastmod>2026-10-26</lastmod>',
     );
     expect(sitemap).toContain(
-      '<loc>https://www.inspectmesh.com/3d-printing-materials/pla</loc><lastmod>2026-10-25</lastmod>',
+      '<loc>https://www.inspectmesh.com/materials/pla</loc><lastmod>2026-10-25</lastmod>',
     );
     expect(sitemap).toContain(
       '<loc>https://www.inspectmesh.com/</loc><lastmod>2026-10-24</lastmod>',
@@ -41,19 +41,28 @@ describe('sitemap editorial dates', () => {
   });
 
   it('uses a guide revision before its publication date and respects the public route list', () => {
-    const sitemap = buildSitemap(siteUrl, ['published', '/revised'], {}, [
-      { slug: 'published', enabled: true, publishDate: '2026-09-05' },
-      {
-        slug: 'revised',
-        enabled: true,
-        publishDate: '2026-09-05',
-        updatedDate: '2026-10-04',
-      },
-      { slug: 'disabled', enabled: false, publishDate: '2026-09-05' },
-      { slug: 'future', enabled: true, publishDate: '2099-01-01' },
-    ]);
-    expect(sitemap).toContain('/published</loc><lastmod>2026-09-05</lastmod>');
-    expect(sitemap).toContain('/revised</loc><lastmod>2026-10-04</lastmod>');
+    const sitemap = buildSitemap(
+      siteUrl,
+      ['guides/published', '/guides/revised'],
+      {},
+      [
+        { slug: 'published', enabled: true, publishDate: '2026-09-05' },
+        {
+          slug: 'revised',
+          enabled: true,
+          publishDate: '2026-09-05',
+          updatedDate: '2026-10-04',
+        },
+        { slug: 'disabled', enabled: false, publishDate: '2026-09-05' },
+        { slug: 'future', enabled: true, publishDate: '2099-01-01' },
+      ],
+    );
+    expect(sitemap).toContain(
+      '/guides/published</loc><lastmod>2026-09-05</lastmod>',
+    );
+    expect(sitemap).toContain(
+      '/guides/revised</loc><lastmod>2026-10-04</lastmod>',
+    );
     expect(sitemap).not.toContain('/disabled');
     expect(sitemap).not.toContain('/future');
   });

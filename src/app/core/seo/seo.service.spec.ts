@@ -154,13 +154,15 @@ describe('SeoService', () => {
     service.apply({
       title: 'Guide',
       description: 'Guide description.',
-      path: '/how-to-repair-an-stl-file',
+      path: '/guides/how-to-repair-an-stl-file',
       structuredData: {
         '@context': 'https://schema.org',
         '@graph': [{ '@type': 'Article' }, { '@type': 'FAQPage' }],
       },
     });
-    service.setBreadcrumbs(breadcrumbsForPath('/how-to-repair-an-stl-file'));
+    service.setBreadcrumbs(
+      breadcrumbsForPath('/guides/how-to-repair-an-stl-file'),
+    );
 
     const graph = JSON.parse(
       document.head.querySelector('script[data-seo-structured-data]')

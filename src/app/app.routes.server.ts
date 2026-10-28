@@ -1,5 +1,8 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { PublicRoutePathValue as PublicRoutePath } from './core/seo/public-routes';
+import {
+  PublicRouteSegment,
+  PublicRoutePathValue as PublicRoutePath,
+} from './core/seo/public-routes';
 import { guideSlugs } from './features/guides/generated/guide-route-data.generated';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 import { printers } from './features/printer-comparison/printer-catalogue';
@@ -20,6 +23,26 @@ export const serverRoutes: ServerRoute[] = [
   })),
   { path: PublicRoutePath.Home, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.AllTools, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.Examples, renderMode: RenderMode.Prerender },
+  {
+    path: PublicRoutePath.FilamentRemainingCalculator,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.NozzleLayerHeightCalculator,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.VolumetricFlowCalculator,
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: PublicRoutePath.PrintFinishTimeCalculator,
+    renderMode: RenderMode.Prerender,
+  },
+  { path: PublicRoutePath.BatchStlChecker, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.StlCompare, renderMode: RenderMode.Prerender },
+  { path: PublicRoutePath.StlScaleTool, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Compare3dPrinters, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.PrinterFitChecker, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.Printers, renderMode: RenderMode.Prerender },
@@ -149,7 +172,7 @@ export const serverRoutes: ServerRoute[] = [
   },
   { path: PublicRoutePath.Guides, renderMode: RenderMode.Prerender },
   {
-    path: ':guideSlug',
+    path: `${PublicRouteSegment.Guide}/:guideSlug`,
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () =>
       guideSlugs.map((guideSlug) => ({ guideSlug })),

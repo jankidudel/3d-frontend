@@ -1,18 +1,18 @@
 <main class="page guide-page">
   <article>
-    <p class="eyebrow">{{ guide.eyebrow }}</p>
-    <h1>{{ guide.heading }}</h1>
-    @if (guide.updatedDate) {
+    <p class="eyebrow">{{ guide().eyebrow }}</p>
+    <h1>{{ guide().heading }}</h1>
+    @if (guide().updatedDate) {
       <p>
-        Substantially updated {{ guide.updatedDate }}. First published
-        {{ guide.publishDate }}.
+        Substantially updated {{ guide().updatedDate }}. First published
+        {{ guide().publishDate }}.
       </p>
     }
-    <div class="guide-body" [innerHTML]="guide.html"></div>
-    @if (guide.faqs.length > 0) {
+    <div class="guide-body" [innerHTML]="guide().html"></div>
+    @if (guide().faqs.length > 0) {
       <section class="guide-faq">
         <h2>FAQ</h2>
-        @for (faq of guide.faqs; track faq.question) {
+        @for (faq of guide().faqs; track faq.question) {
           <h3>{{ faq.question }}</h3>
           <p>{{ faq.answer }}</p>
         }

@@ -1,4 +1,5 @@
 import { isDateOnlyUtc } from '../src/app/features/guides/guide-publishing.ts';
+import { guideRoutePath } from '../src/app/core/seo/public-routes.ts';
 import type { GuideRegistryEntry } from '../src/content/guides/guides.registry.ts';
 
 type SitemapGuide = Pick<
@@ -15,7 +16,10 @@ export function buildSitemap(
   const dates = new Map(Object.entries(editorialDates));
   for (const guide of guides) {
     if (guide.enabled) {
-      dates.set(`/${guide.slug}`, guide.updatedDate ?? guide.publishDate);
+      dates.set(
+        guideRoutePath(guide.slug),
+        guide.updatedDate ?? guide.publishDate,
+      );
     }
   }
 

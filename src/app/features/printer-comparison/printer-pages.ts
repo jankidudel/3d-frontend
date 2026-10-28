@@ -132,7 +132,7 @@ export class PrinterHubPage {
       <ul>
         @for (material of materialCompatibility(); track material.id) {
           <li>
-            <a [routerLink]="['/3d-printing-materials', material.slug]">{{
+            <a [routerLink]="[routeUrl.Materials, material.slug]">{{
               material.displayName
             }}</a>
             - {{ material.verdict }}: {{ material.reason }}

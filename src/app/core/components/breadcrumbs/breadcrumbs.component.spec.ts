@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'stl-tools', component: BlankPage },
   { path: '3mf-tools', component: BlankPage },
   { path: '3d-print-cost-calculator', component: BlankPage },
-  { path: 'how-to-repair-an-stl-file', component: BlankPage },
+  { path: 'guides/how-to-repair-an-stl-file', component: BlankPage },
 ];
 
 describe('BreadcrumbsComponent', () => {
@@ -103,7 +103,7 @@ describe('BreadcrumbsComponent', () => {
       ],
     ]);
 
-    await router.navigateByUrl('/how-to-repair-an-stl-file');
+    await router.navigateByUrl('/guides/how-to-repair-an-stl-file');
     fixture.detectChanges();
     expect(trail(fixture.nativeElement)).toEqual([
       ['Guides', '/guides'],

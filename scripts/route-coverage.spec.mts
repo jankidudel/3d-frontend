@@ -67,12 +67,34 @@ describe('independent router coverage', () => {
     ]) {
       expect(router.routes.some((r) => r.path === path)).toBe(true);
     }
-    expect(router.patterns.map((p) => p.path)).toEqual(['/:guideSlug', '/**']);
+    expect(router.patterns.map((p) => p.path)).toEqual([
+      '/guides/:guideSlug',
+      '/**',
+    ]);
     expect(routeSearchPolicy.find((p) => p.path === '/privacy')).toMatchObject({
       disposition: RouteDisposition.Excluded,
       noindex: false,
       canonical: productionOrigin + '/privacy',
     });
+  });
+  it('publishes only the new guide and materials URLs, without old aliases', () => {
+    const paths = discoverRouter().routes.map((route) => route.path);
+    for (const entry of guideRegistry.filter(
+      (guide) => guide.enabled && guide.publishDate <= '2026-10-28',
+    )) {
+      expect(paths).toContain(`/guides/${entry.slug}`);
+      expect(paths).not.toContain(`/${entry.slug}`);
+    }
+    expect(paths).toContain('/materials');
+    expect(paths).toContain('/materials/pla');
+    expect(
+      paths.some((path) => path.startsWith('/3d-printing-materials')),
+    ).toBe(false);
+    const sitemap = xml();
+    expect(sitemap).toContain('/guides/how-to-fix-non-manifold-stl</loc>');
+    expect(sitemap).not.toContain(
+      `${productionOrigin}/how-to-fix-non-manifold-stl</loc>`,
+    );
   });
   it('follows lazy child exports and rejects unresolved expressions instead of skipping them', () => {
     const source = `export const routes=[{path:'hub',loadChildren:()=>import('./child.routes').then(m=>m.childRoutes)}];`;
@@ -99,7 +121,7 @@ describe('exact XML sitemap membership', () => {
     );
     expect(
       kept.some(
-        (p) => p.loc === productionOrigin + '/how-to-repair-a-3mf-file',
+        (p) => p.loc === productionOrigin + '/guides/how-to-repair-a-3mf-file',
       ),
     ).toBe(true);
     expect(compareSitemap(kept, routeSearchPolicy)).toContain(

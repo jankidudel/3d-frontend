@@ -309,7 +309,10 @@ export function discoverRouter(
         '/' +
         [parent, item['path']].filter(Boolean).join('/').replace(/^\/+/, '');
       const source = String(item['source']);
-      if (item['path'] === ':guideSlug') {
+      if (
+        item['path'] === ':guideSlug' ||
+        item['path'] === 'guides/:guideSlug'
+      ) {
         if (item['canMatch'] !== '[guideCanMatch]') {
           throw new Error(`Unresolved guide route guard at ${source}`);
         }
@@ -317,7 +320,10 @@ export function discoverRouter(
           ...guideSlugs.map((slug) => ({
             path:
               '/' +
-              [parent, slug].filter(Boolean).join('/').replace(/^\/+/, ''),
+              [parent, String(item['path']).replace(':guideSlug', slug)]
+                .filter(Boolean)
+                .join('/')
+                .replace(/^\/+/, ''),
             source,
             renderer: String(item['renderer']),
           })),

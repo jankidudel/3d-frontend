@@ -27,16 +27,26 @@
       (mouseenter)="openToolsMenu()"
       (mouseleave)="scheduleToolsMenuClose()"
     >
-      <button
-        class="tools-trigger"
-        [class.active]="toolsActive()"
-        [attr.aria-expanded]="toolsMenuOpen"
-        aria-controls="tools-menu"
-        type="button"
-        (click)="toggleToolsMenu()"
-      >
-        Tools <span class="chevron" aria-hidden="true">▾</span>
-      </button>
+      <div class="tools-heading">
+        <a
+          class="tools-link"
+          [class.active]="toolsActive()"
+          [routerLink]="['/', routePath.AllTools]"
+          (click)="closeMenus()"
+          >Tools</a
+        >
+        <button
+          class="tools-trigger"
+          [class.active]="toolsActive()"
+          [attr.aria-expanded]="toolsMenuOpen"
+          aria-controls="tools-menu"
+          aria-label="Toggle tools menu"
+          type="button"
+          (click)="toggleToolsMenu()"
+        >
+          <span class="chevron" aria-hidden="true">▾</span>
+        </button>
+      </div>
       <div
         id="tools-menu"
         class="tools-menu"

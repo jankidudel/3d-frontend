@@ -1,6 +1,6 @@
 import { guideBreadcrumbLabelBySlug } from '../../features/guides/generated/guide-route-data.generated';
 import { HOME_TOOL_GROUPS } from '../../features/home/home-tools';
-import { PublicRouteUrl } from './public-routes';
+import { PublicRouteSegment, PublicRouteUrl } from './public-routes';
 
 export interface Breadcrumb {
   readonly href: string;
@@ -115,7 +115,10 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
     ];
   }
 
-  const guideHeading = guideBreadcrumbLabelBySlug[normalizedPath.slice(1)];
+  const guidePrefix = `/${PublicRouteSegment.Guide}/`;
+  const guideHeading = normalizedPath.startsWith(guidePrefix)
+    ? guideBreadcrumbLabelBySlug[normalizedPath.slice(guidePrefix.length)]
+    : undefined;
   if (guideHeading) {
     return [
       { label: 'Guides', href: PublicRouteUrl.Guides },

@@ -1,5 +1,5 @@
+import { guideRoutePath } from '../../core/seo/public-routes';
 import {
-  guideRoutePath,
   validateGuideFrontMatter,
   validateGuideSlugs,
 } from './guide-front-matter';
@@ -29,7 +29,7 @@ describe('guide front matter validation', () => {
       heading: validGuide.heading,
     });
     expect(guide.faqs).toHaveLength(2);
-    expect(guideRoutePath(guide.slug)).toBe('/example-guide');
+    expect(guideRoutePath(guide.slug)).toBe('/guides/example-guide');
   });
 
   it.each(['title', 'description', 'slug', 'eyebrow', 'heading'] as const)(

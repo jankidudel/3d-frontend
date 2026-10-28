@@ -87,11 +87,11 @@ describe('breadcrumbsForPath', () => {
   });
 
   it('uses the guide heading as the guide breadcrumb label', () => {
-    expect(breadcrumbsForPath('/how-to-repair-an-stl-file')).toEqual([
+    expect(breadcrumbsForPath('/guides/how-to-repair-an-stl-file')).toEqual([
       { label: 'Guides', href: '/guides' },
       {
         label: 'How to Repair an STL File for 3D Printing',
-        href: '/how-to-repair-an-stl-file',
+        href: '/guides/how-to-repair-an-stl-file',
       },
     ]);
   });

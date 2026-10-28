@@ -6,16 +6,16 @@ import rehypeParse from 'rehype-parse';
 import rehypeSanitize, { defaultSchema, type Options } from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import { unified } from 'unified';
-import {
-  guideRoutePath,
-  validateGuideFrontMatter,
-} from '../src/app/features/guides/guide-front-matter.ts';
+import { validateGuideFrontMatter } from '../src/app/features/guides/guide-front-matter.ts';
 import {
   guideGroups,
   guideRegistry,
 } from '../src/content/guides/guides.registry.ts';
 import { createGuideClusterIndex } from '../src/content/guides/guide-clusters.mts';
-import { PublicRoutePathValue } from '../src/app/core/seo/public-routes.ts';
+import {
+  guideRoutePath,
+  PublicRoutePathValue,
+} from '../src/app/core/seo/public-routes.ts';
 import { ExampleAsset } from '../src/app/features/examples/example-assets.ts';
 import {
   validateGuideRegistry,
@@ -93,11 +93,13 @@ const htmlToSafeHtml = unified()
 
 const internalRouteSlugs = new Set([
   ...Object.values(PublicRoutePathValue),
-  ...guideRegistry.map((guide) => guide.slug),
+  ...guideRegistry.map((guide) => guideRoutePath(guide.slug).slice(1)),
 ]);
 const guideSlugReference = Object.fromEntries(
   [...internalRouteSlugs].map((slug) => [
     `Route${slug
+      .split('/')
+      .at(-1)!
       .split('-')
       .filter(Boolean)
       .map((part) => part[0].toUpperCase() + part.slice(1))

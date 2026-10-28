@@ -293,7 +293,7 @@ export async function auditLive() {
     for (const path of [
       '/',
       '/tools',
-      '/how-to-hollow-an-stl-file-for-3d-printing',
+      '/guides/how-to-hollow-an-stl-file-for-3d-printing',
     ]) {
       try {
         const identity = await wireSample(path, 'identity');

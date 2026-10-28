@@ -88,7 +88,7 @@ import {
             @for (material of materialList; track material.id) {
               <tr>
                 <th scope="row">
-                  <a [routerLink]="['/3d-printing-materials', material.slug]">{{
+                  <a [routerLink]="[routeUrl.Materials, material.slug]">{{
                     material.displayName
                   }}</a>
                 </th>
@@ -119,7 +119,7 @@ import {
         <article class="card tool-card">
           <h2>{{ material.displayName }}</h2>
           <p>{{ material.summary }}</p>
-          <a [routerLink]="['/3d-printing-materials', material.slug]"
+          <a [routerLink]="[routeUrl.Materials, material.slug]"
             >Uses and printing guide</a
           >
         </article>
@@ -347,7 +347,7 @@ export class MaterialDetailPage {
     inject(SeoService).apply({
       title: `${material.displayName} Filament: Uses, Properties and Printing Guide | InspectMesh`,
       description: material.summary,
-      path: `/3d-printing-materials/${material.slug}`,
+      path: `${PublicRouteUrl.Materials}/${material.slug}`,
       openGraphType: 'article',
     });
   }
@@ -454,11 +454,11 @@ export class MaterialDetailPage {
         </p>
       </section>
       <p>
-        <a [routerLink]="['/3d-printing-materials', left().slug]"
+        <a [routerLink]="[routeUrl.Materials, left().slug]"
           >{{ left().displayName }} guide</a
         >
         ·
-        <a [routerLink]="['/3d-printing-materials', right().slug]"
+        <a [routerLink]="[routeUrl.Materials, right().slug]"
           >{{ right().displayName }} guide</a
         >
         · <a [routerLink]="routeUrl.MaterialSelector">Use the selector</a>

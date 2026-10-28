@@ -87,10 +87,6 @@ export function validateGuideSlugs(
   }
 }
 
-export function guideRoutePath(slug: string): `/${string}` {
-  return `/${slug}`;
-}
-
 function guideRecord(
   value: unknown,
   filePath: string,
