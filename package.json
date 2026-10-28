@@ -30,7 +30,7 @@
     "test:tool-layout": "vitest run scripts/tool-layout.spec.mts",
     "test:material-page-styles": "vitest run scripts/material-page-styles.spec.mts",
     "precommit": "npm run lint && npm test",
-    "verify": "npm run format:check && npm run lint && npm run typecheck:scripts && npm test && npm run build && npm run check:internal-links && npm run seo:audit && npm run seo:render && npm run seo:artifact:seal",
+    "verify": "npm run verify:push && npm run seo:render && npm run seo:artifact:seal",
     "hooks:install": "node --experimental-strip-types scripts/seo-hooks.mts install",
     "test:collection-examples": "vitest run scripts/collection-examples.spec.mts",
     "test:seo-recovery": "vitest run scripts/seo-audit.spec.mts scripts/recovery-evidence.spec.mts scripts/sizing-evidence.spec.mts scripts/export-fidelity.spec.mts scripts/file-handoff.spec.mts",
@@ -49,7 +49,8 @@
     "seo:artifact:seal": "node --experimental-strip-types scripts/seo-artifact.mts --seal",
     "test:technical-seo": "vitest run scripts/technical-seo.spec.mts scripts/seo-hooks.spec.mts",
     "seo:live": "node --experimental-strip-types scripts/seo-live.mts",
-    "seo:performance": "node --experimental-strip-types scripts/seo-performance.mts"
+    "seo:performance": "node --experimental-strip-types scripts/seo-performance.mts",
+    "verify:push": "npm run format:check && npm run lint && npm run typecheck:scripts && npm run test && npm run build && npm run check:internal-links && npm run seo:audit"
   },
   "private": true,
   "engines": {

@@ -15,6 +15,33 @@ const root = process.cwd();
 const git = (args: string[], options: Record<string, unknown> = {}) =>
   execFileSync('git', args, { cwd: root, ...options });
 const zero = /^0+$/;
+export const pushVerificationScripts = [
+  'format:check',
+  'lint',
+  'typecheck:scripts',
+  'test',
+  'build',
+  'check:internal-links',
+  'seo:audit',
+] as const;
+
+/** Keep push checks independent of browser availability and release certification. */
+export function verifyPushSnapshot(
+  scripts: Readonly<Record<string, string>>,
+  run: (args: string[]) => void,
+): void {
+  for (const script of pushVerificationScripts) {
+    if (!scripts[script]) {
+      throw new Error(
+        `Outgoing commit is missing the required push check: ${script}`,
+      );
+    }
+  }
+  for (const script of pushVerificationScripts) {
+    run(['run', script]);
+  }
+}
+
 export function outgoingCommits(
   input: string,
   resolveCommit: (sha: string) => string,
@@ -82,7 +109,19 @@ async function snapshot(commit: string | null, full: boolean) {
     );
     const run = (args: string[]) =>
       execFileSync('npm', args, { cwd: directory, env, stdio: 'inherit' });
-    run(['ls', '--depth=0', '--offline']);
+    // npm treats the snapshot's linked node_modules as extraneous links. Check
+    // the matching installation in its original directory, without dumping the
+    // entire transitive dependency tree into every Git push.
+    try {
+      execFileSync('npm', ['ls', '--depth=0', '--offline', '--json'], {
+        cwd: root,
+        stdio: 'pipe',
+      });
+    } catch {
+      throw new Error(
+        'Installed dependencies do not match the local package manifest. Run npm ls --depth=0 in the frontend repository for details.',
+      );
+    }
     if (full) {
       const pkg = JSON.parse(
         await readFile(resolve(directory, 'package.json'), 'utf8'),
@@ -95,7 +134,10 @@ async function snapshot(commit: string | null, full: boolean) {
           'Outgoing commit does not include the mandatory full SEO gate.',
         );
       }
-      run(['run', 'seo:check']);
+      verifyPushSnapshot(pkg.scripts, run);
+      console.log(
+        'Outgoing source checks passed. Browser audit and artifact certification remain mandatory in npm run verify before deployment.',
+      );
     } else {
       run(['run', 'generate:guides']);
       run(['run', 'seo:source']);

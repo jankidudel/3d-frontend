@@ -141,7 +141,8 @@ and [feature updates](https://developers.google.com/search/updates).
 | `npm run seo:build`       | One production build, existing checks, HTML and route reconciliation                                                                                     |
 | `npm run seo:html`        | Reconcile the router, policy, output, graph, sitemap, metadata, schema, fragments and first-party resources                                              |
 | `npm run seo:render`      | Chrome renders all finite public documents at 390px, desktop family samples, Examples click/direct/history navigation and cross-family client navigation |
-| `npm run seo:check`       | Full `verify`, one build, then browser gate and artifact seal                                                                                            |
+| `npm run verify:push`     | Tests, build and static SEO checks; no browser or artifact seal                                                                                          |
+| `npm run seo:check`       | Full deployment `verify`: push checks, browser gate and artifact seal                                                                                    |
 | `npm run seo:artifact`    | Require the current source and every artifact byte to match the sealed release                                                                           |
 | `npm run seo:live`        | Bounded production GET inventory, known linked queries/downloads, fragments, transport samples and release identity                                      |
 | `npm run seo:performance` | Current local browser timing diagnostics; field evidence remains explicitly unknown                                                                      |
@@ -156,7 +157,11 @@ new/force updates and commit tags. Deleted refs are skipped; non-commit tags and
 unsupported refs fail explicitly. No branch is created. Snapshot checks need
 already installed, matching lockfile dependencies and use no production network.
 Hook inputs and checks are not cached, so an unrelated prior pass cannot certify
-a new source. Local hooks can be bypassed; deployment verification is mandatory.
+a new source. Local pushes run the deterministic source/build checks, without
+requiring Chrome or issuing a release seal. Browser availability must not prevent
+source from reaching the manual deployment workflow. `npm run verify` still
+requires the browser audit and artifact seal before any deployment upload. Local
+hooks can be bypassed; deployment verification is mandatory.
 
 Chrome is required (`CHROME_BIN` may select its executable). The browser auditor
 uses the Chrome DevTools pipe, fulfills every first-party request from the same
