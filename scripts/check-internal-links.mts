@@ -2,6 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { relative, resolve, sep } from 'node:path';
 import { JSDOM } from 'jsdom';
+import { documentUrl, fragmentCount } from './document-urls.mts';
 
 const DEFAULT_OUTPUT_DIRECTORY = 'dist/3d-frontend/browser';
 const INTERNAL_ORIGIN = 'https://internal.inspectmesh.invalid';
@@ -39,11 +40,17 @@ export function validateGeneratedPages(
 ): ValidationFailure[] {
   const failures: ValidationFailure[] = [];
   const routes = new Map(pages.map((page) => [page.route, page]));
-  const siteOrigin = canonicalOrigin(pages);
+  const windows = new Map(
+    pages.map((page) => [page.route, new JSDOM(page.html).window]),
+  );
+  const documents = new Map(
+    [...windows].map(([route, window]) => [route, window.document]),
+  );
+  const siteOrigin = canonicalOrigin(documents);
   const canonicalPages = new Map<string, GeneratedPage>();
 
   for (const page of pages) {
-    const document = new JSDOM(page.html).window.document;
+    const document = documents.get(page.route)!;
     const canonicals = Array.from(
       document.querySelectorAll('link[rel="canonical"]'),
     );
@@ -73,18 +80,30 @@ export function validateGeneratedPages(
         continue;
       }
       const href = element.getAttribute('href')?.trim() ?? '';
-      const failure = validateLink(page, href, siteOrigin, routes);
+      const failure = validateLink(
+        page,
+        document,
+        href,
+        siteOrigin,
+        routes,
+        documents,
+      );
       if (failure) {
         failures.push(failure);
       }
     }
   }
+  for (const window of windows.values()) {
+    window.close();
+  }
   return failures;
 }
 
-function canonicalOrigin(pages: readonly GeneratedPage[]): string | null {
-  for (const page of pages) {
-    const href = new JSDOM(page.html).window.document
+function canonicalOrigin(
+  documents: ReadonlyMap<string, Document>,
+): string | null {
+  for (const document of documents.values()) {
+    const href = document
       .querySelector('link[rel="canonical"]')
       ?.getAttribute('href');
     if (!href) {
@@ -171,16 +190,18 @@ function validateCanonical(
 
 function validateLink(
   page: GeneratedPage,
+  document: Document,
   href: string,
   siteOrigin: string | null,
   routes: ReadonlyMap<string, GeneratedPage>,
+  documents: ReadonlyMap<string, Document>,
 ): ValidationFailure | null {
   if (!href || isIgnoredScheme(href)) {
     return null;
   }
   let target: URL;
   try {
-    target = new URL(href, pageUrl(page.route));
+    target = documentUrl(document, href, pageUrl(page.route));
   } catch {
     return failure(page, href, href, 'URL is invalid');
   }
@@ -201,7 +222,10 @@ function validateLink(
   if (!targetPage) {
     return failure(page, href, route, 'generated page not found');
   }
-  if (target.hash && !hasAnchor(targetPage.html, target.hash.slice(1))) {
+  if (
+    target.hash &&
+    fragmentCount(documents.get(targetPage.route)!, target.hash) !== 1
+  ) {
     return failure(page, href, route + target.hash, 'anchor not found');
   }
   return null;
@@ -235,24 +259,8 @@ function isDevelopmentHost(hostname: string): boolean {
   );
 }
 
-function hasAnchor(html: string, fragment: string): boolean {
-  const document = new JSDOM(html).window.document;
-  let anchor: string;
-  try {
-    anchor = decodeURIComponent(fragment);
-  } catch {
-    return false;
-  }
-  return (
-    document.getElementById(anchor) !== null ||
-    Array.from(document.querySelectorAll('a[name]')).some(
-      (element) => element.getAttribute('name') === anchor,
-    )
-  );
-}
-
 function pageUrl(route: string): string {
-  return INTERNAL_ORIGIN + (route === '/' ? '/' : route + '/');
+  return INTERNAL_ORIGIN + route;
 }
 
 function normalizeRoute(pathname: string): string {

@@ -47,6 +47,9 @@ API base URL `/api/v1` without environment-specific URLs or browser API CORS.
 
 Read the workspace's [permanent SEO strategy](../docs/SEO_STRATEGY.md) before public-page changes. It is the authoritative policy for intent ownership, evidence, quality gates and release measurement. Follow [documentation governance](../AGENTS.md#documentation-governance) for temporary execution inputs.
 
+Run `npm run hooks:install` after cloning. The staged-file, outgoing-commit and
+mandatory deployment checks are documented in [SEO operations](docs/SEO_OPERATIONS.md#technical-seo-gate-and-git-hooks).
+
 The [technical evidence record](docs/english-market-batch/EVIDENCE.md) preserves reproducible geometry controls, slicer experiments and their limitations. It is research documentation, not a release handover.
 
 Every production sitemap entry includes a persistent `lastmod`. For a material change to a non-guide page, update its entry in `scripts/editorial-dates.mts`; for a guide, update `updatedDate` in `src/content/guides/guides.registry.ts` (new guides use `publishDate`). Builds preserve these dates. Existing pages without recorded dates received the one-time baseline `2026-10-06`; this is not a claim that their content was revised that day. New non-guide pages require an explicit date, and sitemap generation fails on missing or invalid dates. Mere rebuilds, formatting or unrelated code changes must not advance page dates.

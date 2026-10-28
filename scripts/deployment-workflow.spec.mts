@@ -89,12 +89,14 @@ describe('frontend deployment workflow', () => {
       writeFile(join(buildDirectory, 'styles-abcdefgh.css'), 'asset'),
       writeFile(join(buildDirectory, 'manifest.webmanifest'), 'mutable'),
       writeFile(join(buildDirectory, 'index.html'), 'document'),
+      writeFile(join(executableDirectory, 'node'), '#!/bin/sh\nexit 0\n'),
       writeFile(
         join(executableDirectory, 'aws'),
         `#!/usr/bin/env bash\nprintf '%s %s\\n' "$(basename "$3")" "$6" >> "${logPath}"\nsleep 0.02\n`,
       ),
     ]);
     await chmod(join(executableDirectory, 'aws'), 0o755);
+    await chmod(join(executableDirectory, 'node'), 0o755);
 
     await runFile(
       'bash',

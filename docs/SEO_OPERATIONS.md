@@ -120,3 +120,95 @@ The production attempt is saved independently under `productionRouteCoverage`; i
 The same verifier also runs seven fixed host/protocol/slash/index/query/missing-path diagnostics, separately from canonical pages and from unknown GSC redirect-error examples. It records redirect headers and retains observed hops when a later fetch or loop fails. Query preservation, final HTTPS www origin and the intended canonical are checked; serving a slash or index variant under its own URL is acceptable when it consistently identifies the clean owner. No hosting change is implied by a multi-hop redirect alone.
 
 Initial HTTP observations include extracted main text and the HTTP `Link` header. Conflicting HTTP canonicals and identical main documents across different intended owners are flagged for investigation. This is a diagnostic, not approval for consolidation. The verifier deduplicates the same-origin scripts and styles actually referenced by initial HTML, resolves the document's base URL, and checks up to 80 resources with three concurrent requests and the existing timeout/byte bounds. Missing, empty, redirected or incorrectly typed assets fail verification; imported/lazy chunks and functional hydration still require representative browser checks. Successful canonical GET observations update the matching ledger row's `live` fields while preserving separate rendered evidence. Failed attempts retain previous successful observations and remain visible in the current attempt record.
+
+## Technical SEO gate and Git hooks
+
+Official guidance reviewed 27 October 2026. The maintained rule catalogue is
+[`scripts/technical-seo-rules.json`](../scripts/technical-seo-rules.json). It
+separates Google eligibility from local delivery contracts. Exactly one H1,
+initial content, link depth and duplicate-title policies are engineering checks;
+none guarantees indexing. Article author/image are recommendations. FAQPage
+presence and FAQ counts are optional; visible questions remain useful. See
+[Google technical requirements](https://developers.google.com/search/docs/essentials/technical),
+[Article guidance](https://developers.google.com/search/docs/appearance/structured-data/article),
+and [feature updates](https://developers.google.com/search/updates).
+
+| Command                   | Contract                                                                                                                                                 |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run hooks:install`   | Configure this repository only; refuse conflicting hook paths or existing uncombined hooks                                                               |
+| `npm run seo:staged`      | Copy the Git index into a disposable directory; validate staged routes, guide data and dates without formatting/stashing/staging working files           |
+| `npm run seo:source`      | Source-only policy and independent router classification, intended for the isolated index snapshot                                                       |
+| `npm run seo:build`       | One production build, existing checks, HTML and route reconciliation                                                                                     |
+| `npm run seo:html`        | Reconcile the router, policy, output, graph, sitemap, metadata, schema, fragments and first-party resources                                              |
+| `npm run seo:render`      | Chrome renders all finite public documents at 390px, desktop family samples, Examples click/direct/history navigation and cross-family client navigation |
+| `npm run seo:check`       | Full `verify`, one build, then browser gate and artifact seal                                                                                            |
+| `npm run seo:artifact`    | Require the current source and every artifact byte to match the sealed release                                                                           |
+| `npm run seo:live`        | Bounded production GET inventory, known linked queries/downloads, fragments, transport samples and release identity                                      |
+| `npm run seo:performance` | Current local browser timing diagnostics; field evidence remains explicitly unknown                                                                      |
+
+Install hooks after clone and verify `git config --local --get core.hooksPath`
+returns `.githooks`. Pre-commit reads staged blobs, including partial staging,
+spaces, deletions and renames; an unmerged index fails. It never auto-formats or
+changes the real index. No docs-only shortcut is used, avoiding an incomplete
+dependency classifier. Pre-push reads ref/SHA pairs from stdin and checks each
+unique outgoing commit in an isolated snapshot, including non-current branches,
+new/force updates and commit tags. Deleted refs are skipped; non-commit tags and
+unsupported refs fail explicitly. No branch is created. Snapshot checks need
+already installed, matching lockfile dependencies and use no production network.
+Hook inputs and checks are not cached, so an unrelated prior pass cannot certify
+a new source. Local hooks can be bypassed; deployment verification is mandatory.
+
+Chrome is required (`CHROME_BIN` may select its executable). The browser auditor
+uses the Chrome DevTools pipe, fulfills every first-party request from the same
+build and blocks third-party requests. It submits no forms or production jobs.
+No localhost listener, remote debugging port or browser-driver download is
+required. A missing browser/environment failure is incomplete, never a pass.
+`data-app-ready` is set after Angular stabilizes; the gate still compares source
+and hydrated canonical, title, directives, component identity and main headings.
+The gate does not replace functional tool tests or physical print verification.
+
+Reports are JSON and CSV under ignored `tmp/seo`, with rule/severity, exact URL,
+evidence, correction, scope counts, timing and source/artifact hashes. The
+manual deployment workflows preserve them as job artifacts even on failure.
+They are execution output, not tracked completion reports. Exit 0 means complete
+with no blocking errors, 1 means deterministic failures, 2 means incomplete or
+unavailable audit evidence. WARN/UNKNOWN remain visible. Search Console,
+verified Googlebot logs and field performance require owner evidence and remain
+unknown until supplied; local rendering cannot establish Google indexing.
+
+`version.json` includes the source/lockfile hashes. The release seal hashes every
+built file and requires successful HTML/browser reports for those exact bytes.
+The frontend uploader rechecks the seal immediately before S3 upload; deploy-all
+also rechecks before CDK. Hashes prove equality to this local artifact, not
+identity of Google's selected canonical or trust in a supplied external file.
+Both workflows remain manual and verify production after upload. A failed live
+audit makes deployment unhealthy; inspect evidence and use the existing reviewed
+redeployment process. Automatic deletion, rollback or invalidation is not added.
+
+### Hosting compression, caching and cost boundaries
+
+HTML used the managed caching-disabled policy, which did not negotiate gzip or
+Brotli. The source correction uses zero minimum/default TTL, a one-day maximum,
+and both encodings. Origin no-cache still forces document revalidation. See
+[AWS compression conditions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/ServingCompressedFiles.html).
+The existing CDK bucket upload now preserves explicit revalidation metadata
+rather than clearing it. Infrastructure uploads conservatively revalidate all
+files; the frontend-only uploader retains its year-long immutable policy for
+content-hashed chunks and uploads those before documents. Old chunks remain.
+Stable examples, HTML, robots and sitemap are never marked immutable.
+
+This adds one free cache-policy configuration, no service, log stream, WAF rule,
+custom uploader, invalidation or fixed recurring charge. Compression can reduce
+transfer bytes. Infrastructure-wide revalidation can increase conditional asset
+requests compared with the frontend-only immutable cache; ordinary S3/CloudFront
+requests, transfer, artifact retention and deployment charges still apply.
+Authorize infrastructure deployment separately and inspect actual response
+encoding, Cache-Control, ETag/304 and raw byte samples after release. Source
+configuration alone does not prove an edge location is updated.
+
+The HTTP apex two-hop redirect is advisory: the existing distribution enforces
+HTTPS before the apex function redirects to www. Removing that hop requires a
+reviewed hosting design change, rather than weakening transport policy or
+inventing a scheme header. It remains measured by the live variant checks.
+Do not create a second distribution or redirects solely to make this warning
+green without separate cost/design authorization.

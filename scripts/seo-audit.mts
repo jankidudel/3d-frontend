@@ -1,3 +1,4 @@
+import { documentUrl } from './document-urls.mts';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -20,7 +21,8 @@ export function inspectPublicHtml(page: GeneratedPage) {
   const links = [...document.querySelectorAll<HTMLAnchorElement>('a[href]')]
     .filter((link) => !link.hasAttribute('download'))
     .flatMap((link) => {
-      const url = new URL(
+      const url = documentUrl(
+        document,
         link.getAttribute('href')!,
         productionOrigin + page.route,
       );
@@ -62,12 +64,12 @@ export function inspectPublicHtml(page: GeneratedPage) {
     contextualLinks: [
       ...new Set(
         [...(main?.querySelectorAll<HTMLAnchorElement>('a[href]') ?? [])]
-          .map(
-            (link) =>
-              new URL(
-                link.getAttribute('href')!,
-                productionOrigin + page.route,
-              ),
+          .map((link) =>
+            documentUrl(
+              document,
+              link.getAttribute('href')!,
+              productionOrigin + page.route,
+            ),
           )
           .filter(
             (url) =>

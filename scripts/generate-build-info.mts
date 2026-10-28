@@ -1,3 +1,4 @@
+import { sourceIdentity } from './seo-artifact.mts';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
@@ -19,6 +20,7 @@ function gitCommit(): string {
 const outputDirectory = new URL('../public/', import.meta.url);
 const buildInfo = {
   version: gitCommit().slice(0, 12),
+  ...(await sourceIdentity()),
   builtAt: new Date().toISOString(),
 };
 mkdirSync(outputDirectory, { recursive: true });

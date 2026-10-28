@@ -26224,14 +26224,14 @@
       "classification": "permanent-documentation",
       "reason": "Durable project/setup/strategy/operations/testing documentation or reproducible fixture evidence; preserved.",
       "inspectedDate": "2026-10-27",
-      "sha256": "486d92c029883a425d3a58f2908c153d9aea5fea2bd6b4782f9b14492c93ffd7"
+      "sha256": "5b989c73ac01ea8a08694b56814d63497bb70cf6d7c60b4dc135b8fdad42d38d"
     },
     {
       "path": "3d-frontend/docs/SEO_OPERATIONS.md",
       "classification": "permanent-documentation",
       "reason": "Durable project/setup/strategy/operations/testing documentation or reproducible fixture evidence; preserved.",
       "inspectedDate": "2026-10-27",
-      "sha256": "b2a72b4aaa02f9b77a3635642bf826fd2a8d6f758a8c1a4987af2b6280f2777d"
+      "sha256": "72b4a4c523444e0cd987a5938e1763850e53ef8a1b1e4e0e0d2e6d2d757ef6a0"
     },
     {
       "path": "3d-frontend/docs/english-market-batch/EVIDENCE.md",
@@ -26260,6 +26260,34 @@
       "reason": "Durable project/setup/strategy/operations/testing documentation or reproducible fixture evidence; preserved.",
       "inspectedDate": "2026-10-27",
       "sha256": "deb5e388efda545336d6a33b093202d99950a98644b37be9fa02d1f3d2e1f753"
+    },
+    {
+      "path": "3d-infra/.github/copilot-instructions.md",
+      "classification": "active-instruction",
+      "reason": "Current project instructions, coding conventions or future-work items; preserved.",
+      "inspectedDate": "2026-10-27",
+      "sha256": "97f26f405477b4f9fed8671376ac85a71466b34c28d869d1255f733c836e15b4"
+    },
+    {
+      "path": "3d-infra/AGENTS.md",
+      "classification": "active-instruction",
+      "reason": "Current project instructions, coding conventions or future-work items; preserved.",
+      "inspectedDate": "2026-10-27",
+      "sha256": "ff62d15026984aad0a50f80d87a089e695124529acf3c4b846d4dec94d19b05a"
+    },
+    {
+      "path": "3d-infra/PRODUCTION_LAUNCH.md",
+      "classification": "permanent-documentation",
+      "reason": "Durable project/setup/strategy/operations/testing documentation or reproducible fixture evidence; preserved.",
+      "inspectedDate": "2026-10-27",
+      "sha256": "148e73dfcdfb88453c381960c21de90c18141c3282fb23d04da985f32e46c60f"
+    },
+    {
+      "path": "3d-infra/README.md",
+      "classification": "permanent-documentation",
+      "reason": "Durable project/setup/strategy/operations/testing documentation or reproducible fixture evidence; preserved.",
+      "inspectedDate": "2026-10-27",
+      "sha256": "840bdce1e2f7a3ef7e098216677d760a3267730f79ff5f932ff8546d17f47401"
     },
     {
       "path": "3d-processor/.github/copilot-instructions.md",
@@ -26358,34 +26386,6 @@
       "reason": "Structural tree notes; no clear completed-batch provenance. Inspected and preserved for owner review.",
       "inspectedDate": "2026-10-27",
       "sha256": "974db5d195f771cd5158f1d088a6171823c42a8c9921c6d43c35235ae0b30c05"
-    },
-    {
-      "path": "3d-infra/.github/copilot-instructions.md",
-      "classification": "active-instruction",
-      "reason": "Current project instructions, coding conventions or future-work items; preserved.",
-      "inspectedDate": "2026-10-27",
-      "sha256": "97f26f405477b4f9fed8671376ac85a71466b34c28d869d1255f733c836e15b4"
-    },
-    {
-      "path": "3d-infra/AGENTS.md",
-      "classification": "active-instruction",
-      "reason": "Current project instructions, coding conventions or future-work items; preserved.",
-      "inspectedDate": "2026-10-27",
-      "sha256": "ff62d15026984aad0a50f80d87a089e695124529acf3c4b846d4dec94d19b05a"
-    },
-    {
-      "path": "3d-infra/PRODUCTION_LAUNCH.md",
-      "classification": "permanent-documentation",
-      "reason": "Durable project/setup/strategy/operations/testing documentation or reproducible fixture evidence; preserved.",
-      "inspectedDate": "2026-10-27",
-      "sha256": "148e73dfcdfb88453c381960c21de90c18141c3282fb23d04da985f32e46c60f"
-    },
-    {
-      "path": "3d-infra/README.md",
-      "classification": "permanent-documentation",
-      "reason": "Durable project/setup/strategy/operations/testing documentation or reproducible fixture evidence; preserved.",
-      "inspectedDate": "2026-10-27",
-      "sha256": "0e748eec4f513c937f8fb63237e0d3f9212ce2efa05529bb9332e5d992277031"
     }
   ],
   "executionBlockers": [

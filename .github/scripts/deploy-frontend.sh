@@ -14,6 +14,8 @@ if ! [[ "$max_upload_jobs" =~ ^[1-9][0-9]*$ ]]; then
   exit 1
 fi
 
+node --experimental-strip-types scripts/seo-artifact.mts "$build_directory"
+
 is_hashed_asset() {
   local file_name="${1##*/}"
   [[ "$file_name" =~ (^|[-.])[A-Za-z0-9_-]{8,}\.(js|mjs|css|map|woff|woff2|ttf|otf|eot|svg|png|jpe?g|gif|webp|avif)$ ]]

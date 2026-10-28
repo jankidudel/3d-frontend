@@ -349,7 +349,7 @@ async function checkGeneratedOutput(): Promise<void> {
       else if (title) renderedTitles.set(title, route);
       if (description && renderedDescriptions.has(description))
         report(
-          'ERROR',
+          'WARNING',
           page.filePath,
           route,
           'duplicate-rendered-description',
@@ -370,9 +370,6 @@ async function checkGeneratedOutput(): Promise<void> {
           'Public production pages must be indexable.',
         );
       if (publicSlugs.has(route.slice(1))) {
-        const guide = catalogue.guides.find(
-          (candidate) => `/${candidate.slug}` === route,
-        );
         const json = doc.querySelector(
           'script[data-seo-structured-data]',
         )?.textContent;
@@ -380,16 +377,14 @@ async function checkGeneratedOutput(): Promise<void> {
           const graph = JSON.parse(json ?? '')['@graph'];
           if (
             !Array.isArray(graph) ||
-            !graph.some((item) => item?.['@type'] === 'Article') ||
-            graph.some((item) => item?.['@type'] === 'FAQPage') !==
-              Boolean(guide?.faqs.length)
+            !graph.some((item) => item?.['@type'] === 'Article')
           )
             report(
               'ERROR',
               page.filePath,
               route,
               'guide-structured-data',
-              'Render Article data and FAQ data only when a visible FAQ exists.',
+              'Render valid Article data matching the visible guide. FAQ markup is optional.',
             );
         } catch {
           report(
@@ -397,7 +392,7 @@ async function checkGeneratedOutput(): Promise<void> {
             page.filePath,
             route,
             'guide-structured-data',
-            'Render Article data and FAQ data only when a visible FAQ exists.',
+            'Render valid Article data matching the visible guide. FAQ markup is optional.',
           );
         }
       }

@@ -1,5 +1,3 @@
 #!/bin/sh
 set -eu
-
-echo "Running pre-push production build..."
-npm run build
+exec node --experimental-strip-types scripts/seo-hooks.mts push

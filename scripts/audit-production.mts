@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { boundedBytes } from './http-documents.mts';
 import { pageLinks } from './route-coverage.mts';
 import { inspectPublicHtml, productionOrigin } from './seo-audit.mts';
@@ -91,6 +92,28 @@ export async function inspectDelivery(
           ),
         ]
       : [];
+    const assetLinks = window
+      ? [
+          ...new Set(
+            [...window.document.querySelectorAll('img[src], a[download][href]')]
+              .map(
+                (element) =>
+                  new URL(
+                    element.getAttribute('src') ??
+                      element.getAttribute('href')!,
+                    window.document.baseURI,
+                  ).href,
+              )
+              .filter((url) => new URL(url).origin === productionOrigin),
+          ),
+        ]
+      : [];
+    const anchorCounts: Record<string, number> = {};
+    for (const element of window?.document.querySelectorAll('[id], a[name]') ??
+      []) {
+      const id = element.id || element.getAttribute('name')!;
+      anchorCounts[id] = (anchorCounts[id] ?? 0) + 1;
+    }
     const mainText =
       window?.document
         .querySelector('main')
@@ -106,6 +129,9 @@ export async function inspectDelivery(
       xRobotsTag: response.headers.get('x-robots-tag'),
       link: response.headers.get('link'),
       criticalAssets,
+      assetLinks,
+      anchorCounts,
+      htmlSha256: createHash('sha256').update(html).digest('hex'),
       responseTimeMs: Math.round(performance.now() - started),
       observedAt: new Date().toISOString(),
       raw: contentType?.includes('text/html')

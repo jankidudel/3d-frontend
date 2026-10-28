@@ -32,7 +32,9 @@ import { publicExamples } from './example-registry';
       </p>
       <nav aria-label="Example topics">
         @for (group of groups; track group) {
-          <a [href]="'#' + firstId(group)">{{ group }}</a>
+          <a [routerLink]="routeUrl.Examples" [fragment]="firstId(group)">{{
+            group
+          }}</a>
         }
       </nav>
       @for (group of groups; track group) {

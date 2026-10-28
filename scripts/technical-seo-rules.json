@@ -1,0 +1,276 @@
+{
+  "reviewedOn": "2026-10-27",
+  "scope": "Google guidance plus explicitly identified InspectMesh engineering policies. Runtime reports state measured scope and unknown evidence.",
+  "rules": [
+    {
+      "id": "R01",
+      "acceptance": "Every finite public router route is explicitly classified; no unknown routes/expressions silently omitted",
+      "severity": "ERROR"
+    },
+    {
+      "id": "R02",
+      "acceptance": "Every indexable page has the correct generated document and stable page identity; a homepage fallback with rewritten title/canonical fails",
+      "severity": "ERROR"
+    },
+    {
+      "id": "R03",
+      "acceptance": "Canonical indexable pages return 200 HTML to a fresh GET. HEAD may supplement, never replace GET",
+      "severity": "ERROR"
+    },
+    {
+      "id": "R04",
+      "acceptance": "Genuine missing page/asset returns 404/410; no success-code homepage/error fallback, including nested detail families",
+      "severity": "ERROR"
+    },
+    {
+      "id": "R05",
+      "acceptance": "Redirect destinations are explicit, loop-free and preserve intended path/query; indexable internal links and sitemap avoid redirects",
+      "severity": "ERROR for wrong/looping target; WARN for an extra successful hop"
+    },
+    {
+      "id": "R06",
+      "acceptance": "Routes and assets are served from one coherent release; required built outputs/chunks exist; stale/missing prerender artifacts fail",
+      "severity": "ERROR"
+    },
+    {
+      "id": "R07",
+      "acceptance": "Deployment audit is tied to the exact source/artifact hash; a prior unrelated green result cannot certify a new upload",
+      "severity": "ERROR"
+    },
+    {
+      "id": "I01",
+      "acceptance": "robots.txt is reachable, parses and allows intended page crawling for the applicable Googlebot groups",
+      "severity": "ERROR if blocked; UNKNOWN on unresolved transient network failure"
+    },
+    {
+      "id": "I02",
+      "acceptance": "Parse all applicable meta and X-Robots-Tag directives, including agent-scoped values and restrictive combinations; intended index pages have no effective noindex",
+      "severity": "ERROR"
+    },
+    {
+      "id": "I03",
+      "acceptance": "Initial and rendered directives match route intent; do not rely on JS to remove an initial noindex",
+      "severity": "ERROR"
+    },
+    {
+      "id": "I04",
+      "acceptance": "Scripts/CSS and assets needed for crawlable page content are not blocked or denied; a challenge/login wall is not a normal page response",
+      "severity": "ERROR for first-party critical resources"
+    },
+    {
+      "id": "I05",
+      "acceptance": "Intentional noindex pages remain crawlable when Google needs to see noindex; robots blocking is not a substitute for noindex [G7]",
+      "severity": "ERROR for conflicting local policy"
+    },
+    {
+      "id": "I06",
+      "acceptance": "Preview/staging controls are explicit. A noindex header must never leak into production; private environments require actual access control",
+      "severity": "ERROR for production leakage"
+    },
+    {
+      "id": "C01",
+      "acceptance": "InspectMesh indexable HTML emits one absolute HTTPS canonical to the intended production path; its target is a canonical 200 page",
+      "severity": "ERROR"
+    },
+    {
+      "id": "C02",
+      "acceptance": "HTTP Link canonicals, HTML canonicals, redirects and sitemap do not conflict; hydration does not replace the correct source canonical [G3]",
+      "severity": "ERROR"
+    },
+    {
+      "id": "C03",
+      "acceptance": "Known preset/tracking variants retain useful behavior and canonicalize according to declared query policy; do not blanket-strip unknown content-changing parameters",
+      "severity": "ERROR for broken declared policy"
+    },
+    {
+      "id": "C04",
+      "acceptance": "Preserve path case, encoded slash identity and meaningful queries during comparison. Fragment removal for document identity is separate from fragment target checking",
+      "severity": "ERROR for unsafe normalization"
+    },
+    {
+      "id": "C05",
+      "acceptance": "Do not canonicalize all tools/guides to hubs or home; related topics with distinct content keep their legitimate routes",
+      "severity": "ERROR for unintended consolidation"
+    },
+    {
+      "id": "C06",
+      "acceptance": "No unsupported geography/language targeting: English content stays English. Validate reciprocal hreflang only if genuine alternate language/region pages exist",
+      "severity": "N/A now unless actual alternates are discovered"
+    },
+    {
+      "id": "S01",
+      "acceptance": "Parse XML and sitemap indexes with a real parser; recursively fetch permitted sitemap children with cycle/count/size limits",
+      "severity": "ERROR"
+    },
+    {
+      "id": "S02",
+      "acceptance": "Expected sitemap set equals the independently classified `sitemap: true` route set; no duplicates, unsupported host, fragments or unintended query states",
+      "severity": "ERROR"
+    },
+    {
+      "id": "S03",
+      "acceptance": "Sitemap URLs return canonical indexable 200 content, not redirects/noindex/error documents",
+      "severity": "ERROR"
+    },
+    {
+      "id": "S04",
+      "acceptance": "Valid lastmod, not future-dated; preserve dates for unchanged pages; significant changes have traceable dates",
+      "severity": "ERROR for invalid/future date; WARN for unverified change provenance"
+    },
+    {
+      "id": "S05",
+      "acceptance": "Sitemap declaration and generated output agree; XML escaping, limits and expected files are correct",
+      "severity": "ERROR"
+    },
+    {
+      "id": "H01",
+      "acceptance": "Public landing pages ship expected title, canonical, main heading, useful page-specific text and crawlable links in initial HTML; tools need no upload for that content",
+      "severity": "ERROR under local delivery policy"
+    },
+    {
+      "id": "H02",
+      "acceptance": "Correct HTML head structure, charset and usable main landmark; metadata isn't misplaced or duplicated by competing services",
+      "severity": "ERROR for broken parser-visible identity; WARN for noncritical markup"
+    },
+    {
+      "id": "H03",
+      "acceptance": "Hydration retains page identity, important text, canonical/directives and links; direct load and client navigation both work",
+      "severity": "ERROR"
+    },
+    {
+      "id": "H04",
+      "acceptance": "Initial/rendered critical text is not replaced by blank/error/loading-only content on timeouts, blocked third-party scripts, local-storage absence or first visit",
+      "severity": "ERROR"
+    },
+    {
+      "id": "H05",
+      "acceptance": "Mobile has the same important content/indexing signals/links; no need to click, scroll or accept cookies to load core indexable text [G8]",
+      "severity": "ERROR for missing content"
+    },
+    {
+      "id": "H06",
+      "acceptance": "Test viewport/legibility, menus, uploads/forms and constrained horizontal scrolling; wide tables may scroll inside their own container",
+      "severity": "ERROR for unusable page-level overflow; WARN for lesser issues"
+    },
+    {
+      "id": "H07",
+      "acceptance": "First-party JS errors or blocked first-party requests that break content/navigation fail; unrelated third-party noise is separately classified",
+      "severity": "ERROR for actual first-party breakage"
+    },
+    {
+      "id": "L01",
+      "acceptance": "Use real `<a href>` navigation for discoverable pages; disabled/button-only routing cannot be the only path [G5]",
+      "severity": "ERROR for unreachable required route"
+    },
+    {
+      "id": "L02",
+      "acceptance": "Resolve relative links and assets using the effective document base, including `<base href>`; respect URL semantics",
+      "severity": "ERROR for bad resolution"
+    },
+    {
+      "id": "L03",
+      "acceptance": "Every required public page is reachable in the site graph; report chrome, hub and contextual inlinks separately",
+      "severity": "ERROR for orphan; WARN for depth beyond local target"
+    },
+    {
+      "id": "L04",
+      "acceptance": "Internal page/download links reach expected resource types; a 200 HTML error response in place of STL/JS/CSS does not pass",
+      "severity": "ERROR"
+    },
+    {
+      "id": "L05",
+      "acceptance": "Fragment targets exist uniquely in the actual target document; verify both copied URL behavior and real browser clicks for shared jump navigation",
+      "severity": "ERROR"
+    },
+    {
+      "id": "L06",
+      "acceptance": "Route construction uses existing project constants/helpers. Do not introduce repeated hardcoded route strings or parallel route maps",
+      "severity": "ERROR for project-rule violations"
+    },
+    {
+      "id": "L07",
+      "acceptance": "Broken external links have bounded checks and reviewable evidence; rate limits/challenges/network failures do not become permanent SEO failures",
+      "severity": "WARN/UNKNOWN"
+    },
+    {
+      "id": "M01",
+      "acceptance": "Nonempty accurate page-specific title; exact duplicates across intended distinct search pages reported",
+      "severity": "ERROR under local policy; allow narrow justified exceptions"
+    },
+    {
+      "id": "M02",
+      "acceptance": "Nonempty useful description; duplicate/missing descriptions reported; no arbitrary length failure",
+      "severity": "WARN except missing required content data in local schema"
+    },
+    {
+      "id": "M03",
+      "acceptance": "One meaningful H1 is the local template policy; sensible headings, language and viewport",
+      "severity": "ERROR for template-policy break; not labelled a Google indexing prerequisite"
+    },
+    {
+      "id": "M04",
+      "acceptance": "No placeholder output, template tokens, empty main, wrong page identity or exact main-content clones disguised by a new canonical",
+      "severity": "ERROR"
+    },
+    {
+      "id": "M05",
+      "acceptance": "Near-duplicate topics/text are surfaced for review with boilerplate excluded; no automatic word-count padding, redirect, deletion or noindex",
+      "severity": "WARN"
+    },
+    {
+      "id": "D01",
+      "acceptance": "Parse every JSON-LD block and graph, including arrays; verify emitted type-specific required properties and consistent IDs/URLs",
+      "severity": "ERROR for invalid emitted markup"
+    },
+    {
+      "id": "D02",
+      "acceptance": "Article/Breadcrumb/other emitted data matches visible page identity, claims and dates; breadcrumb order/URLs and visible trail agree",
+      "severity": "ERROR for false/conflicting data"
+    },
+    {
+      "id": "D03",
+      "acceptance": "Missing recommended Article properties produce actionable warnings; only actual supported, relevant images/authors are added",
+      "severity": "WARN"
+    },
+    {
+      "id": "D04",
+      "acceptance": "Retired/irrelevant rich-result features do not become requirements; no invented ratings, Product offers, reviews or FAQ promises [G10, G11]",
+      "severity": "WARN for obsolete policy; ERROR for fabricated claims"
+    },
+    {
+      "id": "P01",
+      "acceptance": "Informative images have appropriate alt text and load successfully; decorative images may use empty alt [G13]",
+      "severity": "ERROR for missing required assets; WARN for editorial alt issues"
+    },
+    {
+      "id": "P02",
+      "acceptance": "Image/media space is reserved by dimensions or equivalent CSS; below-fold lazy loading is appropriate; likely LCP media is not indiscriminately deferred",
+      "severity": "WARN unless measured harmful regression"
+    },
+    {
+      "id": "P03",
+      "acceptance": "Field targets: p75 LCP ≤2.5 s, INP ≤200 ms, CLS ≤0.1; record mobile/desktop, window, URL/group and sample availability [G14]",
+      "severity": "WARN or UNKNOWN; field data is not an every-commit gate"
+    },
+    {
+      "id": "P04",
+      "acceptance": "Controlled lab runs use pinned tools/environment, repeatable throttling and representative templates; compare before/after budget evidence",
+      "severity": "WARN initially; gate only a justified stable regression budget"
+    },
+    {
+      "id": "P05",
+      "acceptance": "Check eligible compression, intentional Cache-Control, ETag/Last-Modified and deployment consistency; hashed assets do not silently change bytes at the same URL",
+      "severity": "WARN for optimizations; ERROR for stale/broken-release behavior"
+    },
+    {
+      "id": "P06",
+      "acceptance": "HTTPS/certificates and critical mixed-content behavior work for production and known redirect hosts",
+      "severity": "ERROR for access failure"
+    },
+    {
+      "id": "P07",
+      "acceptance": "Required HTML stays available under a first visit and missing optional APIs; no indexing dependency on CAPTCHA, consent completion, upload or WebGL",
+      "severity": "ERROR for core content blocked"
+    }
+  ]
+}

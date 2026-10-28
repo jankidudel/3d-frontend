@@ -60,6 +60,8 @@ jobs:
       - name: Configure the production contact CAPTCHA
         if: ${{ env.STAGE == 'prod' }}
         run: node --experimental-strip-types scripts/configure-contact-captcha.mts
+      - name: Check browser audit environment
+        run: google-chrome --version
       - run: npm run verify
 
       - name: Configure temporary AWS credentials
@@ -88,3 +90,13 @@ jobs:
             dist/3d-frontend/browser \
             "$FRONTEND_BUCKET" \
             "$FRONTEND_DISTRIBUTION_ID"
+
+      - name: Verify production delivery
+        run: npm run seo:live
+
+      - name: Preserve SEO audit evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: technical-seo-prod
+          path: tmp/seo

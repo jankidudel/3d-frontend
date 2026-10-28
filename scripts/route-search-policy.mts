@@ -16,7 +16,14 @@ export const RouteDisposition = {
 export type RouteDisposition =
   (typeof RouteDisposition)[keyof typeof RouteDisposition];
 export const RouteRendering = { Prerendered: 'prerendered' } as const;
+export const QueryPolicy = { CanonicalBase: 'canonical-base' } as const;
 export interface RouteSearchPolicy {
+  readonly sitemap?: boolean;
+  readonly expectedStatus?: number;
+  readonly queryPolicy?: typeof QueryPolicy.CanonicalBase;
+  readonly owner?: string;
+  readonly reviewBy?: string;
+
   readonly id: string;
   readonly path: string;
   readonly pageType: string;
@@ -31,7 +38,7 @@ export interface RouteSearchPolicy {
 }
 
 /** Preserve the established public registry and its deliberate sitemap exclusions. */
-export const routeSearchPolicy: readonly RouteSearchPolicy[] = [
+const policies: readonly RouteSearchPolicy[] = [
   ...[
     ...canonicalPublicRoutePaths.map((path) => `/${path}`),
     ...guideRoutePaths,
@@ -100,3 +107,17 @@ export const routeSearchPolicy: readonly RouteSearchPolicy[] = [
     source: 'NotFoundPage.applyNoIndex',
   },
 ];
+
+export const routeSearchPolicy: readonly RouteSearchPolicy[] = policies.map(
+  (policy) => ({
+    ...policy,
+    sitemap: policy.disposition === RouteDisposition.Indexable,
+    expectedStatus:
+      policy.disposition === RouteDisposition.NotFound ? 404 : 200,
+    queryPolicy: QueryPolicy.CanonicalBase,
+    owner: 'InspectMesh',
+    ...(policy.disposition !== RouteDisposition.Indexable
+      ? { reviewBy: '2027-01-27' }
+      : {}),
+  }),
+);

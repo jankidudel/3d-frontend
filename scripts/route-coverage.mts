@@ -1,3 +1,4 @@
+import { documentUrl } from './document-urls.mts';
 import { JSDOM } from 'jsdom';
 import { isDateOnlyUtc } from '../src/app/features/guides/guide-publishing.ts';
 import type { GeneratedPage } from './check-internal-links.mts';
@@ -125,7 +126,8 @@ export function pageLinks(page: GeneratedPage) {
           return [];
         }
         try {
-          const url = new URL(
+          const url = documentUrl(
+            window.document,
             element.getAttribute('href')!,
             productionOrigin + page.route,
           );

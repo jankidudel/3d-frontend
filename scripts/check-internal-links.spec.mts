@@ -39,6 +39,36 @@ describe('internal link validation', () => {
     expect(failures).toEqual([]);
   });
 
+  it('resolves fragments against the document base and requires a unique target', () => {
+    const examples = page(
+      '/examples',
+      '<base href="/"><a href="#section">Jump</a><h2 id="section">Section</h2>',
+    );
+    expect(validateGeneratedPages([page('/', ''), examples])).toEqual([
+      expect.objectContaining({
+        resolvedTarget: '/#section',
+        reason: 'anchor not found',
+      }),
+    ]);
+    expect(
+      validateGeneratedPages([
+        page('/', ''),
+        {
+          ...examples,
+          html: examples.html.replace(
+            'href="#section"',
+            'href="/examples#section"',
+          ),
+        },
+      ]),
+    ).toEqual([]);
+    expect(
+      validateGeneratedPages([
+        page('/', '<a href="#same">Jump</a><p id="same"></p><p id="same"></p>'),
+      ]),
+    ).toHaveLength(1);
+  });
+
   it('reports a generated page that is missing', () => {
     const failures = validateGeneratedPages([
       page('/', '<a href="/missing">Missing</a>'),
