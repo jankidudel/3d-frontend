@@ -215,9 +215,10 @@ browser-runner correction, not a relaxation of the SEO checks.
 
 ### Hosting compression, caching and cost boundaries
 
-HTML used the managed caching-disabled policy, which did not negotiate gzip or
-Brotli. The source correction uses zero minimum/default TTL, a one-day maximum,
-and both encodings. Origin no-cache still forces document revalidation. See
+HTML uses AWS's managed `CachingDisabled` policy. The CloudFront Free plan rejected
+the custom policy that enabled gzip/Brotli, so it was removed. Documents remain
+fresh, but HTML compression is unresolved and the live audit reports it as an
+advisory finding. JavaScript and CSS retain managed `CachingOptimized` caching. See
 [AWS compression conditions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/ServingCompressedFiles.html).
 The existing CDK bucket upload now preserves explicit revalidation metadata
 rather than clearing it. Infrastructure uploads conservatively revalidate all
@@ -225,9 +226,9 @@ files; the frontend-only uploader retains its year-long immutable policy for
 content-hashed chunks and uploads those before documents. Old chunks remain.
 Stable examples, HTML, robots and sitemap are never marked immutable.
 
-This adds one free cache-policy configuration, no service, log stream, WAF rule,
-custom uploader, invalidation or fixed recurring charge. Compression can reduce
-transfer bytes. Infrastructure-wide revalidation can increase conditional asset
+This adds no custom cache policy, pricing-plan change, service, log stream, WAF rule,
+custom uploader, invalidation or fixed recurring charge.
+Infrastructure-wide revalidation can increase conditional asset
 requests compared with the frontend-only immutable cache; ordinary S3/CloudFront
 requests, transfer, artifact retention and deployment charges still apply.
 Authorize infrastructure deployment separately and inspect actual response
