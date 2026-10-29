@@ -84,6 +84,9 @@ upload_phase mutable "$mutable_cache_control"
 # Upload documents last, once all files they reference are available.
 upload_phase documents "$mutable_cache_control"
 
+# Retire only migrated tool HTML after all replacement documents are uploaded.
+node --experimental-strip-types scripts/retire-tool-documents.mts "$build_directory" "$bucket"
+
 # Route documents revalidate through the caching-disabled behavior. Every
 # referenced JS and CSS entry asset is content-addressed by the build, so a
 # new deployment uses new URLs without CloudFront invalidations.

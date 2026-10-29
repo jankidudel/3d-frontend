@@ -25,7 +25,7 @@
     "format:check": "prettier --check .",
     "test": "npm run generate:guides && ng test --watch=false && npm run test:internal-links && npm run test:tool-layout && npm run test:material-page-styles && npm run test:deployment-workflow && npm run test:sitemap && npm run test:collection-examples && npm run test:seo-recovery && npm run test:route-coverage && npm run test:technical-seo",
     "test:sitemap": "vitest run scripts/sitemap.spec.mts",
-    "test:deployment-workflow": "vitest run scripts/deployment-workflow.spec.mts",
+    "test:deployment-workflow": "vitest run scripts/deployment-workflow.spec.mts scripts/retire-tool-documents.spec.mts",
     "test:internal-links": "vitest run scripts/check-internal-links.spec.mts",
     "test:tool-layout": "vitest run scripts/tool-layout.spec.mts",
     "test:material-page-styles": "vitest run scripts/material-page-styles.spec.mts",

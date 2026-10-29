@@ -253,8 +253,13 @@ controls the dropdown. Materials and printer catalogues retain their own section
 No redirects or old route aliases are provided. The URL ledger records moved URLs
 in each page's `previousPaths`; historical observations retain their original URLs.
 
-The existing uploaders retain old objects. A deployment of the new routes alone
-does not remove previously uploaded HTML at retired URLs. Removing those exact
-document objects is a separate authorized release cleanup; retain hashed assets
-needed by open tabs and verify retired URLs return 404/410 afterward. This route
-change does not modify cache policies, upload behavior or AWS infrastructure.
+Both application deployment workflows remove only the retired root-level tool
+HTML keys after uploading the replacement `/tools/<slug>/index.html` documents.
+`scripts/retire-tool-documents.mts` derives these keys from the route registry,
+requires every replacement in the build and target bucket, rejects old HTML in
+the build, and fails on S3 deletion errors. Hashed assets remain available for
+open tabs. No redirects, cache changes or invalidations are added. Cleanup uses
+ordinary S3 HEAD/delete requests and requires `s3:DeleteObject` on the frontend
+bucket. Infrastructure-only deployments retain the existing application files.
+Verify retired clean URLs return 404 after release; current tool URLs must return
+200 and remain the only tool destinations in navigation and the sitemap.
