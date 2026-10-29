@@ -50,16 +50,21 @@ export function retireToolDocuments(
   }
   console.log(`Removing ${keys.length} retired tool HTML keys from ${bucket}:`);
   console.log(keys.join('\n'));
-  const response = JSON.parse(
-    run([
-      's3api',
-      'delete-objects',
-      '--bucket',
-      bucket,
-      '--delete',
-      JSON.stringify({ Objects: keys.map((Key) => ({ Key })), Quiet: true }),
-    ]),
-  ) as { Errors?: unknown[] };
+  const output = run([
+    's3api',
+    'delete-objects',
+    '--bucket',
+    bucket,
+    '--output',
+    'json',
+    '--delete',
+    JSON.stringify({ Objects: keys.map((Key) => ({ Key })), Quiet: true }),
+  ]);
+  // S3 quiet mode can return an empty response when every deletion succeeds.
+  // Nonzero CLI exits still throw, and nonempty responses retain per-key errors.
+  const response = (output.trim() ? JSON.parse(output) : {}) as {
+    Errors?: unknown[];
+  };
   if (response.Errors?.length) {
     throw new Error(
       `Retired tool cleanup failed: ${JSON.stringify(response.Errors)}`,

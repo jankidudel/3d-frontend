@@ -32,6 +32,12 @@ it('deletes only retired tool HTML after checking all uploaded replacements', as
   });
   const deletion = calls.at(-1)!;
   expect(deletion.slice(0, 2)).toEqual(['s3api', 'delete-objects']);
+  expect(
+    deletion.slice(
+      deletion.indexOf('--output'),
+      deletion.indexOf('--output') + 2,
+    ),
+  ).toEqual(['--output', 'json']);
   const payload = JSON.parse(deletion.at(-1)!) as {
     Objects: { Key: string }[];
   };
@@ -103,4 +109,24 @@ it('rejects live duplicate pages and redirects, accepting only 404/410', async (
   expect(urls).toContain(
     'https://www.inspectmesh.com/3d-print-cost-calculator',
   );
+});
+
+it('accepts empty quiet-mode success without hiding malformed responses or CLI failures', async () => {
+  const directory = await build();
+  for (const output of ['', ' \n', '{}']) {
+    expect(() =>
+      retireToolDocuments(directory, 'test-bucket', () => output),
+    ).not.toThrow();
+  }
+  expect(() =>
+    retireToolDocuments(directory, 'test-bucket', (args) => {
+      if (args[1] === 'delete-objects') {
+        throw new Error('AWS CLI failed');
+      }
+      return '{}';
+    }),
+  ).toThrow('AWS CLI failed');
+  expect(() =>
+    retireToolDocuments(directory, 'test-bucket', () => '{'),
+  ).toThrow(SyntaxError);
 });
