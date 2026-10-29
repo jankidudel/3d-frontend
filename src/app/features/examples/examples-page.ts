@@ -187,6 +187,6 @@ export class ExamplesPage {
     return this.inGroup(group)[0].id;
   }
   toolName(path: string): string {
-    return path.slice(1).replaceAll('-', ' ');
+    return (path.split('/').at(-1) ?? '').replaceAll('-', ' ');
   }
 }

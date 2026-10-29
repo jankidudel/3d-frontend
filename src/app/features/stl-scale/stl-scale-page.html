@@ -29,7 +29,7 @@
     }
   </section>
   <app-example-loader
-    tool="/stl-scale-tool"
+    [tool]="routeUrl.StlScaleTool"
     [active]="file() !== null"
     [busy]="false"
     [current]="file()"

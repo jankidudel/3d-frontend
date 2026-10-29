@@ -70,7 +70,7 @@
   </p>
 
   <app-example-loader
-    tool="/3mf-print-preflight"
+    [tool]="routeUrl.ThreeMfPrintPreflight"
     [active]="file() !== null"
     [busy]="analysing()"
     [current]="file()"

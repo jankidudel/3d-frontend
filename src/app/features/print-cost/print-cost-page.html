@@ -19,14 +19,22 @@
     before pricing a job.
   </p>
 
-  <div class="actions" aria-label="Cost input mode">
+  <div
+    class="actions cost-mode-toggle"
+    role="group"
+    aria-label="Cost input mode"
+  >
     <button
+      class="button"
+      [class.button-secondary]="jobMode()"
       type="button"
       [attr.aria-pressed]="!jobMode()"
       (click)="jobMode.set(false)"
     >
       Simple estimate</button
     ><button
+      class="button"
+      [class.button-secondary]="!jobMode()"
       type="button"
       [attr.aria-pressed]="jobMode()"
       (click)="jobMode.set(true)"

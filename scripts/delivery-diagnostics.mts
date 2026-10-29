@@ -11,15 +11,15 @@ export interface VariantCheck {
 /** Fixed representative diagnostics, never a grid of arbitrary query states. */
 export const deliveryVariants: readonly VariantCheck[] = [
   ...[
-    'http://inspectmesh.com/stl-viewer?seo-audit=1',
-    'https://inspectmesh.com/stl-viewer?seo-audit=1',
-    'http://www.inspectmesh.com/stl-viewer?seo-audit=1',
-    productionOrigin + '/stl-viewer/',
-    productionOrigin + '/stl-viewer/index.html',
-    productionOrigin + '/stl-viewer?seo-audit=1',
+    'http://inspectmesh.com/tools/stl-viewer?seo-audit=1',
+    'https://inspectmesh.com/tools/stl-viewer?seo-audit=1',
+    'http://www.inspectmesh.com/tools/stl-viewer?seo-audit=1',
+    productionOrigin + '/tools/stl-viewer/',
+    productionOrigin + '/tools/stl-viewer/index.html',
+    productionOrigin + '/tools/stl-viewer?seo-audit=1',
   ].map((requestedUrl) => ({
     requestedUrl,
-    expectedCanonical: productionOrigin + '/stl-viewer',
+    expectedCanonical: productionOrigin + '/tools/stl-viewer',
     expectedStatus: 200,
   })),
   {

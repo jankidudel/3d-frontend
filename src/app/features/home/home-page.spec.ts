@@ -15,14 +15,14 @@ describe('HomePage', () => {
       link.getAttribute('href'),
     );
     expect(featured).toEqual([
-      '/stl-viewer',
-      '/3mf-viewer',
-      '/stl-print-preflight',
-      '/3d-printer-fit-checker',
-      '/stl-compare',
-      '/batch-stl-checker',
-      '/3d-print-cost-calculator',
-      '/3d-printing-price-calculator',
+      '/tools/stl-viewer',
+      '/tools/3mf-viewer',
+      '/tools/stl-print-preflight',
+      '/tools/3d-printer-fit-checker',
+      '/tools/stl-compare',
+      '/tools/batch-stl-checker',
+      '/tools/3d-print-cost-calculator',
+      '/tools/3d-printing-price-calculator',
     ]);
     expect(featured.length).toBeLessThan(
       HOME_TOOL_GROUPS.flatMap((group) => group.tools).length,
@@ -34,8 +34,8 @@ describe('HomePage', () => {
         link.getAttribute('href'),
       ]),
     ).toEqual([
-      ['Open an STL model', '/stl-viewer'],
-      ['Open a 3MF model', '/3mf-viewer'],
+      ['Open an STL model', '/tools/stl-viewer'],
+      ['Open a 3MF model', '/tools/3mf-viewer'],
       ['Browse all tools', '/tools'],
     ]);
     expect(heroLinks.every((link) => link.classList.contains('button'))).toBe(

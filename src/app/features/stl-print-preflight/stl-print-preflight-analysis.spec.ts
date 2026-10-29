@@ -33,10 +33,10 @@ describe('STL preflight analysis', () => {
       ),
     ).toEqual(
       expect.arrayContaining([
-        '/stl-repair',
-        '/stl-dimensions-checker',
-        '/stl-wall-thickness-checker',
-        '/stl-file-size-reducer',
+        '/tools/stl-repair',
+        '/tools/stl-dimensions-checker',
+        '/tools/stl-wall-thickness-checker',
+        '/tools/stl-file-size-reducer',
       ]),
     );
   });

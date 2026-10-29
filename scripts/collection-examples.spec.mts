@@ -466,10 +466,13 @@ describe('visual diagnosis teaching controls', () => {
       publicExamples.length,
     );
     expect(
-      findPublicExample('https://customer.invalid/private.stl', '/stl-viewer'),
+      findPublicExample(
+        'https://customer.invalid/private.stl',
+        '/tools/stl-viewer',
+      ),
     ).toBeUndefined();
     expect(
-      findPublicExample('build-conversion', '/stl-viewer'),
+      findPublicExample('build-conversion', '/tools/stl-viewer'),
     ).toBeUndefined();
     for (const example of publicExamples) {
       for (const asset of example.files) {
@@ -1116,7 +1119,10 @@ describe('reduction review controls', () => {
 
 describe('registered disconnected-part controls', () => {
   it('matches the removal demonstration captions to actual generated ASCII and binary files', async () => {
-    const example = findPublicExample('floating-parts-removal', '/stl-repair')!;
+    const example = findPublicExample(
+      'floating-parts-removal',
+      '/tools/stl-repair',
+    )!;
     expect(example.files).toHaveLength(2);
     for (const asset of example.files) {
       const bytes = await readFile(
@@ -1134,7 +1140,7 @@ describe('registered disconnected-part controls', () => {
   it('matches the intended-parts counterexample and close-area warning to its file', async () => {
     const example = findPublicExample(
       'floating-parts-intentional',
-      '/stl-repair',
+      '/tools/stl-repair',
     )!;
     const bytes = await readFile(
       resolve(root, example.files[0].path.replace('/examples/', '')),

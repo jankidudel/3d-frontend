@@ -1,3 +1,4 @@
+import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { ModelDimensions } from '../../shared/model-dimensions';
 import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
 
@@ -193,7 +194,7 @@ export function preflightActions(
   const actions: PreflightAction[] = [];
   actions.push({
     label: 'Review overhang risk',
-    route: '/stl-overhang-checker',
+    route: PublicRouteUrl.StlOverhangChecker,
     reason:
       'Screen downward-facing geometry and compare sensible 90-degree rotations before slicing.',
   });
@@ -206,21 +207,21 @@ export function preflightActions(
   ) {
     actions.push({
       label: 'Repair STL',
-      route: '/stl-repair',
+      route: PublicRouteUrl.StlRepair,
       reason: 'Resolve the reported mesh issues, then run preflight again.',
     });
   }
   if (fitsPrinter === false) {
     actions.push({
       label: 'Check dimensions and scale',
-      route: '/stl-dimensions-checker',
+      route: PublicRouteUrl.DimensionsChecker,
       reason: 'Review the best right-angle orientation or resize a copy.',
     });
   }
   if (thinAreas) {
     actions.push({
       label: 'Review wall thickness',
-      route: '/stl-wall-thickness-checker',
+      route: PublicRouteUrl.StlWallThicknessChecker,
       reason:
         'Inspect sampled thin areas against your printer and material requirements.',
     });
@@ -228,14 +229,14 @@ export function preflightActions(
   if (triangleCount > 500000) {
     actions.push({
       label: 'Reduce file size',
-      route: '/stl-file-size-reducer',
+      route: PublicRouteUrl.StlFileSizeReducer,
       reason: 'A very dense mesh can make slicers slow or difficult to use.',
     });
   }
   if (integrity.volumeReliable && fitsPrinter === false) {
     actions.push({
       label: 'Split the STL',
-      route: '/stl-splitter',
+      route: PublicRouteUrl.StlSplitter,
       reason: 'A valid oversized model may be more practical as capped parts.',
     });
   }

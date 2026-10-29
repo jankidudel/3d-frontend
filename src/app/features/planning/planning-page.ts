@@ -368,7 +368,7 @@ export class PlanningPage implements OnDestroy {
     }).format(instant);
   }
   linkLabel(path: string): string {
-    return path.slice(1).split('-').join(' ');
+    return (path.split('/').at(-1) ?? '').split('-').join(' ');
   }
   private importRequest = 0;
   async importGcode(event: Event): Promise<void> {

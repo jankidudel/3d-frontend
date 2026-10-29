@@ -242,12 +242,14 @@ inventing a scheme header. It remains measured by the live variant checks.
 Do not create a second distribution or redirects solely to make this warning
 green without separate cost/design authorization.
 
-### Guide and materials URL structure
+### Public URL structure
 
 Guides use `/guides/<slug>`; `/guides` remains the guide index. The materials hub
 and detail pages use `/materials` and `/materials/<slug>`. Route constants,
 generated guide links, canonicals, breadcrumbs and the sitemap share this structure.
-The Tools navigation label links to `/tools`; the adjacent button controls the dropdown.
+Interactive tools and the STL/3MF tool hubs use `/tools/<slug>`; `/tools` remains
+the directory. The Tools navigation label links to `/tools`; the adjacent button
+controls the dropdown. Materials and printer catalogues retain their own sections.
 No redirects or old route aliases are provided. The URL ledger records moved URLs
 in each page's `previousPaths`; historical observations retain their original URLs.
 

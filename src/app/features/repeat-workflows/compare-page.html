@@ -176,7 +176,7 @@
     </p>
   </section>
   <app-example-loader
-    tool="/stl-compare"
+    [tool]="routeUrl.StlCompare"
     [active]="before() !== null || after() !== null"
     [busy]="busy()"
     [current]="exampleSource()"

@@ -335,6 +335,7 @@ describe('owned export-fidelity evidence', () => {
       coordinateAssumption: 'millimetres; STL has no unit declaration',
       intendedInventory: inventory,
       checks: {
+        // Retain the route used by this archived 2026-10-26 observation.
         tool: '/batch-stl-checker',
         methodVersion: report.methodVersion,
         executionPath:

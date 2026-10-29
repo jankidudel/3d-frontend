@@ -69,7 +69,7 @@
   </p>
 
   <app-example-loader
-    tool="/stl-print-preflight"
+    [tool]="routeUrl.StlPrintPreflight"
     [active]="file() !== null"
     [busy]="analysing()"
     [current]="file()"

@@ -47,6 +47,32 @@ describe('explicit public example loading', () => {
     ).rejects.toThrow('listed public example');
     expect(fetcher).not.toHaveBeenCalled();
   });
+
+  it.each([
+    [PublicRouteUrl.ThreeMfViewer, '.3mf'],
+    [PublicRouteUrl.GcodePreflightChecker, '.gcode'],
+    [PublicRouteUrl.Viewer, '.stl'],
+  ])(
+    'loads the supported file format from the prefixed tool route %s',
+    async (tool, extension) => {
+      const example = publicExamples.find(
+        (example) =>
+          example.tools.includes(tool) &&
+          example.files.some((asset) => asset.name.endsWith(extension)),
+      )!;
+      const index = example.files.findIndex((asset) =>
+        asset.name.endsWith(extension),
+      );
+      const asset = example.files[index];
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue(new Response(new Uint8Array(asset.bytes))),
+      );
+      const files = await fetchPublicExample(example.id, tool, index);
+      expect(files).toHaveLength(1);
+      expect(files[0].name).toBe(asset.name);
+    },
+  );
   it('announces replacement and awaits the real tool callback', async () => {
     const { fixture, load } = setup();
     fixture.componentRef.setInput('active', true);

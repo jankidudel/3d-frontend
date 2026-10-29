@@ -18,11 +18,11 @@ const routes: Routes = [
   { path: 'tools', component: BlankPage },
   { path: 'guides', component: BlankPage },
   { path: 'privacy', component: BlankPage },
-  { path: 'stl-repair', component: BlankPage },
-  { path: '3mf-manifold-checker', component: BlankPage },
-  { path: 'stl-tools', component: BlankPage },
-  { path: '3mf-tools', component: BlankPage },
-  { path: '3d-print-cost-calculator', component: BlankPage },
+  { path: 'tools/stl-repair', component: BlankPage },
+  { path: 'tools/3mf-manifold-checker', component: BlankPage },
+  { path: 'tools/stl-tools', component: BlankPage },
+  { path: 'tools/3mf-tools', component: BlankPage },
+  { path: 'tools/3d-print-cost-calculator', component: BlankPage },
   { path: 'guides/how-to-repair-an-stl-file', component: BlankPage },
 ];
 
@@ -36,12 +36,12 @@ describe('BreadcrumbsComponent', () => {
     const document = TestBed.inject(DOCUMENT);
 
     fixture.detectChanges();
-    await router.navigateByUrl('/stl-repair');
+    await router.navigateByUrl('/tools/stl-repair');
     fixture.detectChanges();
 
     expect(trail(fixture.nativeElement)).toEqual([
       ['All 3D tools', '/tools'],
-      ['STL tools', '/stl-tools'],
+      ['STL tools', '/tools/stl-tools'],
       ['STL Repair Tool', null],
     ]);
     expect(
@@ -51,19 +51,19 @@ describe('BreadcrumbsComponent', () => {
     ).toBe('STL Repair Tool');
     expect(breadcrumbItems(document)).toEqual([
       ['All 3D tools', 1, 'https://www.inspectmesh.com/tools'],
-      ['STL tools', 2, 'https://www.inspectmesh.com/stl-tools'],
-      ['STL Repair Tool', 3, 'https://www.inspectmesh.com/stl-repair'],
+      ['STL tools', 2, 'https://www.inspectmesh.com/tools/stl-tools'],
+      ['STL Repair Tool', 3, 'https://www.inspectmesh.com/tools/stl-repair'],
     ]);
 
-    await router.navigateByUrl('/3mf-manifold-checker');
+    await router.navigateByUrl('/tools/3mf-manifold-checker');
     fixture.detectChanges();
     expect(trail(fixture.nativeElement)).toEqual([
       ['All 3D tools', '/tools'],
-      ['3MF tools', '/3mf-tools'],
+      ['3MF tools', '/tools/3mf-tools'],
       ['3MF Manifold Checker', null],
     ]);
 
-    await router.navigateByUrl('/stl-tools');
+    await router.navigateByUrl('/tools/stl-tools');
     fixture.detectChanges();
     expect(trail(fixture.nativeElement)).toEqual([
       ['All 3D tools', '/tools'],
@@ -72,10 +72,10 @@ describe('BreadcrumbsComponent', () => {
     expect(currentPage(fixture.nativeElement)).toBe('STL tools');
     expect(breadcrumbItems(document)).toEqual([
       ['All 3D tools', 1, 'https://www.inspectmesh.com/tools'],
-      ['STL tools', 2, 'https://www.inspectmesh.com/stl-tools'],
+      ['STL tools', 2, 'https://www.inspectmesh.com/tools/stl-tools'],
     ]);
 
-    await router.navigateByUrl('/3mf-tools');
+    await router.navigateByUrl('/tools/3mf-tools');
     fixture.detectChanges();
     expect(trail(fixture.nativeElement)).toEqual([
       ['All 3D tools', '/tools'],
@@ -84,10 +84,10 @@ describe('BreadcrumbsComponent', () => {
     expect(currentPage(fixture.nativeElement)).toBe('3MF tools');
     expect(breadcrumbItems(document)).toEqual([
       ['All 3D tools', 1, 'https://www.inspectmesh.com/tools'],
-      ['3MF tools', 2, 'https://www.inspectmesh.com/3mf-tools'],
+      ['3MF tools', 2, 'https://www.inspectmesh.com/tools/3mf-tools'],
     ]);
 
-    await router.navigateByUrl('/3d-print-cost-calculator');
+    await router.navigateByUrl('/tools/3d-print-cost-calculator');
     fixture.detectChanges();
     expect(trail(fixture.nativeElement)).toEqual([
       ['All 3D tools', '/tools'],
@@ -99,7 +99,7 @@ describe('BreadcrumbsComponent', () => {
       [
         '3D Print Cost Calculator',
         2,
-        'https://www.inspectmesh.com/3d-print-cost-calculator',
+        'https://www.inspectmesh.com/tools/3d-print-cost-calculator',
       ],
     ]);
 

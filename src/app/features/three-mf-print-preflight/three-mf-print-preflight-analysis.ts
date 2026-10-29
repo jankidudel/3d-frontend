@@ -1,3 +1,4 @@
+import { PublicRouteUrl } from '../../core/seo/public-routes';
 import {
   MeshIntegrityReport,
   PreflightAction,
@@ -30,7 +31,7 @@ export function threeMfPreflightActions(
   const actions: PreflightAction[] = [];
   actions.push({
     label: 'Review overhang risk',
-    route: '/3mf-overhang-checker',
+    route: PublicRouteUrl.ThreeMfOverhangChecker,
     reason:
       'Screen the resolved build for downward-facing geometry before slicing.',
   });
@@ -42,7 +43,7 @@ export function threeMfPreflightActions(
   ) {
     actions.push({
       label: 'Review 3MF Repair',
-      route: '/3mf-repair',
+      route: PublicRouteUrl.ThreeMfRepair,
       reason:
         'Repair only the findings it can correct safely, then rerun this preflight.',
     });
@@ -50,7 +51,7 @@ export function threeMfPreflightActions(
   if (!fitsPrinter) {
     actions.push({
       label: 'Check dimensions and printer fit',
-      route: '/3mf-dimensions-checker',
+      route: PublicRouteUrl.ThreeMfDimensionsChecker,
       reason:
         'Review the final build size and tested right-angle orientations.',
     });
@@ -58,7 +59,7 @@ export function threeMfPreflightActions(
   if (thinAreas) {
     actions.push({
       label: 'Inspect wall thickness',
-      route: '/3mf-wall-thickness-checker',
+      route: PublicRouteUrl.ThreeMfWallThicknessChecker,
       reason:
         'Review sampled thin regions using the intended printer and material.',
     });
@@ -66,14 +67,14 @@ export function threeMfPreflightActions(
   if (triangleCount > 500000) {
     actions.push({
       label: 'Review triangle complexity',
-      route: '/3mf-triangle-counter',
+      route: PublicRouteUrl.ThreeMfTriangleCounter,
       reason:
         'A dense resolved build can make slicers slower to open and prepare.',
     });
   }
   actions.push({
     label: 'Keep a geometry-only copy only when needed',
-    route: '/3mf-to-stl-converter',
+    route: PublicRouteUrl.ThreeMfToStlConverter,
     reason:
       'Converting to STL loses 3MF package information such as units, build structure and metadata.',
   });

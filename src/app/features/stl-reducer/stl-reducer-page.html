@@ -40,7 +40,7 @@
   <p class="privacy-note">Your STL stays in your browser.</p>
 
   <app-example-loader
-    tool="/stl-file-size-reducer"
+    [tool]="routeUrl.StlFileSizeReducer"
     [active]="file() !== null"
     [busy]="processing()"
     [current]="file()"

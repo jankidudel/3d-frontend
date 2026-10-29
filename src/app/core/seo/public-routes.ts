@@ -10,6 +10,7 @@ export const PageType = {
 export type PageType = (typeof PageType)[keyof typeof PageType];
 
 export const PublicRouteSegment = {
+  Tools: 'tools',
   Guide: 'guides',
   Compare: 'compare',
   Printers: '3d-printers',
@@ -83,14 +84,14 @@ const defineRoute = <Path extends string>(
 ): PublicRouteDefinition<Path> => ({ path, pageType });
 
 const toolRoute = <Path extends string>(path: Path) =>
-  defineRoute(path, PageType.Tool);
+  defineRoute(`${PublicRouteSegment.Tools}/${path}` as const, PageType.Tool);
 
 const guideRoute = <Path extends string>(path: Path) =>
   defineRoute(`${PublicRouteSegment.Guide}/${path}` as const, PageType.Guide);
 
 export const PublicRoutePath = {
   Home: defineRoute('', PageType.Home),
-  AllTools: toolRoute('tools'),
+  AllTools: defineRoute(PublicRouteSegment.Tools, PageType.Tool),
   BatchStlChecker: toolRoute('batch-stl-checker'),
   StlCompare: toolRoute('stl-compare'),
   FilamentRemainingCalculator: toolRoute('filament-remaining-calculator'),
@@ -98,10 +99,10 @@ export const PublicRoutePath = {
   VolumetricFlowCalculator: toolRoute('volumetric-flow-calculator'),
   PrintFinishTimeCalculator: toolRoute('3d-print-finish-time-calculator'),
   Compare3dPrinters: toolRoute('compare-3d-printers'),
-  Compare: toolRoute(PublicRouteSegment.Compare),
+  Compare: defineRoute(PublicRouteSegment.Compare, PageType.Tool),
   PrinterFitChecker: toolRoute('3d-printer-fit-checker'),
-  Printers: toolRoute(PublicRouteSegment.Printers),
-  Materials: toolRoute(PublicRouteSegment.Materials),
+  Printers: defineRoute(PublicRouteSegment.Printers, PageType.Tool),
+  Materials: defineRoute(PublicRouteSegment.Materials, PageType.Tool),
   MaterialSelector: toolRoute('3d-printing-material-selector'),
   CompareMaterials: toolRoute('compare-3d-printing-materials'),
   PrintCostCalculator: toolRoute('3d-print-cost-calculator'),

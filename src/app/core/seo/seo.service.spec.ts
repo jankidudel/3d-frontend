@@ -22,7 +22,7 @@ describe('SeoService', () => {
     service.apply({
       title: 'STL Quality Checker',
       description: 'Checks STL topology.',
-      path: '/stl-quality-checker',
+      path: '/tools/stl-quality-checker',
     });
 
     expect(document.title).toBe('STL Quality Checker');
@@ -57,7 +57,7 @@ describe('SeoService', () => {
     service.apply({
       title: 'STL Volume Calculator',
       description: 'Calculates STL volume.',
-      path: '/stl-volume-calculator',
+      path: '/tools/stl-volume-calculator',
     });
 
     expect(
@@ -69,12 +69,12 @@ describe('SeoService', () => {
       document.head
         .querySelector('link[rel="canonical"]')
         ?.getAttribute('href'),
-    ).toBe('https://tools.example.com/stl-volume-calculator');
+    ).toBe('https://tools.example.com/tools/stl-volume-calculator');
     expect(
       document.head
         .querySelector("meta[property='og:url']")
         ?.getAttribute('content'),
-    ).toBe('https://tools.example.com/stl-volume-calculator');
+    ).toBe('https://tools.example.com/tools/stl-volume-calculator');
   });
 
   it('adds FAQ structured data for an article page', () => {

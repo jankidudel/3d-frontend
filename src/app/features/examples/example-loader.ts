@@ -1,4 +1,7 @@
-import { PublicRouteUrl } from '../../core/seo/public-routes';
+import {
+  PublicRouteSegment,
+  PublicRouteUrl,
+} from '../../core/seo/public-routes';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
@@ -18,16 +21,18 @@ export async function fetchPublicExample(
   }
   const selected = example.files[index];
   const extension =
-    tool === '/gcode-preflight-checker'
+    tool === PublicRouteUrl.GcodePreflightChecker
       ? '.gcode'
-      : tool.startsWith('/3mf')
+      : tool.startsWith(`/${PublicRouteSegment.Tools}/3mf-`)
         ? '.3mf'
         : '.stl';
   if (!selected || !selected.name.endsWith(extension)) {
     throw new Error('Choose a supported example file.');
   }
   const assets =
-    tool === '/stl-compare' ? [example.files[0], selected] : [selected];
+    tool === PublicRouteUrl.StlCompare
+      ? [example.files[0], selected]
+      : [selected];
   return Promise.all(
     assets.map(async (asset) => {
       const response = await fetch(asset.path, { credentials: 'omit' });
@@ -67,7 +72,8 @@ export async function fetchPublicExample(
       <p>{{ selected().question }}</p>
       <p><strong>Settings:</strong> {{ selected().settings }}</p>
       <label
-        >Example file {{ tool() === '/stl-compare' ? '(after revision)' : '' }}
+        >Example file
+        {{ tool() === routeUrl.StlCompare ? '(after revision)' : '' }}
         <select
           class="select-control"
           [value]="chosenIndex()"
@@ -86,7 +92,7 @@ export async function fetchPublicExample(
           }
         </select>
       </label>
-      @if (tool() === '/stl-compare') {
+      @if (tool() === routeUrl.StlCompare) {
         <p>
           Before: {{ selected().files[0].name }}. Both revision slots will be
           replaced.
@@ -96,7 +102,7 @@ export async function fetchPublicExample(
         Downloads this public control, then opens it locally.
         {{
           active()
-            ? tool() === '/stl-compare'
+            ? tool() === routeUrl.StlCompare
               ? 'Replaces both revision slots and the result. Preserve any unsaved output first.'
               : 'Replaces your current model and result. Preserve any unsaved output first.'
             : 'Your own file can still be chosen above.'
@@ -110,7 +116,7 @@ export async function fetchPublicExample(
       >
         {{
           active()
-            ? tool() === '/stl-compare'
+            ? tool() === routeUrl.StlCompare
               ? 'Replace both revision slots with example'
               : 'Replace current model with example'
             : 'Load example locally'
@@ -159,7 +165,8 @@ export class ExampleLoader {
   );
   readonly fileIndex = signal<number | null>(null);
   readonly chosenIndex = computed(
-    () => this.fileIndex() ?? (this.tool() === '/stl-compare' ? 1 : 0),
+    () =>
+      this.fileIndex() ?? (this.tool() === this.routeUrl.StlCompare ? 1 : 0),
   );
   readonly loading = signal(false);
   readonly loaded = signal(false);
@@ -167,16 +174,16 @@ export class ExampleLoader {
   readonly error = signal('');
   supported(name: string): boolean {
     return name.endsWith(
-      this.tool() === '/gcode-preflight-checker'
+      this.tool() === this.routeUrl.GcodePreflightChecker
         ? '.gcode'
-        : this.tool().startsWith('/3mf')
+        : this.tool().startsWith(`/${PublicRouteSegment.Tools}/3mf-`)
           ? '.3mf'
           : '.stl',
     );
   }
   choose(event: Event): void {
     this.selectedId.set((event.target as HTMLSelectElement).value);
-    this.fileIndex.set(this.tool() === '/stl-compare' ? 1 : 0);
+    this.fileIndex.set(this.tool() === this.routeUrl.StlCompare ? 1 : 0);
     this.loaded.set(false);
     this.status.set('');
     this.error.set('');
@@ -212,7 +219,7 @@ export class ExampleLoader {
       this.loaded.set(true);
       this.analytics.trackWorkflow(
         AnalyticsEvent.ExampleLoaded,
-        this.tool().slice(1),
+        this.tool().split('/').at(-1)!,
         this.selected().id,
       );
       this.status.set(

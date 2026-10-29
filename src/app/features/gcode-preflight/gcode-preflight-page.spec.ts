@@ -270,7 +270,7 @@ it('switches examples when the rendered buttons are clicked', async () => {
       fixture.nativeElement
         .querySelector('a[href*="gcode-result"]')
         ?.getAttribute('href'),
-    ).toContain('/gcode-preflight-checker#gcode-result');
+    ).toContain('/tools/gcode-preflight-checker#gcode-result');
     expect(arachneButton.getAttribute('aria-pressed')).toBe('false');
     expect(classicButton.getAttribute('aria-pressed')).toBe('true');
     expect(fixture.nativeElement.textContent).toContain('extrusion moves');

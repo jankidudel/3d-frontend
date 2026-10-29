@@ -59,8 +59,8 @@ describe('independent router coverage', () => {
     const router = discoverRouter();
     expect(classificationFailures(router, routeSearchPolicy)).toEqual([]);
     for (const path of [
-      '/3mf-repair',
-      '/3d-print-finish-time-calculator',
+      '/tools/3mf-repair',
+      '/tools/3d-print-finish-time-calculator',
       '/privacy',
       '/3d-printers/review-draft',
       '/compare/bambu-lab-p1s-vs-p2s',
@@ -117,7 +117,7 @@ describe('independent router coverage', () => {
 describe('exact XML sitemap membership', () => {
   it('detects a missing tool even though its similarly named guide is retained', () => {
     const kept = entries().filter(
-      (p) => p.loc !== productionOrigin + '/3mf-repair',
+      (p) => p.loc !== productionOrigin + '/tools/3mf-repair',
     );
     expect(
       kept.some(
@@ -125,7 +125,7 @@ describe('exact XML sitemap membership', () => {
       ),
     ).toBe(true);
     expect(compareSitemap(kept, routeSearchPolicy)).toContain(
-      `Missing sitemap entry: /3mf-repair (${productionOrigin}/3mf-repair)`,
+      `Missing sitemap entry: /tools/3mf-repair (${productionOrigin}/tools/3mf-repair)`,
     );
   });
   it('rejects duplicates, exclusions, wrong hosts, query states and invalid dates', () => {
@@ -134,9 +134,9 @@ describe('exact XML sitemap membership', () => {
       ...original,
       original[0],
       { loc: productionOrigin + '/privacy', lastmod: null },
-      { loc: 'https://inspectmesh.com/3mf-repair', lastmod: null },
+      { loc: 'https://inspectmesh.com/tools/3mf-repair', lastmod: null },
       {
-        loc: productionOrigin + '/3mf-repair?example=test',
+        loc: productionOrigin + '/tools/3mf-repair?example=test',
         lastmod: '2026-02-30',
       },
     ];
@@ -146,7 +146,7 @@ describe('exact XML sitemap membership', () => {
       'Unexpected sitemap entry: ' + productionOrigin + '/privacy',
     );
     expect(failures).toContain(
-      'Noncanonical sitemap URL: https://inspectmesh.com/3mf-repair',
+      'Noncanonical sitemap URL: https://inspectmesh.com/tools/3mf-repair',
     );
     expect(failures).toContain('?example=test');
     expect(failures).toContain('Unsupported lastmod');
@@ -154,17 +154,17 @@ describe('exact XML sitemap membership', () => {
   it('does not collapse path case, queries or encoded slashes into another route', () => {
     for (const path of [
       '/3MF-repair',
-      '/3mf-repair?state=1',
+      '/tools/3mf-repair?state=1',
       '/3mf%2Frepair',
-      '/3mf-repair/',
+      '/tools/3mf-repair/',
     ]) {
       const changed = entries().map((p) =>
-        p.loc === productionOrigin + '/3mf-repair'
+        p.loc === productionOrigin + '/tools/3mf-repair'
           ? { ...p, loc: productionOrigin + path }
           : p,
       );
       expect(compareSitemap(changed, routeSearchPolicy).join('\n')).toContain(
-        'Missing sitemap entry: /3mf-repair',
+        'Missing sitemap entry: /tools/3mf-repair',
       );
     }
     expect(() => parseSitemapXml('<urlset><url>broken')).toThrow();
@@ -174,7 +174,7 @@ describe('exact XML sitemap membership', () => {
 describe('built route/link evidence', () => {
   it('rejects another tool document even when its canonical has been rewritten correctly', () => {
     const policies = routeSearchPolicy.filter((p) =>
-      ['/', '/stl-viewer', '/3mf-viewer'].includes(p.path),
+      ['/', '/tools/stl-viewer', '/tools/3mf-viewer'].includes(p.path),
     );
     const pages = policies.map((p) => ({
       route: p.path,
@@ -183,10 +183,10 @@ describe('built route/link evidence', () => {
         p.path === '/'
           ? main(
               '/',
-              '<a href="/stl-viewer">STL</a><a href="/3mf-viewer">3MF</a>',
+              '<a href="/tools/stl-viewer">STL</a><a href="/tools/3mf-viewer">3MF</a>',
             )
-          : main('/stl-viewer').replace(
-              `href="${productionOrigin}/stl-viewer"`,
+          : main('/tools/stl-viewer').replace(
+              `href="${productionOrigin}/tools/stl-viewer"`,
               `href="${productionOrigin}${p.path}"`,
             ),
     }));
@@ -217,12 +217,12 @@ describe('built route/link evidence', () => {
       filePath: 'index.html',
       html: main(
         '/',
-        `<nav><a href="/tools">Tools</a></nav><a href="/3mf-repair?example=test#plan">Repair</a><a href="/3mf%2Frepair">Encoded</a>`,
+        `<nav><a href="/tools">Tools</a></nav><a href="/tools/3mf-repair?example=test#plan">Repair</a><a href="/3mf%2Frepair">Encoded</a>`,
       ),
     });
     expect(links[0].contextual).toBe(false);
     expect(links[1]).toMatchObject({
-      path: '/3mf-repair',
+      path: '/tools/3mf-repair',
       query: '?example=test',
       fragment: '#plan',
       contextual: true,
@@ -231,16 +231,16 @@ describe('built route/link evidence', () => {
   });
   it('detects a home fallback even with a rewritten canonical, and reports missing/stale output', () => {
     const home = routeSearchPolicy.find((p) => p.path === '/')!;
-    const tool = routeSearchPolicy.find((p) => p.path === '/3mf-repair')!;
+    const tool = routeSearchPolicy.find((p) => p.path === '/tools/3mf-repair')!;
     const pages = [
       {
         route: '/',
         filePath: 'index.html',
-        html: main('/', '<a href="/3mf-repair">Repair</a>'),
+        html: main('/', '<a href="/tools/3mf-repair">Repair</a>'),
       },
       {
         route: tool.path,
-        filePath: '3mf-repair/index.html',
+        filePath: 'tools/3mf-repair/index.html',
         html: main('/').replace(
           'href="' + productionOrigin + '/"',
           'href="' + tool.canonical + '"',
@@ -267,18 +267,18 @@ describe('built route/link evidence', () => {
   });
   it('treats an ordinary hub navigation link as reachability without inventing a contextual article link', () => {
     const policies = routeSearchPolicy.filter((p) =>
-      ['/', '/3mf-repair'].includes(p.path),
+      ['/', '/tools/3mf-repair'].includes(p.path),
     );
     const pages = [
       {
         route: '/',
         filePath: 'index.html',
-        html: '<nav><a href="/3mf-repair">Repair</a></nav>' + main('/'),
+        html: '<nav><a href="/tools/3mf-repair">Repair</a></nav>' + main('/'),
       },
       {
-        route: '/3mf-repair',
+        route: '/tools/3mf-repair',
         filePath: 'repair.html',
-        html: main('/3mf-repair'),
+        html: main('/tools/3mf-repair'),
       },
     ];
     const report = auditRouteCoverage(
@@ -295,7 +295,9 @@ describe('built route/link evidence', () => {
       entries().filter((e) => policies.some((p) => p.canonical === e.loc)),
     );
     expect(report.failures).toEqual([]);
-    expect(report.rows.find((p) => p.path === '/3mf-repair')).toMatchObject({
+    expect(
+      report.rows.find((p) => p.path === '/tools/3mf-repair'),
+    ).toMatchObject({
       incomingCount: 1,
       contextualIncomingCount: 0,
       depth: 1,
@@ -371,11 +373,11 @@ describe('bounded production evidence', () => {
         '/',
         '/tools',
         '/guides',
-        '/stl-tools',
-        '/3mf-tools',
-        '/stl-viewer',
-        '/3mf-viewer',
-        '/3mf-repair',
+        '/tools/stl-tools',
+        '/tools/3mf-tools',
+        '/tools/stl-viewer',
+        '/tools/3mf-viewer',
+        '/tools/3mf-repair',
       ].includes(policy.path),
     );
     const sitemap = buildSitemap(
@@ -402,13 +404,15 @@ describe('bounded production evidence', () => {
       }
       const policy = policies.find((p) => p.path === url.pathname);
       const missing = url.pathname.includes('definitely-missing');
-      const bodyPath = ['/stl-viewer', '/3mf-viewer'].includes(url.pathname)
+      const bodyPath = ['/tools/stl-viewer', '/tools/3mf-viewer'].includes(
+        url.pathname,
+      )
         ? '/shared-wrong-tool'
         : url.pathname;
       const html = main(
         bodyPath,
         url.pathname === '/'
-          ? '<a href="/linked-only-public-tool">Linked tool</a><a href="/jobs/private-token">Private endpoint</a><a href="/3mf-repair?token=private">State</a>'
+          ? '<a href="/linked-only-public-tool">Linked tool</a><a href="/jobs/private-token">Private endpoint</a><a href="/tools/3mf-repair?token=private">State</a>'
           : '',
       ).replace(
         `href="${productionOrigin}${bodyPath}"`,
@@ -425,7 +429,7 @@ describe('bounded production evidence', () => {
           headers: {
             'content-type': 'text/html',
             'x-robots-tag': 'bingbot: noindex',
-            ...(url.pathname === '/3mf-repair'
+            ...(url.pathname === '/tools/3mf-repair'
               ? { link: '<https://www.inspectmesh.com/wrong>; rel="canonical"' }
               : {}),
           },
@@ -434,7 +438,7 @@ describe('bounded production evidence', () => {
     };
     const result = await verifyProduction(request, policies);
     expect(seen).toContain('/linked-only-public-tool');
-    expect(seen).not.toContain('/stl-repair');
+    expect(seen).not.toContain('/tools/stl-repair');
     expect(seen).not.toContain('/jobs/private-token');
     expect(
       result.responses.some(
@@ -446,7 +450,7 @@ describe('bounded production evidence', () => {
       'Production links/sitemap discovered an unclassified public path: /linked-only-public-tool',
     );
     expect(result.failures).toContain(
-      '/3mf-repair: HTTP Link canonical disagrees with policy.',
+      '/tools/3mf-repair: HTTP Link canonical disagrees with policy.',
     );
     expect(
       result.failures.some((failure) =>
@@ -455,7 +459,7 @@ describe('bounded production evidence', () => {
     ).toBe(true);
     expect(
       result.responses.find(
-        (p) => p.requestedUrl === productionOrigin + '/3mf-repair',
+        (p) => p.requestedUrl === productionOrigin + '/tools/3mf-repair',
       )?.xRobotsTag,
     ).toBe('bingbot: noindex');
   });

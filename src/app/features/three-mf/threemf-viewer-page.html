@@ -39,7 +39,7 @@
   <p>{{ numericNote }}</p>
 
   <app-example-loader
-    tool="/3mf-viewer"
+    [tool]="routeUrl.ThreeMfViewer"
     [active]="model() !== null"
     [busy]="loading()"
     [current]="model()"

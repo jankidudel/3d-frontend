@@ -55,6 +55,38 @@ describe('PrintCostPage', () => {
     }
   });
 
+  it('styles both mode buttons and moves the selected state when switching estimates', () => {
+    const fixture = render();
+    const buttons = [
+      ...fixture.nativeElement.querySelectorAll(
+        '[aria-label="Cost input mode"] button',
+      ),
+    ] as HTMLButtonElement[];
+    expect(buttons).toHaveLength(2);
+    expect(buttons.every((button) => button.classList.contains('button'))).toBe(
+      true,
+    );
+    expect(buttons[0].getAttribute('aria-pressed')).toBe('true');
+    expect(buttons[1].classList.contains('button-secondary')).toBe(true);
+    buttons[1].click();
+    fixture.detectChanges();
+    expect(buttons[1].getAttribute('aria-pressed')).toBe('true');
+    expect(buttons[1].classList.contains('button-secondary')).toBe(false);
+    expect(buttons[0].classList.contains('button-secondary')).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('app-job-cost-editor'),
+    ).not.toBeNull();
+    buttons[0].click();
+    fixture.detectChanges();
+    expect(buttons[0].getAttribute('aria-pressed')).toBe('true');
+    expect(
+      fixture.nativeElement.querySelector('app-job-cost-editor'),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('app-stl-file-picker'),
+    ).not.toBeNull();
+  });
+
   it('selects the matching option when its visible label is clicked', () => {
     const fixture = render();
     const formatLabel = fixture.nativeElement.querySelector(

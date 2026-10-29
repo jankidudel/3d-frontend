@@ -33,7 +33,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.QualityCheck]: '2026-10-24',
   [PublicRouteUrl.DimensionsChecker]: '2026-10-26',
   [PublicRouteUrl.StlWallThicknessChecker]: '2026-10-24',
-  [PublicRouteUrl.PrintCostCalculator]: '2026-10-26',
+  [PublicRouteUrl.PrintCostCalculator]: '2026-10-28',
   [PublicRouteUrl.QuoteGenerator]: '2026-10-26',
   [PublicRouteUrl.PrintPriceCalculator]: '2026-10-26',
   [PublicRouteUrl.FilamentLengthCalculator]: '2026-10-24',

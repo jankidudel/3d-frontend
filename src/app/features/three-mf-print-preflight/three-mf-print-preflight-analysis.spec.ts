@@ -32,11 +32,11 @@ describe('3MF print preflight analysis', () => {
     );
     expect(actions.map((action) => action.route)).toEqual(
       expect.arrayContaining([
-        '/3mf-repair',
-        '/3mf-dimensions-checker',
-        '/3mf-wall-thickness-checker',
-        '/3mf-triangle-counter',
-        '/3mf-to-stl-converter',
+        '/tools/3mf-repair',
+        '/tools/3mf-dimensions-checker',
+        '/tools/3mf-wall-thickness-checker',
+        '/tools/3mf-triangle-counter',
+        '/tools/3mf-to-stl-converter',
       ]),
     );
   });

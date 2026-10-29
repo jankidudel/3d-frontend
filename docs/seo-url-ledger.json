@@ -86,7 +86,7 @@
         "contextualInlinkExamples": ["/404"],
         "internalLinkCount": 59,
         "clickDepth": 0,
-        "observedAt": "2026-10-28T23:12:40.288Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Practical tools and guides for 3D printing",
@@ -228,10 +228,10 @@
         "exampleAssets": [],
         "incomingLinkCount": 198,
         "contextualInlinkCount": 3,
-        "contextualInlinkExamples": ["/404", "/", "/stl-tools"],
+        "contextualInlinkExamples": ["/404", "/", "/tools/stl-tools"],
         "internalLinkCount": 57,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.288Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Choose from the complete tool directory",
@@ -311,7 +311,7 @@
       }
     },
     {
-      "path": "/batch-stl-checker",
+      "path": "/tools/batch-stl-checker",
       "priority": "P2",
       "family": "F17",
       "owner": "InspectMesh",
@@ -359,13 +359,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/batch-stl-checker",
+      "url": "https://www.inspectmesh.com/tools/batch-stl-checker",
       "sitemapMember": true,
       "local": {
         "title": "Batch STL and 3MF Checker - Local Collection Reports | InspectMesh",
         "description": "Check a collection of STL and supported 3MF files locally. Review units, mesh findings, printer fit and sampled walls, then export a consistent report.",
         "headings": ["Batch STL and 3MF Checker"],
-        "canonical": "https://www.inspectmesh.com/batch-stl-checker",
+        "canonical": "https://www.inspectmesh.com/tools/batch-stl-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 4638,
@@ -381,15 +381,15 @@
         "incomingLinkCount": 24,
         "contextualInlinkCount": 24,
         "contextualInlinkExamples": [
-          "/3d-printer-fit-checker",
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
           "/3d-printers/bambu-lab-p1s",
-          "/3d-printers/bambu-lab-x1-carbon"
+          "/3d-printers/bambu-lab-x1-carbon",
+          "/3d-printers/creality-k1c"
         ],
         "internalLinkCount": 54,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Batch STL and 3MF Checker",
@@ -440,10 +440,11 @@
           "mainContentSha256": "d0225d3682e29e4f5c4bb738c366447609446091521555c6b6c33874d6d01a83",
           "observedAt": "2026-10-26T20:35:15.295Z"
         }
-      ]
+      ],
+      "previousPaths": ["/batch-stl-checker"]
     },
     {
-      "path": "/stl-compare",
+      "path": "/tools/stl-compare",
       "priority": "P2",
       "family": "F17",
       "owner": "InspectMesh",
@@ -491,13 +492,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-compare",
+      "url": "https://www.inspectmesh.com/tools/stl-compare",
       "sitemapMember": true,
       "local": {
         "title": "Compare STL Files - Revision Overlay and Surface Samples | InspectMesh",
         "description": "Compare two STL revisions locally in a shared coordinate frame. Review dimensions, surface area and bidirectional sampled geometric differences with explicit tolerance.",
         "headings": ["Compare Two STL Files"],
-        "canonical": "https://www.inspectmesh.com/stl-compare",
+        "canonical": "https://www.inspectmesh.com/tools/stl-compare",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3795,
@@ -513,15 +514,15 @@
         "incomingLinkCount": 13,
         "contextualInlinkCount": 13,
         "contextualInlinkExamples": [
-          "/batch-stl-checker",
           "/examples",
           "/guides/how-to-compare-stl-revisions",
           "/guides/how-to-make-an-stl-file-printable",
-          "/guides/how-to-reduce-stl-triangle-count"
+          "/guides/how-to-reduce-stl-triangle-count",
+          "/guides/how-to-repair-an-stl-file"
         ],
         "internalLinkCount": 52,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Compare Two STL Files",
@@ -572,10 +573,11 @@
           "mainContentSha256": "87705920ddcf36712a886dfdccaaeffd8aeab3606c1599161897e0f2f4328de2",
           "observedAt": "2026-10-26T20:35:15.296Z"
         }
-      ]
+      ],
+      "previousPaths": ["/stl-compare"]
     },
     {
-      "path": "/filament-remaining-calculator",
+      "path": "/tools/filament-remaining-calculator",
       "priority": "P2",
       "family": "F09",
       "owner": "InspectMesh",
@@ -619,13 +621,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/filament-remaining-calculator",
+      "url": "https://www.inspectmesh.com/tools/filament-remaining-calculator",
       "sitemapMember": true,
       "local": {
         "title": "Filament Remaining and Job Sufficiency Calculator | InspectMesh",
         "description": "Weigh a partial spool, subtract its tare and reserve, then check whether you have enough filament for your next job.",
         "headings": ["Filament Remaining and Job Sufficiency Calculator"],
-        "canonical": "https://www.inspectmesh.com/filament-remaining-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/filament-remaining-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2270,
@@ -641,15 +643,15 @@
         "incomingLinkCount": 21,
         "contextualInlinkCount": 21,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
-          "/3d-print-finish-time-calculator",
-          "/3d-print-orientation-planner",
-          "/filament-length-calculator",
-          "/guides/3d-print-support-and-purge-material-cost"
+          "/guides/3d-print-support-and-purge-material-cost",
+          "/guides/filament-dryer-vs-dry-box",
+          "/guides/how-much-filament-does-a-3d-print-use",
+          "/guides/how-to-check-if-a-3d-model-is-ready-to-print",
+          "/guides/how-to-rotate-a-3d-model-to-fit-your-printer"
         ],
         "internalLinkCount": 49,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Filament Remaining and Job Sufficiency Calculator",
@@ -694,10 +696,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/filament-remaining-calculator"]
     },
     {
-      "path": "/nozzle-layer-height-calculator",
+      "path": "/tools/nozzle-layer-height-calculator",
       "priority": "P2",
       "family": "F06",
       "owner": "InspectMesh",
@@ -741,13 +744,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/nozzle-layer-height-calculator",
+      "url": "https://www.inspectmesh.com/tools/nozzle-layer-height-calculator",
       "sitemapMember": true,
       "local": {
         "title": "Nozzle, Layer Height and Wall Planner | InspectMesh",
         "description": "Keep nozzle diameter, extrusion line width and layer height separate. Estimate equal-width wall lines before checking the slicer preview.",
         "headings": ["Nozzle, Layer Height and Wall Planner"],
-        "canonical": "https://www.inspectmesh.com/nozzle-layer-height-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/nozzle-layer-height-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2879,
@@ -769,13 +772,13 @@
         "contextualInlinkExamples": [
           "/guides/3d-print-wall-thickness-guide",
           "/guides/brass-vs-hardened-nozzle",
-          "/stl-wall-thickness-checker",
           "/tools",
-          "/volumetric-flow-calculator"
+          "/tools/stl-wall-thickness-checker",
+          "/tools/volumetric-flow-calculator"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Nozzle, Layer Height and Wall Planner",
@@ -820,10 +823,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/nozzle-layer-height-calculator"]
     },
     {
-      "path": "/volumetric-flow-calculator",
+      "path": "/tools/volumetric-flow-calculator",
       "priority": "P2",
       "family": "F09",
       "owner": "InspectMesh",
@@ -867,13 +871,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/volumetric-flow-calculator",
+      "url": "https://www.inspectmesh.com/tools/volumetric-flow-calculator",
       "sitemapMember": true,
       "local": {
         "title": "Volumetric Flow and Print Speed Calculator | InspectMesh",
         "description": "Calculate requested extrusion throughput from actual line width, layer height and linear speed. Compare an optional measured profile limit.",
         "headings": ["Volumetric Flow and Print Speed Calculator"],
-        "canonical": "https://www.inspectmesh.com/volumetric-flow-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/volumetric-flow-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2228,
@@ -890,15 +894,15 @@
         "incomingLinkCount": 13,
         "contextualInlinkCount": 13,
         "contextualInlinkExamples": [
-          "/3d-print-flow-rate-calculator",
           "/guides/brass-vs-hardened-nozzle",
           "/guides/maximum-volumetric-speed-explained",
           "/materials/abs",
-          "/materials/asa"
+          "/materials/asa",
+          "/materials/nylon"
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Volumetric Flow and Print Speed Calculator",
@@ -943,10 +947,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/volumetric-flow-calculator"]
     },
     {
-      "path": "/3d-print-finish-time-calculator",
+      "path": "/tools/3d-print-finish-time-calculator",
       "priority": "P2",
       "family": "F10",
       "owner": "InspectMesh",
@@ -990,13 +995,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3d-print-finish-time-calculator",
+      "url": "https://www.inspectmesh.com/tools/3d-print-finish-time-calculator",
       "sitemapMember": true,
       "local": {
         "title": "3D Print Finish Time Calculator | InspectMesh",
         "description": "Add your slicer duration, optional setup allowance and an observed correction factor to a chosen start time. See the finish in your selected timezone.",
         "headings": ["3D Print Finish Time Calculator"],
-        "canonical": "https://www.inspectmesh.com/3d-print-finish-time-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/3d-print-finish-time-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2008,
@@ -1011,15 +1016,15 @@
         "incomingLinkCount": 7,
         "contextualInlinkCount": 7,
         "contextualInlinkExamples": [
-          "/gcode-preflight-checker",
           "/guides/3d-print-lead-time-vs-print-time",
           "/guides/how-to-check-gcode-before-printing",
           "/guides",
-          "/guides/maximum-volumetric-speed-explained"
+          "/guides/maximum-volumetric-speed-explained",
+          "/"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Finish Time Calculator",
@@ -1064,10 +1069,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3d-print-finish-time-calculator"]
     },
     {
-      "path": "/compare-3d-printers",
+      "path": "/tools/compare-3d-printers",
       "priority": "P3",
       "family": "F16",
       "owner": "InspectMesh",
@@ -1111,13 +1117,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/compare-3d-printers",
+      "url": "https://www.inspectmesh.com/tools/compare-3d-printers",
       "sitemapMember": true,
       "local": {
         "title": "Compare 3D Printers - Specs, Features and Costs | InspectMesh",
         "description": "Compare 3D printers side by side by price context, build volume, enclosure, materials, multicolour support, features and running-cost considerations.",
         "headings": ["Compare 3D Printers"],
-        "canonical": "https://www.inspectmesh.com/compare-3d-printers",
+        "canonical": "https://www.inspectmesh.com/tools/compare-3d-printers",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2845,
@@ -1134,15 +1140,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 11,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
           "/compare/bambu-lab-a1-vs-a1-mini",
           "/compare/bambu-lab-a1-vs-p2s",
           "/compare/bambu-lab-p1p-vs-p1s",
-          "/compare/bambu-lab-p1s-vs-a1"
+          "/compare/bambu-lab-p1s-vs-a1",
+          "/compare/bambu-lab-p1s-vs-p2s"
         ],
         "internalLinkCount": 59,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.866Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Compare 3D Printers",
@@ -1187,10 +1193,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/compare-3d-printers"]
     },
     {
-      "path": "/3d-printer-fit-checker",
+      "path": "/tools/3d-printer-fit-checker",
       "priority": "P2",
       "family": "F08",
       "owner": "InspectMesh",
@@ -1235,13 +1242,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/3d-printer-fit-checker",
+      "url": "https://www.inspectmesh.com/tools/3d-printer-fit-checker",
       "sitemapMember": true,
       "local": {
         "title": "3D Printer Fit Checker - Will Your STL or 3MF Fit?",
         "description": "Upload an STL or 3MF file, choose a 3D printer and check build-volume fit, orientation, clearance and required scaling.",
         "headings": ["3D Printer Fit Checker"],
-        "canonical": "https://www.inspectmesh.com/3d-printer-fit-checker",
+        "canonical": "https://www.inspectmesh.com/tools/3d-printer-fit-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2147,
@@ -1267,7 +1274,7 @@
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Printer Fit Checker",
@@ -1336,7 +1343,8 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/3d-printer-fit-checker"]
     },
     {
       "path": "/3d-printers",
@@ -1419,7 +1427,7 @@
         ],
         "internalLinkCount": 59,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Printers",
@@ -1546,7 +1554,7 @@
         ],
         "internalLinkCount": 61,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Printing Materials",
@@ -1595,7 +1603,7 @@
       "previousPaths": ["/3d-printing-materials"]
     },
     {
-      "path": "/3d-printing-material-selector",
+      "path": "/tools/3d-printing-material-selector",
       "priority": "P3",
       "family": "F13",
       "owner": "InspectMesh",
@@ -1639,13 +1647,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3d-printing-material-selector",
+      "url": "https://www.inspectmesh.com/tools/3d-printing-material-selector",
       "sitemapMember": true,
       "local": {
         "title": "3D Printing Material Selector - Choose the Right Filament | InspectMesh",
         "description": "Rank filament material families using explicit use-case priorities and practical setup cautions.",
         "headings": ["3D Printing Material Selector"],
-        "canonical": "https://www.inspectmesh.com/3d-printing-material-selector",
+        "canonical": "https://www.inspectmesh.com/tools/3d-printing-material-selector",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2866,
@@ -1667,7 +1675,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Printing Material Selector",
@@ -1712,10 +1720,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3d-printing-material-selector"]
     },
     {
-      "path": "/compare-3d-printing-materials",
+      "path": "/tools/compare-3d-printing-materials",
       "priority": "P3",
       "family": "F13",
       "owner": "InspectMesh",
@@ -1759,13 +1768,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/compare-3d-printing-materials",
+      "url": "https://www.inspectmesh.com/tools/compare-3d-printing-materials",
       "sitemapMember": true,
       "local": {
         "title": "Compare 3D Printing Materials | InspectMesh",
         "description": "Compare practical filament setup needs and editorial property bands for two material families.",
         "headings": ["Compare 3D Printing Materials"],
-        "canonical": "https://www.inspectmesh.com/compare-3d-printing-materials",
+        "canonical": "https://www.inspectmesh.com/tools/compare-3d-printing-materials",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1283,
@@ -1786,7 +1795,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Compare 3D Printing Materials",
@@ -1831,7 +1840,8 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/compare-3d-printing-materials"]
     },
     {
       "path": "/materials/pla",
@@ -1914,7 +1924,7 @@
         ],
         "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PLA Filament: Uses, Properties and Printing Guide",
@@ -2068,7 +2078,7 @@
         ],
         "internalLinkCount": 58,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PETG Filament: Uses, Properties and Printing Guide",
@@ -2203,7 +2213,7 @@
         ],
         "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "ABS Filament: Uses, Properties and Printing Guide",
@@ -2338,7 +2348,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "ASA Filament: Uses, Properties and Printing Guide",
@@ -2473,7 +2483,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "TPU Filament: Uses, Properties and Printing Guide",
@@ -2611,7 +2621,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PA / Nylon Filament: Uses, Properties and Printing Guide",
@@ -2748,7 +2758,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.289Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Polycarbonate / PC Filament: Uses, Properties and Printing Guide",
@@ -2885,7 +2895,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Polypropylene / PP Filament: Uses, Properties and Printing Guide",
@@ -3011,7 +3021,7 @@
         "contextualInlinkExamples": ["/materials/petg", "/materials/pla"],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PLA vs PETG: Which Filament Should You Use?",
@@ -3153,7 +3163,7 @@
         "contextualInlinkExamples": ["/materials/abs", "/materials/pla"],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PLA vs ABS: Which Filament Should You Use?",
@@ -3275,7 +3285,7 @@
         "contextualInlinkExamples": ["/materials/abs", "/materials/petg"],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PETG vs ABS: Which Filament Should You Use?",
@@ -3397,7 +3407,7 @@
         "contextualInlinkExamples": ["/materials/abs", "/materials/asa"],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "ABS vs ASA: Which Filament Should You Use?",
@@ -3517,13 +3527,13 @@
         "incomingLinkCount": 3,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/compare-3d-printing-materials",
           "/materials/asa",
-          "/materials/petg"
+          "/materials/petg",
+          "/tools/compare-3d-printing-materials"
         ],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PETG vs ASA: Which Filament Should You Use?",
@@ -3644,13 +3654,13 @@
         "incomingLinkCount": 3,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/compare-3d-printing-materials",
           "/materials/pla",
-          "/materials/tpu"
+          "/materials/tpu",
+          "/tools/compare-3d-printing-materials"
         ],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.867Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PLA vs TPU: Which Filament Should You Use?",
@@ -3773,7 +3783,7 @@
         "contextualInlinkExamples": ["/materials/petg", "/materials/tpu"],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PETG vs TPU: Which Filament Should You Use?",
@@ -3895,7 +3905,7 @@
         "contextualInlinkExamples": ["/materials/nylon", "/materials/petg"],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PETG vs PA / Nylon: Which Filament Should You Use?",
@@ -4022,7 +4032,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "PA / Nylon vs Polycarbonate / PC: Which Filament Should You Use?",
@@ -4149,7 +4159,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 3,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Polypropylene / PP vs PETG: Which Filament Should You Use?",
@@ -4275,11 +4285,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-p1s",
           "/3d-printers/p2s",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab P1S vs Bambu Lab P2S: Which Should You Buy?",
@@ -4406,11 +4416,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/p2s",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab A1 vs Bambu Lab P2S: Which Should You Buy?",
@@ -4539,11 +4549,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab A1 vs Bambu Lab A1 Mini: Which Should You Buy?",
@@ -4670,11 +4680,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-p1s",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab P1S vs Bambu Lab A1: Which Should You Buy?",
@@ -4820,11 +4830,11 @@
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-p1s",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab P1P vs Bambu Lab P1S: Which Should You Buy?",
@@ -4952,11 +4962,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/p2s",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab X1 Carbon vs Bambu Lab P2S: Which Should You Buy?",
@@ -5085,11 +5095,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-p1s",
           "/3d-printers/prusa-core-one",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Original Prusa CORE One vs Bambu Lab P1S: Which Should You Buy?",
@@ -5218,11 +5228,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/prusa-mk4s",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Original Prusa MK4S vs Bambu Lab A1: Which Should You Buy?",
@@ -5349,11 +5359,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-p1s",
           "/3d-printers/creality-k1c",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Creality K1C vs Bambu Lab P1S: Which Should You Buy?",
@@ -5481,11 +5491,11 @@
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/elegoo-neptune-4-plus",
-          "/compare-3d-printers"
+          "/tools/compare-3d-printers"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Elegoo Neptune 4 Plus vs Bambu Lab A1: Which Should You Buy?",
@@ -5603,7 +5613,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab A1 Mini: Specs, Build Volume and Fit Checker",
@@ -5717,7 +5727,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 64,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.290Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab A1: Specs, Build Volume and Fit Checker",
@@ -5832,7 +5842,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 64,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab P1S: Specs, Build Volume and Fit Checker",
@@ -5970,7 +5980,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 62,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab P2S: Specs, Build Volume and Fit Checker",
@@ -6086,7 +6096,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Bambu Lab X1 Carbon: Specs, Build Volume and Fit Checker",
@@ -6202,7 +6212,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Original Prusa CORE One: Specs, Build Volume and Fit Checker",
@@ -6318,7 +6328,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Original Prusa MK4S: Specs, Build Volume and Fit Checker",
@@ -6432,7 +6442,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Creality K1C: Specs, Build Volume and Fit Checker",
@@ -6548,7 +6558,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.868Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Elegoo Neptune 4 Plus: Specs, Build Volume and Fit Checker",
@@ -6662,7 +6672,7 @@
         "contextualInlinkExamples": ["/3d-printers"],
         "internalLinkCount": 59,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Sovol SV06 ACE: Specs, Build Volume and Fit Checker",
@@ -6704,7 +6714,7 @@
       }
     },
     {
-      "path": "/3d-print-cost-calculator",
+      "path": "/tools/3d-print-cost-calculator",
       "priority": "P1",
       "family": "F10",
       "owner": "InspectMesh",
@@ -6752,13 +6762,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/3d-print-cost-calculator",
+      "url": "https://www.inspectmesh.com/tools/3d-print-cost-calculator",
       "sitemapMember": true,
       "local": {
         "title": "3D Print Cost Calculator: Material, Energy and Print Cost | InspectMesh",
         "description": "Cost a single print or several sliced plates with complete material, run work, shared preparation and order costs. Export a local job estimate.",
         "headings": ["3D Print Cost Calculator"],
-        "canonical": "https://www.inspectmesh.com/3d-print-cost-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/3d-print-cost-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3737,
@@ -6773,15 +6783,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 49,
         "contextualInlinkExamples": [
-          "/3d-print-finish-time-calculator",
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
           "/3d-printers/bambu-lab-p1s",
-          "/3d-printers/bambu-lab-x1-carbon"
+          "/3d-printers/bambu-lab-x1-carbon",
+          "/3d-printers/creality-k1c"
         ],
         "internalLinkCount": 54,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Estimate production cost and offer it to pricing",
@@ -6865,10 +6875,11 @@
         "plannedChange": "One concise simple-mode explanation and linked complete job; output and failure-budget boundaries in both modes.",
         "evidenceChecked": "Existing simple/job tests and independent R3 replay; optional volume upload disclosure preserved.",
         "unresolvedIssue": "Desktop/mobile interaction, production release and authenticated GSC remain unverified."
-      }
+      },
+      "previousPaths": ["/3d-print-cost-calculator"]
     },
     {
-      "path": "/3d-printing-price-calculator",
+      "path": "/tools/3d-printing-price-calculator",
       "priority": "P2",
       "family": "F10",
       "owner": "InspectMesh",
@@ -6916,13 +6927,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/3d-printing-price-calculator",
+      "url": "https://www.inspectmesh.com/tools/3d-printing-price-calculator",
       "sitemapMember": true,
       "local": {
         "title": "3D Printing Price Calculator - Calculate What to Charge | InspectMesh",
         "description": "Price an entered job production total or identical parts with explicit margin or markup, user-entered selling fees and a minimum order price.",
         "headings": ["3D Printing Price Calculator"],
-        "canonical": "https://www.inspectmesh.com/3d-printing-price-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/3d-printing-price-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 4429,
@@ -6937,15 +6948,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 9,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
-          "/3d-printing-quote-generator",
           "/guides/3d-printing-quote-checklist",
           "/guides/how-much-filament-does-a-3d-print-use",
-          "/guides/how-much-to-charge-for-3d-prints"
+          "/guides/how-much-to-charge-for-3d-prints",
+          "/guides/how-to-calculate-3d-printing-cost",
+          "/guides/inspect-customer-supplied-print-files"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Price an imported complete order and pass reviewed price to quotation",
@@ -7023,10 +7034,11 @@
         "plannedChange": "Clarified K not multiplied again and private/customer handoff.",
         "evidenceChecked": "R4 independent replay, fee/minimum constraints, worksheet and handoff tests.",
         "unresolvedIssue": "Desktop/mobile interaction, production release and authenticated GSC remain unverified."
-      }
+      },
+      "previousPaths": ["/3d-printing-price-calculator"]
     },
     {
-      "path": "/3d-printing-quote-generator",
+      "path": "/tools/3d-printing-quote-generator",
       "priority": "P2",
       "family": "F10",
       "owner": "InspectMesh",
@@ -7074,13 +7086,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/3d-printing-quote-generator",
+      "url": "https://www.inspectmesh.com/tools/3d-printing-quote-generator",
       "sitemapMember": true,
       "local": {
         "title": "3D Printing Quote Generator — Branded Quotations | InspectMesh",
         "description": "Turn your 3D printing price into a branded customer quotation. Add job specifications, a model reference and terms, then preview and download a PDF.",
         "headings": ["3D Printing Quote Generator"],
-        "canonical": "https://www.inspectmesh.com/3d-printing-quote-generator",
+        "canonical": "https://www.inspectmesh.com/tools/3d-printing-quote-generator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 5874,
@@ -7106,15 +7118,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
           "/guides/3d-printing-quote-checklist",
           "/guides/how-much-to-charge-for-3d-prints",
           "/guides/how-to-calculate-3d-printing-cost",
-          "/guides/inspect-customer-supplied-print-files"
+          "/guides/inspect-customer-supplied-print-files",
+          "/tools/3d-print-cost-calculator"
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Prepare a customer quotation while retaining private editable assumptions",
@@ -7166,10 +7178,11 @@
         "plannedChange": "Revision help requires re-slicing/repricing rather than automatic field-based pricing.",
         "evidenceChecked": "Actual two-page PDF visually inspected; 60.30 total, quote v2/model r2, no K/margin; private archive reopened with full precision.",
         "unresolvedIssue": "Desktop/mobile interaction, production release and authenticated GSC remain unverified."
-      }
+      },
+      "previousPaths": ["/3d-printing-quote-generator"]
     },
     {
-      "path": "/filament-length-calculator",
+      "path": "/tools/filament-length-calculator",
       "priority": "P2",
       "family": "F09",
       "owner": "InspectMesh",
@@ -7214,13 +7227,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/filament-length-calculator",
+      "url": "https://www.inspectmesh.com/tools/filament-length-calculator",
       "sitemapMember": true,
       "local": {
         "title": "Filament Length Calculator: Convert Grams to Metres | InspectMesh",
         "description": "Convert 3D printer filament grams to metres or metres to grams using filament diameter and material density. Runs locally in your browser.",
         "headings": ["Filament Length Calculator"],
-        "canonical": "https://www.inspectmesh.com/filament-length-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/filament-length-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1769,
@@ -7236,15 +7249,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 11,
         "contextualInlinkExamples": [
-          "/filament-remaining-calculator",
           "/guides/how-many-metres-in-1kg-filament",
           "/materials/abs",
           "/materials/asa",
-          "/materials/nylon"
+          "/materials/nylon",
+          "/materials/petg"
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Filament Length Calculator",
@@ -7295,10 +7308,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/filament-length-calculator"]
     },
     {
-      "path": "/3d-print-tolerance-calculator",
+      "path": "/tools/3d-print-tolerance-calculator",
       "priority": "P2",
       "family": "F08",
       "owner": "InspectMesh",
@@ -7342,13 +7356,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3d-print-tolerance-calculator",
+      "url": "https://www.inspectmesh.com/tools/3d-print-tolerance-calculator",
       "sitemapMember": true,
       "local": {
         "title": "3D Print Tolerance & Clearance Calculator: Size Holes and Pins | InspectMesh",
         "description": "Calculate editable hole and pin model dimensions from a chosen 3D print fit and your own calibration measurements. Browser-local, with no fit guarantees.",
         "headings": ["3D Print Tolerance & Clearance Calculator"],
-        "canonical": "https://www.inspectmesh.com/3d-print-tolerance-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/3d-print-tolerance-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 6214,
@@ -7363,15 +7377,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 18,
         "contextualInlinkExamples": [
-          "/3d-print-flow-rate-calculator",
-          "/3d-print-shrinkage-calculator",
           "/guides/3d-print-elephants-foot-and-part-fit",
           "/guides/3d-print-flow-rate-vs-e-steps",
-          "/guides/3d-print-heat-set-insert-hole-sizing"
+          "/guides/3d-print-heat-set-insert-hole-sizing",
+          "/guides/3d-print-hole-orientation-and-accuracy",
+          "/guides/3d-print-hole-size-compensation"
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Tolerance & Clearance Calculator",
@@ -7416,10 +7430,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3d-print-tolerance-calculator"]
     },
     {
-      "path": "/3d-print-flow-rate-calculator",
+      "path": "/tools/3d-print-flow-rate-calculator",
       "priority": "P2",
       "family": "F09",
       "owner": "InspectMesh",
@@ -7464,13 +7479,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/3d-print-flow-rate-calculator",
+      "url": "https://www.inspectmesh.com/tools/3d-print-flow-rate-calculator",
       "sitemapMember": true,
       "local": {
         "title": "3D Print Flow Rate Calculator | Calibrate Extrusion Multiplier",
         "description": "Calculate a corrected 3D-printer flow rate or extrusion multiplier from a single-wall calibration print. Check the maths before changing your slicer profile.",
         "headings": ["3D Print Flow Rate Calculator"],
-        "canonical": "https://www.inspectmesh.com/3d-print-flow-rate-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/3d-print-flow-rate-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2392,
@@ -7486,15 +7501,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 7,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
-          "/3d-print-shrinkage-calculator",
-          "/3d-print-tolerance-calculator",
           "/guides/3d-print-flow-rate-vs-e-steps",
-          "/guides/3d-printer-calibration-guide"
+          "/guides/3d-printer-calibration-guide",
+          "/guides/maximum-volumetric-speed-explained",
+          "/tools/3d-print-cost-calculator",
+          "/tools/3d-print-shrinkage-calculator"
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Flow Rate Calculator",
@@ -7545,10 +7560,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3d-print-flow-rate-calculator"]
     },
     {
-      "path": "/3d-print-shrinkage-calculator",
+      "path": "/tools/3d-print-shrinkage-calculator",
       "priority": "P2",
       "family": "F08",
       "owner": "InspectMesh",
@@ -7592,13 +7608,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3d-print-shrinkage-calculator",
+      "url": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
       "sitemapMember": true,
       "local": {
         "title": "3D Print Shrinkage Calculator: Scale Compensation | InspectMesh",
         "description": "Calculate measured 3D print shrinkage and per-axis CAD or slicer scale compensation from your own calibration print. Browser-local, with no universal material presets.",
         "headings": ["3D Print Shrinkage Calculator"],
-        "canonical": "https://www.inspectmesh.com/3d-print-shrinkage-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 5464,
@@ -7613,15 +7629,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3d-print-flow-rate-calculator",
           "/guides/3d-print-flow-rate-vs-e-steps",
           "/guides/3d-printer-calibration-guide",
           "/guides/how-to-compensate-for-3d-print-shrinkage",
-          "/guides/how-to-measure-3d-model"
+          "/guides/how-to-measure-3d-model",
+          "/tools/3d-print-flow-rate-calculator"
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Shrinkage Calculator",
@@ -7666,10 +7682,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3d-print-shrinkage-calculator"]
     },
     {
-      "path": "/gcode-preflight-checker",
+      "path": "/tools/gcode-preflight-checker",
       "priority": "P2",
       "family": "F11",
       "owner": "InspectMesh",
@@ -7714,13 +7731,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/gcode-preflight-checker",
+      "url": "https://www.inspectmesh.com/tools/gcode-preflight-checker",
       "sitemapMember": true,
       "local": {
         "title": "Free G-code Viewer & Preflight Checker | InspectMesh",
         "description": "Open a sliced G-code file locally to inspect parsed layers, toolpaths, metadata and practical preflight details before printing.",
         "headings": ["Free G-code Viewer"],
-        "canonical": "https://www.inspectmesh.com/gcode-preflight-checker",
+        "canonical": "https://www.inspectmesh.com/tools/gcode-preflight-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3125,
@@ -7738,15 +7755,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 13,
         "contextualInlinkExamples": [
-          "/3d-print-bed-layout-planner",
-          "/3d-print-finish-time-calculator",
-          "/3mf-print-preflight",
           "/examples",
-          "/guides/can-you-use-gcode-from-another-printer"
+          "/guides/can-you-use-gcode-from-another-printer",
+          "/guides/gcode-outside-print-bed",
+          "/guides/gcode-preview-incomplete",
+          "/guides/how-to-check-gcode-before-printing"
         ],
         "internalLinkCount": 52,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Free G-code Viewer",
@@ -7797,10 +7814,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/gcode-preflight-checker"]
     },
     {
-      "path": "/3d-print-orientation-planner",
+      "path": "/tools/3d-print-orientation-planner",
       "priority": "P2",
       "family": "F06",
       "owner": "InspectMesh",
@@ -7845,13 +7863,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/3d-print-orientation-planner",
+      "url": "https://www.inspectmesh.com/tools/3d-print-orientation-planner",
       "sitemapMember": true,
       "local": {
         "title": "3D Print Orientation Planner - Compare STL and 3MF Orientations",
         "description": "Compare six axis-aligned STL and 3MF orientations locally for envelope fit, downward-facing area and estimated coplanar bed contact before slicing.",
         "headings": ["3D Print Orientation Planner"],
-        "canonical": "https://www.inspectmesh.com/3d-print-orientation-planner",
+        "canonical": "https://www.inspectmesh.com/tools/3d-print-orientation-planner",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2467,
@@ -7869,15 +7887,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 11,
         "contextualInlinkExamples": [
-          "/3mf-tools",
           "/examples",
           "/guides/3d-print-overhangs-and-supports-guide",
           "/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed",
-          "/guides/how-to-check-if-a-3d-model-fits-your-printer"
+          "/guides/how-to-check-if-a-3d-model-fits-your-printer",
+          "/guides/how-to-lay-an-stl-flat-on-print-bed"
         ],
         "internalLinkCount": 53,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Orientation Planner",
@@ -7928,10 +7946,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3d-print-orientation-planner"]
     },
     {
-      "path": "/3d-print-bed-layout-planner",
+      "path": "/tools/3d-print-bed-layout-planner",
       "priority": "P2",
       "family": "F08",
       "owner": "InspectMesh",
@@ -7975,13 +7994,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3d-print-bed-layout-planner",
+      "url": "https://www.inspectmesh.com/tools/3d-print-bed-layout-planner",
       "sitemapMember": true,
       "local": {
         "title": "3D Print Bed Layout Planner - Arrange STL and 3MF Parts",
         "description": "Arrange multiple STL and 3MF model footprints on a saved 3D printer bed locally, with spacing and simple batch planning.",
         "headings": ["3D Print Bed Layout Planner"],
-        "canonical": "https://www.inspectmesh.com/3d-print-bed-layout-planner",
+        "canonical": "https://www.inspectmesh.com/tools/3d-print-bed-layout-planner",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2346,
@@ -8003,7 +8022,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Bed Layout Planner",
@@ -8048,10 +8067,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3d-print-bed-layout-planner"]
     },
     {
-      "path": "/stl-tools",
+      "path": "/tools/stl-tools",
       "priority": "P2",
       "family": "F01",
       "owner": "InspectMesh",
@@ -8096,13 +8116,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/stl-tools",
+      "url": "https://www.inspectmesh.com/tools/stl-tools",
       "sitemapMember": true,
       "local": {
         "title": "STL Tools: View, Check, Measure and Repair | InspectMesh",
         "description": "Choose an STL viewer, checker, measurement or repair tool by the result you need. See which actions run locally and which upload your file.",
         "headings": ["STL Tools for Inspection, Measurement and Repair"],
-        "canonical": "https://www.inspectmesh.com/stl-tools",
+        "canonical": "https://www.inspectmesh.com/tools/stl-tools",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 5568,
@@ -8117,13 +8137,13 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/3mf-tools",
-          "/stl-file-size-reducer",
-          "/tools"
+          "/tools/3mf-tools",
+          "/tools",
+          "/tools/stl-file-size-reducer"
         ],
         "internalLinkCount": 59,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Choose an STL tool by the decision needed",
@@ -8196,10 +8216,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/stl-tools"]
     },
     {
-      "path": "/stl-quality-checker",
+      "path": "/tools/stl-quality-checker",
       "priority": "P2",
       "family": "F03",
       "owner": "InspectMesh",
@@ -8243,13 +8264,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/stl-quality-checker",
+      "url": "https://www.inspectmesh.com/tools/stl-quality-checker",
       "sitemapMember": true,
       "local": {
         "title": "STL Quality Checker: Mesh Findings and Next Steps | InspectMesh",
         "description": "Check STL boundaries, over-shared edges, exact duplicates, degenerate faces and winding findings with controlled examples and clear next steps.",
         "headings": ["STL Quality Checker"],
-        "canonical": "https://www.inspectmesh.com/stl-quality-checker",
+        "canonical": "https://www.inspectmesh.com/tools/stl-quality-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3255,
@@ -8278,7 +8299,7 @@
         ],
         "internalLinkCount": 56,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.291Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Quality Checker",
@@ -8323,10 +8344,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/stl-quality-checker"]
     },
     {
-      "path": "/stl-print-preflight",
+      "path": "/tools/stl-print-preflight",
       "priority": "P1",
       "family": "F04",
       "owner": "InspectMesh",
@@ -8371,13 +8393,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/stl-print-preflight",
+      "url": "https://www.inspectmesh.com/tools/stl-print-preflight",
       "sitemapMember": true,
       "local": {
         "title": "STL Print Preflight Checker - Check Before Slicing | InspectMesh",
         "description": "Run a local STL preflight before slicing: mesh integrity, dimensions, printer fit, sampled wall thickness, complexity and reliable volume guidance.",
         "headings": ["STL Print Preflight Checker"],
-        "canonical": "https://www.inspectmesh.com/stl-print-preflight",
+        "canonical": "https://www.inspectmesh.com/tools/stl-print-preflight",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 6120,
@@ -8398,15 +8420,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 23,
         "contextualInlinkExamples": [
-          "/3d-print-tolerance-calculator",
-          "/batch-stl-checker",
           "/examples",
           "/guides/3d-print-file-preflight-checklist",
-          "/guides/3d-print-tolerance-and-clearance-guide"
+          "/guides/3d-print-tolerance-and-clearance-guide",
+          "/guides/floating-regions-in-slicer",
+          "/guides/how-to-check-gcode-before-printing"
         ],
         "internalLinkCount": 57,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Print Preflight Checker",
@@ -8479,10 +8501,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/stl-print-preflight"]
     },
     {
-      "path": "/stl-repair",
+      "path": "/tools/stl-repair",
       "priority": "P1",
       "family": "F03",
       "owner": "InspectMesh",
@@ -8530,13 +8553,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-repair",
+      "url": "https://www.inspectmesh.com/tools/stl-repair",
       "sitemapMember": true,
       "local": {
         "title": "Free STL Repair Tool - Repair STL Files Online | InspectMesh",
         "description": "Review disconnected STL pieces in your browser, remove selected components, or explicitly run conservative server cleanup. Keep the original file.",
         "headings": ["STL Repair Tool"],
-        "canonical": "https://www.inspectmesh.com/stl-repair",
+        "canonical": "https://www.inspectmesh.com/tools/stl-repair",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 8741,
@@ -8568,7 +8591,7 @@
         ],
         "internalLinkCount": 55,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Repair Tool",
@@ -8641,10 +8664,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/stl-repair"]
     },
     {
-      "path": "/stl-splitter",
+      "path": "/tools/stl-splitter",
       "priority": "P2",
       "family": "F07",
       "owner": "InspectMesh",
@@ -8688,13 +8712,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/stl-splitter",
+      "url": "https://www.inspectmesh.com/tools/stl-splitter",
       "sitemapMember": true,
       "local": {
         "title": "STL Splitter - Split STL Files for 3D Printing | InspectMesh",
         "description": "Cut a supported STL along an X, Y or Z plane, download both capped exports and inspect their dimensions before slicing.",
         "headings": ["Split an STL File for 3D Printing"],
-        "canonical": "https://www.inspectmesh.com/stl-splitter",
+        "canonical": "https://www.inspectmesh.com/tools/stl-splitter",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2865,
@@ -8711,12 +8735,12 @@
           "/examples",
           "/guides/how-to-split-an-stl-file-for-3d-printing",
           "/guides/stl-split-failed",
-          "/stl-tools",
-          "/tools"
+          "/tools",
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 54,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Split an STL File for 3D Printing",
@@ -8761,10 +8785,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/stl-splitter"]
     },
     {
-      "path": "/stl-manifold-checker",
+      "path": "/tools/stl-manifold-checker",
       "priority": "P2",
       "family": "F03",
       "owner": "InspectMesh",
@@ -8808,13 +8833,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/stl-manifold-checker",
+      "url": "https://www.inspectmesh.com/tools/stl-manifold-checker",
       "sitemapMember": true,
       "local": {
         "title": "STL Manifold Checker: Open and Over-Shared Edges | InspectMesh",
         "description": "Inspect exposed and over-shared STL edges plus vertex-connected components. Learn which topology findings need a design review.",
         "headings": ["STL Manifold Checker: Open and Over-Shared Edges"],
-        "canonical": "https://www.inspectmesh.com/stl-manifold-checker",
+        "canonical": "https://www.inspectmesh.com/tools/stl-manifold-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2575,
@@ -8836,12 +8861,12 @@
           "/examples",
           "/guides/how-to-check-stl-for-errors",
           "/guides/what-is-non-manifold-geometry",
-          "/stl-repair",
-          "/stl-tools"
+          "/tools",
+          "/tools/stl-repair"
         ],
         "internalLinkCount": 54,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Manifold Checker: Open and Over-Shared Edges",
@@ -8886,10 +8911,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/stl-manifold-checker"]
     },
     {
-      "path": "/stl-watertight-checker",
+      "path": "/tools/stl-watertight-checker",
       "priority": "P2",
       "family": "F03",
       "owner": "InspectMesh",
@@ -8934,13 +8960,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/stl-watertight-checker",
+      "url": "https://www.inspectmesh.com/tools/stl-watertight-checker",
       "sitemapMember": true,
       "local": {
         "title": "STL Watertight Checker: Boundaries and Closure | InspectMesh",
         "description": "Check STL exposed boundaries and interpret a zero-open-edge result alongside other mesh findings. Inspect an opening before deciding to close it.",
         "headings": ["STL Watertight Checker"],
-        "canonical": "https://www.inspectmesh.com/stl-watertight-checker",
+        "canonical": "https://www.inspectmesh.com/tools/stl-watertight-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2368,
@@ -8967,7 +8993,7 @@
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.869Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Watertight Checker",
@@ -9018,10 +9044,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/stl-watertight-checker"]
     },
     {
-      "path": "/stl-dimensions-checker",
+      "path": "/tools/stl-dimensions-checker",
       "priority": "P2",
       "family": "F02",
       "owner": "InspectMesh",
@@ -9069,13 +9096,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-dimensions-checker",
+      "url": "https://www.inspectmesh.com/tools/stl-dimensions-checker",
       "sitemapMember": true,
       "local": {
         "title": "STL Dimensions Checker: Size, Units and Scale | InspectMesh",
         "description": "Measure STL bounds, choose the intended coordinate unit and calculate proportional scale. Confirm final placement and allowances in your slicer.",
         "headings": ["STL Dimensions Checker"],
-        "canonical": "https://www.inspectmesh.com/stl-dimensions-checker",
+        "canonical": "https://www.inspectmesh.com/tools/stl-dimensions-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3039,
@@ -9092,15 +9119,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 23,
         "contextualInlinkExamples": [
-          "/3d-print-shrinkage-calculator",
-          "/3d-print-tolerance-calculator",
           "/examples",
           "/guides/3d-print-hole-orientation-and-accuracy",
-          "/guides/3d-print-tolerance-and-clearance-guide"
+          "/guides/3d-print-tolerance-and-clearance-guide",
+          "/guides/3d-print-wall-thickness-guide",
+          "/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed"
         ],
         "internalLinkCount": 52,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Interpret coordinate spans and select the next measurement or correction",
@@ -9166,10 +9193,11 @@
         "plannedChange": "Compact next-action table below controls; existing measurement distinctions retained.",
         "evidenceChecked": "Actual report units and local calculation tests; no relabelling raw spans.",
         "unresolvedIssue": "Desktop/mobile interaction, production release and authenticated GSC remain unverified."
-      }
+      },
+      "previousPaths": ["/stl-dimensions-checker"]
     },
     {
-      "path": "/stl-scale-tool",
+      "path": "/tools/stl-scale-tool",
       "priority": "P2",
       "family": "F02",
       "owner": "InspectMesh",
@@ -9217,13 +9245,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-scale-tool",
+      "url": "https://www.inspectmesh.com/tools/stl-scale-tool",
       "sitemapMember": true,
       "local": {
         "title": "STL Scale Tool - Resize STL Files Online | InspectMesh",
         "description": "Resize an STL proportionally by percentage, target dimensions, or an assumed unit conversion. Check the new size and download the scaled STL locally.",
         "headings": ["STL Scale Tool"],
-        "canonical": "https://www.inspectmesh.com/stl-scale-tool",
+        "canonical": "https://www.inspectmesh.com/tools/stl-scale-tool",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1704,
@@ -9242,12 +9270,12 @@
           "/guides/how-to-scale-an-stl-file-for-3d-printing",
           "/guides/stl-scale-factor-explained",
           "/",
-          "/stl-tools",
-          "/tools"
+          "/tools",
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Choose scaling mode and reopen the derivative",
@@ -9299,10 +9327,11 @@
         "plannedChange": "Mode meanings next to controls; original spans labelled coordinate units; output next action.",
         "evidenceChecked": "Actual scale/export/reopen control plus percentage/target/conversion regression tests.",
         "unresolvedIssue": "Desktop/mobile interaction, production release and authenticated GSC remain unverified."
-      }
+      },
+      "previousPaths": ["/stl-scale-tool"]
     },
     {
-      "path": "/stl-wall-thickness-checker",
+      "path": "/tools/stl-wall-thickness-checker",
       "priority": "P2",
       "family": "F06",
       "owner": "InspectMesh",
@@ -9346,13 +9375,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/stl-wall-thickness-checker",
+      "url": "https://www.inspectmesh.com/tools/stl-wall-thickness-checker",
       "sitemapMember": true,
       "local": {
         "title": "STL Wall Thickness Checker: Sample Thin Areas | InspectMesh",
         "description": "Estimate sampled STL wall thickness in your browser. Set units and a review threshold, inspect thin or unmeasured samples, then verify critical features.",
         "headings": ["STL Wall Thickness Checker"],
-        "canonical": "https://www.inspectmesh.com/stl-wall-thickness-checker",
+        "canonical": "https://www.inspectmesh.com/tools/stl-wall-thickness-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1964,
@@ -9367,15 +9396,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 9,
         "contextualInlinkExamples": [
-          "/3d-print-tolerance-calculator",
           "/guides/3d-print-hole-orientation-and-accuracy",
           "/guides/3d-print-tolerance-and-clearance-guide",
           "/guides/3d-print-wall-thickness-guide",
-          "/guides/how-to-check-stl-wall-thickness-for-3d-printing"
+          "/guides/how-to-check-stl-wall-thickness-for-3d-printing",
+          "/guides/how-to-inspect-stl-3mf-cross-sections"
         ],
         "internalLinkCount": 52,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Wall Thickness Checker",
@@ -9420,10 +9449,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/stl-wall-thickness-checker"]
     },
     {
-      "path": "/stl-overhang-checker",
+      "path": "/tools/stl-overhang-checker",
       "priority": "P2",
       "family": "F06",
       "owner": "InspectMesh",
@@ -9467,13 +9497,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/stl-overhang-checker",
+      "url": "https://www.inspectmesh.com/tools/stl-overhang-checker",
       "sitemapMember": true,
       "local": {
         "title": "STL Overhang Checker - Review Downward Geometry | InspectMesh",
         "description": "Screen STL triangles by build direction and a strict angle-from-vertical threshold, with analysed area, skipped counts and explicit unit assumptions.",
         "headings": ["STL Overhang Checker"],
-        "canonical": "https://www.inspectmesh.com/stl-overhang-checker",
+        "canonical": "https://www.inspectmesh.com/tools/stl-overhang-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1462,
@@ -9489,12 +9519,12 @@
         "contextualInlinkExamples": [
           "/examples",
           "/guides/3d-print-bridge-vs-overhang",
-          "/stl-tools",
-          "/tools"
+          "/tools",
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Overhang Checker",
@@ -9539,10 +9569,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/stl-overhang-checker"]
     },
     {
-      "path": "/3mf-wall-thickness-checker",
+      "path": "/tools/3mf-wall-thickness-checker",
       "priority": "P2",
       "family": "F06",
       "owner": "InspectMesh",
@@ -9586,13 +9617,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3mf-wall-thickness-checker",
+      "url": "https://www.inspectmesh.com/tools/3mf-wall-thickness-checker",
       "sitemapMember": true,
       "local": {
         "title": "3MF Wall Thickness Checker: Inspect Resolved Builds | InspectMesh",
         "description": "Screen sampled wall thickness in a resolved 3MF build. Check declared units, transforms, unmeasured samples and combined-scene ray limits.",
         "headings": ["3MF Wall Thickness Checker"],
-        "canonical": "https://www.inspectmesh.com/3mf-wall-thickness-checker",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-wall-thickness-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1520,
@@ -9606,15 +9637,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 9,
         "contextualInlinkExamples": [
-          "/3mf-repair",
-          "/3mf-tools",
           "/examples",
           "/guides/3d-print-wall-thickness-guide",
-          "/guides/how-to-check-3mf-wall-thickness-for-3d-printing"
+          "/guides/how-to-check-3mf-wall-thickness-for-3d-printing",
+          "/guides/how-to-check-a-3mf-file-for-errors",
+          "/guides/how-to-inspect-stl-3mf-cross-sections"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF Wall Thickness Checker",
@@ -9659,10 +9690,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3mf-wall-thickness-checker"]
     },
     {
-      "path": "/3mf-overhang-checker",
+      "path": "/tools/3mf-overhang-checker",
       "priority": "P2",
       "family": "F06",
       "owner": "InspectMesh",
@@ -9706,13 +9738,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3mf-overhang-checker",
+      "url": "https://www.inspectmesh.com/tools/3mf-overhang-checker",
       "sitemapMember": true,
       "local": {
         "title": "3MF Overhang Checker - Review Placed Geometry | InspectMesh",
         "description": "Resolve 3MF units, items and transforms before screening downward-facing triangles by build direction and a strict angle-from-vertical threshold.",
         "headings": ["3MF Overhang Checker"],
-        "canonical": "https://www.inspectmesh.com/3mf-overhang-checker",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-overhang-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1214,
@@ -9725,10 +9757,10 @@
         "exampleAssets": [],
         "incomingLinkCount": 198,
         "contextualInlinkCount": 3,
-        "contextualInlinkExamples": ["/3mf-tools", "/examples", "/tools"],
+        "contextualInlinkExamples": ["/examples", "/tools/3mf-tools", "/tools"],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF Overhang Checker",
@@ -9773,10 +9805,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3mf-overhang-checker"]
     },
     {
-      "path": "/stl-triangle-counter",
+      "path": "/tools/stl-triangle-counter",
       "priority": "P2",
       "family": "F05",
       "owner": "InspectMesh",
@@ -9824,13 +9857,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-triangle-counter",
+      "url": "https://www.inspectmesh.com/tools/stl-triangle-counter",
       "sitemapMember": true,
       "local": {
         "title": "STL Triangle Counter - Count Triangles in an STL File",
         "description": "Count triangles in an STL file online. See triangle count, file size and mesh complexity before slicing or sharing a 3D model.",
         "headings": ["STL Triangle Counter"],
-        "canonical": "https://www.inspectmesh.com/stl-triangle-counter",
+        "canonical": "https://www.inspectmesh.com/tools/stl-triangle-counter",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1259,
@@ -9846,12 +9879,12 @@
         "contextualInlinkExamples": [
           "/guides/stl-file-wont-slice",
           "/guides/stl-triangle-count-explained",
-          "/stl-tools",
-          "/tools"
+          "/tools",
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 54,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Triangle Counter",
@@ -9902,10 +9935,11 @@
           "mainContentSha256": "24b921b61bd1a6ebce6ce6dae8c624fe7f6f5aebd4d4508728577e08263f4556",
           "observedAt": "2026-10-26T20:35:15.299Z"
         }
-      ]
+      ],
+      "previousPaths": ["/stl-triangle-counter"]
     },
     {
-      "path": "/stl-file-size-reducer",
+      "path": "/tools/stl-file-size-reducer",
       "priority": "P1",
       "family": "F05",
       "owner": "InspectMesh",
@@ -9953,13 +9987,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-file-size-reducer",
+      "url": "https://www.inspectmesh.com/tools/stl-file-size-reducer",
       "sitemapMember": true,
       "local": {
         "title": "STL File Size Reducer: Compress and Simplify STL Files | InspectMesh",
         "description": "Reduce STL file size online. Convert ASCII STL to compact binary STL or simplify a dense mesh with before-and-after triangle counts and size comparison.",
         "headings": ["STL File Size Reducer"],
-        "canonical": "https://www.inspectmesh.com/stl-file-size-reducer",
+        "canonical": "https://www.inspectmesh.com/tools/stl-file-size-reducer",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 4020,
@@ -9989,7 +10023,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL File Size Reducer",
@@ -10058,10 +10092,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/stl-file-size-reducer"]
     },
     {
-      "path": "/stl-volume-calculator",
+      "path": "/tools/stl-volume-calculator",
       "priority": "P2",
       "family": "F05",
       "owner": "InspectMesh",
@@ -10106,13 +10141,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/stl-volume-calculator",
+      "url": "https://www.inspectmesh.com/tools/stl-volume-calculator",
       "sitemapMember": true,
       "local": {
         "title": "STL Volume Calculator: Units and Solid Mass | InspectMesh",
         "description": "Interpret STL enclosed volume under an explicit unit assumption. Distinguish solid-mass arithmetic from sliced material consumption.",
         "headings": ["STL Volume Calculator"],
-        "canonical": "https://www.inspectmesh.com/stl-volume-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/stl-volume-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2787,
@@ -10132,13 +10167,13 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/filament-length-calculator",
-          "/stl-tools",
-          "/tools"
+          "/tools/filament-length-calculator",
+          "/tools",
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Interpret enclosed volume under an explicit STL unit assumption",
@@ -10193,10 +10228,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/stl-volume-calculator"]
     },
     {
-      "path": "/stl-viewer",
+      "path": "/tools/stl-viewer",
       "priority": "P1",
       "family": "F02",
       "owner": "InspectMesh",
@@ -10244,13 +10280,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-viewer",
+      "url": "https://www.inspectmesh.com/tools/stl-viewer",
       "sitemapMember": true,
       "local": {
         "title": "Free STL Viewer Online - Open and Inspect STL Files | InspectMesh",
         "description": "Open an STL file locally, inspect it in 3D, measure point-to-point distances and review dimensions and triangle count before 3D printing.",
         "headings": ["Free STL Viewer Online"],
-        "canonical": "https://www.inspectmesh.com/stl-viewer",
+        "canonical": "https://www.inspectmesh.com/tools/stl-viewer",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 5413,
@@ -10277,7 +10313,7 @@
         ],
         "internalLinkCount": 56,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Free STL Viewer Online",
@@ -10354,10 +10390,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/stl-viewer"]
     },
     {
-      "path": "/stl-to-3mf-converter",
+      "path": "/tools/stl-to-3mf-converter",
       "priority": "P2",
       "family": "F02",
       "owner": "InspectMesh",
@@ -10405,13 +10442,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/stl-to-3mf-converter",
+      "url": "https://www.inspectmesh.com/tools/stl-to-3mf-converter",
       "sitemapMember": true,
       "local": {
         "title": "STL to 3MF Converter - Convert Locally | InspectMesh",
         "description": "Convert STL files to basic 3MF packages locally in your browser, with no upload.",
         "headings": ["STL to 3MF Converter"],
-        "canonical": "https://www.inspectmesh.com/stl-to-3mf-converter",
+        "canonical": "https://www.inspectmesh.com/tools/stl-to-3mf-converter",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2087,
@@ -10427,12 +10464,12 @@
         "contextualInlinkExamples": [
           "/guides/3mf-vs-stl",
           "/guides/how-to-convert-stl-to-3mf",
-          "/stl-tools",
-          "/tools"
+          "/tools",
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 52,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Create a basic local 3MF with a chosen coordinate unit",
@@ -10490,10 +10527,11 @@
           "mainContentSha256": "332e476eb529c6497b6d607b25465de41e4a765840a0030c7db40772d3f0292f",
           "observedAt": "2026-10-26T11:38:49.045Z"
         }
-      ]
+      ],
+      "previousPaths": ["/stl-to-3mf-converter"]
     },
     {
-      "path": "/3mf-tools",
+      "path": "/tools/3mf-tools",
       "priority": "P2",
       "family": "F01",
       "owner": "InspectMesh",
@@ -10538,13 +10576,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/3mf-tools",
+      "url": "https://www.inspectmesh.com/tools/3mf-tools",
       "sitemapMember": true,
       "local": {
         "title": "3MF Tools: Inspect Builds, Measure and Convert | InspectMesh",
         "description": "Choose a 3MF tool for viewing, mesh checks, build dimensions, volume or conversion. Understand declared units, placed items and processing limits.",
         "headings": ["3MF Tools for Builds, Mesh Checks and Conversion"],
-        "canonical": "https://www.inspectmesh.com/3mf-tools",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-tools",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3238,
@@ -10560,7 +10598,7 @@
         "contextualInlinkExamples": ["/tools"],
         "internalLinkCount": 53,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Choose a 3MF tool for a build question",
@@ -10637,10 +10675,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/3mf-tools"]
     },
     {
-      "path": "/3mf-viewer",
+      "path": "/tools/3mf-viewer",
       "priority": "P2",
       "family": "F02",
       "owner": "InspectMesh",
@@ -10684,13 +10723,13 @@
         "postUpdateCrawl": null,
         "nextReview": null
       },
-      "url": "https://www.inspectmesh.com/3mf-viewer",
+      "url": "https://www.inspectmesh.com/tools/3mf-viewer",
       "sitemapMember": true,
       "local": {
         "title": "Free 3MF Viewer with Measurements and Dimensions | InspectMesh",
         "description": "Open a 3MF file locally, inspect its resolved build geometry, measure point-to-point distances and review declared units and dimensions before 3D printing.",
         "headings": ["Free 3MF Viewer Online"],
-        "canonical": "https://www.inspectmesh.com/3mf-viewer",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-viewer",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 4225,
@@ -10709,15 +10748,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 24,
         "contextualInlinkExamples": [
-          "/3mf-dimensions-checker",
-          "/3mf-manifold-checker",
-          "/3mf-to-stl-converter",
-          "/3mf-tools",
-          "/3mf-triangle-counter"
+          "/examples",
+          "/guides/3mf-missing-objects-after-import",
+          "/guides/3mf-to-stl-combined-or-separate-parts",
+          "/guides/best-file-format-for-3d-printing",
+          "/guides/does-3mf-keep-colours-materials-and-settings"
         ],
         "internalLinkCount": 55,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Free 3MF Viewer Online",
@@ -10786,10 +10825,11 @@
           "mainContentSha256": "1a57fb29f5725b2e5b981d5a548c0f89cb013f290fe59e8ad5eaeb5d1b827812",
           "observedAt": "2026-10-26T23:37:13.833Z"
         }
-      ]
+      ],
+      "previousPaths": ["/3mf-viewer"]
     },
     {
-      "path": "/3mf-quality-checker",
+      "path": "/tools/3mf-quality-checker",
       "priority": "P1",
       "family": "F03",
       "owner": "InspectMesh",
@@ -10834,13 +10874,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/3mf-quality-checker",
+      "url": "https://www.inspectmesh.com/tools/3mf-quality-checker",
       "sitemapMember": true,
       "local": {
         "title": "3MF Quality Checker - Validate 3MF Files for 3D Printing | InspectMesh",
         "description": "Check 3MF files for mesh problems before 3D printing. Inspect dimensions, triangle count, topology issues and the file’s declared unit online.",
         "headings": ["3MF Quality Checker"],
-        "canonical": "https://www.inspectmesh.com/3mf-quality-checker",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-quality-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 4372,
@@ -10863,15 +10903,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 8,
         "contextualInlinkExamples": [
-          "/3mf-repair",
-          "/3mf-tools",
-          "/3mf-viewer",
           "/guides/3d-print-wall-thickness-guide",
-          "/guides/how-to-check-3mf-triangle-count"
+          "/guides/how-to-check-3mf-triangle-count",
+          "/guides/how-to-check-a-3mf-file-for-errors",
+          "/guides/why-wont-my-3mf-file-slice",
+          "/tools/3mf-repair"
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF Quality Checker",
@@ -10940,10 +10980,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/3mf-quality-checker"]
     },
     {
-      "path": "/3mf-print-preflight",
+      "path": "/tools/3mf-print-preflight",
       "priority": "P2",
       "family": "F04",
       "owner": "InspectMesh",
@@ -10988,13 +11029,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-24"
       },
-      "url": "https://www.inspectmesh.com/3mf-print-preflight",
+      "url": "https://www.inspectmesh.com/tools/3mf-print-preflight",
       "sitemapMember": true,
       "local": {
         "title": "3MF Print Preflight Checker - Check Before Slicing | InspectMesh",
         "description": "Check a resolved 3MF print build locally before slicing: package unit, build dimensions, printer fit, mesh integrity, sampled wall thickness, complexity and reliable volume.",
         "headings": ["3MF Print Preflight Checker"],
-        "canonical": "https://www.inspectmesh.com/3mf-print-preflight",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-print-preflight",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3736,
@@ -11011,15 +11052,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 16,
         "contextualInlinkExamples": [
-          "/3mf-quality-checker",
-          "/3mf-repair",
-          "/3mf-tools",
-          "/batch-stl-checker",
-          "/guides/3d-print-file-preflight-checklist"
+          "/guides/3d-print-file-preflight-checklist",
+          "/guides/how-to-check-a-3mf-file-for-errors",
+          "/guides/how-to-check-gcode-before-printing",
+          "/guides/how-to-check-if-a-3d-model-is-ready-to-print",
+          "/guides/how-to-convert-3mf-to-stl"
         ],
         "internalLinkCount": 55,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF Print Preflight Checker",
@@ -11070,10 +11111,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3mf-print-preflight"]
     },
     {
-      "path": "/3mf-repair",
+      "path": "/tools/3mf-repair",
       "priority": "P2",
       "family": "F03",
       "owner": "InspectMesh",
@@ -11118,13 +11160,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/3mf-repair",
+      "url": "https://www.inspectmesh.com/tools/3mf-repair",
       "sitemapMember": true,
       "local": {
         "title": "3MF Repair: Local Triangle Cleanup | InspectMesh",
         "description": "Review supported triangle removals in a 3MF package locally, save a separate copy and verify its build. No hole filling or winding correction.",
         "headings": ["Repair a 3MF File"],
-        "canonical": "https://www.inspectmesh.com/3mf-repair",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-repair",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3630,
@@ -11141,15 +11183,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 8,
         "contextualInlinkExamples": [
-          "/3mf-manifold-checker",
-          "/3mf-quality-checker",
-          "/3mf-tools",
           "/guides/how-to-check-a-3mf-file-for-errors",
-          "/guides/how-to-repair-a-3mf-file"
+          "/guides/how-to-repair-a-3mf-file",
+          "/guides/how-to-tell-if-a-3mf-file-is-manifold",
+          "/guides/how-to-tell-if-a-3mf-file-is-watertight",
+          "/tools/3mf-manifold-checker"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Repair a 3MF File",
@@ -11222,10 +11264,11 @@
           "headings": true,
           "robots": true
         }
-      }
+      },
+      "previousPaths": ["/3mf-repair"]
     },
     {
-      "path": "/3mf-dimensions-checker",
+      "path": "/tools/3mf-dimensions-checker",
       "priority": "P2",
       "family": "F02",
       "owner": "InspectMesh",
@@ -11273,13 +11316,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/3mf-dimensions-checker",
+      "url": "https://www.inspectmesh.com/tools/3mf-dimensions-checker",
       "sitemapMember": true,
       "local": {
         "title": "3MF Dimensions Checker: Units and Build Bounds | InspectMesh",
         "description": "Measure a 3MF file's final build dimensions, keep its declared unit, convert mm, cm and inches, and compare the model with your 3D printer volume.",
         "headings": ["3MF Dimensions Checker"],
-        "canonical": "https://www.inspectmesh.com/3mf-dimensions-checker",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-dimensions-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2726,
@@ -11298,15 +11341,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 13,
         "contextualInlinkExamples": [
-          "/3mf-repair",
-          "/3mf-tools",
-          "/3mf-viewer",
           "/guides/3mf-units-explained",
-          "/guides/how-to-check-a-3mf-file-for-errors"
+          "/guides/how-to-check-a-3mf-file-for-errors",
+          "/guides/how-to-check-gcode-before-printing",
+          "/guides/how-to-check-if-a-3d-model-fits-your-printer",
+          "/guides/how-to-measure-3d-model"
         ],
         "internalLinkCount": 52,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.292Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Distinguish full resolved build bounds from item bounds",
@@ -11368,10 +11411,11 @@
         "plannedChange": "Replaced reliability comparison with unit/scope explanation and external editor next step.",
         "evidenceChecked": "Source-unit report conversion code, one/two placement controls and existing component tests; no new server job.",
         "unresolvedIssue": "Desktop/mobile interaction, production release and authenticated GSC remain unverified."
-      }
+      },
+      "previousPaths": ["/3mf-dimensions-checker"]
     },
     {
-      "path": "/3mf-watertight-checker",
+      "path": "/tools/3mf-watertight-checker",
       "priority": "P2",
       "family": "F03",
       "owner": "InspectMesh",
@@ -11416,13 +11460,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/3mf-watertight-checker",
+      "url": "https://www.inspectmesh.com/tools/3mf-watertight-checker",
       "sitemapMember": true,
       "local": {
         "title": "3MF Watertight Checker: Open Boundaries | InspectMesh",
         "description": "Check supported 3MF build geometry for exposed boundaries. Interpret closure separately from edge sharing, volume availability and print preparation.",
         "headings": ["3MF Watertight Checker"],
-        "canonical": "https://www.inspectmesh.com/3mf-watertight-checker",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-watertight-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2254,
@@ -11436,15 +11480,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3mf-dimensions-checker",
-          "/3mf-tools",
           "/guides/how-to-check-a-3mf-file-for-errors",
           "/guides/how-to-tell-if-a-3mf-file-is-watertight",
-          "/guides/why-wont-my-3mf-file-slice"
+          "/guides/why-wont-my-3mf-file-slice",
+          "/tools/3mf-dimensions-checker",
+          "/tools/3mf-tools"
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF Watertight Checker",
@@ -11495,10 +11539,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3mf-watertight-checker"]
     },
     {
-      "path": "/3mf-manifold-checker",
+      "path": "/tools/3mf-manifold-checker",
       "priority": "P2",
       "family": "F03",
       "owner": "InspectMesh",
@@ -11543,13 +11588,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/3mf-manifold-checker",
+      "url": "https://www.inspectmesh.com/tools/3mf-manifold-checker",
       "sitemapMember": true,
       "local": {
         "title": "3MF Manifold Checker: Edge Sharing | InspectMesh",
         "description": "Check supported 3MF edge relationships and interpret topology findings without treating clean counts as a complete solid-validity test.",
         "headings": ["3MF Manifold Checker"],
-        "canonical": "https://www.inspectmesh.com/3mf-manifold-checker",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-manifold-checker",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2307,
@@ -11563,15 +11608,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 7,
         "contextualInlinkExamples": [
-          "/3mf-dimensions-checker",
-          "/3mf-tools",
-          "/3mf-watertight-checker",
           "/guides/how-to-check-a-3mf-file-for-errors",
-          "/guides/how-to-tell-if-a-3mf-file-is-manifold"
+          "/guides/how-to-tell-if-a-3mf-file-is-manifold",
+          "/guides/why-wont-my-3mf-file-slice",
+          "/tools/3mf-dimensions-checker",
+          "/tools/3mf-tools"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.870Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF Manifold Checker",
@@ -11622,10 +11667,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3mf-manifold-checker"]
     },
     {
-      "path": "/3mf-triangle-counter",
+      "path": "/tools/3mf-triangle-counter",
       "priority": "P2",
       "family": "F05",
       "owner": "InspectMesh",
@@ -11670,13 +11716,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/3mf-triangle-counter",
+      "url": "https://www.inspectmesh.com/tools/3mf-triangle-counter",
       "sitemapMember": true,
       "local": {
         "title": "3MF Triangle Counter: Resolved Build Count | InspectMesh",
         "description": "Count triangles in a supported 3MF build and understand how repeated placed items affect the result. A count is not a print-quality score.",
         "headings": ["3MF Triangle Counter"],
-        "canonical": "https://www.inspectmesh.com/3mf-triangle-counter",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-triangle-counter",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 1347,
@@ -11692,13 +11738,13 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/3mf-tools",
           "/guides/how-to-check-3mf-triangle-count",
+          "/tools/3mf-tools",
           "/tools"
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Obtain the supported placed-build triangle total",
@@ -11749,10 +11795,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3mf-triangle-counter"]
     },
     {
-      "path": "/3mf-volume-calculator",
+      "path": "/tools/3mf-volume-calculator",
       "priority": "P2",
       "family": "F05",
       "owner": "InspectMesh",
@@ -11797,13 +11844,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-25"
       },
-      "url": "https://www.inspectmesh.com/3mf-volume-calculator",
+      "url": "https://www.inspectmesh.com/tools/3mf-volume-calculator",
       "sitemapMember": true,
       "local": {
         "title": "3MF Volume Calculator: Build Volume and Solid Mass | InspectMesh",
         "description": "Check supported 3MF volume results, understand unavailable values and calculate optional solid mass from density. Use slicer totals for consumption.",
         "headings": ["3MF Volume Calculator"],
-        "canonical": "https://www.inspectmesh.com/3mf-volume-calculator",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-volume-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 2065,
@@ -11821,15 +11868,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
-          "/3mf-tools",
-          "/filament-length-calculator",
           "/guides/how-to-calculate-3mf-volume",
           "/guides/how-to-estimate-filament-weight-from-a-3mf-file",
+          "/tools/3mf-tools",
+          "/tools/filament-length-calculator",
           "/tools"
         ],
         "internalLinkCount": 51,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Interpret supported 3MF volume and availability limits",
@@ -11884,10 +11931,11 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "previousPaths": ["/3mf-volume-calculator"]
     },
     {
-      "path": "/3mf-to-stl-converter",
+      "path": "/tools/3mf-to-stl-converter",
       "priority": "P1",
       "family": "F02",
       "owner": "InspectMesh",
@@ -11935,13 +11983,13 @@
         "nextReview": null,
         "contentChangedAt": "2026-10-26"
       },
-      "url": "https://www.inspectmesh.com/3mf-to-stl-converter",
+      "url": "https://www.inspectmesh.com/tools/3mf-to-stl-converter",
       "sitemapMember": true,
       "local": {
         "title": "3MF to STL Converter - Convert Locally | InspectMesh",
         "description": "Select an entire 3MF build or one placed item, export binary STL in millimetres and verify the generated bytes locally before downloading.",
         "headings": ["3MF to STL Converter"],
-        "canonical": "https://www.inspectmesh.com/3mf-to-stl-converter",
+        "canonical": "https://www.inspectmesh.com/tools/3mf-to-stl-converter",
         "canonicalCount": 1,
         "robots": ["index, follow"],
         "mainTextCharacters": 3385,
@@ -11956,15 +12004,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 8,
         "contextualInlinkExamples": [
-          "/3mf-repair",
-          "/3mf-tools",
           "/guides/3mf-to-stl-combined-or-separate-parts",
           "/guides/3mf-to-stl-wrong-size-or-position",
-          "/guides/3mf-vs-stl"
+          "/guides/3mf-vs-stl",
+          "/guides/extract-part-from-3mf",
+          "/guides/how-to-convert-3mf-to-stl"
         ],
         "internalLinkCount": 54,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Export a supported full build or selected placement with explicit placement",
@@ -12044,7 +12092,8 @@
         "plannedChange": "Intro matches existing modes; result states geometry-only and receiving-unit limit.",
         "evidenceChecked": "Existing selection, placement, report and output verification tests.",
         "unresolvedIssue": "Desktop/mobile interaction, production release and authenticated GSC remain unverified."
-      }
+      },
+      "previousPaths": ["/3mf-to-stl-converter"]
     },
     {
       "path": "/guides",
@@ -12126,10 +12175,10 @@
         "exampleAssets": [],
         "incomingLinkCount": 198,
         "contextualInlinkCount": 2,
-        "contextualInlinkExamples": ["/filament-length-calculator", "/"],
+        "contextualInlinkExamples": ["/", "/tools/filament-length-calculator"],
         "internalLinkCount": 154,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Find a diagnostic or decision guide",
@@ -12423,15 +12472,15 @@
         "incomingLinkCount": 198,
         "contextualInlinkCount": 36,
         "contextualInlinkExamples": [
-          "/3d-print-orientation-planner",
-          "/3mf-overhang-checker",
-          "/3mf-print-preflight",
-          "/3mf-to-stl-converter",
-          "/3mf-viewer"
+          "/guides/3d-print-wall-thickness-guide",
+          "/guides/3mf-to-stl-combined-or-separate-parts",
+          "/guides/3mf-to-stl-wrong-size-or-position",
+          "/guides/can-you-use-gcode-from-another-printer",
+          "/guides/extract-part-from-3mf"
         ],
         "internalLinkCount": 87,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Explore model and G-code evidence controls",
@@ -12569,7 +12618,7 @@
         "contextualInlinkExamples": ["/"],
         "internalLinkCount": 49,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Contact & feedback",
@@ -12714,15 +12763,15 @@
         "incomingLinkCount": 15,
         "contextualInlinkCount": 15,
         "contextualInlinkExamples": [
-          "/3mf-print-preflight",
           "/examples",
           "/guides/3d-print-heat-set-insert-hole-sizing",
           "/guides/3d-print-snap-fit-clearance",
-          "/guides/how-inspectmesh-checks-files"
+          "/guides/how-inspectmesh-checks-files",
+          "/guides/how-to-check-3mf-wall-thickness-for-3d-printing"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Wall Thickness: What a Thin Area Means",
@@ -12855,7 +12904,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print File Preflight Checklist",
@@ -12985,15 +13034,15 @@
         "incomingLinkCount": 9,
         "contextualInlinkCount": 9,
         "contextualInlinkExamples": [
-          "/3mf-print-preflight",
-          "/3mf-to-stl-converter",
           "/guides/3mf-vs-stl",
           "/guides/does-3mf-keep-colours-materials-and-settings",
-          "/guides"
+          "/guides",
+          "/guides/stl-vs-obj-for-3d-printing",
+          "/guides/stl-vs-step-for-3d-printing"
         ],
         "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "What Is the Best File Format for 3D Printing?",
@@ -13134,15 +13183,15 @@
         "incomingLinkCount": 5,
         "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
-          "/3d-print-tolerance-calculator",
           "/guides/3d-printer-calibration-guide",
           "/guides/alignment-pins-for-split-3d-prints",
           "/guides/how-to-check-if-a-3d-model-is-ready-to-print",
-          "/guides"
+          "/guides",
+          "/tools/3d-print-tolerance-calculator"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Tolerance and Clearance: How to Design Parts That Fit",
@@ -13270,15 +13319,15 @@
         "incomingLinkCount": 8,
         "contextualInlinkCount": 8,
         "contextualInlinkExamples": [
-          "/3mf-print-preflight",
           "/guides/3d-print-file-preflight-checklist",
           "/guides/how-to-check-stl-for-errors",
           "/guides/how-to-make-an-stl-file-printable",
-          "/guides"
+          "/guides",
+          "/guides/stl-file-wont-slice"
         ],
         "internalLinkCount": 57,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Check if a 3D Model Is Ready to Print",
@@ -13403,15 +13452,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3mf-overhang-checker",
           "/examples",
           "/guides/3d-print-bridge-vs-overhang",
           "/guides/floating-regions-in-slicer",
-          "/guides"
+          "/guides",
+          "/guides/supports-inside-holes-and-channels"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Overhangs and Supports: How to Check a Model Before Slicing",
@@ -13540,15 +13589,15 @@
         "incomingLinkCount": 7,
         "contextualInlinkCount": 7,
         "contextualInlinkExamples": [
-          "/3mf-viewer",
           "/guides/3d-print-heat-set-insert-hole-sizing",
           "/guides/3d-print-hole-orientation-and-accuracy",
           "/guides",
-          "/stl-dimensions-checker"
+          "/tools/3mf-viewer",
+          "/tools/stl-dimensions-checker"
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Choose the measurement method for the question",
@@ -13696,14 +13745,14 @@
         "contextualInlinkCount": 8,
         "contextualInlinkExamples": [
           "/examples",
-          "/gcode-preflight-checker",
           "/guides/can-you-use-gcode-from-another-printer",
           "/guides/gcode-outside-print-bed",
-          "/guides/gcode-preview-incomplete"
+          "/guides/gcode-preview-incomplete",
+          "/guides/how-to-open-and-view-gcode-files"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Check G-code Before You Start a 3D Print",
@@ -13837,15 +13886,15 @@
         "incomingLinkCount": 11,
         "contextualInlinkCount": 11,
         "contextualInlinkExamples": [
-          "/3mf-viewer",
           "/guides/3d-print-wall-thickness-guide",
           "/guides/how-to-check-3mf-wall-thickness-for-3d-printing",
           "/guides/how-to-check-stl-wall-thickness-for-3d-printing",
-          "/guides/how-to-hollow-an-stl-file-for-3d-printing"
+          "/guides/how-to-hollow-an-stl-file-for-3d-printing",
+          "/guides"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Inspect STL and 3MF Cross-Sections Before Printing",
@@ -13977,7 +14026,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Check if a 3D Model Fits Your Printer",
@@ -14103,15 +14152,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3d-print-bed-layout-planner",
           "/guides/can-you-use-gcode-from-another-printer",
           "/guides/gcode-outside-print-bed",
           "/guides/gcode-preview-incomplete",
-          "/guides"
+          "/guides",
+          "/guides/sequential-3d-printing-clearance"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Arrange Multiple Parts on a 3D Printer Bed",
@@ -14232,15 +14281,15 @@
         "incomingLinkCount": 5,
         "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
-          "/3d-print-shrinkage-calculator",
           "/guides/3d-print-elephants-foot-and-part-fit",
           "/guides/3d-print-hole-size-compensation",
           "/guides/3d-printer-calibration-guide",
-          "/guides"
+          "/guides",
+          "/tools/3d-print-shrinkage-calculator"
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Compensate for 3D Print Shrinkage",
@@ -14362,7 +14411,7 @@
         "contextualInlinkExamples": ["/guides"],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Open and View G-code Files",
@@ -14480,7 +14529,7 @@
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Bridge vs Overhang: Identify the Geometry First",
@@ -14616,7 +14665,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Supports Inside Holes and Channels: Check Access Before Printing",
@@ -14738,14 +14787,14 @@
         "incomingLinkCount": 4,
         "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
-          "/3d-printing-quote-generator",
           "/guides/3d-print-batch-cost-per-part",
           "/guides/how-much-to-charge-for-3d-prints",
-          "/guides"
+          "/guides",
+          "/tools/3d-printing-quote-generator"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Review the exact customer document before sending",
@@ -14888,10 +14937,13 @@
         "exampleAssets": [],
         "incomingLinkCount": 2,
         "contextualInlinkCount": 2,
-        "contextualInlinkExamples": ["/3mf-dimensions-checker", "/guides"],
+        "contextualInlinkExamples": [
+          "/guides",
+          "/tools/3mf-dimensions-checker"
+        ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Rotate a 3D Model to Fit Your Printer",
@@ -15004,14 +15056,14 @@
         "incomingLinkCount": 4,
         "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
           "/guides/3d-print-batch-cost-per-part",
           "/guides/how-much-to-charge-for-3d-prints",
-          "/guides"
+          "/guides",
+          "/tools/3d-print-cost-calculator"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.293Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Cost the full production order before selling profit",
@@ -15153,15 +15205,15 @@
         "incomingLinkCount": 10,
         "contextualInlinkCount": 10,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
-          "/3d-printing-price-calculator",
           "/guides/3d-print-batch-cost-per-part",
           "/guides/3d-print-heat-set-insert-hole-sizing",
-          "/guides/3d-print-labour-cost-and-post-processing"
+          "/guides/3d-print-labour-cost-and-post-processing",
+          "/guides/3d-print-lead-time-vs-print-time",
+          "/guides/3d-print-snap-fit-clearance"
         ],
         "internalLinkCount": 53,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Price reviewed K with deliberate margin/markup, fees and minimum",
@@ -15296,15 +15348,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3d-print-cost-calculator",
           "/guides/3d-print-support-and-purge-material-cost",
           "/guides/how-many-metres-in-1kg-filament",
           "/guides/how-to-estimate-filament-weight-from-a-3mf-file",
-          "/guides"
+          "/guides",
+          "/guides/stl-volume-calculation-wrong"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.871Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Read complete per-material sliced consumption",
@@ -15438,7 +15490,7 @@
         "contextualInlinkExamples": ["/guides"],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How Many Metres Are in 1 kg of 3D Printer Filament?",
@@ -15567,7 +15619,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Review STL Revisions Without Losing Intended Geometry",
@@ -15700,14 +15752,14 @@
         "incomingLinkCount": 4,
         "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
-          "/batch-stl-checker",
           "/examples",
           "/guides/best-file-format-for-3d-printing",
-          "/guides"
+          "/guides",
+          "/tools/batch-stl-checker"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "A Practical File-Quality Handoff for STL Model Sellers",
@@ -15838,7 +15890,7 @@
         ],
         "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Decide accept for slicing review, clarify or return to source",
@@ -15969,7 +16021,7 @@
         "contextualInlinkExamples": ["/guides", "/materials"],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Filament Dryer vs Dry Box: Choose the Function You Need",
@@ -16082,7 +16134,7 @@
         "contextualInlinkExamples": ["/guides"],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Brass vs Hardened Nozzles: Material and Fitment Checklist",
@@ -16193,7 +16245,7 @@
         "contextualInlinkExamples": ["/guides"],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Maximum Volumetric Speed: Throughput vs Calibration",
@@ -16313,15 +16365,15 @@
         "incomingLinkCount": 23,
         "contextualInlinkCount": 23,
         "contextualInlinkExamples": [
-          "/3d-print-orientation-planner",
-          "/3mf-overhang-checker",
-          "/3mf-print-preflight",
-          "/3mf-quality-checker",
-          "/3mf-to-stl-converter"
+          "/examples",
+          "/guides/how-to-check-a-3mf-file-for-errors",
+          "/guides",
+          "/",
+          "/tools/3d-print-orientation-planner"
         ],
         "internalLinkCount": 61,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How InspectMesh Checks Files",
@@ -16476,7 +16528,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Allocate an identical-part order without claiming mixed-item costs",
@@ -16617,7 +16669,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Reconcile material inclusion once",
@@ -16756,7 +16808,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Plan active work by order/run/part scope",
@@ -16880,14 +16932,14 @@
         "incomingLinkCount": 4,
         "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
-          "/3d-print-finish-time-calculator",
           "/guides/3d-print-labour-cost-and-post-processing",
           "/guides",
-          "/guides/inspect-customer-supplied-print-files"
+          "/guides/inspect-customer-supplied-print-files",
+          "/tools/3d-print-finish-time-calculator"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Lead Time vs Print Time",
@@ -17006,15 +17058,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3d-print-bed-layout-planner",
           "/examples",
           "/guides/how-to-check-gcode-before-printing",
           "/guides/how-to-check-if-a-3d-model-fits-your-printer",
-          "/guides"
+          "/guides",
+          "/guides/stl-model-off-build-plate"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "G-code Outside the Print Bed: Size, Origin and Travel",
@@ -17147,7 +17199,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Can You Use G-code From Another Printer?",
@@ -17271,7 +17323,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Why a G-code Preview Is Incomplete: Arcs, Macros and Formats",
@@ -17387,13 +17439,13 @@
         "incomingLinkCount": 3,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/3d-print-bed-layout-planner",
           "/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed",
-          "/guides"
+          "/guides",
+          "/tools/3d-print-bed-layout-planner"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Sequential Printing Clearance Versus Bed Placement",
@@ -17517,7 +17569,7 @@
         ],
         "internalLinkCount": 56,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Interpret a mesh finding and choose one focused action",
@@ -17650,12 +17702,12 @@
         "contextualInlinkExamples": [
           "/guides/how-to-check-if-a-3d-model-is-ready-to-print",
           "/guides",
-          "/stl-print-preflight",
-          "/stl-repair"
+          "/tools/stl-print-preflight",
+          "/tools/stl-repair"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Follow a duplicate-face STL through saved-copy repair and verification",
@@ -17826,11 +17878,11 @@
           "/guides/how-to-check-stl-for-errors",
           "/guides",
           "/guides/what-is-non-manifold-geometry",
-          "/stl-manifold-checker"
+          "/tools/stl-manifold-checker"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Fix a Non-Manifold STL: Choose the Right Repair",
@@ -17947,10 +17999,13 @@
         ],
         "incomingLinkCount": 2,
         "contextualInlinkCount": 2,
-        "contextualInlinkExamples": ["/guides", "/stl-watertight-checker"],
+        "contextualInlinkExamples": [
+          "/guides",
+          "/tools/stl-watertight-checker"
+        ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Tell If an STL File Is Watertight",
@@ -18065,11 +18120,11 @@
           "/guides/ascii-vs-binary-stl",
           "/guides",
           "/guides/stl-resolution-chord-height-explained",
-          "/stl-file-size-reducer"
+          "/tools/stl-file-size-reducer"
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Triangle Count Explained",
@@ -18212,7 +18267,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Diagnose intended STL units before changing coordinates",
@@ -18356,7 +18411,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Resize a separate STL and verify saved bytes",
@@ -18492,11 +18547,11 @@
           "/guides/how-to-scale-an-stl-file-for-3d-printing",
           "/guides",
           "/guides/why-stl-files-have-no-units",
-          "/stl-tools"
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Calculate a factor and final percentage",
@@ -18649,7 +18704,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.872Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Reduce STL File Size",
@@ -18792,7 +18847,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.294Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Reduce STL Triangle Count",
@@ -18914,11 +18969,11 @@
           "/guides/how-to-reduce-stl-triangle-count",
           "/guides",
           "/guides/self-intersecting-mesh-vs-non-manifold",
-          "/stl-repair"
+          "/tools/stl-repair"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Repair an STL File for 3D Printing",
@@ -19043,7 +19098,7 @@
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Fix Holes in an STL File",
@@ -19172,7 +19227,7 @@
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Fix Flipped STL Faces: Check Winding Before Repair",
@@ -19297,7 +19352,7 @@
         "contextualInlinkExamples": ["/guides"],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Remove Duplicate STL Triangles: Verify the Saved Surface",
@@ -19416,11 +19471,11 @@
           "/examples",
           "/guides",
           "/guides/self-intersecting-mesh-vs-non-manifold",
-          "/stl-manifold-checker"
+          "/tools/stl-manifold-checker"
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "What Does Non-Manifold Geometry Mean?",
@@ -19542,11 +19597,11 @@
           "/examples",
           "/guides/3d-print-wall-thickness-guide",
           "/guides",
-          "/stl-quality-checker"
+          "/tools/stl-quality-checker"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Why Does My STL Surface Have No Thickness?",
@@ -19667,11 +19722,11 @@
         "contextualInlinkExamples": [
           "/examples",
           "/guides",
-          "/stl-quality-checker"
+          "/tools/stl-quality-checker"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Find Internal Faces in an STL",
@@ -19792,7 +19847,7 @@
         ],
         "internalLinkCount": 56,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL File Won’t Slice? Find the First Failing Step",
@@ -19941,7 +19996,7 @@
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL vs OBJ for 3D Printing",
@@ -20079,7 +20134,7 @@
         "contextualInlinkExamples": ["/guides", "/"],
         "internalLinkCount": 58,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "What Is an STL File?",
@@ -20199,7 +20254,7 @@
         "contextualInlinkExamples": ["/guides", "/guides/what-is-an-stl-file"],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Open an STL File",
@@ -20340,7 +20395,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "ASCII vs Binary STL: What Is the Difference?",
@@ -20469,7 +20524,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL vs STEP for 3D Printing",
@@ -20597,15 +20652,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3d-print-orientation-planner",
           "/guides/3d-print-heat-set-insert-hole-sizing",
           "/guides/3d-print-snap-fit-clearance",
           "/guides/how-to-lay-an-stl-flat-on-print-bed",
-          "/guides"
+          "/guides",
+          "/tools/3d-print-orientation-planner"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Orient an STL File for 3D Printing",
@@ -20728,15 +20783,15 @@
         "incomingLinkCount": 7,
         "contextualInlinkCount": 7,
         "contextualInlinkExamples": [
-          "/batch-stl-checker",
           "/guides/how-inspectmesh-checks-files",
           "/guides/how-to-check-stl-for-errors",
           "/guides",
-          "/guides/what-is-an-stl-file"
+          "/guides/what-is-an-stl-file",
+          "/tools/batch-stl-checker"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Why Is My STL Volume Wrong or Unavailable?",
@@ -20862,15 +20917,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/batch-stl-checker",
           "/guides/how-to-fix-non-manifold-stl",
           "/guides/how-to-remove-duplicate-triangles-from-an-stl-file",
           "/guides",
-          "/stl-quality-checker"
+          "/tools/batch-stl-checker",
+          "/tools/stl-quality-checker"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Self Intersections and Non-Manifold Edges Are Different Checks",
@@ -21001,7 +21056,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Export STL from CAD",
@@ -21140,7 +21195,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Resolution: Chord Height and Angular Tolerance",
@@ -21272,15 +21327,15 @@
         "incomingLinkCount": 12,
         "contextualInlinkCount": 12,
         "contextualInlinkExamples": [
-          "/batch-stl-checker",
           "/examples",
           "/guides/how-to-export-stl-from-cad",
           "/guides/how-to-fix-non-manifold-stl",
-          "/guides/how-to-remove-duplicate-triangles-from-an-stl-file"
+          "/guides/how-to-remove-duplicate-triangles-from-an-stl-file",
+          "/guides/how-to-split-an-stl-file-for-3d-printing"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Multiple STL Shells and Disconnected Parts",
@@ -21415,7 +21470,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Floating Regions in a Slicer",
@@ -21541,7 +21596,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Model Off the Build Plate",
@@ -21670,7 +21725,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Slicer Fills a Hole in an STL",
@@ -21785,14 +21840,14 @@
         "incomingLinkCount": 4,
         "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
-          "/3d-print-orientation-planner",
           "/examples",
           "/guides/how-to-orient-an-stl-file-for-3d-printing",
-          "/guides"
+          "/guides",
+          "/tools/3d-print-orientation-planner"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Lay an STL Flat on the Print Bed",
@@ -21918,7 +21973,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.873Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Split an STL File for 3D Printing",
@@ -22045,12 +22100,12 @@
           "/examples",
           "/guides/how-to-split-an-stl-file-for-3d-printing",
           "/guides",
-          "/stl-splitter",
-          "/stl-tools"
+          "/tools/stl-splitter",
+          "/tools/stl-tools"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Split Failed? Diagnose the Cut Before Retrying",
@@ -22176,7 +22231,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Check STL Wall Thickness for 3D Printing",
@@ -22305,7 +22360,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Hollow an STL File for 3D Printing",
@@ -22438,7 +22493,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF vs STL: Which File Format Should You Use?",
@@ -22572,13 +22627,13 @@
         "incomingLinkCount": 3,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/3mf-viewer",
           "/guides/3mf-missing-objects-after-import",
-          "/guides"
+          "/guides",
+          "/tools/3mf-viewer"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.295Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Open a 3MF File",
@@ -22711,15 +22766,15 @@
         "incomingLinkCount": 9,
         "contextualInlinkCount": 9,
         "contextualInlinkExamples": [
-          "/3mf-repair",
-          "/3mf-to-stl-converter",
-          "/3mf-viewer",
           "/guides/3mf-missing-objects-after-import",
-          "/guides/3mf-to-stl-combined-or-separate-parts"
+          "/guides/3mf-to-stl-combined-or-separate-parts",
+          "/guides/3mf-vs-stl",
+          "/guides/best-file-format-for-3d-printing",
+          "/guides/how-to-open-a-3mf-file"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Does 3MF Keep Colours, Materials and Print Settings?",
@@ -22857,7 +22912,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Check a 3MF File Before Slicing",
@@ -22991,14 +23046,14 @@
         "incomingLinkCount": 4,
         "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
-          "/3mf-manifold-checker",
-          "/3mf-watertight-checker",
           "/guides/how-to-tell-if-a-3mf-file-is-manifold",
-          "/guides"
+          "/guides",
+          "/tools/3mf-manifold-checker",
+          "/tools/3mf-watertight-checker"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Tell if a 3MF File Is Watertight",
@@ -23142,14 +23197,14 @@
         "incomingLinkCount": 4,
         "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
-          "/3mf-volume-calculator",
           "/guides/how-inspectmesh-checks-files",
           "/guides/how-to-check-a-3mf-file-for-errors",
-          "/guides"
+          "/guides",
+          "/tools/3mf-volume-calculator"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Calculate 3MF Volume for 3D Printing",
@@ -23286,7 +23341,7 @@
         ],
         "internalLinkCount": 50,
         "clickDepth": 1,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Why Won’t My 3MF File Slice?",
@@ -23402,15 +23457,15 @@
         "incomingLinkCount": 5,
         "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
-          "/3mf-dimensions-checker",
-          "/3mf-tools",
           "/guides/3mf-units-explained",
           "/guides/how-to-calculate-3mf-volume",
-          "/guides"
+          "/guides",
+          "/tools/3mf-dimensions-checker",
+          "/tools/3mf-tools"
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Scale the intended 3MF object or arrangement in its editing application",
@@ -23543,15 +23598,15 @@
         "incomingLinkCount": 5,
         "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
-          "/3mf-dimensions-checker",
-          "/3mf-tools",
           "/guides/3mf-to-stl-wrong-size-or-position",
           "/guides/how-to-scale-a-3mf-file",
-          "/guides"
+          "/guides",
+          "/tools/3mf-dimensions-checker",
+          "/tools/3mf-tools"
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Interpret declared/effective units and resolved placement",
@@ -23687,11 +23742,11 @@
         "contextualInlinkExamples": [
           "/guides",
           "/guides/why-stl-files-have-no-units",
-          "/stl-to-3mf-converter"
+          "/tools/stl-to-3mf-converter"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Package existing coordinates with a known unit",
@@ -23829,15 +23884,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3mf-to-stl-converter",
           "/guides/3mf-to-stl-wrong-size-or-position",
           "/guides/3mf-units-explained",
           "/guides/extract-part-from-3mf",
-          "/guides/how-to-repair-a-3mf-file"
+          "/guides/how-to-repair-a-3mf-file",
+          "/guides"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Choose geometry scope and verify the received derivative",
@@ -23969,15 +24024,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3mf-repair",
           "/guides/how-inspectmesh-checks-files",
           "/guides/how-to-check-a-3mf-file-for-errors",
           "/guides/how-to-tell-if-a-3mf-file-is-manifold",
-          "/guides/how-to-tell-if-a-3mf-file-is-watertight"
+          "/guides/how-to-tell-if-a-3mf-file-is-watertight",
+          "/guides"
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Repair a 3MF File for 3D Printing",
@@ -24114,13 +24169,13 @@
         "incomingLinkCount": 3,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/3mf-tools",
-          "/3mf-triangle-counter",
-          "/guides"
+          "/guides",
+          "/tools/3mf-tools",
+          "/tools/3mf-triangle-counter"
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Investigate stored meshes versus placed build totals",
@@ -24244,13 +24299,13 @@
         "incomingLinkCount": 3,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/3mf-manifold-checker",
           "/guides/how-to-tell-if-a-3mf-file-is-watertight",
-          "/guides"
+          "/guides",
+          "/tools/3mf-manifold-checker"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Tell if a 3MF File Is Manifold",
@@ -24389,15 +24444,15 @@
         "incomingLinkCount": 6,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
-          "/3mf-tools",
-          "/3mf-volume-calculator",
           "/guides/3d-print-support-and-purge-material-cost",
           "/guides/how-much-filament-does-a-3d-print-use",
-          "/guides/how-to-calculate-3mf-volume"
+          "/guides/how-to-calculate-3mf-volume",
+          "/guides",
+          "/tools/3mf-tools"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Calculate solid-model-equivalent mass from valid volume/density",
@@ -24528,13 +24583,13 @@
         "incomingLinkCount": 3,
         "contextualInlinkCount": 3,
         "contextualInlinkExamples": [
-          "/3mf-wall-thickness-checker",
           "/examples",
-          "/guides"
+          "/guides",
+          "/tools/3mf-wall-thickness-checker"
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Check 3MF Wall Thickness for 3D Printing",
@@ -24653,15 +24708,15 @@
         "incomingLinkCount": 11,
         "contextualInlinkCount": 11,
         "contextualInlinkExamples": [
-          "/3mf-print-preflight",
-          "/3mf-to-stl-converter",
-          "/3mf-viewer",
           "/examples",
-          "/guides/how-inspectmesh-checks-files"
+          "/guides/how-inspectmesh-checks-files",
+          "/guides/how-to-calculate-3mf-volume",
+          "/guides/how-to-check-a-3mf-file-for-errors",
+          "/guides/how-to-convert-3mf-to-stl"
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Why Are Objects Missing After Importing a 3MF?",
@@ -24792,7 +24847,7 @@
         ],
         "internalLinkCount": 50,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Extract One Placed Part from a 3MF",
@@ -24915,7 +24970,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Why a Converted STL Looks Moved or Resized",
@@ -25039,7 +25094,7 @@
         ],
         "internalLinkCount": 51,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "One Combined STL or Separate Placed Parts?",
@@ -25171,7 +25226,7 @@
         ],
         "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Printer Calibration Guide: What to Calibrate First",
@@ -25307,7 +25362,7 @@
         ],
         "internalLinkCount": 49,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.874Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Flow Rate vs E-Steps: What Is the Difference?",
@@ -25443,7 +25498,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.875Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Hole Size Compensation: Make Holes and Pins Fit",
@@ -25579,7 +25634,7 @@
         ],
         "internalLinkCount": 52,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.875Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Hole Orientation and Accuracy",
@@ -25699,7 +25754,7 @@
         ],
         "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.875Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Elephant's Foot and Part Fit",
@@ -25818,7 +25873,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.875Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Heat-Set Insert Hole Sizing for 3D Prints",
@@ -25937,7 +25992,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.875Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Snap-Fit Clearance and Engagement",
@@ -26069,7 +26124,7 @@
         ],
         "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-10-28T23:12:40.296Z",
+        "observedAt": "2026-10-28T23:58:55.875Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Alignment Pins for Split 3D Prints: Plan and Test the Joint",

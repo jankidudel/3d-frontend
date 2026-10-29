@@ -1,5 +1,5 @@
 <a
-  [routerLink]="['/', route()]"
+  [routerLink]="'/' + route()"
   routerLinkActive="active"
   (click)="selected.emit()"
   >{{ label() }}</a

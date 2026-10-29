@@ -151,7 +151,7 @@
   </section>
   @if (kind === '3mf-to-stl') {
     <app-example-loader
-      tool="/3mf-to-stl-converter"
+      [tool]="routeUrl.ThreeMfToStlConverter"
       [active]="file() !== null"
       [busy]="converting() || resolving()"
       [current]="file()"

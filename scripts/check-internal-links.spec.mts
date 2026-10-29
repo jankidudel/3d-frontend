@@ -132,8 +132,8 @@ describe('internal link validation', () => {
 
   it('rejects duplicate and mismatched canonical URLs', () => {
     const failures = validateGeneratedPages([
-      page('/guides', '', { canonical: SITE + '/stl-viewer' }),
-      page('/stl-viewer', ''),
+      page('/guides', '', { canonical: SITE + '/tools/stl-viewer' }),
+      page('/tools/stl-viewer', ''),
     ]);
 
     expect(failures).toEqual(
@@ -158,8 +158,11 @@ describe('internal link validation', () => {
       ),
     ).toBe('/guides');
     expect(
-      routeForFile(outputDirectory, join(outputDirectory, 'stl-viewer.html')),
-    ).toBe('/stl-viewer');
+      routeForFile(
+        outputDirectory,
+        join(outputDirectory, 'tools', 'stl-viewer.html'),
+      ),
+    ).toBe('/tools/stl-viewer');
     expect(
       routeForFile(outputDirectory, join(outputDirectory, 'index.html')),
     ).toBe('/');
@@ -171,14 +174,14 @@ describe('registered guide links with section fragments', () => {
     expect(
       resolveGuideLinks(
         '<a href="{{ GuideSlug.RouteStlSplitter }}?example=split-verification">Load</a>',
-        { RouteStlSplitter: 'stl-splitter' },
+        { RouteStlSplitter: 'tools/stl-splitter' },
         'split-guide.html',
       ),
-    ).toBe('<a href="/stl-splitter?example=split-verification">Load</a>');
+    ).toBe('<a href="/tools/stl-splitter?example=split-verification">Load</a>');
     expect(() =>
       resolveGuideLinks(
         '<a href="{{ GuideSlug.RouteStlSplitter }}?url=private">Load</a>',
-        { RouteStlSplitter: 'stl-splitter' },
+        { RouteStlSplitter: 'tools/stl-splitter' },
         'split-guide.html',
       ),
     ).toThrow('unresolved route placeholder');
@@ -187,17 +190,17 @@ describe('registered guide links with section fragments', () => {
     expect(
       resolveGuideLinks(
         '<a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts">Review</a>',
-        { RouteStlRepair: 'stl-repair' },
+        { RouteStlRepair: 'tools/stl-repair' },
         'guide.html',
       ),
-    ).toBe('<a href="/stl-repair#remove-floating-parts">Review</a>');
+    ).toBe('<a href="/tools/stl-repair#remove-floating-parts">Review</a>');
     expect(
       resolveGuideLinks(
         '<a href="{{GuideSlug.RouteStlRepair}}">Repair</a>',
-        { RouteStlRepair: 'stl-repair' },
+        { RouteStlRepair: 'tools/stl-repair' },
         'guide.html',
       ),
-    ).toBe('<a href="/stl-repair">Repair</a>');
+    ).toBe('<a href="/tools/stl-repair">Repair</a>');
   });
   it('rejects an unknown owner even with an anchor', () => {
     expect(() =>

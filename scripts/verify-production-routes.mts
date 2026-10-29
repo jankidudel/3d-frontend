@@ -278,8 +278,8 @@ export async function verifyProduction(
     '/',
     '/tools',
     '/guides',
-    '/stl-tools',
-    '/3mf-tools',
+    '/tools/stl-tools',
+    '/tools/3mf-tools',
     ...policies.map((p) => p.path),
     missingPath,
   ];

@@ -65,7 +65,7 @@
   </p>
 
   <app-example-loader
-    tool="/stl-viewer"
+    [tool]="routeUrl.Viewer"
     [active]="model() !== null"
     [busy]="loading()"
     [current]="model()"
