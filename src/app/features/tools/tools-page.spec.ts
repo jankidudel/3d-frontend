@@ -29,13 +29,19 @@ describe('ToolsPage', () => {
       (fixture.nativeElement as HTMLElement).querySelectorAll('.tools h2'),
     );
     expect(headings.map((heading) => heading.textContent?.trim())).toEqual([
-      'STL tools',
-      '3MF tools',
-      'Planning and functional tools',
-      'G-code and print workflow',
-      'Collections and next-job planning',
-      'Prepare customer paperwork',
+      'Open and inspect',
+      'Diagnose a finding',
+      'Change and verify',
+      'Fit and orient',
+      'Material and sliced job',
+      'Cost and quote',
     ]);
+    const cardRoutes = [
+      ...(fixture.nativeElement as HTMLElement).querySelectorAll(
+        '.tool-card a',
+      ),
+    ].map((link) => link.getAttribute('href'));
+    expect(new Set(cardRoutes).size).toBe(cardRoutes.length);
     expect(
       fixture.nativeElement.querySelector('nav[aria-label="Breadcrumb"]'),
     ).toBeNull();

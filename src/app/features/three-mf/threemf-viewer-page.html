@@ -247,7 +247,12 @@
     <p>
       The viewer displays the resolved build geometry, including repeated build
       items and their transforms. It calculates the displayed bounds and
-      triangle count locally.
+      triangle count locally. Stored resources can be reused or remain unplaced,
+      so a resource count is not a visible-part count.
+      <a [routerLink]="guideRouteUrl.RouteHowToCheck3mfTriangleCount"
+        >Interpret stored versus placed triangle counts</a
+      >
+      before assuming geometry was lost.
     </p>
     <p>
       Overall dimensions describe the resolved build bounds. Point-to-point

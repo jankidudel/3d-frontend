@@ -202,7 +202,13 @@ describe('StlQualityPage', () => {
     const completed: Job = {
       ...job,
       status: 'completed',
-      report: { triangleCount: 12 },
+      report: {
+        triangleCount: 12,
+        validation: {
+          isValid: false,
+          issues: [{ code: 'duplicate_triangles', count: 1 }],
+        },
+      },
     };
     jobsService.getJob.mockReturnValue(of(completed));
     const fixture = TestBed.createComponent(StlQualityPage);

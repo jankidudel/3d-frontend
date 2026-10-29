@@ -21,6 +21,22 @@
       estimating filament or time.
     </p>
   </section>
+  <nav aria-label="Tool tasks">
+    <ul>
+      @for (group of toolGroups; track group.id) {
+        <li>
+          <a [href]="routes.AllTools + '#' + group.id">{{ group.title }}</a>
+        </li>
+      }
+    </ul>
+  </nav>
+  <p>
+    For file-specific interpretation,
+    <a [routerLink]="routes.Tools">choose an STL inspection tool</a> or
+    <a [routerLink]="routes.ThreeMfTools">choose a 3MF build check</a>. For
+    source evidence, browse <a [routerLink]="routes.Materials">materials</a> or
+    <a [routerLink]="routes.Printers">printer specifications</a>.
+  </p>
   @for (group of toolGroups; track group.id) {
     <section class="tools" [attr.aria-labelledby]="group.id">
       <div class="section-intro">
@@ -28,7 +44,6 @@
         <p>
           {{ group.intro }}
         </p>
-        <a [routerLink]="group.exploreRoute">{{ group.exploreLinkText }}</a>
       </div>
       <div class="tool-grid">
         @for (tool of group.tools; track tool.route) {
@@ -41,20 +56,6 @@
       </div>
     </section>
   }
-  <section class="tools" aria-labelledby="customer-quotation-tool">
-    <div class="section-intro">
-      <h2 id="customer-quotation-tool">Prepare customer paperwork</h2>
-    </div>
-    <div class="tool-grid">
-      <article class="tool-card card">
-        <h3>3D Printing Quote Generator</h3>
-        <p>Prepare branded quotations and retain revised versions locally.</p>
-        <a class="button" [routerLink]="routes.QuoteGenerator"
-          >Prepare a quotation</a
-        >
-      </article>
-    </div>
-  </section>
   <app-workflow-paths />
   <section class="content">
     <h2>From a production record to a customer document</h2>

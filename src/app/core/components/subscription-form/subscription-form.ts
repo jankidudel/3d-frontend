@@ -1,5 +1,4 @@
 import {
-  afterNextRender,
   Component,
   computed,
   inject,
@@ -35,6 +34,7 @@ export class SubscriptionFormComponent {
   protected readonly submitting = signal(false);
   protected readonly captchaLoading = signal(false);
   protected readonly captchaError = signal('');
+  protected readonly captchaRequested = signal(false);
   protected readonly submitDisabled = computed(
     () => this.submitting() || !this.captchaAvailable || !this.captchaToken(),
   );
@@ -51,18 +51,19 @@ export class SubscriptionFormComponent {
   private readonly turnstile = inject(TurnstileService);
   private captchaWidgetId?: string;
 
-  constructor() {
-    afterNextRender(() => {
-      if (this.captchaAvailable) {
-        void this.renderCaptcha();
-      }
-    });
+  protected startVerification(): void {
+    if (!this.captchaAvailable) {
+      return;
+    }
+    this.captchaRequested.set(true);
+    void this.renderCaptcha();
   }
 
   protected update(field: 'email' | 'honeypot', event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     if (field === 'email') {
       this.email.set(value);
+      this.startVerification();
     } else {
       this.honeypot.set(value);
     }

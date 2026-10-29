@@ -76,6 +76,19 @@
       </article>
     </div>
   </section>
+  <section aria-labelledby="file-format-title">
+    <h2 id="file-format-title">Choose the file you have</h2>
+    <p>
+      STL stores triangle coordinates without a declared physical unit. Start by
+      viewing the model and confirming one known dimension. A 3MF can also
+      describe units and placed build items; inspect the build before assuming
+      that every stored object is printed.
+    </p>
+    <p>
+      <a [routerLink]="routeUrl.Tools">Choose an STL inspection tool</a> ·
+      <a [routerLink]="routeUrl.ThreeMfTools">Choose a 3MF build tool</a>
+    </p>
+  </section>
   <section class="tools" aria-labelledby="featured-title">
     <h2 id="featured-title">Featured tools</h2>
     <p>

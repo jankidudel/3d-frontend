@@ -2,33 +2,25 @@ import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import {
-  PageType,
-  PublicRoutePath,
-} from '../src/app/core/seo/public-routes.ts';
+import { retiredRoutes, retirementDocuments } from './retired-routes.mts';
 
 export function retiredToolDocuments(buildDirectory: string): string[] {
-  const keys: string[] = [];
-  for (const route of Object.values(PublicRoutePath)) {
-    if (route.pageType !== PageType.Tool || !route.path.startsWith('tools/')) {
-      continue;
-    }
-    const slug = route.path.slice('tools/'.length);
-    if (!/^[a-z0-9-]+$/.test(slug)) {
-      throw new Error(`Unsafe tool slug: ${slug}`);
-    }
-    if (!existsSync(resolve(buildDirectory, route.path, 'index.html'))) {
-      throw new Error(`Replacement tool document missing: ${route.path}`);
-    }
-    for (const key of [`${slug}/index.html`, `${slug}.html`]) {
-      if (existsSync(resolve(buildDirectory, key))) {
-        throw new Error(`Retired tool document remains in build: ${key}`);
-      }
-      keys.push(key);
+  const keys = retirementDocuments();
+  for (const policy of retiredRoutes) {
+    if (
+      !existsSync(
+        resolve(buildDirectory, '.' + policy.currentPath, 'index.html'),
+      )
+    ) {
+      throw new Error(
+        `Replacement tool document missing: ${policy.currentPath}`,
+      );
     }
   }
-  if (keys.length === 0) {
-    throw new Error('No migrated tools found; refusing cleanup');
+  for (const key of keys) {
+    if (existsSync(resolve(buildDirectory, key))) {
+      throw new Error(`Retired tool document remains in build: ${key}`);
+    }
   }
   return keys;
 }
@@ -45,8 +37,15 @@ export function retireToolDocuments(
   const keys = retiredToolDocuments(buildDirectory);
   // Check the uploaded replacements before deleting anything. This also fails
   // safely if the workflow selected the wrong bucket or an upload was partial.
-  for (const key of keys.filter((key) => key.endsWith('/index.html'))) {
-    run(['s3api', 'head-object', '--bucket', bucket, '--key', `tools/${key}`]);
+  for (const policy of retiredRoutes) {
+    run([
+      's3api',
+      'head-object',
+      '--bucket',
+      bucket,
+      '--key',
+      policy.currentPath.slice(1) + '/index.html',
+    ]);
   }
   console.log(`Removing ${keys.length} retired tool HTML keys from ${bucket}:`);
   console.log(keys.join('\n'));
@@ -62,9 +61,28 @@ export function retireToolDocuments(
   ]);
   // S3 quiet mode can return an empty response when every deletion succeeds.
   // Nonzero CLI exits still throw, and nonempty responses retain per-key errors.
-  const response = (output.trim() ? JSON.parse(output) : {}) as {
-    Errors?: unknown[];
-  };
+  let response: { Errors?: unknown[] } = {};
+  if (output.trim()) {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(output);
+    } catch {
+      throw new Error(
+        'Invalid retirement deletion response: truncated or non-JSON output',
+      );
+    }
+    if (
+      !parsed ||
+      typeof parsed !== 'object' ||
+      Array.isArray(parsed) ||
+      ('Errors' in parsed && !Array.isArray(parsed.Errors))
+    ) {
+      throw new Error(
+        'Invalid retirement deletion response: expected a JSON object with optional Errors array',
+      );
+    }
+    response = parsed;
+  }
   if (response.Errors?.length) {
     throw new Error(
       `Retired tool cleanup failed: ${JSON.stringify(response.Errors)}`,
@@ -84,7 +102,7 @@ export async function verifyRetiredTools(
       keys.slice(index, index + 4).map(async (key) => {
         const url = `https://www.inspectmesh.com/${key.replace('/index.html', '')}`;
         const response = await request(url, {
-          method: 'HEAD',
+          method: 'GET',
           redirect: 'manual',
           signal: AbortSignal.timeout(15000),
         });

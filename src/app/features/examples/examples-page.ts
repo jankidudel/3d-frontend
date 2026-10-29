@@ -76,11 +76,11 @@ import { publicExamples } from './example-registry';
                   }
                 </ul>
                 <p>
-                  @if (example.tools.length > 0) {
+                  @for (tool of example.tools; track tool) {
                     <a
-                      [routerLink]="example.tools[0]"
+                      [routerLink]="tool"
                       [queryParams]="{ example: example.id }"
-                      >Try in {{ toolName(example.tools[0]) }}</a
+                      >Try in {{ toolName(tool) }}</a
                     >
                     ·
                   }
@@ -177,7 +177,7 @@ export class ExamplesPage {
         'Model and G-code Evidence Controls - Visual Diagnosis | InspectMesh',
       description:
         'Download original known-geometry controls for orientation, bridge and overhang comparison, internal support access, 3MF transforms and mesh diagnosis.',
-      path: '/examples',
+      path: PublicRouteUrl.Examples,
     });
   }
   inGroup(group: string) {

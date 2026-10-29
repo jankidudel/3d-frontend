@@ -52,6 +52,14 @@ describe('JobStatusComponent', () => {
     return fixture;
   }
 
+  it('does not present an empty validation report as a healthy result', () => {
+    const fixture = render({ ...completedJob, report: {} });
+    expect(fixture.nativeElement.textContent).toContain('Report unavailable');
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'No listed mesh blockers found',
+    );
+  });
+
   it('renders a valid report with rounded metrics and technical details collapsed', () => {
     const fixture = render();
     const text = fixture.nativeElement.textContent;

@@ -1,3 +1,4 @@
+import { retiredRoutes, retirementDocuments } from './retired-routes.mts';
 import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -19,6 +20,13 @@ async function build() {
       await mkdir(join(directory, route.path), { recursive: true });
       await writeFile(join(directory, route.path, 'index.html'), 'replacement');
     }
+  }
+  for (const policy of retiredRoutes) {
+    await mkdir(join(directory, policy.currentPath), { recursive: true });
+    await writeFile(
+      join(directory, policy.currentPath, 'index.html'),
+      'replacement',
+    );
   }
   return directory;
 }
@@ -44,19 +52,25 @@ it('deletes only retired tool HTML after checking all uploaded replacements', as
   const keys = payload.Objects.map(({ Key }) => Key);
   expect(keys).toContain('3d-print-cost-calculator/index.html');
   expect(keys).toContain('3d-print-cost-calculator.html');
-  expect(keys).toHaveLength(98);
+  expect(keys).toHaveLength(retirementDocuments().length);
+  expect(keys).toContain('how-to-repair-an-stl-file/index.html');
+  expect(keys).toContain('3d-printing-materials/index.html');
   expect(keys.every((key) => /^[a-z0-9-]+(?:\/index)?\.html$/.test(key))).toBe(
     true,
   );
   expect(keys).not.toContain('index.html');
   expect(keys).not.toContain('materials/index.html');
-  expect(calls.slice(0, -1)).toHaveLength(49);
+  expect(calls.slice(0, -1)).toHaveLength(retiredRoutes.length);
   expect(
     calls
       .slice(0, -1)
       .every(
         (args) =>
-          args[1] === 'head-object' && args.at(-1)?.startsWith('tools/'),
+          args[1] === 'head-object' &&
+          retiredRoutes.some(
+            (policy) =>
+              args.at(-1) === policy.currentPath.slice(1) + '/index.html',
+          ),
       ),
   ).toBe(true);
 });
@@ -105,7 +119,7 @@ it('rejects live duplicate pages and redirects, accepting only 404/410', async (
     expect(options?.redirect).toBe('manual');
     return new Response(null, { status: 404 });
   });
-  expect(urls).toHaveLength(49);
+  expect(urls).toHaveLength(retiredRoutes.length);
   expect(urls).toContain(
     'https://www.inspectmesh.com/3d-print-cost-calculator',
   );
@@ -128,5 +142,63 @@ it('accepts empty quiet-mode success without hiding malformed responses or CLI f
   ).toThrow('AWS CLI failed');
   expect(() =>
     retireToolDocuments(directory, 'test-bucket', () => '{'),
-  ).toThrow(SyntaxError);
+  ).toThrow('Invalid retirement deletion response');
+});
+
+it('rejects empty policy inventories, current outputs and unregistered replacements before cleanup', () => {
+  expect(() => retirementDocuments([])).toThrow('Empty retirement inventory');
+  expect(() =>
+    retirementDocuments([
+      {
+        path: '/tools/stl-viewer',
+        currentPath: '/tools/stl-viewer',
+        expectedStatus: 404,
+        reason: 'invalid',
+      },
+    ]),
+  ).toThrow('Unsafe retirement policy');
+  expect(() =>
+    retirementDocuments([
+      {
+        path: '/old-tool',
+        currentPath: '/tools/unknown',
+        expectedStatus: 404,
+        reason: 'invalid',
+      },
+    ]),
+  ).toThrow('Unsafe retirement policy');
+});
+it('rejects malformed nonempty cleanup responses without confusing them with valid quiet success', async () => {
+  const directory = await build();
+  for (const output of [
+    '{',
+    '<html>failed</html>',
+    'null',
+    '[]',
+    '{"Errors":"invalid"}',
+  ]) {
+    expect(() =>
+      retireToolDocuments(directory, 'test-bucket', () => output),
+    ).toThrow('Invalid retirement deletion response');
+  }
+});
+
+it('reports the exact obsolete clean or .html object still served publicly', async () => {
+  const { auditRetiredDelivery } = await import('./retired-routes.mts');
+  const good = await auditRetiredDelivery(
+    async () => new Response(null, { status: 404 }),
+  );
+  expect(good.complete).toBe(true);
+  expect(good.failures).toEqual([]);
+  const stale = await auditRetiredDelivery(
+    async (url) =>
+      new Response(null, {
+        status: String(url).endsWith('/how-to-repair-an-stl-file.html')
+          ? 200
+          : 404,
+      }),
+  );
+  expect(stale.failures).toEqual([
+    'Retired URL /how-to-repair-an-stl-file.html (object how-to-repair-an-stl-file.html) returned 200; expected 404/410',
+  ]);
 });

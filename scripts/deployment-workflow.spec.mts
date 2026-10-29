@@ -126,3 +126,40 @@ describe('frontend deployment workflow', () => {
     ]);
   });
 });
+
+it('propagates upload and required retirement failures to the deployment exit', async () => {
+  const directory = await mkdtemp(
+    join(tmpdir(), 'inspectmesh-deploy-failure-'),
+  );
+  const build = join(directory, 'build');
+  const bin = join(directory, 'bin');
+  await mkdir(build);
+  await mkdir(bin);
+  await writeFile(join(build, 'index.html'), 'document');
+  await writeFile(join(build, 'main-12345678.js'), 'asset');
+  await writeFile(join(build, 'manifest.webmanifest'), 'mutable');
+  for (const failure of ['upload', 'retirement']) {
+    await writeFile(
+      join(bin, 'aws'),
+      '#!/bin/sh\nexit ' + (failure === 'upload' ? '23' : '0') + '\n',
+    );
+    await writeFile(
+      join(bin, 'node'),
+      '#!/bin/sh\ncase "$*" in *retire-tool-documents*) exit ' +
+        (failure === 'retirement' ? '29' : '0') +
+        ';; esac\nexit 0\n',
+    );
+    await chmod(join(bin, 'aws'), 0o755);
+    await chmod(join(bin, 'node'), 0o755);
+    await expect(
+      runFile(
+        'bash',
+        ['.github/scripts/deploy-frontend.sh', build, 'test-bucket', 'unused'],
+        {
+          cwd: projectRoot,
+          env: { ...process.env, PATH: `${bin}:${process.env['PATH']}` },
+        },
+      ),
+    ).rejects.toMatchObject({ code: failure === 'upload' ? 23 : 29 });
+  }
+});

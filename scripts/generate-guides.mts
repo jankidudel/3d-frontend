@@ -11,7 +11,10 @@ import {
   guideGroups,
   guideRegistry,
 } from '../src/content/guides/guides.registry.ts';
-import { createGuideClusterIndex } from '../src/content/guides/guide-clusters.mts';
+import {
+  discoveryTasks,
+  createGuideClusterIndex,
+} from '../src/content/guides/guide-clusters.mts';
 import {
   guideRoutePath,
   PublicRoutePathValue,
@@ -209,6 +212,7 @@ const generated = [
   'export interface GuideIndexGroup { readonly id: string; readonly label: string; readonly description?: string; readonly pillar?: string; readonly guides: readonly GuideCard[]; }',
   `export const guides: readonly Guide[] = ${JSON.stringify(catalogue.guides, null, 2)};`,
   'export const guideBySlug: Readonly<Record<string, Guide>> = Object.fromEntries(guides.map((guide) => [guide.slug, guide]));',
+  `export const guideDiscoveryTasks = ${JSON.stringify(discoveryTasks, null, 2)} as const;`,
   `export const guideIndexGroups: readonly GuideIndexGroup[] = ${JSON.stringify(createGuideClusterIndex(catalogue.guides.map((guide) => ({ title: guide.title, description: guide.description, slug: guide.slug, heading: guide.heading }))), null, 2)};`,
   `export const relatedGuidesBySlug: Readonly<Record<string, readonly GuideCard[]>> = ${JSON.stringify(catalogue.relatedGuidesBySlug, null, 2)};`,
   '',

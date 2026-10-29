@@ -53,6 +53,28 @@
   </section>
   <section class="guide-search" aria-labelledby="guide-search-title">
     <h2 id="guide-search-title">Find a guide</h2>
+    @if (!hasSearchQuery()) {
+      <nav aria-label="Guide decisions and category contents">
+        <ul>
+          @for (task of discoveryTasks; track task.id) {
+            <li>
+              <a [href]="routeUrl.Guides + '#guide-group-' + task.anchor">{{
+                task.label
+              }}</a
+              >: {{ task.description }} Start with
+              <a [href]="guidePath(task.primaryGuide)">{{
+                pillarHeading(task.primaryGuide)
+              }}</a
+              >; also
+              <a [href]="guidePath(task.supportingGuide)">{{
+                pillarHeading(task.supportingGuide)
+              }}</a
+              >.
+            </li>
+          }
+        </ul>
+      </nav>
+    }
     <label class="field" for="guide-search-input">
       <span>Search guides by topic or tool</span>
       <input

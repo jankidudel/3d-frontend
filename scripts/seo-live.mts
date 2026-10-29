@@ -1,3 +1,4 @@
+import { auditRetiredDelivery } from './retired-routes.mts';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -79,6 +80,29 @@ export async function auditLive() {
         'complete correct canonical production delivery',
       ),
     );
+  }
+  const retirement = result.responses.length
+    ? await auditRetiredDelivery()
+    : {
+        rows: [],
+        complete: false,
+        failures: [
+          'Retired URLs NOT_OBSERVED: canonical origin preflight unavailable.',
+        ],
+      };
+  for (const row of retirement.rows) {
+    if (row.failure) {
+      findings.push(
+        finding(
+          'R04',
+          row.status === null ? Severity.Unknown : Severity.Error,
+          row.path,
+          AuditStage.Live,
+          row.failure,
+          'explicitly retired URL returning 404/410',
+        ),
+      );
+    }
   }
   const queries = [
     ...new Set(
@@ -327,6 +351,7 @@ export async function auditLive() {
   }
   const complete =
     result.complete &&
+    retirement.complete &&
     completed === tasks.length &&
     queries.length <= 120 &&
     assets.length <= 300;
@@ -350,6 +375,7 @@ export async function auditLive() {
     findings,
     rows: result.responses,
     delivery: result,
+    retirement,
     artifactSha256: artifactHash(await artifactFiles()),
     sourceSha256: (await sourceIdentity()).sourceSha256,
   };

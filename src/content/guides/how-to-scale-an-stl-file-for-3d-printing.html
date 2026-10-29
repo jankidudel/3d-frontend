@@ -22,6 +22,11 @@ heading: How to Scale an STL File for 3D Printing
   <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}">the unit ambiguity</a>
   before changing coordinates.
 </p>
+<p>
+  If the source coordinates already match the known dimension, correct a wrong
+  receiving unit assumption first. If the intended physical size really changes,
+  resize a copy; scaling does not repair topology.
+</p>
 <h2>Choose a target and uniform mode</h2>
 <p>
   For the owned asymmetric control, X/Y/Z are 40 × 20 × 10 mm under its designed

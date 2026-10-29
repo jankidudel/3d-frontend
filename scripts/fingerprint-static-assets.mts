@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { access, readdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
+import { createModulePreloadCompleter } from './module-preloads.mts';
 
 const outputDirectory = resolve(
   import.meta.dirname,
@@ -10,6 +11,9 @@ const outputDirectory = resolve(
   'browser',
 );
 const entryAssetNames = ['main.js', 'styles.css'] as const;
+const completeModulePreloads = createModulePreloadCompleter((filename) =>
+  readFile(join(outputDirectory, filename), 'utf8'),
+);
 
 const replacements = new Map<string, string>();
 for (const entryAssetName of entryAssetNames) {
@@ -31,13 +35,13 @@ for (const entryAssetName of entryAssetNames) {
 }
 
 if (replacements.size > 0) {
-  await rewriteHtmlReferences(outputDirectory);
   console.log(
     `Fingerprinted static entry assets: ${[...replacements.values()].join(', ')}.`,
   );
 } else {
   console.log('Static entry assets are already fingerprinted.');
 }
+await rewriteHtmlReferences(outputDirectory);
 
 async function fileExists(path: string): Promise<boolean> {
   try {
@@ -66,7 +70,10 @@ async function rewriteHtmlReferences(directory: string): Promise<void> {
           result.replaceAll(sourceName, fingerprintedName),
         html,
       );
-      await writeFile(path, fingerprintedHtml);
+      const optimizedHtml = await completeModulePreloads(fingerprintedHtml);
+      if (optimizedHtml !== html) {
+        await writeFile(path, optimizedHtml);
+      }
     }),
   );
 }

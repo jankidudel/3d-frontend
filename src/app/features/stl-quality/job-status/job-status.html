@@ -23,6 +23,12 @@
         </button>
       </div>
     </div>
+  } @else if (!validationAvailable()) {
+    <h2 id="job-title">Report unavailable</h2>
+    <p>
+      No explicit completed validation outcome was returned. Missing analysis is
+      not zero findings; review the source file and supported format.
+    </p>
   } @else if (report(); as qualityReport) {
     <div
       class="status-panel"

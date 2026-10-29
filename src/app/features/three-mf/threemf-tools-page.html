@@ -88,6 +88,32 @@
       review its printer and material settings.
     </p>
   </section>
+  <section>
+    <h2>Follow the package, build and derivative</h2>
+    <ol>
+      <li>
+        <strong>Stored package:</strong> resources, units and supported metadata
+        can exist without being separate printed items.
+        <a [href]="routeUrl.MissingThreeMfObjectsGuide"
+          >Why is a stored object missing from the build?</a
+        >
+      </li>
+      <li>
+        <strong>Placed build:</strong> selected build items and their transforms
+        determine the geometry inspected by supported tools.
+        <a [href]="guideRouteUrl.RouteHowToCheck3mfTriangleCount"
+          >Why did the triangle count change?</a
+        >
+      </li>
+      <li>
+        <strong>Exported mesh:</strong> an STL derivative carries triangle
+        geometry, not the package's complete settings or project semantics.
+        <a [href]="routeUrl.ThreeMfToStlGuide"
+          >What changes when I export to STL?</a
+        >
+      </li>
+    </ol>
+  </section>
   <app-format-tools-grid heading="3MF tools" [tools]="tools" />
   <p>
     Choosing how to place a build before slicing?

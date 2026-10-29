@@ -2,7 +2,10 @@ import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { SeoService } from '../../core/seo/seo.service';
 import { guideRoutePath, PublicRouteUrl } from '../../core/seo/public-routes';
-import { guideIndexGroups } from './generated/guides.generated';
+import {
+  guideDiscoveryTasks,
+  guideIndexGroups,
+} from './generated/guides.generated';
 import { filterGuideGroups } from './guide-search';
 
 @Component({
@@ -11,6 +14,7 @@ import { filterGuideGroups } from './guide-search';
   styleUrl: './guides-page.scss',
 })
 export class GuidesPage {
+  readonly discoveryTasks = guideDiscoveryTasks;
   readonly guideRouteUrl = GuideRouteUrl;
   protected readonly guidePath = guideRoutePath;
   protected readonly query = signal('');

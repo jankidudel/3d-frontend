@@ -117,10 +117,15 @@
     </p>
     <p>
       The missing-face control shows the boundary around a known absent square.
-      In an unknown model, a reported boundary still needs a design decision. Do
-      not close a designed passage merely to reduce the edge count. Use
+      In an unknown model, a reported boundary still needs a design decision.
+      Closed material walls can surround an intended passage without exposed
+      mesh edges. Do not cap that passage merely because it looks open. Use
       <a [routerLink]="routeUrl.WatertightStlGuide">the watertight guide</a> to
-      interpret the opening and
+      interpret the opening.
+      <a [routerLink]="routeUrl.QualityCheck"
+        >Check other supported mesh issues</a
+      >
+      when closure is not the only question, or use
       <a [routerLink]="routeUrl.ManifoldChecker">the manifold checker</a> for
       edge-sharing questions.
     </p>

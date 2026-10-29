@@ -9,6 +9,7 @@ describe('breadcrumbsForPath', () => {
     const breadcrumbs = breadcrumbsForPath('/tools/stl-repair');
 
     expect(breadcrumbs).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'All 3D tools', href: '/tools' },
       { label: 'STL tools', href: '/tools/stl-tools' },
       { label: 'STL Repair Tool', href: '/tools/stl-repair' },
@@ -19,6 +20,7 @@ describe('breadcrumbsForPath', () => {
 
   it('builds the 3MF manifold checker trail', () => {
     expect(breadcrumbsForPath('/tools/3mf-manifold-checker')).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'All 3D tools', href: '/tools' },
       { label: '3MF tools', href: '/tools/3mf-tools' },
       { label: '3MF Manifold Checker', href: '/tools/3mf-manifold-checker' },
@@ -29,6 +31,7 @@ describe('breadcrumbsForPath', () => {
     const breadcrumbs = breadcrumbsForPath('/tools/3mf-print-preflight');
 
     expect(breadcrumbs).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'All 3D tools', href: '/tools' },
       { label: '3MF tools', href: '/tools/3mf-tools' },
       {
@@ -39,6 +42,12 @@ describe('breadcrumbsForPath', () => {
     expect(breadcrumbStructuredData(breadcrumbs)).toMatchObject({
       '@type': 'BreadcrumbList',
       itemListElement: [
+        {
+          '@type': 'ListItem',
+          name: 'Home',
+          item: 'https://www.inspectmesh.com/',
+          position: 1,
+        },
         expect.objectContaining({
           item: 'https://www.inspectmesh.com/tools',
         }),
@@ -52,8 +61,15 @@ describe('breadcrumbsForPath', () => {
     });
   });
 
+  it('keeps STL revision comparison under the real format hub', () => {
+    expect(
+      breadcrumbsForPath('/tools/stl-compare').map((item) => item.href),
+    ).toEqual(['/', '/tools', '/tools/stl-tools', '/tools/stl-compare']);
+  });
+
   it('builds the calculator trail directly from all 3D tools', () => {
     expect(breadcrumbsForPath('/tools/3d-print-cost-calculator')).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'All 3D tools', href: '/tools' },
       {
         label: '3D Print Cost Calculator',
@@ -64,6 +80,7 @@ describe('breadcrumbsForPath', () => {
 
   it('builds the tolerance calculator trail directly from all 3D tools', () => {
     expect(breadcrumbsForPath('/tools/3d-print-tolerance-calculator')).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'All 3D tools', href: '/tools' },
       {
         label: '3D Print Tolerance & Clearance Calculator',
@@ -74,6 +91,7 @@ describe('breadcrumbsForPath', () => {
 
   it('builds the orientation planner trail directly from all 3D tools', () => {
     expect(breadcrumbsForPath('/tools/3d-print-orientation-planner')).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'All 3D tools', href: '/tools' },
       {
         label: '3D Print Orientation Planner',
@@ -84,6 +102,7 @@ describe('breadcrumbsForPath', () => {
 
   it('builds the STL hub trail without linking its current item', () => {
     expect(breadcrumbsForPath('/tools/stl-tools')).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'All 3D tools', href: '/tools' },
       { label: 'STL tools', href: '/tools/stl-tools' },
     ]);
@@ -91,6 +110,7 @@ describe('breadcrumbsForPath', () => {
 
   it('uses the guide heading as the guide breadcrumb label', () => {
     expect(breadcrumbsForPath('/guides/how-to-repair-an-stl-file')).toEqual([
+      { label: 'Home', href: '/' },
       { label: 'Guides', href: '/guides' },
       {
         label: 'How to Repair an STL File for 3D Printing',
@@ -123,19 +143,25 @@ describe('breadcrumbsForPath', () => {
       itemListElement: [
         {
           '@type': 'ListItem',
+          name: 'Home',
+          item: 'https://www.inspectmesh.com/',
           position: 1,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
           name: 'All 3D tools',
           item: `${BREADCRUMB_PRODUCTION_ORIGIN}/tools`,
         },
         {
           '@type': 'ListItem',
-          position: 2,
+          position: 3,
           name: 'STL tools',
           item: `${BREADCRUMB_PRODUCTION_ORIGIN}/tools/stl-tools`,
         },
         {
           '@type': 'ListItem',
-          position: 3,
+          position: 4,
           name: 'STL Repair Tool',
           item: `${BREADCRUMB_PRODUCTION_ORIGIN}/tools/stl-repair`,
         },
@@ -152,12 +178,18 @@ describe('breadcrumbsForPath', () => {
       '@type': 'BreadcrumbList',
       itemListElement: [
         {
+          '@type': 'ListItem',
+          name: 'Home',
+          item: 'https://www.inspectmesh.com/',
           position: 1,
+        },
+        {
+          position: 2,
           name: 'All 3D tools',
           item: 'https://www.inspectmesh.com/tools',
         },
         {
-          position: 2,
+          position: 3,
           name: '3D Print Cost Calculator',
           item: 'https://www.inspectmesh.com/tools/3d-print-cost-calculator',
         },

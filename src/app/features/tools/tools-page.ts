@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
-import { HOME_TOOL_GROUPS } from '../home/home-tools';
+import { toolDirectoryGroups } from './tool-directory';
 
 @Component({
   selector: 'app-tools-page',
@@ -13,7 +13,7 @@ import { HOME_TOOL_GROUPS } from '../home/home-tools';
 })
 export class ToolsPage {
   readonly routes = PublicRouteUrl;
-  readonly toolGroups = HOME_TOOL_GROUPS;
+  readonly toolGroups = toolDirectoryGroups;
   private readonly seo = inject(SeoService);
 
   constructor() {

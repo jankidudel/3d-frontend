@@ -55,6 +55,10 @@ export class ThreeMfQualityPage {
   readonly generatingPdf = signal(false);
   readonly reportDownloadError = signal('');
   readonly report = computed(() => this.asRecord(this.job()?.report));
+  readonly validationAvailable = computed(() => {
+    const validation = this.asRecord(this.report()?.['validation']);
+    return typeof validation?.['isValid'] === 'boolean';
+  });
   readonly processing = computed(() => {
     const status = this.job()?.status;
     return (

@@ -410,7 +410,7 @@
                       {{ limitingAxes(nearest.limitingAxes) }}.
                     </p>
                     <p>
-                      <a href="#scale-title"
+                      <a [href]="routeUrl.DimensionsChecker + '#scale-title'"
                         >Use the proportional scaling controls above</a
                       >
                       to calculate a smaller size; this does not apply a scale
@@ -696,11 +696,20 @@
         <tbody>
           <tr>
             <td>The known reference dimension agrees</td>
-            <td>Continue with the intended orientation and usable-bed check</td>
+            <td>
+              <a [href]="routeUrl.PrinterFitChecker"
+                >Check the intended orientation and nominal usable envelope</a
+              >, then verify the sliced placement.
+            </td>
           </tr>
           <tr>
             <td>All dimensions differ by one plausible unit factor</td>
-            <td>Confirm the source unit before choosing a correction</td>
+            <td>
+              <a [href]="routeUrl.StlUnitsGuide"
+                >Establish a known dimension and source unit</a
+              >
+              before choosing a correction.
+            </td>
           </tr>
           <tr>
             <td>One functional feature differs while overall size agrees</td>

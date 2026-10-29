@@ -17,9 +17,12 @@ heading: How to Check 3MF Triangle Count
 <p>
   A 3MF can reuse one object resource in several build items. Per-object
   triangle count describes the resource; resolved-build count describes the
-  geometry placed for the job after item selection and transforms. High count is
-  a workflow cost, not a print-quality score. Simplify only a copy, then compare
-  silhouette, critical dimensions and the final build layout before slicing.
+  geometry placed for the job after item selection and transforms. Transforms
+  usually move or scale the referenced triangles without changing their number;
+  reuse and build membership determine which triangles contribute. Equal counts
+  cannot prove equal surfaces. High count is a workflow cost, not a
+  print-quality score. Simplify only a copy, then compare silhouette, critical
+  dimensions and the final build layout before slicing.
 </p>
 <h2>Investigate the archive, not just its displayed count</h2>
 <p>
@@ -101,7 +104,10 @@ heading: How to Check 3MF Triangle Count
   </tbody>
 </table>
 <p>
-  If the question is mesh integrity rather than the count,
+  Use the <a href="{{ GuideSlug.Route3mfViewer }}">placed-item viewer</a> to
+  inspect the intended build;
+  <a href="{{ GuideSlug.Route3mfTools }}">choose another 3MF build check</a> for
+  a different question. If the question is mesh integrity rather than the count,
   <a href="{{ GuideSlug.Route3mfQualityChecker }}"
     >run 3MF Quality Checker separately</a
   >

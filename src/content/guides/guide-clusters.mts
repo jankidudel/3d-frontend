@@ -1,3 +1,7 @@
+import {
+  PublicRouteUrl,
+  guideRoutePath,
+} from '../../app/core/seo/public-routes.ts';
 import type { GuideCard } from '../../app/features/guides/guide-catalogue.ts';
 import { GuideContentSlug } from './guides.registry.ts';
 
@@ -275,3 +279,75 @@ export function createGuideClusterIndex(
     guides: cluster.slugs.map((slug) => guideBySlug.get(slug)!),
   }));
 }
+
+/** Featured decision relationships. Existing category sections retain every guide. */
+export const discoveryTasks = [
+  {
+    id: 'stl-diagnosis',
+    label: 'Interpret STL findings',
+    anchor: 'readiness',
+    description: 'Decide which finding needs inspection before any repair.',
+    primaryGuide: 'how-to-check-stl-for-errors',
+    supportingGuide: 'how-to-tell-if-an-stl-is-watertight',
+    tools: [PublicRouteUrl.QualityCheck, PublicRouteUrl.WatertightChecker],
+  },
+  {
+    id: 'stl-edits',
+    label: 'Choose an STL edit',
+    anchor: 'repair',
+    description:
+      'Separate conservative cleanup from deliberate resizing, then verify the saved copy.',
+    primaryGuide: 'how-to-repair-an-stl-file',
+    supportingGuide: 'how-to-scale-an-stl-file-for-3d-printing',
+    tools: [PublicRouteUrl.StlRepair, PublicRouteUrl.StlScaleTool],
+  },
+  {
+    id: '3mf-examination',
+    label: 'Trace the placed 3MF build',
+    anchor: '3mf',
+    description:
+      'Identify intended placements before interpreting missing parts or counts.',
+    primaryGuide: '3mf-missing-objects-after-import',
+    supportingGuide: 'how-to-check-3mf-triangle-count',
+    tools: [PublicRouteUrl.ThreeMfViewer, PublicRouteUrl.ThreeMfQualityCheck],
+  },
+  {
+    id: '3mf-export',
+    label: 'Verify a 3MF derivative',
+    anchor: '3mf',
+    description:
+      'Choose delivery scope and compare size and position in the receiving application.',
+    primaryGuide: '3mf-to-stl-wrong-size-or-position',
+    supportingGuide: '3mf-to-stl-combined-or-separate-parts',
+    tools: [
+      PublicRouteUrl.ThreeMfToStlConverter,
+      PublicRouteUrl.ThreeMfDimensionsChecker,
+    ],
+  },
+  {
+    id: 'units-fit',
+    label: 'Establish units and fit',
+    anchor: 'size',
+    description:
+      'Resolve physical size, compare candidate orientation, then check actual slicer placement.',
+    primaryGuide: 'why-stl-files-have-no-units',
+    supportingGuide: 'how-to-check-if-a-3d-model-fits-your-printer',
+    tools: [PublicRouteUrl.DimensionsChecker, PublicRouteUrl.PrinterFitChecker],
+  },
+  {
+    id: 'production-quote',
+    label: 'Prepare costs and a quotation',
+    anchor: 'cost',
+    description:
+      'Keep production inputs, selling-price assumptions and the customer document separate.',
+    primaryGuide: 'how-to-calculate-3d-printing-cost',
+    supportingGuide: '3d-printing-quote-checklist',
+    tools: [PublicRouteUrl.PrintCostCalculator, PublicRouteUrl.QuoteGenerator],
+  },
+] as const;
+
+export const priorityDiscoveryPaths = discoveryTasks.flatMap((task) => [
+  ...task.tools,
+  guideRoutePath(task.primaryGuide),
+  guideRoutePath(task.supportingGuide),
+]);

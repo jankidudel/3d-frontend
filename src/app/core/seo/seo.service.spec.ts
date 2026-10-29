@@ -177,7 +177,7 @@ describe('SeoService', () => {
       graph[2].itemListElement.map(
         (item: { position: number }) => item.position,
       ),
-    ).toEqual([1, 2]);
+    ).toEqual([1, 2, 3]);
   });
 
   it('marks an error page as noindex and removes an existing canonical URL', () => {

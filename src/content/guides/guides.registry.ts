@@ -46,7 +46,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 16,
     enabled: true,
     publishDate: '2026-10-24',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-29',
     checkEditorialTargets: true,
   },
   {
@@ -87,6 +87,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 311,
     enabled: true,
     publishDate: '2026-10-11',
+    updatedDate: '2026-10-29',
     checkEditorialTargets: true,
   },
   {
@@ -95,6 +96,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 312,
     enabled: true,
     publishDate: '2026-10-11',
+    updatedDate: '2026-10-29',
     checkEditorialTargets: true,
   },
 
@@ -268,7 +270,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 200,
     enabled: true,
     publishDate: '2026-10-07',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-10-29',
     checkEditorialTargets: true,
   },
   {
@@ -481,7 +483,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-29',
     checkEditorialTargets: false,
   },
   {
@@ -526,7 +528,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-18',
+    updatedDate: '2026-10-29',
   },
   {
     slug: 'how-to-check-stl-for-errors',
@@ -535,7 +537,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-25',
+    updatedDate: '2026-10-29',
   },
   {
     slug: 'how-to-make-an-stl-file-printable',
@@ -562,7 +564,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-14',
+    updatedDate: '2026-10-29',
   },
   {
     slug: 'stl-triangle-count-explained',
@@ -580,14 +582,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-29',
   },
   {
     slug: 'how-to-scale-an-stl-file-for-3d-printing',
     group: GuideGroupId.Stl,
     order: 60,
     enabled: true,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-29',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -624,7 +626,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-14',
+    updatedDate: '2026-10-29',
     checkEditorialTargets: false,
   },
   {
@@ -899,7 +901,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 120,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-25',
+    updatedDate: '2026-10-29',
     checkEditorialTargets: false,
   },
   {

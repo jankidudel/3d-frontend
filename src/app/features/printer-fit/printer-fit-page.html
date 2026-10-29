@@ -134,6 +134,16 @@
     </section>
   }
   <section class="content">
+    <h2>Establish physical size first</h2>
+    <p>
+      For STL,
+      <a [routerLink]="routeUrl.DimensionsChecker"
+        >confirm a known dimension under the intended unit assumption</a
+      >. For 3MF,
+      <a [routerLink]="routeUrl.ThreeMfDimensionsChecker"
+        >check declared units and the placed-build envelope</a
+      >. An arrangement's total bounds need not be the size of one part.
+    </p>
     <h2>How fit is calculated</h2>
     <p>
       The checker compares resolved millimetre dimensions with the selected

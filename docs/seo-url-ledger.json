@@ -30881,5 +30881,386 @@
       "receiverAppearance": "Untested; Blender failed before import.",
       "deployedVerification": null
     }
+  },
+  "discoveryMeasurementCohort": {
+    "preparedOn": "2026-10-29",
+    "deploymentDate": null,
+    "deployedArtifactIdentity": null,
+    "reviewDaysAfterDeployment": [7, 14, 28],
+    "scope": "Six guide/action pairs. Local preparation does not establish production delivery or Google indexing.",
+    "pages": [
+      {
+        "currentPath": "/guides/how-to-check-stl-for-errors",
+        "url": "https://www.inspectmesh.com/guides/how-to-check-stl-for-errors",
+        "previousPaths": ["/how-to-check-stl-for-errors"],
+        "intendedRole": "Interpret the interpret stl findings decision",
+        "clusterId": "stl-diagnosis",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/tools/stl-quality-checker",
+        "url": "https://www.inspectmesh.com/tools/stl-quality-checker",
+        "previousPaths": ["/stl-quality-checker"],
+        "intendedRole": "Execute the supported interpret stl findings action",
+        "clusterId": "stl-diagnosis",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/guides/how-to-repair-an-stl-file",
+        "url": "https://www.inspectmesh.com/guides/how-to-repair-an-stl-file",
+        "previousPaths": ["/how-to-repair-an-stl-file"],
+        "intendedRole": "Interpret the choose an stl edit decision",
+        "clusterId": "stl-edits",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/tools/stl-repair",
+        "url": "https://www.inspectmesh.com/tools/stl-repair",
+        "previousPaths": ["/stl-repair"],
+        "intendedRole": "Execute the supported choose an stl edit action",
+        "clusterId": "stl-edits",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/guides/3mf-missing-objects-after-import",
+        "url": "https://www.inspectmesh.com/guides/3mf-missing-objects-after-import",
+        "previousPaths": ["/3mf-missing-objects-after-import"],
+        "intendedRole": "Interpret the trace the placed 3mf build decision",
+        "clusterId": "3mf-examination",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/tools/3mf-viewer",
+        "url": "https://www.inspectmesh.com/tools/3mf-viewer",
+        "previousPaths": ["/3mf-viewer"],
+        "intendedRole": "Execute the supported trace the placed 3mf build action",
+        "clusterId": "3mf-examination",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/guides/3mf-to-stl-wrong-size-or-position",
+        "url": "https://www.inspectmesh.com/guides/3mf-to-stl-wrong-size-or-position",
+        "previousPaths": ["/3mf-to-stl-wrong-size-or-position"],
+        "intendedRole": "Interpret the verify a 3mf derivative decision",
+        "clusterId": "3mf-export",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/tools/3mf-to-stl-converter",
+        "url": "https://www.inspectmesh.com/tools/3mf-to-stl-converter",
+        "previousPaths": ["/3mf-to-stl-converter"],
+        "intendedRole": "Execute the supported verify a 3mf derivative action",
+        "clusterId": "3mf-export",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/guides/why-stl-files-have-no-units",
+        "url": "https://www.inspectmesh.com/guides/why-stl-files-have-no-units",
+        "previousPaths": ["/why-stl-files-have-no-units"],
+        "intendedRole": "Interpret the establish units and fit decision",
+        "clusterId": "units-fit",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/tools/stl-dimensions-checker",
+        "url": "https://www.inspectmesh.com/tools/stl-dimensions-checker",
+        "previousPaths": ["/stl-dimensions-checker"],
+        "intendedRole": "Execute the supported establish units and fit action",
+        "clusterId": "units-fit",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/guides/how-to-calculate-3d-printing-cost",
+        "url": "https://www.inspectmesh.com/guides/how-to-calculate-3d-printing-cost",
+        "previousPaths": ["/how-to-calculate-3d-printing-cost"],
+        "intendedRole": "Interpret the prepare costs and a quotation decision",
+        "clusterId": "production-quote",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      },
+      {
+        "currentPath": "/tools/3d-print-cost-calculator",
+        "url": "https://www.inspectmesh.com/tools/3d-print-cost-calculator",
+        "previousPaths": ["/3d-print-cost-calculator"],
+        "intendedRole": "Execute the supported prepare costs and a quotation action",
+        "clusterId": "production-quote",
+        "publicGet": {
+          "state": "NOT_OBSERVED",
+          "observedAt": null,
+          "status": null,
+          "canonical": null
+        },
+        "googlebotAccess": {
+          "state": "NOT_OBSERVED",
+          "date": null,
+          "status": null
+        },
+        "searchConsoleIndexedInspection": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "lastCrawl": null,
+          "selectedCanonical": null,
+          "indexingStatus": null
+        },
+        "searchConsoleLiveTest": {
+          "state": "NOT_OBSERVED",
+          "dataDate": null,
+          "fetchResult": null
+        },
+        "limitation": "Authenticated Google evidence and authorized post-release verification are unavailable during local implementation."
+      }
+    ]
   }
 }

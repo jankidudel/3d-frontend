@@ -390,8 +390,12 @@
     <h2>Review the saved revision</h2>
     <p>
       After local piece selection or explicit server cleanup, download the
-      changed copy and retain the original. Compare the exact files in original
-      coordinates using the same intended unit assumption.
+      changed copy and retain the original. Reopen the exact saved bytes in the
+      <a [href]="routeUrl.Viewer">STL viewer</a>, inspect every intended kept
+      component and
+      <a [href]="routeUrl.DimensionsChecker">verify dimensions</a>. Compare the
+      files in original coordinates under the same intended unit assumption when
+      design fidelity matters.
     </p>
     <p>
       <a [href]="guideRouteUrl.RouteHowToCompareStlRevisions"

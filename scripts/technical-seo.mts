@@ -1,3 +1,4 @@
+import { auditDiscovery } from './discovery-audit.mts';
 import { readFile, mkdir, writeFile, access } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve, relative } from 'node:path';
@@ -349,6 +350,24 @@ export async function auditHtml(pages?: GeneratedPage[]) {
       pages,
       entries.entries,
     );
+    const discovery = auditDiscovery(pages, entries.entries);
+    await mkdir(reportDirectory, { recursive: true });
+    await writeFile(
+      resolve(reportDirectory, 'discovery.json'),
+      JSON.stringify(discovery, null, 2) + '\n',
+    );
+    for (const error of discovery.failures) {
+      findings.push(
+        finding(
+          'L06',
+          Severity.Error,
+          '/',
+          AuditStage.Html,
+          error,
+          'crawlable contextual relationships, current routes and matching breadcrumbs',
+        ),
+      );
+    }
     for (const error of coverage.failures) {
       findings.push(
         finding(

@@ -380,7 +380,13 @@
       To resize the project, use
       <a [href]="guideRouteUrl.RouteHowToScaleA3mfFile"
         >the application workflow in the scaling guide</a
-      >. Changing a display unit here does not save a resized 3MF.
+      >. Changing a display unit here does not save a resized 3MF. Before making
+      a derivative,
+      <a [href]="guideRouteUrl.Route3mfToStlWrongSizeOrPosition"
+        >record a known dimension and placement</a
+      >, then choose scope in the
+      <a [routerLink]="routeUrl.ThreeMfToStlConverter">converter</a>.
+      Printer-fit bounds remain a geometric screen, not a print guarantee.
     </p>
 
     <h2>One resource, two placements, different bounds</h2>

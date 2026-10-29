@@ -53,6 +53,9 @@ export class JobStatusComponent {
   readonly validation = computed(() =>
     this.asRecord(this.report()?.['validation']),
   );
+  readonly validationAvailable = computed(
+    () => typeof this.validation()?.['isValid'] === 'boolean',
+  );
   readonly isValid = computed(() => this.validation()?.['isValid'] === true);
   readonly issues = computed(() =>
     normalizeValidationIssues(this.validation()?.['issues']),

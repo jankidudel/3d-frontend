@@ -271,6 +271,11 @@
       "id": "P07",
       "acceptance": "Required HTML stays available under a first visit and missing optional APIs; no indexing dependency on CAPTCHA, consent completion, upload or WebGL",
       "severity": "ERROR for core content blocked"
+    },
+    {
+      "id": "L06",
+      "acceptance": "Current initial-HTML routes stay reachable, all guides remain in their unfiltered index, format tools link through their hubs, priority pages retain real contextual inbound links, visible breadcrumbs match JSON-LD, and explicitly retired paths have no current artifacts or links. These are project quality targets, not Google ranking thresholds.",
+      "severity": "ERROR"
     }
   ]
 }

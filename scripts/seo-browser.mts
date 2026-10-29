@@ -1,3 +1,4 @@
+import { priorityDiscoveryPaths } from '../src/content/guides/guide-clusters.mts';
 import {
   browserSnapshotExpression,
   pageReadyExpression,
@@ -606,9 +607,38 @@ export async function auditRender() {
               ),
             );
           }
+          const captureReview = [
+            PublicRouteUrl.AllTools,
+            PublicRouteUrl.Guides,
+            PublicRouteUrl.QualityCheck,
+          ].some((path) => path === policy.path);
+          const capture = async (viewport: string): Promise<void> => {
+            const image = await send('Page.captureScreenshot', {
+              format: 'png',
+              captureBeyondViewport: false,
+            });
+            await mkdir(reportDirectory, { recursive: true });
+            await writeFile(
+              resolve(
+                reportDirectory,
+                policy.path.slice(1).replaceAll('/', '-') +
+                  '-' +
+                  viewport +
+                  '.png',
+              ),
+              Buffer.from(String(image['data']), 'base64'),
+            );
+          };
+          if (captureReview) {
+            await capture('mobile');
+          }
           const family = policy.pageType;
           // One desktop page per independently declared template family.
-          if (!rows.some((row) => row['desktopFamily'] === family)) {
+          if (
+            !rows.some((row) => row['desktopFamily'] === family) ||
+            priorityDiscoveryPaths.some((path) => path === policy.path) ||
+            captureReview
+          ) {
             phase = 'desktop-snapshot';
             await send('Emulation.setDeviceMetricsOverride', {
               width: 1280,
@@ -621,6 +651,9 @@ export async function auditRender() {
               unknown
             >;
             findings.push(...compareRendered(initial, desktop, policy.path));
+            if (captureReview) {
+              await capture('desktop');
+            }
             if (desktop['overflow']) {
               findings.push(
                 finding(

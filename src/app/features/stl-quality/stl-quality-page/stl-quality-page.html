@@ -138,11 +138,25 @@
       </thead>
       <tbody>
         <tr>
+          <td>Parse failure, failed or unavailable report</td>
+          <td>
+            No healthy zero-finding result exists.
+            <a [href]="guideRouteUrl.RouteStlFileWontSlice"
+              >Check file/format diagnosis</a
+            >
+            and the stated failure before retrying.
+          </td>
+        </tr>
+        <tr>
           <td>Boundary edge</td>
           <td>
             Use the
             <a [href]="routeUrl.WatertightChecker">boundary checker</a> and
-            inspect whether the opening is intended.
+            <a [href]="guideRouteUrl.RouteHowToTellIfAnStlIsWatertight"
+              >interpret the exposed boundary</a
+            >
+            before closing a surface. A designed passage can have closed
+            material walls.
           </td>
         </tr>
         <tr>

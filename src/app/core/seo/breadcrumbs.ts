@@ -1,3 +1,4 @@
+import { toolDirectoryGroups } from '../../features/tools/tool-directory';
 import { guideBreadcrumbLabelBySlug } from '../../features/guides/generated/guide-route-data.generated';
 import { HOME_TOOL_GROUPS } from '../../features/home/home-tools';
 import { PublicRouteSegment, PublicRouteUrl } from './public-routes';
@@ -34,7 +35,17 @@ const toolBreadcrumbs = new Map(
 );
 
 export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
+  const trail = pageBreadcrumbs(path);
+  return trail.length
+    ? [{ label: 'Home', href: PublicRouteUrl.Home }, ...trail]
+    : [];
+}
+
+function pageBreadcrumbs(path: string): readonly Breadcrumb[] {
   const normalizedPath = path.split(/[?#]/, 1)[0] || '/';
+  if (normalizedPath === PublicRouteUrl.Examples) {
+    return [{ label: 'Examples', href: PublicRouteUrl.Examples }];
+  }
   if (normalizedPath === PublicRouteUrl.Tools) {
     return [
       { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
@@ -51,6 +62,13 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
     return [{ label: 'Contact & feedback', href: PublicRouteUrl.Contact }];
   }
 
+  if (normalizedPath === PublicRouteUrl.StlCompare) {
+    return [
+      { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
+      { label: 'STL tools', href: PublicRouteUrl.Tools },
+      { label: 'STL Revision Comparison', href: normalizedPath },
+    ];
+  }
   const workflow = HOME_TOOL_GROUPS.find(
     (group) => group.id === 'collections-and-planning',
   )?.tools.find((tool) => tool.route === normalizedPath);
@@ -112,6 +130,16 @@ export function breadcrumbsForPath(path: string): readonly Breadcrumb[] {
         label: '3D Print Orientation Planner',
         href: PublicRouteUrl.OrientationPlanner,
       },
+    ];
+  }
+
+  const generalTool = toolDirectoryGroups
+    .flatMap((group) => group.tools)
+    .find((entry) => entry.route === normalizedPath);
+  if (generalTool) {
+    return [
+      { label: 'All 3D tools', href: PublicRouteUrl.AllTools },
+      { label: generalTool.title, href: normalizedPath },
     ];
   }
 

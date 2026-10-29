@@ -40,33 +40,58 @@
             </td>
           </tr>
           <tr>
-            <td>Is a surface open or an edge shared unexpectedly?</td>
+            <td>
+              Reported open boundary: inspect the surface first. Closed material
+              walls can surround an intended passage; do not automatically cap
+              every visible opening.
+            </td>
             <td>
               <a [href]="guideRouteUrl.RouteHowToCheckStlForErrors"
                 >Interpret STL mesh findings</a
-              >
+              >;
+              <a [href]="routeUrl.WatertightStlGuide">interpret closure</a> and
+              <a [href]="routeUrl.WatertightChecker">check the boundary</a>.
             </td>
           </tr>
           <tr>
-            <td>Is the model the intended size?</td>
+            <td>
+              Unexpected size: STL declares neither millimetres nor inches.
+              Establish a known physical dimension before changing coordinates.
+            </td>
             <td>
               <a [href]="routeUrl.DimensionsChecker"
                 >Check STL dimensions and units</a
-              >
+              >;
+              <a [href]="routeUrl.StlUnitsGuide">resolve the unit assumption</a>
+              before <a [href]="routeUrl.StlScaleTool">scaling</a>.
             </td>
           </tr>
           <tr>
-            <td>Do I need to remove a disconnected piece or redundant face?</td>
             <td>
-              <a [href]="routeUrl.StlRepair">Review STL repair options</a>
+              Separate pieces may be unwanted fragments or intended assembly
+              parts. Review what each represents before removal.
+            </td>
+            <td>
+              <a [href]="routeUrl.StlRepair">Review STL repair options</a>;
+              <a [href]="routeUrl.StlShellsGuide"
+                >interpret disconnected shells</a
+              >.
             </td>
           </tr>
           <tr>
-            <td>Is file size causing a handling problem?</td>
+            <td>
+              Large file: binary encoding can save bytes without intentionally
+              removing triangles. Triangle reduction changes the represented
+              surface and needs a separate comparison.
+            </td>
             <td>
               <a [href]="routeUrl.StlFileSizeReducer"
                 >Compare STL reduction options</a
               >
+              after
+              <a [href]="guideRouteUrl.RouteHowToReduceStlFileSize"
+                >choosing the reduction method</a
+              >.
             </td>
           </tr>
         </tbody>
@@ -79,6 +104,11 @@
       server analysis. Each tool identifies that boundary beside its controls.
     </p>
   </section>
+  <p>
+    After editing,
+    <a [href]="routeUrl.StlCompare">compare the saved STL with the original</a>
+    to review sampled surface changes.
+  </p>
   <app-format-tools-grid heading="STL tools" [tools]="tools" />
   <p>
     Choosing how to place a model before slicing?
@@ -196,4 +226,8 @@
       >.
     </p>
   </section>
+  <p>
+    For build metadata and geometry conversion,
+    <a [href]="routeUrl.ThreeMfTools">choose a 3MF build check</a>.
+  </p>
 </main>

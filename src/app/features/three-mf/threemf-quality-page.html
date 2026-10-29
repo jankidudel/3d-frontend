@@ -43,6 +43,12 @@
         <p class="error" role="alert">
           {{ jobFailureMessage(currentJob.failure) }}
         </p>
+      } @else if (!validationAvailable()) {
+        <h2 id="results-title">Mesh analysis unavailable</h2>
+        <p>
+          No explicit completed validation outcome was returned. This is not a
+          zero-issue report; review the source export and try a supported file.
+        </p>
       } @else if (report(); as value) {
         <h2 id="results-title">
           {{
@@ -198,7 +204,7 @@
               use <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair</a>. Save
               the repaired copy under a new filename and run this checker again.
             </p>
-          } @else if (issues(value).length === 0) {
+          } @else if (validationIsValid(value) && issues(value).length === 0) {
             <p class="no-issues">
               No checked mesh issues were found. Print success can still depend
               on scale, wall thickness, supports, material, printer, and slicer
@@ -218,6 +224,18 @@
       >.
     </p>
     <h2>What the report means</h2>
+    <p>
+      Only supported resolved build geometry is analysed. Unplaced resources,
+      unsupported required semantics and missing results cannot be treated as
+      zero issues.
+      <a [routerLink]="routeUrl.ThreeMfViewer"
+        >Review intended parts and placements locally</a
+      >, or
+      <a [routerLink]="guideRouteUrl.Route3mfMissingObjectsAfterImport"
+        >trace a missing item</a
+      >
+      before mesh cleanup.
+    </p>
     <div
       class="interpretation-table"
       role="region"

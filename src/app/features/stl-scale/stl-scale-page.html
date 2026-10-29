@@ -227,8 +227,14 @@
           Download scaled STL
         </button>
         <p>
-          Download and reopen this copy under the intended unit assumption.
-          Check the dimensions and important features before slicing.
+          Download and reopen this copy under the intended unit assumption. The
+          applied factor changes every coordinate proportionally, rather than
+          merely changing a display unit. Verify a named feature such as a hole
+          diameter as well as overall dimensions.
+          <a [href]="guideRouteUrl.RouteHowToScaleAnStlFileFor3dPrinting"
+            >Follow the saved-copy scaling workflow</a
+          >
+          before slicing.
         </p>
         <p class="safety-note">
           Scaling changes size only. It does not repair holes, non-manifold
@@ -258,9 +264,13 @@
     <p>
       Keep the original. Download the changed STL, reopen it in the
       <a [href]="routeUrl.DimensionsChecker">dimensions checker</a> and confirm
-      the intended physical size. Scaling also changes hole sizes, wall
-      thickness and mating clearances; it does not repair topology. ASCII/binary
-      files up to 25 MiB are processed locally.
+      the intended physical size. Follow the
+      <a [href]="guideRouteUrl.RouteHowToScaleAnStlFileFor3dPrinting"
+        >practical scaling workflow</a
+      >
+      for that saved-copy check. Scaling also changes hole sizes, wall thickness
+      and mating clearances; it does not repair topology. ASCII/binary files up
+      to 25 MiB are processed locally.
     </p>
     <p>
       <a [href]="exampleAsset.Closed20mmCubeStl" download
