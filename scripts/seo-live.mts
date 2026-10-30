@@ -22,156 +22,55 @@ import {
   sourceIdentity,
 } from './seo-artifact.mts';
 
-export async function wireSample(path: string, encoding: string) {
-  return new Promise<{
-    url: string;
-    requestedEncoding: string;
-    status: number | null;
-    encoding: string | null;
-    cacheControl: string | null;
-    wireBytes: number;
-  }>((resolve, reject) => {
-    const url = productionOrigin + path;
-    const request = get(
-      url,
-      { headers: { 'Accept-Encoding': encoding }, timeout: 8000 },
-      (response) => {
-        let bytes = 0;
-        response.on('data', (chunk: Buffer) => {
-          bytes += chunk.length;
-          if (bytes > 4 * 1024 * 1024) {
-            request.destroy(
-              new Error('Wire sample exceeds bounded byte limit'),
-            );
-          }
-        });
-        response.on('end', () =>
-          resolve({
-            url,
-            requestedEncoding: encoding,
-            status: response.statusCode ?? null,
-            encoding:
-              String(response.headers['content-encoding'] ?? '') || null,
-            cacheControl:
-              String(response.headers['cache-control'] ?? '') || null,
-            wireBytes: bytes,
-          }),
-        );
-      },
-    );
-    request.on('timeout', () =>
-      request.destroy(new Error('Wire request timed out')),
-    );
-    request.on('error', reject);
-  });
-}
-export async function auditLive() {
-  const started = performance.now();
+const resourceConcurrency = 3;
+// One overall request budget bounds discovery without truncating either kind.
+const maxResourceRequests = 1000;
+
+export async function auditLiveResources(
+  queries: readonly string[],
+  assets: readonly string[],
+  request: typeof fetch = fetch,
+) {
   const findings: Finding[] = [];
-  const result = await verifyProduction();
-  for (const error of result.failures) {
-    findings.push(
-      finding(
-        'R03',
-        result.complete ? Severity.Error : Severity.Unknown,
-        '/',
-        AuditStage.Live,
-        error,
-        'complete correct canonical production delivery',
-      ),
-    );
-  }
-  const retirement = result.responses.length
-    ? await auditRetiredDelivery()
-    : {
-        rows: [],
-        complete: false,
-        failures: [
-          'Retired URLs NOT_OBSERVED: canonical origin preflight unavailable.',
-        ],
-      };
-  for (const row of retirement.rows) {
-    if (row.failure) {
-      findings.push(
-        finding(
-          'R04',
-          row.status === null ? Severity.Unknown : Severity.Error,
-          row.path,
-          AuditStage.Live,
-          row.failure,
-          'explicitly retired URL returning 404/410',
-        ),
-      );
-    }
-  }
-  const queries = [
-    ...new Set(
-      result.responses.flatMap((response) =>
-        response.linkEvidence
-          .filter((link) => link.query)
-          .map((link) => link.url),
-      ),
-    ),
-  ];
-  const assets = [
-    ...new Set(result.responses.flatMap((response) => response.assetLinks)),
-  ];
   let attempted = 0;
   let completed = 0;
   const resourceRows: Record<string, unknown>[] = [];
-  const responses = new Map(
-    result.responses.map((response) => [
-      new URL(response.requestedUrl).pathname,
-      response,
-    ]),
-  );
-  for (const response of result.responses) {
-    for (const link of response.linkEvidence.filter(
-      (link) => link.fragment && !link.query,
-    )) {
-      let id: string;
-      try {
-        id = decodeURIComponent(link.fragment!.slice(1));
-      } catch {
-        id = '';
-      }
-      if (responses.get(link.path)?.anchorCounts[id] !== 1) {
-        findings.push(
-          finding(
-            'L05',
-            Severity.Error,
-            response.requestedUrl,
-            AuditStage.Live,
-            link.url,
-            'existing unique fragment in its actual target document',
-          ),
-        );
-      }
-    }
-  }
+  const uniqueQueries = [...new Set(queries)];
+  const uniqueAssets = [...new Set(assets)];
   const tasks = [
-    ...queries.slice(0, 120).map((url) => ({ url, query: true })),
-    ...assets.slice(0, 300).map((url) => ({ url, query: false })),
+    ...uniqueQueries.map((url) => ({ url, query: true })),
+    ...uniqueAssets.map((url) => ({ url, query: false })),
   ];
-  if (queries.length > 120 || assets.length > 300) {
+  console.log(
+    `Live resources: ${tasks.length} URLs (${uniqueQueries.length} query states, ${uniqueAssets.length} assets), concurrency ${resourceConcurrency}.`,
+  );
+  if (tasks.length > maxResourceRequests) {
     findings.push(
       finding(
         'L04',
         Severity.Unknown,
         '/',
         AuditStage.Live,
-        'Resource audit bound exceeded',
-        'bounded complete resource audit',
+        `Resource inventory has ${tasks.length} URLs (${uniqueQueries.length} query states, ${uniqueAssets.length} assets); safety limit is ${maxResourceRequests}. No resource URLs were checked.`,
+        'complete resource verification within the request budget',
       ),
     );
+    return {
+      expected: tasks.length,
+      attempted,
+      completed,
+      rows: resourceRows,
+      findings,
+    };
   }
-  for (let index = 0; index < tasks.length; index += 3) {
+  let lastProgress = 0;
+  for (let index = 0; index < tasks.length; index += resourceConcurrency) {
     await Promise.all(
-      tasks.slice(index, index + 3).map(async (task) => {
+      tasks.slice(index, index + resourceConcurrency).map(async (task) => {
         attempted++;
         try {
           if (task.query) {
-            const response = await inspectDelivery(task.url);
+            const response = await inspectDelivery(task.url, request);
             const path = new URL(task.url).pathname;
             const expected = routeSearchPolicy.find(
               (policy) => policy.path === path,
@@ -200,7 +99,7 @@ export async function auditLive() {
               canonical: response.raw?.canonical,
             });
           } else {
-            const response = await fetch(task.url, {
+            const response = await request(task.url, {
               redirect: 'manual',
               signal: AbortSignal.timeout(8000),
             });
@@ -248,7 +147,164 @@ export async function auditLive() {
         }
       }),
     );
+    if (attempted >= lastProgress + 25 || attempted === tasks.length) {
+      lastProgress = attempted;
+      console.log(
+        `Live resources: attempted ${attempted}/${tasks.length}, completed ${completed}.`,
+      );
+    }
   }
+  return {
+    expected: tasks.length,
+    attempted,
+    completed,
+    rows: resourceRows,
+    findings,
+  };
+}
+
+/** Keep failure details visible in raw CI logs, with multiline evidence escaped. */
+export function logLiveFindings(
+  findings: readonly Finding[],
+  write: (line: string) => void = console.error,
+): void {
+  for (const item of findings) {
+    write(
+      `[live:${item.rule}] ${item.severity} ${item.url} ${JSON.stringify({ observed: item.observed.slice(0, 6000), expected: item.expected, source: item.source })}`,
+    );
+  }
+}
+
+export async function wireSample(path: string, encoding: string) {
+  return new Promise<{
+    url: string;
+    requestedEncoding: string;
+    status: number | null;
+    encoding: string | null;
+    cacheControl: string | null;
+    wireBytes: number;
+  }>((resolve, reject) => {
+    const url = productionOrigin + path;
+    const request = get(
+      url,
+      { headers: { 'Accept-Encoding': encoding }, timeout: 8000 },
+      (response) => {
+        let bytes = 0;
+        response.on('data', (chunk: Buffer) => {
+          bytes += chunk.length;
+          if (bytes > 4 * 1024 * 1024) {
+            request.destroy(
+              new Error('Wire sample exceeds bounded byte limit'),
+            );
+          }
+        });
+        response.on('end', () =>
+          resolve({
+            url,
+            requestedEncoding: encoding,
+            status: response.statusCode ?? null,
+            encoding:
+              String(response.headers['content-encoding'] ?? '') || null,
+            cacheControl:
+              String(response.headers['cache-control'] ?? '') || null,
+            wireBytes: bytes,
+          }),
+        );
+      },
+    );
+    request.on('timeout', () =>
+      request.destroy(new Error('Wire request timed out')),
+    );
+    request.on('error', reject);
+  });
+}
+export async function auditLive() {
+  const started = performance.now();
+  const findings: Finding[] = [];
+  const result = await verifyProduction();
+  const expectedPaths = new Set(routeSearchPolicy.map((policy) => policy.path));
+  const pageResponses = result.responses.filter((response) =>
+    expectedPaths.has(new URL(response.requestedUrl).pathname),
+  );
+  for (const error of result.failures) {
+    findings.push(
+      finding(
+        'R03',
+        result.complete ? Severity.Error : Severity.Unknown,
+        '/',
+        AuditStage.Live,
+        error,
+        'complete correct canonical production delivery',
+      ),
+    );
+  }
+  const retirement = result.responses.length
+    ? await auditRetiredDelivery()
+    : {
+        rows: [],
+        complete: false,
+        failures: [
+          'Retired URLs NOT_OBSERVED: canonical origin preflight unavailable.',
+        ],
+      };
+  for (const row of retirement.rows) {
+    if (row.failure) {
+      findings.push(
+        finding(
+          'R04',
+          row.status === null ? Severity.Unknown : Severity.Error,
+          row.path,
+          AuditStage.Live,
+          row.failure,
+          'explicitly retired URL returning 404/410',
+        ),
+      );
+    }
+  }
+  const queries = [
+    ...new Set(
+      result.responses.flatMap((response) =>
+        response.linkEvidence
+          .filter((link) => link.query)
+          .map((link) => link.url),
+      ),
+    ),
+  ];
+  const assets = [
+    ...new Set(result.responses.flatMap((response) => response.assetLinks)),
+  ];
+  const responses = new Map(
+    result.responses.map((response) => [
+      new URL(response.requestedUrl).pathname,
+      response,
+    ]),
+  );
+  for (const response of result.responses) {
+    for (const link of response.linkEvidence.filter(
+      (link) => link.fragment && !link.query,
+    )) {
+      let id: string;
+      try {
+        id = decodeURIComponent(link.fragment!.slice(1));
+      } catch {
+        id = '';
+      }
+      if (responses.get(link.path)?.anchorCounts[id] !== 1) {
+        findings.push(
+          finding(
+            'L05',
+            Severity.Error,
+            response.requestedUrl,
+            AuditStage.Live,
+            link.url,
+            'existing unique fragment in its actual target document',
+          ),
+        );
+      }
+    }
+  }
+  const resources = await auditLiveResources(queries, assets);
+  findings.push(...resources.findings);
   let releaseIdentity: unknown = null;
   if (result.responses.length) {
     try {
@@ -276,11 +332,7 @@ export async function auditLive() {
           ),
         );
       }
-      for (const response of result.responses.filter((response) =>
-        routeSearchPolicy.some(
-          (policy) => policy.path === new URL(response.requestedUrl).pathname,
-        ),
-      )) {
+      for (const response of pageResponses) {
         const path = new URL(response.requestedUrl).pathname;
         const bytes = await readFile(
           resolve(outputDirectory, '.' + path, 'index.html'),
@@ -352,44 +404,55 @@ export async function auditLive() {
   const complete =
     result.complete &&
     retirement.complete &&
-    completed === tasks.length &&
-    queries.length <= 120 &&
-    assets.length <= 300;
+    resources.completed === resources.expected;
   const report = {
     stage: AuditStage.Live,
     complete,
     expected: routeSearchPolicy.length,
     attempted:
-      result.responses.length +
-      result.unavailable.filter((row) => row.attempted).length,
-    completed: result.responses.length,
+      pageResponses.length +
+      result.unavailable.filter(
+        (row) =>
+          row.attempted &&
+          expectedPaths.has(new URL(row.requestedUrl).pathname),
+      ).length,
+    completed: pageResponses.length,
     resources: {
-      expected: tasks.length,
-      attempted,
-      completed,
-      rows: resourceRows,
+      expected: resources.expected,
+      attempted: resources.attempted,
+      completed: resources.completed,
+      rows: resources.rows,
     },
     elapsedMs: Math.round(performance.now() - started),
     releaseIdentity,
     transport,
     findings,
-    rows: result.responses,
+    rows: pageResponses,
     delivery: result,
     retirement,
     artifactSha256: artifactHash(await artifactFiles()),
     sourceSha256: (await sourceIdentity()).sourceSha256,
   };
+  logLiveFindings(findings);
   await writeReport('live', report);
   return report;
 }
+export function liveAuditExitCode(report: {
+  complete: boolean;
+  findings: readonly Finding[];
+}): number {
+  if (!report.complete) {
+    return 2;
+  }
+  return report.findings.some((item) => item.severity === Severity.Error)
+    ? 1
+    : 0;
+}
+
 if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
   const result = await auditLive();
-  process.exitCode = !result.complete
-    ? 2
-    : result.findings.some((item) => item.severity === Severity.Error)
-      ? 1
-      : 0;
+  process.exitCode = liveAuditExitCode(result);
 }

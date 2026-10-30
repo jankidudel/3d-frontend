@@ -297,3 +297,15 @@ unknown. These are observation intervals, not promised indexing deadlines.
 The implementation adds no AWS resources, cache changes or invalidations.
 The expanded retirement check uses a small number of ordinary S3 HEAD/delete and
 public GET requests when the owner separately deploys it.
+
+### Live resource verification
+
+The post-deployment audit checks every distinct query-state link and downloadable
+asset discovered in initial HTML. It uses three concurrent requests and one overall
+1,000-resource safety budget. It does not silently trim query links or assets to
+separate sample sizes. An unexpected inventory over that budget fails explicitly
+before resource requests start, with the discovered count in the log. HTTP failures,
+wrong canonicals, HTML fallbacks, empty assets and unavailable requests remain
+blocking. Error and unknown findings are printed to raw CI logs as well as retained
+in `tmp/seo/live.json`. Page progress counts only declared routes; the deliberate
+missing-route probe remains in the detailed delivery evidence.

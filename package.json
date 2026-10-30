@@ -47,7 +47,7 @@
     "seo:render": "node --experimental-strip-types scripts/seo-browser.mts",
     "seo:artifact": "node --experimental-strip-types scripts/seo-artifact.mts",
     "seo:artifact:seal": "node --experimental-strip-types scripts/seo-artifact.mts --seal",
-    "test:technical-seo": "vitest run scripts/technical-seo.spec.mts scripts/seo-hooks.spec.mts scripts/module-preloads.spec.mts scripts/discovery-audit.spec.mts",
+    "test:technical-seo": "vitest run scripts/technical-seo.spec.mts scripts/seo-hooks.spec.mts scripts/module-preloads.spec.mts scripts/discovery-audit.spec.mts scripts/seo-live.spec.mts",
     "seo:live": "node --experimental-strip-types scripts/seo-live.mts",
     "seo:performance": "node --experimental-strip-types scripts/seo-performance.mts",
     "verify:push": "npm run verify:prepare && npm run verify:source && npm run verify:tests && npm run verify:build",
