@@ -12,7 +12,7 @@
     "assets:fingerprint": "node --experimental-strip-types scripts/fingerprint-static-assets.mts",
     "prepare-build:development": "npm run generate:guides && npm run generate:build-info && npm run generate:seo:development",
     "prepare-build:production": "npm run generate:guides && npm run generate:build-info && npm run generate:seo:production",
-    "build": "npm run prepare-build:production && ng build && npm run assets:fingerprint && npm run seo:legacy && npm run check:route-coverage && npm run seo:html",
+    "build": "npm run generate:guides && npm run build:prepared",
     "build:deployment-development": "npm run prepare-build:development && ng build --configuration deployment-development && npm run assets:fingerprint",
     "build:development": "npm run prepare-build:development && ng build --configuration development",
     "check:internal-links": "node --experimental-strip-types scripts/check-internal-links.mts",
@@ -23,7 +23,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run generate:guides && ng test --watch=false && npm run test:internal-links && npm run test:tool-layout && npm run test:material-page-styles && npm run test:deployment-workflow && npm run test:sitemap && npm run test:collection-examples && npm run test:seo-recovery && npm run test:route-coverage && npm run test:technical-seo",
+    "test": "npm run generate:guides && npm run verify:tests",
     "test:sitemap": "vitest run scripts/sitemap.spec.mts",
     "test:deployment-workflow": "vitest run scripts/deployment-workflow.spec.mts scripts/retire-tool-documents.spec.mts",
     "test:internal-links": "vitest run scripts/check-internal-links.spec.mts",
@@ -50,7 +50,13 @@
     "test:technical-seo": "vitest run scripts/technical-seo.spec.mts scripts/seo-hooks.spec.mts scripts/module-preloads.spec.mts scripts/discovery-audit.spec.mts",
     "seo:live": "node --experimental-strip-types scripts/seo-live.mts",
     "seo:performance": "node --experimental-strip-types scripts/seo-performance.mts",
-    "verify:push": "npm run format:check && npm run lint && npm run typecheck:scripts && npm run test && npm run build && npm run check:internal-links && npm run seo:audit"
+    "verify:push": "npm run verify:prepare && npm run verify:source && npm run verify:tests && npm run verify:build",
+    "build:prepared": "npm run generate:build-info && npm run generate:seo:production && ng build && npm run assets:fingerprint && npm run seo:legacy && npm run seo:html",
+    "test:scripts": "vitest run scripts/*.spec.mts",
+    "verify:prepare": "npm run generate:guides",
+    "verify:source": "npm run format:check && eslint . && tsc --project tsconfig.scripts.json && tsc --project tsconfig.collection-examples.json",
+    "verify:tests": "ng test --watch=false && npm run test:scripts",
+    "verify:build": "npm run build:prepared && npm run seo:audit"
   },
   "private": true,
   "engines": {

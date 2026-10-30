@@ -8,6 +8,7 @@ readonly immutable_cache_control='public, max-age=31536000, immutable'
 readonly mutable_cache_control='no-cache, max-age=0, must-revalidate'
 readonly max_upload_jobs="${DEPLOY_MAX_UPLOAD_JOBS:-8}"
 active_uploads=()
+completed_uploads=0
 
 if ! [[ "$max_upload_jobs" =~ ^[1-9][0-9]*$ ]]; then
   echo "DEPLOY_MAX_UPLOAD_JOBS must be a positive whole number." >&2
@@ -35,13 +36,22 @@ wait_for_upload_slot() {
   fi
   wait "${active_uploads[0]}"
   active_uploads=("${active_uploads[@]:1}")
+  report_completed_upload
 }
 
 wait_for_uploads() {
   local pid
   for pid in "${active_uploads[@]}"; do
     wait "$pid"
+    report_completed_upload
   done
+}
+
+report_completed_upload() {
+  completed_uploads=$((completed_uploads + 1))
+  if (( completed_uploads % 25 == 0 )); then
+    echo "Published $completed_uploads files in the current phase."
+  fi
 }
 
 upload_phase() {
@@ -49,6 +59,8 @@ upload_phase() {
   local cache_control="$2"
   local file relative_path
   active_uploads=()
+  completed_uploads=0
+  echo "Publishing $phase files (up to $max_upload_jobs concurrent uploads)..."
 
   while IFS= read -r -d '' file; do
     relative_path="${file#"$build_directory"/}"
@@ -75,6 +87,7 @@ upload_phase() {
   done < <(find "$build_directory" -type f -print0 | sort -z)
 
   wait_for_uploads
+  echo "Published $phase: $completed_uploads files."
 }
 
 # Hashed files are uploaded before HTML, then retained forever so old tabs can

@@ -14,7 +14,21 @@ describe('frontend deployment workflow', () => {
       join(projectRoot, '.github/workflows/deploy-frontend.yml'),
       'utf8',
     );
-    expect(workflow.match(/run: npm run verify\s*$/gm)).toHaveLength(1);
+    const stages = [
+      'verify:prepare',
+      'verify:source',
+      'verify:tests',
+      'verify:build',
+      'seo:render',
+      'seo:artifact:seal',
+    ];
+    let previous = -1;
+    for (const stage of stages) {
+      const command = `run: npm run ${stage}`;
+      expect(workflow.split(command)).toHaveLength(2);
+      expect(workflow.indexOf(command)).toBeGreaterThan(previous);
+      previous = workflow.indexOf(command);
+    }
     expect(workflow).not.toContain('npm run build');
     expect(workflow).toContain('environment: prod');
     expect(workflow).toContain('STAGE: prod');

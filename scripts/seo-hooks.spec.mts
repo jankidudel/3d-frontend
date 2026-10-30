@@ -138,13 +138,10 @@ describe('Git SEO snapshot contracts', () => {
     const commands: string[][] = [];
     verifyPushSnapshot(pkg.scripts, (args) => commands.push(args));
     expect(commands).toEqual([
-      ['run', 'format:check'],
-      ['run', 'lint'],
-      ['run', 'typecheck:scripts'],
-      ['run', 'test'],
-      ['run', 'build'],
-      ['run', 'check:internal-links'],
-      ['run', 'seo:audit'],
+      ['run', 'verify:prepare'],
+      ['run', 'verify:source'],
+      ['run', 'verify:tests'],
+      ['run', 'verify:build'],
     ]);
     expect(pkg.scripts['verify:push']).toBe(
       pushVerificationScripts.map((script) => `npm run ${script}`).join(' && '),
@@ -156,7 +153,20 @@ describe('Git SEO snapshot contracts', () => {
     // It must still receive all source checks through its actual script names.
     const legacy = { ...pkg.scripts };
     delete legacy['verify:push'];
-    expect(() => verifyPushSnapshot(legacy, () => undefined)).not.toThrow();
+    for (const script of pushVerificationScripts) {
+      delete legacy[script];
+    }
+    const legacyCommands: string[][] = [];
+    verifyPushSnapshot(legacy, (args) => legacyCommands.push(args));
+    expect(legacyCommands).toEqual([
+      ['run', 'format:check'],
+      ['run', 'lint'],
+      ['run', 'typecheck:scripts'],
+      ['run', 'test'],
+      ['run', 'build'],
+      ['run', 'check:internal-links'],
+      ['run', 'seo:audit'],
+    ]);
   });
 
   it('rejects incomplete push contracts before running any command', () => {

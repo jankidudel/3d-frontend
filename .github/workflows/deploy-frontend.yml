@@ -26,6 +26,7 @@ jobs:
   deploy:
     name: Deploy frontend to prod
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     environment: prod
     env:
       AWS_REGION: us-east-1
@@ -34,6 +35,11 @@ jobs:
       AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
       TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
     steps:
+      - name: Report runner startup
+        run: |
+          echo "Deployment runner started at $(date -u +%FT%TZ) for $GITHUB_SHA."
+          echo "Runner: $RUNNER_OS / $RUNNER_ARCH. Production verification runs before any upload."
+
       - uses: actions/checkout@v6
 
       - name: Verify AWS deployment configuration
@@ -62,7 +68,21 @@ jobs:
         run: node --experimental-strip-types scripts/configure-contact-captcha.mts
       - name: Check browser audit environment
         run: google-chrome --version
-      - run: npm run verify
+      - name: Generate frontend content once
+        run: npm run verify:prepare
+      - name: Check frontend source
+        run: npm run verify:source
+      - name: Test frontend
+        timeout-minutes: 15
+        run: npm run verify:tests
+      - name: Build and audit frontend HTML
+        timeout-minutes: 10
+        run: npm run verify:build
+      - name: Audit rendered frontend pages
+        timeout-minutes: 15
+        run: npm run seo:render
+      - name: Seal verified frontend artifact
+        run: npm run seo:artifact:seal
 
       - name: Configure temporary AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
@@ -100,3 +120,14 @@ jobs:
         with:
           name: technical-seo-prod
           path: tmp/seo
+
+      - name: Report deployment result
+        if: always()
+        env:
+          DEPLOY_RESULT: ${{ job.status }}
+        run: |
+          {
+            echo "### Production frontend deployment: $DEPLOY_RESULT"
+            echo "Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo "If live logs stop updating, use the job menu to view raw logs."
+          } >> "$GITHUB_STEP_SUMMARY"

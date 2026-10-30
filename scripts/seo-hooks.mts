@@ -15,7 +15,7 @@ const root = process.cwd();
 const git = (args: string[], options: Record<string, unknown> = {}) =>
   execFileSync('git', args, { cwd: root, ...options });
 const zero = /^0+$/;
-export const pushVerificationScripts = [
+const legacyPushVerificationScripts = [
   'format:check',
   'lint',
   'typecheck:scripts',
@@ -25,19 +25,30 @@ export const pushVerificationScripts = [
   'seo:audit',
 ] as const;
 
+export const pushVerificationScripts = [
+  'verify:prepare',
+  'verify:source',
+  'verify:tests',
+  'verify:build',
+] as const;
+
 /** Keep push checks independent of browser availability and release certification. */
 export function verifyPushSnapshot(
   scripts: Readonly<Record<string, string>>,
   run: (args: string[]) => void,
 ): void {
-  for (const script of pushVerificationScripts) {
+  // Historical outgoing commits still use their original standalone checks.
+  const checks = scripts['verify:prepare']
+    ? pushVerificationScripts
+    : legacyPushVerificationScripts;
+  for (const script of checks) {
     if (!scripts[script]) {
       throw new Error(
         `Outgoing commit is missing the required push check: ${script}`,
       );
     }
   }
-  for (const script of pushVerificationScripts) {
+  for (const script of checks) {
     run(['run', script]);
   }
 }

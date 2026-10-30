@@ -105,7 +105,7 @@ Audit tracked Markdown case-insensitively in the workspace and each component. K
 
 ## Independent route coverage and production verification
 
-`npm run build` includes `check:route-coverage`; the normal `verify` and deployment prerequisites therefore use the same network-free gate. `npm run test:route-coverage` tests the router independently of the search policy, including an added unclassified public hub. No workflow trigger or deployment stage is added.
+`npm run build` runs route coverage and internal-link validation inside `seo:html`; the normal `verify` and deployment prerequisites therefore use the same network-free gate without repeating the standalone audits. `npm run test:route-coverage` tests the router independently of the search policy, including an added unclassified public hub. No workflow trigger or deployment stage is added.
 
 The reader in `scripts/router-source.mts` walks actual router declarations, nested arrays, finite catalogue mappings and supported lazy child exports without importing Angular or executing components. Only explicitly allowlisted pure catalogue modules execute in its isolated data loader. New unresolved route expressions, matcher patterns or data imports fail with their source location. The published guide matcher is resolved through its existing generated finite slug registry; `**` remains a separately recorded not-found handler. No upload, job/result, account or private-file route exists in the current concrete router; transient tool state does not create sitemap URLs.
 

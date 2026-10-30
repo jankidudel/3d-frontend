@@ -344,6 +344,9 @@ export async function auditHtml(pages?: GeneratedPage[]) {
     const entries = parseSitemapXml(
       await readFile(resolve(outputDirectory, 'sitemap.xml'), 'utf8'),
     );
+    if (entries.kind !== 'urlset') {
+      throw new Error('The local build must produce a sitemap urlset.');
+    }
     const coverage = auditRouteCoverage(
       router,
       routeSearchPolicy,

@@ -79,7 +79,7 @@ settings as they are until the custom domain is live. The CloudFront URL must no
 be used as `siteUrl`.
 
 The manually dispatched `deploy-frontend` workflow uses the protected `prod` GitHub
-Environment. It runs `npm run verify` once and uploads that verified production
+Environment. It runs the ordered `npm run verify` phases once and uploads that verified production
 build directly to S3, without rebuilding it or running a CDK bucket-deployment
 Lambda. Use `deploy-all` in `3d-infra` for coordinated application releases.
 
@@ -179,3 +179,19 @@ Quotation families live in tab memory, with at most ten retained immutable snaps
 The existing jsPDF engine generates selectable customer text using bundled Liberation Sans fonts under their included OFL license. Unsupported font characters produce an actionable export error rather than corrupt output. PDF export keeps totals together, wraps long text and repeats continued-section labels and page numbers. Consent-gated quotation events contain only source category, reviewed state and sample status. No quotation values, names, filenames, JSON or form contents are sent to analytics. This editor does not wrap its fields in an auto-submitting form, and GA automatic form interaction collection is disabled in configuration.
 
 Run `npm run verify` for the existing regression suite, including quotation projection, rounding, handoffs, draft bounds, storage failure and inert rendering tests. A browser acceptance run must additionally open real PDFs and reparse downloaded JSON, check sample/manual/imported flows, local save/reopen/clear and denied storage, narrow layouts and long multi-page text with a logo. This local builder does not provide paid plans, hosted approval, accounts or production management.
+
+### Verification phases
+
+`npm run verify` runs these phases in order: `verify:prepare`, `verify:source`,
+`verify:tests`, `verify:build`, `seo:render`, `seo:artifact:seal`. Deployment workflows
+show each phase as its own step. Guide content is generated once, all script specs
+run in one Vitest invocation, and the combined HTML audit includes route coverage
+and internal-link validation. Standalone lint, type-check, test and build commands
+still prepare their own generated input. `verify:push` runs the first four phases;
+browser rendering and artifact sealing remain mandatory before deployment.
+
+If GitHub displays stale steps or no live output, open **View raw logs** from the
+job menu before cancelling. The workflow reports runner startup and uses separate
+limits for tests, builds and browser verification. Upload logs show each publication
+phase and completed file counts without changing cache headers or uploading HTML
+before its referenced assets.
