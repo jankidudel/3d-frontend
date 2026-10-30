@@ -233,3 +233,28 @@ it('diagnoses a broken material evidence target using the actual document pathna
     }),
   );
 });
+
+it('keeps encoded, named and duplicate fragment diagnostics after releasing page DOMs', () => {
+  const failures = validateGeneratedPages([
+    page(
+      '/',
+      '<a href="/target#named">Named</a><a href="/target#same">Same element</a>' +
+        '<a href="/target#two">Duplicate</a><a href="/target#caf%C3%A9">Encoded</a>' +
+        '<a href="/target#%E0%A4">Malformed</a><a href="http://[">Invalid URL</a>' +
+        '<area href="/missing">',
+    ),
+    page(
+      '/target',
+      '<a name="named"></a><a id="same" name="same"></a>' +
+        '<p id="two"></p><a name="two"></a><h2 id="café">Target</h2>',
+    ),
+  ]);
+  expect(
+    failures.map(({ originalUrl, reason }) => ({ originalUrl, reason })),
+  ).toEqual([
+    { originalUrl: '/target#two', reason: 'anchor not found' },
+    { originalUrl: '/target#%E0%A4', reason: 'anchor not found' },
+    { originalUrl: 'http://[', reason: 'URL is invalid' },
+    { originalUrl: '/missing', reason: 'generated page not found' },
+  ]);
+});

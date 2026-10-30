@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
-import { JSDOM } from 'jsdom';
+import { withHtmlDocument } from './html-document.mts';
 import {
   loadGeneratedPages,
   type GeneratedPage,
@@ -13,76 +13,78 @@ export const productionOrigin = 'https://www.inspectmesh.com';
 
 /** Inspect delivered HTML, without executing the application or uploading files. */
 export function inspectPublicHtml(page: GeneratedPage) {
-  const window = new JSDOM(page.html, { url: productionOrigin + page.route })
-    .window;
-  const document = window.document;
-  const main = document.querySelector('main');
-  const text = main?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('a[href]')]
-    .filter((link) => !link.hasAttribute('download'))
-    .flatMap((link) => {
-      const url = documentUrl(
-        document,
-        link.getAttribute('href')!,
-        productionOrigin + page.route,
-      );
-      return url.origin === productionOrigin ? [url.pathname] : [];
-    });
-  const canonicals = [
-    ...document.querySelectorAll('link[rel="canonical"]'),
-  ].map((element) => element.getAttribute('href'));
-  const robots = [
-    ...document.querySelectorAll('meta[name="robots"], meta[name="googlebot"]'),
-  ].map((element) => element.getAttribute('content') ?? '');
-  const result = {
-    title: document.title.trim(),
-    description:
-      document
-        .querySelector('meta[name="description"]')
-        ?.getAttribute('content') ?? null,
-    headings: [...document.querySelectorAll('h1')].map((element) =>
-      element.textContent?.trim(),
-    ),
-    canonical: canonicals.length === 1 ? canonicals[0] : null,
-    canonicalCount: canonicals.length,
-    robots,
-    mainTextCharacters: text.length,
-    mainContentSha256: createHash('sha256').update(text).digest('hex'),
-    sectionHeadings: [...(main?.querySelectorAll('h2') ?? [])].map((element) =>
-      element.textContent?.trim(),
-    ),
-    exampleAssets: [
-      ...new Set(
-        [...document.querySelectorAll('[href], [src]')]
-          .map(
-            (element) =>
-              element.getAttribute('href') ?? element.getAttribute('src') ?? '',
-          )
-          .filter((url) => url.startsWith('/examples/')),
+  return withHtmlDocument(page.html, (document) => {
+    const main = document.querySelector('main');
+    const text = main?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('a[href]')]
+      .filter((link) => !link.hasAttribute('download'))
+      .flatMap((link) => {
+        const url = documentUrl(
+          document,
+          link.getAttribute('href')!,
+          productionOrigin + page.route,
+        );
+        return url.origin === productionOrigin ? [url.pathname] : [];
+      });
+    const canonicals = [
+      ...document.querySelectorAll('link[rel="canonical"]'),
+    ].map((element) => element.getAttribute('href'));
+    const robots = [
+      ...document.querySelectorAll(
+        'meta[name="robots"], meta[name="googlebot"]',
       ),
-    ],
-    contextualLinks: [
-      ...new Set(
-        [...(main?.querySelectorAll<HTMLAnchorElement>('a[href]') ?? [])]
-          .map((link) =>
-            documentUrl(
-              document,
-              link.getAttribute('href')!,
-              productionOrigin + page.route,
-            ),
-          )
-          .filter(
-            (url) =>
-              url.origin === productionOrigin &&
-              !url.pathname.startsWith('/examples/'),
-          )
-          .map((url) => url.pathname),
+    ].map((element) => element.getAttribute('content') ?? '');
+    const result = {
+      title: document.title.trim(),
+      description:
+        document
+          .querySelector('meta[name="description"]')
+          ?.getAttribute('content') ?? null,
+      headings: [...document.querySelectorAll('h1')].map((element) =>
+        element.textContent?.trim(),
       ),
-    ],
-    links: [...new Set(links)],
-  };
-  window.close();
-  return result;
+      canonical: canonicals.length === 1 ? canonicals[0] : null,
+      canonicalCount: canonicals.length,
+      robots,
+      mainTextCharacters: text.length,
+      mainContentSha256: createHash('sha256').update(text).digest('hex'),
+      sectionHeadings: [...(main?.querySelectorAll('h2') ?? [])].map(
+        (element) => element.textContent?.trim(),
+      ),
+      exampleAssets: [
+        ...new Set(
+          [...document.querySelectorAll('[href], [src]')]
+            .map(
+              (element) =>
+                element.getAttribute('href') ??
+                element.getAttribute('src') ??
+                '',
+            )
+            .filter((url) => url.startsWith('/examples/')),
+        ),
+      ],
+      contextualLinks: [
+        ...new Set(
+          [...(main?.querySelectorAll<HTMLAnchorElement>('a[href]') ?? [])]
+            .map((link) =>
+              documentUrl(
+                document,
+                link.getAttribute('href')!,
+                productionOrigin + page.route,
+              ),
+            )
+            .filter(
+              (url) =>
+                url.origin === productionOrigin &&
+                !url.pathname.startsWith('/examples/'),
+            )
+            .map((url) => url.pathname),
+        ),
+      ],
+      links: [...new Set(links)],
+    };
+    return result;
+  });
 }
 
 export function shortestPaths(links: ReadonlyMap<string, readonly string[]>) {

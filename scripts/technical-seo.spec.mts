@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process';
+import { withHtmlDocument } from './html-document.mts';
 import {
   browserSnapshot,
   browserSnapshotExpression,
@@ -251,3 +253,95 @@ describe('browser audit diagnostics and navigation probes', () => {
     ).toBe(false);
   });
 });
+
+it('inspects inert HTML with its complete head and base, then releases the tree even on failure', () => {
+  let released: Document | undefined;
+  withHtmlDocument(
+    '<!doctype html><html lang="en"><head><title>First</title>' +
+      '<meta name="robots" content="noindex"><base href="/guides/">' +
+      '<script>document.body.textContent = "executed";</script>' +
+      '<script type="application/ld+json">{"@type":"Article"}</script></head>' +
+      '<body><main id="evidence"><h1>Evidence</h1></main></body></html>',
+    (document) => {
+      released = document;
+      expect(document.defaultView).toBeNull();
+      expect(document.title).toBe('First');
+      expect(document.documentElement.lang).toBe('en');
+      expect(blocksIndexing(document)).toBe(true);
+      expect(document.querySelector('h1')?.textContent).toBe('Evidence');
+      expect(
+        document.querySelector('script[type="application/ld+json"]')
+          ?.textContent,
+      ).toBe('{"@type":"Article"}');
+      expect(
+        documentUrl(
+          document,
+          'file#section',
+          'https://www.inspectmesh.com/examples',
+        ).href,
+      ).toBe('https://www.inspectmesh.com/guides/file#section');
+    },
+  );
+  expect(released?.childNodes.length).toBe(0);
+  expect(() =>
+    withHtmlDocument('<main id="failure">Failure</main>', (document) => {
+      released = document;
+      throw new Error('inspection failed');
+    }),
+  ).toThrow('inspection failed');
+  expect(released?.childNodes.length).toBe(0);
+  withHtmlDocument(
+    '<title>Second</title><main>Independent</main>',
+    (document) => {
+      expect(document.title).toBe('Second');
+      expect(document.querySelector('base')).toBeNull();
+    },
+  );
+});
+
+it('audits a large site in a bounded heap without dropping cross-page link checks', () => {
+  const output = execFileSync(
+    process.execPath,
+    [
+      '--max-old-space-size=256',
+      '--experimental-strip-types',
+      '--input-type=module',
+      '-e',
+      `
+      import assert from 'node:assert/strict';
+      import { validateGeneratedPages } from './scripts/check-internal-links.mts';
+      import { inspectPublicHtml } from './scripts/seo-audit.mts';
+      import { pageLinks } from './scripts/route-coverage.mts';
+      import { discoveryLinks, breadcrumbConsistency } from './scripts/discovery-audit.mts';
+      const body = Array.from({length: 200}, (_, i) => '<section id="s' + i + '"><h2>Evidence</h2><p>Scoped product claim and source.</p></section>').join('');
+      const pages = Array.from({length: 160}, (_, i) => ({
+        route: '/page-' + i, filePath: 'page-' + i + '/index.html',
+        html: '<!doctype html><head><title>Page ' + i + '</title><link rel="canonical" href="https://www.inspectmesh.com/page-' + i + '"></head><body><main><h1>Page</h1>' + body + '<a href="/page-' + ((i+1)%160) + '#s199">Next evidence</a></main></body>',
+      }));
+      for (const page of pages) {
+        inspectPublicHtml(page);
+      }
+      for (const page of pages) {
+        assert.equal(pageLinks(page).length, 1);
+      }
+      for (const page of pages) {
+        assert.equal(discoveryLinks(page).length, 1);
+      }
+      for (const page of pages) {
+        assert.deepEqual(breadcrumbConsistency(page), []);
+      }
+      assert.deepEqual(validateGeneratedPages(pages), []);
+      pages[159].html = pages[159].html.replace('id="s199"', 'id="removed"');
+      assert.equal(validateGeneratedPages(pages).filter(f => f.reason === 'anchor not found').length, 1);
+      console.log('bounded audit passed');
+    `,
+    ],
+    {
+      cwd: resolve(import.meta.dirname, '..'),
+      encoding: 'utf8',
+      timeout: 45000,
+      maxBuffer: 1024 * 1024,
+    },
+  );
+  expect(output.trim()).toBe('bounded audit passed');
+}, 50000);

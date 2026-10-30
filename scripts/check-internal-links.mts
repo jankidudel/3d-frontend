@@ -1,8 +1,12 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { relative, resolve, sep } from 'node:path';
-import { JSDOM } from 'jsdom';
-import { documentUrl, fragmentCount } from './document-urls.mts';
+import { withHtmlDocument } from './html-document.mts';
+import {
+  documentUrl,
+  documentFragments,
+  indexedFragmentCount,
+} from './document-urls.mts';
 
 const DEFAULT_OUTPUT_DIRECTORY = 'dist/3d-frontend/browser';
 const INTERNAL_ORIGIN = 'https://internal.inspectmesh.invalid';
@@ -40,21 +44,17 @@ export function validateGeneratedPages(
 ): ValidationFailure[] {
   const failures: ValidationFailure[] = [];
   const routes = new Map(pages.map((page) => [page.route, page]));
-  const windows = new Map(
-    pages.map((page) => [page.route, new JSDOM(page.html).window]),
+  // Keep scalar observations, not every page's DOM, for cross-page checks.
+  const observations = new Map(
+    pages.map((page) => [page.route, inspectLinks(page)]),
   );
-  const documents = new Map(
-    [...windows].map(([route, window]) => [route, window.document]),
-  );
-  const siteOrigin = canonicalOrigin(documents);
+  const siteOrigin = canonicalOrigin(observations);
   const canonicalPages = new Map<string, GeneratedPage>();
 
   for (const page of pages) {
-    const document = documents.get(page.route)!;
-    const canonicals = Array.from(
-      document.querySelectorAll('link[rel="canonical"]'),
-    );
-    if (isIndexable(document) && canonicals.length !== 1) {
+    const observation = observations.get(page.route)!;
+    const canonicals = observation.canonicals;
+    if (observation.indexable && canonicals.length !== 1) {
       failures.push({
         source: page.filePath,
         originalUrl: 'canonical',
@@ -67,7 +67,7 @@ export function validateGeneratedPages(
     } else if (canonicals.length === 1) {
       validateCanonical(
         page,
-        canonicals[0].getAttribute('href') ?? '',
+        canonicals[0],
         siteOrigin,
         routes,
         canonicalPages,
@@ -75,37 +75,53 @@ export function validateGeneratedPages(
       );
     }
 
-    for (const element of document.querySelectorAll('a[href], area[href]')) {
-      if (element.hasAttribute('download')) {
-        continue;
-      }
-      const href = element.getAttribute('href')?.trim() ?? '';
+    for (const link of observation.links) {
       const failure = validateLink(
         page,
-        document,
-        href,
+        link,
         siteOrigin,
         routes,
-        documents,
+        observations,
       );
       if (failure) {
         failures.push(failure);
       }
     }
   }
-  for (const window of windows.values()) {
-    window.close();
-  }
   return failures;
 }
 
+function inspectLinks(page: GeneratedPage) {
+  return withHtmlDocument(page.html, (document) => {
+    return {
+      indexable: isIndexable(document),
+      canonicals: [...document.querySelectorAll('link[rel="canonical"]')].map(
+        (element) => element.getAttribute('href') ?? '',
+      ),
+      fragments: documentFragments(document),
+      links: [...document.querySelectorAll('a[href], area[href]')]
+        .filter((element) => !element.hasAttribute('download'))
+        .map((element) => {
+          const href = element.getAttribute('href')?.trim() ?? '';
+          let target: URL | null = null;
+          try {
+            target = documentUrl(document, href, pageUrl(page.route));
+          } catch {
+            // Preserve invalid-URL diagnostics after the document is released.
+          }
+          return { href, target };
+        }),
+    };
+  });
+}
+
+type LinkObservation = ReturnType<typeof inspectLinks>;
+
 function canonicalOrigin(
-  documents: ReadonlyMap<string, Document>,
+  observations: ReadonlyMap<string, LinkObservation>,
 ): string | null {
-  for (const document of documents.values()) {
-    const href = document
-      .querySelector('link[rel="canonical"]')
-      ?.getAttribute('href');
+  for (const observation of observations.values()) {
+    const href = observation.canonicals[0];
     if (!href) {
       continue;
     }
@@ -190,19 +206,16 @@ function validateCanonical(
 
 function validateLink(
   page: GeneratedPage,
-  document: Document,
-  href: string,
+  link: LinkObservation['links'][number],
   siteOrigin: string | null,
   routes: ReadonlyMap<string, GeneratedPage>,
-  documents: ReadonlyMap<string, Document>,
+  observations: ReadonlyMap<string, LinkObservation>,
 ): ValidationFailure | null {
+  const { href, target } = link;
   if (!href || isIgnoredScheme(href)) {
     return null;
   }
-  let target: URL;
-  try {
-    target = documentUrl(document, href, pageUrl(page.route));
-  } catch {
+  if (!target) {
     return failure(page, href, href, 'URL is invalid');
   }
   if (isDevelopmentHost(target.hostname)) {
@@ -224,7 +237,10 @@ function validateLink(
   }
   if (
     target.hash &&
-    fragmentCount(documents.get(targetPage.route)!, target.hash) !== 1
+    indexedFragmentCount(
+      observations.get(targetPage.route)!.fragments,
+      target.hash,
+    ) !== 1
   ) {
     return failure(page, href, route + target.hash, 'anchor not found');
   }

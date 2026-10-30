@@ -1,4 +1,4 @@
-import { JSDOM } from 'jsdom';
+import { withHtmlDocument } from './html-document.mts';
 import {
   discoveryTasks,
   priorityDiscoveryPaths,
@@ -37,63 +37,52 @@ const cleanText = (value: string | null | undefined) =>
 
 /** Directory cards and global navigation never replace a contextual relationship. */
 export function discoveryLinks(page: GeneratedPage) {
-  const window = new JSDOM(page.html, { url: productionOrigin + page.route })
-    .window;
-  try {
-    return [...window.document.querySelectorAll('a[href]')].flatMap(
-      (element) => {
-        if (element.hasAttribute('download')) {
-          return [];
-        }
-        const href = element.getAttribute('href')!;
-        let url: URL;
-        try {
-          url = documentUrl(
-            window.document,
-            href,
-            productionOrigin + page.route,
-          );
-        } catch {
-          return [];
-        }
-        if (url.origin !== productionOrigin) {
-          return [];
-        }
-        const directory = element.closest(
-          '.tool-card, .guide-list, app-format-tools-grid',
-        );
-        const navigation = element.closest(
-          'nav, header, footer, app-workflow-paths',
-        );
-        const kind = directory
-          ? LinkKind.Hub
-          : navigation || !element.closest('main')
-            ? LinkKind.Navigation
-            : LinkKind.Contextual;
-        return [
-          {
-            source: page.route,
-            sourceLocation: `${page.filePath}: a[href=${JSON.stringify(href)}]`,
-            target: url.pathname,
-            href,
-            query: url.search,
-            fragment: url.hash,
-            anchor: cleanText(element.textContent),
-            kind,
-            hub: hubs.has(page.route),
-          },
-        ];
-      },
-    );
-  } finally {
-    window.close();
-  }
+  return withHtmlDocument(page.html, (document) => {
+    return [...document.querySelectorAll('a[href]')].flatMap((element) => {
+      if (element.hasAttribute('download')) {
+        return [];
+      }
+      const href = element.getAttribute('href')!;
+      let url: URL;
+      try {
+        url = documentUrl(document, href, productionOrigin + page.route);
+      } catch {
+        return [];
+      }
+      if (url.origin !== productionOrigin) {
+        return [];
+      }
+      const directory = element.closest(
+        '.tool-card, .guide-list, app-format-tools-grid',
+      );
+      const navigation = element.closest(
+        'nav, header, footer, app-workflow-paths',
+      );
+      const kind = directory
+        ? LinkKind.Hub
+        : navigation || !element.closest('main')
+          ? LinkKind.Navigation
+          : LinkKind.Contextual;
+      return [
+        {
+          source: page.route,
+          sourceLocation: `${page.filePath}: a[href=${JSON.stringify(href)}]`,
+          target: url.pathname,
+          href,
+          query: url.search,
+          fragment: url.hash,
+          anchor: cleanText(element.textContent),
+          kind,
+          hub: hubs.has(page.route),
+        },
+      ];
+    });
+  });
 }
 
 export function breadcrumbConsistency(page: GeneratedPage): string[] {
-  const window = new JSDOM(page.html).window;
-  try {
-    const nav = window.document.querySelector('nav[aria-label="Breadcrumb"]');
+  return withHtmlDocument(page.html, (document) => {
+    const nav = document.querySelector('nav[aria-label="Breadcrumb"]');
     const visible = nav
       ? [...nav.querySelectorAll('a, [aria-current="page"]')].map(
           (element) => ({
@@ -124,7 +113,7 @@ export function breadcrumbConsistency(page: GeneratedPage): string[] {
       }
       Object.values(row).forEach(visit);
     };
-    for (const script of window.document.querySelectorAll(
+    for (const script of document.querySelectorAll(
       'script[type="application/ld+json"]',
     )) {
       try {
@@ -153,9 +142,7 @@ export function breadcrumbConsistency(page: GeneratedPage): string[] {
       return [`${page.route}: visible breadcrumbs and JSON-LD differ`];
     }
     return [];
-  } finally {
-    window.close();
-  }
+  });
 }
 
 export function auditDiscovery(

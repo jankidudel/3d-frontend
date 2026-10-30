@@ -1,4 +1,5 @@
 import { documentUrl } from './document-urls.mts';
+import { withHtmlDocument } from './html-document.mts';
 import { JSDOM } from 'jsdom';
 import { isDateOnlyUtc } from '../src/app/features/guides/guide-publishing.ts';
 import type { GeneratedPage } from './check-internal-links.mts';
@@ -117,17 +118,15 @@ export function pagePath(url: URL): string {
   return url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
 }
 export function pageLinks(page: GeneratedPage) {
-  const window = new JSDOM(page.html, { url: productionOrigin + page.route })
-    .window;
-  try {
-    return [...window.document.querySelectorAll('a[href], area[href]')].flatMap(
+  return withHtmlDocument(page.html, (document) => {
+    return [...document.querySelectorAll('a[href], area[href]')].flatMap(
       (element) => {
         if (element.hasAttribute('download')) {
           return [];
         }
         try {
           const url = documentUrl(
-            window.document,
+            document,
             element.getAttribute('href')!,
             productionOrigin + page.route,
           );
@@ -150,9 +149,7 @@ export function pageLinks(page: GeneratedPage) {
         }
       },
     );
-  } finally {
-    window.close();
-  }
+  });
 }
 const difference = (left: ReadonlySet<string>, right: ReadonlySet<string>) =>
   [...left].filter((path) => !right.has(path)).sort();

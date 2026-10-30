@@ -8,14 +8,32 @@ export function documentUrl(
   return new URL(href, base ? new URL(base, pageUrl) : pageUrl);
 }
 
-export function fragmentCount(document: Document, fragment: string): number {
-  let id: string;
+/** Count each element once, including legacy named anchors and duplicate IDs. */
+export function documentFragments(
+  document: Document,
+): ReadonlyMap<string, number> {
+  const counts = new Map<string, number>();
+  for (const element of document.querySelectorAll('[id], a[name]')) {
+    for (const id of new Set([element.id, element.getAttribute('name')])) {
+      if (id !== null) {
+        counts.set(id, (counts.get(id) ?? 0) + 1);
+      }
+    }
+  }
+  return counts;
+}
+
+export function indexedFragmentCount(
+  counts: ReadonlyMap<string, number>,
+  fragment: string,
+): number {
   try {
-    id = decodeURIComponent(fragment.replace(/^#/, ''));
+    return counts.get(decodeURIComponent(fragment.replace(/^#/, ''))) ?? 0;
   } catch {
     return 0;
   }
-  return [...document.querySelectorAll('[id], a[name]')].filter(
-    (element) => element.id === id || element.getAttribute('name') === id,
-  ).length;
+}
+
+export function fragmentCount(document: Document, fragment: string): number {
+  return indexedFragmentCount(documentFragments(document), fragment);
 }

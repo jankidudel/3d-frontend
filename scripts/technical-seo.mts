@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, resolve, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import ts from 'typescript';
-import { JSDOM } from 'jsdom';
+import { withHtmlDocument } from './html-document.mts';
 import {
   loadGeneratedPages,
   validateGeneratedPages,
@@ -419,114 +419,110 @@ export async function auditHtml(pages?: GeneratedPage[]) {
       if (!page) {
         continue;
       }
-      const window = new JSDOM(page.html, {
-        url: productionOrigin + policy.path,
-      }).window;
-      try {
-        const document = window.document;
-        const route = router.routes.find(
-          (candidate) => candidate.path === policy.path,
-        )!;
-        const selector = expectedSelector(route);
-        if (!document.querySelector(selector)) {
-          findings.push(
-            finding(
-              'R02',
-              Severity.Error,
-              policy.path,
-              AuditStage.Html,
-              'Wrong component document',
-              `router component ${selector}`,
-              route.source,
-            ),
-          );
-        }
-        if (
-          blocksIndexing(document) !== policy.noindex ||
-          (!policy.noindex && !robotsAccess(robots, policy.path, 'Googlebot'))
-        ) {
-          findings.push(
-            finding(
-              'I01',
-              Severity.Error,
-              policy.path,
-              AuditStage.Html,
-              'Conflicting crawl/index signals',
-              'robots and meta matching explicit route intent',
-              page.filePath,
-            ),
-          );
-        }
-        if (
-          !document.querySelector('meta[charset]') ||
-          !document.querySelector('meta[name="viewport"]') ||
-          document.documentElement.lang !== 'en'
-        ) {
-          findings.push(
-            finding(
-              'H02',
-              Severity.Error,
-              policy.path,
-              AuditStage.Html,
-              'Missing charset, viewport or English language',
-              'valid shared document head',
-              page.filePath,
-            ),
-          );
-        }
-        findings.push(...inspectSchema(document, policy.path));
-        for (const element of document.querySelectorAll(
-          'script[src], link[rel="stylesheet"][href], img[src], a[download][href]',
-        )) {
-          const raw =
-            element.getAttribute('src') ?? element.getAttribute('href')!;
-          const url = documentUrl(
-            document,
-            raw,
-            productionOrigin + policy.path,
-          );
-          if (url.origin === productionOrigin) {
-            assets.add(url.pathname);
-            if (!robotsAccess(robots, url.pathname, 'Googlebot')) {
+      rows.push(
+        withHtmlDocument(page.html, (document) => {
+          const route = router.routes.find(
+            (candidate) => candidate.path === policy.path,
+          )!;
+          const selector = expectedSelector(route);
+          if (!document.querySelector(selector)) {
+            findings.push(
+              finding(
+                'R02',
+                Severity.Error,
+                policy.path,
+                AuditStage.Html,
+                'Wrong component document',
+                `router component ${selector}`,
+                route.source,
+              ),
+            );
+          }
+          if (
+            blocksIndexing(document) !== policy.noindex ||
+            (!policy.noindex && !robotsAccess(robots, policy.path, 'Googlebot'))
+          ) {
+            findings.push(
+              finding(
+                'I01',
+                Severity.Error,
+                policy.path,
+                AuditStage.Html,
+                'Conflicting crawl/index signals',
+                'robots and meta matching explicit route intent',
+                page.filePath,
+              ),
+            );
+          }
+          if (
+            !document.querySelector('meta[charset]') ||
+            !document.querySelector('meta[name="viewport"]') ||
+            document.documentElement.lang !== 'en'
+          ) {
+            findings.push(
+              finding(
+                'H02',
+                Severity.Error,
+                policy.path,
+                AuditStage.Html,
+                'Missing charset, viewport or English language',
+                'valid shared document head',
+                page.filePath,
+              ),
+            );
+          }
+          findings.push(...inspectSchema(document, policy.path));
+          for (const element of document.querySelectorAll(
+            'script[src], link[rel="stylesheet"][href], img[src], a[download][href]',
+          )) {
+            const raw =
+              element.getAttribute('src') ?? element.getAttribute('href')!;
+            const url = documentUrl(
+              document,
+              raw,
+              productionOrigin + policy.path,
+            );
+            if (url.origin === productionOrigin) {
+              assets.add(url.pathname);
+              if (!robotsAccess(robots, url.pathname, 'Googlebot')) {
+                findings.push(
+                  finding(
+                    'I04',
+                    Severity.Error,
+                    policy.path,
+                    AuditStage.Html,
+                    url.href,
+                    'crawlable first-party resource',
+                    page.filePath,
+                  ),
+                );
+              }
+            }
+            if (element.tagName === 'IMG' && !element.hasAttribute('alt')) {
               findings.push(
                 finding(
-                  'I04',
-                  Severity.Error,
+                  'P01',
+                  Severity.Warning,
                   policy.path,
                   AuditStage.Html,
-                  url.href,
-                  'crawlable first-party resource',
+                  raw,
+                  'meaningful alt or explicit decorative alt',
                   page.filePath,
                 ),
               );
             }
           }
-          if (element.tagName === 'IMG' && !element.hasAttribute('alt')) {
-            findings.push(
-              finding(
-                'P01',
-                Severity.Warning,
-                policy.path,
-                AuditStage.Html,
-                raw,
-                'meaningful alt or explicit decorative alt',
-                page.filePath,
-              ),
-            );
-          }
-        }
-        rows.push({
-          url: productionOrigin + policy.path,
-          selector,
-          disposition: policy.disposition,
-          sitemap: policy.disposition === RouteDisposition.Indexable,
-          title: document.title,
-          h1: document.querySelector('h1')?.textContent?.trim(),
-          initialHtml: true,
-        });
-      } finally {
-        window.close();
-      }
+          return {
+            url: productionOrigin + policy.path,
+            selector,
+            disposition: policy.disposition,
+            sitemap: policy.disposition === RouteDisposition.Indexable,
+            title: document.title,
+            h1: document.querySelector('h1')?.textContent?.trim(),
+            initialHtml: true,
+          };
+        }),
+      );
     }
     for (const asset of assets) {
       try {
