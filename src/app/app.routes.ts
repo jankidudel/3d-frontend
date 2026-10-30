@@ -3,13 +3,13 @@ import { Routes } from '@angular/router';
 import { BreadcrumbPageLayout } from './core/components/breadcrumb-page-layout/breadcrumb-page-layout';
 import {
   PublicRouteSegment,
+  materialProfilePaths,
+  materialPairPaths,
   PublicRoutePathValue as PublicRoutePath,
 } from './core/seo/public-routes';
 import { guideCanMatch } from './features/guides/guide-route';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 import { printers } from './features/printer-comparison/printer-catalogue';
-import { materials } from './features/materials/material-catalogue';
-import { materialComparisonPaths } from './features/materials/material-comparisons';
 
 const breadcrumbRoutes: Routes = [
   {
@@ -47,8 +47,8 @@ const breadcrumbRoutes: Routes = [
         (m) => m.MaterialHubPage,
       ),
   },
-  ...materials.map((material) => ({
-    path: `${PublicRoutePath.Materials}/${material.slug}`,
+  ...materialProfilePaths.map((path) => ({
+    path,
     loadComponent: () =>
       import('./features/materials/material-pages').then(
         (m) => m.MaterialDetailPage,
@@ -68,7 +68,7 @@ const breadcrumbRoutes: Routes = [
         (m) => m.MaterialComparisonPage,
       ),
   },
-  ...materialComparisonPaths.map((path) => ({
+  ...materialPairPaths.map((path) => ({
     path,
     loadComponent: () =>
       import('./features/materials/material-pages').then(

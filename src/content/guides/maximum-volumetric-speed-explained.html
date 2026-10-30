@@ -33,6 +33,28 @@ faq:
   observation date with a claimed limit. A material name cannot supply that
   context.
 </p>
+<h2>Read a speed claim without inventing a flow ceiling</h2>
+<p>
+  The
+  <a href="{{ GuideSlug.RoutePetg }}#product-evidence"
+    >Prusament PETG example</a
+  >
+  links its version 1.1 sheet, whose recommended-settings table gives print
+  speed up to 200 mm/s. That linear speed has no accompanying extrusion width
+  and layer height in that row; it cannot establish a maximum volumetric flow
+  for your printer.
+</p>
+<p>
+  With illustrative 0.45 mm width and 0.20 mm layers, 100 mm/s requests 9 mm³/s;
+  at 200 mm/s it requests 18 mm³/s. Reproduce both in
+  <a href="{{ GuideSlug.RouteVolumetricFlowCalculator }}"
+    >the current flow planner</a
+  >. These are calculated requests. Keep an actual measured limit, with its
+  nozzle, formulation, temperature, method and date, in a separate record.
+  Density, a melting-related property or a datasheet speed cannot supply that
+  missing measurement.
+</p>
+
 <h2>Why the computed speed is not a recommendation</h2>
 <p>
   Short segments may never reach a requested speed, and cooling or quality

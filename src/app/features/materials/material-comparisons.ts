@@ -7,6 +7,9 @@ export type MaterialComparison = Readonly<{
   materialAId: MaterialId;
   materialBId: MaterialId;
   summary: string;
+  verdict: string;
+  evidenceQuestion: string;
+  evidenceAction: string;
   criteria: readonly Readonly<{
     requirement: string;
     left: string;
@@ -21,10 +24,17 @@ export type MaterialComparison = Readonly<{
   chooseBWhen: readonly string[];
   lastReviewedAt: string;
 }>;
-const reviewed = '2026-10-24';
+const reviewed = '2026-10-29';
 export const materialComparisons: readonly MaterialComparison[] = [
   {
     slug: MaterialComparisonSlug.PlaVsPetg,
+    verdict:
+      'Keep PLA for the detailed rigid fit prototype; investigate PETG when repeated handling is the changed requirement.',
+    evidenceQuestion:
+      'A tensile modulus describes stiffness, not impact tolerance. The named sheets use different nozzle/bed conditions and omit mechanical conditioning, so their numbers are shown separately. Neither supplies long-term cable-holder creep evidence.',
+    evidenceAction:
+      'Record actual mounting temperature and load duration, then compare the intended layer direction and handled feature.',
+
     criteria: [
       {
         requirement: 'Visual fit prototype',
@@ -81,6 +91,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PlaVsAbs,
+    verdict:
+      'Use PLA to verify room-temperature fit; consider ABS only when the warm-service requirement justifies its preparation.',
+    evidenceQuestion:
+      'The PolyLite ABS chamber instruction is product-specific. Nozzle settings are not service-temperature ratings; the warm cover may need loaded-time evidence that neither sheet supplies.',
+    evidenceAction:
+      'Measure the mounting environment, duration and deformation allowance. Verify a suitable chamber before repeating the corner trial with that exact ABS.',
+
     criteria: [
       {
         requirement: 'First room-temperature fit',
@@ -136,6 +153,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsAbs,
+    verdict:
+      'Keep an established PETG job unless a documented temperature, deformation or exposure requirement calls for a process change.',
+    evidenceQuestion:
+      'Do not select ABS from a generic strength band. These product references give different setup instructions, and a neat cover does not establish loaded service performance for either.',
+    evidenceAction:
+      'Identify which requirement currently fails; retain the actual temperature/load record and compare supported exact-grade profiles.',
+
     criteria: [
       {
         requirement: 'Indoor bracket',
@@ -190,6 +214,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.AbsVsAsa,
+    verdict:
+      'Investigate ASA for the exposure brief; retain ABS where the existing indoor process already meets the requirement.',
+    evidenceQuestion:
+      'Prusa reports UV stability for its ASA product without an exposure duration or protocol in the inspected sources. That statement is separate from mechanical specimen results and cannot predict the cover lifetime.',
+    evidenceAction:
+      'Record sun, water paths, fastening load and colour/function observations over time, and request exposure evidence for the exact spool.',
+
     criteria: [
       {
         requirement: 'Protected cabinet part',
@@ -244,6 +275,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsAsa,
+    verdict:
+      'Keep PETG when its known process answers the job; shortlist ASA when sunlight exposure provides a reason and preparation can be verified.',
+    evidenceQuestion:
+      'The ASA product recommends a skirt or enclosure. That recommendation cannot mark every ASA impossible; a selected product or printer requirement must still be respected. Unknown setup evidence is not a pass.',
+    evidenceAction:
+      'Record exposure and check the selected printer/profile, plate and enclosure instructions together before repeating the mounting-feature trial.',
+
     criteria: [
       {
         requirement: 'Sheltered prototype',
@@ -298,6 +336,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PlaVsTpu,
+    verdict:
+      'Use PLA to locate rigid geometry; choose a specified TPU candidate for deliberately compliant contact.',
+    evidenceQuestion:
+      'TPU hardness on Shore A is not comparable with a rigid-material stiffness score. The TPU 95A name and its measured Shore A/D values have different roles; no numerical overall winner resolves the bumper function.',
+    evidenceAction:
+      'Specify required travel, insertion force and retained clearance. Check a corner with the exact hardness and feed profile, keeping fatigue unknown.',
+
     criteria: [
       {
         requirement: 'Locate an assembly',
@@ -353,6 +398,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsTpu,
+    verdict:
+      'Investigate PETG when bending is an unwanted defect; investigate TPU when controlled deformation is the function.',
+    evidenceQuestion:
+      'A toughness description does not say whether the part should bend. The named TPU sheet reports hardness and loaded deflection; neither property establishes impact protection for the intended insert.',
+    evidenceAction:
+      'State whether bending is wanted, then record loaded movement and recovery with the intended geometry and actual feed setup.',
+
     criteria: [
       {
         requirement: 'Firm outer housing',
@@ -406,6 +458,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PetgVsNylon,
+    verdict:
+      'Keep the PETG workflow unless a specified PA grade has relevant wear or dimensional evidence for the changed job.',
+    evidenceQuestion:
+      'The nylon example is unfilled PA11, not PA6 or a filled grade. Its mechanical moisture-conditioning state is unspecified; do not compare it as a dry-versus-wet test or infer a scale correction.',
+    evidenceAction:
+      'Date the product, chemistry/filler identity, drying/storage and feed record. Use the dryer guide before interpreting a dimensional change.',
+
     criteria: [
       {
         requirement: 'Accessible fit prototype',
@@ -459,6 +518,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.NylonVsPolycarbonate,
+    verdict:
+      'Choose between documented exact formulations and available hardware, rather than two engineering-family labels.',
+    evidenceQuestion:
+      'The examples are unfilled PA11 and PC Blend. Their printed specimens use different printers, thermal settings and slicers; mechanical conditioning is not specified. Read their separate values without a numerical winner.',
+    evidenceAction:
+      'Verify PA11 chamber capability or PC Blend surface/profile preparation, then record the cooled feature and actual service requirement.',
+
     criteria: [
       {
         requirement: 'Service requirement',
@@ -512,6 +578,13 @@ export const materialComparisons: readonly MaterialComparison[] = [
   },
   {
     slug: MaterialComparisonSlug.PolypropyleneVsPetg,
+    verdict:
+      'Investigate a specific PP grade for the mass or attachment brief; keep PETG when its established functional workflow already works.',
+    evidenceQuestion:
+      'The PP example is carbon-filled, with density 0.91 g/cm³ versus the named PETG 1.27. Equal-volume arithmetic is not a sliced-weight comparison, and a filled PP example cannot establish unfilled hinge life.',
+    evidenceAction:
+      'Check PP-specific adhesion and a compatible hardened nozzle independently of mass savings. Record attachment, flexure amplitude, load and observed cycles before a lifetime claim.',
+
     criteria: [
       {
         requirement: 'Integral hinge',

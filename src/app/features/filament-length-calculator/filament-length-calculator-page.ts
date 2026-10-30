@@ -1,9 +1,16 @@
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { materials, materialSources } from '../materials/material-catalogue';
+import { MaterialProperty } from '../materials/material-evidence';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import {
+  DensityOrigin,
+  editDensity,
+  initialDensityState,
+  selectDensityPreset,
   FILAMENT_DIAMETERS,
   FILAMENT_PRESETS,
   FilamentPreset,
@@ -27,6 +34,7 @@ type ConversionMode = (typeof CONVERSION_MODE)[keyof typeof CONVERSION_MODE];
 export class FilamentLengthCalculatorPage {
   readonly routeUrl = PublicRouteUrl;
   readonly conversionMode = CONVERSION_MODE;
+  readonly filamentPreset = FilamentPreset;
   readonly diameterOptions = FILAMENT_DIAMETERS;
   readonly materialOptions = Object.entries(FILAMENT_PRESETS) as readonly [
     FilamentPreset,
@@ -36,13 +44,19 @@ export class FilamentLengthCalculatorPage {
   readonly weightGrams = signal(1000);
   readonly lengthMetres = signal(100);
   readonly diameterMillimetres = signal<number>(1.75);
-  readonly material = signal<FilamentPreset>('Pla');
-  readonly customDensity = signal(1.24);
-  readonly density = computed(() =>
-    this.material() === 'Custom'
-      ? this.customDensity()
-      : FILAMENT_PRESETS[this.material()].density,
+  readonly densityState = signal(initialDensityState(null, null));
+  readonly material = computed(() => this.densityState().preset);
+  readonly density = computed(() => this.densityState().value);
+  readonly densityOrigin = computed(() => this.densityState().origin);
+  readonly densityProduct = computed(() =>
+    materials.find((material) => material.id === this.densityState().productId),
   );
+  readonly densitySource = computed(() => {
+    const sourceId = this.densityProduct()?.productExample?.claims.find(
+      (claim) => claim.property === MaterialProperty.Density,
+    )?.sourceId;
+    return materialSources.find((source) => source.id === sourceId);
+  });
   readonly result = computed(() =>
     this.mode() === CONVERSION_MODE.WeightToLength
       ? gramsToMetres(
@@ -58,6 +72,15 @@ export class FilamentLengthCalculatorPage {
   );
 
   constructor() {
+    inject(ActivatedRoute)
+      .queryParamMap.pipe(takeUntilDestroyed())
+      .subscribe((params) => {
+        if (this.densityState().origin !== DensityOrigin.User) {
+          this.densityState.set(
+            initialDensityState(params.get('material'), params.get('grade')),
+          );
+        }
+      });
     inject(SeoService).apply({
       title:
         'Filament Length Calculator: Convert Grams to Metres | InspectMesh',
@@ -76,7 +99,11 @@ export class FilamentLengthCalculatorPage {
     event: Event,
   ): void {
     const value = Number((event.target as HTMLInputElement).value);
-    this[target].set(value);
+    if (target === 'customDensity') {
+      this.densityState.update((state) => editDensity(state, value));
+    } else {
+      this[target].set(value);
+    }
   }
 
   setDiameter(event: Event): void {
@@ -86,9 +113,12 @@ export class FilamentLengthCalculatorPage {
   }
 
   setMaterial(event: Event): void {
-    this.material.set(
-      (event.target as HTMLSelectElement).value as FilamentPreset,
-    );
+    const id = (event.target as HTMLSelectElement).value;
+    this.densityState.update((state) => selectDensityPreset(state, id));
+  }
+
+  applyPreset(): void {
+    this.densityState.set(initialDensityState(this.material(), null));
   }
 
   reset(): void {
@@ -96,8 +126,7 @@ export class FilamentLengthCalculatorPage {
     this.weightGrams.set(1000);
     this.lengthMetres.set(100);
     this.diameterMillimetres.set(1.75);
-    this.material.set('Pla');
-    this.customDensity.set(1.24);
+    this.densityState.set(initialDensityState(null, null));
   }
 
   format(value: number | null, unit: string): string {

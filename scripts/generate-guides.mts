@@ -18,6 +18,7 @@ import {
 import {
   guideRoutePath,
   PublicRoutePathValue,
+  MaterialRoutePath,
 } from '../src/app/core/seo/public-routes.ts';
 import { ExampleAsset } from '../src/app/features/examples/example-assets.ts';
 import {
@@ -96,6 +97,7 @@ const htmlToSafeHtml = unified()
 
 const internalRouteSlugs = new Set([
   ...Object.values(PublicRoutePathValue),
+  ...Object.values(MaterialRoutePath),
   ...guideRegistry.map((guide) => guideRoutePath(guide.slug).slice(1)),
 ]);
 const guideSlugReference = Object.fromEntries(

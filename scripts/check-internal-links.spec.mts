@@ -212,3 +212,24 @@ describe('registered guide links with section fragments', () => {
     ).toThrow('unknown internal route');
   });
 });
+
+it('diagnoses a broken material evidence target using the actual document pathname', () => {
+  const pages = [
+    page(
+      '/',
+      '<base href="/"><a href="/materials/nylon#product-evidence">Named PA11 evidence</a>',
+    ),
+    page(
+      '/materials/nylon',
+      '<base href="/"><section id="product-evidence">PA11 evidence</section>',
+    ),
+  ];
+  expect(validateGeneratedPages(pages)).toEqual([]);
+  pages[1] = page('/materials/nylon', '<main>Evidence anchor removed</main>');
+  expect(validateGeneratedPages(pages)).toContainEqual(
+    expect.objectContaining({
+      resolvedTarget: '/materials/nylon#product-evidence',
+      reason: 'anchor not found',
+    }),
+  );
+});

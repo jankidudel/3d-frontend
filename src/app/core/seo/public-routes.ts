@@ -220,6 +220,10 @@ export const MaterialComparisonRoutePath = Object.fromEntries(
   ]: `${typeof PublicRouteSegment.MaterialComparisons}/${(typeof MaterialComparisonSlug)[Key]}`;
 };
 
+/** Route projections keep the rich material evidence catalogue in lazy feature chunks. */
+export const materialProfilePaths = Object.values(MaterialRoutePath);
+export const materialPairPaths = Object.values(MaterialComparisonRoutePath);
+
 export const MaterialComparisonRouteUrl = Object.fromEntries(
   Object.entries(MaterialComparisonRoutePath).map(([key, path]) => [
     key,

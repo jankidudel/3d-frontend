@@ -1,23 +1,23 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import {
   PublicRouteSegment,
+  materialProfilePaths,
+  materialPairPaths,
   PublicRoutePathValue as PublicRoutePath,
 } from './core/seo/public-routes';
 import { guideSlugs } from './features/guides/generated/guide-route-data.generated';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 import { printers } from './features/printer-comparison/printer-catalogue';
-import { materials } from './features/materials/material-catalogue';
-import { materialComparisonPaths } from './features/materials/material-comparisons';
 
 export const serverRoutes: ServerRoute[] = [
   { path: PublicRoutePath.Materials, renderMode: RenderMode.Prerender },
-  ...materials.map((material) => ({
-    path: `${PublicRoutePath.Materials}/${material.slug}`,
+  ...materialProfilePaths.map((path) => ({
+    path,
     renderMode: RenderMode.Prerender as RenderMode.Prerender,
   })),
   { path: PublicRoutePath.MaterialSelector, renderMode: RenderMode.Prerender },
   { path: PublicRoutePath.CompareMaterials, renderMode: RenderMode.Prerender },
-  ...materialComparisonPaths.map((path) => ({
+  ...materialPairPaths.map((path) => ({
     path,
     renderMode: RenderMode.Prerender as RenderMode.Prerender,
   })),

@@ -17,6 +17,7 @@ const dataFiles = new Set([
   'src/app/core/seo/public-routes.ts',
   'src/app/features/planning/planner-kind.ts',
   'src/app/features/materials/material-catalogue.ts',
+  'src/app/features/materials/material-evidence.ts',
   'src/app/features/materials/material-comparisons.ts',
   'src/app/features/printer-comparison/printer-catalogue.ts',
   'src/app/features/printer-comparison/comparison-catalogue.ts',

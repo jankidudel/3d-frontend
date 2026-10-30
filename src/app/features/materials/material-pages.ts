@@ -1,3 +1,9 @@
+import {
+  MaterialEvidenceComponent,
+  MaterialProductComparisonComponent,
+  materialEvidenceUrl,
+} from './material-evidence-components';
+import { PublicRouteSegment } from '../../core/seo/public-routes';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { materialDecisionExamples } from '../repeat-workflows/material-decision-examples';
 import { materialPreparation } from './material-preparation';
@@ -6,7 +12,7 @@ import {
   ProductRecords,
 } from '../repeat-workflows/product-link';
 import { Component, computed, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import {
@@ -68,6 +74,11 @@ import {
     </section>
     <section class="material-section">
       <h2>Compare material families</h2>
+      <p>
+        Start with the part's function, then check the exact spool and printer
+        workflow. Product-sheet values describe the named formulation and test,
+        rather than every part in the family.
+      </p>
       <div
         class="material-table-scroll"
         tabindex="0"
@@ -77,11 +88,9 @@ import {
         <table>
           <thead>
             <tr>
-              <th>Material</th>
-              <th>Print difficulty</th>
-              <th>Flexibility</th>
-              <th>Heat</th>
-              <th>Weather</th>
+              <th scope="col">Family and reason to investigate</th>
+              <th scope="col">Preparation that changes the workflow</th>
+              <th scope="col">Decision needing product evidence</th>
             </tr>
           </thead>
           <tbody>
@@ -91,28 +100,45 @@ import {
                   <a [routerLink]="[routeUrl.Materials, material.slug]">{{
                     material.displayName
                   }}</a>
+                  <p>{{ material.bestFor.join(', ') }}</p>
                 </th>
-                <td>{{ material.difficulty }}</td>
+                <td>{{ preparation[material.id].surface }}</td>
                 <td>
-                  {{
-                    material.id === materialIds.Tpu
-                      ? 'Flexible; grade-dependent'
-                      : 'Check deformation for the intended geometry'
-                  }}
-                </td>
-                <td>Exact grade service data required</td>
-                <td>
-                  {{
-                    material.id === materialIds.Asa
-                      ? 'UV-resistant family; verify grade'
-                      : 'Exposure evidence required'
-                  }}
+                  {{ preparation[material.id].question }}
+                  <a [href]="evidenceUrl(material)"
+                    >Read the named product example</a
+                  >
                 </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
+    </section>
+    <section>
+      <h2>How to read the evidence</h2>
+      <ul>
+        <li>
+          <strong>Family guidance:</strong> a qualitative starting point, such
+          as PETG support-removal or surface-adhesion preparation.
+        </li>
+        <li>
+          <strong>Published product data:</strong> a named formulation, document
+          revision, property and test context. TPU hardness needs its Shore
+          scale; a PA11 result does not describe PA6.
+        </li>
+        <li>
+          <strong>Your observation:</strong> a measured fit, mass or deformation
+          from your own recorded process. It does not become a manufacturer
+          property.
+        </li>
+      </ul>
+      <p>
+        For example, an HDT result under a stated load does not specify
+        continuous operating temperature. Read source conditions before
+        comparing numbers. InspectMesh has not physically tested these
+        filaments.
+      </p>
     </section>
     <section class="tool-grid material-card-grid">
       @for (material of materialList; track material.id) {
@@ -128,6 +154,8 @@ import {
   </main>`,
 })
 export class MaterialHubPage {
+  readonly preparation = materialPreparation;
+  readonly evidenceUrl = materialEvidenceUrl;
   readonly guideRouteUrl = GuideRouteUrl;
   readonly materialIds = MaterialId;
   readonly routeUrl = PublicRouteUrl;
@@ -145,7 +173,7 @@ export class MaterialHubPage {
 
 @Component({
   selector: 'app-material-detail',
-  imports: [RouterLink, ProductLinkComponent],
+  imports: [RouterLink, ProductLinkComponent, MaterialEvidenceComponent],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-detail-page">
     @if (material(); as item) {
@@ -202,16 +230,16 @@ export class MaterialHubPage {
           and observation before applying the result to a larger part.
         </p>
       </section>
-      <section>
-        <h2>Formulation and property evidence</h2>
-        <p>
-          Unfilled polymers, blends and fibre-filled versions can differ. Use
-          the linked material source for family context and the exact spool
-          datasheet for mechanical, thermal and exposure data. The selector uses
-          editorial bands to order candidates; they are not measured service
-          limits.
-        </p>
-      </section>
+      <app-material-evidence [material]="item" />
+      <p>
+        <a [routerLink]="guideRouteUrl.RouteFilamentDryerVsDryBox"
+          >Read drying instructions with the equipment limits</a
+        >
+        ·
+        <a [routerLink]="guideRouteUrl.RouteBrassVsHardenedNozzle"
+          >Check filler requirements and installed nozzle fitment</a
+        >
+      </p>
       <section>
         <h2>Printing and design cautions</h2>
         <ul>
@@ -241,7 +269,7 @@ export class MaterialHubPage {
         <ul>
           @for (comparison of comparisons(); track comparison.slug) {
             <li>
-              <a [routerLink]="['/compare-materials', comparison.slug]">{{
+              <a [routerLink]="[comparisonBase, comparison.slug]">{{
                 comparison.slug.replaceAll('-', ' ')
               }}</a>
             </li>
@@ -317,6 +345,8 @@ export class MaterialHubPage {
   </main>`,
 })
 export class MaterialDetailPage {
+  readonly comparisonBase = `/${PublicRouteSegment.MaterialComparisons}`;
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly preparation = computed(
     () => materialPreparation[this.material()!.id],
   );
@@ -330,7 +360,8 @@ export class MaterialDetailPage {
   readonly routeUrl = PublicRouteUrl;
   readonly methodology =
     'The five-point ratings are editorial comparison bands for typical unfilled material families, not laboratory measurements.';
-  private readonly slug = inject(Router).url.split('/').at(-1) ?? '';
+  private readonly slug =
+    inject(ActivatedRoute).snapshot.url.at(-1)?.path ?? '';
   readonly material = computed(() => materialsBySlug.get(this.slug));
   readonly comparisons = computed(() =>
     materialComparisons.filter(
@@ -360,7 +391,7 @@ export class MaterialDetailPage {
 
 @Component({
   selector: 'app-material-comparison-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, MaterialProductComparisonComponent],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-comparison-detail-page">
     @if (comparison(); as record) {
@@ -428,6 +459,26 @@ export class MaterialDetailPage {
         <p>{{ record.reversals }}</p>
       </section>
       <section>
+        <h2>Evidence that would change this choice</h2>
+        <p><strong>Conditional choice:</strong> {{ record.verdict }}</p>
+        <p>{{ record.evidenceQuestion }}</p>
+        <p>
+          <strong>Next evidence to collect:</strong> {{ record.evidenceAction }}
+        </p>
+        <p>
+          Family context explains the trade-off above. The named examples below
+          retain their own formulation and test scope.
+        </p>
+      </section>
+      <app-material-product-comparison [left]="left()" [right]="right()" />
+      <p>
+        <a
+          [routerLink]="routeUrl.CompareMaterials"
+          [queryParams]="{ left: left().id, right: right().id }"
+          >Open this pair in the comparison tool</a
+        >
+      </p>
+      <section>
         <h2>Prepare the exact formulation</h2>
         <p>{{ record.preparation }}</p>
         <p>
@@ -477,7 +528,8 @@ export class MaterialComparisonDetailPage {
   );
 
   readonly routeUrl = PublicRouteUrl;
-  private readonly slug = inject(Router).url.split('/').at(-1) ?? '';
+  private readonly slug =
+    inject(ActivatedRoute).snapshot.url.at(-1)?.path ?? '';
   readonly comparison = computed(() =>
     materialComparisonsBySlug.get(this.slug),
   );
@@ -503,7 +555,7 @@ export class MaterialComparisonDetailPage {
     inject(SeoService).apply({
       title: `${left.displayName} vs ${right.displayName}: Which Filament Should You Use? | InspectMesh`,
       description: comparison.summary,
-      path: `/compare-materials/${comparison.slug}`,
+      path: `/${PublicRouteSegment.MaterialComparisons}/${comparison.slug}`,
       openGraphType: 'article',
     });
   }

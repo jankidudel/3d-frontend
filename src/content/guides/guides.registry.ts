@@ -321,6 +321,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'filament-dryer-vs-dry-box',
+    updatedDate: '2026-10-29',
     group: GuideGroupId.General,
     order: 103,
     enabled: true,
@@ -329,6 +330,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'brass-vs-hardened-nozzle',
+    updatedDate: '2026-10-29',
     group: GuideGroupId.General,
     order: 104,
     enabled: true,
@@ -337,6 +339,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'maximum-volumetric-speed-explained',
+    updatedDate: '2026-10-29',
     group: GuideGroupId.General,
     order: 105,
     enabled: true,

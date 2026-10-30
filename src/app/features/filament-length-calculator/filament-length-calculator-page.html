@@ -74,19 +74,43 @@
           }
         </select>
       </label>
-      @if (material() === 'Custom') {
-        <label class="field">
-          <span>Material density (g/cm³)</span>
-          <input
-            type="number"
-            min="0.001"
-            step="any"
-            [value]="customDensity()"
-            (input)="setNumber('customDensity', $event)"
-          />
-        </label>
-      }
+
+      <label class="field">
+        <span>Material density (g/cm³)</span>
+        <input
+          type="number"
+          min="0.001"
+          step="any"
+          [value]="density()"
+          (input)="setNumber('customDensity', $event)"
+        />
+      </label>
     </div>
+    <p><strong>Density basis:</strong> {{ densityOrigin() }}.</p>
+    @if (densityProduct(); as product) {
+      <p>
+        {{ product.productExample?.manufacturer }} -
+        {{ product.productExample?.productName }}.
+        @if (densitySource(); as source) {
+          <a [href]="source.url"
+            >Published density, version {{ source.documentVersion }}</a
+          >
+          (checked {{ source.accessedAt }}).
+        }
+      </p>
+    }
+    @if (densityState().notice) {
+      <p role="status">{{ densityState().notice }}</p>
+    }
+    @if (material() !== filamentPreset.Custom) {
+      <button
+        type="button"
+        class="button button-secondary"
+        (click)="applyPreset()"
+      >
+        Apply selected family density
+      </button>
+    }
   </section>
 
   <section
@@ -115,6 +139,31 @@
       Actual spool length can vary with diameter tolerance, density, additives
       and manufacturer specification. Use the value printed on your spool when
       it differs.
+    </p>
+  </section>
+
+  <section class="card note">
+    <h2>Reproduce an illustrative conversion</h2>
+    <p>
+      Choose 1,000 g and an illustrative density of 1.24 g/cm³. This is an
+      editable example input, not a universal PLA value or a measured spool.
+    </p>
+    <p>
+      Area = π × (diameter / 2)² mm². Volume = mass / density cm³. Converting
+      cm³ to mm³ and mm to metres cancels the factor of 1,000, so length (m) =
+      mass / (density × area).
+    </p>
+    <p>
+      For 1.75 mm filament: 1,000 / (1.24 × π × 0.875²) = 335.3 m. For 2.85 mm
+      at the same mass/density: 126.4 m. In reverse, 335.3 m at 1.75 mm is about
+      1,000.1 g after rounding.
+    </p>
+    <p>
+      The result describes solid filament. For complete job consumption, include
+      support and purge and use
+      <a [routerLink]="routeUrl.FilamentRemainingCalculator"
+        >the partial-spool planner</a
+      >.
     </p>
   </section>
 
