@@ -20,6 +20,14 @@ faq:
   mesh should you test whether the passage is too small for the selected
   extrusion profile.
 </p>
+<p>
+  An intended void becoming material is different from a roof not receiving top
+  paths. For an absent roof, start with
+  <a href="{{ GuideSlug.RouteStlFileWontSlice }}"
+    >preview and top-closure checks</a
+  >
+  before changing the mesh.
+</p>
 <h2>Three controlled models with the same outer envelope</h2>
 <table>
   <thead>
@@ -122,7 +130,9 @@ faq:
     If the source passage is intact, inspect the first layer where its paths
     vanish. Compare its actual width with your profile's nozzle and line width,
     then test a revised design or reviewed slicer setting. Do not scale a
-    functional part blindly.
+    functional part blindly. For a letter counter or recessed groove, follow the
+    <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}">lettering checks</a
+    >: negative-space width is a different quantity from a material-wall ray.
   </li>
   <li>
     Reopen the saved STL and slice it again. Check the complete channel through

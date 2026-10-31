@@ -105,6 +105,43 @@
         intended material wall.
       </p>
       <p class="legend">Heatmap legend: {{ legend(result) }}</p>
+      <div class="next-actions" aria-labelledby="wall-next-action">
+        <h3 id="wall-next-action">Choose the next check</h3>
+        <p>
+          A sampled material-wall result and generated slicer paths answer
+          different questions. Find the same region in both before changing the
+          model. The threshold does not configure the slicer.
+        </p>
+        <ul>
+          @if (result.belowThreshold > 0) {
+            <li>
+              Inspect each flagged material region in the source and the
+              corresponding model paths. A below-threshold count is sampled
+              rays, not a count of separate defective features.
+            </li>
+          }
+          @if (
+            result.unmeasured > 0 ||
+            result.samples.length < mesh()!.indices.length / 3
+          ) {
+            <li>
+              Review unmeasured directions and unsampled source regions. Missing
+              coverage is not zero thickness or an acceptable wall; check
+              critical geometry independently of heatmap colour.
+            </li>
+          }
+          @if (result.measured > 0 && result.belowThreshold === 0) {
+            <li>
+              If lettering is still omitted, compare its solid strokes, empty
+              counters and relief with the
+              <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
+                >lettering checks</a
+              >. Acceptable measured samples cannot establish full feature
+              coverage or preserved sliced detail.
+            </li>
+          }
+        </ul>
+      </div>
       <label class="heatmap-toggle"
         ><input
           type="checkbox"

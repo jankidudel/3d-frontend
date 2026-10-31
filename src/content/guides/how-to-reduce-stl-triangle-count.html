@@ -208,10 +208,23 @@ heading: How to Reduce STL Triangle Count
       </td>
     </tr>
     <tr>
-      <td>Rib or lettering</td>
+      <td>Material rib</td>
       <td>
         Inspect close-up geometry and relevant slicer layers; area sampling may
         miss it.
+      </td>
+    </tr>
+    <tr>
+      <td>Lettering: stroke, counter and relief</td>
+      <td>
+        Keep the original feature definitions, reopen the exact candidate and
+        inspect those regions. Compare sliced paths only with the same profile
+        and layer schedule. Unchanged bounds and small average deviation do not
+        prove preserved text; use the
+        <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+          >lettering checks</a
+        >
+        to separate missing material from a closed counter.
       </td>
     </tr>
     <tr>

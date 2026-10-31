@@ -134,6 +134,27 @@ heading: How to Check 3MF Wall Thickness for 3D Printing
 </p>
 
 <h2>5. Verify before editing the source</h2>
+<ol>
+  <li>
+    Identify the intended placed object in the
+    <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> and native project.
+    Compare its resolved physical dimensions, including placement scale. The
+    wall report itself covers the combined scene, not a selected-object wall
+    result.
+  </li>
+  <li>
+    Find that object's corresponding region in the native slicer and inspect its
+    effective object settings and modifiers. Supported geometry resolution does
+    not apply every slicer project's modifiers, material assignments or print
+    profile.
+  </li>
+  <li>
+    Compare the generated model paths through the critical region. A millimetre
+    review threshold changes the geometry screen; it does not change the native
+    project's extrusion settings. Keep both source and project settings with the
+    comparison.
+  </li>
+</ol>
 <p>
   Keep the original 3MF. Check its build items and transformed dimensions in the
   authoring application, make a targeted source edit where needed, then compare

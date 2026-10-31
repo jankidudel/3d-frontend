@@ -57,6 +57,14 @@ heading: '3D Print Wall Thickness: What a Thin Area Means'
       </td>
     </tr>
     <tr>
+      <td>Counter inside a letter or engraved groove</td>
+      <td>Negative space bounded by material</td>
+      <td>
+        Inspect the opening and corresponding sliced paths. A material-wall ray
+        does not measure the empty counter or groove width.
+      </td>
+    </tr>
+    <tr>
       <td>Zero-thickness sheet</td>
       <td>A surface with no enclosed solid wall</td>
       <td>
@@ -251,10 +259,26 @@ heading: '3D Print Wall Thickness: What a Thin Area Means'
       </td>
     </tr>
     <tr>
-      <td>Missing sliced feature</td>
+      <td>Missing narrow material rib</td>
       <td>
         Review generator, line-width and thin-feature profile controls in the
         native slicer.
+      </td>
+    </tr>
+    <tr>
+      <td>Lettering loses strokes or counters</td>
+      <td>
+        Separate material width, negative space and relief in the lettering
+        checks below.
+      </td>
+    </tr>
+    <tr>
+      <td>Preview has no roof</td>
+      <td>
+        Check source closure, preview visibility and effective top settings with
+        the
+        <a href="{{ GuideSlug.RouteStlFileWontSlice }}">missing-roof triage</a>.
+        Roof paths are a different question from a sampled material wall.
       </td>
     </tr>
     <tr>
@@ -266,3 +290,25 @@ heading: '3D Print Wall Thickness: What a Thin Area Means'
     </tr>
   </tbody>
 </table>
+<h2>Lettering: separate width, empty space and relief</h2>
+<p>
+  First reopen the exported model in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> and confirm that the
+  intended lettering exists. Solid strokes and the counters inside letters need
+  separate inspection. Compare XY stroke/gap widths in the source with generated
+  paths, then inspect the geometric Z interval of the raised or recessed detail
+  against the actual layer schedule. Finer Z layers alone do not change the
+  source's XY width. There is no universal font-size threshold.
+</p>
+<p>
+  If text is absent from the mesh, review
+  <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}"
+    >export selection and solid geometry</a
+  >. If a letter floats above its base, inspect attachment in the source before
+  discarding disconnected pieces. A filled counter needs
+  <a href="{{ GuideSlug.RouteSlicerFillsHoleInStl }}">negative-space review</a>.
+  Prefer a local edit to stroke, counter, relief or attachment when the rest of
+  the part must keep its dimensions; reopen the saved correction and inspect all
+  affected layers under the same profile. These are diagnostic steps, not
+  results of a new lettering experiment or proof of printed readability.
+</p>

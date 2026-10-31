@@ -277,6 +277,71 @@
     </ul>
   </section>
   @if (kind === kinds.Wall) {
+    <section class="card" aria-labelledby="detail-dimension-title">
+      <h2 id="detail-dimension-title">Which detail is changing?</h2>
+      <p>
+        This planner compares dimensions and equal-width line arithmetic. To
+        find why a particular stroke, opening or roof is missing, inspect that
+        feature in the actual sliced preview.
+      </p>
+      <div
+        class="table-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Detail dimensions and next checks"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Detail</th>
+              <th scope="col">Check in the source and slicer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>XY material width</td>
+              <td>
+                Compare source width with actual line widths and perimeter
+                generation using the
+                <a [href]="guides.Route3dPrintWallThicknessGuide"
+                  >wall interpretation guide</a
+                >.
+              </td>
+            </tr>
+            <tr>
+              <td>Z relief</td>
+              <td>
+                Compare raised height or recess depth with actual first-layer,
+                adaptive-layer and slice-plane settings. Use the
+                <a [href]="guides.Route3dPrintWallThicknessGuide"
+                  >lettering checks</a
+                >; nominal height divided by layer height is not an exact
+                generated-layer count.
+              </td>
+            </tr>
+            <tr>
+              <td>Negative-space counter</td>
+              <td>
+                Inspect whether the intended void remains open in the slice.
+                <a [href]="guides.RouteSlicerFillsHoleInStl"
+                  >Filled-opening diagnosis</a
+                >
+                addresses this separately from material-wall thickness.
+              </td>
+            </tr>
+            <tr>
+              <td>Roof</td>
+              <td>
+                Review visibility, source closure, effective top layers and mode
+                in the
+                <a [href]="guides.RouteStlFileWontSlice">roof triage</a>.
+                Equal-width line arithmetic does not predict top closure.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
     <p>
       <a [href]="guides.Route3dPrintWallThicknessGuide"
         >Interpret wall thickness for the feature's use</a

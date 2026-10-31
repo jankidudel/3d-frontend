@@ -3,6 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { toolDirectoryGroups, ToolType } from './tool-directory';
 
 @Component({
@@ -13,6 +14,7 @@ import { toolDirectoryGroups, ToolType } from './tool-directory';
 })
 export class ToolsPage {
   readonly routes = PublicRouteUrl;
+  readonly guides = GuideRouteUrl;
   readonly toolGroups = toolDirectoryGroups;
   readonly toolTypes = Object.values(ToolType);
   readonly query = signal('');

@@ -43,6 +43,29 @@ heading: 'How to Export STL from CAD'
   body needs an explicit decision; a complete-looking viewer image does not
   identify missing inventory.
 </p>
+<h2>Export small lettering as intended geometry</h2>
+<ol>
+  <li>
+    Include the intended text bodies in the export selection. An appearance,
+    annotation or screen label is not automatically solid text geometry.
+  </li>
+  <li>
+    Confirm raised strokes join the intended base and recessed cuts leave the
+    intended negative space. If one solid is required, use the source tool's
+    supported union or subtraction; overlapping closed shells alone do not
+    demonstrate a Boolean result.
+  </li>
+  <li>
+    Record a critical stroke, counter and relief dimension, then reopen the
+    actual saved STL. Inspect those regions separately from the outside bounds.
+  </li>
+  <li>
+    Compare sliced paths under the intended profile using the
+    <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+      >lettering handoff</a
+    >. Export refinement cannot restore text that never reached the saved mesh.
+  </li>
+</ol>
 <h2>Choose coordinate unit and mesh settings</h2>
 <p>
   STL has no unit declaration. Record what one coordinate unit represents.

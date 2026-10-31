@@ -134,13 +134,33 @@ heading: How to Check STL Wall Thickness for 3D Printing
 </p>
 
 <h2>5. Confirm the saved copy and sliced layers</h2>
+<ol>
+  <li>
+    Name the critical region, such as the rib beside a mounting hole. Export a
+    new copy, confirm its physical dimensions and topology, then find that same
+    region in the reopened STL.
+  </li>
+  <li>
+    Compare the source material width with the sampled result at that region.
+    The review threshold only flags measured rays; it does not configure line
+    width, perimeter generation or any other slicer setting.
+  </li>
+  <li>
+    Slice the saved copy with the intended profile and inspect corresponding
+    model paths through every affected layer. Separate travel and skirt paths
+    from paths that represent the feature.
+  </li>
+</ol>
 <p>
-  Export a new STL copy, recheck its physical dimensions and topology, then
-  inspect the same critical region with the sampled checker. Slice that copy
-  with the intended profile and inspect native perimeter paths layer by layer.
   In a retained PrusaSlicer 2.9.6 software experiment on the thin bars, Classic
   and Arachne produced different second-layer paths under recorded settings. The
   <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}">full comparison</a>
   explains its settings and limitations. Neither software preview is a physical
   print test.
+</p>
+<p>
+  For lettering, distinguish solid strokes from the empty counters inside
+  letters and separate XY width from Z relief. Follow the
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}">lettering checks</a>;
+  a sampled material ray is not a groove-width measurement.
 </p>

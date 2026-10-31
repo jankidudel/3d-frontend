@@ -1,0 +1,199 @@
+{
+  "method": "Independent serialized Float32 STL decoding, signed volume, edge topology and point parity",
+  "coordinate_unit": "assumed mm",
+  "coverage": "These orthogonal controls only; not a general self-intersection detector or slicer observation",
+  "controls": [
+    {
+      "id": "T1",
+      "sha256": "435f1405d6d0e7d88e1fddc5df45ad6d8eb1dbd9e9654ed11ca8a4a0517c6066",
+      "triangles": 500,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          40.0
+        ],
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          2.5999999046325684
+        ]
+      ],
+      "signed_volume_mm3": 1938.8670044169403
+    },
+    {
+      "id": "T2",
+      "sha256": "0fe035121e41948faad3908dcbcc06fc51cc90fbc414489d2f8ae835a3c82523",
+      "triangles": 500,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          40.0
+        ],
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          2.5999999046325684
+        ]
+      ],
+      "signed_volume_mm3": 1955.135977523807
+    },
+    {
+      "id": "T3",
+      "sha256": "8de4bfad0b7eca4179f2a0fbfac483d509e74a408a96da7578635b276abcc662",
+      "triangles": 500,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          40.0
+        ],
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          2.0999999046325684
+        ]
+      ],
+      "signed_volume_mm3": 1925.8559916000404
+    },
+    {
+      "id": "T4",
+      "sha256": "fb40a5d8a0f2fb7bac17241ee41e35434fdff4c6abea6f67bc7bf0fb76501fbb",
+      "triangles": 572,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          40.0
+        ],
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          2.0
+        ]
+      ],
+      "signed_volume_mm3": 1901.1329918345214
+    },
+    {
+      "id": "V1",
+      "sha256": "206933c9758c318d39a640655463a7b2f7e5908dd4289f75cdd244f5e22ce0c8",
+      "triangles": 12,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          30.0
+        ]
+      ],
+      "signed_volume_mm3": 17280.0
+    },
+    {
+      "id": "V2",
+      "sha256": "3ae78d71cc485842405625242d34dcedbde912779162ed0cd923790e01bdf93a",
+      "triangles": 92,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          30.0
+        ]
+      ],
+      "signed_volume_mm3": 3843.0730307922177
+    },
+    {
+      "id": "V3",
+      "sha256": "1c1a050e601565d05585f1afb7d389099d7c5ef47e6289479543792affbfc7f3",
+      "triangles": 44,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          24.0
+        ],
+        [
+          0.0,
+          30.0
+        ]
+      ],
+      "signed_volume_mm3": 13440.0
+    },
+    {
+      "id": "R-box",
+      "sha256": "a2ca792913afce3c4d19a59468bebc4703ef8e56fbfd1438a26117da3a591e4a",
+      "triangles": 12,
+      "edge_connected_shells": 1,
+      "boundary_edges": 0,
+      "over_shared_edges": 0,
+      "winding_conflicts": 0,
+      "bounds": [
+        [
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          30.0
+        ],
+        [
+          0.0,
+          10.0
+        ]
+      ],
+      "signed_volume_mm3": 9000.0
+    }
+  ]
+}

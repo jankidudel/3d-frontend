@@ -100,6 +100,51 @@
         even though translation leaves the isolated part's own wall unchanged.
       </p>
       <p class="legend">Heatmap legend: {{ legend(result) }}</p>
+      <div class="next-actions" aria-labelledby="build-next-action">
+        <h3 id="build-next-action">
+          Compare the resolved build with its project
+        </h3>
+        <p>
+          Resolved placed geometry in millimetres is the measured basis. Native
+          slicer object settings and modifiers require a separate comparison;
+          this result does not check a printer profile or apply text-modifier
+          effects.
+        </p>
+        <ul>
+          @if (result.belowThreshold > 0) {
+            <li>
+              Locate the flagged material region in the intended placed object.
+              Check whether the opposing hit belongs to that object before
+              comparing its native sliced paths.
+            </li>
+          }
+          @if (
+            result.unmeasured > 0 ||
+            result.samples.length < resolved()!.geometry.indices.length / 3
+          ) {
+            <li>
+              Inspect unmeasured and unsampled placed geometry in the source
+              project. Assembly gaps and neighbouring bodies need their own
+              review; missing coverage is not an acceptable wall result.
+            </li>
+          }
+          @if (result.measured > 0 && result.belowThreshold === 0) {
+            <li>
+              If detail is missing in the slice, match the intended object's
+              resolved size to its native project and inspect effective object
+              settings. No flagged measured ray does not establish preserved
+              lettering or complete geometry coverage.
+            </li>
+          }
+        </ul>
+        <p>
+          Follow the
+          <a [href]="guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting"
+            >3MF native-project handoff</a
+          >
+          while preserving the original package.
+        </p>
+      </div>
       <label class="heatmap-toggle"
         ><input
           type="checkbox"
