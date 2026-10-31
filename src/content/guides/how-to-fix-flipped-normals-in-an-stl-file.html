@@ -106,6 +106,14 @@ faq:
   the mesh is open, contains duplicate faces or has crossing surfaces, resolve
   those structural questions before trusting any orientation operation.
 </p>
+<h2>Wrong assembly side or inward faces?</h2>
+<p>
+  Reversing winding does not move a key, thread or letter to the other side of a
+  part. If the geometry itself appears reflected,
+  <a href="{{ GuideSlug.RouteMirroredStlFile }}">check reflected handedness</a>
+  against the intended design. A mirrored outward mesh can pass the same basic
+  edge and volume checks as the reference.
+</p>
 <h2>Recheck the saved output</h2>
 <p>
   Save under a new filename, then run the

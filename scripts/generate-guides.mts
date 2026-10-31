@@ -183,6 +183,11 @@ for (const fileName of contentFiles) {
         /<img src="\/examples\/split-assembly\/[^"]+"[^>]*>/g,
         (image) =>
           `<div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original split and assembly diagram, scroll horizontally on small screens">${image}</div>`,
+      )
+      .replace(
+        /<img src="\/examples\/input-integrity\/[^"]+"[^>]*>/g,
+        (image) =>
+          `<div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original input integrity diagram, scroll horizontally on small screens">${image}</div>`,
       ),
   });
 }

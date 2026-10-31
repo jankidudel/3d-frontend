@@ -1679,6 +1679,138 @@ export const publicExamples: readonly PublicExample[] = [
     guide: GuideRouteUrl.RouteCheckStlFilesBeforeSelling,
     tools: [PublicRouteUrl.BatchStlChecker],
   },
+  {
+    id: 'degenerate-records',
+    name: 'Zero-area records versus the cube surface',
+    group: 'Input integrity',
+    question:
+      'Does an added zero-area record differ from a duplicate valid face?',
+    files: [
+      {
+        path: ExampleAsset.Closed20mmCubeStl,
+        name: 'closed-20mm-cube.stl',
+        bytes: 684,
+        label: 'Existing reference',
+      },
+      {
+        path: ExampleAsset.CubeRepeatedPositionStl,
+        name: 'cube-repeated-position.stl',
+        bytes: 734,
+        label: 'Repeated positions; parseable diagnostic geometry',
+      },
+      {
+        path: ExampleAsset.CubeCollinearStl,
+        name: 'cube-collinear.stl',
+        bytes: 734,
+        label: 'Collinear added face; parseable diagnostic geometry',
+      },
+    ],
+    preview: ExampleAsset.InputIntegrityDegeneracySvg,
+    alt: 'Repeated positions and collinear points have zero area, while a schematic narrow triangle has nonzero area.',
+    known:
+      'Each derived cube retains the reference bounds and has one additional zero-area record, for 13 stored faces. The diagram is schematic, not to scale.',
+    observed:
+      '31 October 2026: local preflight and local processor each count one degenerate face. The processor additionally counts the detached record as another component. Local processor cleanup removes one face, no duplicates and no winding changes, then reopens as a valid 12-face cube.',
+    settings:
+      'Choose a control deliberately in local preflight. No upload or cleanup starts when it loads; preserve your current model first.',
+    limitations:
+      'These are diagnostic records, not physically tested printable models. The guide separately compares a positive-area narrow triangle rejected by the processor tolerance.',
+    guide: GuideRouteUrl.RouteDegenerateTrianglesStl,
+    tools: [PublicRouteUrl.StlPrintPreflight, PublicRouteUrl.Viewer],
+    provenance:
+      'Original InspectMesh analytical controls; exact bytes and separate local workflow observations in the input-integrity manifest. No physical test.',
+  },
+  {
+    id: 'binary-input-controls',
+    name: 'Complete input versus an open surface',
+    group: 'Input integrity',
+    question: 'Does successful parsing establish that the surface is closed?',
+    files: [
+      {
+        path: ExampleAsset.Closed20mmCubeStl,
+        name: 'closed-20mm-cube.stl',
+        bytes: 684,
+        label: 'Complete closed reference',
+      },
+      {
+        path: ExampleAsset.OpenFaceCubeStl,
+        name: 'open-face-cube.stl',
+        bytes: 584,
+        label: 'Complete binary records; open surface',
+      },
+      {
+        path: ExampleAsset.CubeSolidHeaderStl,
+        name: 'cube-solid-header.stl',
+        bytes: 684,
+        label: 'Complete binary input beginning with solid',
+      },
+    ],
+    preview: ExampleAsset.InputIntegrityBinaryLayoutSvg,
+    alt: 'Standard binary header, count and records with a complete open cube distinguished from a missing byte.',
+    known:
+      'The existing 12-face reference is 684 bytes; the 10-face open cube is 584. Both have complete standard records. The header variant retains the reference payload.',
+    observed:
+      '31 October 2026: local preflight, component reader and processor accept all three inputs. Preflight and processor find four boundary edges on the open cube. Malformed examples are direct guide downloads and are never gallery loading choices.',
+    settings:
+      'Load the open surface in preflight to inspect its boundary finding. Use the linked guide for malformed download investigation.',
+    limitations:
+      'Parsing is separate from surface validation. A trusted hash establishes byte equality, not design correctness or printability.',
+    guide: GuideRouteUrl.RouteTruncatedStlFile,
+    tools: [PublicRouteUrl.StlPrintPreflight, PublicRouteUrl.Viewer],
+    provenance:
+      'Existing InspectMesh cube controls and an original binary-header derivative; local reader and processor observations, no physical test.',
+  },
+  {
+    id: 'reflected-handedness',
+    name: 'Reflection, rotation and winding',
+    group: 'Input integrity',
+    question:
+      'Can a mirrored outward mesh share counts, bounds and absolute volume with its reference?',
+    files: [
+      {
+        path: ExampleAsset.TetraReferenceStl,
+        name: 'tetra-reference.stl',
+        bytes: 284,
+        label: 'Outward reference',
+      },
+      {
+        path: ExampleAsset.TetraMirroredStl,
+        name: 'tetra-mirrored-outward.stl',
+        bytes: 284,
+        label: 'Reflected X positions; outward winding preserved',
+      },
+      {
+        path: ExampleAsset.TetraRotatedStl,
+        name: 'tetra-rotated-outward.stl',
+        bytes: 284,
+        label: '180-degree Z rotation',
+      },
+      {
+        path: ExampleAsset.TetraInwardStl,
+        name: 'tetra-inward.stl',
+        bytes: 284,
+        label: 'Reference positions; inward winding',
+      },
+    ],
+    preview: ExampleAsset.InputIntegrityReflectionSvg,
+    alt: 'The same O, X, Y and Z vertex identities are retained across reference, reflection and rotation in one fixed viewing frame.',
+    known:
+      'Four scalene tetrahedra share 30 x 20 x 10 bounds. Reflection changes labelled handedness; winding reversal alone leaves all positions unchanged.',
+    observed:
+      '31 October 2026: local preflight and processor report four faces, no open edges or winding conflicts and absolute volume 1000 for every control. Independently calculated signed volume is -1000 only for the inward reference.',
+    settings:
+      'Inspect known asymmetric features in the viewer. In revision comparison the reference remains the before file; deliberately select the after control.',
+    limitations:
+      'No tool here automatically determines intended handedness or assembly fit. A positive signed volume does not prove the intended design side. STL has no unit declaration.',
+    guide: GuideRouteUrl.RouteMirroredStlFile,
+    tools: [
+      PublicRouteUrl.StlPrintPreflight,
+      PublicRouteUrl.Viewer,
+      PublicRouteUrl.StlCompare,
+    ],
+    provenance:
+      'Original InspectMesh coordinate transforms with labelled correspondence and exact-byte observations; no slicer export or physical print test.',
+  },
 ];
 /** Only registry IDs are accepted; unknown values never become fetch locations. */
 export function findPublicExample(

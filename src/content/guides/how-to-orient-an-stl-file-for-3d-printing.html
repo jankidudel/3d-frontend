@@ -13,6 +13,13 @@ heading: How to Orient an STL File for 3D Printing
   target slicer's supports and layers. No geometry score is universally best.
 </p>
 
+<p>
+  Rotation changes bed pose; reflection changes handedness. If asymmetric
+  features remain on the wrong side after rotating,
+  <a href="{{ GuideSlug.RouteMirroredStlFile }}">check reflected handedness</a>
+  before choosing an orientation. An intentional left-hand variant is a design
+  decision, not a poorer bed-orientation score.
+</p>
 <h2>1. Rank the requirement that cannot be fixed later</h2>
 <table>
   <thead>

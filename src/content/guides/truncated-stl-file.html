@@ -1,0 +1,287 @@
+---
+title: 'Truncated STL File: Check Missing Bytes and Records | InspectMesh'
+description: Use controlled STL files to distinguish missing records, count mismatches and mesh holes. Learn when to download again or request a fresh export.
+slug: truncated-stl-file
+eyebrow: STL input diagnosis
+heading: 'Truncated STL File: Check Missing Bytes and Records'
+---
+
+<p>
+  Preserve the received STL unchanged. If a complete known control opens but
+  your file does not, compare its byte length and reported parsing error before
+  attempting mesh repair. Missing bytes are an input-structure problem; a
+  structurally complete file with a hole is a different case. Obtain a complete
+  download or fresh source export rather than inventing the missing geometry.
+</p>
+<h2>Check the standard binary structure</h2>
+<figure>
+  <img
+    src="/examples/input-integrity/binary-record-layout.svg"
+    width="720"
+    height="260"
+    alt="An 80-byte header, four-byte count and fifty bytes per facet distinguish an incomplete record from a complete open surface"
+  />
+  <figcaption>
+    Original byte-layout schematic. Block widths are not proportional.
+  </figcaption>
+</figure>
+<p>
+  Standard, unextended binary STL has an 80-byte header, a four-byte
+  little-endian triangle count and 50 bytes per facet. Expected bytes are 84 +
+  50 × N. A 12-face reference therefore occupies 684 bytes. This is
+  standard-format arithmetic, not a universal corruption verdict for every
+  producer-specific extension. A mismatch does not by itself establish whether
+  the count, payload or an extension convention is responsible.
+</p>
+<h2 id="controlled-inputs">Controlled downloads and actual outcomes</h2>
+<p>
+  <strong
+    >The malformed downloads below are deliberate diagnostic files, not
+    printable models.</strong
+  >
+  They are linked directly rather than offered as one-click gallery inputs.
+  Checks ran locally on 31 October 2026 using actual InspectMesh functions. No
+  file was sent to a deployed processing endpoint.
+</p>
+<table>
+  <caption>
+    Binary controls: accepted means parsing succeeded, not a valid finished
+    model
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Download</th>
+      <th scope="col">Declared faces / bytes</th>
+      <th scope="col">Local preflight</th>
+      <th scope="col">Local processor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="complete-reference">
+      <th scope="row">
+        <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
+          >Complete cube reference</a
+        >
+      </th>
+      <td>12 / 684</td>
+      <td>Accepted; 12 faces, 0 open edges</td>
+      <td>Accepted; 12 faces, 0 open edges</td>
+    </tr>
+    <tr id="last-byte-missing">
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeLastByteMissingStl }}" download
+          >Diagnostic: last byte missing</a
+        >
+      </th>
+      <td>12 / 683</td>
+      <td>Rejected; no surface check</td>
+      <td>Rejected: invalid binary STL</td>
+    </tr>
+    <tr id="last-record-missing">
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeLastRecordMissingStl }}" download
+          >Diagnostic: last full record missing</a
+        >
+      </th>
+      <td>12 / 634</td>
+      <td>Rejected; no surface check</td>
+      <td>Rejected: invalid binary STL</td>
+    </tr>
+    <tr id="count-mismatch">
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeCountMismatchStl }}" download
+          >Diagnostic: count 13, unchanged payload</a
+        >
+      </th>
+      <td>13 / 684</td>
+      <td>Rejected; no surface check</td>
+      <td>Rejected: invalid binary STL</td>
+    </tr>
+    <tr id="open-surface">
+      <th scope="row">
+        <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download
+          >Existing open-face cube</a
+        >
+      </th>
+      <td>10 / 584</td>
+      <td>Accepted; 10 faces, 4 open edges, unavailable volume</td>
+      <td>Accepted; 10 faces, 4 open edges, unavailable volume</td>
+    </tr>
+    <tr id="solid-header">
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeSolidHeaderStl }}" download
+          >Complete binary cube with solid-prefixed header</a
+        >
+      </th>
+      <td>12 / 684</td>
+      <td>Accepted; 12 faces</td>
+      <td>Accepted; 12 faces</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The 683-byte control has all coordinate bytes but is missing the final
+  attribute byte. The 634-byte control has only 11 complete facet records. The
+  count-mismatch control instead retains the full reference payload while
+  declaring 13. Blindly treating all three as one repairable hole would hide
+  distinct input failures. The word <code>solid</code> at the start of a header
+  alone does not prove ASCII encoding.
+</p>
+<h2>A hole in the mesh is not a missing byte</h2>
+<p>
+  The existing 584-byte open cube correctly declares ten facets. Parsing
+  succeeds and the subsequent topology check finds four open edges around its
+  missing square face. The incomplete 683-byte file is rejected before those
+  checks. Adding padding to make a file parse cannot reconstruct the author's
+  intended surface, and changing a declared count can conceal missing records.
+  Preserve the input and investigate its source instead.
+</p>
+<h2 id="reader-differences">Different readers can stop at different stages</h2>
+<table>
+  <caption>
+    Additional reader observations, not a universal application compatibility
+    promise
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Control</th>
+      <th scope="col">Component reader</th>
+      <th scope="col">Viewer loader</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">683-byte binary cube</th>
+      <td>Rejected</td>
+      <td>
+        Returned 12 triangles; it did not require the final attribute byte
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">634-byte cube or count-13 mismatch</th>
+      <td>Rejected</td>
+      <td>Threw “Offset is outside the bounds of the DataView”</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <a href="{{ ExampleAsset.TriangleCompleteAsciiStl }}" download
+          >Complete one-facet ASCII control</a
+        >
+      </th>
+      <td>Accepted; 1 face</td>
+      <td>Returned 1 triangle</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <a href="{{ ExampleAsset.TriangleCutOffAsciiStl }}" download
+          >Diagnostic: ASCII cut during its final vertex</a
+        >
+      </th>
+      <td>Rejected</td>
+      <td>
+        Returned empty geometry; the viewer's separate nonempty check rejects it
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Preflight rejected the three malformed binary controls and the cut-off ASCII
+  with “We could not read that STL file. Choose a valid ASCII or binary STL
+  file.” The strict component reader reported “Malformed or truncated STL.
+  Binary declared counts must match its complete byte length.” The processor
+  reported “Invalid binary STL. The file is incomplete or malformed.” for the
+  binary cases and “Invalid ASCII STL. The file is incomplete or malformed.” for
+  the cut-off text. Accepted ASCII input subsequently had three open edges in
+  preflight and processor checks; one facet is not a closed solid.
+</p>
+<p>
+  These observations name <code>readStl → inspectMesh</code>,
+  <code>parsePartStl</code> and Three.js <code>STLLoader</code> 0.185.1. The
+  loader experiment is a unit-level read, not a full viewer screenshot or proof
+  of surface validity. The component-reader experiment did not run component
+  analysis. Full messages, source revisions, observation method and SHA-256 for
+  each file are in the
+  <a href="{{ ExampleAsset.InputIntegrityObservations }}" download
+    >local observations</a
+  >
+  and
+  <a href="{{ ExampleAsset.InputIntegrityProcessorObservations }}" download
+    >processor observations</a
+  >. The
+  <a href="{{ ExampleAsset.InputIntegrityManifest }}" download
+    >construction manifest</a
+  >
+  records the exact byte mutations and complete reference hashes.
+</p>
+<h2>Recover the source rather than hide the failure</h2>
+<p>
+  Check a replacement with
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">local STL preflight</a>.
+  Select the file deliberately: processing stays in your browser. If parsing
+  fails, return to the source download or export; if it succeeds, review the
+  reported dimensions, unit assumption and topology findings. A successful read
+  alone does not establish a complete or printable model.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Evidence</th>
+      <th scope="col">Next action</th>
+      <th scope="col">What it establishes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Trusted sender provides an expected size/hash</th>
+      <td>Download again and compare those values with the replacement.</td>
+      <td>
+        A matching SHA-256 establishes equality with that reference, not that
+        the reference is good geometry.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">No complete source or trustworthy reference</th>
+      <td>
+        Ask the author for a fresh export and preserve the original received
+        file.
+      </td>
+      <td>
+        A successful replacement still needs surface, dimension and unit checks.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Known control also fails</th>
+      <td>
+        Check the application's supported format, file limit and
+        browser/rendering failure.
+      </td>
+      <td>An application failure is not proof that your mesh is damaged.</td>
+    </tr>
+    <tr>
+      <th scope="row">Replacement parses but has open edges</th>
+      <td>Investigate the boundary in the source design.</td>
+      <td>Mesh reconstruction is now a separate, informed decision.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Use the
+  <a href="{{ GuideSlug.RouteHowToOpenAnStlFile }}">opening diagnosis</a> for
+  general file/application triage, and
+  <a href="{{ GuideSlug.RouteAsciiVsBinaryStl }}">ASCII versus binary STL</a>
+  for encoding and coordinate representation. Only after a replacement parses
+  should you choose an appropriate
+  <a href="{{ GuideSlug.RouteHowToRepairAnStlFile }}">mesh repair method</a>
+  and inspect its actual slicer layers. Renaming an HTML error page to .stl,
+  adding zero bytes or running cleanup cannot recover missing original design
+  data.
+</p>
+<p>
+  The
+  <a href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000505.shtml"
+    >Library of Congress binary STL description</a
+  >
+  documents the standard record layout. Reviewed 31 October 2026. The numerical
+  controls and named software observations above are original InspectMesh
+  evidence; they are not physical printing tests.
+</p>

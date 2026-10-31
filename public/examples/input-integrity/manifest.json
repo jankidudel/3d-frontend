@@ -1,0 +1,916 @@
+{
+  "formatVersion": 1,
+  "generator": "scripts/generate-input-integrity-fixtures.mts",
+  "rights": "Original InspectMesh controls, CC0-1.0; reused InspectMesh reference files retain their provenance. No physical print tests.",
+  "units": "STL has no unit declaration; coordinates and areas are coordinate-unit quantities. A millimetre interpretation is explicit, not stored.",
+  "observationRecords": ["observations.json", "processor-observations.json"],
+  "diagrams": [
+    {
+      "name": "triangle-degeneracy.svg",
+      "bytes": 1386,
+      "sha256": "8be584ac93b29732c7b68330436f54ee8acdd57b59b6f616233bdb4cadf837a3"
+    },
+    {
+      "name": "binary-record-layout.svg",
+      "bytes": 1258,
+      "sha256": "6835374aa08815998382daa2cac1eb4670aeedcd8753d686d6d85feae5d7d10d"
+    },
+    {
+      "name": "reflection-vs-rotation.svg",
+      "bytes": 3206,
+      "sha256": "0ebe4a54248f113586fdb6a08a04ff73894bec2f0539192303bf63bdd12ae859"
+    }
+  ],
+  "entries": [
+    {
+      "name": "cube-repeated-position.stl",
+      "path": "/examples/input-integrity/cube-repeated-position.stl",
+      "bytes": 734,
+      "sha256": "867e908fbcee6dbcbca7d9341d52c9a30da11731a4d873271c94123ed1a611d6",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "baseline": "/examples/english-market-batch/closed-20mm-cube.stl",
+        "appendedCoordinates": [5, 5, 5, 10, 5, 5, 10, 5, 5]
+      },
+      "analytical": {
+        "intendedAddedArea": 0,
+        "reopened": {
+          "triangles": [
+            [
+              [0, 0, 0],
+              [20, 20, 0],
+              [20, 0, 0]
+            ],
+            [
+              [0, 0, 0],
+              [0, 20, 0],
+              [20, 20, 0]
+            ],
+            [
+              [0, 0, 20],
+              [20, 0, 20],
+              [20, 20, 20]
+            ],
+            [
+              [0, 0, 20],
+              [20, 20, 20],
+              [0, 20, 20]
+            ],
+            [
+              [0, 0, 0],
+              [20, 0, 0],
+              [20, 0, 20]
+            ],
+            [
+              [0, 0, 0],
+              [20, 0, 20],
+              [0, 0, 20]
+            ],
+            [
+              [0, 20, 0],
+              [0, 20, 20],
+              [20, 20, 20]
+            ],
+            [
+              [0, 20, 0],
+              [20, 20, 20],
+              [20, 20, 0]
+            ],
+            [
+              [0, 0, 0],
+              [0, 0, 20],
+              [0, 20, 20]
+            ],
+            [
+              [0, 0, 0],
+              [0, 20, 20],
+              [0, 20, 0]
+            ],
+            [
+              [20, 0, 0],
+              [20, 20, 0],
+              [20, 20, 20]
+            ],
+            [
+              [20, 0, 0],
+              [20, 20, 20],
+              [20, 0, 20]
+            ],
+            [
+              [5, 5, 5],
+              [10, 5, 5],
+              [10, 5, 5]
+            ]
+          ],
+          "areas": [
+            200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 0
+          ],
+          "signedVolume": 7999.999999999999,
+          "bounds": [
+            [0, 20],
+            [0, 20],
+            [0, 20]
+          ]
+        },
+        "intendedCleanup": "Deleting only the final zero-area face restores the reference geometry; this is not an observed repair result."
+      }
+    },
+    {
+      "name": "cube-collinear.stl",
+      "path": "/examples/input-integrity/cube-collinear.stl",
+      "bytes": 734,
+      "sha256": "2b6421e3659eb820d5fef918081899cacb5eac8fd236894ce129819b6360e1a4",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "baseline": "/examples/english-market-batch/closed-20mm-cube.stl",
+        "appendedCoordinates": [5, 5, 5, 10, 5, 5, 15, 5, 5]
+      },
+      "analytical": {
+        "intendedAddedArea": 0,
+        "reopened": {
+          "triangles": [
+            [
+              [0, 0, 0],
+              [20, 20, 0],
+              [20, 0, 0]
+            ],
+            [
+              [0, 0, 0],
+              [0, 20, 0],
+              [20, 20, 0]
+            ],
+            [
+              [0, 0, 20],
+              [20, 0, 20],
+              [20, 20, 20]
+            ],
+            [
+              [0, 0, 20],
+              [20, 20, 20],
+              [0, 20, 20]
+            ],
+            [
+              [0, 0, 0],
+              [20, 0, 0],
+              [20, 0, 20]
+            ],
+            [
+              [0, 0, 0],
+              [20, 0, 20],
+              [0, 0, 20]
+            ],
+            [
+              [0, 20, 0],
+              [0, 20, 20],
+              [20, 20, 20]
+            ],
+            [
+              [0, 20, 0],
+              [20, 20, 20],
+              [20, 20, 0]
+            ],
+            [
+              [0, 0, 0],
+              [0, 0, 20],
+              [0, 20, 20]
+            ],
+            [
+              [0, 0, 0],
+              [0, 20, 20],
+              [0, 20, 0]
+            ],
+            [
+              [20, 0, 0],
+              [20, 20, 0],
+              [20, 20, 20]
+            ],
+            [
+              [20, 0, 0],
+              [20, 20, 20],
+              [20, 0, 20]
+            ],
+            [
+              [5, 5, 5],
+              [10, 5, 5],
+              [15, 5, 5]
+            ]
+          ],
+          "areas": [
+            200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 0
+          ],
+          "signedVolume": 7999.999999999999,
+          "bounds": [
+            [0, 20],
+            [0, 20],
+            [0, 20]
+          ]
+        },
+        "intendedCleanup": "Deleting only the final zero-area face restores the reference geometry; this is not an observed repair result."
+      }
+    },
+    {
+      "name": "triangle-repeated-position.stl",
+      "path": "/examples/input-integrity/triangle-repeated-position.stl",
+      "bytes": 134,
+      "sha256": "cf3417ea591b519a0203c50b7505a0726813dc764cd3fc35cfac9d2d430037c8",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "baseline": null,
+        "appendedCoordinates": [0, 0, 0, 1, 0, 0, 1, 0, 0]
+      },
+      "analytical": {
+        "intendedAddedArea": 0,
+        "reopened": {
+          "triangles": [
+            [
+              [0, 0, 0],
+              [1, 0, 0],
+              [1, 0, 0]
+            ]
+          ],
+          "areas": [0],
+          "signedVolume": 0,
+          "bounds": [
+            [0, 1],
+            [0, 0],
+            [0, 0]
+          ]
+        },
+        "intendedCleanup": null
+      }
+    },
+    {
+      "name": "triangle-collinear.stl",
+      "path": "/examples/input-integrity/triangle-collinear.stl",
+      "bytes": 134,
+      "sha256": "1218c6995ea0f62fa3274f5ef1a8ab51a37da8f44c4544cad20d44f0d0c15438",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "baseline": null,
+        "appendedCoordinates": [0, 0, 0, 1, 0, 0, 2, 0, 0]
+      },
+      "analytical": {
+        "intendedAddedArea": 0,
+        "reopened": {
+          "triangles": [
+            [
+              [0, 0, 0],
+              [1, 0, 0],
+              [2, 0, 0]
+            ]
+          ],
+          "areas": [0],
+          "signedVolume": 0,
+          "bounds": [
+            [0, 2],
+            [0, 0],
+            [0, 0]
+          ]
+        },
+        "intendedCleanup": null
+      }
+    },
+    {
+      "name": "triangle-narrow.stl",
+      "path": "/examples/input-integrity/triangle-narrow.stl",
+      "bytes": 134,
+      "sha256": "83d408cdfaebd321fa825ef1120f0728cef63ac5f8b4756cba798d8a57d6fdb4",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "baseline": null,
+        "appendedCoordinates": [0, 0, 0, 1, 0, 0, 1, 0.000001, 0]
+      },
+      "analytical": {
+        "intendedAddedArea": 5e-7,
+        "reopened": {
+          "triangles": [
+            [
+              [0, 0, 0],
+              [1, 0, 0],
+              [1, 9.999999974752427e-7, 0]
+            ]
+          ],
+          "areas": [4.999999987376214e-7],
+          "signedVolume": 0,
+          "bounds": [
+            [0, 1],
+            [0, 9.999999974752427e-7],
+            [0, 0]
+          ]
+        },
+        "intendedCleanup": null
+      }
+    },
+    {
+      "name": "cube-last-byte-missing.stl",
+      "path": "/examples/input-integrity/cube-last-byte-missing.stl",
+      "bytes": 683,
+      "sha256": "f045e6c30560ec1e8f846f25046fa89a91e6de67216015398b68598dbeec08dc",
+      "format": "binary-stl",
+      "deliberateMalformedInput": true,
+      "construction": {
+        "baseline": "/examples/english-market-batch/closed-20mm-cube.stl",
+        "mutation": "Remove the final byte"
+      },
+      "analytical": {
+        "declaredCount": 12,
+        "expectedStandardBytes": 684,
+        "completePayloadRecords": 11
+      }
+    },
+    {
+      "name": "cube-last-record-missing.stl",
+      "path": "/examples/input-integrity/cube-last-record-missing.stl",
+      "bytes": 634,
+      "sha256": "af70cb456ef7f48d8564e83cbc622433b66c27433a047c9582a2c378357eb739",
+      "format": "binary-stl",
+      "deliberateMalformedInput": true,
+      "construction": {
+        "baseline": "/examples/english-market-batch/closed-20mm-cube.stl",
+        "mutation": "Remove the final 50-byte facet record; retain count 12"
+      },
+      "analytical": {
+        "declaredCount": 12,
+        "expectedStandardBytes": 684,
+        "completePayloadRecords": 11
+      }
+    },
+    {
+      "name": "cube-count-mismatch.stl",
+      "path": "/examples/input-integrity/cube-count-mismatch.stl",
+      "bytes": 684,
+      "sha256": "1c6aafd14874d4f912f05f1a55567ac8a0aa11b254864dd00f490c998a3ef496",
+      "format": "binary-stl",
+      "deliberateMalformedInput": true,
+      "construction": {
+        "baseline": "/examples/english-market-batch/closed-20mm-cube.stl",
+        "mutation": "Change the little-endian count from 12 to 13; retain every payload byte"
+      },
+      "analytical": {
+        "declaredCount": 13,
+        "expectedStandardBytes": 734,
+        "completePayloadRecords": 12
+      }
+    },
+    {
+      "name": "cube-solid-header.stl",
+      "path": "/examples/input-integrity/cube-solid-header.stl",
+      "bytes": 684,
+      "sha256": "b25e4adcac96a97a31c508f2d26bd8a3801bf20964a09c989991f3bdb97d51b8",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "baseline": "/examples/english-market-batch/closed-20mm-cube.stl",
+        "mutation": "Replace the 80-byte header with a solid-prefixed comment; retain count and payload"
+      },
+      "analytical": {
+        "declaredCount": 12,
+        "expectedStandardBytes": 684,
+        "completePayloadRecords": 12
+      }
+    },
+    {
+      "name": "triangle-complete-ascii.stl",
+      "path": "/examples/input-integrity/triangle-complete-ascii.stl",
+      "bytes": 145,
+      "sha256": "f5c4f08e4eb7110053b9de759fc575f255762248b0af37ef04ae516f3779996a",
+      "format": "ascii-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "completeCoordinates": [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 1, 0]
+        ],
+        "mutation": "Complete single open triangle"
+      }
+    },
+    {
+      "name": "triangle-cut-off-ascii.stl",
+      "path": "/examples/input-integrity/triangle-cut-off-ascii.stl",
+      "bytes": 92,
+      "sha256": "33f26e2e6afa0e6e275650fe405f4440796f28f16046624f06b4e9a172a24e63",
+      "format": "ascii-stl",
+      "deliberateMalformedInput": true,
+      "construction": {
+        "completeCoordinates": [
+          [0, 0, 0],
+          [1, 0, 0],
+          [0, 1, 0]
+        ],
+        "mutation": "Cut the third vertex and all facet/file closures"
+      }
+    },
+    {
+      "name": "tetra-reference.stl",
+      "path": "/examples/input-integrity/tetra-reference.stl",
+      "bytes": 284,
+      "sha256": "40e38d30a774ba7d20f1b849a088a6412ad9bf228e4754bccad20918be0bc6eb",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "vertexLabels": ["O", "X", "Y", "Z"],
+        "originalVertices": [
+          [0, 0, 0],
+          [30, 0, 0],
+          [0, 20, 0],
+          [0, 0, 10]
+        ],
+        "originalFaces": [
+          [0, 2, 1],
+          [0, 1, 3],
+          [0, 3, 2],
+          [1, 2, 3]
+        ],
+        "columnVectorMatrix": [
+          [1, 0, 0, 0],
+          [0, 1, 0, 0],
+          [0, 0, 1, 0],
+          [0, 0, 0, 1]
+        ],
+        "windingReversed": false,
+        "transformedVertices": [
+          [0, 0, 0],
+          [30, 0, 0],
+          [0, 20, 0],
+          [0, 0, 10]
+        ]
+      },
+      "analytical": {
+        "reopened": {
+          "triangles": [
+            [
+              [0, 0, 0],
+              [0, 20, 0],
+              [30, 0, 0]
+            ],
+            [
+              [0, 0, 0],
+              [30, 0, 0],
+              [0, 0, 10]
+            ],
+            [
+              [0, 0, 0],
+              [0, 0, 10],
+              [0, 20, 0]
+            ],
+            [
+              [30, 0, 0],
+              [0, 20, 0],
+              [0, 0, 10]
+            ]
+          ],
+          "areas": [300, 150, 100, 350],
+          "signedVolume": 1000,
+          "bounds": [
+            [0, 30],
+            [0, 20],
+            [0, 10]
+          ]
+        }
+      }
+    },
+    {
+      "name": "tetra-mirrored-outward.stl",
+      "path": "/examples/input-integrity/tetra-mirrored-outward.stl",
+      "bytes": 284,
+      "sha256": "238523ba7c5ace6f34d2d1634928db8a5070515c14497192686732c8b780ce08",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "vertexLabels": ["O", "X", "Y", "Z"],
+        "originalVertices": [
+          [0, 0, 0],
+          [30, 0, 0],
+          [0, 20, 0],
+          [0, 0, 10]
+        ],
+        "originalFaces": [
+          [0, 2, 1],
+          [0, 1, 3],
+          [0, 3, 2],
+          [1, 2, 3]
+        ],
+        "columnVectorMatrix": [
+          [-1, 0, 0, 30],
+          [0, 1, 0, 0],
+          [0, 0, 1, 0],
+          [0, 0, 0, 1]
+        ],
+        "windingReversed": true,
+        "transformedVertices": [
+          [30, 0, 0],
+          [0, 0, 0],
+          [30, 20, 0],
+          [30, 0, 10]
+        ]
+      },
+      "analytical": {
+        "reopened": {
+          "triangles": [
+            [
+              [30, 0, 0],
+              [0, 0, 0],
+              [30, 20, 0]
+            ],
+            [
+              [30, 0, 0],
+              [30, 0, 10],
+              [0, 0, 0]
+            ],
+            [
+              [30, 0, 0],
+              [30, 20, 0],
+              [30, 0, 10]
+            ],
+            [
+              [0, 0, 0],
+              [30, 0, 10],
+              [30, 20, 0]
+            ]
+          ],
+          "areas": [300, 150, 100, 350],
+          "signedVolume": 1000,
+          "bounds": [
+            [0, 30],
+            [0, 20],
+            [0, 10]
+          ]
+        }
+      }
+    },
+    {
+      "name": "tetra-rotated-outward.stl",
+      "path": "/examples/input-integrity/tetra-rotated-outward.stl",
+      "bytes": 284,
+      "sha256": "841fb6e2883f5029230ebd5b1d16284b7e0082b563daebd74b458c65dfb551d5",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "vertexLabels": ["O", "X", "Y", "Z"],
+        "originalVertices": [
+          [0, 0, 0],
+          [30, 0, 0],
+          [0, 20, 0],
+          [0, 0, 10]
+        ],
+        "originalFaces": [
+          [0, 2, 1],
+          [0, 1, 3],
+          [0, 3, 2],
+          [1, 2, 3]
+        ],
+        "columnVectorMatrix": [
+          [-1, 0, 0, 30],
+          [0, -1, 0, 20],
+          [0, 0, 1, 0],
+          [0, 0, 0, 1]
+        ],
+        "windingReversed": false,
+        "transformedVertices": [
+          [30, 20, 0],
+          [0, 20, 0],
+          [30, 0, 0],
+          [30, 20, 10]
+        ]
+      },
+      "analytical": {
+        "reopened": {
+          "triangles": [
+            [
+              [30, 20, 0],
+              [30, 0, 0],
+              [0, 20, 0]
+            ],
+            [
+              [30, 20, 0],
+              [0, 20, 0],
+              [30, 20, 10]
+            ],
+            [
+              [30, 20, 0],
+              [30, 20, 10],
+              [30, 0, 0]
+            ],
+            [
+              [0, 20, 0],
+              [30, 0, 0],
+              [30, 20, 10]
+            ]
+          ],
+          "areas": [300, 150, 100, 350],
+          "signedVolume": 1000,
+          "bounds": [
+            [0, 30],
+            [0, 20],
+            [0, 10]
+          ]
+        }
+      }
+    },
+    {
+      "name": "tetra-inward.stl",
+      "path": "/examples/input-integrity/tetra-inward.stl",
+      "bytes": 284,
+      "sha256": "4516bf6f2fdbdeb1623129c0b5f5946f80daa1ce43aea4ececd7980db546970f",
+      "format": "binary-stl",
+      "deliberateMalformedInput": false,
+      "construction": {
+        "vertexLabels": ["O", "X", "Y", "Z"],
+        "originalVertices": [
+          [0, 0, 0],
+          [30, 0, 0],
+          [0, 20, 0],
+          [0, 0, 10]
+        ],
+        "originalFaces": [
+          [0, 2, 1],
+          [0, 1, 3],
+          [0, 3, 2],
+          [1, 2, 3]
+        ],
+        "columnVectorMatrix": [
+          [1, 0, 0, 0],
+          [0, 1, 0, 0],
+          [0, 0, 1, 0],
+          [0, 0, 0, 1]
+        ],
+        "windingReversed": true,
+        "transformedVertices": [
+          [0, 0, 0],
+          [30, 0, 0],
+          [0, 20, 0],
+          [0, 0, 10]
+        ]
+      },
+      "analytical": {
+        "reopened": {
+          "triangles": [
+            [
+              [0, 0, 0],
+              [30, 0, 0],
+              [0, 20, 0]
+            ],
+            [
+              [0, 0, 0],
+              [0, 0, 10],
+              [30, 0, 0]
+            ],
+            [
+              [0, 0, 0],
+              [0, 20, 0],
+              [0, 0, 10]
+            ],
+            [
+              [30, 0, 0],
+              [0, 0, 10],
+              [0, 20, 0]
+            ]
+          ],
+          "areas": [300, 150, 100, 350],
+          "signedVolume": -1000,
+          "bounds": [
+            [0, 30],
+            [0, 20],
+            [0, 10]
+          ]
+        }
+      }
+    }
+  ],
+  "reused": [
+    {
+      "path": "/examples/english-market-batch/closed-20mm-cube.stl",
+      "bytes": 684,
+      "sha256": "06440b45372060a582e8898b0f522b2f8975f323ec421b19d7c04713e8293e6f",
+      "format": "binary-stl",
+      "analytical": {
+        "triangles": [
+          [
+            [0, 0, 0],
+            [20, 20, 0],
+            [20, 0, 0]
+          ],
+          [
+            [0, 0, 0],
+            [0, 20, 0],
+            [20, 20, 0]
+          ],
+          [
+            [0, 0, 20],
+            [20, 0, 20],
+            [20, 20, 20]
+          ],
+          [
+            [0, 0, 20],
+            [20, 20, 20],
+            [0, 20, 20]
+          ],
+          [
+            [0, 0, 0],
+            [20, 0, 0],
+            [20, 0, 20]
+          ],
+          [
+            [0, 0, 0],
+            [20, 0, 20],
+            [0, 0, 20]
+          ],
+          [
+            [0, 20, 0],
+            [0, 20, 20],
+            [20, 20, 20]
+          ],
+          [
+            [0, 20, 0],
+            [20, 20, 20],
+            [20, 20, 0]
+          ],
+          [
+            [0, 0, 0],
+            [0, 0, 20],
+            [0, 20, 20]
+          ],
+          [
+            [0, 0, 0],
+            [0, 20, 20],
+            [0, 20, 0]
+          ],
+          [
+            [20, 0, 0],
+            [20, 20, 0],
+            [20, 20, 20]
+          ],
+          [
+            [20, 0, 0],
+            [20, 20, 20],
+            [20, 0, 20]
+          ]
+        ],
+        "areas": [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+        "signedVolume": 7999.999999999999,
+        "bounds": [
+          [0, 20],
+          [0, 20],
+          [0, 20]
+        ]
+      }
+    },
+    {
+      "path": "/examples/english-market-batch/open-face-cube.stl",
+      "bytes": 584,
+      "sha256": "bd250acc9586f6dd86438480ade08b113ea0edc898562180b4580a6139e18d67",
+      "format": "binary-stl",
+      "analytical": {
+        "triangles": [
+          [
+            [0, 0, 20],
+            [20, 0, 20],
+            [20, 20, 20]
+          ],
+          [
+            [0, 0, 20],
+            [20, 20, 20],
+            [0, 20, 20]
+          ],
+          [
+            [0, 0, 0],
+            [20, 0, 0],
+            [20, 0, 20]
+          ],
+          [
+            [0, 0, 0],
+            [20, 0, 20],
+            [0, 0, 20]
+          ],
+          [
+            [0, 20, 0],
+            [0, 20, 20],
+            [20, 20, 20]
+          ],
+          [
+            [0, 20, 0],
+            [20, 20, 20],
+            [20, 20, 0]
+          ],
+          [
+            [0, 0, 0],
+            [0, 0, 20],
+            [0, 20, 20]
+          ],
+          [
+            [0, 0, 0],
+            [0, 20, 20],
+            [0, 20, 0]
+          ],
+          [
+            [20, 0, 0],
+            [20, 20, 0],
+            [20, 20, 20]
+          ],
+          [
+            [20, 0, 0],
+            [20, 20, 20],
+            [20, 0, 20]
+          ]
+        ],
+        "areas": [200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+        "signedVolume": 7999.999999999999,
+        "bounds": [
+          [0, 20],
+          [0, 20],
+          [0, 20]
+        ]
+      }
+    },
+    {
+      "path": "/examples/cad-export/duplicate-face-cube.stl",
+      "bytes": 734,
+      "sha256": "0bfc7cd05ca9b7ef9c8fda1b59536885cd50de35717a1b5609133d0a5cee8db2",
+      "format": "binary-stl",
+      "analytical": {
+        "triangles": [
+          [
+            [0, 0, 0],
+            [20, 20, 0],
+            [20, 0, 0]
+          ],
+          [
+            [0, 0, 0],
+            [0, 20, 0],
+            [20, 20, 0]
+          ],
+          [
+            [0, 0, 20],
+            [20, 0, 20],
+            [20, 20, 20]
+          ],
+          [
+            [0, 0, 20],
+            [20, 20, 20],
+            [0, 20, 20]
+          ],
+          [
+            [0, 0, 0],
+            [20, 0, 0],
+            [20, 0, 20]
+          ],
+          [
+            [0, 0, 0],
+            [20, 0, 20],
+            [0, 0, 20]
+          ],
+          [
+            [0, 20, 0],
+            [0, 20, 20],
+            [20, 20, 20]
+          ],
+          [
+            [0, 20, 0],
+            [20, 20, 20],
+            [20, 20, 0]
+          ],
+          [
+            [0, 0, 0],
+            [0, 0, 20],
+            [0, 20, 20]
+          ],
+          [
+            [0, 0, 0],
+            [0, 20, 20],
+            [0, 20, 0]
+          ],
+          [
+            [20, 0, 0],
+            [20, 20, 0],
+            [20, 20, 20]
+          ],
+          [
+            [20, 0, 0],
+            [20, 20, 20],
+            [20, 0, 20]
+          ],
+          [
+            [0, 0, 0],
+            [20, 20, 0],
+            [20, 0, 0]
+          ]
+        ],
+        "areas": [
+          200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200
+        ],
+        "signedVolume": 7999.999999999999,
+        "bounds": [
+          [0, 20],
+          [0, 20],
+          [0, 20]
+        ]
+      }
+    }
+  ]
+}

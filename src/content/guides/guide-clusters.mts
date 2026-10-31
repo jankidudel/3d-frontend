@@ -32,6 +32,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'how-to-reduce-stl-file-size',
       'how-to-reduce-stl-triangle-count',
       'ascii-vs-binary-stl',
+      GuideContentSlug.TruncatedStlFile,
       'stl-triangle-count-explained',
     ],
   },
@@ -97,6 +98,7 @@ export const guideClusters: readonly GuideCluster[] = [
     pillar: 'how-to-repair-an-stl-file',
     slugs: [
       'how-to-repair-an-stl-file',
+      GuideContentSlug.DegenerateTrianglesStl,
       'how-to-fix-holes-in-an-stl-file',
       'how-to-fix-non-manifold-stl',
       'how-to-fix-flipped-normals-in-an-stl-file',
@@ -160,6 +162,7 @@ export const guideClusters: readonly GuideCluster[] = [
       'stl-model-off-build-plate',
       'how-to-rotate-a-3d-model-to-fit-your-printer',
       'how-to-orient-an-stl-file-for-3d-printing',
+      GuideContentSlug.MirroredStlFile,
       'how-to-lay-an-stl-flat-on-print-bed',
       '3d-print-overhangs-and-supports-guide',
       '3d-print-bridge-vs-overhang',

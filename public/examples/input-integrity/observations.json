@@ -1,0 +1,575 @@
+{
+  "formatVersion": 1,
+  "observedDate": "2026-10-31",
+  "sourceRevision": "a0af30a3d4eb6ca7deec909c32b0e312e495dba8",
+  "node": "v24.19.0",
+  "threeVersion": "0.185.1",
+  "method": "Actual production functions executed locally in Vitest. Preflight: readStl -> inspectMesh. Component reader: parsePartStl only. Viewer: three STLLoader only, not the viewer UI or renderer. No deployed request or physical test.",
+  "reproduction": "INSPECTMESH_REFRESH_EVIDENCE=1 npx vitest run scripts/input-integrity.spec.mts",
+  "implementations": [
+    {
+      "file": "src/app/features/stl-reducer/stl-reducer.ts",
+      "sha256": "566ff7b88bf0501d48bff54934d9d4a0fa6ee8002612a2277c0c6f5ed055acc7"
+    },
+    {
+      "file": "src/app/features/stl-print-preflight/stl-print-preflight-analysis.ts",
+      "sha256": "553e020ebf56d8f704ee0bb597e1de06c5e3ddcfd7e7c192eaf28b17d1a39520"
+    },
+    {
+      "file": "src/app/features/stl-repair/disconnected-parts.ts",
+      "sha256": "d973fe32b6222963177ea4f3217f8f21a49640b3e3e0f2db27b90d8d3f977c80"
+    },
+    {
+      "file": "node_modules/three/examples/jsm/loaders/STLLoader.js",
+      "sha256": "023ed97f848b633d8bcd53d4db3b996d29d0c644088700691297c552257d480b"
+    }
+  ],
+  "observations": [
+    {
+      "path": "/examples/input-integrity/cube-repeated-position.stl",
+      "bytes": 734,
+      "sha256": "867e908fbcee6dbcbca7d9341d52c9a30da11731a4d873271c94123ed1a611d6",
+      "preflight": {
+        "accepted": true,
+        "triangles": 13,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 1,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 13,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 13,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/cube-collinear.stl",
+      "bytes": 734,
+      "sha256": "2b6421e3659eb820d5fef918081899cacb5eac8fd236894ce129819b6360e1a4",
+      "preflight": {
+        "accepted": true,
+        "triangles": 13,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 1,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 13,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 13,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/triangle-repeated-position.stl",
+      "bytes": 134,
+      "sha256": "cf3417ea591b519a0203c50b7505a0726813dc764cd3fc35cfac9d2d430037c8",
+      "preflight": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 1,
+          "duplicateTriangles": 0,
+          "shells": 0,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 1,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/triangle-collinear.stl",
+      "bytes": 134,
+      "sha256": "1218c6995ea0f62fa3274f5ef1a8ab51a37da8f44c4544cad20d44f0d0c15438",
+      "preflight": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 1,
+          "duplicateTriangles": 0,
+          "shells": 0,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 1,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/triangle-narrow.stl",
+      "bytes": 134,
+      "sha256": "83d408cdfaebd321fa825ef1120f0728cef63ac5f8b4756cba798d8a57d6fdb4",
+      "preflight": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 3,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 1,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/cube-last-byte-missing.stl",
+      "bytes": 683,
+      "sha256": "f045e6c30560ec1e8f846f25046fa89a91e6de67216015398b68598dbeec08dc",
+      "preflight": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "We could not read that STL file. Choose a valid ASCII or binary STL file."
+      },
+      "components": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Malformed or truncated STL. Binary declared counts must match its complete byte length."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 12,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/cube-last-record-missing.stl",
+      "bytes": 634,
+      "sha256": "af70cb456ef7f48d8564e83cbc622433b66c27433a047c9582a2c378357eb739",
+      "preflight": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "We could not read that STL file. Choose a valid ASCII or binary STL file."
+      },
+      "components": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Malformed or truncated STL. Binary declared counts must match its complete byte length."
+      },
+      "viewerLoader": {
+        "returnedGeometry": false,
+        "surfaceValidationRan": false,
+        "message": "Offset is outside the bounds of the DataView"
+      }
+    },
+    {
+      "path": "/examples/input-integrity/cube-count-mismatch.stl",
+      "bytes": 684,
+      "sha256": "1c6aafd14874d4f912f05f1a55567ac8a0aa11b254864dd00f490c998a3ef496",
+      "preflight": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "We could not read that STL file. Choose a valid ASCII or binary STL file."
+      },
+      "components": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Malformed or truncated STL. Binary declared counts must match its complete byte length."
+      },
+      "viewerLoader": {
+        "returnedGeometry": false,
+        "surfaceValidationRan": false,
+        "message": "Offset is outside the bounds of the DataView"
+      }
+    },
+    {
+      "path": "/examples/input-integrity/cube-solid-header.stl",
+      "bytes": 684,
+      "sha256": "b25e4adcac96a97a31c508f2d26bd8a3801bf20964a09c989991f3bdb97d51b8",
+      "preflight": {
+        "accepted": true,
+        "triangles": 12,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 8000,
+          "volumeReliable": true
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 12,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 12,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/triangle-complete-ascii.stl",
+      "bytes": 145,
+      "sha256": "f5c4f08e4eb7110053b9de759fc575f255762248b0af37ef04ae516f3779996a",
+      "preflight": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 3,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 1,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 1,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/triangle-cut-off-ascii.stl",
+      "bytes": 92,
+      "sha256": "33f26e2e6afa0e6e275650fe405f4440796f28f16046624f06b4e9a172a24e63",
+      "preflight": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "We could not read that STL file. Choose a valid ASCII or binary STL file."
+      },
+      "components": {
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Malformed or truncated STL. Binary declared counts must match its complete byte length."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 0,
+        "nonempty": false,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/tetra-reference.stl",
+      "bytes": 284,
+      "sha256": "40e38d30a774ba7d20f1b849a088a6412ad9bf228e4754bccad20918be0bc6eb",
+      "preflight": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 1000,
+          "volumeReliable": true
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 4,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/tetra-mirrored-outward.stl",
+      "bytes": 284,
+      "sha256": "238523ba7c5ace6f34d2d1634928db8a5070515c14497192686732c8b780ce08",
+      "preflight": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 1000,
+          "volumeReliable": true
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 4,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/tetra-rotated-outward.stl",
+      "bytes": 284,
+      "sha256": "841fb6e2883f5029230ebd5b1d16284b7e0082b563daebd74b458c65dfb551d5",
+      "preflight": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 1000,
+          "volumeReliable": true
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 4,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/input-integrity/tetra-inward.stl",
+      "bytes": 284,
+      "sha256": "4516bf6f2fdbdeb1623129c0b5f5946f80daa1ce43aea4ececd7980db546970f",
+      "preflight": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 1000,
+          "volumeReliable": true
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 4,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 4,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/english-market-batch/closed-20mm-cube.stl",
+      "bytes": 684,
+      "sha256": "06440b45372060a582e8898b0f522b2f8975f323ec421b19d7c04713e8293e6f",
+      "preflight": {
+        "accepted": true,
+        "triangles": 12,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": 8000,
+          "volumeReliable": true
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 12,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 12,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/english-market-batch/open-face-cube.stl",
+      "bytes": 584,
+      "sha256": "bd250acc9586f6dd86438480ade08b113ea0edc898562180b4580a6139e18d67",
+      "preflight": {
+        "accepted": true,
+        "triangles": 10,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 4,
+          "nonManifoldEdges": 0,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 0,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 10,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 10,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    },
+    {
+      "path": "/examples/cad-export/duplicate-face-cube.stl",
+      "bytes": 734,
+      "sha256": "0bfc7cd05ca9b7ef9c8fda1b59536885cd50de35717a1b5609133d0a5cee8db2",
+      "preflight": {
+        "accepted": true,
+        "triangles": 13,
+        "surfaceValidationRan": true,
+        "topology": {
+          "openEdges": 0,
+          "nonManifoldEdges": 3,
+          "degenerateTriangles": 0,
+          "duplicateTriangles": 1,
+          "shells": 1,
+          "orientationConflicts": 0,
+          "volume": null,
+          "volumeReliable": false
+        }
+      },
+      "components": {
+        "accepted": true,
+        "triangles": 13,
+        "surfaceValidationRan": false,
+        "note": "Reader only; component analysis was not run."
+      },
+      "viewerLoader": {
+        "returnedGeometry": true,
+        "triangles": 13,
+        "nonempty": true,
+        "finiteCoordinates": true,
+        "surfaceValidationRan": false
+      }
+    }
+  ]
+}

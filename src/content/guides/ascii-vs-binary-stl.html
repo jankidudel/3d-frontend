@@ -64,6 +64,14 @@ heading: 'ASCII vs Binary STL: What Is the Difference?'
   facets. A truncated record is a parsing problem. Successful structure parsing
   does not establish closed, correctly wound or printable geometry.
 </p>
+<p>
+  If the record is incomplete,
+  <a href="{{ GuideSlug.RouteTruncatedStlFile }}"
+    >check incomplete STL records</a
+  >
+  against controlled missing-byte and count-mismatch files. That investigation
+  separates failed input from a complete file whose surface has a hole.
+</p>
 <h2>Understand bytes and coordinate representation</h2>
 <p>
   <strong>Standard binary bytes = 84 + 50 × triangle count.</strong> A

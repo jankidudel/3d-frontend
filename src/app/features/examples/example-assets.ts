@@ -1,5 +1,40 @@
 /** Canonical paths for downloadable public example files linked from pages and guides. */
 export const ExampleAsset = {
+  InputIntegrityManifest: '/examples/input-integrity/manifest.json',
+  InputIntegrityObservations: '/examples/input-integrity/observations.json',
+  InputIntegrityProcessorObservations:
+    '/examples/input-integrity/processor-observations.json',
+  InputIntegrityDegeneracySvg:
+    '/examples/input-integrity/triangle-degeneracy.svg',
+  InputIntegrityBinaryLayoutSvg:
+    '/examples/input-integrity/binary-record-layout.svg',
+  InputIntegrityReflectionSvg:
+    '/examples/input-integrity/reflection-vs-rotation.svg',
+  CubeRepeatedPositionStl:
+    '/examples/input-integrity/cube-repeated-position.stl',
+  CubeCollinearStl: '/examples/input-integrity/cube-collinear.stl',
+  TriangleRepeatedPositionStl:
+    '/examples/input-integrity/triangle-repeated-position.stl',
+  TriangleCollinearStl: '/examples/input-integrity/triangle-collinear.stl',
+  TriangleNarrowStl: '/examples/input-integrity/triangle-narrow.stl',
+  CubeLastByteMissingStl:
+    '/examples/input-integrity/cube-last-byte-missing.stl',
+  CubeLastRecordMissingStl:
+    '/examples/input-integrity/cube-last-record-missing.stl',
+  CubeCountMismatchStl: '/examples/input-integrity/cube-count-mismatch.stl',
+  CubeSolidHeaderStl: '/examples/input-integrity/cube-solid-header.stl',
+  TriangleCompleteAsciiStl:
+    '/examples/input-integrity/triangle-complete-ascii.stl',
+  TriangleCutOffAsciiStl:
+    '/examples/input-integrity/triangle-cut-off-ascii.stl',
+  TetraReferenceStl: '/examples/input-integrity/tetra-reference.stl',
+  TetraMirroredStl: '/examples/input-integrity/tetra-mirrored-outward.stl',
+  TetraRotatedStl: '/examples/input-integrity/tetra-rotated-outward.stl',
+  TetraInwardStl: '/examples/input-integrity/tetra-inward.stl',
+  CubeRepeatedPositionCleanedStl:
+    '/examples/input-integrity/cube-repeated-position-cleaned.stl',
+  CubeCollinearCleanedStl:
+    '/examples/input-integrity/cube-collinear-cleaned.stl',
   ObjCompanionBundle: '/examples/file-handoff/obj-companion-bundle.zip',
   ReceivingCheckBlank: '/examples/file-handoff/receiving-check-blank.csv',
   ReceivingCheckFilled: '/examples/file-handoff/receiving-check-filled.json',

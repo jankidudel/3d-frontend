@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="260" viewBox="0 0 720 260"><title>Repeated positions, collinear points and nonzero narrow area</title><rect width="720" height="260" fill="#f8fafc"/><g font-family="sans-serif" font-size="14" fill="#172a3a">
+    <text x="20" y="25" font-size="18" font-weight="bold">Three different triangle records</text>
+    <g stroke="#075985" stroke-width="3" fill="none"><path d="M35 130 L190 130"/><path d="M270 130 L440 130"/><path d="M505 150 L680 150 L680 85 Z"/></g>
+    <g fill="#075985"><circle cx="35" cy="130" r="4"/><circle cx="190" cy="130" r="4"/><circle cx="270" cy="130" r="4"/><circle cx="355" cy="130" r="4"/><circle cx="440" cy="130" r="4"/></g>
+    <text x="25" y="65">Repeated position</text><text x="30" y="115">A</text><text x="166" y="115">B = C</text>
+    <text x="270" y="65">Collinear, distinct positions</text><text x="265" y="115">A</text><text x="350" y="115">B</text><text x="435" y="115">C</text>
+    <text x="505" y="65">Narrow, nonzero area</text><text x="500" y="175">A</text><text x="675" y="175">B</text><text x="682" y="83">C</text>
+    <text x="25" y="205">Area = 0</text><text x="270" y="205">Area = 0</text><text x="505" y="205">Area &gt; 0; height exaggerated</text>
+    <text x="20" y="242">Schematic, not to scale. Exact coordinates and stored Float32 areas are in the manifest.</text></g></svg>

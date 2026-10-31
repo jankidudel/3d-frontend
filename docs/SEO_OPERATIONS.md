@@ -60,6 +60,33 @@ The runner checks the one/repeated-item 3MF build, defective resource and reopen
 
 Keep .NET's socket-based test runner limitation distinct from a test failure or successful run. A successful direct evidence runner checks its listed controls, not the full test suite.
 
+### Input integrity controls
+
+The owned `public/examples/input-integrity/` controls distinguish zero-area
+records, incomplete input and reflected handedness. Reproduce them explicitly:
+
+```sh
+node --experimental-strip-types scripts/generate-input-integrity-fixtures.mts
+INSPECTMESH_REFRESH_EVIDENCE=1 npx vitest run scripts/input-integrity.spec.mts
+node --experimental-strip-types scripts/capture-input-integrity-processor.mts
+npx vitest run scripts/input-integrity.spec.mts
+```
+
+The generator reuses the existing closed/open/duplicate cube controls. Its
+manifest records construction, exact stored coordinates, transform matrices,
+byte mutations, file hashes and analytical calculations. The frontend observation
+records execute the actual preflight and component readers and the viewer's
+Three.js loader; the loader alone is not a rendered viewer observation.
+The offline processor harness temporarily builds a small caller of the unchanged
+`ProcessorApplication.Process` and `RepairStl` methods and records full reports,
+reopened output hashes, source revisions and implementation hashes. It requires
+the sibling processor checkout and .NET 10, never calls AWS and is not part of
+deployment. Review all results before refreshing dated evidence. Normal tests
+replay frontend behavior and verify retained processor inputs/outputs; they do
+not require a .NET runtime. Malformed files stay direct diagnostic downloads,
+excluded from gallery loading. No physical printing or handedness detector is
+implied by successful topology checks.
+
 ## Release and measurement
 
 ### File handoff and interior evidence

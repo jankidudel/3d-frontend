@@ -1,0 +1,1787 @@
+{
+  "formatVersion": 1,
+  "observedDate": "2026-10-31",
+  "processorRevision": "9def7b8e533946e22e18c8ae32b4c7c6320700a9",
+  "dotnet": "10.0.302",
+  "harness": "scripts/capture-input-integrity-processor.mts",
+  "harnessSha256": "eedbfced671d21a4cc73deb3fbdbbc427d658d7f696a89c0a542fcce4ad59ff0",
+  "reproduction": "node --experimental-strip-types scripts/capture-input-integrity-processor.mts",
+  "method": "Local unchanged ProcessorApplication.Process and RepairStl, followed by reparse of saved bytes through Process. The same processor methods serve checker/cleanup jobs. No deployed endpoint, browser upload, slicer or physical print was used.",
+  "implementations": [
+    {
+      "file": "src/Processor/ProcessorApplication.cs",
+      "sha256": "1b3365b3ce2dbb78b73a0c057f570e7902b2c4a71829f53a47524282dd479ce6"
+    },
+    {
+      "file": "src/Processor/Stl/StlReader.cs",
+      "sha256": "633d3705d8d3f156091403437b90267a89ecd6ad618a51a12faf094c830df827"
+    },
+    {
+      "file": "src/Processor/Stl/StlSafeRepairer.cs",
+      "sha256": "38588b7095061417aa376fbeb035beead9fe3cf0cb73d711cd2c68880966ab50"
+    },
+    {
+      "file": "src/Processor/Validation/MeshValidator.cs",
+      "sha256": "3fb72cc850701ace3d27206bf3ed13dbb50e72e7f6cc4ba2af671229f018892b"
+    },
+    {
+      "file": "src/Processor/Reporting/MeshQualityReportBuilder.cs",
+      "sha256": "a2f93d9823d2d45c088e379cb4207105c131f7e0ca03a0a5b2efce1f5db7465c"
+    }
+  ],
+  "capture": {
+    "observations": [
+      {
+        "path": "/examples/input-integrity/cube-repeated-position.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "cube-repeated-position.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 734,
+          "triangleCount": 13,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 20,
+            "maxY": 20,
+            "maxZ": 20
+          },
+          "dimensions": {
+            "width": 20,
+            "height": 20,
+            "depth": 20
+          },
+          "surfaceArea": 2400,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 2,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "degenerate_triangle",
+                "message": "Triangle 12 is degenerate.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "multiple_disconnected_shells",
+                "message": "This STL contains 2 separate mesh components. This can be intentional, but check that all parts are expected before printing.",
+                "count": 2,
+                "severity": "warning"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 2,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "degenerate_triangle": [
+                {
+                  "a": {
+                    "x": 5,
+                    "y": 5,
+                    "z": 5
+                  },
+                  "b": {
+                    "x": 10,
+                    "y": 5,
+                    "z": 5
+                  },
+                  "c": {
+                    "x": 10,
+                    "y": 5,
+                    "z": 5
+                  }
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/cube-collinear.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "cube-collinear.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 734,
+          "triangleCount": 13,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 20,
+            "maxY": 20,
+            "maxZ": 20
+          },
+          "dimensions": {
+            "width": 20,
+            "height": 20,
+            "depth": 20
+          },
+          "surfaceArea": 2400,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 2,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "degenerate_triangle",
+                "message": "Triangle 12 is degenerate.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "multiple_disconnected_shells",
+                "message": "This STL contains 2 separate mesh components. This can be intentional, but check that all parts are expected before printing.",
+                "count": 2,
+                "severity": "warning"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 2,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "degenerate_triangle": [
+                {
+                  "a": {
+                    "x": 5,
+                    "y": 5,
+                    "z": 5
+                  },
+                  "b": {
+                    "x": 10,
+                    "y": 5,
+                    "z": 5
+                  },
+                  "c": {
+                    "x": 15,
+                    "y": 5,
+                    "z": 5
+                  }
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/triangle-repeated-position.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "triangle-repeated-position.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 134,
+          "triangleCount": 1,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 1,
+            "maxY": 0,
+            "maxZ": 0
+          },
+          "dimensions": {
+            "width": 1,
+            "height": 0,
+            "depth": 0
+          },
+          "surfaceArea": 0,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "degenerate_triangle",
+                "message": "Triangle 0 is degenerate.",
+                "count": 1,
+                "severity": "error"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "degenerate_triangle": [
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "c": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  }
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/triangle-collinear.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "triangle-collinear.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 134,
+          "triangleCount": 1,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 2,
+            "maxY": 0,
+            "maxZ": 0
+          },
+          "dimensions": {
+            "width": 2,
+            "height": 0,
+            "depth": 0
+          },
+          "surfaceArea": 0,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "degenerate_triangle",
+                "message": "Triangle 0 is degenerate.",
+                "count": 1,
+                "severity": "error"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "degenerate_triangle": [
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "c": {
+                    "x": 2,
+                    "y": 0,
+                    "z": 0
+                  }
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/triangle-narrow.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "triangle-narrow.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 134,
+          "triangleCount": 1,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 1,
+            "maxY": 9.999999974752427e-7,
+            "maxZ": 0
+          },
+          "dimensions": {
+            "width": 1,
+            "height": 9.999999974752427e-7,
+            "depth": 0
+          },
+          "surfaceArea": 4.999999987376214e-7,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "degenerate_triangle",
+                "message": "Triangle 0 is degenerate.",
+                "count": 1,
+                "severity": "error"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "degenerate_triangle": [
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "c": {
+                    "x": 1,
+                    "y": 0.000001,
+                    "z": 0
+                  }
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/cube-last-byte-missing.stl",
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Invalid binary STL. The file is incomplete or malformed."
+      },
+      {
+        "path": "/examples/input-integrity/cube-last-record-missing.stl",
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Invalid binary STL. The file is incomplete or malformed."
+      },
+      {
+        "path": "/examples/input-integrity/cube-count-mismatch.stl",
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Invalid binary STL. The file is incomplete or malformed."
+      },
+      {
+        "path": "/examples/input-integrity/cube-solid-header.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "cube-solid-header.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 684,
+          "triangleCount": 12,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 20,
+            "maxY": 20,
+            "maxZ": 20
+          },
+          "dimensions": {
+            "width": 20,
+            "height": 20,
+            "depth": 20
+          },
+          "surfaceArea": 2400,
+          "volume": 7999.999999999999,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": true
+          },
+          "issueHighlights": {
+            "samples": {}
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/triangle-complete-ascii.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "triangle-complete-ascii.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 145,
+          "triangleCount": 1,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 1,
+            "maxY": 1,
+            "maxZ": 0
+          },
+          "dimensions": {
+            "width": 1,
+            "height": 1,
+            "depth": 0
+          },
+          "surfaceArea": 0.5,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 3,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "open_edge",
+                "message": "Open edge [(0, 0, 0) - (1, 0, 0)] is used only by triangle 0.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "open_edge",
+                "message": "Open edge [(0, 1, 0) - (1, 0, 0)] is used only by triangle 0.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "open_edge",
+                "message": "Open edge [(0, 0, 0) - (0, 1, 0)] is used only by triangle 0.",
+                "count": 1,
+                "severity": "error"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 3,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "open_edge": [
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "c": null
+                },
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "c": null
+                },
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                  },
+                  "c": null
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 3,
+              "returnedCount": 3,
+              "truncated": false,
+              "segments": [
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  }
+                },
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                  }
+                },
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                  }
+                }
+              ]
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/triangle-cut-off-ascii.stl",
+        "accepted": false,
+        "surfaceValidationRan": false,
+        "message": "Invalid ASCII STL. The file is incomplete or malformed."
+      },
+      {
+        "path": "/examples/input-integrity/tetra-reference.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "tetra-reference.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 284,
+          "triangleCount": 4,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 30,
+            "maxY": 20,
+            "maxZ": 10
+          },
+          "dimensions": {
+            "width": 30,
+            "height": 20,
+            "depth": 10
+          },
+          "surfaceArea": 900,
+          "volume": 1000,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": true
+          },
+          "issueHighlights": {
+            "samples": {}
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/tetra-mirrored-outward.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "tetra-mirrored-outward.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 284,
+          "triangleCount": 4,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 30,
+            "maxY": 20,
+            "maxZ": 10
+          },
+          "dimensions": {
+            "width": 30,
+            "height": 20,
+            "depth": 10
+          },
+          "surfaceArea": 900,
+          "volume": 1000,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": true
+          },
+          "issueHighlights": {
+            "samples": {}
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/tetra-rotated-outward.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "tetra-rotated-outward.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 284,
+          "triangleCount": 4,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 30,
+            "maxY": 20,
+            "maxZ": 10
+          },
+          "dimensions": {
+            "width": 30,
+            "height": 20,
+            "depth": 10
+          },
+          "surfaceArea": 900,
+          "volume": 1000,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": true
+          },
+          "issueHighlights": {
+            "samples": {}
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/input-integrity/tetra-inward.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "tetra-inward.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 284,
+          "triangleCount": 4,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 30,
+            "maxY": 20,
+            "maxZ": 10
+          },
+          "dimensions": {
+            "width": 30,
+            "height": 20,
+            "depth": 10
+          },
+          "surfaceArea": 900,
+          "volume": 1000,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": true
+          },
+          "issueHighlights": {
+            "samples": {}
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/english-market-batch/closed-20mm-cube.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "closed-20mm-cube.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 684,
+          "triangleCount": 12,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 20,
+            "maxY": 20,
+            "maxZ": 20
+          },
+          "dimensions": {
+            "width": 20,
+            "height": 20,
+            "depth": 20
+          },
+          "surfaceArea": 2400,
+          "volume": 7999.999999999999,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": true
+          },
+          "issueHighlights": {
+            "samples": {}
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/english-market-batch/open-face-cube.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "open-face-cube.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 584,
+          "triangleCount": 10,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 20,
+            "maxY": 20,
+            "maxZ": 20
+          },
+          "dimensions": {
+            "width": 20,
+            "height": 20,
+            "depth": 20
+          },
+          "surfaceArea": 2000,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 4,
+            "nonManifoldEdgeCount": 0,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "open_edge",
+                "message": "Open edge [(0, 0, 0) - (20, 0, 0)] is used only by triangle 2.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "open_edge",
+                "message": "Open edge [(0, 20, 0) - (20, 20, 0)] is used only by triangle 5.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "open_edge",
+                "message": "Open edge [(0, 0, 0) - (0, 20, 0)] is used only by triangle 7.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "open_edge",
+                "message": "Open edge [(20, 0, 0) - (20, 20, 0)] is used only by triangle 8.",
+                "count": 1,
+                "severity": "error"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 4,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "open_edge": [
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "c": null
+                },
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "c": null
+                },
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "c": null
+                },
+                {
+                  "a": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "c": null
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 4,
+              "returnedCount": 4,
+              "truncated": false,
+              "segments": [
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  }
+                },
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  }
+                },
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 0,
+                    "y": 20,
+                    "z": 0
+                  }
+                },
+                {
+                  "start": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  }
+                }
+              ]
+            },
+            "nonManifoldEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            }
+          }
+        }
+      },
+      {
+        "path": "/examples/cad-export/duplicate-face-cube.stl",
+        "accepted": true,
+        "surfaceValidationRan": true,
+        "report": {
+          "reportVersion": "1.0",
+          "fileName": "duplicate-face-cube.stl",
+          "fileFormat": "stl",
+          "sourceUnit": null,
+          "modelObjectCount": null,
+          "buildItemCount": null,
+          "fileSizeBytes": 734,
+          "triangleCount": 13,
+          "boundingBox": {
+            "minX": 0,
+            "minY": 0,
+            "minZ": 0,
+            "maxX": 20,
+            "maxY": 20,
+            "maxZ": 20
+          },
+          "dimensions": {
+            "width": 20,
+            "height": 20,
+            "depth": 20
+          },
+          "surfaceArea": 2600,
+          "volume": null,
+          "topology": {
+            "connectedComponentCount": 1,
+            "openEdgeCount": 0,
+            "nonManifoldEdgeCount": 3,
+            "hasInconsistentOrientation": false
+          },
+          "validation": {
+            "issues": [
+              {
+                "code": "duplicate_triangle",
+                "message": "Triangle 12 duplicates triangle 0.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "non_manifold_edge",
+                "message": "Non-manifold edge [(0, 0, 0) - (20, 20, 0)] is used by 3 triangles: 0, 1, 12.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "non_manifold_edge",
+                "message": "Non-manifold edge [(20, 0, 0) - (20, 20, 0)] is used by 3 triangles: 0, 10, 12.",
+                "count": 1,
+                "severity": "error"
+              },
+              {
+                "code": "non_manifold_edge",
+                "message": "Non-manifold edge [(0, 0, 0) - (20, 0, 0)] is used by 3 triangles: 0, 4, 12.",
+                "count": 1,
+                "severity": "error"
+              }
+            ],
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 3,
+              "hasInconsistentOrientation": false
+            },
+            "isValid": false
+          },
+          "issueHighlights": {
+            "samples": {
+              "duplicate_triangle": [
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "c": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  }
+                }
+              ],
+              "non_manifold_edge": [
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "c": null
+                },
+                {
+                  "a": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  },
+                  "c": null
+                },
+                {
+                  "a": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "b": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "c": null
+                }
+              ]
+            }
+          },
+          "issueGeometry": {
+            "version": "1.0",
+            "openEdges": {
+              "totalCount": 0,
+              "returnedCount": 0,
+              "truncated": false,
+              "segments": []
+            },
+            "nonManifoldEdges": {
+              "totalCount": 3,
+              "returnedCount": 3,
+              "truncated": false,
+              "segments": [
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  }
+                },
+                {
+                  "start": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 20,
+                    "y": 20,
+                    "z": 0
+                  }
+                },
+                {
+                  "start": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                  },
+                  "end": {
+                    "x": 20,
+                    "y": 0,
+                    "z": 0
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "repairs": [
+      {
+        "input": "/examples/input-integrity/cube-repeated-position.stl",
+        "output": "/examples/input-integrity/cube-repeated-position-cleaned.stl",
+        "bytes": 684,
+        "sha256": "0a8fab85bfe0a2d69ebc9152cf0a1b6691bf0213489c6b981518f8156ebcfe34",
+        "report": {
+          "before": {
+            "reportVersion": "1.0",
+            "fileName": "cube-repeated-position.stl",
+            "fileFormat": "stl",
+            "sourceUnit": null,
+            "modelObjectCount": null,
+            "buildItemCount": null,
+            "fileSizeBytes": 734,
+            "triangleCount": 13,
+            "boundingBox": {
+              "minX": 0,
+              "minY": 0,
+              "minZ": 0,
+              "maxX": 20,
+              "maxY": 20,
+              "maxZ": 20
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 20
+            },
+            "surfaceArea": 2400,
+            "volume": null,
+            "topology": {
+              "connectedComponentCount": 2,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "validation": {
+              "issues": [
+                {
+                  "code": "degenerate_triangle",
+                  "message": "Triangle 12 is degenerate.",
+                  "count": 1,
+                  "severity": "error"
+                },
+                {
+                  "code": "multiple_disconnected_shells",
+                  "message": "This STL contains 2 separate mesh components. This can be intentional, but check that all parts are expected before printing.",
+                  "count": 2,
+                  "severity": "warning"
+                }
+              ],
+              "topology": {
+                "connectedComponentCount": 2,
+                "openEdgeCount": 0,
+                "nonManifoldEdgeCount": 0,
+                "hasInconsistentOrientation": false
+              },
+              "isValid": false
+            },
+            "issueHighlights": {
+              "samples": {
+                "degenerate_triangle": [
+                  {
+                    "a": {
+                      "x": 5,
+                      "y": 5,
+                      "z": 5
+                    },
+                    "b": {
+                      "x": 10,
+                      "y": 5,
+                      "z": 5
+                    },
+                    "c": {
+                      "x": 10,
+                      "y": 5,
+                      "z": 5
+                    }
+                  }
+                ]
+              }
+            },
+            "issueGeometry": {
+              "version": "1.0",
+              "openEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              },
+              "nonManifoldEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              }
+            }
+          },
+          "after": {
+            "reportVersion": "1.0",
+            "fileName": "cube-repeated-position-cleaned.stl",
+            "fileFormat": "stl",
+            "sourceUnit": null,
+            "modelObjectCount": null,
+            "buildItemCount": null,
+            "fileSizeBytes": 684,
+            "triangleCount": 12,
+            "boundingBox": {
+              "minX": 0,
+              "minY": 0,
+              "minZ": 0,
+              "maxX": 20,
+              "maxY": 20,
+              "maxZ": 20
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 20
+            },
+            "surfaceArea": 2400,
+            "volume": 7999.999999999999,
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "validation": {
+              "issues": [],
+              "topology": {
+                "connectedComponentCount": 1,
+                "openEdgeCount": 0,
+                "nonManifoldEdgeCount": 0,
+                "hasInconsistentOrientation": false
+              },
+              "isValid": true
+            },
+            "issueHighlights": {
+              "samples": {}
+            },
+            "issueGeometry": {
+              "version": "1.0",
+              "openEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              },
+              "nonManifoldEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              }
+            }
+          },
+          "duplicateTrianglesRemoved": 0,
+          "degenerateTrianglesRemoved": 1,
+          "orientationsCorrected": 0,
+          "skippedReasons": [],
+          "hasCleanedFile": true,
+          "isFullyValid": true,
+          "cleanedFileName": "cube-repeated-position-cleaned.stl"
+        }
+      },
+      {
+        "input": "/examples/input-integrity/cube-collinear.stl",
+        "output": "/examples/input-integrity/cube-collinear-cleaned.stl",
+        "bytes": 684,
+        "sha256": "0a8fab85bfe0a2d69ebc9152cf0a1b6691bf0213489c6b981518f8156ebcfe34",
+        "report": {
+          "before": {
+            "reportVersion": "1.0",
+            "fileName": "cube-collinear.stl",
+            "fileFormat": "stl",
+            "sourceUnit": null,
+            "modelObjectCount": null,
+            "buildItemCount": null,
+            "fileSizeBytes": 734,
+            "triangleCount": 13,
+            "boundingBox": {
+              "minX": 0,
+              "minY": 0,
+              "minZ": 0,
+              "maxX": 20,
+              "maxY": 20,
+              "maxZ": 20
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 20
+            },
+            "surfaceArea": 2400,
+            "volume": null,
+            "topology": {
+              "connectedComponentCount": 2,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "validation": {
+              "issues": [
+                {
+                  "code": "degenerate_triangle",
+                  "message": "Triangle 12 is degenerate.",
+                  "count": 1,
+                  "severity": "error"
+                },
+                {
+                  "code": "multiple_disconnected_shells",
+                  "message": "This STL contains 2 separate mesh components. This can be intentional, but check that all parts are expected before printing.",
+                  "count": 2,
+                  "severity": "warning"
+                }
+              ],
+              "topology": {
+                "connectedComponentCount": 2,
+                "openEdgeCount": 0,
+                "nonManifoldEdgeCount": 0,
+                "hasInconsistentOrientation": false
+              },
+              "isValid": false
+            },
+            "issueHighlights": {
+              "samples": {
+                "degenerate_triangle": [
+                  {
+                    "a": {
+                      "x": 5,
+                      "y": 5,
+                      "z": 5
+                    },
+                    "b": {
+                      "x": 10,
+                      "y": 5,
+                      "z": 5
+                    },
+                    "c": {
+                      "x": 15,
+                      "y": 5,
+                      "z": 5
+                    }
+                  }
+                ]
+              }
+            },
+            "issueGeometry": {
+              "version": "1.0",
+              "openEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              },
+              "nonManifoldEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              }
+            }
+          },
+          "after": {
+            "reportVersion": "1.0",
+            "fileName": "cube-collinear-cleaned.stl",
+            "fileFormat": "stl",
+            "sourceUnit": null,
+            "modelObjectCount": null,
+            "buildItemCount": null,
+            "fileSizeBytes": 684,
+            "triangleCount": 12,
+            "boundingBox": {
+              "minX": 0,
+              "minY": 0,
+              "minZ": 0,
+              "maxX": 20,
+              "maxY": 20,
+              "maxZ": 20
+            },
+            "dimensions": {
+              "width": 20,
+              "height": 20,
+              "depth": 20
+            },
+            "surfaceArea": 2400,
+            "volume": 7999.999999999999,
+            "topology": {
+              "connectedComponentCount": 1,
+              "openEdgeCount": 0,
+              "nonManifoldEdgeCount": 0,
+              "hasInconsistentOrientation": false
+            },
+            "validation": {
+              "issues": [],
+              "topology": {
+                "connectedComponentCount": 1,
+                "openEdgeCount": 0,
+                "nonManifoldEdgeCount": 0,
+                "hasInconsistentOrientation": false
+              },
+              "isValid": true
+            },
+            "issueHighlights": {
+              "samples": {}
+            },
+            "issueGeometry": {
+              "version": "1.0",
+              "openEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              },
+              "nonManifoldEdges": {
+                "totalCount": 0,
+                "returnedCount": 0,
+                "truncated": false,
+                "segments": []
+              }
+            }
+          },
+          "duplicateTrianglesRemoved": 0,
+          "degenerateTrianglesRemoved": 1,
+          "orientationsCorrected": 0,
+          "skippedReasons": [],
+          "hasCleanedFile": true,
+          "isFullyValid": true,
+          "cleanedFileName": "cube-collinear-cleaned.stl"
+        }
+      }
+    ]
+  }
+}

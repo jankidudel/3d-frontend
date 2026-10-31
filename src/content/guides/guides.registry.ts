@@ -8,6 +8,9 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  DegenerateTrianglesStl: 'degenerate-triangles-stl',
+  TruncatedStlFile: 'truncated-stl-file',
+  MirroredStlFile: 'mirrored-stl-file',
   BestFileFormatFor3dPrinting: 'best-file-format-for-3d-printing',
   ThreeMfVsStl: '3mf-vs-stl',
   StlVsObjFor3dPrinting: 'stl-vs-obj-for-3d-printing',
@@ -40,6 +43,31 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.DegenerateTrianglesStl,
+    group: GuideGroupId.Stl,
+    order: 239,
+    enabled: true,
+    publishDate: '2026-10-31',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: GuideContentSlug.TruncatedStlFile,
+    group: GuideGroupId.Stl,
+    order: 240,
+    enabled: true,
+    publishDate: '2026-10-31',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: GuideContentSlug.MirroredStlFile,
+    group: GuideGroupId.Stl,
+    order: 241,
+    enabled: true,
+    publishDate: '2026-10-31',
+    checkEditorialTargets: true,
+  },
+
   {
     slug: '3d-printing-quote-checklist',
     group: GuideGroupId.General,
@@ -602,7 +630,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 65,
     enabled: true,
     publishDate: '2026-09-06',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: false,
   },
   {
@@ -629,7 +657,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: false,
   },
   {
@@ -648,7 +676,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-15',
+    updatedDate: '2026-10-31',
   },
   {
     slug: 'how-to-remove-duplicate-triangles-from-an-stl-file',
@@ -657,7 +685,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-15',
+    updatedDate: '2026-10-31',
   },
   {
     slug: 'what-is-non-manifold-geometry',
@@ -717,7 +745,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 170,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: false,
   },
   {
@@ -726,7 +754,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 180,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: false,
   },
   {
@@ -743,7 +771,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Stl,
     order: 200,
     enabled: true,
-    updatedDate: '2026-10-18',
+    updatedDate: '2026-10-31',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -932,6 +960,6 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-31',
   },
 ];

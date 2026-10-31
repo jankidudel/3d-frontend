@@ -1,0 +1,229 @@
+---
+title: 'Mirrored STL File: Check Handedness Before Printing | InspectMesh'
+description: Separate a mirrored part from rotation and reversed faces. Compare asymmetric STL controls with equal dimensions and volume before changing the design.
+slug: mirrored-stl-file
+eyebrow: STL design correspondence
+heading: 'Mirrored STL File: Check Handedness Before Printing'
+---
+
+<p>
+  Compare known asymmetric features with the original design or mating part.
+  Reflection moves features to the opposite handed arrangement; rotation changes
+  their pose, and reversing triangle winding changes face orientation without
+  moving the vertices. A mirrored part can be a valid mesh and the intended
+  left-hand design. Quality checks cannot decide which version you meant to
+  print.
+</p>
+<h2 id="asymmetric-reference">Use an asymmetric reference, not a cube</h2>
+<figure>
+  <img
+    src="/examples/input-integrity/reflection-vs-rotation.svg"
+    width="720"
+    height="260"
+    alt="Reference, X-reflected and Z-rotated scalene tetrahedra in one fixed frame retain the original O, X, Y and Z vertex identities"
+  />
+  <figcaption>
+    Original fixed-frame oblique projections of the stored coordinates. Labels
+    retain their original vertex identities; this is not a slicer screenshot.
+  </figcaption>
+</figure>
+<p>
+  The reference tetrahedron has O=(0,0,0), X=(30,0,0), Y=(0,20,0) and
+  Z=(0,0,10). All six edge lengths differ, so corresponding vertices can be
+  distinguished. Outward faces are (O,Y,X), (O,X,Z), (O,Z,Y) and (X,Y,Z). The
+  analytical signed volume is +1000 cubic coordinate units. Only an explicit
+  millimetre interpretation makes that 1000 mm³; STL itself stores no unit.
+</p>
+<h2 id="four-controls">Four files, equal spans, different questions</h2>
+<table>
+  <caption>
+    Analytical transforms and separately observed local software results
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Download</th>
+      <th scope="col">Construction and winding</th>
+      <th scope="col">Recalculated signed volume</th>
+      <th scope="col">Observed preflight / processor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="reference">
+      <th scope="row">
+        <a href="{{ ExampleAsset.TetraReferenceStl }}" download
+          >Outward reference</a
+        >
+      </th>
+      <td>Original labelled vertices and outward faces</td>
+      <td>+1000</td>
+      <td>4 faces; 0 open edges; no winding conflicts; absolute volume 1000</td>
+    </tr>
+    <tr id="mirrored">
+      <th scope="row">
+        <a href="{{ ExampleAsset.TetraMirroredStl }}" download
+          >Mirrored outward</a
+        >
+      </th>
+      <td>x′ = 30 - x; reverse each face's vertex order</td>
+      <td>+1000</td>
+      <td>4 faces; 0 open edges; no winding conflicts; absolute volume 1000</td>
+    </tr>
+    <tr id="rotated">
+      <th scope="row">
+        <a href="{{ ExampleAsset.TetraRotatedStl }}" download
+          >Rotated outward</a
+        >
+      </th>
+      <td>x′ = 30 - x; y′ = 20 - y; keep face order</td>
+      <td>+1000</td>
+      <td>4 faces; 0 open edges; no winding conflicts; absolute volume 1000</td>
+    </tr>
+    <tr id="inward">
+      <th scope="row">
+        <a href="{{ ExampleAsset.TetraInwardStl }}" download
+          >Inward reference</a
+        >
+      </th>
+      <td>Keep original coordinates; reverse every face</td>
+      <td>-1000</td>
+      <td>4 faces; 0 open edges; no winding conflicts; absolute volume 1000</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Every file has X bounds 0-30, Y bounds 0-20 and Z bounds 0-10. The rotation is
+  180 degrees around a Z-parallel line through (15,10); the reflection is across
+  the plane X=15. Neither transform changes edge lengths. The reflection changes
+  the handed arrangement of the labelled vertices, whereas the inward reference
+  changes only their face order. A rotation cannot align all corresponding
+  vertices of this reflected scalene control with the reference.
+</p>
+<p>
+  The signed volumes above were independently recalculated from the serialized
+  binary coordinates; they are not a signed value reported by the public tool.
+  Local preflight and the unchanged local processor were executed on 31 October
+  2026 and reported the absolute volume and edge results in the last column. All
+  four processor validations passed their implemented checks. None of those
+  checks establishes intended handedness, intended outside, assembly fit or
+  physical print success.
+</p>
+<h2>Why a reflected mesh can still face outward</h2>
+<p>
+  Reflecting coordinates reverses orientation. Reversing each face's vertex
+  order as well preserves the outward order in the mirrored control. Its
+  positive signed volume therefore does not establish the designer's intended
+  side. Conversely, all faces in the inward control remain mutually consistent
+  across shared edges; no winding conflict is reported even though the global
+  signed volume is negative. The existing
+  <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
+    >flipped-face guide</a
+  >
+  owns local-patch and inward-shell diagnosis. Changing stored normals alone
+  does not relocate a key, thread or letter to its intended side.
+</p>
+<h2>Compare design correspondence before choosing a transform</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Useful comparison</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">A keyed cutout is on the opposite side</th>
+      <td>
+        Use a fixed assembly viewing direction and the same identifiable feature
+        on the source.
+      </td>
+      <td>
+        Establish the intended left/right variant before deliberately reflecting
+        geometry.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">The model is facing the wrong direction on the bed</th>
+      <td>
+        Check whether rotation brings all asymmetric features into
+        correspondence.
+      </td>
+      <td>
+        Use the existing orientation workflow; do not reflect simply to change
+        pose.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Text or a handed fastener seems reversed</th>
+      <td>
+        Compare against an authoritative design and mating interface, not a
+        camera view alone.
+      </td>
+      <td>
+        Review the actual geometry and intended viewing side. No physical
+        fastener test was performed here.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Only shading or face-side appearance differs</th>
+      <td>Compare vertex positions and winding separately.</td>
+      <td>Investigate face orientation instead of moving the features.</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Preserve the original and reopen the exported bytes</h2>
+<ol>
+  <li>
+    Keep the source and record the intended handed variant and a fixed
+    coordinate/viewing frame.
+  </li>
+  <li>
+    Choose reflection only when design correspondence calls for it. A left/right
+    pair can intentionally require both variants.
+  </li>
+  <li>
+    Save a separate output, reopen those exact bytes and compare the same
+    labelled features with the source or mating-part reference.
+  </li>
+  <li>
+    Check dimensions, relevant edge findings and actual sliced layers before
+    committing material or time.
+  </li>
+</ol>
+<p>
+  A slicer placement transform and an exported STL are different evidence. Do
+  not assume the saved bytes contain the visible transform until reopening them.
+  Prusa's
+  <a href="https://help.prusa3d.com/article/object-manipulation-panel_1757"
+    >official object manipulation documentation</a
+  >
+  describes per-axis mirror controls and coordinate frames, reviewed 31 October
+  2026. This article did not perform a PrusaSlicer mirror/export experiment and
+  does not present application clicks as tested instructions.
+</p>
+<p>
+  Open the controls deliberately in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">local viewer</a> or
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">preflight</a>. No download
+  starts an upload or replaces your current file. For bed pose, follow the
+  <a href="{{ GuideSlug.RouteHowToOrientAnStlFileFor3dPrinting }}"
+    >orientation guide</a
+  >. InspectMesh has no wrong-handedness detector in this workflow and this
+  batch adds no mirror tool.
+</p>
+<p>
+  Download the
+  <a href="{{ ExampleAsset.InputIntegrityManifest }}" download
+    >full coordinate and transform manifest</a
+  >,
+  <a href="{{ ExampleAsset.InputIntegrityObservations }}" download
+    >local workflow observations</a
+  >
+  and
+  <a href="{{ ExampleAsset.InputIntegrityProcessorObservations }}" download
+    >processor observations</a
+  >
+  for exact hashes, matrices, source revisions, workflow names and reproduction
+  commands. These original software controls are available for reuse; no
+  material, strength or physical assembly test is claimed.
+</p>

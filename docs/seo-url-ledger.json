@@ -490,7 +490,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-26"
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/tools/stl-compare",
       "sitemapMember": true,
@@ -8391,7 +8391,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/tools/stl-print-preflight",
       "sitemapMember": true,
@@ -10278,7 +10278,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-26"
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/tools/stl-viewer",
       "sitemapMember": true,
@@ -12139,7 +12139,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-26"
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/guides",
       "sitemapMember": true,
@@ -12317,7 +12317,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-26"
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/examples",
       "sitemapMember": true,
@@ -18912,7 +18912,11 @@
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
-        "remainingEvidence": "Own repair selection and verification, linking fault-specific procedures without repeating them all."
+        "remainingEvidence": "Own repair selection and verification, linking fault-specific procedures without repeating them all.",
+        "contextualUpdate": {
+          "date": "2026-10-31",
+          "scope": "Added a specific diagnostic branch to the new input-integrity guide; retained the established intent, examples and substantive sections."
+        }
       },
       "google": {
         "status": null,
@@ -18944,7 +18948,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-repair-an-stl-file",
       "sitemapMember": true,
@@ -19157,7 +19162,11 @@
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
-        "remainingEvidence": "Distinguish shading, winding conflict and inward shell; demonstrate the actual correction."
+        "remainingEvidence": "Distinguish shading, winding conflict and inward shell; demonstrate the actual correction.",
+        "contextualUpdate": {
+          "date": "2026-10-31",
+          "scope": "Added a specific diagnostic branch to the new input-integrity guide; retained the established intent, examples and substantive sections."
+        }
       },
       "google": {
         "status": null,
@@ -19189,7 +19198,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-fix-flipped-normals-in-an-stl-file",
       "sitemapMember": true,
@@ -19286,7 +19296,11 @@
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
-        "remainingEvidence": "Retain before/after duplicate counts and verify intended surface preservation."
+        "remainingEvidence": "Retain before/after duplicate counts and verify intended surface preservation.",
+        "contextualUpdate": {
+          "date": "2026-10-31",
+          "scope": "Added a specific diagnostic branch to the new input-integrity guide; retained the established intent, examples and substantive sections."
+        }
       },
       "google": {
         "status": null,
@@ -19318,7 +19332,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-remove-duplicate-triangles-from-an-stl-file",
       "sitemapMember": true,
@@ -20193,7 +20208,11 @@
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
-        "remainingEvidence": "Give actual opening/inspection steps and import troubleshooting; avoid repeating the STL definition page."
+        "remainingEvidence": "Give actual opening/inspection steps and import troubleshooting; avoid repeating the STL definition page.",
+        "contextualUpdate": {
+          "date": "2026-10-31",
+          "scope": "Added a specific diagnostic branch to the new input-integrity guide; retained the established intent, examples and substantive sections."
+        }
       },
       "google": {
         "status": null,
@@ -20225,7 +20244,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-open-an-stl-file",
       "sitemapMember": true,
@@ -20327,7 +20347,11 @@
         "primaryTask": "Choose STL encoding and verify precision-sensitive conversion",
         "improvement": "Consolidated encoding choice, compactness formula and receiving checks.",
         "evidence": "Retained the full Float32 precision experiment, source references and downloadable controls.",
-        "remainingEvidence": "Browser/mobile/AXE/print visual acceptance; authorised deployment; authenticated Google evidence."
+        "remainingEvidence": "Browser/mobile/AXE/print visual acceptance; authorised deployment; authenticated Google evidence.",
+        "contextualUpdate": {
+          "date": "2026-10-31",
+          "scope": "Added a specific diagnostic branch to the new input-integrity guide; retained the established intent, examples and substantive sections."
+        }
       },
       "google": {
         "status": null,
@@ -20360,7 +20384,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-26"
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/guides/ascii-vs-binary-stl",
       "sitemapMember": true,
@@ -20594,7 +20618,11 @@
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
-        "remainingEvidence": "Own orientation tradeoffs across surfaces, supports and fit; use one complete comparison."
+        "remainingEvidence": "Own orientation tradeoffs across surfaces, supports and fit; use one complete comparison.",
+        "contextualUpdate": {
+          "date": "2026-10-31",
+          "scope": "Added a specific diagnostic branch to the new input-integrity guide; retained the established intent, examples and substantive sections."
+        }
       },
       "google": {
         "status": null,
@@ -20626,7 +20654,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-orient-an-stl-file-for-3d-printing",
       "sitemapMember": true,
@@ -26171,6 +26200,147 @@
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
       },
       "previousPaths": ["/alignment-pins-for-split-3d-prints"]
+    },
+    {
+      "path": "/guides/degenerate-triangles-stl",
+      "priority": "P2",
+      "family": "F03",
+      "owner": "InspectMesh",
+      "decision": "new-distinct-task-owner",
+      "brief": "Interpret repeated-position, collinear and numerically narrow STL faces before choosing cleanup.",
+      "decisionReason": "Confirmed absent from the execution source and the supplied 31 October live baseline; existing adjacent guides retain their separate tasks.",
+      "editorialReview": {
+        "scope": "Source, deterministic diagnostic fixtures and named local production algorithms. Browser, live release and Google evidence remain separate.",
+        "status": "prepared-locally",
+        "primaryTask": "Interpret repeated-position, collinear and numerically narrow STL faces before choosing cleanup.",
+        "evidence": "Original serialized triangle controls, actual preflight/processor disagreements and reopened conservative-cleanup outputs.",
+        "remainingEvidence": "Final build/browser checks, separately authorized deployment and authenticated Google evidence."
+      },
+      "google": {
+        "status": null,
+        "reason": null,
+        "lastCrawl": null,
+        "selectedCanonical": null,
+        "indexedHistory": null,
+        "impressions": null,
+        "clicks": null,
+        "queryCluster": null,
+        "country": null,
+        "device": null,
+        "range": null,
+        "exportDate": null
+      },
+      "live": {
+        "requestedUrl": "https://www.inspectmesh.com/guides/degenerate-triangles-stl",
+        "finalUrl": null,
+        "status": null,
+        "observedAt": null,
+        "limitation": "Prepared locally; this task has not deployed the new guide."
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
+      },
+      "url": "https://www.inspectmesh.com/guides/degenerate-triangles-stl",
+      "sitemapMember": true,
+      "primaryTask": "Interpret repeated-position, collinear and numerically narrow STL faces before choosing cleanup.",
+      "baseline": null
+    },
+    {
+      "path": "/guides/truncated-stl-file",
+      "priority": "P2",
+      "family": "F05",
+      "owner": "InspectMesh",
+      "decision": "new-distinct-task-owner",
+      "brief": "Investigate failed STL input structure separately from topology and obtain a trustworthy replacement.",
+      "decisionReason": "Confirmed absent from the execution source and the supplied 31 October live baseline; existing adjacent guides retain their separate tasks.",
+      "editorialReview": {
+        "scope": "Source, deterministic diagnostic fixtures and named local production algorithms. Browser, live release and Google evidence remain separate.",
+        "status": "prepared-locally",
+        "primaryTask": "Investigate failed STL input structure separately from topology and obtain a trustworthy replacement.",
+        "evidence": "Controlled missing-byte, missing-record, count-mismatch and ASCII truncation inputs compared with a structurally complete open cube.",
+        "remainingEvidence": "Final build/browser checks, separately authorized deployment and authenticated Google evidence."
+      },
+      "google": {
+        "status": null,
+        "reason": null,
+        "lastCrawl": null,
+        "selectedCanonical": null,
+        "indexedHistory": null,
+        "impressions": null,
+        "clicks": null,
+        "queryCluster": null,
+        "country": null,
+        "device": null,
+        "range": null,
+        "exportDate": null
+      },
+      "live": {
+        "requestedUrl": "https://www.inspectmesh.com/guides/truncated-stl-file",
+        "finalUrl": null,
+        "status": null,
+        "observedAt": null,
+        "limitation": "Prepared locally; this task has not deployed the new guide."
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
+      },
+      "url": "https://www.inspectmesh.com/guides/truncated-stl-file",
+      "sitemapMember": true,
+      "primaryTask": "Investigate failed STL input structure separately from topology and obtain a trustworthy replacement.",
+      "baseline": null
+    },
+    {
+      "path": "/guides/mirrored-stl-file",
+      "priority": "P2",
+      "family": "F06",
+      "owner": "InspectMesh",
+      "decision": "new-distinct-task-owner",
+      "brief": "Establish intended handedness using asymmetric design correspondence, separately from rotation and winding.",
+      "decisionReason": "Confirmed absent from the execution source and the supplied 31 October live baseline; existing adjacent guides retain their separate tasks.",
+      "editorialReview": {
+        "scope": "Source, deterministic diagnostic fixtures and named local production algorithms. Browser, live release and Google evidence remain separate.",
+        "status": "prepared-locally",
+        "primaryTask": "Establish intended handedness using asymmetric design correspondence, separately from rotation and winding.",
+        "evidence": "Four labelled scalene tetrahedra with stored-coordinate transforms, independent signed-volume arithmetic and actual analyzer results.",
+        "remainingEvidence": "Final build/browser checks, separately authorized deployment and authenticated Google evidence."
+      },
+      "google": {
+        "status": null,
+        "reason": null,
+        "lastCrawl": null,
+        "selectedCanonical": null,
+        "indexedHistory": null,
+        "impressions": null,
+        "clicks": null,
+        "queryCluster": null,
+        "country": null,
+        "device": null,
+        "range": null,
+        "exportDate": null
+      },
+      "live": {
+        "requestedUrl": "https://www.inspectmesh.com/guides/mirrored-stl-file",
+        "finalUrl": null,
+        "status": null,
+        "observedAt": null,
+        "limitation": "Prepared locally; this task has not deployed the new guide."
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-10-31"
+      },
+      "url": "https://www.inspectmesh.com/guides/mirrored-stl-file",
+      "sitemapMember": true,
+      "primaryTask": "Establish intended handedness using asymmetric design correspondence, separately from rotation and winding.",
+      "baseline": null
     }
   ],
   "additionalUrls": [

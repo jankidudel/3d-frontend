@@ -1,0 +1,268 @@
+---
+title: 'Degenerate STL Triangles: Check and Clean Up | InspectMesh'
+description: Compare repeated vertices, collinear faces and narrow triangles. Check the actual analyzer result and verify what STL cleanup changed.
+slug: degenerate-triangles-stl
+eyebrow: STL geometry diagnosis
+heading: 'Degenerate STL Triangles: Identify and Verify Cleanup'
+---
+
+<p>
+  A mathematically degenerate triangle has zero area: two positions coincide, or
+  all three positions lie on one line. A very narrow triangle can have nonzero
+  area and still be excluded by a workflow's numerical tolerance. Identify the
+  reported face before removing it, keep the original and check the complete
+  cleanup report on the saved derivative.
+</p>
+<h2>Repeated positions, collinearity and a narrow surface</h2>
+<figure>
+  <img
+    src="/examples/input-integrity/triangle-degeneracy.svg"
+    width="720"
+    height="260"
+    alt="Repeated positions coincide, three collinear points form a line, and an exaggerated narrow triangle encloses nonzero area"
+  />
+  <figcaption>
+    Original schematic, not to scale. The narrow triangle's height is
+    deliberately exaggerated.
+  </figcaption>
+</figure>
+<p>
+  For vertices A, B and C, area is half the magnitude of (B - A) cross (C - A).
+  A=(0,0,0), B=(1,0,0), C=(1,0,0) repeats a position; replacing C with (2,0,0)
+  makes three distinct collinear positions. Both areas are exactly zero.
+  C=(1,0.000001,0) instead produces an analytical area of 0.0000005 square
+  coordinate units. STL declares no physical unit.
+</p>
+<h2 id="diagnostic-controls">Download and reproduce the findings</h2>
+<p>
+  These original controls were run on 31 October 2026 through the actual local
+  preflight reader and topology function, and the unchanged local processor used
+  by quality-check jobs. The workflow names matter: these are software
+  observations, not a deployed-job run or physical print test.
+</p>
+<table>
+  <caption>
+    Observed degeneracy counts; mathematical area is calculated separately
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Control</th>
+      <th scope="col">Area of added or single face</th>
+      <th scope="col">Local preflight</th>
+      <th scope="col">Local processor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="cube-repeated-position">
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeRepeatedPositionStl }}" download
+          >Cube plus repeated-position triangle</a
+        >
+      </th>
+      <td>0; 13 stored faces</td>
+      <td>1 degenerate; 0 duplicate</td>
+      <td>1 degenerate; 0 duplicate; 2 components</td>
+    </tr>
+    <tr id="cube-collinear">
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeCollinearStl }}" download
+          >Cube plus collinear triangle</a
+        >
+      </th>
+      <td>0; 13 stored faces</td>
+      <td>1 degenerate; 0 duplicate</td>
+      <td>1 degenerate; 0 duplicate; 2 components</td>
+    </tr>
+    <tr id="triangle-repeated-position">
+      <th scope="row">
+        <a href="{{ ExampleAsset.TriangleRepeatedPositionStl }}" download
+          >Single repeated-position triangle</a
+        >
+      </th>
+      <td>0</td>
+      <td>1 degenerate</td>
+      <td>1 degenerate</td>
+    </tr>
+    <tr id="triangle-collinear">
+      <th scope="row">
+        <a href="{{ ExampleAsset.TriangleCollinearStl }}" download
+          >Single collinear triangle</a
+        >
+      </th>
+      <td>0</td>
+      <td>1 degenerate</td>
+      <td>1 degenerate</td>
+    </tr>
+    <tr id="triangle-narrow">
+      <th scope="row">
+        <a href="{{ ExampleAsset.TriangleNarrowStl }}" download
+          >Single narrow triangle</a
+        >
+      </th>
+      <td>4.999999987376214e-7 after binary reopen</td>
+      <td>0 degenerate; 3 open edges</td>
+      <td>1 degenerate; excluded from edge checks</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
+          >Existing closed cube reference</a
+        >
+      </th>
+      <td>No added face; 12 stored faces</td>
+      <td>0 degenerate; 0 duplicate</td>
+      <td>0 degenerate; 0 duplicate</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <a href="{{ ExampleAsset.DuplicateFaceCubeStl }}" download
+          >Existing duplicate-face cube</a
+        >
+      </th>
+      <td>Repeated valid face; 13 stored faces</td>
+      <td>0 degenerate; 1 duplicate</td>
+      <td>0 degenerate; 1 duplicate</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  In the narrow binary file, C reopens as (1, 9.999999974752427e-7, 0). The
+  recalculated area remains positive. It is not mathematically zero merely
+  because the processor flags it. The two cube additions lie wholly inside the
+  original 0-20 bounds; deleting just the final zero-area face would
+  mathematically restore the reference. The next section records what cleanup
+  actually did, rather than assuming that outcome.
+</p>
+<h2>Why the workflows disagree at a numerical boundary</h2>
+<p>
+  The checked preflight implementation counts a repeated index or an exactly
+  zero squared cross product. The checked processor validator uses a relative
+  rule: squared cross-product magnitude is at most 1e-12 times the square of the
+  longest squared edge length. That is a shape-dependent numerical test, not one
+  fixed area in mm². The single narrow control satisfies that processor rule
+  after Float32 storage. No threshold was changed for this article.
+</p>
+<p>
+  Component counting also has a different scope: local preflight skips the
+  zero-area face before joining components, while the processor records the
+  detached added record as another component and reports that warning. Neither
+  count identifies which design pieces are intentional. Read the named report,
+  not an assumed universal InspectMesh threshold or shell count.
+</p>
+<h2 id="cleanup-observation">Actual cleanup: read every changed category</h2>
+<table>
+  <caption>
+    Local ProcessorApplication.RepairStl output, reopened through Process
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Saved derivative</th>
+      <th scope="col">Complete change summary</th>
+      <th scope="col">Reopened result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeRepeatedPositionCleanedStl }}" download
+          >Repeated-position cube, cleaned</a
+        >
+      </th>
+      <td>
+        1 degenerate removed; 0 duplicates removed; 0 orientation corrections;
+        no skipped reasons
+      </td>
+      <td>
+        12 faces; 0-20 bounds on each axis; 1 component; valid in the
+        processor's checks
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <a href="{{ ExampleAsset.CubeCollinearCleanedStl }}" download
+          >Collinear cube, cleaned</a
+        >
+      </th>
+      <td>
+        1 degenerate removed; 0 duplicates removed; 0 orientation corrections;
+        no skipped reasons
+      </td>
+      <td>
+        12 faces; 0-20 bounds on each axis; 1 component; valid in the
+        processor's checks
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The full before/after reports, saved-file hashes and source revisions are in
+  the
+  <a href="{{ ExampleAsset.InputIntegrityProcessorObservations }}" download
+    >processor observations</a
+  >.
+  <a href="{{ ExampleAsset.InputIntegrityManifest }}" download
+    >The fixture manifest</a
+  >
+  records every source file, coordinate, byte length and SHA-256, while
+  <a href="{{ ExampleAsset.InputIntegrityObservations }}" download
+    >local reader observations</a
+  >
+  keep the preflight and viewer-loader results separate. The generator and
+  reproduction commands are named in those records. A repeated valid face is
+  owned by the existing
+  <a href="{{ GuideSlug.RouteHowToRemoveDuplicateTrianglesFromAnStlFile }}"
+    >duplicate-triangle guide</a
+  >; its earlier cleanup experiment is not repeated here.
+</p>
+<h2>Choose removal, review or re-export</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Finding</th>
+      <th scope="col">Next action</th>
+      <th scope="col">Verification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">An isolated zero-area record</th>
+      <td>
+        Review it against the source, then consider conservative cleanup on a
+        copy.
+      </td>
+      <td>
+        Compare the entire report, bounds and saved surface against the
+        original.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">A nonzero narrow face on a designed feature</th>
+      <td>
+        Review source tessellation and scale before deleting it. Re-export when
+        that better preserves the intended feature.
+      </td>
+      <td>
+        Inspect that feature and the surrounding surface in the receiving
+        slicer.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Zero-area faces beside boundaries or overlaps</th>
+      <td>Resolve the known design boundary or Boolean in the source.</td>
+      <td>
+        Do not accept deletion alone as reconstruction of missing geometry.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Open a control deliberately in
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">local STL preflight</a>, or
+  choose <a href="{{ GuideSlug.RouteStlRepair }}">standard STL cleanup</a> only
+  when you intend to upload that selected file for processing. Downloading a
+  control starts neither action and replaces no current input. After saving,
+  inspect the exact output with the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality checker</a>
+  and your intended slicer. Removing degenerate faces does not prove closure,
+  outward orientation, absence of intersections or printability.
+</p>

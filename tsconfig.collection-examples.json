@@ -13,6 +13,7 @@
     "scripts/sizing-evidence.spec.mts",
     "scripts/export-fidelity.spec.mts",
     "scripts/file-handoff.spec.mts",
-    "src/types/jspdf-esm.d.ts"
+    "src/types/jspdf-esm.d.ts",
+    "scripts/input-integrity.spec.mts"
   ]
 }
