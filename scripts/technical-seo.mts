@@ -27,6 +27,7 @@ import {
   sourceIdentity,
 } from './seo-artifact.mts';
 import { guideRegistry } from '../src/content/guides/guides.registry.ts';
+import { PublicRouteUrl } from '../src/app/core/seo/public-routes.ts';
 
 export const Severity = {
   Error: 'ERROR',
@@ -132,6 +133,78 @@ export function expectedSelector(route: RegisteredRoute): string {
   throw new Error(
     `R02: missing component selector for ${route.path} in ${source}`,
   );
+}
+
+/** Keep the primary guide search ahead of discovery and editorial content. */
+export function inspectGuideSearchLayout(document: Document): Finding[] {
+  const main = document.querySelector('main.guides-page');
+  const heading = main?.querySelector(':scope > h1');
+  const search = main?.querySelector(
+    ':scope > section[aria-labelledby="guide-search-title"]',
+  );
+  const input = search?.querySelector('input[type="search"]');
+  const label = input?.closest('label');
+  if (
+    main &&
+    heading &&
+    search &&
+    input?.id === 'guide-search-input' &&
+    main.querySelectorAll('input[type="search"]').length === 1 &&
+    heading.nextElementSibling === search &&
+    main.querySelector('section') === search &&
+    search.firstElementChild?.id === 'guide-search-title' &&
+    search.firstElementChild.nextElementSibling === label
+  ) {
+    const results = main.querySelector(':scope > .guide-results');
+    const support = main.querySelector(':scope > .guide-support');
+    const panels = support?.querySelectorAll(':scope > details.guide-help');
+    if (
+      results &&
+      support &&
+      search.nextElementSibling === results &&
+      results.nextElementSibling === support &&
+      main.lastElementChild === support &&
+      results.querySelector('.guide-list') &&
+      [...results.children].every(
+        (element) =>
+          element.tagName === 'SECTION' &&
+          (element.classList.contains('guide-empty') ||
+            element.querySelector('.guide-list')),
+      ) &&
+      panels?.length &&
+      [...support.children].every(
+        (element) =>
+          element.tagName === 'H2' ||
+          (element.tagName === 'DETAILS' &&
+            !element.hasAttribute('open') &&
+            element.firstElementChild?.tagName === 'SUMMARY'),
+      )
+    ) {
+      return [];
+    }
+    return [
+      finding(
+        'guide-results-first',
+        Severity.Error,
+        PublicRouteUrl.Guides,
+        AuditStage.Html,
+        'Guide results are interrupted or supporting content is not collapsed below them',
+        'guide results immediately after search, followed by supporting content in collapsed details panels',
+        'src/app/features/guides/guides-page.html',
+      ),
+    ];
+  }
+  return [
+    finding(
+      'guide-search-first',
+      Severity.Error,
+      PublicRouteUrl.Guides,
+      AuditStage.Html,
+      'Guide search is missing or appears after other content',
+      'a dedicated search block immediately after the H1, with the labelled search input before navigation or supporting content',
+      'src/app/features/guides/guides-page.html',
+    ),
+  ];
 }
 
 export function inspectSchema(document: Document, path: string): Finding[] {
@@ -475,6 +548,9 @@ export async function auditHtml(pages?: GeneratedPage[]) {
             );
           }
           findings.push(...inspectSchema(document, policy.path));
+          if (policy.path === PublicRouteUrl.Guides) {
+            findings.push(...inspectGuideSearchLayout(document));
+          }
           for (const element of document.querySelectorAll(
             'script[src], link[rel="stylesheet"][href], img[src], a[download][href]',
           )) {

@@ -2,79 +2,8 @@
   <p class="eyebrow">3D printing file guides</p>
 
   <h1>Practical 3D Printing Guides</h1>
-  <p>
-    <a [href]="routeUrl.Examples">Explore known example models</a> to reproduce
-    a finding, then use the guide for its interpretation.
-  </p>
-  <p class="lead">
-    Understand formats, inspect a file, diagnose a finding, correct geometry and
-    plan the print. Choose the question you need to answer before changing the
-    model.
-  </p>
-  <section class="guide-search">
-    <h2>Start with the problem you have</h2>
-    <ul>
-      <li>
-        Choose the next preparation stage:
-        <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
-          >Decide whether a model is ready for the next stage</a
-        >
-      </li>
-      <li>
-        Record checks for a particular revision:
-        <a [href]="guideRouteUrl.Route3dPrintFilePreflightChecklist"
-          >Use the printable preflight record</a
-        >
-      </li>
-      <li>
-        Interpret a mesh report:
-        <a [href]="guideRouteUrl.RouteHowToCheckStlForErrors"
-          >Diagnose an STL finding</a
-        >
-      </li>
-      <li>
-        Diagnose an import or slicing failure:
-        <a [href]="guideRouteUrl.RouteStlFileWontSlice"
-          >Investigate an STL that will not slice</a
-        >
-      </li>
-      <li>
-        Understand a surprising 3MF count:
-        <a [href]="guideRouteUrl.RouteHowToCheck3mfTriangleCount"
-          >Trace stored resources and placed items</a
-        >
-      </li>
-    </ul>
-    <p>
-      The readiness guide explains the decision. The checklist records it. A
-      diagnostic guide helps interpret a specific finding before you choose a
-      correction.
-    </p>
-  </section>
   <section class="guide-search" aria-labelledby="guide-search-title">
     <h2 id="guide-search-title">Find a guide</h2>
-    @if (!hasSearchQuery()) {
-      <nav aria-label="Guide decisions and category contents">
-        <ul>
-          @for (task of discoveryTasks; track task.id) {
-            <li>
-              <a [href]="routeUrl.Guides + '#guide-group-' + task.anchor">{{
-                task.label
-              }}</a
-              >: {{ task.description }} Start with
-              <a [href]="guidePath(task.primaryGuide)">{{
-                pillarHeading(task.primaryGuide)
-              }}</a
-              >; also
-              <a [href]="guidePath(task.supportingGuide)">{{
-                pillarHeading(task.supportingGuide)
-              }}</a
-              >.
-            </li>
-          }
-        </ul>
-      </nav>
-    }
     <label class="field" for="guide-search-input">
       <span>Search guides by topic or tool</span>
       <input
@@ -100,189 +29,284 @@
       }
     </p>
   </section>
-  @if (!hasSearchQuery()) {
-    <section class="card wall-guides" aria-labelledby="wall-guides-title">
-      <h2 id="wall-guides-title">Orientation, overhangs and support access</h2>
-      <p>
-        <a [href]="guideRouteUrl.RouteHowToOrientAnStlFileFor3dPrinting"
-          >Choose an orientation from the requirement that matters most</a
-        >
-        before confirming the actual layers in the target slicer.
-      </p>
-      <ul>
-        <li>
-          <a [href]="guideRouteUrl.RouteHowToLayAnStlFlatOnPrintBed"
-            >Lay an imported STL flat deliberately</a
-          >
-          - separate face alignment from final bed placement.
-        </li>
-        <li>
-          <a [href]="guideRouteUrl.Route3dPrintBridgeVsOverhang"
-            >Distinguish a bridge from an overhang</a
-          >
-          - inspect anchors and the first affected layer.
-        </li>
-        <li>
-          <a [href]="guideRouteUrl.RouteSupportsInsideHolesAndChannels"
-            >Plan support access inside holes and channels</a
-          >
-          - confirm the support can leave without damaging a critical face.
-        </li>
-      </ul>
-    </section>
-  }
-  @if (hasSearchQuery() && resultCount() === 0) {
-    <section class="guide-empty" aria-labelledby="guide-empty-title">
-      <h2 id="guide-empty-title">No matching guides</h2>
-      <p>
-        Try a broader term such as STL, 3MF, repair, scale, dimensions or print
-        preparation.
-      </p>
-    </section>
-  }
-  @for (group of guideGroups(); track group.id) {
-    <section
-      [attr.aria-labelledby]="
-        guideGroups().length > 1 ? 'guide-group-' + group.id : null
-      "
-      [attr.aria-label]="guideGroups().length === 1 ? 'Guides' : null"
-    >
-      @if (guideGroups().length > 1) {
-        <h2 [id]="'guide-group-' + group.id">{{ group.label }}</h2>
-        @if (group.description) {
-          <p>{{ group.description }}</p>
-        }
-        @if (group.pillar) {
-          <p>
-            Start with:
-            <a [href]="guidePath(group.pillar)">{{
-              pillarHeading(group.pillar)
-            }}</a
-            >.
-          </p>
-        }
-      }
-      <ul class="guide-list">
-        @for (guide of group.guides; track guide.slug) {
-          <li>
-            <h3 class="guide-card-title">
-              <a [href]="guidePath(guide.slug)">{{ guide.heading }}</a>
-            </h3>
-            <p>{{ guide.description }}</p>
-          </li>
-        }
-      </ul>
-    </section>
-  }
-  <section class="guide-search">
-    <h2>After slicing: follow the finding</h2>
-    <ul>
-      <li>
-        <a [href]="guideRouteUrl.RouteGcodeOutsidePrintBed"
-          >Small path outside the bed: review location and travel</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteCanYouUseGcodeFromAnotherPrinter"
-          >Received another printer's G-code: record project/profile
-          provenance</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteGcodePreviewIncomplete"
-          >Incomplete preview: identify unsupported effects or import
-          failures</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteSequential3dPrintingClearance"
-          >One object at a time: review head clearance and order</a
-        >
-      </li>
-    </ul>
-  </section>
-  <section class="guide-search">
-    <h2>Choose the question you need to answer</h2>
-    <ul>
-      <li>
-        <a [href]="guideRouteUrl.RouteBestFileFormatFor3dPrinting"
-          >Which format preserves what I need?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
-          >What needs checking before slicing?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteStlFileWontSlice"
-          >Why is this file failing to slice?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteFloatingRegionsInSlicer"
-          >What does a floating-region warning mean in the layers?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteStlModelOffBuildPlate"
-          >Why did the STL land away from the build plate?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteSlicerFillsHoleInStl"
-          >Why did the slicer fill an intended channel?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToRepairAnStlFile"
-          >Which correction is appropriate?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToFixHolesInAnStlFile"
-          >Is a surface missing, or is the opening intentional?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToTellIfAnStlIsWatertight"
-          >What does an open-edge result establish?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToReduceStlFileSize"
-          >How can I send a smaller STL?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter"
-          >Does the actual job fit?</a
-        >
-      </li>
-      <li>
-        <a [href]="guideRouteUrl.RouteHowToCalculate3dPrintingCost"
-          >What does production cost?</a
-        >
-      </li>
-    </ul>
-    <p>
-      For a collection, use
-      <a [href]="routeUrl.BatchStlChecker">batch reports</a> and the
-      seller/customer handoff guides. For an edited export, use
-      <a [href]="routeUrl.StlCompare">revision comparison</a>. For the next job,
-      check
-      <a [href]="routeUrl.FilamentRemainingCalculator"
-        >partial-spool sufficiency</a
+  <div class="guide-results">
+    @if (hasSearchQuery() && resultCount() === 0) {
+      <section class="guide-empty" aria-labelledby="guide-empty-title">
+        <h2 id="guide-empty-title">No matching guides</h2>
+        <p>
+          Try a broader term such as STL, 3MF, repair, scale, dimensions or
+          print preparation.
+        </p>
+      </section>
+    }
+    @for (group of guideGroups(); track group.id) {
+      <section
+        [attr.aria-labelledby]="
+          guideGroups().length > 1 ? 'guide-group-' + group.id : null
+        "
+        [attr.aria-label]="guideGroups().length === 1 ? 'Guides' : null"
       >
-      and <a [href]="routeUrl.PrintFinishTimeCalculator">finish time</a> from
-      complete slicer estimates.
-    </p>
-    <p>
-      Wall/nozzle and volumetric-throughput guides explain different preparation
-      choices from extrusion multiplier calibration. Material decisions
-      distinguish exact formulation evidence from general family guidance. The
-      examples identify software fixtures and illustrative inputs; they do not
-      imply physical product testing.
-    </p>
+        @if (guideGroups().length > 1) {
+          <h2 [id]="'guide-group-' + group.id">{{ group.label }}</h2>
+          @if (group.description) {
+            <p>{{ group.description }}</p>
+          }
+          @if (group.pillar) {
+            <p>
+              Start with:
+              <a [href]="guidePath(group.pillar)">{{
+                pillarHeading(group.pillar)
+              }}</a
+              >.
+            </p>
+          }
+        }
+        <ul class="guide-list">
+          @for (guide of group.guides; track guide.slug) {
+            <li>
+              <h3 class="guide-card-title">
+                <a [href]="guidePath(guide.slug)">{{ guide.heading }}</a>
+              </h3>
+              <p>{{ guide.description }}</p>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </div>
+  <section class="guide-support" aria-labelledby="guide-support-title">
+    <h2 id="guide-support-title">Help choosing your next step</h2>
+    <details class="guide-help">
+      <summary><h3>About these guides</h3></summary>
+      <div class="guide-help-body">
+        <p>
+          <a [href]="routeUrl.Examples">Explore known example models</a> to
+          reproduce a finding, then use the guide for its interpretation.
+        </p>
+        <p>
+          Understand formats, inspect a file, diagnose a finding, correct
+          geometry and plan the print. Choose the question you need to answer
+          before changing the model.
+        </p>
+      </div>
+    </details>
+    <details class="guide-help">
+      <summary><h3 id="guide-discovery-title">Browse by task</h3></summary>
+      <div class="guide-help-body">
+        <nav aria-label="Guide decisions and category contents">
+          <ul>
+            @for (task of discoveryTasks; track task.id) {
+              <li>
+                <a [href]="routeUrl.Guides + '#guide-group-' + task.anchor">{{
+                  task.label
+                }}</a
+                >: {{ task.description }} Start with
+                <a [href]="guidePath(task.primaryGuide)">{{
+                  pillarHeading(task.primaryGuide)
+                }}</a
+                >; also
+                <a [href]="guidePath(task.supportingGuide)">{{
+                  pillarHeading(task.supportingGuide)
+                }}</a
+                >.
+              </li>
+            }
+          </ul>
+        </nav>
+      </div>
+    </details>
+    <details class="guide-help">
+      <summary><h3>Start with the problem you have</h3></summary>
+      <div class="guide-help-body">
+        <ul>
+          <li>
+            Choose the next preparation stage:
+            <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
+              >Decide whether a model is ready for the next stage</a
+            >
+          </li>
+          <li>
+            Record checks for a particular revision:
+            <a [href]="guideRouteUrl.Route3dPrintFilePreflightChecklist"
+              >Use the printable preflight record</a
+            >
+          </li>
+          <li>
+            Interpret a mesh report:
+            <a [href]="guideRouteUrl.RouteHowToCheckStlForErrors"
+              >Diagnose an STL finding</a
+            >
+          </li>
+          <li>
+            Diagnose an import or slicing failure:
+            <a [href]="guideRouteUrl.RouteStlFileWontSlice"
+              >Investigate an STL that will not slice</a
+            >
+          </li>
+          <li>
+            Understand a surprising 3MF count:
+            <a [href]="guideRouteUrl.RouteHowToCheck3mfTriangleCount"
+              >Trace stored resources and placed items</a
+            >
+          </li>
+        </ul>
+        <p>
+          The readiness guide explains the decision. The checklist records it. A
+          diagnostic guide helps interpret a specific finding before you choose
+          a correction.
+        </p>
+      </div>
+    </details>
+    <details class="guide-help">
+      <summary>
+        <h3 id="wall-guides-title">
+          Orientation, overhangs and support access
+        </h3>
+      </summary>
+      <div class="guide-help-body">
+        <p>
+          <a [href]="guideRouteUrl.RouteHowToOrientAnStlFileFor3dPrinting"
+            >Choose an orientation from the requirement that matters most</a
+          >
+          before confirming the actual layers in the target slicer.
+        </p>
+        <ul>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToLayAnStlFlatOnPrintBed"
+              >Lay an imported STL flat deliberately</a
+            >
+            - separate face alignment from final bed placement.
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.Route3dPrintBridgeVsOverhang"
+              >Distinguish a bridge from an overhang</a
+            >
+            - inspect anchors and the first affected layer.
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteSupportsInsideHolesAndChannels"
+              >Plan support access inside holes and channels</a
+            >
+            - confirm the support can leave without damaging a critical face.
+          </li>
+        </ul>
+      </div>
+    </details>
+    <details class="guide-help">
+      <summary><h3>After slicing: follow the finding</h3></summary>
+      <div class="guide-help-body">
+        <ul>
+          <li>
+            <a [href]="guideRouteUrl.RouteGcodeOutsidePrintBed"
+              >Small path outside the bed: review location and travel</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteCanYouUseGcodeFromAnotherPrinter"
+              >Received another printer's G-code: record project/profile
+              provenance</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteGcodePreviewIncomplete"
+              >Incomplete preview: identify unsupported effects or import
+              failures</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteSequential3dPrintingClearance"
+              >One object at a time: review head clearance and order</a
+            >
+          </li>
+        </ul>
+      </div>
+    </details>
+    <details class="guide-help">
+      <summary><h3>Choose the question you need to answer</h3></summary>
+      <div class="guide-help-body">
+        <ul>
+          <li>
+            <a [href]="guideRouteUrl.RouteBestFileFormatFor3dPrinting"
+              >Which format preserves what I need?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelIsReadyToPrint"
+              >What needs checking before slicing?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteStlFileWontSlice"
+              >Why is this file failing to slice?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteFloatingRegionsInSlicer"
+              >What does a floating-region warning mean in the layers?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteStlModelOffBuildPlate"
+              >Why did the STL land away from the build plate?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteSlicerFillsHoleInStl"
+              >Why did the slicer fill an intended channel?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToRepairAnStlFile"
+              >Which correction is appropriate?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToFixHolesInAnStlFile"
+              >Is a surface missing, or is the opening intentional?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToTellIfAnStlIsWatertight"
+              >What does an open-edge result establish?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToReduceStlFileSize"
+              >How can I send a smaller STL?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter"
+              >Does the actual job fit?</a
+            >
+          </li>
+          <li>
+            <a [href]="guideRouteUrl.RouteHowToCalculate3dPrintingCost"
+              >What does production cost?</a
+            >
+          </li>
+        </ul>
+        <p>
+          For a collection, use
+          <a [href]="routeUrl.BatchStlChecker">batch reports</a> and the
+          seller/customer handoff guides. For an edited export, use
+          <a [href]="routeUrl.StlCompare">revision comparison</a>. For the next
+          job, check
+          <a [href]="routeUrl.FilamentRemainingCalculator"
+            >partial-spool sufficiency</a
+          >
+          and
+          <a [href]="routeUrl.PrintFinishTimeCalculator">finish time</a> from
+          complete slicer estimates.
+        </p>
+        <p>
+          Wall/nozzle and volumetric-throughput guides explain different
+          preparation choices from extrusion multiplier calibration. Material
+          decisions distinguish exact formulation evidence from general family
+          guidance. The examples identify software fixtures and illustrative
+          inputs; they do not imply physical product testing.
+        </p>
+      </div>
+    </details>
   </section>
 </main>

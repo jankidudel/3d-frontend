@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { withHtmlDocument } from './html-document.mts';
 import {
   browserSnapshot,
@@ -14,6 +15,7 @@ import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import {
   inspectSchema,
+  inspectGuideSearchLayout,
   blocksIndexing,
   expectedSelector,
   Severity,
@@ -33,6 +35,72 @@ const page = (html: string) => ({
   filePath: 'examples/index.html',
   html,
 });
+describe('guide search layout build gate', () => {
+  const template = readFileSync(
+    resolve('src/app/features/guides/guides-page.html'),
+    'utf8',
+  );
+
+  it('keeps search first in the real guide index template', () => {
+    expect(withHtmlDocument(template, inspectGuideSearchLayout)).toEqual([]);
+  });
+
+  it('rejects a supporting block inserted above search', () => {
+    const changed = template.replace(
+      '<section class="guide-search" aria-labelledby="guide-search-title">',
+      '<section><h2>New recommendations</h2></section><section class="guide-search" aria-labelledby="guide-search-title">',
+    );
+    expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toEqual([
+      expect.objectContaining({
+        rule: 'guide-search-first',
+        severity: Severity.Error,
+      }),
+    ]);
+  });
+
+  it('rejects navigation inserted before the search field inside its block', () => {
+    const changed = template.replace(
+      '<label class="field" for="guide-search-input">',
+      '<nav><a href="#guides">Browse guides</a></nav><label class="field" for="guide-search-input">',
+    );
+    expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toHaveLength(1);
+  });
+
+  it('rejects a missing search field', () => {
+    const changed = template.replace('type="search"', 'type="text"');
+    expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toHaveLength(1);
+  });
+
+  it('rejects supporting content inserted between search and guide results', () => {
+    const changed = template.replace(
+      '<div class="guide-results">',
+      '<p>Read this first</p><div class="guide-results">',
+    );
+    expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toEqual([
+      expect.objectContaining({
+        rule: 'guide-results-first',
+        severity: Severity.Error,
+      }),
+    ]);
+  });
+
+  it('rejects a supporting panel inserted inside the results wrapper', () => {
+    const changed = template.replace(
+      '<div class="guide-results">',
+      '<div class="guide-results"><section><h2>Recommendations</h2></section>',
+    );
+    expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toHaveLength(1);
+  });
+
+  it('rejects supporting panels expanded by default', () => {
+    const changed = template.replace(
+      '<details class="guide-help">',
+      '<details class="guide-help" open>',
+    );
+    expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toHaveLength(1);
+  });
+});
+
 describe('technical SEO production pipeline regressions', () => {
   it('reads the actual router component independently of rendered metadata', () => {
     const route = discoverRouter().routes.find(

@@ -14,25 +14,74 @@
   background: var(--surface);
 }
 
-.guides-page .wall-guides {
-  margin-top: 1.5rem;
-  padding: clamp(1.25rem, 4vw, 1.75rem);
+.guides-page .guide-support {
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
 }
 
-.wall-guides h2 {
+.guide-support > h2 {
+  margin: 0 0 1rem;
+}
+
+.guide-help {
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.guide-help summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 3rem;
+  padding: 1.25rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.guide-help summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide-help summary::after {
+  content: '';
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.guide-help[open] summary::after {
+  transform: rotate(225deg);
+}
+
+.guide-help summary h3 {
   margin: 0;
+  font-size: 1.05rem;
 }
 
-.wall-guides p {
-  margin: 1rem 0;
+.guide-help-body {
+  padding: 0 1.25rem 1.25rem;
+  overflow-wrap: anywhere;
 }
 
-.wall-guides ul {
-  margin: 0;
+.guide-help-body > :first-child {
+  margin-top: 0;
+}
+
+.guide-help-body > :last-child {
+  margin-bottom: 0;
+}
+
+.guide-help-body ul {
   padding-left: 1.35rem;
 }
 
-.wall-guides li + li {
+.guide-help-body li + li {
   margin-top: 0.5rem;
 }
 
