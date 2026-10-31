@@ -55,16 +55,16 @@ describe('ToolsPage', () => {
     fixture.detectChanges();
     const main = (fixture.nativeElement as HTMLElement).querySelector('main')!;
     const children = Array.from(main.children);
-    const groups = children.filter((element) =>
-      element.matches('section.tools'),
+    const directory = main.querySelector('#tool-results')!;
+    const groups = Array.from(
+      directory.querySelectorAll(':scope > section.tools'),
     );
-    const firstGroup = children.indexOf(groups[0]);
-    const lastGroup = children.indexOf(groups.at(-1)!);
+    const directoryIndex = children.indexOf(directory);
 
-    // Only the title, eyebrow and brief lead may precede the actual directory.
+    // Only the brief heading and functional search controls precede the directory.
     expect(
       children
-        .slice(0, firstGroup)
+        .slice(0, directoryIndex)
         .map((element) =>
           element.matches('p.eyebrow')
             ? 'eyebrow'
@@ -72,10 +72,12 @@ describe('ToolsPage', () => {
               ? 'title'
               : element.matches('p.lead')
                 ? 'lead'
-                : 'unexpected block',
+                : element.matches('search.tool-search')
+                  ? 'search'
+                  : 'unexpected block',
         ),
-    ).toEqual(['eyebrow', 'title', 'lead']);
-    expect(children.slice(firstGroup, lastGroup + 1)).toEqual(groups);
+    ).toEqual(['eyebrow', 'title', 'lead', 'search']);
+    expect(Array.from(directory.children)).toEqual(groups);
     expect(groups).toHaveLength(fixture.componentInstance.toolGroups.length);
     for (const group of groups) {
       expect(group.querySelectorAll('.tool-card').length).toBeGreaterThan(0);
@@ -83,12 +85,114 @@ describe('ToolsPage', () => {
     const guidance = children.find((element) =>
       element.textContent?.includes('Choose the result you need'),
     )!;
-    expect(children.indexOf(guidance)).toBeGreaterThan(lastGroup);
+    expect(children.indexOf(guidance)).toBeGreaterThan(directoryIndex);
     expect(
       children.indexOf(main.querySelector('nav[aria-label="Tool tasks"]')!),
-    ).toBeGreaterThan(lastGroup);
+    ).toBeGreaterThan(directoryIndex);
     expect(
       children.indexOf(main.querySelector('app-workflow-paths')!),
-    ).toBeGreaterThan(lastGroup);
+    ).toBeGreaterThan(directoryIndex);
+  });
+
+  function createSearchFixture() {
+    TestBed.configureTestingModule({
+      imports: [ToolsPage],
+      providers: [provideRouter([])],
+    });
+    const fixture = TestBed.createComponent(ToolsPage);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    const search = (query: string) => {
+      const input = root.querySelector<HTMLInputElement>('#tool-query')!;
+      input.value = query;
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+    };
+    const selectType = (type: string) => {
+      const select = root.querySelector<HTMLSelectElement>('#tool-type')!;
+      select.value = type;
+      select.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+    };
+    const titles = () =>
+      Array.from(root.querySelectorAll('.tool-card h3')).map((heading) =>
+        heading.textContent!.trim(),
+      );
+    return { fixture, root, search, selectType, titles };
+  }
+
+  it('renders every tool with searchable type tags before filtering', () => {
+    const { root, titles } = createSearchFixture();
+    expect(titles()).toHaveLength(47);
+    expect(root.querySelector('[role="status"]')?.textContent).toContain(
+      '47 of 47 tools',
+    );
+    for (const card of root.querySelectorAll('.tool-card')) {
+      expect(card.querySelectorAll('.tool-tag').length).toBeGreaterThan(0);
+    }
+    expect(root.querySelectorAll('.empty-results')).toHaveLength(0);
+  });
+
+  it('matches multiple words regardless of case or order, including type tags', () => {
+    const { search, titles } = createSearchFixture();
+    search('  REPAIR  3mF ');
+    expect(titles()).toEqual(['3MF Repair Tool']);
+    search('comparison');
+    expect(titles()).toHaveLength(3);
+  });
+
+  it('combines the type filter with text and removes empty task groups and anchors', () => {
+    const { root, search, selectType, titles } = createSearchFixture();
+    selectType('Viewer');
+    expect(titles()).toHaveLength(3);
+    search('3mf');
+    expect(titles()).toEqual(['Free 3MF Viewer']);
+    expect(root.querySelectorAll('.tools')).toHaveLength(1);
+    const anchors = root.querySelectorAll('nav[aria-label="Tool tasks"] a');
+    expect(anchors).toHaveLength(1);
+    expect(anchors[0].getAttribute('href')).toBe('/tools#open-inspect');
+    expect(root.querySelector('[role="status"]')?.textContent).toContain(
+      '1 of 47 tools',
+    );
+  });
+
+  it('filters through a card tag and exposes its selected state', () => {
+    const { fixture, root, titles } = createSearchFixture();
+    root
+      .querySelector<HTMLButtonElement>(
+        '.tool-tag[aria-label="Filter by Converter"]',
+      )!
+      .click();
+    fixture.detectChanges();
+    expect(titles()).toHaveLength(2);
+    expect(root.querySelector<HTMLSelectElement>('#tool-type')!.value).toBe(
+      'Converter',
+    );
+    expect(
+      Array.from(root.querySelectorAll('.tool-tag')).every(
+        (tag) => tag.getAttribute('aria-pressed') === 'true',
+      ),
+    ).toBe(true);
+  });
+
+  it('shows an empty state and restores all tools when filters are cleared', () => {
+    const { fixture, root, search, selectType, titles } = createSearchFixture();
+    selectType('Repair');
+    search('no-such-tool');
+    expect(titles()).toEqual([]);
+    expect(root.querySelector('.empty-results')?.textContent).toContain(
+      'No tools match',
+    );
+    expect(root.querySelector('[role="status"]')?.textContent).toContain(
+      '0 of 47 tools',
+    );
+    root.querySelector<HTMLButtonElement>('.clear-filters')!.click();
+    fixture.detectChanges();
+    expect(titles()).toHaveLength(47);
+    expect(root.querySelector<HTMLInputElement>('#tool-query')!.value).toBe('');
+    expect(root.querySelector<HTMLSelectElement>('#tool-type')!.value).toBe('');
+    expect(
+      root.querySelector<HTMLButtonElement>('.clear-filters')!.disabled,
+    ).toBe(true);
   });
 });

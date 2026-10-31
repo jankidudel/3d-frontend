@@ -41,6 +41,25 @@ describe('ContactPage', () => {
 
   afterEach(() => TestBed.resetTestingModule());
 
+  it('keeps the complete form and submit button before the About section', () => {
+    const main = (fixture.nativeElement as HTMLElement).querySelector('main')!;
+    const sections = Array.from(main.querySelectorAll(':scope > section'));
+    expect(
+      sections.map((section) => section.getAttribute('aria-labelledby')),
+    ).toEqual(['contact-form-title', 'about-inspectmesh-title']);
+    expect(
+      sections[0].querySelector('form button[type="submit"]'),
+    ).not.toBeNull();
+    expect(sections[1].querySelector('h3')?.textContent).toContain(
+      'Report an error',
+    );
+    expect(
+      Array.from(main.children)
+        .slice(0, 3)
+        .map((element) => element.tagName),
+    ).toEqual(['P', 'H1', 'P']);
+  });
+
   it('renders the required choices and direct-delivery privacy explanation', () => {
     const text = fixture.nativeElement.textContent;
 

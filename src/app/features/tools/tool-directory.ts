@@ -1,6 +1,85 @@
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { HOME_TOOL_GROUPS, type HomeTool } from '../home/home-tools';
 
+export const ToolType = {
+  Viewer: 'Viewer',
+  Checker: 'Checker',
+  Repair: 'Repair',
+  Editor: 'Editor',
+  Converter: 'Converter',
+  Calculator: 'Calculator',
+  Planner: 'Planner',
+  Comparison: 'Comparison',
+  Selector: 'Selector',
+  Quote: 'Quote',
+} as const;
+export type ToolType = (typeof ToolType)[keyof typeof ToolType];
+
+// Explicit tags describe functionality independently of titles and task groups.
+const typeRoutes: Record<ToolType, readonly HomeTool['route'][]> = {
+  [ToolType.Viewer]: [
+    PublicRouteUrl.Viewer,
+    PublicRouteUrl.ThreeMfViewer,
+    PublicRouteUrl.GcodePreflightChecker,
+  ],
+  [ToolType.Checker]: [
+    PublicRouteUrl.DimensionsChecker,
+    PublicRouteUrl.ThreeMfDimensionsChecker,
+    PublicRouteUrl.QualityCheck,
+    PublicRouteUrl.ThreeMfQualityCheck,
+    PublicRouteUrl.StlPrintPreflight,
+    PublicRouteUrl.ThreeMfPrintPreflight,
+    PublicRouteUrl.ManifoldChecker,
+    PublicRouteUrl.ThreeMfManifoldChecker,
+    PublicRouteUrl.WatertightChecker,
+    PublicRouteUrl.ThreeMfWatertightChecker,
+    PublicRouteUrl.StlWallThicknessChecker,
+    PublicRouteUrl.ThreeMfWallThicknessChecker,
+    PublicRouteUrl.StlOverhangChecker,
+    PublicRouteUrl.ThreeMfOverhangChecker,
+    PublicRouteUrl.BatchStlChecker,
+    PublicRouteUrl.PrinterFitChecker,
+    PublicRouteUrl.GcodePreflightChecker,
+  ],
+  [ToolType.Repair]: [PublicRouteUrl.StlRepair, PublicRouteUrl.ThreeMfRepair],
+  [ToolType.Editor]: [
+    PublicRouteUrl.StlScaleTool,
+    PublicRouteUrl.StlSplitter,
+    PublicRouteUrl.StlFileSizeReducer,
+  ],
+  [ToolType.Converter]: [
+    PublicRouteUrl.StlToThreeMfConverter,
+    PublicRouteUrl.ThreeMfToStlConverter,
+  ],
+  [ToolType.Calculator]: [
+    PublicRouteUrl.TriangleCounter,
+    PublicRouteUrl.ThreeMfTriangleCounter,
+    PublicRouteUrl.VolumeCalculator,
+    PublicRouteUrl.ThreeMfVolumeCalculator,
+    PublicRouteUrl.ToleranceCalculator,
+    PublicRouteUrl.ShrinkageCalculator,
+    PublicRouteUrl.FilamentLengthCalculator,
+    PublicRouteUrl.FilamentRemainingCalculator,
+    PublicRouteUrl.NozzleLayerHeightCalculator,
+    PublicRouteUrl.VolumetricFlowCalculator,
+    PublicRouteUrl.FlowRateCalculator,
+    PublicRouteUrl.PrintFinishTimeCalculator,
+    PublicRouteUrl.PrintCostCalculator,
+    PublicRouteUrl.PrintPriceCalculator,
+  ],
+  [ToolType.Planner]: [
+    PublicRouteUrl.OrientationPlanner,
+    PublicRouteUrl.BedLayoutPlanner,
+  ],
+  [ToolType.Comparison]: [
+    PublicRouteUrl.StlCompare,
+    PublicRouteUrl.Compare3dPrinters,
+    PublicRouteUrl.CompareMaterials,
+  ],
+  [ToolType.Selector]: [PublicRouteUrl.MaterialSelector],
+  [ToolType.Quote]: [PublicRouteUrl.QuoteGenerator],
+};
+
 const extraTools: readonly HomeTool[] = [
   {
     route: PublicRouteUrl.MaterialSelector,
@@ -150,16 +229,23 @@ export const toolDirectoryGroups = definitions.map((group) => ({
     if (!tool) {
       throw new Error('Missing tool directory entry: ' + route);
     }
+    const tags = Object.values(ToolType).filter((type) =>
+      typeRoutes[type].includes(route),
+    );
+    if (tags.length === 0) {
+      throw new Error('Missing tool directory type: ' + route);
+    }
     if (
       route === PublicRouteUrl.Viewer ||
       route === PublicRouteUrl.ThreeMfViewer
     ) {
       return {
         ...tool,
+        tags,
         description:
           'Inspect locally, select surface points or mesh vertices, measure distance, three-point angles or constructed circles, and download a private JSON record.',
       };
     }
-    return tool;
+    return { ...tool, tags };
   }),
 }));

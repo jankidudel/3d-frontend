@@ -6,37 +6,6 @@
     issue, request a tool, or get in touch about working together.
   </p>
 
-  <section class="card contact-card" aria-labelledby="about-inspectmesh-title">
-    <h2 id="about-inspectmesh-title">About InspectMesh</h2>
-    <p>
-      InspectMesh develops tools for inspecting 3D-print files and planning
-      print jobs. File checks describe the geometry and settings they examine;
-      they do not certify a physical print. Messages through this form provide a
-      direct way to reach the site maintainer about a result, feature or
-      correction.
-    </p>
-    @if (supportEmail) {
-      <p>
-        You can also email
-        <a [href]="'mailto:' + supportEmail">{{ supportEmail }}</a
-        >.
-      </p>
-    }
-    <h3>Report an error or unclear result</h3>
-    <p>
-      Include the page address, the result you expected and what you observed.
-      For a published example, include its filename or example name. You do not
-      need to send your own model to report a wording problem. Keep confidential
-      geometry out of your message.
-    </p>
-    <p>
-      Software examples demonstrate specific checks. Printer and material pages
-      distinguish sourced guidance from physical testing. A source date records
-      when a reference was checked; it does not establish current stock or
-      price.
-    </p>
-  </section>
-
   <section class="card contact-card" aria-labelledby="contact-form-title">
     <h2 id="contact-form-title">How can we help?</h2>
     <p class="privacy-note">
@@ -162,5 +131,35 @@
         {{ submitting() ? 'Sending…' : 'Send message' }}
       </button>
     </form>
+  </section>
+  <section class="card contact-card" aria-labelledby="about-inspectmesh-title">
+    <h2 id="about-inspectmesh-title">About InspectMesh</h2>
+    <p>
+      InspectMesh develops tools for inspecting 3D-print files and planning
+      print jobs. File checks describe the geometry and settings they examine;
+      they do not certify a physical print. Messages through this form provide a
+      direct way to reach the site maintainer about a result, feature or
+      correction.
+    </p>
+    @if (supportEmail) {
+      <p>
+        You can also email
+        <a [href]="'mailto:' + supportEmail">{{ supportEmail }}</a
+        >.
+      </p>
+    }
+    <h3>Report an error or unclear result</h3>
+    <p>
+      Include the page address, the result you expected and what you observed.
+      For a published example, include its filename or example name. You do not
+      need to send your own model to report a wording problem. Keep confidential
+      geometry out of your message.
+    </p>
+    <p>
+      Software examples demonstrate specific checks. Printer and material pages
+      distinguish sourced guidance from physical testing. A source date records
+      when a reference was checked; it does not establish current stock or
+      price.
+    </p>
   </section>
 </main>

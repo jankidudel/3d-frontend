@@ -104,5 +104,5 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.ThreeMfTriangleCounter]: '2026-10-25',
   [PublicRouteUrl.ThreeMfVolumeCalculator]: '2026-10-27',
   [PublicRouteUrl.ThreeMfToStlConverter]: '2026-10-29',
-  [PublicRouteUrl.Contact]: '2026-10-25',
+  [PublicRouteUrl.Contact]: '2026-10-31',
 };

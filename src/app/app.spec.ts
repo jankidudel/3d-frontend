@@ -50,6 +50,26 @@ describe('App', () => {
     ).toBe('/materials');
   });
 
+  it('links Examples from the main navigation and closes the mobile menu when selected', async () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const toggle = fixture.nativeElement.querySelector(
+      '.mobile-nav-toggle',
+    ) as HTMLButtonElement;
+    toggle.click();
+    fixture.detectChanges();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    const link = fixture.nativeElement.querySelector(
+      'app-site-header nav > a[href="/examples"]',
+    ) as HTMLAnchorElement;
+    expect(link.textContent?.trim()).toBe('Examples');
+    link.click();
+    await fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe('/examples');
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(link.classList.contains('active')).toBe(true);
+  });
+
   it('places the newsletter signup inside the site footer', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();

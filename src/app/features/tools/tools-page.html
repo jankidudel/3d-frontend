@@ -6,25 +6,86 @@
     InspectMesh helps you inspect, measure and prepare 3D files for printing.
   </p>
 
-  @for (group of toolGroups; track group.id) {
-    <section class="tools" [attr.aria-labelledby]="group.id">
-      <div class="section-intro">
-        <h2 [id]="group.id">{{ group.title }}</h2>
-        <p>
-          {{ group.intro }}
-        </p>
-      </div>
-      <div class="tool-grid">
-        @for (tool of group.tools; track tool.route) {
-          <article class="tool-card card">
-            <h3>{{ tool.title }}</h3>
-            <p>{{ tool.description }}</p>
-            <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
-          </article>
-        }
-      </div>
-    </section>
-  }
+  <search class="tool-search" aria-label="Find a tool">
+    <div class="search-controls">
+      <label class="search-field" for="tool-query">
+        <span>Search tools</span>
+        <input
+          id="tool-query"
+          type="search"
+          placeholder="Search by name, task or tag"
+          [value]="query()"
+          (input)="updateQuery($event)"
+          aria-controls="tool-results"
+        />
+      </label>
+      <label class="type-field" for="tool-type">
+        <span>Tool type</span>
+        <select
+          id="tool-type"
+          [value]="selectedType() ?? ''"
+          (change)="updateType($event)"
+          aria-controls="tool-results"
+        >
+          <option value="">All types</option>
+          @for (type of toolTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </label>
+      <button
+        class="clear-filters"
+        type="button"
+        [disabled]="!hasFilters()"
+        (click)="clearFilters()"
+      >
+        Clear filters
+      </button>
+    </div>
+    <p class="result-count" role="status" aria-live="polite" aria-atomic="true">
+      {{ resultCount() }} of {{ totalTools }} tools
+    </p>
+  </search>
+
+  <div id="tool-results">
+    @for (group of filteredToolGroups(); track group.id) {
+      <section class="tools" [attr.aria-labelledby]="group.id">
+        <div class="section-intro">
+          <h2 [id]="group.id">{{ group.title }}</h2>
+          <p>
+            {{ group.intro }}
+          </p>
+        </div>
+        <div class="tool-grid">
+          @for (tool of group.tools; track tool.route) {
+            <article class="tool-card card">
+              <h3>{{ tool.title }}</h3>
+              <div class="tool-tags" role="group" aria-label="Tool types">
+                @for (tag of tool.tags; track tag) {
+                  <button
+                    type="button"
+                    class="tool-tag"
+                    [attr.aria-pressed]="selectedType() === tag"
+                    [attr.aria-label]="'Filter by ' + tag"
+                    (click)="selectedType.set(tag)"
+                  >
+                    {{ tag }}
+                  </button>
+                }
+              </div>
+              <p>{{ tool.description }}</p>
+              <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
+            </article>
+          }
+        </div>
+      </section>
+    }
+    @if (resultCount() === 0) {
+      <p class="empty-results">
+        No tools match your search. Try another name or clear the filters.
+      </p>
+    }
+  </div>
   <section>
     <h2>Choose the result you need</h2>
     <p>
@@ -42,7 +103,7 @@
   </section>
   <nav aria-label="Tool tasks">
     <ul>
-      @for (group of toolGroups; track group.id) {
+      @for (group of filteredToolGroups(); track group.id) {
         <li>
           <a [href]="routes.AllTools + '#' + group.id">{{ group.title }}</a>
         </li>

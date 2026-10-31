@@ -311,6 +311,13 @@
     >
     <a
       class="top-nav-link mobile-menu__link"
+      [routerLink]="['/', routePath.Examples]"
+      routerLinkActive="active"
+      (click)="closeMenus()"
+      >Examples</a
+    >
+    <a
+      class="top-nav-link mobile-menu__link"
       [routerLink]="['/', routePath.Contact]"
       routerLinkActive="active"
       (click)="closeMenus()"
