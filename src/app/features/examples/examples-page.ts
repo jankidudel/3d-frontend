@@ -37,60 +37,56 @@ import { publicExamples } from './example-registry';
           }}</a>
         }
       </nav>
-      @for (group of groups; track group) {
-        <section [attr.aria-label]="group">
-          <h2>{{ group }}</h2>
-          <div class="example-grid">
-            @for (example of inGroup(group); track example.id) {
-              <article class="card" [id]="example.id">
-                <h3>{{ example.name }}</h3>
-                <figure>
-                  <img
-                    [ngSrc]="example.preview"
-                    width="720"
-                    height="260"
-                    [alt]="example.alt"
-                  />
-                  <figcaption>
-                    Original explanatory diagram. Use the files to reproduce the
-                    reported observation.
-                  </figcaption>
-                </figure>
-                <p>
-                  <strong>{{ example.question }}</strong>
-                </p>
-                <p><strong>Known geometry:</strong> {{ example.known }}</p>
-                <p>
-                  <strong>Reproduction settings:</strong> {{ example.settings }}
-                </p>
-                <p>
-                  <strong>Software observation:</strong> {{ example.observed }}
-                </p>
-                <p>{{ example.limitations }}</p>
-                <ul>
-                  @for (asset of example.files; track asset.path) {
-                    <li>
-                      <a [href]="asset.path" download>{{ asset.name }}</a> ·
-                      {{ asset.bytes }} bytes
-                    </li>
-                  }
-                </ul>
-                <p>
-                  @for (tool of example.tools; track tool) {
-                    <a
-                      [routerLink]="tool"
-                      [queryParams]="{ example: example.id }"
-                      >Try in {{ toolName(tool) }}</a
-                    >
-                    ·
-                  }
-                  <a [routerLink]="example.guide">Read the explanation</a>
-                </p>
-              </article>
-            }
-          </div>
-        </section>
-      }
+      <div class="example-grid">
+        @for (example of examples; track example.id) {
+          <article
+            class="card"
+            [id]="example.id"
+            [attr.aria-labelledby]="example.id + '-title'"
+          >
+            <span class="example-category">{{ example.group }}</span>
+            <h2 [id]="example.id + '-title'">{{ example.name }}</h2>
+            <figure>
+              <img
+                [ngSrc]="example.preview"
+                width="720"
+                height="260"
+                [alt]="example.alt"
+              />
+              <figcaption>
+                Original explanatory diagram. Use the files to reproduce the
+                reported observation.
+              </figcaption>
+            </figure>
+            <p>
+              <strong>{{ example.question }}</strong>
+            </p>
+            <p><strong>Known geometry:</strong> {{ example.known }}</p>
+            <p>
+              <strong>Reproduction settings:</strong> {{ example.settings }}
+            </p>
+            <p><strong>Software observation:</strong> {{ example.observed }}</p>
+            <p>{{ example.limitations }}</p>
+            <ul>
+              @for (asset of example.files; track asset.path) {
+                <li>
+                  <a [href]="asset.path" download>{{ asset.name }}</a> ·
+                  {{ asset.bytes }} bytes
+                </li>
+              }
+            </ul>
+            <p>
+              @for (tool of example.tools; track tool) {
+                <a [routerLink]="tool" [queryParams]="{ example: example.id }"
+                  >Try in {{ toolName(tool) }}</a
+                >
+                ·
+              }
+              <a [routerLink]="example.guide">Read the explanation</a>
+            </p>
+          </article>
+        }
+      </div>
     </main>
   `,
   styles: `
@@ -114,8 +110,8 @@ import { publicExamples } from './example-registry';
     }
     .example-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 28rem), 1fr));
-      align-items: start;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
       gap: 1.25rem;
     }
     article {
@@ -123,7 +119,21 @@ import { publicExamples } from './example-registry';
       padding: clamp(1rem, 3vw, 1.5rem);
       scroll-margin-top: 6rem;
     }
-    h3 {
+    .example-category {
+      display: inline-flex;
+      max-width: 100%;
+      margin-bottom: 0.75rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #edf6ef;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+    h2 {
       margin: 0 0 1rem;
       font-size: 1.2rem;
       line-height: 1.3;
@@ -135,6 +145,9 @@ import { publicExamples } from './example-registry';
       display: block;
       width: 100%;
       height: auto;
+      aspect-ratio: 36 / 13;
+      object-fit: contain;
+      background: #eef4fa;
       border-radius: 0.75rem;
     }
     figcaption {
@@ -161,8 +174,10 @@ import { publicExamples } from './example-registry';
     p {
       overflow-wrap: anywhere;
     }
-    section {
-      margin-top: 2rem;
+    @media (max-width: 55rem) {
+      .example-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
   `,
 })
@@ -171,6 +186,9 @@ export class ExamplesPage {
   readonly groups = [
     ...new Set(publicExamples.map((example) => example.group)),
   ];
+  readonly examples = this.groups.flatMap((group) =>
+    publicExamples.filter((example) => example.group === group),
+  );
   constructor() {
     inject(SeoService).apply({
       title:
@@ -180,11 +198,8 @@ export class ExamplesPage {
       path: PublicRouteUrl.Examples,
     });
   }
-  inGroup(group: string) {
-    return publicExamples.filter((example) => example.group === group);
-  }
   firstId(group: string): string {
-    return this.inGroup(group)[0].id;
+    return this.examples.find((example) => example.group === group)!.id;
   }
   toolName(path: string): string {
     return (path.split('/').at(-1) ?? '').replaceAll('-', ' ');

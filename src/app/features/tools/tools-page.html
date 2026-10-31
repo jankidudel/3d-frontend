@@ -6,6 +6,25 @@
     InspectMesh helps you inspect, measure and prepare 3D files for printing.
   </p>
 
+  @for (group of toolGroups; track group.id) {
+    <section class="tools" [attr.aria-labelledby]="group.id">
+      <div class="section-intro">
+        <h2 [id]="group.id">{{ group.title }}</h2>
+        <p>
+          {{ group.intro }}
+        </p>
+      </div>
+      <div class="tool-grid">
+        @for (tool of group.tools; track tool.route) {
+          <article class="tool-card card">
+            <h3>{{ tool.title }}</h3>
+            <p>{{ tool.description }}</p>
+            <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
+          </article>
+        }
+      </div>
+    </section>
+  }
   <section>
     <h2>Choose the result you need</h2>
     <p>
@@ -37,25 +56,6 @@
     source evidence, browse <a [routerLink]="routes.Materials">materials</a> or
     <a [routerLink]="routes.Printers">printer specifications</a>.
   </p>
-  @for (group of toolGroups; track group.id) {
-    <section class="tools" [attr.aria-labelledby]="group.id">
-      <div class="section-intro">
-        <h2 [id]="group.id">{{ group.title }}</h2>
-        <p>
-          {{ group.intro }}
-        </p>
-      </div>
-      <div class="tool-grid">
-        @for (tool of group.tools; track tool.route) {
-          <article class="tool-card card">
-            <h3>{{ tool.title }}</h3>
-            <p>{{ tool.description }}</p>
-            <a class="button" [routerLink]="tool.route">{{ tool.cta }}</a>
-          </article>
-        }
-      </div>
-    </section>
-  }
   <app-workflow-paths />
   <section class="content">
     <h2>From a production record to a customer document</h2>

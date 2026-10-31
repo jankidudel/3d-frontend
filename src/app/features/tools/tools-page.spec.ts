@@ -46,4 +46,49 @@ describe('ToolsPage', () => {
       fixture.nativeElement.querySelector('nav[aria-label="Breadcrumb"]'),
     ).toBeNull();
   });
+  it('keeps the entire tool list ahead of every supporting block', () => {
+    TestBed.configureTestingModule({
+      imports: [ToolsPage],
+      providers: [provideRouter([])],
+    });
+    const fixture = TestBed.createComponent(ToolsPage);
+    fixture.detectChanges();
+    const main = (fixture.nativeElement as HTMLElement).querySelector('main')!;
+    const children = Array.from(main.children);
+    const groups = children.filter((element) =>
+      element.matches('section.tools'),
+    );
+    const firstGroup = children.indexOf(groups[0]);
+    const lastGroup = children.indexOf(groups.at(-1)!);
+
+    // Only the title, eyebrow and brief lead may precede the actual directory.
+    expect(
+      children
+        .slice(0, firstGroup)
+        .map((element) =>
+          element.matches('p.eyebrow')
+            ? 'eyebrow'
+            : element.matches('h1')
+              ? 'title'
+              : element.matches('p.lead')
+                ? 'lead'
+                : 'unexpected block',
+        ),
+    ).toEqual(['eyebrow', 'title', 'lead']);
+    expect(children.slice(firstGroup, lastGroup + 1)).toEqual(groups);
+    expect(groups).toHaveLength(fixture.componentInstance.toolGroups.length);
+    for (const group of groups) {
+      expect(group.querySelectorAll('.tool-card').length).toBeGreaterThan(0);
+    }
+    const guidance = children.find((element) =>
+      element.textContent?.includes('Choose the result you need'),
+    )!;
+    expect(children.indexOf(guidance)).toBeGreaterThan(lastGroup);
+    expect(
+      children.indexOf(main.querySelector('nav[aria-label="Tool tasks"]')!),
+    ).toBeGreaterThan(lastGroup);
+    expect(
+      children.indexOf(main.querySelector('app-workflow-paths')!),
+    ).toBeGreaterThan(lastGroup);
+  });
 });
