@@ -11,6 +11,48 @@ heading: 'STL Resolution: Chord Height and Angular Tolerance'
   then inspect the actual exported facets. Chord deviation, angular constraints
   and triangle count describe mesh geometry; none certifies a printed dimension.
 </p>
+<h2>Apply sagitta to an internal polygonal bore</h2>
+<p>
+  For an ideal regular n-sided opening with vertex circumradius R=10, the flat
+  span is 2R cos(π/n). The deficit from the 20-unit vertex circle is twice the
+  sagitta. The original
+  <a href="{{ ExampleAsset.FeatureBore12 }}" download>12-sided</a> and
+  <a href="{{ ExampleAsset.FeatureBore48 }}" download>48-sided</a> closed bore
+  controls have identical 30 by 30 by 8 outer bounds.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Ideal section</th>
+      <th scope="col">Vertex circle diameter</th>
+      <th scope="col">Flat span</th>
+      <th scope="col">Radial sagitta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">12 sides</th>
+      <td>20</td>
+      <td>19.3185165258</td>
+      <td>0.3407417371</td>
+    </tr>
+    <tr>
+      <th scope="row">48 sides</th>
+      <td>20</td>
+      <td>19.9571784648</td>
+      <td>0.0214107676</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  These are analytical ideal-section values; stored Float32 coordinates
+  introduce small differences. Actual three-point constructions on the reopened
+  cardinal vertices return about 20 for both bores. The viewer does not
+  calculate an inscribed passage. The
+  <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}">hole diameter guide</a>
+  owns selection and interpretation, including an ellipse counterexample; this
+  page retains the tessellation mathematics.
+</p>
 <h2>What each setting means</h2>
 <p>
   Chord height/deviation is a length between the source curve and its straight

@@ -1,5 +1,31 @@
 /** Canonical paths for downloadable public example files linked from pages and guides. */
 export const ExampleAsset = {
+  FeatureStlUnknownRecord:
+    '/examples/feature-measurement/browser-stl-unknown-unit.json',
+  FeatureBore12Record:
+    '/examples/feature-measurement/browser-bore12-record.json',
+  FeatureBore48Record:
+    '/examples/feature-measurement/browser-bore48-record.json',
+  FeatureEllipseRecord:
+    '/examples/feature-measurement/browser-ellipse-record.json',
+  FeatureManifest: '/examples/feature-measurement/manifest.json',
+  FeatureObservations: '/examples/feature-measurement/observations.json',
+  FeatureGenerator: '/examples/feature-measurement/generate-fixtures.mts',
+  FeatureRecord: '/examples/feature-measurement/example-measurements.json',
+  FeatureBrowserObservations:
+    '/examples/feature-measurement/browser-observations.json',
+  FeatureDistanceCoupon: '/examples/feature-measurement/distance-coupon.stl',
+  FeatureAngleCoupon: '/examples/feature-measurement/angle-coupon.stl',
+  FeatureAngleTilted: '/examples/feature-measurement/angle-coupon-tilted.stl',
+  FeatureAngleScaled: '/examples/feature-measurement/angle-coupon-scaled.stl',
+  FeatureBore12: '/examples/feature-measurement/bore-12.stl',
+  FeatureBore48: '/examples/feature-measurement/bore-48.stl',
+  FeatureEllipse: '/examples/feature-measurement/ellipse.stl',
+  FeaturePlacement: '/examples/feature-measurement/placed-centimetre.3mf',
+  FeatureAngleSvg: '/examples/feature-measurement/angle.svg',
+  FeaturePolygonSvg: '/examples/feature-measurement/polygon.svg',
+  FeatureEllipseSvg: '/examples/feature-measurement/ellipse.svg',
+  FeaturePlacementSvg: '/examples/feature-measurement/placement.svg',
   InputIntegrityManifest: '/examples/input-integrity/manifest.json',
   InputIntegrityObservations: '/examples/input-integrity/observations.json',
   InputIntegrityProcessorObservations:

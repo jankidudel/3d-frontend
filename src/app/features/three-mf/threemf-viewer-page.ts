@@ -1,4 +1,8 @@
 import {
+  MeasurementContext,
+  MeasurementFormat,
+} from '../shared/feature-measurement/measurement';
+import {
   displayNumber,
   displayVector,
   displayBounds,
@@ -45,6 +49,7 @@ import { MeshIssueHighlightsComponent } from '../shared/mesh-issue-highlights/me
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 
 interface ModelInfo {
+  readonly measurementContext: MeasurementContext;
   readonly name: string;
   readonly size: number;
   readonly unit: string;
@@ -74,9 +79,15 @@ export class ThreeMfViewerPage {
   readonly loadPublicExample = async (
     files: readonly File[],
   ): Promise<void> => {
+    const previousRun = this.loadRun;
     await this.load(files[0]);
     if (this.error()) {
       throw new Error(this.error());
+    }
+    if (this.sourceFile !== files[0] && this.loadRun === previousRun) {
+      throw new Error(
+        'Replacement cancelled; the current file and measurements were retained.',
+      );
     }
   };
   readonly guideRouteUrl = GuideRouteUrl;
@@ -129,7 +140,7 @@ export class ThreeMfViewerPage {
     this.seo.apply({
       title: 'Free 3MF Viewer with Measurements and Dimensions | InspectMesh',
       description:
-        'Open a 3MF file locally, inspect its resolved build geometry, measure point-to-point distances and review declared units and dimensions before 3D printing.',
+        'Inspect resolved 3MF builds locally, measure distances, angles and three-point circles in millimetres, and save a private record with placement identity.',
       path: PublicRouteUrl.ThreeMfViewer,
     });
     this.destroyRef.onDestroy(() => {
@@ -229,19 +240,7 @@ export class ThreeMfViewerPage {
   }
 
   private async load(file: File): Promise<void> {
-    const run = ++this.loadRun;
-    this.sourceFile = null;
-    this.analyzingIssues.set(false);
-    this.loading.set(false);
-    this.selectedItem.set(null);
-    this.isolatedItem.set(null);
-    this.issuePolling?.unsubscribe();
-    this.issuePolling = undefined;
     this.error.set('');
-    this.model.set(null);
-    this.issueReport.set(null);
-    this.issueAnalysisError.set('');
-    this.issueLines.set([]);
     if (!this.browser) {
       return;
     }
@@ -260,6 +259,15 @@ export class ThreeMfViewerPage {
       return;
     }
 
+    if (
+      this.viewer()?.hasMeasurementWork() &&
+      !window.confirm(
+        'Replacing the file discards current and saved measurements after the new file loads. Download JSON first to keep them. Continue?',
+      )
+    ) {
+      return;
+    }
+    const run = ++this.loadRun;
     this.loading.set(true);
     try {
       const resolved = await resolveThreeMfWallGeometry(
@@ -291,8 +299,21 @@ export class ThreeMfViewerPage {
       }
       group.position.set(-centre[0], -centre[1], -centre[2]);
       group.updateMatrixWorld(true);
+      this.viewer()?.resetMeasurementFile();
+      this.issuePolling?.unsubscribe();
+      this.analyzingIssues.set(false);
+      this.issueReport.set(null);
+      this.issueLines.set([]);
+      this.issueAnalysisError.set('');
+      this.selectedItem.set(null);
+      this.isolatedItem.set(null);
       this.sourceFile = file;
       this.model.set({
+        measurementContext: {
+          format: MeasurementFormat.ThreeMf,
+          offset: centre as [number, number, number],
+          declaredUnit: resolved.declaredUnit,
+        },
         name: file.name,
         size: file.size,
         unit: resolved.declaredUnit,
@@ -310,7 +331,6 @@ export class ThreeMfViewerPage {
       if (run !== this.loadRun) {
         return;
       }
-      this.model.set(null);
       this.error.set(
         this.webglUnavailable()
           ? 'WebGL is unavailable in this browser. You can still use the other tools.'

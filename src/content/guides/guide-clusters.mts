@@ -122,6 +122,8 @@ export const guideClusters: readonly GuideCluster[] = [
       'why-stl-files-have-no-units',
       'stl-volume-calculation-wrong',
       'how-to-measure-3d-model',
+      'measure-angle-in-stl',
+      'measure-hole-diameter-stl',
     ],
   },
   {

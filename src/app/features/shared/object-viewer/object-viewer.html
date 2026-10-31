@@ -6,11 +6,12 @@
   <div
     #viewport
     class="viewport"
-    [class.is-measuring]="measuring()"
+    [class.is-measuring]="measuring() || measurementPanel()?.active()"
     role="img"
     [attr.aria-label]="ariaLabel()"
     (pointerdown)="onViewportPointerDown($event)"
     (pointerup)="onViewportPointerUp($event)"
+    (pointercancel)="onViewportPointerCancel($event)"
     (pointermove)="onViewportPointerMove($event)"
     (pointerleave)="triangleHovered.emit(null)"
   ></div>
@@ -96,7 +97,7 @@
           Choose another file
         </button>
       }
-      @if (showMeasurementControls()) {
+      @if (showMeasurementControls() && !featureMeasurements()) {
         <button
           class="button button-secondary"
           type="button"
@@ -129,7 +130,7 @@
         </button>
       }
     </div>
-    @if (showMeasurementControls()) {
+    @if (showMeasurementControls() && !featureMeasurements()) {
       <p class="hint">{{ measurementHint() }}</p>
     }
     @if (measurement(); as result) {
@@ -158,6 +159,13 @@
         original model resolution, selected points and chosen unit. Use CAD or
         calibrated physical measurement where tighter tolerances are required.
       </p>
+    }
+    @if (featureMeasurements()) {
+      <app-measurement-panel
+        [context]="measurementContext()"
+        [assumption]="measurementUnit()"
+        (changed)="updateFeatureOverlay()"
+      />
     }
     @if (crossSectionEnabled()) {
       <section

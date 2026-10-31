@@ -16,6 +16,22 @@ faq:
     ><strong>Calculate starting hole and pin dimensions</strong></a
   >
 </p>
+<h2>Compare CAD, exported mesh and produced readings first</h2>
+<p>
+  Keep the intended CAD diameter, a named construction on the
+  serialized/reopened mesh, and the produced-part reading as three separate
+  records. In the original
+  <a href="{{ ExampleAsset.FeatureBore12 }}" download>12-sided bore control</a>,
+  a circle through separated boundary vertices gives about 20 coordinate units,
+  while the ideal flat span is only 19.3185165258. That apparent nominal circle
+  is not evidence that a 20-unit pin fits, or that any printed compensation is
+  appropriate. See
+  <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+    >how to interpret a constructed diameter</a
+  >
+  before attributing a mismatch to the printer. Physical readings and a
+  controlled compensation coupon still determine the next process adjustment.
+</p>
 <h2>Measure holes and pins separately</h2>
 <p>
   An undersized hole and an oversized pin can produce the same failed assembly.

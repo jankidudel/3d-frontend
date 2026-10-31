@@ -30,6 +30,10 @@
   </p>
   <section class="card viewer-tool" aria-labelledby="viewer-upload-title">
     <h2 id="viewer-upload-title">Open an STL file</h2>
+    <p>
+      Replacing a successfully loaded file discards its measurements. Cancelled
+      or failed replacement keeps the current record.
+    </p>
     <div
       class="drop-zone"
       (drop)="onDrop($event)"
@@ -79,9 +83,11 @@
     >
       <app-object-viewer
         [object]="current.object"
+        [featureMeasurements]="true"
+        [measurementContext]="current.measurementContext"
         [extent]="current.extent"
         [issueLines]="issueLines()"
-        [measurementUnit]="selectedUnit() || 'model units'"
+        [measurementUnit]="selectedUnit()"
         [measurementAvailable]="true"
         ariaLabel="3D STL model viewer"
         (chooseAnother)="openPicker()"
@@ -126,7 +132,7 @@
           intended interpretation before measuring in a real-world unit.
         </p>
         <label class="unit-label" for="stl-measurement-unit"
-          >Measurement unit</label
+          >STL coordinate interpretation</label
         >
         <select
           class="select-control"
@@ -158,6 +164,35 @@
     </section>
   }
   <section class="content">
+    <h2>Measure a named feature and retain its basis</h2>
+    <p>
+      Choose Distance, Angle or Circle through 3 points in Feature measurements.
+      Surface point remains the initial selection method. Mesh vertex offers a
+      bounded candidate from the visible hit triangle; it does not infer a CAD
+      corner or hole centre. Angle uses side A, vertex B, side C. Circle reports
+      a constructed radius and diameter, not roundness or clear passage. Save up
+      to 20 named measurements in this tab and download the local JSON record
+      before replacing the file.
+    </p>
+    <p>
+      Follow the
+      <a [routerLink]="guideRouteUrl.RouteMeasureAngleInStl">angle coupon</a> or
+      <a [routerLink]="guideRouteUrl.RouteMeasureHoleDiameterStl"
+        >faceted-bore and ellipse examples</a
+      >. Camera movement changes the view, not the stored references. Entered
+      coordinates are available as a keyboard alternative and are distinguished
+      from verified mesh picks.
+    </p>
+    <p>
+      Coordinates restore the original STL frame from the recentered displayed
+      mesh. Interpret the source unit below Model details. One coordinate unit
+      means 1 mm under a millimetre assumption or 25.4 mm under an inch
+      assumption. Display conversion is separate; unknown units leave physical
+      length unavailable while valid angles remain usable. Displayed Float32
+      mesh values do not recover CAD precision.
+    </p>
+  </section>
+  <section class="content">
     <h2>Inspect an export before releasing it</h2>
     <ol>
       <li>Confirm the intended revision and all visible required parts.</li>
@@ -179,9 +214,10 @@
     </ol>
     <p>
       Rotate by dragging, zoom with the wheel or pinch, and pan with right drag
-      or two fingers. With the intended unit selected, Measure distance picks
-      two visible mesh points. Inspect cross-section moves a display cut through
-      the model; it does not alter the saved file.
+      or two fingers. Distance picks two visible mesh points. Select the STL
+      coordinate interpretation separately to establish physical length. Inspect
+      cross-section moves a display cut through the model; it does not alter the
+      saved file.
     </p>
     <h2>What the Viewer shows</h2>
     <p>

@@ -12,6 +12,30 @@ heading: 'How to Export STL from CAD'
   native design as the authority for a named hole, contact face or other
   required feature.
 </p>
+<h2>Reopen one named angle and one bore before release</h2>
+<p>
+  Choose references in the source design, export, then reopen the exact STL
+  bytes in the <a href="{{ GuideSlug.RouteStlViewer }}">viewer</a>. For the
+  original angle coupon, ideal A=(10,0,0), B=(0,0,0), C=(5,5√3,0) reopens with
+  C.Y=8.66025447845459 and the actual three-point calculation gives about
+  60.0000012623 degrees. The
+  <a href="{{ ExampleAsset.FeatureBore12 }}" download>12-sided bore</a> reopens
+  with a 20-unit cardinal-vertex circle although its ideal flat span is
+  19.3185165258. These are verified generated exports, not vendor CAD export
+  tests or physical readings.
+</p>
+<p>
+  Save the ordered mesh references and source-unit interpretation in a local
+  JSON record. Follow the
+  <a href="{{ GuideSlug.RouteMeasureAngleInStl }}">angle control</a> and
+  <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}">bore interpretation</a>
+  for exact reproduction. A mesh construction cannot recover source constraints
+  or analytic CAD history; use the
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >tessellation owner</a
+  >
+  to choose a defensible deviation and recheck the exported detail.
+</p>
 <h2>Select the source revision and intended parts</h2>
 <p>
   Save the native revision and list the expected output files. Decide which

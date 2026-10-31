@@ -68,6 +68,19 @@
           </div>
         </div>
       } @else if (report()) {
+        <section aria-label="Envelope or feature choice">
+          <h3>Whole envelope or one feature?</h3>
+          <p>
+            These spans describe overall size. The 12-sided and 48-sided bore
+            controls share 30 by 30 by 8 outer bounds, while their ideal opening
+            flat spans differ. For a named point distance, angle or constructed
+            circle, use the <a [routerLink]="routeUrl.Viewer">STL Viewer</a> and
+            the
+            <a [routerLink]="guideRouteUrl.RouteMeasureHoleDiameterStl"
+              >bore interpretation guide</a
+            >. Matching bounds does not establish an opening.
+          </p>
+        </section>
         <div class="result-header">
           <div>
             <p class="eyebrow">Measured bounding size</p>

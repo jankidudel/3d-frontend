@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "provenance": "Original InspectMesh deterministic software controls; no physical print tests.",
+  "generator": "scripts/generate-feature-measurement-fixtures.mts",
+  "assets": [
+    {
+      "name": "distance-coupon.stl",
+      "bytes": 484,
+      "sha256": "3a307755adbfdca80c48053590edbdf82213696d884c576670a37c76b3959eea"
+    },
+    {
+      "name": "angle-coupon.stl",
+      "bytes": 484,
+      "sha256": "45242701ae6a33d4807c21048833e7619e0c35cad178ba5731cee7be390d40f9"
+    },
+    {
+      "name": "angle-coupon-tilted.stl",
+      "bytes": 484,
+      "sha256": "9466e42f7ee84b43634556cbb2b94d5947cb4d63e04df6499d95a40d4edd7242"
+    },
+    {
+      "name": "angle-coupon-scaled.stl",
+      "bytes": 484,
+      "sha256": "50dfaf9b77bc710dc94193e17386f5c1f531b7b5c431a34954d35a9eabc3cf19"
+    },
+    {
+      "name": "bore-12.stl",
+      "bytes": 4884,
+      "sha256": "0dcca04c33c4aa5a1a3c5293fc800054a2de92385c86f26b4249d26be6b809c9"
+    },
+    {
+      "name": "bore-48.stl",
+      "bytes": 19284,
+      "sha256": "9d70f40003fdb3513da7a4e2454d363185161bb383c9baa6d1ff475103f340b7"
+    },
+    {
+      "name": "ellipse.stl",
+      "bytes": 19284,
+      "sha256": "c8d74883db205fad409c7d289b74ac1f6f4856d73fb881b4c7d9ab806bb674db"
+    },
+    {
+      "name": "placed-centimetre.3mf",
+      "bytes": 949,
+      "sha256": "f5f8a3066b1de88b38e5cfb5bc37590ec93cffd9c06a23e3a93a1ed1245e2983"
+    },
+    {
+      "name": "angle.svg",
+      "bytes": 625,
+      "sha256": "8d2ca4e7facbd5afaf266c46e5fcdb6eab3ea53fd819175c57030f2768513b62"
+    },
+    {
+      "name": "polygon.svg",
+      "bytes": 982,
+      "sha256": "6695cff31404ee0bc0857c8909608b41dfecdf9bf0461e69e3bbed6bc8e4b6d3"
+    },
+    {
+      "name": "ellipse.svg",
+      "bytes": 685,
+      "sha256": "a828ff0648830858bcf493a4e2428557884907e5a5f7ea16a7a0e595a86d4920"
+    },
+    {
+      "name": "placement.svg",
+      "bytes": 545,
+      "sha256": "857010e8f5722820d1d6730514137d055e555e5b991a27cb2dba135102528a10"
+    },
+    {
+      "name": "example-measurements.json",
+      "bytes": 2601,
+      "sha256": "dd25908a5a1c5c1662cde9ef32852d0536aba4d6092d3c6f14ba732276f1024f"
+    },
+    {
+      "name": "observations.json",
+      "bytes": 1910,
+      "sha256": "72739bc746c42e56b07a958b5b96ab7711432ccd78b66d7308edad2b70476356"
+    },
+    {
+      "name": "generate-fixtures.mts",
+      "bytes": 13881,
+      "sha256": "69b302db97b45e9265792331401e5973bfc059fb7afff9b8b5e563ddd2917ef3"
+    },
+    {
+      "name": "browser-3mf-record.json",
+      "bytes": 5157,
+      "sha256": "f8099942db98b5154c8230a70602ef865f7d27d07b45aea08f83d944f7669e3b"
+    },
+    {
+      "name": "browser-bore12-record.json",
+      "bytes": 1946,
+      "sha256": "443a6cfd5ec600d7acd2036697695251935c4461f67f3dc90e4e2fc371521961"
+    },
+    {
+      "name": "browser-bore48-record.json",
+      "bytes": 1951,
+      "sha256": "e7f5dda6f919579ec1237f97ff788dd132e103974366414d73c8c22677f896a1"
+    },
+    {
+      "name": "browser-ellipse-record.json",
+      "bytes": 4001,
+      "sha256": "56d13cb84457ce89cab24d5c497a9aff9f5adc7b4b0c6a86ed8ed6d9c6e6c0ed"
+    },
+    {
+      "name": "browser-observations.json",
+      "bytes": 9718,
+      "sha256": "e57f2f2a5957da2ce2bbab0fdbd7ef0e59b2566e37632ba9876d25ade729ef0d"
+    },
+    {
+      "name": "browser-stl-record.json",
+      "bytes": 4909,
+      "sha256": "322ab86340ca207c447c5c79c15e893333d3d702a9e64c9b82cc13a457571ff3"
+    },
+    {
+      "name": "browser-stl-unknown-unit.json",
+      "bytes": 1687,
+      "sha256": "8b0b8a40a222ae0f32b3353630fa3fe2303bbd078f3537645b42c172f2ceedea"
+    }
+  ],
+  "points": {
+    "A": [10, 0, 0],
+    "B": [0, 0, 0],
+    "C": [5, 8.660254037844386, 0],
+    "right": [0, 10, 0],
+    "opposite": [-10, 0, 0],
+    "distanceEnd": [30, 40, 0]
+  },
+  "coupon": {
+    "topZ": 0,
+    "distancePoints": [
+      [0, 0, 0],
+      [30, 40, 0]
+    ],
+    "distance": 50,
+    "axisDifferences": [30, 40, 0],
+    "components": 1,
+    "tilt": "(x+100, .6y-.8z-40, .8y+.6z+25)",
+    "uniformScale": 3
+  },
+  "bores": [
+    {
+      "sides": 12,
+      "axis": "Z",
+      "openingZ": [0, 8],
+      "outerBounds": [30, 30, 8],
+      "circumradius": 10,
+      "vertexAngles": "2*pi*i/n from +X",
+      "circlePoints": [0, 3, 6],
+      "idealDiameter": 20,
+      "idealFlatSpan": 19.318516525781366
+    },
+    {
+      "sides": 48,
+      "axis": "Z",
+      "openingZ": [0, 8],
+      "outerBounds": [30, 30, 8],
+      "circumradius": 10,
+      "vertexAngles": "2*pi*i/n from +X",
+      "circlePoints": [0, 12, 24],
+      "idealDiameter": 20,
+      "idealFlatSpan": 19.95717846477207
+    }
+  ],
+  "ellipse": {
+    "spans": [20, 10],
+    "pointIndicesA": [0, 12, 24],
+    "pointIndicesB": [0, 12, 36],
+    "idealDiameters": [25, 12.5]
+  },
+  "threeMf": {
+    "declaredUnit": "centimeter",
+    "transforms": ["0 2 0 -2 0 0 0 0 2 1 2 3", "1 0 0 0 1 0 0 0 1 5 2 3"],
+    "expectedBuildOrigins": [
+      [10, 20, 30],
+      [50, 20, 30]
+    ],
+    "crossItemDistanceMm": 40
+  },
+  "limits": [
+    "A point reference is a mesh vertex, not an analytic CAD feature.",
+    "Polygon inscribed spans are independent arithmetic, not viewer clearance results."
+  ]
+}

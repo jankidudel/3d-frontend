@@ -1,0 +1,63 @@
+{
+  "format": "inspectmesh-measurements",
+  "version": 1,
+  "privacy": "Local record; no source filename or geometry included.",
+  "entries": [
+    {
+      "id": "measurement-1",
+      "name": "Unknown-unit triangle ♥",
+      "type": "angle",
+      "points": [
+        {
+          "coordinates": [
+            0,
+            0,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 0,
+          "vertexIndex": 0
+        },
+        {
+          "coordinates": [
+            10,
+            0,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 0,
+          "vertexIndex": 1
+        },
+        {
+          "coordinates": [
+            5,
+            8.66025447845459,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 0,
+          "vertexIndex": 2
+        }
+      ],
+      "result": {
+        "state": "available",
+        "angleDegrees": 60.0000012622552
+      },
+      "frame": "STL source coordinates restored from displayed Float32 mesh",
+      "sourceUnit": "unknown",
+      "coordinateToMm": null,
+      "resultLengthUnit": "source coordinate units",
+      "displayedLengthUnit": "coordinate units (physical length unavailable)",
+      "placedItemIds": [],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Changing the STL interpretation recomputes physical lengths; changing display unit only converts them."
+      ]
+    }
+  ]
+}

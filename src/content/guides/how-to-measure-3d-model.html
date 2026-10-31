@@ -44,6 +44,58 @@ heading: How to Measure a 3D Model Before 3D Printing
     </tr>
   </tbody>
 </table>
+<h2>Choose an angle or a three-point circle</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Viewer mode</th>
+      <th scope="col">Selected references and outcome</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Angle</th>
+      <td>
+        Three mesh points A-B-C; B is the vertex. The unsigned interior angle is
+        independent of camera perspective and uniform unit conversion. Follow
+        the
+        <a href="{{ GuideSlug.RouteMeasureAngleInStl }}">known-angle control</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Circle through 3 points</th>
+      <td>
+        A constructed radius and diameter in the plane of the three points. This
+        does not detect a cylinder or prove roundness, minimum passage or
+        printed fit. Use the
+        <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+          >faceted-bore and ellipse comparison</a
+        >.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  For one reproducible sequence, load the angle coupon in the STL Viewer, choose
+  Angle and Mesh vertex, select A=(10,0,0), B=(0,0,0), C=(5,8.66025447845459,0),
+  then save a named record. The actual production calculation on reopened stored
+  points gives about 60.0000012623 degrees. Orbit or reset the camera without
+  changing the points. Download JSON to retain point order, selection basis and
+  unit/frame notes. The
+  <a href="{{ ExampleAsset.FeatureManifest }}" download>manifest</a> and
+  <a href="{{ ExampleAsset.FeatureObservations }}" download>observations</a>
+  distinguish stored mesh values from ideal arithmetic.
+</p>
+<p>
+  STL picks are restored to source coordinates after display centering. A 3MF
+  pick uses resolved millimetre build coordinates and retains its placed-item
+  ID. One source-coordinate unit becomes 1 mm under a millimetre interpretation
+  or 25.4 mm under an inch interpretation. Displaying that latter value in
+  inches gives 1 inch; conversion does not change the original interpretation.
+  Unknown units leave physical length unavailable while valid angles remain
+  available.
+</p>
 <h2>Rotation changes an envelope without stretching a part</h2>
 <p>
   The 40 × 20 × 10 mm control has a 40 mm long edge. Rotating it 45° around Z
@@ -81,9 +133,9 @@ heading: How to Measure a 3D Model Before 3D Printing
   <li>
     For approximate visible-feature checks, open
     <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
-    <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, activate Measure
-    distance and pick two visible surface points. Read direct distance and axis
-    differences.
+    <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, choose Distance,
+    activate Start measuring and pick two visible surface points. Read direct
+    distance and axis differences.
   </li>
   <li>
     Compare the source CAD requirements. A mounting-hole centre distance, datum

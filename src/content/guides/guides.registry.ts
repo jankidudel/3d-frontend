@@ -8,6 +8,8 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  MeasureAngleInStl: 'measure-angle-in-stl',
+  MeasureHoleDiameterStl: 'measure-hole-diameter-stl',
   DegenerateTrianglesStl: 'degenerate-triangles-stl',
   TruncatedStlFile: 'truncated-stl-file',
   MirroredStlFile: 'mirrored-stl-file',
@@ -43,6 +45,22 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.MeasureAngleInStl,
+    group: GuideGroupId.Stl,
+    order: 242,
+    enabled: true,
+    publishDate: '2026-10-31',
+    checkEditorialTargets: true,
+  },
+  {
+    slug: GuideContentSlug.MeasureHoleDiameterStl,
+    group: GuideGroupId.Stl,
+    order: 243,
+    enabled: true,
+    publishDate: '2026-10-31',
+    checkEditorialTargets: true,
+  },
   {
     slug: GuideContentSlug.DegenerateTrianglesStl,
     group: GuideGroupId.Stl,
@@ -203,6 +221,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: true,
   },
   {
@@ -236,7 +255,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 250,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: true,
   },
   {
@@ -245,7 +264,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 203,
     enabled: true,
     publishDate: '2026-10-08',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: true,
   },
   {
@@ -255,7 +274,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-08',
     checkEditorialTargets: true,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-31',
   },
   {
     slug: 'stl-multiple-shells-disconnected-parts',
@@ -396,7 +415,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Calibration,
     order: 3,
     enabled: true,
-    updatedDate: '2026-10-17',
+    updatedDate: '2026-10-31',
     publishDate: '2026-09-15',
     checkEditorialTargets: false,
   },
@@ -442,7 +461,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 9,
     enabled: true,
     publishDate: '2026-09-12',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: false,
   },
   {
@@ -450,7 +469,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 7,
     enabled: true,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-10-31',
     publishDate: '2026-09-10',
     checkEditorialTargets: false,
   },
@@ -833,7 +852,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 20,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-10-31',
     checkEditorialTargets: false,
   },
   {

@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-31",
+  "method": "Exact stored Float32 STL positions reopened, then actual calculateMeasurement. Browser interactions recorded separately.",
+  "angle": {
+    "points": [
+      [10, 0, 0],
+      [0, 0, 0],
+      [5, 8.66025447845459, 0]
+    ],
+    "result": { "state": "available", "angleDegrees": 60.0000012622552 }
+  },
+  "bore12": {
+    "points": [
+      [10, 0, 0],
+      [6.123233998228043e-16, 10, 0],
+      [-10, 1.2246467996456087e-15, 0]
+    ],
+    "result": {
+      "state": "available",
+      "centre": [0, 0, 0],
+      "radius": 10,
+      "diameter": 20,
+      "normal": [0, 0, 1],
+      "axisU": [1, 0, 0],
+      "axisV": [0, 1, 0]
+    }
+  },
+  "bore48": {
+    "points": [
+      [10, 0, 0],
+      [6.123233998228043e-16, 10, 0],
+      [-10, 1.2246467996456087e-15, 0]
+    ],
+    "result": {
+      "state": "available",
+      "centre": [0, 0, 0],
+      "radius": 10,
+      "diameter": 20,
+      "normal": [0, 0, 1],
+      "axisU": [1, 0, 0],
+      "axisV": [0, 1, 0]
+    }
+  },
+  "ellipseA": {
+    "points": [
+      [10, 0, 0],
+      [6.123233998228043e-16, 5, 0],
+      [-10, 6.123233998228043e-16, 0]
+    ],
+    "result": {
+      "state": "available",
+      "centre": [0, -7.500000000000002, 0],
+      "radius": 12.500000000000002,
+      "diameter": 25.000000000000004,
+      "normal": [0, 0, 1],
+      "axisU": [0.7999999999999999, 0.6000000000000001, 0],
+      "axisV": [-0.6000000000000001, 0.7999999999999999, 0]
+    }
+  },
+  "ellipseB": {
+    "points": [
+      [10, 0, 0],
+      [6.123233998228043e-16, 5, 0],
+      [-1.8369700935892946e-15, -5, 0]
+    ],
+    "result": {
+      "state": "available",
+      "centre": [3.7499999999999982, -9.697399036122168e-16, 0],
+      "radius": 6.250000000000002,
+      "diameter": 12.500000000000004,
+      "normal": [0, 0, 1],
+      "axisU": [1, 1.5515838457795464e-16, 0],
+      "axisV": [-1.5515838457795464e-16, 1, 0]
+    }
+  }
+}

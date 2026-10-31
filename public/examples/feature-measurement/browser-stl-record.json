@@ -1,0 +1,188 @@
+{
+  "format": "inspectmesh-measurements",
+  "version": 1,
+  "privacy": "Local record; no source filename or geometry included.",
+  "entries": [
+    {
+      "id": "measurement-1",
+      "name": "Unknown-unit triangle ♥",
+      "type": "angle",
+      "points": [
+        {
+          "coordinates": [
+            0,
+            0,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 0,
+          "vertexIndex": 0
+        },
+        {
+          "coordinates": [
+            10,
+            0,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 0,
+          "vertexIndex": 1
+        },
+        {
+          "coordinates": [
+            5,
+            8.66025447845459,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 0,
+          "vertexIndex": 2
+        }
+      ],
+      "result": {
+        "state": "available",
+        "angleDegrees": 60.0000012622552
+      },
+      "frame": "STL source coordinates restored from displayed Float32 mesh",
+      "sourceUnit": "mm",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "source coordinate units",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Changing the STL interpretation recomputes physical lengths; changing display unit only converts them."
+      ]
+    },
+    {
+      "id": "measurement-2",
+      "name": "Circle on angle coupon",
+      "type": "circle",
+      "points": [
+        {
+          "coordinates": [
+            0,
+            0,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 0,
+          "vertexIndex": 0
+        },
+        {
+          "coordinates": [
+            10,
+            0,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 5,
+          "vertexIndex": 15
+        },
+        {
+          "coordinates": [
+            5,
+            8.66025447845459,
+            0
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-5",
+          "faceIndex": 5,
+          "vertexIndex": 17
+        }
+      ],
+      "result": {
+        "state": "available",
+        "centre": [
+          5.000000000000001,
+          2.886751639688261,
+          0
+        ],
+        "radius": 5.77350283876633,
+        "diameter": 11.54700567753266,
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "axisU": [
+          -0.8660253817539285,
+          -0.5000000381579609,
+          0
+        ],
+        "axisV": [
+          0.5000000381579609,
+          -0.8660253817539285,
+          0
+        ]
+      },
+      "frame": "STL source coordinates restored from displayed Float32 mesh",
+      "sourceUnit": "mm",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "source coordinate units",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Changing the STL interpretation recomputes physical lengths; changing display unit only converts them."
+      ]
+    },
+    {
+      "id": "measurement-3",
+      "name": "Surface distance",
+      "type": "distance",
+      "points": [
+        {
+          "coordinates": [
+            4.031266070999482,
+            3.523124421577558,
+            0
+          ],
+          "basis": "surface",
+          "meshId": "mesh-5",
+          "faceIndex": 0
+        },
+        {
+          "coordinates": [
+            6.108057616825109,
+            6.741042290755519,
+            -0.4577811211597478
+          ],
+          "basis": "surface",
+          "meshId": "mesh-5",
+          "faceIndex": 5
+        }
+      ],
+      "result": {
+        "state": "available",
+        "distance": 3.857152070177932,
+        "delta": [
+          2.0767915458256265,
+          3.2179178691779615,
+          0.4577811211597478
+        ]
+      },
+      "frame": "STL source coordinates restored from displayed Float32 mesh",
+      "sourceUnit": "mm",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "source coordinate units",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Changing the STL interpretation recomputes physical lengths; changing display unit only converts them."
+      ]
+    }
+  ]
+}

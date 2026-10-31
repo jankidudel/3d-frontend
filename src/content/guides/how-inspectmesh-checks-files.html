@@ -115,6 +115,25 @@ faq:
   </thead>
   <tbody>
     <tr>
+      <td>Dedicated viewer feature measurements</td>
+      <td>
+        Surface picks or bounded mesh vertices; unsigned three-point angle at B;
+        circle through three points; local named JSON record
+      </td>
+      <td>
+        No CAD fitting, cylinder detection, roundness, minimum passage, physical
+        calibration or fit check. Entered coordinates are not verified mesh
+        picks.
+      </td>
+      <td>
+        <a href="{{ GuideSlug.RouteMeasureAngleInStl }}">Tilted angle coupon</a>
+        and
+        <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+          >polygon/ellipse constructions</a
+        >
+      </td>
+    </tr>
+    <tr>
       <td>STL coordinates with an explicit unit assumption</td>
       <td>Axis spans and scaled dimensions</td>
       <td>
@@ -246,6 +265,37 @@ faq:
     </tr>
   </tbody>
 </table>
+<h2>Viewer selection, coordinates and private records</h2>
+<p>
+  Mesh vertex considers only the nearest eligible hit triangle's three vertices
+  within 24 CSS pixels, or 40 on touch, with visibility, clipping and occlusion
+  checks. This radius controls interaction, not geometric uncertainty.
+  Source/face/vertex and placed-item references are retained where available.
+  Keyboard coordinate entry is labelled Entered coordinates and does not
+  establish mesh membership.
+</p>
+<p>
+  STL coordinates restore the display centre offset and retain the explicit
+  coordinate-unit assumption. 3MF uses resolved millimetre build coordinates and
+  records the declared source unit; cross-item measurements retain both IDs.
+  Values come from displayed mesh geometry, not recovered CAD precision. Camera
+  movement does not change the measurement frame. Interpretation changes
+  recompute physical lengths; display-unit conversion does not reinterpret the
+  source. Unknown STL units still allow valid angles and coordinate-unit
+  distances.
+</p>
+<p>
+  Angle uses normalized legs and atan2; unresolved legs return Unavailable.
+  Circle uses translated, scaled local vectors and rejects repeated or
+  near-collinear points. These conditioning policies are documented in the
+  reproducible
+  <a href="{{ ExampleAsset.FeatureManifest }}" download>control manifest</a> and
+  source generator. Records are bounded to 20 entries in memory; names,
+  coordinates, filenames and geometry are not sent to analytics or URLs.
+  Explicit JSON download omits source filenames and model geometry. Successful
+  file replacement clears the record after warning; failed/cancelled replacement
+  preserves it.
+</p>
 <h2>Which actions process locally and which upload</h2>
 <p>
   The STL/3MF viewers open geometry locally. STL/3MF preflight, revision

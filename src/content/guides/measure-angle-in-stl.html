@@ -1,0 +1,216 @@
+---
+title: 'Measure an Angle in STL: Pick Three Points | InspectMesh'
+description: 'Pick three mesh points with the middle point as the angle vertex. Check known controls and distinguish feature angles from overhang and face angles.'
+slug: measure-angle-in-stl
+eyebrow: Repeatable mesh measurements
+heading: Measure an Angle in an STL File
+---
+
+<p>
+  Select three points in the order side, vertex, side. The angle belongs at the
+  middle point. Use a visible mesh vertex when you need a repeatable reference,
+  and compare against a known control before interpreting an unfamiliar part.
+  This measures an angle defined by those points; it does not automatically
+  measure the angle between two entire faces.
+</p>
+<p>
+  Open the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a>, choose
+  <strong>Angle</strong> under Feature measurements, then
+  <strong>Start measuring</strong>. Select A, B (angle vertex), C. Keep the
+  source revision and point identities with the result. Measurement and the
+  downloadable JSON stay in your browser; optional issue analysis is a separate
+  upload action.
+</p>
+<h2>Choose the angle you mean</h2>
+<table>
+  <caption>
+    Different angle questions need different references
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Question</th>
+      <th scope="col">Reference and method</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Angle ABC</th>
+      <td>
+        Three selected locations. The viewer reports the unsigned interior angle
+        from 0 to 180 degrees at B.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Two whole faces or a dihedral angle</th>
+      <td>
+        Face normals, fitted planes and a definition of which side is intended.
+        Three arbitrary points do not supply these automatically.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Inclination to the print bed</th>
+      <td>
+        A defined print axis and actual placement. Use the
+        <a href="{{ GuideSlug.RouteStlOverhangChecker }}">overhang checker</a>
+        within its stated axis convention, then inspect sliced paths.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Design angle or tolerance</th>
+      <td>
+        The source CAD constraint, datums and acceptance specification.
+        Displayed mesh positions cannot recover lost analytic design history.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 id="angle-control">Try the 60-degree control</h2>
+<figure>
+  <img
+    src="{{ ExampleAsset.FeatureAngleSvg }}"
+    width="760"
+    height="340"
+    alt="A and C define the sides at B, with the ideal 60 degree interior angle labelled"
+    loading="lazy"
+  />
+  <figcaption>
+    Original ideal XY construction. The STL is a closed triangular prism coupon;
+    a separate distance coupon supplies the 30-40-50 reference. This diagram is
+    arithmetic, not a screenshot or a physical measurement.
+  </figcaption>
+</figure>
+<ol>
+  <li>
+    Download the
+    <a href="{{ ExampleAsset.FeatureAngleCoupon }}" download
+      >original angle coupon</a
+    >. Open it deliberately in the viewer or choose the Repeatable feature
+    angles example. Loading a fixture does not start server analysis.
+  </li>
+  <li>
+    The triangular prism has top references A=(10,0,0), B=(0,0,0), C=(5,5√3,0).
+    Use <strong>Mesh vertex</strong> and select the three visible top corners in
+    that order. Use the separate distance coupon for the 30-40-50 check.
+  </li>
+  <li>
+    Review the point list. B must be the origin corner, not the apex. The stored
+    C coordinate is about 8.66025447845459 on Y. Running the actual angle
+    calculation on reopened Float32 records gives about 60.0000012623 degrees.
+    This small difference from ideal 60 is serialization precision, not physical
+    error.
+  </li>
+  <li>
+    Name the measurement, choose <strong>Save measurement</strong>, and
+    <strong>Download measurements (JSON)</strong>. Compare the selected
+    coordinates and basis with the
+    <a href="{{ ExampleAsset.FeatureManifest }}" download>manifest</a> and
+    <a href="{{ ExampleAsset.FeatureObservations }}" download
+      >calculation observations</a
+    >.
+  </li>
+</ol>
+<p>
+  The unknown STL unit does not prevent a valid angle. A uniform interpretation
+  or conversion changes lengths, not the angle. For a length on the
+  <a href="{{ ExampleAsset.FeatureDistanceCoupon }}" download>distance coupon</a
+  >, (0,0,0) to (30,40,0) is 50 coordinate units with absolute XYZ differences
+  30,40,0. Establish the source unit before calling that 50 mm.
+</p>
+<p>
+  In local browser checks on 31 October 2026, normal mesh-vertex picks at
+  desktop and mobile widths displayed 60.0000013 degrees. The saved desktop
+  selection uses the other base corner as B, which gives the same angle for this
+  equilateral control. Its
+  <a href="{{ ExampleAsset.FeatureStlUnknownRecord }}" download
+    >actual unknown-unit download</a
+  >
+  retains the full numerical result and explicitly unknown source unit. Reset,
+  zoom and fullscreen checks preserved geometric values. See the
+  <a href="{{ ExampleAsset.FeatureBrowserObservations }}" download
+    >browser observation record</a
+  >
+  for exact tested interactions and limitations; mobile width used mouse input,
+  not a physical touchscreen.
+</p>
+<h2>Use vertex picks deliberately</h2>
+<p>
+  Surface point selects an arbitrary visible triangle location. Mesh vertex
+  considers only the three vertices of the nearest eligible hit triangle, ranked
+  by projected pointer distance within 24 CSS pixels, or 40 for touch. It is a
+  bounded interaction aid, not a global vertex search, edge detector or estimate
+  of measurement uncertainty. Move toward a visible corner if none is offered;
+  there is no automatic fallback to a surface location.
+</p>
+<p>
+  Hover shows a green candidate marker. The candidate buttons provide keyboard
+  selection after targeting a triangle. Undo last point lets you replace a
+  mistaken C without starting again. The optional coordinate fields provide a
+  keyboard-only alternative, but their entries are explicitly recorded as
+  Entered coordinates. They do not prove that any entered point lies on the
+  mesh.
+</p>
+<h2>Move the camera, keep the geometry</h2>
+<p>
+  Orbit, zoom, Reset view and fullscreen change the view rather than the stored
+  geometric references. The red legs join A-B-C; B has a blue marker. The
+  displayed screen angle can look narrower under perspective even though the
+  three-dimensional angle is unchanged. Compare the
+  <a href="{{ ExampleAsset.FeatureAngleTilted }}" download
+    >translated, tilted coupon</a
+  >: its transform is (x+100, 0.6y-0.8z-40, 0.8y+0.6z+25). Reopened points
+  retain approximately the same angle, subject to Float32 rounding. The
+  <a href="{{ ExampleAsset.FeatureAngleScaled }}" download
+    >three-times scaled coupon</a
+  >
+  changes distances by three while preserving angles.
+</p>
+<h2>Understand unavailable results</h2>
+<p>
+  A repeated B/A or B/C leaves a zero-length leg and no defined angle.
+  Numerically unresolved legs at the coordinate scale also return Unavailable
+  with a reason. Opposite nonzero rays are different: A=(-10,0,0), B=(0,0,0),
+  C=(10,0,0) gives 180 degrees. Same-direction nonzero legs give 0. Circle
+  construction rejects collinearity, but Angle does not reject these valid
+  limiting angles.
+</p>
+<p>
+  The implementation uses atan2 of cross-product magnitude and dot product after
+  normalizing the legs. Its thresholds are numerical policies, not a
+  manufacturing tolerance. The exact rule and stress tests are retained with the
+  reproducible evidence.
+</p>
+<h2>Retain the basis and choose the next check</h2>
+<p>
+  A saved entry contains ordered source/build coordinates, selection provenance,
+  available results or an unavailable reason, unit assumptions and placement IDs
+  where present. STL display centering is restored to its source frame. The
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> instead uses resolved
+  build coordinates in millimetres and records the declared source unit
+  separately. Points from different placements measure their build arrangement,
+  not the resource's local feature.
+</p>
+<p>
+  Keep the source file yourself: JSON deliberately excludes its filename and
+  geometry and cannot authenticate a revision. Successful file replacement
+  clears the in-memory record after a warning; download first. For a different
+  question, use the
+  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}"
+    >general measurement chooser</a
+  >,
+  <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+    >constructed hole diameter guide</a
+  >, source CAD, actual slicer placement or calibrated physical inspection.
+</p>
+<h2>Evidence and terminology</h2>
+<p>
+  Original controls and actual production-calculation observations were
+  generated on 31 October 2026. Download the
+  <a href="{{ ExampleAsset.FeatureGenerator }}" download>generator</a> and
+  manifest to reproduce stored coordinates and hashes. There is no physical
+  print or calibrated metrology claim. Autodesk's
+  <a
+    href="https://help.autodesk.com/cloudhelp/2026/ENU/NETF/files/GUID-204EDC5D-24F5-4B0B-BDEF-20E9D22FF2EB.htm"
+    >measurement reference</a
+  >, reviewed on that date, distinguishes side-vertex-side angles and
+  three-point circles; its other measurement capabilities are not implied here.
+</p>

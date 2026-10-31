@@ -1,0 +1,281 @@
+{
+  "date": "2026-10-31",
+  "environment": "Local development site in the available in-app browser. No production deployment or physical testing.",
+  "viewports": [
+    {
+      "width": 1280,
+      "height": 720,
+      "kind": "desktop"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "kind": "mobile-width layout; native mouse input, not a real touchscreen"
+    }
+  ],
+  "actualDownloads": [
+    {
+      "path": "/examples/feature-measurement/browser-stl-unknown-unit.json",
+      "sha256": "8b0b8a40a222ae0f32b3353630fa3fe2303bbd078f3537645b42c172f2ceedea",
+      "entries": 1
+    },
+    {
+      "path": "/examples/feature-measurement/browser-stl-record.json",
+      "sha256": "322ab86340ca207c447c5c79c15e893333d3d702a9e64c9b82cc13a457571ff3",
+      "entries": 3
+    },
+    {
+      "path": "/examples/feature-measurement/browser-3mf-record.json",
+      "sha256": "f8099942db98b5154c8230a70602ef865f7d27d07b45aea08f83d944f7669e3b",
+      "entries": 3
+    },
+    {
+      "path": "/examples/feature-measurement/browser-bore12-record.json",
+      "sha256": "443a6cfd5ec600d7acd2036697695251935c4461f67f3dc90e4e2fc371521961",
+      "entries": 1
+    },
+    {
+      "path": "/examples/feature-measurement/browser-bore48-record.json",
+      "sha256": "e7f5dda6f919579ec1237f97ff788dd132e103974366414d73c8c22677f896a1",
+      "entries": 1
+    },
+    {
+      "path": "/examples/feature-measurement/browser-ellipse-record.json",
+      "sha256": "56d13cb84457ce89cab24d5c497a9aff9f5adc7b4b0c6a86ed8ed6d9c6e6c0ed",
+      "entries": 2
+    }
+  ],
+  "observations": [
+    {
+      "viewer": "STL",
+      "interaction": "Mesh vertex picks through visible canvas; unknown source unit",
+      "points": [
+        [0, 0, 0],
+        [10, 0, 0],
+        [5, 8.66025447845459, 0]
+      ],
+      "angleDegrees": 60.0000012622552,
+      "circleRadiusCoordinateUnits": 5.77350283876633,
+      "circleDiameterCoordinateUnits": 11.54700567753266,
+      "basis": "Actual displayed Float32 mesh points restored to source frame. Saved angle survived reset and zoom."
+    },
+    {
+      "viewer": "STL",
+      "interaction": "Distance, angle and circle made through visible canvas at mobile width",
+      "distanceMm": 10,
+      "angleDegrees": 60.0000012622552,
+      "circleDiameterMm": 11.54700567753266,
+      "points": "Same cardinal coupon vertices. Display unit mm after explicit STL interpretation. Native drag and fullscreen exit did not change recorded distance."
+    },
+    {
+      "viewer": "3MF",
+      "interaction": "Distance across two visible placed-item vertices, desktop and mobile width",
+      "points": [
+        [10, 40, 30],
+        [50, 30, 30]
+      ],
+      "placedItemIds": ["build-1", "build-2"],
+      "distanceMm": 41.23105625617661,
+      "absoluteDeltaMm": [40, 10, 0],
+      "declaredSourceUnit": "centimeter",
+      "frame": "resolved millimetre build coordinates"
+    },
+    {
+      "viewer": "3MF",
+      "interaction": "Angle and circle made through visible mesh vertices, desktop and mobile width",
+      "points": [
+        [10, 40, 30],
+        [-10, 20, 30],
+        [10, 20, 50]
+      ],
+      "placedItemIds": ["build-1"],
+      "angleDegrees": 59.99999999999999,
+      "circleRadiusMm": 16.32993161855452,
+      "circleDiameterMm": 32.65986323710904
+    },
+    {
+      "viewer": "3MF",
+      "interaction": "Normal labelled coordinate inputs and add-point buttons",
+      "points": [
+        [10, 20, 30],
+        [50, 20, 30]
+      ],
+      "basis": "Entered coordinates, explicitly not verified mesh picks",
+      "distanceMm": 40
+    },
+    {
+      "viewer": "3MF",
+      "interaction": "Replacement lifecycle through actual example selector",
+      "cancelled": "Explicit cancellation preserved prior model and saved entry. Cancellation status was shown.",
+      "failed": "Existing invalid-build-reference control reported missing/cyclic reference 99 and preserved the prior valid model/entry.",
+      "successful": "A valid replacement cleared the record to zero entries."
+    },
+    {
+      "control": "browser-bore12-record.json",
+      "interaction": "Actual canvas Mesh vertex picks at Z=8; millimetre STL interpretation. Names saved and JSON downloaded through visible controls.",
+      "entries": [
+        {
+          "name": "12-sided bore rim",
+          "type": "circle",
+          "points": [
+            {
+              "coordinates": [10, 0, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-19",
+              "faceIndex": 92,
+              "vertexIndex": 278
+            },
+            {
+              "coordinates": [6.123233998228043e-16, 10, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-19",
+              "faceIndex": 29,
+              "vertexIndex": 87
+            },
+            {
+              "coordinates": [-10, 1.2246467996456087e-15, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-19",
+              "faceIndex": 53,
+              "vertexIndex": 159
+            }
+          ],
+          "result": {
+            "state": "available",
+            "centre": [0, 0, 8],
+            "radius": 10,
+            "diameter": 20,
+            "normal": [0, 0, 1],
+            "axisU": [1, 0, 0],
+            "axisV": [0, 1, 0]
+          }
+        }
+      ]
+    },
+    {
+      "control": "browser-bore48-record.json",
+      "interaction": "Actual canvas Mesh vertex picks at Z=8; millimetre STL interpretation. Names saved and JSON downloaded through visible controls.",
+      "entries": [
+        {
+          "name": "48-sided bore rim",
+          "type": "circle",
+          "points": [
+            {
+              "coordinates": [10, 0, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-54",
+              "faceIndex": 380,
+              "vertexIndex": 1142
+            },
+            {
+              "coordinates": [6.123233998228043e-16, 10, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-54",
+              "faceIndex": 101,
+              "vertexIndex": 303
+            },
+            {
+              "coordinates": [-10, 1.2246467996456087e-15, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-54",
+              "faceIndex": 197,
+              "vertexIndex": 591
+            }
+          ],
+          "result": {
+            "state": "available",
+            "centre": [0, 0, 8],
+            "radius": 10,
+            "diameter": 20,
+            "normal": [0, 0, 1],
+            "axisU": [1, 0, 0],
+            "axisV": [0, 1, 0]
+          }
+        }
+      ]
+    },
+    {
+      "control": "browser-ellipse-record.json",
+      "interaction": "Actual canvas Mesh vertex picks at Z=8; millimetre STL interpretation. Names saved and JSON downloaded through visible controls.",
+      "entries": [
+        {
+          "name": "Ellipse cardinal construction A",
+          "type": "circle",
+          "points": [
+            {
+              "coordinates": [10, 0, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-89",
+              "faceIndex": 5,
+              "vertexIndex": 15
+            },
+            {
+              "coordinates": [6.123233998228043e-16, 5, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-89",
+              "faceIndex": 100,
+              "vertexIndex": 300
+            },
+            {
+              "coordinates": [-10, 6.123233998228043e-16, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-89",
+              "faceIndex": 197,
+              "vertexIndex": 591
+            }
+          ],
+          "result": {
+            "state": "available",
+            "centre": [0, -7.500000000000002, 8],
+            "radius": 12.500000000000002,
+            "diameter": 25.000000000000004,
+            "normal": [0, 0, 1],
+            "axisU": [0.7999999999999999, 0.6000000000000001, 0],
+            "axisV": [-0.6000000000000001, 0.7999999999999999, 0]
+          }
+        },
+        {
+          "name": "Ellipse cardinal construction B",
+          "type": "circle",
+          "points": [
+            {
+              "coordinates": [10, 0, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-89",
+              "faceIndex": 5,
+              "vertexIndex": 15
+            },
+            {
+              "coordinates": [6.123233998228043e-16, 5, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-89",
+              "faceIndex": 100,
+              "vertexIndex": 300
+            },
+            {
+              "coordinates": [-1.8369700935892946e-15, -5, 8],
+              "basis": "mesh-vertex",
+              "meshId": "mesh-89",
+              "faceIndex": 293,
+              "vertexIndex": 879
+            }
+          ],
+          "result": {
+            "state": "available",
+            "centre": [3.7499999999999982, -9.697399036122168e-16, 8],
+            "radius": 6.250000000000002,
+            "diameter": 12.500000000000004,
+            "normal": [0, 0, 1],
+            "axisU": [1, 1.5515838457795464e-16, 0],
+            "axisV": [-1.5515838457795464e-16, 1, 0]
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Mobile-width checks used native mouse input. Real-device pinch and touch-radius interaction were not exercised; multi-pointer rejection is covered by event regression tests.",
+    "The current in-app browser did not expose a network capture. Privacy is enforced by local-only implementation and data-contract regression checks, not a retained browser network trace.",
+    "Actual browser downloads are separate from independently regenerated calculation observations. No screenshot or calibrated physical measurement is inferred from these records."
+  ]
+}

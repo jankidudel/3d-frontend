@@ -1,0 +1,84 @@
+{
+  "format": "inspectmesh-measurements",
+  "version": 1,
+  "privacy": "Local record; no source filename or geometry included.",
+  "entries": [
+    {
+      "id": "measurement-1",
+      "name": "48-sided bore rim",
+      "type": "circle",
+      "points": [
+        {
+          "coordinates": [
+            10,
+            0,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-54",
+          "faceIndex": 380,
+          "vertexIndex": 1142
+        },
+        {
+          "coordinates": [
+            6.123233998228043e-16,
+            10,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-54",
+          "faceIndex": 101,
+          "vertexIndex": 303
+        },
+        {
+          "coordinates": [
+            -10,
+            1.2246467996456087e-15,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-54",
+          "faceIndex": 197,
+          "vertexIndex": 591
+        }
+      ],
+      "result": {
+        "state": "available",
+        "centre": [
+          0,
+          0,
+          8
+        ],
+        "radius": 10,
+        "diameter": 20,
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "axisU": [
+          1,
+          0,
+          0
+        ],
+        "axisV": [
+          0,
+          1,
+          0
+        ]
+      },
+      "frame": "STL source coordinates restored from displayed Float32 mesh",
+      "sourceUnit": "mm",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "source coordinate units",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Changing the STL interpretation recomputes physical lengths; changing display unit only converts them."
+      ]
+    }
+  ]
+}

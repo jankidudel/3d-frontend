@@ -150,6 +150,16 @@ export const toolDirectoryGroups = definitions.map((group) => ({
     if (!tool) {
       throw new Error('Missing tool directory entry: ' + route);
     }
+    if (
+      route === PublicRouteUrl.Viewer ||
+      route === PublicRouteUrl.ThreeMfViewer
+    ) {
+      return {
+        ...tool,
+        description:
+          'Inspect locally, select surface points or mesh vertices, measure distance, three-point angles or constructed circles, and download a private JSON record.',
+      };
+    }
     return tool;
   }),
 }));

@@ -1,0 +1,161 @@
+{
+  "format": "inspectmesh-measurements",
+  "version": 1,
+  "privacy": "Local record; no source filename or geometry included.",
+  "entries": [
+    {
+      "id": "measurement-1",
+      "name": "Ellipse cardinal construction A",
+      "type": "circle",
+      "points": [
+        {
+          "coordinates": [
+            10,
+            0,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-89",
+          "faceIndex": 5,
+          "vertexIndex": 15
+        },
+        {
+          "coordinates": [
+            6.123233998228043e-16,
+            5,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-89",
+          "faceIndex": 100,
+          "vertexIndex": 300
+        },
+        {
+          "coordinates": [
+            -10,
+            6.123233998228043e-16,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-89",
+          "faceIndex": 197,
+          "vertexIndex": 591
+        }
+      ],
+      "result": {
+        "state": "available",
+        "centre": [
+          0,
+          -7.500000000000002,
+          8
+        ],
+        "radius": 12.500000000000002,
+        "diameter": 25.000000000000004,
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "axisU": [
+          0.7999999999999999,
+          0.6000000000000001,
+          0
+        ],
+        "axisV": [
+          -0.6000000000000001,
+          0.7999999999999999,
+          0
+        ]
+      },
+      "frame": "STL source coordinates restored from displayed Float32 mesh",
+      "sourceUnit": "mm",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "source coordinate units",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Changing the STL interpretation recomputes physical lengths; changing display unit only converts them."
+      ]
+    },
+    {
+      "id": "measurement-2",
+      "name": "Ellipse cardinal construction B",
+      "type": "circle",
+      "points": [
+        {
+          "coordinates": [
+            10,
+            0,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-89",
+          "faceIndex": 5,
+          "vertexIndex": 15
+        },
+        {
+          "coordinates": [
+            6.123233998228043e-16,
+            5,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-89",
+          "faceIndex": 100,
+          "vertexIndex": 300
+        },
+        {
+          "coordinates": [
+            -1.8369700935892946e-15,
+            -5,
+            8
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-89",
+          "faceIndex": 293,
+          "vertexIndex": 879
+        }
+      ],
+      "result": {
+        "state": "available",
+        "centre": [
+          3.7499999999999982,
+          -9.697399036122168e-16,
+          8
+        ],
+        "radius": 6.250000000000002,
+        "diameter": 12.500000000000004,
+        "normal": [
+          0,
+          0,
+          1
+        ],
+        "axisU": [
+          1,
+          1.5515838457795464e-16,
+          0
+        ],
+        "axisV": [
+          -1.5515838457795464e-16,
+          1,
+          0
+        ]
+      },
+      "frame": "STL source coordinates restored from displayed Float32 mesh",
+      "sourceUnit": "mm",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "source coordinate units",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Changing the STL interpretation recomputes physical lengths; changing display unit only converts them."
+      ]
+    }
+  ]
+}

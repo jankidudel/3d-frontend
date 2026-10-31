@@ -20,6 +20,23 @@ faq:
   settings. Successful geometry display does not establish that the project was
   preserved.
 </p>
+<h2>After opening, inspect a named feature in the intended placement</h2>
+<p>
+  In the <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>, select the
+  intended placed item before choosing feature references. Measurements use
+  resolved build coordinates in millimetres, with the original declared unit
+  recorded separately. A resource reused twice is not two different source
+  designs: a distance spanning the two item IDs describes their placement in the
+  build. The original
+  <a href="{{ ExampleAsset.FeaturePlacement }}" download
+    >centimetre placement control</a
+  >
+  reuses one tetrahedron with different transforms; its two origins resolve to
+  (10,20,30) and (50,20,30) mm, 40 mm apart. The
+  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">measurement chooser</a>
+  distinguishes full-build bounds, named features and CAD intent. Opening
+  geometry does not establish full project or slicer compatibility.
+</p>
 <h2>Choose the opening task and processing boundary</h2>
 <p>
   The <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> resolves supported

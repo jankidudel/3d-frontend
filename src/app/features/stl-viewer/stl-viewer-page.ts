@@ -1,3 +1,7 @@
+import {
+  MeasurementContext,
+  MeasurementFormat,
+} from '../shared/feature-measurement/measurement';
 import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
@@ -33,6 +37,7 @@ import { MeshQualityReport } from '../../models/mesh-quality-report';
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 interface ModelInfo {
+  readonly measurementContext: MeasurementContext;
   readonly name: string;
   readonly size: number;
   readonly triangles: number;
@@ -59,9 +64,15 @@ export class StlViewerPage {
   readonly loadPublicExample = async (
     files: readonly File[],
   ): Promise<void> => {
+    const previousRun = this.loadRun;
     await this.load(files[0]);
     if (this.error()) {
       throw new Error(this.error());
+    }
+    if (this.sourceFile !== files[0] && this.loadRun === previousRun) {
+      throw new Error(
+        'Replacement cancelled; the current file and measurements were retained.',
+      );
     }
   };
   readonly guideRouteUrl = GuideRouteUrl;
@@ -70,6 +81,8 @@ export class StlViewerPage {
   );
   readonly fromCollection = this.handoff() !== null;
   readonly routeUrl = PublicRouteUrl;
+  readonly viewer = viewChild(ObjectViewerComponent);
+  private loadRun = 0;
   readonly picker = viewChild<ElementRef<HTMLInputElement>>('picker');
   readonly error = signal('');
   readonly model = signal<ModelInfo | null>(null);
@@ -100,7 +113,7 @@ export class StlViewerPage {
       title:
         'Free STL Viewer Online - Open and Inspect STL Files | InspectMesh',
       description:
-        'Open an STL file locally, inspect it in 3D, measure point-to-point distances and review dimensions and triangle count before 3D printing.',
+        'Open STL locally, select mesh vertices, measure distances, angles and three-point circles, and download a private measurement record with unit assumptions.',
       path: PublicRouteUrl.Viewer,
     });
   }
@@ -109,7 +122,9 @@ export class StlViewerPage {
     this.picker()?.nativeElement.click();
   }
   onPicker(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.item(0) ?? null;
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.item(0) ?? null;
+    input.value = '';
     if (file) {
       void this.load(file);
     }
@@ -188,8 +203,6 @@ export class StlViewerPage {
   }
 
   private async load(file: File): Promise<void> {
-    this.issuePolling?.unsubscribe();
-    this.issuePolling = undefined;
     this.error.set('');
     if (!file.name.toLowerCase().endsWith('.stl')) {
       this.fail('Choose an STL file with a .stl extension.', 'wrong_extension');
@@ -203,6 +216,15 @@ export class StlViewerPage {
       return;
     }
     this.analytics.trackStlViewerFileSelected(file.size);
+    if (
+      this.viewer()?.hasMeasurementWork() &&
+      !window.confirm(
+        'Replacing the file discards current and saved measurements after the new file loads. Download JSON first to keep them. Continue?',
+      )
+    ) {
+      return;
+    }
+    const run = ++this.loadRun;
     this.loading.set(true);
     try {
       const [{ STLLoader }, three] = await Promise.all([
@@ -215,6 +237,18 @@ export class StlViewerPage {
         geometry.getAttribute('position').count === 0
       ) {
         throw new Error('empty');
+      }
+      if (run !== this.loadRun) {
+        geometry.dispose();
+        return;
+      }
+      if (
+        !Array.from(geometry.getAttribute('position').array).every(
+          Number.isFinite,
+        )
+      ) {
+        geometry.dispose();
+        throw new Error('nonfinite');
       }
       geometry.computeBoundingBox();
       const box = geometry.boundingBox;
@@ -229,10 +263,20 @@ export class StlViewerPage {
         roughness: 0.58,
         metalness: 0.05,
       });
+      this.issuePolling?.unsubscribe();
+      this.issuePolling = undefined;
+      this.analyzingIssues.set(false);
+      this.issueAnalysisError.set('');
       this.sourceFile = file;
       this.issueReport.set(null);
       this.issueLines.set([]);
+      this.viewer()?.resetMeasurementFile();
       this.model.set({
+        measurementContext: {
+          format: MeasurementFormat.Stl,
+          offset: [centre.x, centre.y, centre.z],
+          declaredUnit: 'not declared by STL',
+        },
         name: file.name,
         size: file.size,
         triangles: geometry.getAttribute('position').count / 3,
@@ -244,7 +288,9 @@ export class StlViewerPage {
         centre: [centre.x, centre.y, centre.z],
       });
     } catch {
-      this.model.set(null);
+      if (run !== this.loadRun) {
+        return;
+      }
       this.fail(
         this.webglUnavailable()
           ? 'WebGL is unavailable in this browser. You can still use the other tools.'
@@ -252,7 +298,9 @@ export class StlViewerPage {
         this.webglUnavailable() ? 'webgl_unavailable' : 'parse_failed',
       );
     } finally {
-      this.loading.set(false);
+      if (run === this.loadRun) {
+        this.loading.set(false);
+      }
     }
   }
 

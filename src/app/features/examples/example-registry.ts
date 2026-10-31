@@ -128,6 +128,129 @@ const splitAssemblyExamples: readonly PublicExample[] = [
 ];
 export const publicExamples: readonly PublicExample[] = [
   {
+    id: 'feature-angle',
+    name: 'Repeatable feature angles',
+    question:
+      'Does a three-point angle stay the same under camera movement and a rigid 3D transform?',
+    files: [
+      {
+        path: ExampleAsset.FeatureAngleCoupon,
+        name: 'angle-coupon.stl',
+        bytes: 484,
+        label: 'Reference',
+      },
+      {
+        path: ExampleAsset.FeatureAngleTilted,
+        name: 'angle-coupon-tilted.stl',
+        bytes: 484,
+        label: 'Rigid 3D transform',
+        reference:
+          'The ideal rigid transform preserves the 60-degree angle. Review the reopened stored points; Float32 rounding can change the final decimals.',
+      },
+      {
+        path: ExampleAsset.FeatureAngleScaled,
+        name: 'angle-coupon-scaled.stl',
+        bytes: 484,
+        label: 'Uniform scale x3',
+        reference:
+          'The ideal x3 scale preserves angles and triples distances. Review the reopened stored points rather than treating display decimals as exact.',
+      },
+      {
+        path: ExampleAsset.FeatureDistanceCoupon,
+        name: 'distance-coupon.stl',
+        bytes: 484,
+        label: '30-40-50 distance',
+        reference:
+          'Choose Distance: (0,0,0) to (30,40,0) is 50 coordinate units, with absolute differences 30,40,0. Establish the STL interpretation before using physical units.',
+      },
+    ],
+    preview: ExampleAsset.FeatureAngleSvg,
+    alt: 'A, B and C define an ideal 60 degree angle at B.',
+    known:
+      'A=(10,0,0), B=(0,0,0), C=(5,5√3,0). Separate distance coupon has a 30-40-50 distance at Z=0.',
+    observed:
+      'Reopened Float32 production calculation gives about 60.0000012623 degrees; see the exact observation record.',
+    settings:
+      'Choose Angle, Mesh vertex, Start measuring. Target upper top corners A, B, C. Unit affects lengths, not angle.',
+    guide: GuideRouteUrl.RouteMeasureAngleInStl,
+    tools: [PublicRouteUrl.Viewer],
+    group: 'Feature measurement',
+    provenance:
+      'Original InspectMesh generated software controls; no physical testing.',
+    limitations:
+      'Mesh points and circle constructions do not prove CAD dimensions, roundness, clear passage or physical fit.',
+  },
+  {
+    id: 'feature-bore',
+    name: 'Faceted bore and ellipse constructions',
+    question:
+      'Can a circle through three mesh vertices establish a round opening or minimum passage?',
+    files: [
+      {
+        path: ExampleAsset.FeatureBore12,
+        name: 'bore-12.stl',
+        bytes: 4884,
+        label: '12 sides',
+      },
+      {
+        path: ExampleAsset.FeatureBore48,
+        name: 'bore-48.stl',
+        bytes: 19284,
+        label: '48 sides',
+      },
+      {
+        path: ExampleAsset.FeatureEllipse,
+        name: 'ellipse.stl',
+        bytes: 19284,
+        label: 'Ellipse counterexample',
+      },
+    ],
+    preview: ExampleAsset.FeaturePolygonSvg,
+    alt: 'Polygon flat span is smaller than the circle through its corners.',
+    known:
+      '12/48-sided openings share radius 10 and 30 x 30 x 8 outer bounds; ellipse spans 20 x 10.',
+    observed:
+      'Cardinal-vertex constructions give diameter 20 for the polygon controls; two ellipse selections give 25 and 12.5. These are construction results, not clearance or roundness.',
+    settings:
+      'Assume mm for these controls. Choose Circle through 3 points and target three separated vertices on the same opening rim. See manifest point indices.',
+    guide: GuideRouteUrl.RouteMeasureHoleDiameterStl,
+    tools: [PublicRouteUrl.Viewer],
+    group: 'Feature measurement',
+    provenance:
+      'Original InspectMesh generated software controls; no physical testing.',
+    limitations:
+      'Mesh points and circle constructions do not prove CAD dimensions, roundness, clear passage or physical fit.',
+  },
+  {
+    id: 'feature-placement',
+    name: 'Measurement units and placed-item identity',
+    question:
+      'Is this a resource feature or a distance between two resolved placements?',
+    files: [
+      {
+        path: ExampleAsset.FeaturePlacement,
+        name: 'placed-centimetre.3mf',
+        bytes: 949,
+        label: 'Centimetre placement control',
+      },
+    ],
+    preview: ExampleAsset.FeaturePlacementSvg,
+    alt: 'Two differently transformed placements of the same tetrahedron have build origins forty millimetres apart.',
+    known:
+      'Declared centimetres. First placement rotates and scales the resource x2; second reuses it. Resolved origins are (10,20,30) and (50,20,30) mm.',
+    observed:
+      'Independent transform arithmetic expects 40 mm between placement origins. Actual resolver and selection checks are retained in the evidence.',
+    settings:
+      'Open locally, show both items, choose Distance and Mesh vertex. Review the two placed-item IDs and resolved millimetre coordinates.',
+    guide: GuideRouteUrl.RouteHowToMeasure3dModel,
+    tools: [PublicRouteUrl.ThreeMfViewer],
+    group: 'Feature measurement',
+    provenance:
+      'Original InspectMesh generated software controls; no physical testing.',
+    limitations:
+      'Mesh points and circle constructions do not prove CAD dimensions, roundness, clear passage or physical fit.',
+  },
+  {
     id: 'passage-versus-boundary',
     name: 'Intact passage versus missing face',
     group: 'File handoff / interiors',

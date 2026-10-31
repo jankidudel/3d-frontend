@@ -1,0 +1,299 @@
+---
+title: 'Measure STL Hole Diameter: Check the Mesh | InspectMesh'
+description: 'Compare point distances and a circle through three mesh points. See why a fitted diameter does not prove a round hole, clear passage or printed fit.'
+slug: measure-hole-diameter-stl
+eyebrow: Mesh opening interpretation
+heading: Measure a Hole Diameter in an STL File
+---
+
+<p>
+  A distance across a mesh opening and a circle through three selected points
+  answer different questions. A faceted bore can produce a 20 mm circle through
+  its vertices while leaving less than 20 mm between its flat sides. Establish
+  the unit, choose points on the intended section and keep the construction
+  separate from source CAD dimensions and the printed fit.
+</p>
+<p>
+  Use the <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> for
+  <strong>Distance</strong> or <strong>Circle through 3 points</strong>. This
+  circle passes through the three selected points. It does not detect a cylinder
+  or prove that the opening is round. There is no automatic minimum-clearance,
+  section extraction or roundness check.
+</p>
+<h2>Choose distance or a constructed circle</h2>
+<table>
+  <caption>
+    What the result describes
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Meaning and limitation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Point distance</th>
+      <td>
+        A chord between two selected locations, possibly not the largest span or
+        intended section.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Constructed diameter</th>
+      <td>
+        Twice the circumradius through three noncollinear points in their plane.
+        It describes those points only.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Clear section or passage</th>
+      <td>
+        A boundary-wide or swept-volume question. The new modes do not solve it.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">CAD nominal diameter</th>
+      <td>
+        An analytic source-design parameter. A tessellated file may approximate
+        it.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Produced bore reading</th>
+      <td>
+        A physical result depending on process, orientation, location and
+        measurement method.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2 id="bore-controls">Compare the polygonal bores</h2>
+<figure>
+  <img
+    src="{{ ExampleAsset.FeaturePolygonSvg }}"
+    width="760"
+    height="340"
+    loading="lazy"
+    alt="A twelve-sided opening lies inside its vertex circle; circle diameter and smaller flat span are labelled separately"
+  />
+  <figcaption>
+    Original ideal regular-polygon section. The inscribed span is independently
+    calculated ground truth, not a measurement mode offered by the viewer.
+  </figcaption>
+</figure>
+<p>
+  Download the
+  <a href="{{ ExampleAsset.FeatureBore12 }}" download>12-sided bore</a> and
+  <a href="{{ ExampleAsset.FeatureBore48 }}" download>48-sided bore</a>. Each is
+  an original closed material boundary with a straight-through Z opening,
+  Z=0..8, and the same 30 by 30 outer square. Interpret STL coordinates as
+  millimetres only for this documented control. The ideal opening vertices lie
+  on radius 10, starting at +X.
+</p>
+<table>
+  <caption>
+    Ideal polygon arithmetic, before stored-coordinate rounding
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Opening</th>
+      <th scope="col">Circle through boundary vertices</th>
+      <th scope="col">Flat-to-flat span</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">12 sides</th>
+      <td>20</td>
+      <td>20 cos(π/12) = 19.3185165258</td>
+    </tr>
+    <tr>
+      <th scope="row">48 sides</th>
+      <td>20</td>
+      <td>20 cos(π/48) = 19.9571784648</td>
+    </tr>
+  </tbody>
+</table>
+<ol>
+  <li>
+    Choose Circle through 3 points, Mesh vertex, then Start measuring. At one
+    opening rim select (10,0,0), (0,10,0), (-10,0,0), or the corresponding
+    points all at Z=8. These are indices 0, n/4, n/2 in the manifest. Review the
+    actual selected coordinates rather than assuming a screen click was exact.
+  </li>
+  <li>
+    Constructed radius is approximately 10 and diameter 20 for these reopened
+    stored cardinal points. Save the record and retain its point references.
+    Tiny nonzero cardinal coordinates from trigonometry may remain in the file.
+  </li>
+  <li>
+    Compare the smaller analytical flat span. A nominal 20 mm circle through
+    corners is not proof that a 20 mm pin passes through the polygon. A
+    different construction through three 12-gon flat midpoints would give about
+    19.3185; the viewer has no midpoint snap and free surface picks must retain
+    their actual locations.
+  </li>
+</ol>
+<p>
+  Both bores have matching outer bounds. A dimensions checker cannot distinguish
+  their internal flat span. The
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >chord-height guide</a
+  >
+  owns the tessellation derivation: diameter deficit here is twice the radial
+  sagitta. More facets reduce this ideal deviation but do not establish physical
+  fit.
+</p>
+<p>
+  Actual local viewer checks on 31 October 2026 selected the three cardinal rim
+  vertices at Z=8 on each file. Both displayed Constructed radius 10 mm and
+  Constructed diameter 20 mm. Download the actual
+  <a href="{{ ExampleAsset.FeatureBore12Record }}" download>12-sided record</a>
+  and
+  <a href="{{ ExampleAsset.FeatureBore48Record }}" download>48-sided record</a>
+  to review exact coordinates and mesh/face/vertex references. These are viewer
+  constructions; the smaller flat spans in the table remain independent
+  analytical values.
+</p>
+<h2>Use separated points on the intended section</h2>
+<p>
+  Choose references widely separated around the intended opening rim. Three
+  points also define their own plane: mixing locations at different axial
+  heights can construct a mathematically valid circle in a plane irrelevant to
+  the intended section. The viewer cannot infer your design datum or which
+  section you meant.
+</p>
+<p>
+  Repeated, collinear or numerically unstable near-collinear points return
+  Unavailable. Keep the points, use Undo last point and replace the unsuitable
+  reference. A very large radius from almost straight samples is not useful
+  evidence; the documented conditioning rule rejects that case. It is a
+  numerical policy rather than a universal physical tolerance.
+</p>
+<p>
+  Visual clipping hides geometry only. It creates no cap, analytic curve, snap
+  target or measured section boundary. You can select remaining visible source
+  triangles and vertices near a cut, but cannot pick an invented clipping
+  contour. Read the
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >cross-section workflow</a
+  >
+  before interpreting a clipped view.
+</p>
+<h2 id="ellipse-counterexample">A circle can be constructed on an ellipse</h2>
+<figure>
+  <img
+    src="{{ ExampleAsset.FeatureEllipseSvg }}"
+    width="760"
+    height="340"
+    loading="lazy"
+    alt="A twenty by ten ellipse supports two different three-point circles with diameters twenty-five and twelve-point-five"
+  />
+  <figcaption>
+    Ideal analytical counterexample. The same noncircular boundary supports
+    conflicting circle constructions without either being an ellipse diameter or
+    roundness result.
+  </figcaption>
+</figure>
+<p>
+  Open the
+  <a href="{{ ExampleAsset.FeatureEllipse }}" download
+    >extruded ellipse control</a
+  >, with ideal section x=10 cos(t), y=5 sin(t). All references below use Z=0.
+  The actual production calculation on its reopened cardinal references yields:
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Chosen references</th>
+      <th scope="col">Constructed radius</th>
+      <th scope="col">Constructed diameter</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">(10,0), (0,5), (-10,0)</th>
+      <td>12.5</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th scope="row">(10,0), (0,5), (0,-5)</th>
+      <td>6.25</td>
+      <td>12.5</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Save both selections under distinct names. Neither diameter equals the
+  ellipse's 20 by 10 span. Three points leave no additional samples to establish
+  circularity: passing exactly through them supplies no confidence score or
+  validation of the rest of the bore. The
+  <a href="{{ ExampleAsset.FeatureObservations }}" download
+    >calculation observations</a
+  >
+  distinguish the implemented results from the ideal polygon arithmetic.
+</p>
+<p>
+  The actual viewer was also run on the ellipse with those cardinal triples at
+  Z=8. It displayed diameters 25 mm and 12.5 mm. The
+  <a href="{{ ExampleAsset.FeatureEllipseRecord }}" download
+    >two-entry viewer download</a
+  >
+  retains both constructions, full numeric values and selected vertex
+  references. One nearby selection initially chose a neighbouring rim vertex and
+  produced about 23.9626 mm; reviewing the point list and replacing it with the
+  intended cardinal reference gave 25 mm. That selection dependence is why the
+  exact point record matters.
+</p>
+<h2>Keep source and printed evidence separate</h2>
+<p>
+  Compare three records before compensation: the intended CAD feature, the
+  serialized and reopened mesh, and the produced part under a stated physical
+  method. Tessellation, orientation, seam, support, material and process can
+  contribute to disagreement. A mesh construction alone cannot assign the cause
+  or recommend a universal offset. Use the
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >hole compensation workflow</a
+  >
+  and
+  <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+    >orientation and accuracy guide</a
+  >
+  for the physical investigation.
+</p>
+<h2>Save the basis and choose the next action</h2>
+<p>
+  JSON records retain ordered points, selection basis, centre, plane basis,
+  units and unavailable reasons. Coordinates are restored to the STL source
+  frame; camera orbit and fullscreen do not change the geometry. Unknown STL
+  units leave physical length unavailable while coordinate lengths remain
+  useful. Changing the source interpretation recomputes physical lengths;
+  converting the output display merely changes units.
+</p>
+<p>
+  The <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> supports the same
+  constructions in resolved millimetre build coordinates. Keep each placed-item
+  ID; a circle spanning several placements is not automatically one resource's
+  hole. Start with the
+  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}"
+    >general measurement guide</a
+  >
+  if your question is actually outer size, CAD intent or physical inspection.
+</p>
+<h2>Reproducibility and sources</h2>
+<p>
+  Controls and actual calculation observations were generated on 31 October
+  2026. The
+  <a href="{{ ExampleAsset.FeatureManifest }}" download>manifest</a> supplies
+  point indices, transforms, original provenance, hashes and limitations; the
+  <a href="{{ ExampleAsset.FeatureGenerator }}" download>generator</a>
+  reproduces the assets. These are software controls, with no printed fit or
+  calibration test. Autodesk's
+  <a
+    href="https://help.autodesk.com/cloudhelp/2026/ENU/NETF/files/GUID-204EDC5D-24F5-4B0B-BDEF-20E9D22FF2EB.htm"
+    >measurement reference</a
+  >, reviewed on that date, distinguishes three-point construction from
+  automatic circle detection. InspectMesh implements the construction described
+  here.
+</p>

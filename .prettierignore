@@ -1,3 +1,7 @@
 .angular/
 dist/
 node_modules/
+
+# Exact browser-downloaded records retain their original JSON bytes.
+public/examples/feature-measurement/browser-*-record.json
+public/examples/feature-measurement/browser-stl-unknown-unit.json

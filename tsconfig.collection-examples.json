@@ -14,6 +14,7 @@
     "scripts/export-fidelity.spec.mts",
     "scripts/file-handoff.spec.mts",
     "src/types/jspdf-esm.d.ts",
-    "scripts/input-integrity.spec.mts"
+    "scripts/input-integrity.spec.mts",
+    "scripts/feature-measurement.spec.mts"
   ]
 }

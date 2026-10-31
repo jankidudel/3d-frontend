@@ -1,0 +1,248 @@
+<section class="measure-panel" aria-label="Feature measurements">
+  <h2>Feature measurements</h2>
+  <div class="measure-controls">
+    <label
+      >Measurement type
+      <select #typeSelect [value]="type()" (change)="setType(typeSelect.value)">
+        <option [value]="types.Distance" [selected]="type() === types.Distance">
+          Distance
+        </option>
+        <option [value]="types.Angle" [selected]="type() === types.Angle">
+          Angle
+        </option>
+        <option [value]="types.Circle" [selected]="type() === types.Circle">
+          Circle through 3 points
+        </option>
+      </select>
+    </label>
+    <label
+      >Point selection
+      <select
+        #basisSelect
+        [value]="basis()"
+        (change)="setBasis(basisSelect.value)"
+      >
+        <option [value]="bases.Surface" [selected]="basis() === bases.Surface">
+          Surface point
+        </option>
+        <option [value]="bases.Vertex" [selected]="basis() === bases.Vertex">
+          Mesh vertex
+        </option>
+      </select>
+    </label>
+    <label
+      >Display length unit
+      <select
+        #unitSelect
+        [value]="displayUnit()"
+        (change)="displayUnit.set(unitSelect.value)"
+      >
+        <option value="mm">mm</option>
+        <option value="cm">cm</option>
+        <option value="in">in</option>
+      </select>
+    </label>
+    <button
+      type="button"
+      [attr.aria-pressed]="active()"
+      (click)="active.set(!active())"
+    >
+      {{ active() ? 'Stop measuring' : 'Start measuring' }}
+    </button>
+    <button type="button" (click)="undo()" [disabled]="points().length === 0">
+      Undo last point
+    </button>
+    <button type="button" (click)="clear()">Clear current measurement</button>
+  </div>
+  <p>
+    Surface point selects a visible triangle location. Mesh vertex offers only
+    the three vertices of the targeted triangle within
+    {{ policy.pointerRadius }} CSS pixels ({{ policy.touchRadius }} on touch);
+    it does not find a CAD corner or hole centre. Target a face near a corner,
+    then use the candidate buttons if needed. Drag to orbit; tap to select.
+  </p>
+  <p role="status">{{ notice() }}</p>
+  @if (type() === types.Angle) {
+    <p>
+      Select A, then B (angle vertex), then C. This is the unsigned interior
+      angle ABC, not a face, dihedral or bed-relative overhang angle.
+    </p>
+  }
+  @if (type() === types.Circle) {
+    <p>
+      This circle passes through the three selected points. It does not detect a
+      cylinder or prove that the opening is round.
+    </p>
+  }
+  @if (candidates().length) {
+    <div
+      class="measure-controls"
+      aria-label="Candidate vertices of targeted triangle"
+    >
+      @for (candidate of candidates(); track $index) {
+        <button type="button" (click)="accept(candidate)">
+          Choose vertex {{ candidate.vertexIndex }}:
+          {{ candidate.coordinates.join(', ') }}
+        </button>
+      }
+    </div>
+  }
+  <details>
+    <summary>Enter coordinates without the canvas</summary>
+    <p>
+      Entered coordinates use the source/build frame stated below. They are not
+      verified mesh picks and need not lie on the mesh.
+    </p>
+    <div class="measure-controls">
+      <label>X <input #x type="number" step="any" /></label>
+      <label>Y <input #y type="number" step="any" /></label>
+      <label>Z <input #z type="number" step="any" /></label>
+      <button type="button" (click)="enter(x.value, y.value, z.value)">
+        Add entered coordinates
+      </button>
+    </div>
+  </details>
+  <ol aria-label="Ordered measurement points">
+    @for (point of points(); track $index) {
+      <li>
+        <strong>{{ pointLabel($index) }}</strong
+        >: {{ point.coordinates.join(', ') }} - {{ basisLabels[point.basis] }}
+        @if (point.placedItemId) {
+          ; placed item {{ point.placedItemId }}
+        }
+      </li>
+    }
+  </ol>
+  @if (current(); as entry) {
+    @if (entry.result.state === states.Unavailable) {
+      <p role="status">
+        Unavailable: {{ entry.result.reason }} Use Undo last point to replace a
+        point.
+      </p>
+    } @else {
+      <dl>
+        @if (type() === types.Distance) {
+          <dt>Direct distance</dt>
+          <dd>{{ length(entry.result.distance) }}</dd>
+          <dt>Absolute XYZ differences</dt>
+          <dd>
+            {{ length(entry.result.delta?.[0]) }} /
+            {{ length(entry.result.delta?.[1]) }} /
+            {{ length(entry.result.delta?.[2]) }}
+          </dd>
+        }
+        @if (entry.result.angleDegrees !== undefined) {
+          <dt>Interior angle ABC</dt>
+          <dd>{{ number(entry.result.angleDegrees) }} degrees</dd>
+        }
+        @if (type() === types.Circle) {
+          <dt>Constructed radius</dt>
+          <dd>{{ length(entry.result.radius) }}</dd>
+          <dt>Constructed diameter</dt>
+          <dd>{{ length(entry.result.diameter) }}</dd>
+        }
+      </dl>
+    }
+    <details>
+      <summary>Frame, unit and construction record</summary>
+      <p>
+        {{ entry.frame }}. Source unit: {{ entry.sourceUnit }}. Result length
+        basis: {{ entry.resultLengthUnit }}.
+      </p>
+      @if (entry.result.centre) {
+        <p>
+          Centre: {{ entry.result.centre.join(', ') }}. Plane normal:
+          {{ entry.result.normal?.join(', ') }}. Plane U:
+          {{ entry.result.axisU?.join(', ') }}; V:
+          {{ entry.result.axisV?.join(', ') }}.
+        </p>
+      }
+      @if (entry.spansPlacedItems) {
+        <p>
+          Points span different placed items. This is a build-space measurement,
+          not a resource-local feature.
+        </p>
+      }
+      @if (entry.spansPlacedItems === null) {
+        <p>
+          Placed-item scope is unknown for unassigned or entered coordinates.
+          They do not establish whether the points belong to one item or
+          different items.
+        </p>
+      }
+      @for (note of entry.notes; track note) {
+        <p>{{ note }}</p>
+      }
+    </details>
+    <label
+      >Measurement name
+      <input
+        #nameInput
+        maxlength="80"
+        [value]="name()"
+        (input)="name.set(nameInput.value)"
+    /></label>
+    <button type="button" (click)="save()">Save measurement</button>
+  }
+  <p>
+    Frame:
+    {{
+      context().format === formats.ThreeMf
+        ? 'resolved build coordinates in mm; declared source unit: ' +
+          context().declaredUnit
+        : 'restored STL source coordinates; assumed source unit: ' +
+          (assumption() || 'unknown')
+    }}. Camera movement does not change these coordinates. Values come from
+    displayed mesh geometry, not recovered CAD precision. Formatting is not
+    measurement accuracy.
+  </p>
+  <h3>Saved measurements ({{ entries().length }}/{{ policy.maxRecords }})</h3>
+  <p>
+    Names, points and downloads stay local in this tab's memory. Successful file
+    replacement discards this record. Download to retain it. No source filename
+    or model geometry is included.
+  </p>
+  @for (entry of entries(); track entry.id) {
+    <div class="saved-entry">
+      <label
+        >Rename {{ entry.id }}
+        <input
+          #renameInput
+          maxlength="80"
+          [value]="entry.name"
+          (change)="rename(entry.id, renameInput.value)"
+      /></label>
+      <button type="button" (click)="review(entry)">
+        Review {{ entry.name }}
+      </button>
+      <button type="button" (click)="remove(entry.id)">
+        Remove {{ entry.name }}
+      </button>
+    </div>
+  }
+  <div class="measure-controls">
+    <button
+      type="button"
+      [disabled]="entries().length === 0"
+      (click)="download()"
+    >
+      Download measurements (JSON)
+    </button>
+    <button
+      type="button"
+      [disabled]="entries().length === 0"
+      (click)="confirmClear.set(true)"
+    >
+      Clear all saved measurements
+    </button>
+  </div>
+  @if (confirmClear()) {
+    <p>Discard all saved measurements? Download first to keep them.</p>
+    <button type="button" (click)="clearAll()">
+      Confirm discard measurements
+    </button>
+    <button type="button" (click)="confirmClear.set(false)">
+      Keep measurements
+    </button>
+  }
+</section>

@@ -7,6 +7,10 @@
   </p>
   <section class="card viewer-tool" aria-labelledby="viewer-upload-title">
     <h2 id="viewer-upload-title">Open a 3MF file</h2>
+    <p>
+      Replacing a successfully loaded file discards its measurements. Cancelled
+      or failed replacement keeps the current record.
+    </p>
     <div
       class="drop-zone"
       (drop)="onDrop($event)"
@@ -53,6 +57,8 @@
     >
       <app-object-viewer
         [object]="current.object"
+        [featureMeasurements]="true"
+        [measurementContext]="current.measurementContext"
         [extent]="current.extent"
         [issueLines]="issueLines()"
         measurementUnit="mm"
@@ -226,6 +232,35 @@
     </section>
   }
   <section class="content">
+    <h2>Measure a named feature and retain its basis</h2>
+    <p>
+      Choose Distance, Angle or Circle through 3 points in Feature measurements.
+      Surface point remains the initial selection method. Mesh vertex offers a
+      bounded candidate from the visible hit triangle; it does not infer a CAD
+      corner or hole centre. Angle uses side A, vertex B, side C. Circle reports
+      a constructed radius and diameter, not roundness or clear passage. Save up
+      to 20 named measurements in this tab and download the local JSON record
+      before replacing the file.
+    </p>
+    <p>
+      Follow the
+      <a [routerLink]="guideRouteUrl.RouteMeasureAngleInStl">angle coupon</a> or
+      <a [routerLink]="guideRouteUrl.RouteMeasureHoleDiameterStl"
+        >faceted-bore and ellipse examples</a
+      >. Camera movement changes the view, not the stored references. Entered
+      coordinates are available as a keyboard alternative and are distinguished
+      from verified mesh picks.
+    </p>
+    <p>
+      Coordinates use the resolved millimetre build frame; the declared source
+      unit is recorded separately. The centimetre placement example has origins
+      at (10,20,30) and (50,20,30) mm. Review placement IDs when measuring
+      across items: that distance describes the build arrangement, not one
+      reused resource's local feature. Isolation never reassigns a saved point
+      to another item.
+    </p>
+  </section>
+  <section class="content">
     <h2>How to use the 3MF Viewer</h2>
     <ol>
       <li>Choose or drop a 3MF file.</li>
@@ -235,8 +270,8 @@
       </li>
       <li>Review the displayed build geometry summary and declared unit.</li>
       <li>
-        Activate Measure distance and select two visible mesh points to inspect
-        a specific feature.
+        Choose Distance, activate Start measuring and select two visible mesh
+        points to inspect a specific feature.
       </li>
       <li>
         Use Inspect cross-section to move a cut through the resolved build and

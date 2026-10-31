@@ -1,0 +1,205 @@
+{
+  "format": "inspectmesh-measurements",
+  "version": 1,
+  "privacy": "Local record; no source filename or geometry included.",
+  "entries": [
+    {
+      "id": "measurement-1",
+      "name": "Across build-1 and build-2",
+      "type": "distance",
+      "points": [
+        {
+          "coordinates": [
+            10,
+            40,
+            30
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-6",
+          "placedItemId": "build-1",
+          "faceIndex": 1,
+          "vertexIndex": 1
+        },
+        {
+          "coordinates": [
+            50,
+            30,
+            30
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-7",
+          "placedItemId": "build-2",
+          "faceIndex": 3,
+          "vertexIndex": 2
+        }
+      ],
+      "result": {
+        "state": "available",
+        "distance": 41.23105625617661,
+        "delta": [
+          40,
+          10,
+          0
+        ]
+      },
+      "frame": "resolved 3MF build coordinates in millimetres",
+      "sourceUnit": "centimeter",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "mm",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [
+        "build-1",
+        "build-2"
+      ],
+      "spansPlacedItems": true,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Resolved placement coordinates; source unit normalized to mm before display."
+      ]
+    },
+    {
+      "id": "measurement-2",
+      "name": "Resolved face angle",
+      "type": "angle",
+      "points": [
+        {
+          "coordinates": [
+            10,
+            40,
+            30
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-6",
+          "placedItemId": "build-1",
+          "faceIndex": 1,
+          "vertexIndex": 1
+        },
+        {
+          "coordinates": [
+            -10,
+            20,
+            30
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-6",
+          "placedItemId": "build-1",
+          "faceIndex": 3,
+          "vertexIndex": 2
+        },
+        {
+          "coordinates": [
+            10,
+            20,
+            50
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-6",
+          "placedItemId": "build-1",
+          "faceIndex": 1,
+          "vertexIndex": 3
+        }
+      ],
+      "result": {
+        "state": "available",
+        "angleDegrees": 59.99999999999999
+      },
+      "frame": "resolved 3MF build coordinates in millimetres",
+      "sourceUnit": "centimeter",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "mm",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [
+        "build-1"
+      ],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Resolved placement coordinates; source unit normalized to mm before display."
+      ]
+    },
+    {
+      "id": "measurement-3",
+      "name": "Resolved face circle",
+      "type": "circle",
+      "points": [
+        {
+          "coordinates": [
+            10,
+            40,
+            30
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-6",
+          "placedItemId": "build-1",
+          "faceIndex": 1,
+          "vertexIndex": 1
+        },
+        {
+          "coordinates": [
+            -10,
+            20,
+            30
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-6",
+          "placedItemId": "build-1",
+          "faceIndex": 3,
+          "vertexIndex": 2
+        },
+        {
+          "coordinates": [
+            10,
+            20,
+            50
+          ],
+          "basis": "mesh-vertex",
+          "meshId": "mesh-6",
+          "placedItemId": "build-1",
+          "faceIndex": 1,
+          "vertexIndex": 3
+        }
+      ],
+      "result": {
+        "state": "available",
+        "centre": [
+          3.333333333333333,
+          26.666666666666664,
+          36.666666666666664
+        ],
+        "radius": 16.32993161855452,
+        "diameter": 32.65986323710904,
+        "normal": [
+          -0.5773502691896258,
+          0.5773502691896258,
+          0.5773502691896258
+        ],
+        "axisU": [
+          0.40824829046386296,
+          0.8164965809277259,
+          -0.40824829046386296
+        ],
+        "axisV": [
+          -0.7071067811865475,
+          0,
+          -0.7071067811865475
+        ]
+      },
+      "frame": "resolved 3MF build coordinates in millimetres",
+      "sourceUnit": "centimeter",
+      "coordinateToMm": 1,
+      "resultLengthUnit": "mm",
+      "displayedLengthUnit": "mm",
+      "placedItemIds": [
+        "build-1"
+      ],
+      "spansPlacedItems": false,
+      "notes": [
+        "Displayed mesh precision; no CAD precision recovery.",
+        "Three-point constructions do not establish roundness, clearance or physical fit.",
+        "Resolved placement coordinates; source unit normalized to mm before display."
+      ]
+    }
+  ]
+}

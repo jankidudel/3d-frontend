@@ -13,6 +13,19 @@ import {
   viewChild,
 } from '@angular/core';
 
+import { MeasurementPanel } from '../feature-measurement/measurement-panel';
+import {
+  MeasurementContext,
+  MeasurementFormat,
+  MeasurementState,
+  MeasurementType,
+  MeasurementPolicy,
+  SelectionBasis,
+  subtract,
+  type Point3,
+} from '../feature-measurement/measurement';
+import { pickMeasurement } from '../feature-measurement/measurement-picking';
+
 interface ViewerRuntime {
   readonly THREE: typeof import('three');
   readonly renderer: import('three').WebGLRenderer;
@@ -46,7 +59,7 @@ interface MeasurementLabelPosition {
 
 @Component({
   selector: 'app-object-viewer',
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, MeasurementPanel],
   templateUrl: './object-viewer.html',
   styleUrl: './object-viewer.scss',
 })
@@ -60,6 +73,25 @@ export class ObjectViewerComponent {
   readonly scrollOnRender = input(true);
   readonly preserveVertexColors = input(false);
   readonly measurementUnit = input('model units');
+  readonly featureMeasurements = input(false);
+  readonly measurementContext = input<MeasurementContext>({
+    format: MeasurementFormat.Stl,
+    offset: [0, 0, 0],
+    declaredUnit: 'unknown',
+  });
+  readonly measurementPanel = viewChild(MeasurementPanel);
+  private readonly activePointers = new Set<number>();
+  private pointerDragged = false;
+  private multiPointerGesture = false;
+
+  hasMeasurementWork(): boolean {
+    const panel = this.measurementPanel();
+    return !!panel && (panel.entries().length > 0 || panel.points().length > 0);
+  }
+  resetMeasurementFile(): void {
+    this.measurementPanel()?.resetForFile();
+  }
+
   readonly measurementAvailable = input(true);
   readonly showMeasurementControls = input(true);
   readonly showCrossSectionControls = input(true);
@@ -140,6 +172,10 @@ export class ObjectViewerComponent {
     });
     effect(() => this.updateIssueLines(this.issueLines()));
     effect(() => {
+      this.measurementContext();
+      this.updateMeasurementOverlay();
+    });
+    effect(() => {
       this.selectedPlacedItem();
       this.isolatedPlacedItem();
       this.updatePlacedItems();
@@ -158,6 +194,7 @@ export class ObjectViewerComponent {
     if (!runtime) {
       return;
     }
+    this.measurementPanel()?.candidates.set([]);
     this.frame(runtime);
     this.resetView.emit();
   }
@@ -214,16 +251,52 @@ export class ObjectViewerComponent {
   }
 
   onViewportPointerDown(event: PointerEvent): void {
-    this.pointerStart = { x: event.clientX, y: event.clientY };
+    this.activePointers.add(event.pointerId);
+    if (this.activePointers.size > 1) {
+      this.multiPointerGesture = true;
+    }
+    if (this.activePointers.size === 1) {
+      this.pointerDragged = false;
+      this.multiPointerGesture = false;
+      this.pointerStart = { x: event.clientX, y: event.clientY };
+    }
   }
 
   onViewportPointerUp(event: PointerEvent): void {
     const start = this.pointerStart;
-    this.pointerStart = null;
+    this.activePointers.delete(event.pointerId);
+    if (this.activePointers.size === 0) {
+      this.pointerStart = null;
+    }
     if (
       !start ||
+      event.button !== 0 ||
+      this.multiPointerGesture ||
+      this.pointerDragged ||
       Math.hypot(event.clientX - start.x, event.clientY - start.y) > 8
     ) {
+      return;
+    }
+    const panel = this.measurementPanel();
+    if (this.featureMeasurements() && panel?.active()) {
+      const pick = this.featurePick(event);
+      if (panel.basis() === SelectionBasis.Vertex) {
+        panel.candidates.set(pick?.candidates ?? []);
+        const candidate = pick?.candidates[0];
+        if (candidate) {
+          panel.accept(candidate);
+        } else {
+          panel.notice.set(
+            'No visible vertex within the selection radius. Target a triangle nearer its corner; no surface fallback was used.',
+          );
+        }
+      } else if (pick?.surface) {
+        panel.accept(pick.surface);
+      } else {
+        panel.notice.set(
+          'No visible mesh point selected. Clipped and hidden geometry cannot supply points.',
+        );
+      }
       return;
     }
     if (this.measuring()) {
@@ -273,7 +346,28 @@ export class ObjectViewerComponent {
     }
   }
 
+  onViewportPointerCancel(event: PointerEvent): void {
+    this.activePointers.delete(event.pointerId);
+    this.multiPointerGesture = true;
+    this.pointerStart = null;
+  }
   onViewportPointerMove(event: PointerEvent): void {
+    if (
+      this.pointerStart &&
+      Math.hypot(
+        event.clientX - this.pointerStart.x,
+        event.clientY - this.pointerStart.y,
+      ) > 8
+    ) {
+      this.pointerDragged = true;
+    }
+    const panel = this.measurementPanel();
+    if (this.featureMeasurements() && panel?.active()) {
+      if (event.buttons === 0 && panel.basis() === SelectionBasis.Vertex) {
+        panel.candidates.set(this.featurePick(event)?.candidates ?? []);
+      }
+      return;
+    }
     if (
       !this.measuring() &&
       this.triangleInteraction() &&
@@ -319,6 +413,7 @@ export class ObjectViewerComponent {
     if (!runtime) {
       return;
     }
+    this.measurementPanel()?.candidates.set([]);
     const offset = runtime.camera.position
       .clone()
       .sub(runtime.controls.target)
@@ -332,6 +427,7 @@ export class ObjectViewerComponent {
     if (!runtime || this.rotationAnimating) {
       return;
     }
+    this.measurementPanel()?.candidates.set([]);
     this.rotationAnimating = true;
     const start = performance.now();
     const duration = 250;
@@ -437,7 +533,10 @@ export class ObjectViewerComponent {
         renderer.domElement,
       );
       controls.enableDamping = true;
-      controls.addEventListener('start', () => this.cancelRotation());
+      controls.addEventListener('start', () => {
+        this.cancelRotation();
+        this.measurementPanel()?.candidates.set([]);
+      });
       controls.minDistance = Math.max(extent * 0.05, 0.01);
       controls.maxDistance = Math.max(extent * 20, 100);
       if (!this.preserveVertexColors()) {
@@ -505,6 +604,7 @@ export class ObjectViewerComponent {
   }
 
   private updatePlacedItems(): void {
+    this.measurementPanel()?.candidates.set([]);
     const runtime = this.runtime;
     if (!runtime) {
       return;
@@ -524,6 +624,7 @@ export class ObjectViewerComponent {
     });
   }
   framePlacedItem(id: string | null): void {
+    this.measurementPanel()?.candidates.set([]);
     const runtime = this.runtime;
     if (!runtime || !id) {
       return;
@@ -545,6 +646,7 @@ export class ObjectViewerComponent {
     runtime.controls.update();
   }
   frameBounds(min: readonly number[], max: readonly number[]): void {
+    this.measurementPanel()?.candidates.set([]);
     const runtime = this.runtime;
     if (!runtime) {
       return;
@@ -600,6 +702,7 @@ export class ObjectViewerComponent {
   }
 
   private updateCrossSection(): void {
+    this.measurementPanel()?.candidates.set([]);
     const runtime = this.runtime;
     if (!runtime) {
       return;
@@ -660,6 +763,25 @@ export class ObjectViewerComponent {
     });
   }
 
+  private featurePick(event: PointerEvent) {
+    const runtime = this.runtime;
+    const host = this.viewport()?.nativeElement;
+    if (!runtime || !host) {
+      return null;
+    }
+    return pickMeasurement(
+      runtime.object,
+      runtime.camera,
+      host.getBoundingClientRect(),
+      event.clientX,
+      event.clientY,
+      event.pointerType === 'touch',
+      this.measurementContext().offset,
+    );
+  }
+  updateFeatureOverlay(): void {
+    this.updateMeasurementOverlay();
+  }
   private selectMeasurementPoint(event: PointerEvent): void {
     const point = this.intersectMeasurementPoint(event);
     if (!point) {
@@ -722,6 +844,10 @@ export class ObjectViewerComponent {
     }
     this.disposeObject(runtime.measurement);
     runtime.measurement.clear();
+    if (this.featureMeasurements()) {
+      this.drawFeatureOverlay(runtime);
+      return;
+    }
     const markerRadius = Math.max(this.extent() * 0.012, 0.1);
     const markerMaterial = new runtime.THREE.MeshBasicMaterial({
       color: '#c0392b',
@@ -756,6 +882,100 @@ export class ObjectViewerComponent {
     }
   }
 
+  private drawFeatureOverlay(runtime: ViewerRuntime): void {
+    const panel = this.measurementPanel();
+    if (!panel) {
+      return;
+    }
+    const offset = this.measurementContext().offset;
+    const vector = (p: Point3) =>
+      new runtime.THREE.Vector3(...subtract(p, offset));
+    const points = panel.points().map((p) => vector(p.coordinates));
+    const line = (vertices: import('three').Vector3[]) => {
+      const geometry = new runtime.THREE.BufferGeometry().setFromPoints(
+        vertices,
+      );
+      const annotation = new runtime.THREE.Line(
+        geometry,
+        new runtime.THREE.LineBasicMaterial({
+          color: '#a12b21',
+          depthTest: false,
+        }),
+      );
+      annotation.renderOrder = 2;
+      runtime.measurement.add(annotation);
+    };
+    for (const [index, point] of points.entries()) {
+      const marker = new runtime.THREE.Mesh(
+        new runtime.THREE.SphereGeometry(
+          Math.max(this.extent() * 0.008, 0.001),
+          12,
+          8,
+        ),
+        new runtime.THREE.MeshBasicMaterial({
+          color: index === 1 ? '#144f99' : '#a12b21',
+          depthTest: false,
+        }),
+      );
+      marker.position.copy(point);
+      marker.renderOrder = 2;
+      runtime.measurement.add(marker);
+    }
+    const candidate = panel.candidates()[0];
+    if (candidate) {
+      const marker = new runtime.THREE.Mesh(
+        new runtime.THREE.SphereGeometry(
+          Math.max(this.extent() * 0.012, 0.001),
+          12,
+          8,
+        ),
+        new runtime.THREE.MeshBasicMaterial({
+          color: '#126b38',
+          wireframe: true,
+          depthTest: false,
+        }),
+      );
+      marker.position.copy(vector(candidate.coordinates));
+      marker.renderOrder = 3;
+      runtime.measurement.add(marker);
+    }
+    if (points.length > 1) {
+      line(points);
+    }
+    const result = panel.current()?.result;
+    if (
+      result?.state === MeasurementState.Available &&
+      result.centre &&
+      result.radius &&
+      result.axisU &&
+      result.axisV
+    ) {
+      const centre = vector(result.centre),
+        u = new runtime.THREE.Vector3(...result.axisU),
+        v = new runtime.THREE.Vector3(...result.axisV);
+      const radius = result.radius;
+      line(
+        Array.from({ length: MeasurementPolicy.circleSegments + 1 }, (_, i) =>
+          centre
+            .clone()
+            .addScaledVector(
+              u,
+              radius *
+                Math.cos((i * 2 * Math.PI) / MeasurementPolicy.circleSegments),
+            )
+            .addScaledVector(
+              v,
+              radius *
+                Math.sin((i * 2 * Math.PI) / MeasurementPolicy.circleSegments),
+            ),
+        ),
+      );
+    }
+    // Two legs with a differently coloured B marker are the angle annotation.
+    if (panel.type() === MeasurementType.Angle && points.length === 3) {
+      runtime.measurement.userData['angleVertex'] = 'B';
+    }
+  }
   private updateMeasurementLabel(runtime: ViewerRuntime): void {
     const points = this.measurementPoints;
     const host = this.viewport()?.nativeElement;
@@ -879,6 +1099,7 @@ export class ObjectViewerComponent {
     runtime.controls.dispose();
     this.disposeObject(runtime.issueLines);
     this.disposeObject(runtime.crossSectionGuide);
+    this.disposeObject(runtime.measurement);
     this.disposeObject(runtime.object);
     runtime.renderer.dispose();
     runtime.renderer.domElement.remove();

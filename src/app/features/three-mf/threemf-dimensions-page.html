@@ -55,6 +55,22 @@
         </p>
       } @else if (dimensions(); as measured) {
         <h2 id="results-title">Build dimensions</h2>
+        <section aria-label="Build or feature choice">
+          <h3>Resolved build or named feature?</h3>
+          <p>
+            Build spans describe the resolved arrangement. In the centimetre
+            placement control, one resource is reused twice with different
+            transforms: the two resolved origins are 40 mm apart, while the
+            resource's unscaled local span is one centimetre. Use the
+            <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a> to select
+            named points and retain their placed-item IDs. The
+            <a [routerLink]="guideRouteUrl.RouteHowToMeasure3dModel"
+              >measurement chooser</a
+            >
+            separates resource dimensions, placement spacing and physical
+            readings.
+          </p>
+        </section>
         <p class="primary-dimensions">
           {{ formatDimensions(measured) }} <span>{{ effectiveUnit() }}</span>
         </p>

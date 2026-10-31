@@ -26,6 +26,20 @@ heading: How to Inspect STL and 3MF Cross-Sections Before Printing
   </figcaption>
 </figure>
 
+<h2>Choose real points near a visual cut</h2>
+<p>
+  A clipping display does not create a measured cap, analytic curve or
+  automatically extracted section. The dedicated viewers can select visible
+  source triangles or mesh vertices near the cut, but not an invented cap or
+  displayed cut-plane guide. Three selected points define their own plane;
+  points at different heights may not describe the intended section. Undo a
+  misplaced point and keep its selection basis in the local record. The
+  <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+    >diameter construction guide</a
+  >
+  shows why a valid circle through those points still cannot establish a round
+  hole or clear passage.
+</p>
 <h2>Choose a known wall or channel</h2>
 <p>
   Start with a feature whose intended source dimensions you know. The
