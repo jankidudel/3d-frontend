@@ -1,0 +1,76 @@
+{
+  "method": "Actual production browser STL Viewer controls, manually observed 2026-11-01; no numerical section measurement.",
+  "url": "https://www.inspectmesh.com/tools/stl-viewer",
+  "unit": "STL interpreted as millimetres",
+  "axis": "source Z",
+  "retainedSide": "Z greater than or equal to selected coordinate",
+  "camera": "Reset view default oblique (+X,+Y,+Z); V2 at 5% also rotated two 90-degree turns for opposite-side comparison. No cap generated.",
+  "records": [
+    {
+      "input": "V2.stl",
+      "sha256": "3ae78d71cc485842405625242d34dcedbde912779162ed0cd923790e01bdf93a",
+      "boundsZ": [
+        0,
+        30
+      ],
+      "percent": 3,
+      "derivedSourceCoordinateMm": 0.9,
+      "visibleObservation": "Below the 1.2 mm base transition; cavity and enclosing walls visible, with walls obscuring part of the cut."
+    },
+    {
+      "input": "V2.stl",
+      "sha256": "3ae78d71cc485842405625242d34dcedbde912779162ed0cd923790e01bdf93a",
+      "boundsZ": [
+        0,
+        30
+      ],
+      "percent": 5,
+      "derivedSourceCoordinateMm": 1.5,
+      "visibleObservation": "Above the base; the cavity is exposed through the uncapped cut. Camera rotation changes which wall obscures it."
+    },
+    {
+      "input": "V2.stl",
+      "sha256": "3ae78d71cc485842405625242d34dcedbde912779162ed0cd923790e01bdf93a",
+      "boundsZ": [
+        0,
+        30
+      ],
+      "percent": 7,
+      "derivedSourceCoordinateMm": 2.1,
+      "visibleObservation": "Nearby position above the base; cavity remains exposed, rear and side surfaces occlude part of the view."
+    },
+    {
+      "input": "T4.stl",
+      "sha256": "fb40a5d8a0f2fb7bac17241ee41e35434fdff4c6abea6f67bc7bf0fb76501fbb",
+      "boundsZ": [
+        0,
+        2
+      ],
+      "percent": 69,
+      "derivedSourceCoordinateMm": 1.38,
+      "visibleObservation": "Just below the 1.4 mm recess floor; the shallow glyph recesses retain their floor surfaces."
+    },
+    {
+      "input": "T4.stl",
+      "sha256": "fb40a5d8a0f2fb7bac17241ee41e35434fdff4c6abea6f67bc7bf0fb76501fbb",
+      "boundsZ": [
+        0,
+        2
+      ],
+      "percent": 75,
+      "derivedSourceCoordinateMm": 1.5,
+      "visibleObservation": "Within the recess interval; clipped floors no longer obscure the background through the grooves. The O island can appear detached in the display."
+    },
+    {
+      "input": "T4.stl",
+      "sha256": "fb40a5d8a0f2fb7bac17241ee41e35434fdff4c6abea6f67bc7bf0fb76501fbb",
+      "boundsZ": [
+        0,
+        2
+      ],
+      "percent": 95,
+      "derivedSourceCoordinateMm": 1.9,
+      "visibleObservation": "Nearby position within the same recess; narrow grooves remain visible with no generated cap."
+    }
+  ]
+}

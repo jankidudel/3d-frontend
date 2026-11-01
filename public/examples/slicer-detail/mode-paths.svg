@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 728" width="1080" height="728" role="img">
+<title>mode-paths.svg</title><desc>Original rendering of actual retained extrusion centrelines. Dashed rectangles mark source regions, not deposited material.</desc>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="22.0" y="27" font-family="sans-serif" font-size="19" font-weight="bold" fill="#172b32">Solid source / ordinary</text>
+<text x="22.0" y="50" font-family="sans-serif" font-size="15" fill="#384f59">V1-N; deposition Z near 20 mm</text>
+<rect x="28.0" y="43.0" width="235.0" height="235.0" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
+<line x1="256.812" y1="49.188" x2="34.188" y2="49.188" stroke="#086b65" stroke-width="1.6"/>
+<line x1="34.188" y1="49.188" x2="34.188" y2="271.812" stroke="#086b65" stroke-width="1.6"/>
+<line x1="34.188" y1="271.812" x2="256.812" y2="271.812" stroke="#086b65" stroke-width="1.6"/>
+<line x1="256.812" y1="271.812" x2="256.812" y2="49.776" stroke="#086b65" stroke-width="1.6"/>
+<line x1="260.797" y1="45.203" x2="30.203" y2="45.203" stroke="#086b65" stroke-width="1.6"/>
+<line x1="30.203" y1="45.203" x2="30.203" y2="275.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="30.203" y1="275.797" x2="260.797" y2="275.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="260.797" y1="275.797" x2="260.797" y2="45.791" stroke="#086b65" stroke-width="1.6"/>
+<line x1="223.285" y1="50.383" x2="253.825" y2="80.923" stroke="#086b65" stroke-width="1.6"/>
+<line x1="253.825" y1="80.923" x2="253.825" y2="118.504" stroke="#086b65" stroke-width="1.6"/>
+<line x1="253.825" y1="118.504" x2="187.496" y2="52.175" stroke="#086b65" stroke-width="1.6"/>
+<line x1="187.496" y1="52.175" x2="149.916" y2="52.175" stroke="#086b65" stroke-width="1.6"/>
+<line x1="149.916" y1="52.175" x2="253.825" y2="156.084" stroke="#086b65" stroke-width="1.6"/>
+<line x1="253.825" y1="156.084" x2="253.825" y2="193.664" stroke="#086b65" stroke-width="1.6"/>
+<line x1="253.825" y1="193.664" x2="112.336" y2="52.175" stroke="#086b65" stroke-width="1.6"/>
+<line x1="112.336" y1="52.175" x2="74.755" y2="52.175" stroke="#086b65" stroke-width="1.6"/>
+<line x1="74.755" y1="52.175" x2="253.825" y2="231.245" stroke="#086b65" stroke-width="1.6"/>
+<line x1="253.825" y1="231.245" x2="253.825" y2="268.825" stroke="#086b65" stroke-width="1.6"/>
+<line x1="253.825" y1="268.825" x2="37.175" y2="52.175" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.175" y1="52.175" x2="37.175" y2="89.755" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.175" y1="89.755" x2="216.245" y2="268.825" stroke="#086b65" stroke-width="1.6"/>
+<line x1="216.245" y1="268.825" x2="178.664" y2="268.825" stroke="#086b65" stroke-width="1.6"/>
+<line x1="178.664" y1="268.825" x2="37.175" y2="127.336" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.175" y1="127.336" x2="37.175" y2="164.916" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.175" y1="164.916" x2="141.084" y2="268.825" stroke="#086b65" stroke-width="1.6"/>
+<line x1="141.084" y1="268.825" x2="103.504" y2="268.825" stroke="#086b65" stroke-width="1.6"/>
+<line x1="103.504" y1="268.825" x2="37.175" y2="202.496" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.175" y1="202.496" x2="37.175" y2="240.077" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.175" y1="240.077" x2="67.715" y2="270.617" stroke="#086b65" stroke-width="1.6"/>
+<text x="22.0" y="325" font-family="sans-serif" font-size="14" fill="#384f59">29 retained extrusion moves in this view</text>
+<text x="562.0" y="27" font-family="sans-serif" font-size="19" font-weight="bold" fill="#172b32">Solid source / spiral</text>
+<text x="562.0" y="50" font-family="sans-serif" font-size="15" fill="#384f59">V1-S; deposition Z near 20 mm</text>
+<rect x="568.0" y="43.0" width="235.0" height="235.0" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
+<line x1="800.797" y1="275.797" x2="800.797" y2="45.203" stroke="#086b65" stroke-width="1.6"/>
+<line x1="800.797" y1="45.203" x2="570.203" y2="45.203" stroke="#086b65" stroke-width="1.6"/>
+<line x1="570.203" y1="45.203" x2="570.203" y2="266.534" stroke="#086b65" stroke-width="1.6"/>
+<line x1="570.203" y1="266.534" x2="570.203" y2="275.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="570.203" y1="275.797" x2="800.797" y2="275.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="800.797" y1="275.797" x2="800.797" y2="45.203" stroke="#086b65" stroke-width="1.6"/>
+<text x="562.0" y="325" font-family="sans-serif" font-size="14" fill="#384f59">6 retained extrusion moves in this view</text>
+<text x="22.0" y="367" font-family="sans-serif" font-size="19" font-weight="bold" fill="#172b32">Modelled cavity / ordinary</text>
+<text x="22.0" y="390" font-family="sans-serif" font-size="15" fill="#384f59">V2-N; deposition Z near 20 mm</text>
+<rect x="28.0" y="383.0" width="235.0" height="235.0" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
+<line x1="253.453" y1="608.453" x2="253.453" y2="392.547" stroke="#086b65" stroke-width="1.6"/>
+<line x1="253.453" y1="392.547" x2="37.547" y2="392.547" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.547" y1="392.547" x2="37.547" y2="608.453" stroke="#086b65" stroke-width="1.6"/>
+<line x1="37.547" y1="608.453" x2="252.866" y2="608.453" stroke="#086b65" stroke-width="1.6"/>
+<line x1="260.797" y1="615.797" x2="260.797" y2="385.203" stroke="#086b65" stroke-width="1.6"/>
+<line x1="260.797" y1="385.203" x2="30.203" y2="385.203" stroke="#086b65" stroke-width="1.6"/>
+<line x1="30.203" y1="385.203" x2="30.203" y2="615.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="30.203" y1="615.797" x2="260.209" y2="615.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="256.841" y1="611.841" x2="255.451" y2="612.125" stroke="#086b65" stroke-width="1.6"/>
+<line x1="255.451" y1="612.125" x2="35.549" y2="612.125" stroke="#086b65" stroke-width="1.6"/>
+<line x1="35.549" y1="612.125" x2="34.854" y2="611.978" stroke="#086b65" stroke-width="1.6"/>
+<line x1="34.854" y1="611.978" x2="34.159" y2="611.841" stroke="#086b65" stroke-width="1.6"/>
+<line x1="34.159" y1="611.841" x2="33.875" y2="610.451" stroke="#086b65" stroke-width="1.6"/>
+<line x1="33.875" y1="610.451" x2="33.875" y2="390.549" stroke="#086b65" stroke-width="1.6"/>
+<line x1="33.875" y1="390.549" x2="34.022" y2="389.854" stroke="#086b65" stroke-width="1.6"/>
+<line x1="34.022" y1="389.854" x2="34.159" y2="389.159" stroke="#086b65" stroke-width="1.6"/>
+<line x1="34.159" y1="389.159" x2="35.549" y2="388.875" stroke="#086b65" stroke-width="1.6"/>
+<line x1="35.549" y1="388.875" x2="255.451" y2="388.875" stroke="#086b65" stroke-width="1.6"/>
+<line x1="255.451" y1="388.875" x2="256.146" y2="389.022" stroke="#086b65" stroke-width="1.6"/>
+<line x1="256.146" y1="389.022" x2="256.841" y2="389.159" stroke="#086b65" stroke-width="1.6"/>
+<line x1="256.841" y1="389.159" x2="257.125" y2="390.549" stroke="#086b65" stroke-width="1.6"/>
+<line x1="257.125" y1="390.549" x2="257.125" y2="610.451" stroke="#086b65" stroke-width="1.6"/>
+<line x1="257.125" y1="610.451" x2="256.978" y2="611.146" stroke="#086b65" stroke-width="1.6"/>
+<line x1="256.978" y1="611.146" x2="256.959" y2="611.263" stroke="#086b65" stroke-width="1.6"/>
+<text x="22.0" y="665" font-family="sans-serif" font-size="14" fill="#384f59">24 retained extrusion moves in this view</text>
+<text x="562.0" y="367" font-family="sans-serif" font-size="19" font-weight="bold" fill="#172b32">Branching source / spiral</text>
+<text x="562.0" y="390" font-family="sans-serif" font-size="15" fill="#384f59">V3-S; deposition Z near 20 mm</text>
+<rect x="568.0" y="383.0" width="235.0" height="235.0" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
+<line x1="800.797" y1="615.797" x2="800.797" y2="385.203" stroke="#086b65" stroke-width="1.6"/>
+<line x1="800.797" y1="385.203" x2="726.870" y2="385.203" stroke="#086b65" stroke-width="1.6"/>
+<line x1="726.870" y1="385.203" x2="726.870" y2="606.534" stroke="#086b65" stroke-width="1.6"/>
+<line x1="726.870" y1="606.534" x2="726.870" y2="615.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="726.870" y1="615.797" x2="800.797" y2="615.797" stroke="#086b65" stroke-width="1.6"/>
+<line x1="800.797" y1="615.797" x2="800.797" y2="385.203" stroke="#086b65" stroke-width="1.6"/>
+<text x="562.0" y="665" font-family="sans-serif" font-size="14" fill="#384f59">6 retained extrusion moves in this view</text>
+<text x="22" y="711" font-family="sans-serif" font-size="15" fill="#172b32">Parsed linear paths, not a native screenshot or a printed-plastic outline. Source XY translation removed.</text></svg>

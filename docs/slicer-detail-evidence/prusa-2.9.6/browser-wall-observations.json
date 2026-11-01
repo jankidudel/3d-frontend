@@ -1,0 +1,61 @@
+{
+  "observedAt": "2026-11-01",
+  "method": "Actual production browser interaction with existing supported public examples; calculation code unchanged. Current new owner-link destinations are separately tested in TestBed, not claimed deployed.",
+  "records": [
+    {
+      "url": "https://www.inspectmesh.com/tools/stl-wall-thickness-checker",
+      "asset": "/examples/english-market-batch/thin-wall-bars.stl",
+      "sha256": "55c1252390a8fe3a69053fe6c4ae8a6c69e317d2464ed17fb5f01b8deb14d06c",
+      "unit": "mm",
+      "threshold": 1.2,
+      "measured": 36,
+      "unmeasured": 0,
+      "belowThreshold": 12,
+      "visibleState": "Sampled areas below your threshold"
+    },
+    {
+      "url": "https://www.inspectmesh.com/tools/stl-wall-thickness-checker",
+      "asset": "/examples/english-market-batch/thin-wall-bars.stl",
+      "sha256": "55c1252390a8fe3a69053fe6c4ae8a6c69e317d2464ed17fb5f01b8deb14d06c",
+      "unit": "mm",
+      "threshold": 0.2,
+      "measured": 36,
+      "unmeasured": 0,
+      "belowThreshold": 0,
+      "visibleState": "No measured samples below your threshold"
+    },
+    {
+      "url": "https://www.inspectmesh.com/tools/stl-wall-thickness-checker",
+      "asset": "/examples/diagnosis/horizontal-sheet.stl",
+      "sha256": "148b33b55ffcd07edd2f19d82fc6c568529e89e1f7370e9a2364135635637aa3",
+      "unit": "mm",
+      "threshold": 0.2,
+      "measured": 0,
+      "unmeasured": 2,
+      "belowThreshold": 0,
+      "visibleState": "No wall estimate available"
+    },
+    {
+      "url": "https://www.inspectmesh.com/tools/3mf-wall-thickness-checker",
+      "asset": "/examples/wall-controls/two-scale-slabs.3mf",
+      "sha256": "a3f52404424f34d28ccbd40f4644b5588e4d00b7d0244acab2fe08c76ba07570",
+      "unit": "mm",
+      "threshold": 0.6,
+      "measured": 24,
+      "unmeasured": 0,
+      "belowThreshold": 4,
+      "visibleState": "Sampled areas below your threshold"
+    },
+    {
+      "url": "https://www.inspectmesh.com/tools/3mf-wall-thickness-checker",
+      "asset": "/examples/wall-controls/two-scale-slabs.3mf",
+      "sha256": "a3f52404424f34d28ccbd40f4644b5588e4d00b7d0244acab2fe08c76ba07570",
+      "unit": "mm",
+      "threshold": 0.2,
+      "measured": 24,
+      "unmeasured": 0,
+      "belowThreshold": 0,
+      "visibleState": "No measured samples below your threshold"
+    }
+  ]
+}

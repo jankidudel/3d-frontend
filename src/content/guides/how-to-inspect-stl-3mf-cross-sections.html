@@ -138,6 +138,114 @@ heading: How to Inspect STL and 3MF Cross-Sections Before Printing
   >
   for the design decision; this guide owns operating and interpreting the clip.
 </p>
+<h2 id="guide-observed-clips">
+  Visible mesh clipping compared with generated paths
+</h2>
+<p>
+  On 1 November 2026, the production STL Viewer was operated with the exact
+  <a href="{{ ExampleAsset.SlicerV2Stl }}" download>V2 vessel</a> and
+  <a href="{{ ExampleAsset.SlicerT4Stl }}" download>T4 recess</a> controls,
+  interpreted as millimetres. The
+  <a href="{{ ExampleAsset.SlicerViewerObservations }}" download
+    >observation record</a
+  >
+  identifies their SHA-256 hashes. Source Z bounds are 0..30 mm for V2 and 0..2
+  mm for T4. The Z cut retains geometry at or above the selected coordinate; it
+  does not close the exposed side.
+</p>
+<table>
+  <caption>
+    Visible mesh clipping - actual browser observations, not measured sections
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Source / Z control</th>
+      <th scope="col">Coordinate from bounds</th>
+      <th scope="col">Observed surfaces</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>V2 / 3%</td>
+      <td>0.90 mm</td>
+      <td>
+        Below the 1.20 mm base transition. Cavity and enclosing walls are
+        visible; walls obscure part of the cut.
+      </td>
+    </tr>
+    <tr>
+      <td>V2 / 5%</td>
+      <td>1.50 mm</td>
+      <td>
+        Above the base, the cavity is exposed through the uncapped cut. Rotating
+        to the opposite side changes occlusion.
+      </td>
+    </tr>
+    <tr>
+      <td>V2 / 7%</td>
+      <td>2.10 mm</td>
+      <td>
+        The nearby position still exposes the cavity, with rear and side
+        surfaces hiding part of the view.
+      </td>
+    </tr>
+    <tr>
+      <td>T4 / 69%</td>
+      <td>1.38 mm</td>
+      <td>
+        Just below the 1.40 mm recess floor; the shallow glyph recesses retain
+        their floor surfaces.
+      </td>
+    </tr>
+    <tr>
+      <td>T4 / 75%, then 95%</td>
+      <td>1.50, then 1.90 mm</td>
+      <td>
+        Within the recess interval, the clipped floor no longer hides the
+        background through the grooves. The O island can appear detached,
+        although the stored source remains joined underneath.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  These views used Reset view's default oblique camera; V2 at 5% was also
+  compared after two 90-degree rotations. No distance was picked. The
+  percentages locate a display plane: 7% of 30 mm is 2.10 mm, not a
+  wall-thickness result.
+</p>
+<figure>
+  <img
+    src="{{ ExampleAsset.SlicerRecessFigure }}"
+    width="1080"
+    height="388"
+    loading="lazy"
+    alt="Parsed T4 extrusion centrelines at deposition Z 1.8 mm, including the recessed glyph region."
+  />
+  <figcaption>
+    Generated paths - PrusaSlicer 2.9.6 T4-C at Z=1.80 mm, independently
+    rendered from its real output. This is not a native preview screenshot.
+    Unlike visible mesh clipping, these lines describe generated extrusion
+    moves; they do not outline deposited plastic.
+  </figcaption>
+</figure>
+<p>
+  At deposition Z=1.60, 1.80 and 2.00 mm, the bounded recess-strip checks
+  contain no positive-extrusion centrelines, while the O counter island retains
+  material paths. The
+  <a href="{{ ExampleAsset.SlicerPathObservations }}" download>path record</a>
+  gives the tested regions. It does not establish the physical groove clearance.
+  Follow the
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}#guide-lettering-results"
+    >text result</a
+  >
+  to compare XY strokes, shallow relief and recesses; use the
+  <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}#guide-vase-results"
+    >mode comparison</a
+  >
+  to see why a modelled cavity and spiral paths are different decisions.
+</p>
+
 <h2>Identify material boundaries and empty space</h2>
 <p>
   Look for the two surfaces bounding a solid web or enclosure wall. A passage

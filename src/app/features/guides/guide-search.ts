@@ -13,7 +13,7 @@ export function filterGuideGroups(
       ...group,
       guides: group.guides.filter((guide) => {
         const searchable =
-          `${guide.title} ${guide.heading} ${guide.description} ${guide.slug}`.toLocaleLowerCase();
+          `${guide.title} ${guide.heading} ${guide.description} ${guide.slug} ${(guide.searchTerms ?? []).join(' ')}`.toLocaleLowerCase();
         return terms.every((term) => searchable.includes(term));
       }),
     }))

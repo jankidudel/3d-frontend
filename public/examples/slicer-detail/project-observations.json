@@ -1,0 +1,27 @@
+{
+  "method": "Official CLI geometry export plus explicitly constructed native-format settings/override archives; actual CLI reopen/reslice, not GUI Save Project",
+  "application": "PrusaSlicer 2.9.6",
+  "projects": [
+    {
+      "project": "P-roof",
+      "sha256": "c992b033589fef363eff649652874ec5bb103eb7dd5172479d547aabd6af3992",
+      "global_top_layers": 4,
+      "object_top_layers": 4,
+      "exit_status": 0,
+      "gcode_sha256": "37cab1077d83b2d4ba114d23337517dd2fab308d73a1e75914e3579eef7a5d1d",
+      "observed_at": "2026-11-01T00:04:32.143504+00:00"
+    },
+    {
+      "project": "P-open",
+      "sha256": "5bbc3de620133c8c1f153f761c540c4c2c21593868c89eb732c110c9671ce94d",
+      "global_top_layers": 4,
+      "object_top_layers": 0,
+      "exit_status": 0,
+      "gcode_sha256": "944c0609d3229a399ca80c1f0970d254eaed8e2777d094891dbcb83f8a2e848b",
+      "observed_at": "2026-11-01T00:04:32.224780+00:00"
+    }
+  ],
+  "derivative_sha256": "cb9dff4e386082686f9020a83bab1cc911a3edec01f63c5c6e6726dc3297e1bc",
+  "fresh_output_sha256": "37cab1077d83b2d4ba114d23337517dd2fab308d73a1e75914e3579eef7a5d1d",
+  "native_ui_observation": "Not recorded; CLI project-reader operations only. Appearance and cross-slicer receiving remain untested."
+}

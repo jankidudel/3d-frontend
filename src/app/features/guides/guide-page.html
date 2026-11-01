@@ -8,7 +8,18 @@
         {{ guide().publishDate }}.
       </p>
     }
-    <div class="guide-body" [innerHTML]="guide().html"></div>
+    @if (guide().sections; as sections) {
+      <div class="guide-body">
+        @for (section of sections; track section.id) {
+          @if (section.heading) {
+            <h2 [id]="section.id" [innerHTML]="section.heading"></h2>
+          }
+          <div [innerHTML]="section.html"></div>
+        }
+      </div>
+    } @else {
+      <div class="guide-body" [innerHTML]="guide().html"></div>
+    }
     @if (guide().faqs.length > 0) {
       <section class="guide-faq">
         <h2>FAQ</h2>

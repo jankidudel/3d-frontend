@@ -1,0 +1,770 @@
+{
+  "method": "Bounded linear path reader; complete XY segment intersections, extrusion state/debt, feature and actual deposition Z",
+  "limitations": "Region presence does not prove complete stroke tracing or printed readability. Native display state and physical results are separate.",
+  "comparisons": {
+    "V1-S_vs_V2-S_coordinate_paths_equal": true
+  },
+  "runs": [
+    {
+      "file": "P-fresh.gcode",
+      "sha256": "37cab1077d83b2d4ba114d23337517dd2fab308d73a1e75914e3579eef7a5d1d",
+      "model_move_count": 3312,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        85,
+        85
+      ],
+      "feature_counts": {
+        "Perimeter": 200,
+        "External perimeter": 200,
+        "Solid infill": 1328,
+        "Internal infill": 1218,
+        "Bridge infill": 173,
+        "Top solid infill": 193
+      },
+      "top_solid_z": [
+        10.0
+      ],
+      "upper_roof_solid_z": [
+        9.2,
+        9.6,
+        9.8,
+        10.0
+      ],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 2380,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "1460.02",
+        "filament used [cm3]": "3.51",
+        "filament used [g]": "4.35",
+        "estimated printing time (normal mode)": "22m 1s"
+      }
+    },
+    {
+      "file": "P-open.gcode",
+      "sha256": "944c0609d3229a399ca80c1f0970d254eaed8e2777d094891dbcb83f8a2e848b",
+      "model_move_count": 2597,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        85,
+        85
+      ],
+      "feature_counts": {
+        "Perimeter": 200,
+        "External perimeter": 200,
+        "Solid infill": 863,
+        "Internal infill": 1334
+      },
+      "top_solid_z": [],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 1665,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "1205.33",
+        "filament used [cm3]": "2.90",
+        "filament used [g]": "3.59",
+        "estimated printing time (normal mode)": "16m 9s"
+      }
+    },
+    {
+      "file": "P-roof.gcode",
+      "sha256": "37cab1077d83b2d4ba114d23337517dd2fab308d73a1e75914e3579eef7a5d1d",
+      "model_move_count": 3312,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        85,
+        85
+      ],
+      "feature_counts": {
+        "Perimeter": 200,
+        "External perimeter": 200,
+        "Solid infill": 1328,
+        "Internal infill": 1218,
+        "Bridge infill": 173,
+        "Top solid infill": 193
+      },
+      "top_solid_z": [
+        10.0
+      ],
+      "upper_roof_solid_z": [
+        9.2,
+        9.6,
+        9.8,
+        10.0
+      ],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 2380,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "1460.02",
+        "filament used [cm3]": "3.51",
+        "filament used [g]": "4.35",
+        "estimated printing time (normal mode)": "22m 1s"
+      }
+    },
+    {
+      "file": "R1.gcode",
+      "sha256": "969076ce46221073a30ba87f32f5bba6e9c032baf1315dd11351307a83faa101",
+      "model_move_count": 3312,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        85,
+        85
+      ],
+      "feature_counts": {
+        "Perimeter": 200,
+        "External perimeter": 200,
+        "Solid infill": 1328,
+        "Internal infill": 1218,
+        "Bridge infill": 173,
+        "Top solid infill": 193
+      },
+      "top_solid_z": [
+        10.0
+      ],
+      "upper_roof_solid_z": [
+        9.2,
+        9.6,
+        9.8,
+        10.0
+      ],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 2380,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "1460.02",
+        "filament used [cm3]": "3.51",
+        "filament used [g]": "4.35",
+        "estimated printing time (normal mode)": "22m 1s"
+      }
+    },
+    {
+      "file": "R2.gcode",
+      "sha256": "ec6b0c4ad48d3ce76203ff281102ff90fba79c95b1b8aa55744ee6b2c136b317",
+      "model_move_count": 2597,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        85,
+        85
+      ],
+      "feature_counts": {
+        "Perimeter": 200,
+        "External perimeter": 200,
+        "Solid infill": 863,
+        "Internal infill": 1334
+      },
+      "top_solid_z": [],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 1665,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "1205.33",
+        "filament used [cm3]": "2.90",
+        "filament used [g]": "3.59",
+        "estimated printing time (normal mode)": "16m 9s"
+      }
+    },
+    {
+      "file": "R3.gcode",
+      "sha256": "5a1817e8f0f0b662cf4fe5d770dd6f31355519cded69bf0998c76a1e4228fb8e",
+      "model_move_count": 3312,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        85,
+        85
+      ],
+      "feature_counts": {
+        "Perimeter": 200,
+        "External perimeter": 200,
+        "Solid infill": 1328,
+        "Internal infill": 1218,
+        "Bridge infill": 173,
+        "Top solid infill": 193
+      },
+      "top_solid_z": [
+        10.0
+      ],
+      "upper_roof_solid_z": [
+        9.2,
+        9.6,
+        9.8,
+        10.0
+      ],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 2380,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "1460.02",
+        "filament used [cm3]": "3.51",
+        "filament used [g]": "4.35",
+        "estimated printing time (normal mode)": "22m 1s"
+      }
+    },
+    {
+      "file": "T1-A.gcode",
+      "sha256": "818f2b2932b01a178d04ff277d5dbed90e61743af3b7e3d2944fb6ac07b90f34",
+      "model_move_count": 1934,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        80,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 40,
+        "External perimeter": 130,
+        "Solid infill": 1309,
+        "Internal infill": 60,
+        "Bridge infill": 187,
+        "Top solid infill": 208
+      },
+      "top_solid_z": [
+        2.0
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": {
+        "O": {
+          "positive_move_count": 24,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        },
+        "H": {
+          "positive_move_count": 54,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        },
+        "I": {
+          "positive_move_count": 12,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        }
+      },
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 1008,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "727.95",
+        "filament used [cm3]": "1.75",
+        "filament used [g]": "2.17",
+        "estimated printing time (normal mode)": "15m 6s"
+      }
+    },
+    {
+      "file": "T1-C.gcode",
+      "sha256": "5dcc6bde68beae0716b6526321f79609254f21542d68f360db37232be73e3273",
+      "model_move_count": 1881,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        80,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 40,
+        "External perimeter": 79,
+        "Solid infill": 1309,
+        "Internal infill": 60,
+        "Bridge infill": 185,
+        "Top solid infill": 208
+      },
+      "top_solid_z": [
+        2.0
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": {
+        "O": {
+          "positive_move_count": 0,
+          "deposition_z": []
+        },
+        "H": {
+          "positive_move_count": 27,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        },
+        "I": {
+          "positive_move_count": 12,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        }
+      },
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 955,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "728.05",
+        "filament used [cm3]": "1.75",
+        "filament used [g]": "2.17",
+        "estimated printing time (normal mode)": "14m 57s"
+      }
+    },
+    {
+      "file": "T2-C.gcode",
+      "sha256": "2a7598ee2832f83eefbde47adfe066b30379d01da52cec9dc07c6bdfc671e507",
+      "model_move_count": 1922,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        80,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 40,
+        "External perimeter": 118,
+        "Solid infill": 1309,
+        "Internal infill": 60,
+        "Bridge infill": 187,
+        "Top solid infill": 208
+      },
+      "top_solid_z": [
+        2.0
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": {
+        "O": {
+          "positive_move_count": 27,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        },
+        "H": {
+          "positive_move_count": 39,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        },
+        "I": {
+          "positive_move_count": 12,
+          "deposition_z": [
+            2.2,
+            2.4,
+            2.6
+          ]
+        }
+      },
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 996,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "734.63",
+        "filament used [cm3]": "1.77",
+        "filament used [g]": "2.19",
+        "estimated printing time (normal mode)": "15m 11s"
+      }
+    },
+    {
+      "file": "T3-C.gcode",
+      "sha256": "256f7a588e23307d74882b53fb51ecda3fea5587bb6c4c769b7581891e7a6210",
+      "model_move_count": 1842,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        80,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 40,
+        "External perimeter": 40,
+        "Solid infill": 1309,
+        "Internal infill": 60,
+        "Bridge infill": 185,
+        "Top solid infill": 208
+      },
+      "top_solid_z": [
+        2.0
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": {
+        "O": {
+          "positive_move_count": 0,
+          "deposition_z": []
+        },
+        "H": {
+          "positive_move_count": 0,
+          "deposition_z": []
+        },
+        "I": {
+          "positive_move_count": 0,
+          "deposition_z": []
+        }
+      },
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 916,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "719.83",
+        "filament used [cm3]": "1.73",
+        "filament used [g]": "2.15",
+        "estimated printing time (normal mode)": "14m 43s"
+      }
+    },
+    {
+      "file": "T3-F.gcode",
+      "sha256": "ac107800e9fa20546dca34af37da4235f5436ae3b13cedf355526146b9d39fdf",
+      "model_move_count": 2184,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        80,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 80,
+        "External perimeter": 106,
+        "Solid infill": 1255,
+        "Internal infill": 360,
+        "Bridge infill": 187,
+        "Top solid infill": 196
+      },
+      "top_solid_z": [
+        2.0
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": {
+        "O": {
+          "positive_move_count": 9,
+          "deposition_z": [
+            2.1
+          ]
+        },
+        "H": {
+          "positive_move_count": 13,
+          "deposition_z": [
+            2.1
+          ]
+        },
+        "I": {
+          "positive_move_count": 4,
+          "deposition_z": [
+            2.1
+          ]
+        }
+      },
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 1105,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "521.47",
+        "filament used [cm3]": "1.25",
+        "filament used [g]": "1.56",
+        "estimated printing time (normal mode)": "16m 19s"
+      }
+    },
+    {
+      "file": "T4-C.gcode",
+      "sha256": "c2fce7066d07f70afc479979844363bfc98be2b03ad4acd065ec791ba27151b6",
+      "model_move_count": 4141,
+      "extrusion_bounds_above_z20": null,
+      "source_to_output_xy_offset_mm": [
+        80,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 121,
+        "External perimeter": 121,
+        "Solid infill": 2427,
+        "Internal infill": 160,
+        "Top solid infill": 824,
+        "Bridge infill": 488
+      },
+      "top_solid_z": [
+        1.4,
+        2.0
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": {
+        "O": {
+          "positive_move_count": 0,
+          "deposition_z": []
+        },
+        "H": {
+          "positive_move_count": 0,
+          "deposition_z": []
+        },
+        "I": {
+          "positive_move_count": 0,
+          "deposition_z": []
+        }
+      },
+      "recess_slot_crossings_by_deposition_z": {
+        "O-left": {
+          "1.6": 0,
+          "1.8": 0,
+          "2.0": 0
+        },
+        "H-left": {
+          "1.6": 0,
+          "1.8": 0,
+          "2.0": 0
+        },
+        "I": {
+          "1.6": 0,
+          "1.8": 0,
+          "2.0": 0
+        },
+        "O-counter": {
+          "1.6": 62,
+          "1.8": 63,
+          "2.0": 46
+        }
+      },
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 2958,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "733.37",
+        "filament used [cm3]": "1.76",
+        "filament used [g]": "2.19",
+        "estimated printing time (normal mode)": "16m 18s"
+      }
+    },
+    {
+      "file": "V1-N.gcode",
+      "sha256": "7050622dc8f8bec345bb921e214f791c173417a6f5499592c49b35e810a462c2",
+      "model_move_count": 5512,
+      "extrusion_bounds_above_z20": {
+        "min": [
+          88.225,
+          88.225,
+          20.2
+        ],
+        "max": [
+          111.775,
+          111.775,
+          30.0
+        ]
+      },
+      "source_to_output_xy_offset_mm": [
+        88,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 600,
+        "External perimeter": 600,
+        "Solid infill": 1042,
+        "Internal infill": 2982,
+        "Bridge infill": 136,
+        "Top solid infill": 152
+      },
+      "top_solid_z": [
+        30.0
+      ],
+      "upper_roof_solid_z": [
+        29.2,
+        29.6,
+        29.8,
+        30.0
+      ],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 4777,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "2356.02",
+        "filament used [cm3]": "5.67",
+        "filament used [g]": "7.03",
+        "estimated printing time (normal mode)": "30m 27s"
+      }
+    },
+    {
+      "file": "V1-S.gcode",
+      "sha256": "38b883cdf85bf1c79a80c079a21f54a6e843eea7e2c467a049940721b2bd191f",
+      "model_move_count": 1432,
+      "extrusion_bounds_above_z20": {
+        "min": [
+          88.225,
+          88.225,
+          20.002
+        ],
+        "max": [
+          111.775,
+          111.775,
+          30.0
+        ]
+      },
+      "source_to_output_xy_offset_mm": [
+        88,
+        88
+      ],
+      "feature_counts": {
+        "External perimeter": 750,
+        "Solid infill": 525,
+        "Top solid infill": 157
+      },
+      "top_solid_z": [
+        0.8
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 724,
+      "rising_z_moves_above_z1": 724,
+      "declared_totals": {
+        "filament used [mm]": "659.57",
+        "filament used [cm3]": "1.59",
+        "filament used [g]": "1.97",
+        "estimated printing time (normal mode)": "12m 32s"
+      }
+    },
+    {
+      "file": "V2-N.gcode",
+      "sha256": "f683241a3bcc2bff6b087e93ad3715177bf43eb580f483018381fb2b29785000",
+      "model_move_count": 4495,
+      "extrusion_bounds_above_z20": {
+        "min": [
+          88.225,
+          88.225,
+          20.2
+        ],
+        "max": [
+          111.775,
+          111.775,
+          30.0
+        ]
+      },
+      "source_to_output_xy_offset_mm": [
+        88,
+        88
+      ],
+      "feature_counts": {
+        "Perimeter": 28,
+        "External perimeter": 1178,
+        "Solid infill": 848,
+        "Top solid infill": 145,
+        "Gap fill": 2296
+      },
+      "top_solid_z": [
+        1.2
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 3607,
+      "rising_z_moves_above_z1": 0,
+      "declared_totals": {
+        "filament used [mm]": "1553.73",
+        "filament used [cm3]": "3.74",
+        "filament used [g]": "4.63",
+        "estimated printing time (normal mode)": "32m 59s"
+      }
+    },
+    {
+      "file": "V2-S.gcode",
+      "sha256": "38b883cdf85bf1c79a80c079a21f54a6e843eea7e2c467a049940721b2bd191f",
+      "model_move_count": 1432,
+      "extrusion_bounds_above_z20": {
+        "min": [
+          88.225,
+          88.225,
+          20.002
+        ],
+        "max": [
+          111.775,
+          111.775,
+          30.0
+        ]
+      },
+      "source_to_output_xy_offset_mm": [
+        88,
+        88
+      ],
+      "feature_counts": {
+        "External perimeter": 750,
+        "Solid infill": 525,
+        "Top solid infill": 157
+      },
+      "top_solid_z": [
+        0.8
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": null,
+      "extruding_moves_above_z1": 724,
+      "rising_z_moves_above_z1": 724,
+      "declared_totals": {
+        "filament used [mm]": "659.57",
+        "filament used [cm3]": "1.59",
+        "filament used [g]": "1.97",
+        "estimated printing time (normal mode)": "12m 32s"
+      }
+    },
+    {
+      "file": "V3-S.gcode",
+      "sha256": "69d18db742a065eea68209c41fd75fe6439c352eabf2b6217935bedf2d85f993",
+      "model_move_count": 1432,
+      "extrusion_bounds_above_z20": {
+        "min": [
+          104.225,
+          88.225,
+          20.003
+        ],
+        "max": [
+          111.775,
+          111.775,
+          30.0
+        ]
+      },
+      "source_to_output_xy_offset_mm": [
+        88,
+        88
+      ],
+      "feature_counts": {
+        "External perimeter": 750,
+        "Solid infill": 525,
+        "Top solid infill": 157
+      },
+      "top_solid_z": [
+        0.8
+      ],
+      "upper_roof_solid_z": [],
+      "glyph_regions_above_plaque": null,
+      "recess_slot_crossings_by_deposition_z": null,
+      "intertower_void_crossings_above_z10": 0,
+      "extruding_moves_above_z1": 724,
+      "rising_z_moves_above_z1": 724,
+      "declared_totals": {
+        "filament used [mm]": "551.25",
+        "filament used [cm3]": "1.33",
+        "filament used [g]": "1.64",
+        "estimated printing time (normal mode)": "10m 46s"
+      }
+    }
+  ]
+}

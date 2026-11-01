@@ -64,6 +64,61 @@ heading: 'How Much Filament Will a Print Use? Read the Complete Slicer Total'
   supports, layer direction and functional evidence before accepting the saving.
   Infill percentage alone cannot describe the whole material use.
 </p>
+<h2>A lower total can mean a missing required feature</h2>
+<p>
+  Compare the required object before accepting a smaller estimate. Removing an
+  intended roof can reduce planned material while failing the job's purpose. In
+  the actual PrusaSlicer 2.9.6 R-box runs, the source bytes, nozzle, widths,
+  layer schedule and nonzero infill stay fixed; only top closure is disabled and
+  then restored by reloading the baseline.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Exact run / requirement</th>
+      <th scope="col">Observed top paths</th>
+      <th scope="col">Declared one-filament total</th>
+      <th scope="col">Declared normal-mode duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>R1: closed box, top count 4</td>
+      <td>Top-solid paths at Z=10</td>
+      <td>4.35 g / 1460.02 mm</td>
+      <td>22m 1s</td>
+    </tr>
+    <tr>
+      <td>R2: same source, top count 0</td>
+      <td>No top-solid paths; fails a required-roof intention</td>
+      <td>3.59 g / 1205.33 mm</td>
+      <td>16m 9s</td>
+    </tr>
+    <tr>
+      <td>R3: same source, baseline restored</td>
+      <td>Top-solid paths restored at Z=10</td>
+      <td>4.35 g / 1460.02 mm</td>
+      <td>22m 1s</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The 0.76 g difference is a comparison of the exported declarations for this
+  single synthetic object and specified profile, not a measured saving or
+  general waste factor. Diameter is 1.75 mm and configured density 1.24 g/cm³,
+  but the grams above are read directly, not recomputed from length. Skirt, brim
+  and supports are disabled. Keep each run's declared scope; unknown categories
+  on another job remain unknown. The
+  <a href="{{ ExampleAsset.SlicerParserObservations }}" download
+    >exact-file record</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">roof diagnosis</a>
+  identify the paths and limits. A
+  <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}">mode change</a> can
+  change the intended object more fundamentally than a consumption number
+  suggests.
+</p>
 <h2>Convert consumption to cost</h2>
 <p>
   Use the

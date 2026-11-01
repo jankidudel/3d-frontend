@@ -61,8 +61,7 @@ heading: 'How to Export STL from CAD'
   </li>
   <li>
     Compare sliced paths under the intended profile using the
-    <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
-      >lettering handoff</a
+    <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}">lettering handoff</a
     >. Export refinement cannot restore text that never reached the saved mesh.
   </li>
 </ol>
@@ -220,4 +219,16 @@ heading: 'How to Export STL from CAD'
   Stop and return to source when an intended body is absent, a required feature
   disagrees or a solid has an unexplained opening. Repeated conversion cannot
   recover a native feature timeline.
+</p>
+<p>
+  For an exact saved-byte lettering handoff, compare
+  <a href="{{ ExampleAsset.SlicerT1Stl }}" download>T1</a> with
+  <a href="{{ ExampleAsset.SlicerT2Stl }}" download>T2</a>. Both reopen as one
+  closed 500-triangle plaque with the same outside bounds; only the narrow O/H
+  strokes were widened locally. Under the retained Classic profile the O changes
+  from zero to 27 model extrusion moves across the relief layers. These are
+  original generated polygon solids, not an observed Fusion or Onshape export.
+  Preserve source definitions, reopen the actual derivative and use the
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}">text workflow</a> for
+  sliced interpretation.
 </p>

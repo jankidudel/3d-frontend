@@ -8,10 +8,10 @@ import {
 
 /** Recorded editorial dates for individual pages, never build time. */
 export const editorialDates: Readonly<Record<string, string>> = {
-  [PublicRouteUrl.Examples]: '2026-10-31',
+  [PublicRouteUrl.Examples]: '2026-11-01',
   [PublicRouteUrl.Home]: '2026-10-29',
-  [PublicRouteUrl.AllTools]: '2026-10-31',
-  [PublicRouteUrl.Guides]: '2026-10-31',
+  [PublicRouteUrl.AllTools]: '2026-11-01',
+  [PublicRouteUrl.Guides]: '2026-11-01',
   [`/${MaterialRoutePath.Pla}`]: '2026-10-29',
   [`/${MaterialRoutePath.Petg}`]: '2026-10-29',
   [`/${MaterialRoutePath.Abs}`]: '2026-10-29',
@@ -32,7 +32,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.ThreeMfPrintPreflight]: '2026-10-24',
   [PublicRouteUrl.QualityCheck]: '2026-10-29',
   [PublicRouteUrl.DimensionsChecker]: '2026-10-31',
-  [PublicRouteUrl.StlWallThicknessChecker]: '2026-10-31',
+  [PublicRouteUrl.StlWallThicknessChecker]: '2026-11-01',
   [PublicRouteUrl.PrintCostCalculator]: '2026-10-29',
   [PublicRouteUrl.QuoteGenerator]: '2026-10-29',
   [PublicRouteUrl.PrintPriceCalculator]: '2026-10-26',
@@ -44,7 +44,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.BatchStlChecker]: '2026-10-26',
   [PublicRouteUrl.StlCompare]: '2026-10-31',
   [PublicRouteUrl.FilamentRemainingCalculator]: '2026-10-10',
-  [PublicRouteUrl.NozzleLayerHeightCalculator]: '2026-10-31',
+  [PublicRouteUrl.NozzleLayerHeightCalculator]: '2026-11-01',
   [PublicRouteUrl.VolumetricFlowCalculator]: '2026-10-04',
   [PublicRouteUrl.PrintFinishTimeCalculator]: '2026-10-10',
 
@@ -87,7 +87,7 @@ export const editorialDates: Readonly<Record<string, string>> = {
   [PublicRouteUrl.WatertightChecker]: '2026-10-29',
   [PublicRouteUrl.StlScaleTool]: '2026-10-29',
   [PublicRouteUrl.StlOverhangChecker]: '2026-10-22',
-  [PublicRouteUrl.ThreeMfWallThicknessChecker]: '2026-10-31',
+  [PublicRouteUrl.ThreeMfWallThicknessChecker]: '2026-11-01',
   [PublicRouteUrl.ThreeMfOverhangChecker]: '2026-10-22',
   [PublicRouteUrl.TriangleCounter]: '2026-10-26',
   [PublicRouteUrl.StlFileSizeReducer]: '2026-10-26',

@@ -56,11 +56,89 @@ heading: How to Check a 3MF File Before Slicing
     <tr>
       <td>Geometry screens complete, slicing remains unexpected</td>
       <td>Required features in actual profile and affected layers</td>
-      <td>Native slicer/source design.</td>
+      <td>
+        Missing
+        <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}"
+          >strokes/counters</a
+        >, an absent
+        <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">roof</a>, or
+        changed
+        <a
+          href="{{
+            GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings
+          }}#guide-project-state"
+          >project preparation state</a
+        >
+        need different checks.
+      </td>
     </tr>
   </tbody>
 </table>
 
+<h2>Walk one identified package through four stages</h2>
+<p>
+  The
+  <a href="{{ ExampleAsset.SlicerProjectOpen }}" download>P-open control</a>
+  keeps file identity through these actual checks. Its
+  <a
+    href="{{
+      GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings
+    }}#guide-project-state"
+    >project comparison</a
+  >
+  explains the controlled archive construction and the separate exported STL.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Stage / method</th>
+      <th scope="col">Actual observation</th>
+      <th scope="col">Remaining decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Package: current local resolver and PrusaSlicer 2.9.6 CLI</td>
+      <td>The exact ZIP/XML package opens in both</td>
+      <td>Opening alone does not validate every property</td>
+    </tr>
+    <tr>
+      <td>Build: current supported geometry resolver</td>
+      <td>
+        One placement, one mesh, 12 triangles; millimetres; X/Y=85..115 and
+        Z=0..10
+      </td>
+      <td>Confirm this is the intended inventory and placement</td>
+    </tr>
+    <tr>
+      <td>Mesh: current combined local topology method</td>
+      <td>
+        One shell; zero open, over-shared, degenerate, duplicate or
+        winding-conflict findings; supported volume 9,000 mm³
+      </td>
+      <td>
+        Intersections, application intent and physical suitability remain
+        separate
+      </td>
+    </tr>
+    <tr>
+      <td>Native project reader: actual CLI reslice</td>
+      <td>Object top count 0 overrides global 4; no top-solid paths</td>
+      <td>
+        Restore the required effective shell setting, rather than repair
+        unchanged geometry
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The
+  <a href="{{ ExampleAsset.SlicerImplementationObservations }}" download
+    >exact implementation record</a
+  >
+  is local software evidence, not a server endpoint or GUI display observation.
+  For this file, the remaining question is whether an open top was intended.
+</p>
 <h2>Choose a method deliberately</h2>
 <p>
   <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a>

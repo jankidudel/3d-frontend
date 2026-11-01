@@ -1,0 +1,216 @@
+---
+title: 'Embossed Text Not Printing? Check the Preview | InspectMesh'
+description: Find whether missing lettering comes from narrow strokes, closed gaps, shallow relief or disconnected geometry. Compare controlled models and sliced paths.
+slug: embossed-text-not-printing
+eyebrow: Lettering and sliced detail
+heading: Embossed or Engraved Text Missing from Your Slice?
+---
+
+<p>
+  First check whether the lettering exists in the exported mesh, then find where
+  it changes in the sliced preview. Stroke width and the gaps inside letters are
+  XY features; raised height or engraved depth is a Z feature. Changing one does
+  not automatically fix the other.
+</p>
+<p>
+  This guide compares source geometry and software paths. It does not establish
+  printed readability or physical accuracy. You can follow it without uploading
+  a model.
+</p>
+<h2>Find which part of the letter is missing</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Symptom</th>
+      <th scope="col">First useful check</th>
+      <th scope="col">Change to consider</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Entire word absent from the exported mesh</td>
+      <td>
+        Reopen the actual STL in the
+        <a href="{{ GuideSlug.RouteStlViewer }}">local viewer</a>; inspect body
+        selection and whether the text is solid geometry.
+      </td>
+      <td>
+        Correct the
+        <a href="{{ GuideSlug.RouteHowToExportStlFromCad }}">source export</a>.
+        More triangles cannot recreate text that was never exported.
+      </td>
+    </tr>
+    <tr>
+      <td>Narrow positive strokes disappear only after slicing</td>
+      <td>
+        Compare local stroke width with the generated model paths under the
+        effective perimeter profile.
+      </td>
+      <td>A local width edit or a tested generator change.</td>
+    </tr>
+    <tr>
+      <td>Counter closes or neighbouring strokes join</td>
+      <td>Inspect the negative space through all affected layers.</td>
+      <td>
+        Counter/slot spacing or the relevant profile, rather than a
+        material-wall threshold.
+      </td>
+    </tr>
+    <tr>
+      <td>Shallow relief disappears</td>
+      <td>
+        Compare its source Z interval with actual deposition heights, including
+        the first-layer schedule.
+      </td>
+      <td>Relief height/depth or a reviewed layer schedule.</td>
+    </tr>
+    <tr>
+      <td>Letter floats above its base</td>
+      <td>Inspect intended attachment and the source union/subtraction.</td>
+      <td>
+        Correct the connection; do not discard every disconnected piece
+        automatically.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="guide-lettering-results">
+  Controlled strokes: source widths versus actual paths
+</h2>
+<p>
+  The original T1 plaque is 40 x 24 x 2 mm with original polygon O/H/I glyphs.
+  Their strokes are 0.25, 0.45 and 0.80 mm wide, raised from Z=2 to Z=2.6 mm.
+  These are experimental dimensions, not minimum font recommendations. The
+  reopened T1 is one closed 500-triangle shell. In PrusaSlicer 2.9.6, the
+  retained baseline uses a 0.4 mm nozzle, explicit 0.45 mm widths, 0.20 mm
+  layers and first layer, two perimeters, 15% rectilinear infill and no adaptive
+  layers. The
+  <a href="{{ ExampleAsset.SlicerBaselineIni }}" download
+    >complete saved profile</a
+  >
+  retains the other effective settings.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Run and deliberate change</th>
+      <th scope="col">O / H / I region extrusion moves above the plaque</th>
+      <th scope="col">Decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T1-C: original, Classic</td>
+      <td>0 / 27 / 12, across Z=2.2, 2.4 and 2.6 where present</td>
+      <td>
+        The narrow O has no model paths above the base under this profile.
+      </td>
+    </tr>
+    <tr>
+      <td>T1-A: exact T1 bytes, Arachne</td>
+      <td>24 / 54 / 12 at those three heights</td>
+      <td>
+        The generator change produces paths in the O region; inspect the actual
+        outline and counter.
+      </td>
+    </tr>
+    <tr>
+      <td>T2-C: O/H locally widened to 0.80 mm, Classic</td>
+      <td>27 / 39 / 12 at those three heights</td>
+      <td>
+        Local widening restores O-region paths while the plaque and glyph
+        outside footprints stay fixed.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<figure>
+  <img
+    src="{{ ExampleAsset.SlicerLetteringFigure }}"
+    width="1080"
+    height="388"
+    loading="lazy"
+    alt="Actual Z 2.2 extrusion paths: Classic omits the original O, while Arachne and local widening produce O-region paths."
+  />
+  <figcaption>
+    Original rendering of retained extrusion centrelines, with source XY
+    translation removed. Move counts establish region presence, not complete
+    lettering quality or a plastic outline.
+  </figcaption>
+</figure>
+<p>
+  Inspect
+  <a href="{{ ExampleAsset.SlicerT1Stl }}" download>original T1 STL</a> and
+  <a href="{{ ExampleAsset.SlicerT2Stl }}" download>corrected T2 STL</a>, or
+  compare their exported surfaces in
+  <a href="{{ GuideSlug.RouteStlCompare }}">STL Compare</a>. The
+  <a href="{{ ExampleAsset.SlicerPathObservations }}" download
+    >exact-output observations</a
+  >
+  retain hashes, regions and heights.
+  <a href="https://help.prusa3d.com/article/arachne-perimeter-generator_352769"
+    >Prusa's Arachne documentation</a
+  >
+  explains variable-width controls; this particular result comes from the
+  identified runs, not a universal engine ranking.
+</p>
+
+<h2>Finer layers and wider strokes answer different questions</h2>
+<p>
+  T3 keeps T2's XY outlines but reduces relief to 0.10 mm, over Z=2..2.1. T3-C
+  has no deposition above Z=2 under the 0.20 mm schedule. T3-F, with both layer
+  and first-layer heights changed to 0.10 mm, has O/H/I paths at Z=2.1: 9, 13
+  and 4 moves respectively. T2-C's 0.60 mm relief had paths at three deposition
+  heights. These are observed heights, not relief divided by nominal layer
+  height.
+</p>
+<figure>
+  <img
+    src="{{ ExampleAsset.SlicerReliefFigure }}"
+    width="1080"
+    height="388"
+    loading="lazy"
+    alt="T2 has raised paths, shallow T3 has none above the plaque under the coarse schedule, and the finer schedule records paths at Z 2.1."
+  />
+  <figcaption>
+    Actual retained paths at the stated deposition heights. XY settings are
+    unchanged between the two T3 schedules.
+  </figcaption>
+</figure>
+<p>
+  Reducing layer height can address this Z representation problem; it does not
+  widen a narrow XY stroke. Match the change to the lost feature rather than
+  globally scaling the entire part, its holes and mounting dimensions.
+</p>
+
+<h2>Read engraved lettering as empty space</h2>
+<p>
+  T4 subtracts the narrow outlines from Z=1.4..2.0 mm. At deposition Z=1.6, 1.8
+  and 2.0, the retained Classic paths have zero crossings through the bounded
+  interior strips of the O-left, H-left and I recesses. The O counter instead
+  contains material paths: 62, 63 and 46 crossings in its bounded counter
+  region. That island is attached to the material below the recess. These
+  centreline checks do not measure the eventual groove clearance.
+</p>
+<figure>
+  <img
+    src="{{ ExampleAsset.SlicerRecessFigure }}"
+    width="1080"
+    height="388"
+    loading="lazy"
+    alt="Actual T4 paths at Z 1.8 show material around the recessed glyph strips and inside the O counter."
+  />
+  <figcaption>
+    Recessed control, actual Z=1.8 paths. A letter counter and a groove are
+    different negative-space questions.
+  </figcaption>
+</figure>
+<p>
+  A sampled
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}">material-wall ray</a>
+  is not a groove-width measurement. If a void becomes material, use the
+  <a href="{{ GuideSlug.RouteSlicerFillsHoleInStl }}">filled-opening workflow</a
+  >. Reopen every saved correction and inspect all affected sliced layers.
+  InspectMesh does not edit fonts or automatically recognise letter strokes.
+</p>

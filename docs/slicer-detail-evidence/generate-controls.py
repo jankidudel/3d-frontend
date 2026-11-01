@@ -112,7 +112,6 @@ def main():
         'widened_widths_mm': {'O': 0.8, 'H': 0.8, 'I': 0.8},
         'relief_interval_mm': {'T1': [2, 2.6], 'T2': [2, 2.6], 'T3': [2, 2.1], 'T4': [1.4, 2]},
         'branch_interval_mm': {'V3': [10, 30]},
-        'slicer_status': 'not run; no path observations, effective profile or native screenshots',
         'files': files,
     }
     (ROOT / 'inputs.json').write_text(json.dumps(manifest, indent=2) + '\n')

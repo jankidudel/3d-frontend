@@ -15,6 +15,7 @@
     "scripts/export-fidelity.spec.mts",
     "scripts/file-handoff.spec.mts",
     "scripts/input-integrity.spec.mts",
-    "scripts/feature-measurement.spec.mts"
+    "scripts/feature-measurement.spec.mts",
+    "scripts/slicer-detail.spec.mts"
   ]
 }

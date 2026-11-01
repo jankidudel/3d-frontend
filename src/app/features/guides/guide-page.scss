@@ -2,12 +2,13 @@
   max-width: 54rem;
 }
 
-.guide-page .guide-body > h2,
+.guide-page .guide-body h2,
 .guide-page .guide-faq {
   margin-top: 2.75rem;
 }
 
 .guide-page h2 {
+  scroll-margin-block-start: 1.5rem;
   margin-bottom: 1rem;
   font-size: clamp(1.45rem, 3vw, 2rem);
 }
@@ -152,5 +153,20 @@
   }
   .guide-page .guide-body table:has(caption) thead {
     display: table-header-group;
+  }
+}
+
+.guide-page
+  .guide-body
+  .guide-diagram-scroll
+  img[src^='/examples/slicer-detail/'] {
+  min-width: 67.5rem;
+}
+@media print {
+  .guide-page
+    .guide-body
+    .guide-diagram-scroll
+    img[src^='/examples/slicer-detail/'] {
+    min-width: 0;
   }
 }

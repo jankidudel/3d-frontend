@@ -73,6 +73,40 @@ describe('explicit public example loading', () => {
       expect(files[0].name).toBe(asset.name);
     },
   );
+  it.each([
+    [PublicRouteUrl.GcodePreflightChecker, 'lettering-detail', '.gcode'],
+    [PublicRouteUrl.ThreeMfViewer, 'top-closure', '.3mf'],
+    [PublicRouteUrl.Viewer, 'top-closure', '.stl'],
+  ])(
+    'selects and loads a supported initial asset from a mixed-format scenario for %s',
+    async (tool, id, extension) => {
+      const { fixture, load } = setup(tool);
+      fixture.detectChanges();
+      const component = fixture.componentInstance;
+      const question = fixture.nativeElement.querySelector(
+        'select',
+      ) as HTMLSelectElement;
+      question.value = id;
+      question.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      const asset = component.selected().files[component.chosenIndex()];
+      expect(asset.name.endsWith(extension)).toBe(true);
+      expect(
+        (
+          fixture.nativeElement.querySelectorAll(
+            'select',
+          )[1] as HTMLSelectElement
+        ).value,
+      ).toBe(String(component.chosenIndex()));
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue(new Response(new Uint8Array(asset.bytes))),
+      );
+      await component.open();
+      expect(load.mock.lastCall?.[0][0].name).toBe(asset.name);
+    },
+  );
+
   it('announces replacement and awaits the real tool callback', async () => {
     const { fixture, load } = setup();
     fixture.componentRef.setInput('active', true);

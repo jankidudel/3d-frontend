@@ -8,6 +8,9 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  EmbossedTextNotPrinting: 'embossed-text-not-printing',
+  VaseModeVsNormalPrinting: 'vase-mode-vs-normal-printing',
+  MissingTopLayersInSlicer: 'missing-top-layers-in-slicer',
   MeasureAngleInStl: 'measure-angle-in-stl',
   MeasureHoleDiameterStl: 'measure-hole-diameter-stl',
   DegenerateTrianglesStl: 'degenerate-triangles-stl',
@@ -29,6 +32,7 @@ export interface GuideRegistryEntry {
   readonly publishDate: string;
   readonly updatedDate?: string;
   readonly checkEditorialTargets: boolean;
+  readonly searchTerms?: readonly string[];
 }
 
 export const guideGroups = {
@@ -45,6 +49,49 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.EmbossedTextNotPrinting,
+    group: GuideGroupId.Stl,
+    order: 244,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'lettering',
+      'engraved',
+      'debossed',
+      'logo',
+      'stroke',
+      'counter',
+    ],
+  },
+  {
+    slug: GuideContentSlug.VaseModeVsNormalPrinting,
+    group: GuideGroupId.Stl,
+    order: 245,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: ['vase', 'spiral', 'spiralise', 'spiralize', 'single wall'],
+  },
+  {
+    slug: GuideContentSlug.MissingTopLayersInSlicer,
+    group: GuideGroupId.Stl,
+    order: 246,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'missing top',
+      'roof',
+      'top solid',
+      'top skin',
+      'top shell',
+      'top-solid',
+      'top-skin',
+      'missing-top',
+    ],
+  },
   {
     slug: GuideContentSlug.MeasureAngleInStl,
     group: GuideGroupId.Stl,
@@ -168,6 +215,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 272,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -255,7 +303,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 250,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -264,7 +312,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 203,
     enabled: true,
     publishDate: '2026-10-08',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -308,7 +356,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 208,
     enabled: true,
     publishDate: '2026-10-15',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
 
@@ -318,7 +366,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 200,
     enabled: true,
     publishDate: '2026-10-07',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -449,7 +497,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-check-gcode-before-printing',
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     group: GuideGroupId.General,
     order: 8,
     enabled: true,
@@ -462,7 +510,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 9,
     enabled: true,
     publishDate: '2026-09-12',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -515,7 +563,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 1,
     enabled: true,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-08',
     checkEditorialTargets: false,
   },
@@ -552,7 +600,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -669,7 +717,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-06',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
   },
   {
     slug: 'how-to-repair-an-stl-file',
@@ -722,7 +770,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 131,
     enabled: true,
     publishDate: '2026-10-15',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -739,7 +787,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 140,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -827,7 +875,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 220,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -836,7 +884,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 230,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -863,7 +911,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 25,
     enabled: true,
     publishDate: '2026-09-15',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -873,7 +921,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-25',
+    updatedDate: '2026-11-01',
   },
   {
     slug: 'how-to-tell-if-a-3mf-file-is-watertight',
@@ -970,7 +1018,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.ThreeMf,
     order: 145,
     enabled: true,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-06',
     checkEditorialTargets: false,
   },

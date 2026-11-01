@@ -397,20 +397,78 @@ faq:
   </li>
 </ul>
 <h2>How the examples were produced and verified</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Evidence stage</th>
+      <th scope="col">What the new controls establish</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Designed geometry</td>
+      <td>
+        R-box has a closed 30 x 30 x 10 mm material boundary; T1 has named
+        stroke/void/relief definitions
+      </td>
+    </tr>
+    <tr>
+      <td>Actual InspectMesh implementation</td>
+      <td>
+        The P project pair resolves the same one-mesh box; T1's 0.4 mm threshold
+        run measures 500 rays and flags 32
+      </td>
+    </tr>
+    <tr>
+      <td>Actual slicer output</td>
+      <td>
+        PrusaSlicer 2.9.6 R1/R3 have top-solid paths at Z=10; R2 omits them
+        despite the same source geometry
+      </td>
+    </tr>
+    <tr>
+      <td>Native display state</td>
+      <td>
+        Not recorded for the new roof output; a path-derived figure is not a
+        native UI screenshot
+      </td>
+    </tr>
+    <tr>
+      <td>Physical outcome</td>
+      <td>
+        No physical print, readability, leak or strength test in these controls
+      </td>
+    </tr>
+  </tbody>
+</table>
 <p>
-  <a href="{{ GuideSlug.RouteExamples }}">The example library</a> contains eight
-  teaching scenarios with stable IDs, original generated geometry, known
-  dimensions, downloadable bytes and original explanatory diagrams. Regression
-  checks read those distributed files, run the actual local implementations and
-  reopen generated STL output. They distinguish duplicate facets, reversed
-  winding and stored normal vectors, resolve 3MF instances/units/transforms and
-  check nominal fit arithmetic independently. These are software controls, not
-  customer models or physical prints.
+  The
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}#guide-roof-results"
+    >roof comparison</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}#guide-lettering-results"
+    >lettering comparison</a
+  >
+  identify exact inputs, outputs and effective settings. A geometry view does
+  not apply a native project's print profile. One screenshot would not establish
+  every generated path either. These observations do not expand the coverage of
+  earlier server tests or establish general 3MF appearance support.
+</p>
+<p>
+  <a href="{{ GuideSlug.RouteExamples }}">The example library</a> contains
+  original controlled scenarios with stable IDs, original generated geometry,
+  known dimensions, downloadable bytes and original explanatory diagrams.
+  Regression checks read those distributed files, run the actual local
+  implementations and reopen generated STL output. They distinguish duplicate
+  facets, reversed winding and stored normal vectors, resolve 3MF
+  instances/units/transforms and check nominal fit arithmetic independently.
+  These are software controls, not customer models or physical prints.
 </p>
 <p>
   The coupon derivatives use meshoptimizer 1.2.0, relative error 0.01 and
-  LockBorder. Actual retained PrusaSlicer 2.9.6 Classic/Arachne exports use a
-  0.4 mm nozzle, 0.2 mm layers, 0.45 mm extrusion width, two perimeters, zero
+  LockBorder. The earlier thin-bar PrusaSlicer 2.9.6 Classic/Arachne exports use
+  a 0.4 mm nozzle, 0.2 mm layers, 0.45 mm extrusion width, two perimeters, zero
   infill and thin-wall option off. Their configuration footers remain available
   in preview-only G-code. No printer was controlled; a slicer estimate is not
   measured print time. The guide explains the recorded experiment and its

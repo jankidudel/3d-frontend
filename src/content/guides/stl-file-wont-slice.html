@@ -132,7 +132,7 @@ faq:
       <td>Check whether strokes, counters or relief changed after export.</td>
       <td>
         Follow the
-        <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+        <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}"
           >lettering checks</a
         >
         before changing unrelated mesh topology.
@@ -144,7 +144,9 @@ faq:
         Compare the source roof, visible layer range and top-path settings.
       </td>
       <td>
-        Separate display, geometry and profile using the roof checks below.
+        <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}"
+          >Separate display, geometry and profile</a
+        >.
       </td>
     </tr>
     <tr>
@@ -152,7 +154,7 @@ faq:
       <td>Does the required result need a roof or separate upper regions?</td>
       <td>
         Use the
-        <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
+        <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}"
           >mode-versus-hollowing decision</a
         >; a cavity in the mesh is a separate source operation.
       </td>
@@ -175,37 +177,14 @@ faq:
   </tbody>
 </table>
 <h2>A missing roof: display, source or profile?</h2>
-<ol>
-  <li>
-    Restore the preview's complete relevant layer range and model extrusion
-    categories. If a roof appears in the same output, only the display changed;
-    mesh repair is unnecessary.
-  </li>
-  <li>
-    Inspect the source in the
-    <a href="{{ GuideSlug.RouteStlViewer }}">viewer</a>. An intentionally open
-    vessel should stay open. A defective missing face needs the
-    <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
-      >missing-surface workflow</a
-    >. Visual clipping hides geometry; it does not create a cap or extract a
-    solid section.
-  </li>
-  <li>
-    If the source roof exists, check effective top-solid layer count, minimum
-    shell thickness, object modifiers and mode in the native project. Preserve
-    the source bytes, restore the required settings, reslice and inspect
-    top-solid paths rather than just the maximum Z reached by sidewalls.
-  </li>
-</ol>
 <p>
-  <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748"
-    >Prusa's layer/perimeter documentation</a
-  >, reviewed 31 October 2026, describes top-layer and minimum-thickness
-  controls and spiral mode's top-layer override. Match controls to your
-  installed version. This is documentation-based triage; no new roof slice or
-  native preview experiment is claimed here. If a continuous roof exists in the
-  preview but the physical surface has holes, investigate the actual print
-  process separately.
+  Restore the full relevant preview visibility, inspect whether the source has
+  an intended roof, then review effective top settings and mode. The
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}#guide-roof-results"
+    >same-box closure experiment</a
+  >
+  shows why a closed source can produce no top skin. Keep geometry unchanged for
+  a setting correction.
 </p>
 <h2>When the mesh check and slicer disagree</h2>
 <p>

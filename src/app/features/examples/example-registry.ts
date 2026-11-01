@@ -14,6 +14,9 @@ export interface PublicExample {
     readonly reference?: string;
   }[];
   readonly preview: string;
+  readonly previewWidth?: number;
+  readonly previewHeight?: number;
+  readonly previewCaption?: string;
   readonly alt: string;
   readonly known: string;
   readonly observed: string;
@@ -1933,6 +1936,234 @@ export const publicExamples: readonly PublicExample[] = [
     ],
     provenance:
       'Original InspectMesh coordinate transforms with labelled correspondence and exact-byte observations; no slicer export or physical print test.',
+  },
+  {
+    id: 'lettering-detail',
+    name: 'Letter strokes and shallow relief',
+    group: 'Slicer detail',
+    question:
+      'Did a stroke disappear because of XY width or its Z representation?',
+    files: [
+      {
+        path: ExampleAsset.SlicerT1Stl,
+        name: 'T1.stl',
+        label: 'Original STL control',
+        bytes: 25084,
+      },
+      {
+        path: ExampleAsset.SlicerT2Stl,
+        name: 'T2.stl',
+        label: 'Locally widened STL control',
+        bytes: 25084,
+      },
+      {
+        path: ExampleAsset.SlicerT3Stl,
+        name: 'T3.stl',
+        label: 'Shallow-relief STL control',
+        bytes: 25084,
+      },
+      {
+        path: ExampleAsset.SlicerT4Stl,
+        name: 'T4.stl',
+        label: 'Recessed STL control',
+        bytes: 28684,
+      },
+      {
+        path: ExampleAsset.SlicerTextClassic,
+        name: 'T1-C.gcode',
+        label: 'Preview-only G-code',
+        bytes: 72415,
+      },
+      {
+        path: ExampleAsset.SlicerTextWidened,
+        name: 'T2-C.gcode',
+        label: 'Preview-only corrected G-code',
+        bytes: 74098,
+      },
+      {
+        path: ExampleAsset.SlicerBaselineIni,
+        name: 'baseline.ini',
+        label: 'Slicer configuration',
+        bytes: 9988,
+      },
+      {
+        path: ExampleAsset.SlicerPathObservations,
+        name: 'path-observations.json',
+        label: 'Exact-output observations',
+        bytes: 20651,
+      },
+    ],
+    preview: ExampleAsset.SlicerLetteringFigure,
+    previewWidth: 1080,
+    previewHeight: 388,
+    previewCaption:
+      'Original rendering of actual retained extrusion centrelines; not a native UI screenshot or physical print.',
+    alt: 'Actual paths omit the original O under Classic and show O-region paths under Arachne and local widening.',
+    known:
+      'Original 40 x 24 x 2 mm plaque; T1 O/H/I widths 0.25/0.45/0.80 mm and 0.60 mm relief. T2 widens O/H to 0.80; T3 reduces relief to 0.10; T4 recesses the original outlines.',
+    observed:
+      'T1-C has zero O-region moves above the base; T2-C has 27. T3-C omits paths above Z=2 while T3-F records glyph paths at Z=2.1. Counts describe retained centrelines, not readable plastic.',
+    settings:
+      'PrusaSlicer 2.9.6; 0.4 mm nozzle, explicit 0.45 mm widths, 0.20 mm layer/first layer unless named. Exact baseline and variants are retained; preview only.',
+    limitations:
+      'STL assumes mm. No physical print or native display-state experiment.',
+    guide: GuideRouteUrl.RouteEmbossedTextNotPrinting,
+    tools: [
+      PublicRouteUrl.Viewer,
+      PublicRouteUrl.StlWallThicknessChecker,
+      PublicRouteUrl.GcodePreflightChecker,
+    ],
+    provenance:
+      'Original InspectMesh controls, independently checked saved geometry and actual PrusaSlicer 2.9.6 output; no customer data.',
+  },
+  {
+    id: 'spiral-mode-source',
+    name: 'Solid outline, vessel and branching spiral',
+    group: 'Slicer detail',
+    question:
+      'Does a successful spiral export preserve the source features you require?',
+    files: [
+      {
+        path: ExampleAsset.SlicerV1Stl,
+        name: 'V1.stl',
+        label: 'Original solid STL control',
+        bytes: 684,
+      },
+      {
+        path: ExampleAsset.SlicerV2Stl,
+        name: 'V2.stl',
+        label: 'Designed-vessel STL control',
+        bytes: 4684,
+      },
+      {
+        path: ExampleAsset.SlicerV3Stl,
+        name: 'V3.stl',
+        label: 'Branching STL control',
+        bytes: 2284,
+      },
+      {
+        path: ExampleAsset.SlicerSpiralGcode,
+        name: 'V1-S.gcode',
+        label: 'Preview-only G-code',
+        bytes: 70547,
+      },
+      {
+        path: ExampleAsset.SlicerVaseIni,
+        name: 'V1-S.ini',
+        label: 'Slicer configuration',
+        bytes: 10021,
+      },
+      {
+        path: ExampleAsset.SlicerPathObservations,
+        name: 'path-observations.json',
+        label: 'Exact-output observations',
+        bytes: 20651,
+      },
+    ],
+    preview: ExampleAsset.SlicerModeFigure,
+    previewWidth: 1080,
+    previewHeight: 728,
+    previewCaption:
+      'Original rendering of actual retained extrusion centrelines; not a native UI screenshot or physical print.',
+    alt: 'Actual ordinary and spiral paths include a designed cavity in ordinary mode and only the right upper tower in the branching spiral result.',
+    known:
+      '24 x 24 x 30 mm solid, 1.2 mm wall/base vessel, and two upper towers branching above Z=10. Closed material boundaries do not imply equivalent mode behavior.',
+    observed:
+      'V1-S and V2-S have matching parsed path coordinates. V3-S exports successfully but traces only the right tower above Z=20. All 724 inspected extrusion moves above Z=1 rise in the spiral runs.',
+    settings:
+      'PrusaSlicer 2.9.6; 0.4 mm nozzle, explicit 0.45 mm widths, 0.20 mm layer/first layer unless named. Exact baseline and variants are retained; preview only.',
+    limitations:
+      'STL assumes mm. No physical print or native display-state experiment.',
+    guide: GuideRouteUrl.RouteVaseModeVsNormalPrinting,
+    tools: [PublicRouteUrl.Viewer, PublicRouteUrl.GcodePreflightChecker],
+    provenance:
+      'Original InspectMesh controls, independently checked saved geometry and actual PrusaSlicer 2.9.6 output; no customer data.',
+  },
+  {
+    id: 'top-closure',
+    name: 'Same source roof, different saved closure',
+    group: 'Slicer detail',
+    question:
+      'Can source geometry stay the same while a required roof disappears?',
+    files: [
+      {
+        path: ExampleAsset.SlicerRoofStl,
+        name: 'R-box.stl',
+        label: 'Original STL control',
+        bytes: 684,
+      },
+      {
+        path: ExampleAsset.SlicerRoofOn,
+        name: 'R1.gcode',
+        label: 'Preview-only roof G-code',
+        bytes: 126392,
+      },
+      {
+        path: ExampleAsset.SlicerRoofOff,
+        name: 'R2.gcode',
+        label: 'Preview-only no-top G-code',
+        bytes: 104006,
+      },
+      {
+        path: ExampleAsset.SlicerRoofRestored,
+        name: 'R3.gcode',
+        label: 'Preview-only restored G-code',
+        bytes: 126392,
+      },
+      {
+        path: ExampleAsset.SlicerRoofOffIni,
+        name: 'R2.ini',
+        label: 'Slicer configuration',
+        bytes: 9988,
+      },
+      {
+        path: ExampleAsset.SlicerProjectRoof,
+        name: 'P-roof.3mf',
+        label: 'Controlled project with roof',
+        bytes: 5149,
+      },
+      {
+        path: ExampleAsset.SlicerProjectOpen,
+        name: 'P-open.3mf',
+        label: 'Controlled object-override project',
+        bytes: 5147,
+      },
+      {
+        path: ExampleAsset.SlicerProjectDerivative,
+        name: 'P-open-geometry.stl',
+        label: 'Official geometry export',
+        bytes: 684,
+      },
+      {
+        path: ExampleAsset.SlicerProjectObservations,
+        name: 'project-observations.json',
+        label: 'Project-reader observations',
+        bytes: 1250,
+      },
+    ],
+    preview: ExampleAsset.SlicerRoofFigure,
+    previewWidth: 1080,
+    previewHeight: 388,
+    previewCaption:
+      'Original rendering of actual retained extrusion centrelines; not a native UI screenshot or physical print.',
+    alt: 'Actual top-layer paths show a roof with top closure enabled, no top skin with zero top layers, and restored roof paths after reloading the baseline.',
+    known:
+      'Exact same closed 30 x 30 x 10 mm source bytes; top count 4, then 0, then saved ordinary baseline restored. P projects carry the same geometry/global profile with different object top overrides.',
+    observed:
+      'R1/R3 have top-solid paths at Z=10 and declare 4.35 g / 22m 1s; R2 has no top-solid paths and declares 3.59 g / 16m 9s. CLI reopening of the P pair preserves the local override effect.',
+    settings:
+      'PrusaSlicer 2.9.6; 0.4 mm nozzle, explicit 0.45 mm widths, 0.20 mm layer/first layer unless named. Exact baseline and variants are retained; preview only.',
+    limitations:
+      'STL assumes mm. No physical print or native display-state experiment. Controlled project packages were read/resliced by CLI, not saved/reopened in a recorded GUI session.',
+    guide: GuideRouteUrl.RouteMissingTopLayersInSlicer,
+    tools: [
+      PublicRouteUrl.Viewer,
+      PublicRouteUrl.ThreeMfViewer,
+      PublicRouteUrl.ThreeMfWallThicknessChecker,
+      PublicRouteUrl.GcodePreflightChecker,
+    ],
+    provenance:
+      'Original InspectMesh controls, independently checked saved geometry and actual PrusaSlicer 2.9.6 output; no customer data.',
   },
 ];
 /** Only registry IDs are accepted; unknown values never become fetch locations. */

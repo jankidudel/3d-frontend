@@ -50,8 +50,9 @@ faq:
       <td>Derive a continuous outer-contour object</td>
       <td>Native slicer's spiral-vase mode and effective settings</td>
       <td>
-        Source outline, required features and paths, as explained below; this is
-        a slicing-mode decision, not a designed-cavity operation
+        <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}"
+          >Source outline, required features and paths</a
+        >; this is a slicing-mode decision, not a designed-cavity operation
       </td>
     </tr>
     <tr>
@@ -70,22 +71,16 @@ faq:
 </p>
 <h2>Spiral mode is a separate decision</h2>
 <p>
-  Prusa's
-  <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748"
-    >documented spiral-vase workflow</a
-  >, reviewed 31 October 2026, starts from a solid outside shape and derives a
-  continuously rising contour after the base. Its mode changes perimeter,
-  infill, top-layer and support settings. This documented behavior is not a new
-  local mode experiment. An already modelled vessel has real inner surfaces; do
-  not assume it is equivalent input or that separate upper branches can be
-  preserved as one continuous contour.
-</p>
-<p>
-  Choose ordinary walls when the required design needs independent regions,
-  interior geometry or a roof. Check effective settings after switching modes;
-  reopen the saved ordinary profile rather than assuming the toggle restores
-  earlier values. Inspect actual paths in your slicer. Neither a hollow-looking
-  model nor a generated file proves leak resistance or mechanical suitability.
+  V1's solid source produces ordinary infill and a roof, while its retained
+  spiral run produces a continuously rising outer path after the base. V2 has an
+  actual 1.2 mm cavity wall in its source; its spiral attempt nevertheless
+  produces the same path coordinates as V1's spiral run under the tested
+  profile. The
+  <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}#guide-vase-results"
+    >PrusaSlicer 2.9.6 mode comparison</a
+  >
+  owns those observations and the branching counterexample. A slicing mode is
+  not a source cavity operation, leak test or resin hollowing method.
 </p>
 <h2>A designed opening is different from a missing face</h2>
 <p>

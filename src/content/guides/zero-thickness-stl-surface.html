@@ -87,15 +87,16 @@ faq:
 </p>
 <h2>Check the source before the slicer</h2>
 <p>
-  The same distinction applies to lettering: a designed 0.25 mm wide raised
-  stroke with 0.60 mm relief, joined to a plaque, has finite material volume. An
-  open sheet has no enclosed material thickness. These illustrative source
-  dimensions are not a sampled result or a slicer observation. If a narrow
-  closed stroke receives no paths under a profile, that omission alone does not
-  prove zero thickness. Check
-  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
-    >source stroke width, counter and relief separately</a
-  >.
+  The same distinction applies to the original
+  <a href="{{ ExampleAsset.SlicerT1Stl }}" download>T1 plaque</a>: its O stroke
+  is designed 0.25 mm wide with 0.60 mm relief and joined to the base.
+  Independent reopening reports one closed 500-triangle shell. Yet the retained
+  PrusaSlicer 2.9.6 Classic output has no O-region paths above the plaque. That
+  is an omitted finite-width feature, not proof of a zero-thickness sheet. The
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}#guide-lettering-results"
+    >lettering comparison</a
+  >
+  separates topology from actual sliced paths.
 </p>
 <p>
   Download both controls without uploading a model. Open each in the

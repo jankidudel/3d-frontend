@@ -17,6 +17,19 @@ faq:
   different next actions. Read each metric's coverage instead of treating the
   picture or number of recognised lines as a machine compatibility score.
 </p>
+<p>
+  The exact R1.gcode bytes were also opened in the production browser viewer on
+  1 November 2026. Its
+  <a href="{{ ExampleAsset.SlicerBrowserReview }}" download
+    >downloaded review record</a
+  >
+  matches SHA-256
+  969076ce46221073a30ba87f32f5bba6e9c032baf1315dd11351307a83faa101: linear and
+  extrusion coverage are incomplete, duration and material declarations are
+  recognised, and all 4,796 source lines were reviewed. Unsupported effects
+  include G28 and M84. This is an actual unedited slicer export, separate from
+  the hand-authored unsupported-command examples below.
+</p>
 <h2>Follow a finding to its source</h2>
 <figure>
   <img
@@ -116,6 +129,72 @@ faq:
   firmware-dependent extrusion classification in the conservative model. G92 E
   resets logical extrusion without ordinary XYZ movement; G92 XYZ changes the
   frame and does not prove machine-space bounds.
+</p>
+<h2 id="guide-preview-stages">
+  A region absent from the picture: compare three places
+</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Possible observation</th>
+      <th scope="col">Confirming comparison</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Native display hides existing paths</td>
+      <td>
+        Same exact output with the full relevant layer/category visibility
+        restored
+      </td>
+      <td>
+        Correct display state; a native before/after recording is not claimed
+        here
+      </td>
+    </tr>
+    <tr>
+      <td>The exported model paths lack the required region</td>
+      <td>Source feature plus effective project/profile and actual output</td>
+      <td>
+        Follow
+        <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}">lettering</a> or
+        <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}"
+          >roof diagnosis</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Output has a region but this parser's coverage is incomplete</td>
+      <td>
+        Exact-file coverage and original unsupported source findings,
+        independently from the picture
+      </td>
+      <td>Use native review for the unsupported scope</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Actual example: the retained R1 output has top-solid paths at Z=10. The
+  current production parser, executed on those exact bytes, reports linear and
+  extrusion coverage incomplete, duration and material recognised, and no
+  preview truncation. It recognises the declared 22m 1s and 4.35 g without
+  making path review complete.
+  <a href="{{ ExampleAsset.SlicerParserObservations }}" download
+    >The per-metric record</a
+  >
+  includes the unsupported source findings. The original export was not edited
+  to manufacture an incomplete result, and the production parser was not
+  expanded for this batch.
+</p>
+<p>
+  This is distinct from R2, whose actual export omits top-solid paths because
+  top closure is zero. The
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}#guide-roof-results"
+    >same-source comparison</a
+  >
+  identifies that deliberate change. The analytical arc control above remains a
+  separate hand-authored case, not a real sliced job.
 </p>
 <h2>Reproduce the distinction</h2>
 <ol>

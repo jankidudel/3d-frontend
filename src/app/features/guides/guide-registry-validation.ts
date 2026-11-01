@@ -6,6 +6,7 @@ export interface GuideRegistryEntry {
   readonly publishDate: string;
   readonly updatedDate?: string;
   readonly checkEditorialTargets?: boolean;
+  readonly searchTerms?: readonly string[];
 }
 
 export interface GuideGroup {
@@ -25,6 +26,7 @@ const supportedRegistryFields = new Set([
   'publishDate',
   'updatedDate',
   'checkEditorialTargets',
+  'searchTerms',
 ]);
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -131,8 +133,25 @@ function registryEntry(
       `entry "${slug}" must provide boolean "checkEditorialTargets" when present.`,
     );
   }
+  const searchTerms = record['searchTerms'];
+  if (
+    searchTerms !== undefined &&
+    (!Array.isArray(searchTerms) ||
+      searchTerms.length > 24 ||
+      !searchTerms.every(
+        (term) =>
+          typeof term === 'string' &&
+          term.trim().length > 0 &&
+          term.length <= 80,
+      ))
+  ) {
+    throw registryError(
+      `entry "${slug}" must provide bounded nonempty search terms.`,
+    );
+  }
   return {
     slug,
+    searchTerms: searchTerms as readonly string[] | undefined,
     enabled: record['enabled'],
     group,
     order,

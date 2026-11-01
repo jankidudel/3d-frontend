@@ -1,0 +1,181 @@
+---
+title: 'Vase Mode vs Normal Printing: Choose the Shape | InspectMesh'
+description: Compare spiral-vase and ordinary shell toolpaths using controlled models. Check source shape, openings, separate regions and the features your part needs.
+slug: vase-mode-vs-normal-printing
+eyebrow: Source shape and slicing mode
+heading: Vase Mode vs Normal Printing
+---
+
+<p>
+  Choose the slicing mode from the paths and features the object needs.
+  Spiral-vase mode is a continuous contour workflow after its base; ordinary
+  printing can use separate walls, infill and top surfaces. A hollow-looking
+  model and a spiral toolpath are different things.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Required result</th>
+      <th scope="col">Ordinary slicing</th>
+      <th scope="col">Spiral decision</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>One continuously rising outer contour</td>
+      <td>Ordinary layer changes do not establish this.</td>
+      <td>Inspect actual extrusion Z after the base.</td>
+    </tr>
+    <tr>
+      <td>A roof or ordinary infill</td>
+      <td>Can be configured with relevant shell/infill settings.</td>
+      <td>The tested spiral setup disables both.</td>
+    </tr>
+    <tr>
+      <td>Two separated upper regions</td>
+      <td>Separate paths can represent them.</td>
+      <td>A successful export alone does not establish both survived.</td>
+    </tr>
+    <tr>
+      <td>Designed inner surfaces and a specified cavity wall</td>
+      <td>Inspect those source boundaries and paths.</td>
+      <td>
+        Do not assume a hollow source preserves its inner surfaces in this mode.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="guide-vase-results">One version, three source shapes</h2>
+<p>
+  The original controls share a 24 x 24 x 30 mm outside envelope. V1 is solid;
+  V2 is an open vessel with a 1.2 mm base and material wall; V3 branches into
+  two upper towers above Z=10. Their material boundaries reopen closed. STL uses
+  an assumed millimetre convention. PrusaSlicer 2.9.6 ran the
+  <a href="{{ ExampleAsset.SlicerBaselineIni }}" download
+    >saved ordinary profile</a
+  >
+  with 0.4 mm nozzle, 0.45 mm explicit widths and 0.20 mm layer/first-layer
+  heights.
+</p>
+<p>
+  The spiral runs deliberately change several effective inputs: two perimeters
+  become one, 15% infill becomes zero, four top solid layers become zero, and
+  spiral mode is enabled. Four bottom layers and support disabled are retained.
+  The
+  <a href="{{ ExampleAsset.SlicerVaseIni }}" download
+    >complete spiral configuration</a
+  >
+  records the remaining effective settings. This is a mode comparison, not an
+  isolated one-setting experiment.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Actual run</th>
+      <th scope="col">Observed paths</th>
+      <th scope="col">What follows</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>V1-N, solid source ordinary</td>
+      <td>Ordinary walls/infill and top-solid paths at Z=30.</td>
+      <td>The source can be sliced with a roof.</td>
+    </tr>
+    <tr>
+      <td>V1-S, same source spiral</td>
+      <td>
+        Base paths precede the spiral. All 724 inspected extrusion moves above
+        Z=1 have increasing Z; no upper roof is generated.
+      </td>
+      <td>
+        A closed solid source intentionally becomes an open-top sliced contour.
+      </td>
+    </tr>
+    <tr>
+      <td>V2-N, designed vessel ordinary</td>
+      <td>
+        Paths follow inner and outer wall regions; the cavity floor has
+        top-solid paths at Z=1.2.
+      </td>
+      <td>The source cavity is real geometry, separate from infill.</td>
+    </tr>
+    <tr>
+      <td>V2-S, vessel spiral attempt</td>
+      <td>
+        Export succeeds. Parsed path coordinates match V1-S exactly under this
+        setup.
+      </td>
+      <td>
+        The designed 1.2 mm inner-wall structure is not retained as the ordinary
+        vessel paths.
+      </td>
+    </tr>
+    <tr>
+      <td>V3-S, branching spiral attempt</td>
+      <td>
+        Export succeeds, but above Z=20 paths span X=104.225..111.775 and
+        Y=88.225..111.775: only the right tower is traced.
+      </td>
+      <td>
+        Do not approve the intended two-tower object from successful export
+        status.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<figure>
+  <img
+    src="{{ ExampleAsset.SlicerModeFigure }}"
+    width="1080"
+    height="728"
+    loading="lazy"
+    alt="Actual ordinary and spiral paths: the solid source has ordinary infill, the vessel has inner walls in ordinary mode, and the branching spiral output retains only the right tower."
+  />
+  <figcaption>
+    Parsed retained paths around Z=20. Dashed rectangles identify source outside
+    regions. This is not a native slicer screenshot or a physical print.
+  </figcaption>
+</figure>
+<p>
+  Compare <a href="{{ ExampleAsset.SlicerV1Stl }}" download>V1 solid STL</a>,
+  <a href="{{ ExampleAsset.SlicerV2Stl }}" download>V2 vessel STL</a> and
+  <a href="{{ ExampleAsset.SlicerV3Stl }}" download>V3 branching STL</a> in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">viewer</a>. The
+  <a href="{{ ExampleAsset.SlicerPathObservations }}" download
+    >hashed observations</a
+  >
+  identify the exact output and coordinate translation. None of these paths is
+  evidence of leak resistance, adhesion or mechanical suitability.
+</p>
+
+<h2>Choose a source operation or a mode deliberately</h2>
+<p>
+  Use the
+  <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
+    >hollowing guide</a
+  >
+  when the design needs an actual cavity, passage or resin-process opening. Use
+  ordinary walls when the requirement includes separate regions, intended inner
+  surfaces or a roof. A
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >material-wall check</a
+  >
+  does not detect spiral-mode compatibility, and the
+  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}">nozzle planner</a>
+  supplies line arithmetic rather than a slicer verdict.
+</p>
+<p>
+  <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748"
+    >Prusa's mode documentation</a
+  >
+  describes the named workflow and automatic settings. Match it to your version.
+  When leaving spiral mode, reload the saved ordinary profile and inspect
+  perimeter, infill, top/bottom and support settings; do not assume the toggle
+  restores earlier values. If a roof is unexpectedly absent, use the
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}"
+    >top-closure diagnosis</a
+  >
+  before changing source geometry.
+</p>

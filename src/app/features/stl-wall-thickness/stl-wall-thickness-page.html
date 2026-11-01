@@ -104,6 +104,12 @@
         ray can hit a different nearby body; compare flagged places with your
         intended material wall.
       </p>
+      <p>
+        If the missing feature is a roof, follow
+        <a [href]="guideRouteUrl.RouteMissingTopLayersInSlicer"
+          >top-closure diagnosis</a
+        >; this wall result does not detect roofs.
+      </p>
       <p class="legend">Heatmap legend: {{ legend(result) }}</p>
       <div class="next-actions" aria-labelledby="wall-next-action">
         <h3 id="wall-next-action">Choose the next check</h3>
@@ -134,7 +140,7 @@
             <li>
               If lettering is still omitted, compare its solid strokes, empty
               counters and relief with the
-              <a [href]="guideRouteUrl.Route3dPrintWallThicknessGuide"
+              <a [href]="guideRouteUrl.RouteEmbossedTextNotPrinting"
                 >lettering checks</a
               >. Acceptable measured samples cannot establish full feature
               coverage or preserved sliced detail.

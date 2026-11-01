@@ -313,7 +313,7 @@
               <td>
                 Compare raised height or recess depth with actual first-layer,
                 adaptive-layer and slice-plane settings. Use the
-                <a [href]="guides.Route3dPrintWallThicknessGuide"
+                <a [href]="guides.RouteEmbossedTextNotPrinting"
                   >lettering checks</a
                 >; nominal height divided by layer height is not an exact
                 generated-layer count.
@@ -334,8 +334,9 @@
               <td>
                 Review visibility, source closure, effective top layers and mode
                 in the
-                <a [href]="guides.RouteStlFileWontSlice">roof triage</a>.
-                Equal-width line arithmetic does not predict top closure.
+                <a [href]="guides.RouteMissingTopLayersInSlicer"
+                  >roof diagnosis</a
+                >. Equal-width line arithmetic does not predict top closure.
               </td>
             </tr>
           </tbody>
@@ -348,6 +349,16 @@
       >. If you already have a mesh, screen its sampled geometry with the
       <a [routerLink]="routeUrl.StlWallThicknessChecker">STL checker</a> or
       <a [routerLink]="routeUrl.ThreeMfWallThicknessChecker">3MF checker</a>.
+    </p>
+    <p>
+      The retained T3 plaque has 0.10 mm relief. Its 0.20 mm layer/first-layer
+      schedule has no paths above the base, while the 0.10 mm schedule records
+      glyph paths at Z=2.1.
+      <a [href]="guides.RouteEmbossedTextNotPrinting"
+        >Actual layer observations</a
+      >
+      differ from nominal line arithmetic; no minimum font size is calculated
+      here.
     </p>
     <section class="card">
       <h2>Actual thin-wall slicer control</h2>

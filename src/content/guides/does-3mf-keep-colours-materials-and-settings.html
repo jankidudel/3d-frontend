@@ -87,6 +87,104 @@ faq:
   treatment. A successful geometry load cannot produce a global compatibility
   score.
 </p>
+<h2 id="guide-project-state">
+  Same geometry, different saved preparation state
+</h2>
+<p>
+  The P-roof and P-open controls use the official PrusaSlicer 2.9.6 CLI geometry
+  exporter, with its complete saved profile and an explicitly constructed
+  object-level top-layer override packaged alongside the geometry. The exact
+  published packages were reopened and sliced by that same CLI. This is a
+  controlled project-reader persistence experiment, not a recording of GUI Save
+  Project, appearance preservation or another slicer's importer.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Exact stage</th>
+      <th scope="col">Geometry / effective setting</th>
+      <th scope="col">Actual observation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.SlicerProjectRoof }}" download
+          >P-roof reopened</a
+        >
+      </td>
+      <td>
+        One 30 x 30 x 10 mm box, X/Y=85..115; global top count 4, object count 4
+      </td>
+      <td>Top-solid paths at Z=10</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.SlicerProjectOpen }}" download
+          >P-open reopened</a
+        >
+      </td>
+      <td>Same intended box and placement; global count 4, object count 0</td>
+      <td>No top-solid paths; the local override changes the slice</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ ExampleAsset.SlicerProjectDerivative }}" download
+          >Official geometry derivative</a
+        >
+        in fresh baseline
+      </td>
+      <td>
+        Triangle records match the source after the measured +85,+85,0 placement
+        translation; fresh baseline top count 4
+      </td>
+      <td>
+        Top-solid paths return at Z=10; the STL does not carry the object
+        override
+      </td>
+    </tr>
+    <tr>
+      <td>Current InspectMesh resolver</td>
+      <td>
+        Both project packages resolve one placement, one mesh and 12 triangles;
+        same bounds
+      </td>
+      <td>
+        Complete supported geometry; local topology reports one closed shell and
+        9,000 mm³. Native shell settings are not applied by this view.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The
+  <a href="{{ ExampleAsset.SlicerProjectObservations }}" download
+    >project-reader record</a
+  >
+  identifies construction and output hashes; the
+  <a href="{{ ExampleAsset.SlicerImplementationObservations }}" download
+    >independent geometry record</a
+  >
+  compares actual triangle coordinates and winding, rather than relying on
+  bounds or byte equality. Unnecessary source-file metadata was removed before
+  the published packages were reopened. Neither control contains a modifier
+  mesh: the override belongs to the ordinary model object. A GUI object-tree
+  observation, GUI save/reopen, textures, appearance and other applications
+  remain untested.
+</p>
+<p>
+  A geometry export can reproduce the intended surfaces while leaving
+  preparation choices to a new project. If the
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">roof changes</a>,
+  review that saved state; if an ordinary placement is absent, follow the
+  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}">inventory trace</a
+  >.
+  <a href="https://help.prusa3d.com/article/saving-projects-as-3mf_1773"
+    >Prusa's project documentation</a
+  >
+  describes its project workflow; this observation covers only the named version
+  and operations.
+</p>
 <h2>Record one real path, leave unknown properties unknown</h2>
 <p>
   The

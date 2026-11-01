@@ -1,0 +1,1006 @@
+{
+  "runtime": "Current production implementations executed in Node; not a native display or browser screenshot",
+  "rows": [
+    {
+      "run": "T1-C",
+      "sha256": "5dcc6bde68beae0716b6526321f79609254f21542d68f360db37232be73e3273",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.24916666666666668,
+        "unit": "hours",
+        "line": 2249,
+        "source": "; estimated printing time (normal mode) = 14m 57s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 2.17,
+        "unit": "g",
+        "line": 2245,
+        "source": "; filament used [g] = 2.17",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 1213,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 2241,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "T2-C",
+      "sha256": "2a7598ee2832f83eefbde47adfe066b30379d01da52cec9dc07c6bdfc671e507",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.25305555555555553,
+        "unit": "hours",
+        "line": 2317,
+        "source": "; estimated printing time (normal mode) = 15m 11s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 2.19,
+        "unit": "g",
+        "line": 2313,
+        "source": "; filament used [g] = 2.19",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 1213,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 2309,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "R1",
+      "sha256": "969076ce46221073a30ba87f32f5bba6e9c032baf1315dd11351307a83faa101",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.36694444444444446,
+        "unit": "hours",
+        "line": 4444,
+        "source": "; estimated printing time (normal mode) = 22m 1s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 4.35,
+        "unit": "g",
+        "line": 4440,
+        "source": "; filament used [g] = 4.35",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 3481,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 4436,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "R2",
+      "sha256": "ec6b0c4ad48d3ce76203ff281102ff90fba79c95b1b8aa55744ee6b2c136b317",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.26916666666666667,
+        "unit": "hours",
+        "line": 3647,
+        "source": "; estimated printing time (normal mode) = 16m 9s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 3.59,
+        "unit": "g",
+        "line": 3643,
+        "source": "; filament used [g] = 3.59",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 3639,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "R3",
+      "sha256": "5a1817e8f0f0b662cf4fe5d770dd6f31355519cded69bf0998c76a1e4228fb8e",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.36694444444444446,
+        "unit": "hours",
+        "line": 4444,
+        "source": "; estimated printing time (normal mode) = 22m 1s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 4.35,
+        "unit": "g",
+        "line": 4440,
+        "source": "; filament used [g] = 4.35",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 3481,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 4436,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "V1-S",
+      "sha256": "38b883cdf85bf1c79a80c079a21f54a6e843eea7e2c467a049940721b2bd191f",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.2088888888888889,
+        "unit": "hours",
+        "line": 2304,
+        "source": "; estimated printing time (normal mode) = 12m 32s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 1.97,
+        "unit": "g",
+        "line": 2300,
+        "source": "; filament used [g] = 1.97",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 2296,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "P-roof",
+      "sha256": "37cab1077d83b2d4ba114d23337517dd2fab308d73a1e75914e3579eef7a5d1d",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.36694444444444446,
+        "unit": "hours",
+        "line": 4444,
+        "source": "; estimated printing time (normal mode) = 22m 1s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 4.35,
+        "unit": "g",
+        "line": 4440,
+        "source": "; filament used [g] = 4.35",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 3481,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 4436,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "P-open",
+      "sha256": "944c0609d3229a399ca80c1f0970d254eaed8e2777d094891dbcb83f8a2e848b",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.26916666666666667,
+        "unit": "hours",
+        "line": 3647,
+        "source": "; estimated printing time (normal mode) = 16m 9s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 3.59,
+        "unit": "g",
+        "line": 3643,
+        "source": "; filament used [g] = 3.59",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 3639,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    },
+    {
+      "run": "P-fresh",
+      "sha256": "37cab1077d83b2d4ba114d23337517dd2fab308d73a1e75914e3579eef7a5d1d",
+      "coverage": {
+        "linear": "incomplete",
+        "extrusion": "incomplete",
+        "duration": "recognised",
+        "material": "recognised"
+      },
+      "previewTruncated": false,
+      "duration": {
+        "value": 0.36694444444444446,
+        "unit": "hours",
+        "line": 4444,
+        "source": "; estimated printing time (normal mode) = 22m 1s",
+        "scope": "one sliced run, normal mode elapsed estimate",
+        "basis": "Converted declared days/hours/minutes/seconds to hours; no timing simulation."
+      },
+      "material": {
+        "value": 4.35,
+        "unit": "g",
+        "line": 4440,
+        "source": "; filament used [g] = 4.35",
+        "scope": "one declared filament for one sliced run, including reported support/purge",
+        "basis": "Parsed grams directly; no density conversion."
+      },
+      "findings": [
+        {
+          "kind": "metadata",
+          "firstLine": 1,
+          "interpretation": "File comment declaration, not authenticated provenance."
+        },
+        {
+          "kind": "state",
+          "firstLine": 12,
+          "interpretation": "Bed target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 13,
+          "interpretation": "Hotend target set; not measured temperature."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 15,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        },
+        {
+          "kind": "state",
+          "firstLine": 16,
+          "interpretation": "Retained linear move in the disclosed model; positive E advance classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 17,
+          "interpretation": "Hotend target with waiting declared; waiting behaviour is not simulated."
+        },
+        {
+          "kind": "state",
+          "firstLine": 18,
+          "interpretation": "Subsequent coordinates use millimetres."
+        },
+        {
+          "kind": "state",
+          "firstLine": 19,
+          "interpretation": "Absolute logical XYZ positioning; E mode interactions need exact firmware review."
+        },
+        {
+          "kind": "state",
+          "firstLine": 20,
+          "interpretation": "Absolute E in this disclosed model; positive change, not total E, classifies extrusion."
+        },
+        {
+          "kind": "state",
+          "firstLine": 21,
+          "interpretation": "Logical coordinate/extrusion reset, without an ordinary XYZ motion."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 23,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "auxiliary",
+          "firstLine": 3481,
+          "interpretation": "Auxiliary action outside geometric review."
+        },
+        {
+          "kind": "unsupported",
+          "firstLine": 4436,
+          "interpretation": "Unsupported state effects; subsequent paths are incomplete."
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "control": "T1",
+      "sha256": "435f1405d6d0e7d88e1fddc5df45ad6d8eb1dbd9e9654ed11ca8a4a0517c6066",
+      "triangles": 500,
+      "measured": 500,
+      "unmeasured": 0,
+      "belowThreshold": 32,
+      "threshold": 0.4,
+      "minimum": 0.24999000000000038,
+      "namedOLeftSamples": [
+        {
+          "triangle": 48,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 49,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 50,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 51,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 54,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 55,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 138,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 139,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 140,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 141,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 142,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 143,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 152,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 153,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 154,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 155,
+          "thickness": 0.24999000000000038
+        },
+        {
+          "triangle": 156,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 157,
+          "thickness": 2.5999899046325683
+        }
+      ]
+    },
+    {
+      "control": "T2",
+      "sha256": "0fe035121e41948faad3908dcbcc06fc51cc90fbc414489d2f8ae835a3c82523",
+      "triangles": 500,
+      "measured": 500,
+      "unmeasured": 0,
+      "belowThreshold": 0,
+      "threshold": 0.4,
+      "minimum": 0.7999892370605473,
+      "namedOLeftSamples": [
+        {
+          "triangle": 48,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 49,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 50,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 51,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 54,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 55,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 138,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 139,
+          "thickness": 2.5999899046325683
+        },
+        {
+          "triangle": 140,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 141,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 142,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 143,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 152,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 153,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 154,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 155,
+          "thickness": 0.7999901907348637
+        },
+        {
+          "triangle": 156,
+          "thickness": 2.599989904632568
+        },
+        {
+          "triangle": 157,
+          "thickness": 2.599989904632568
+        }
+      ]
+    }
+  ]
+}

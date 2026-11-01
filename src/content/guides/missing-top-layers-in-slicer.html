@@ -1,0 +1,193 @@
+---
+title: 'Missing Top Layers in Slicer? Find the Cause | InspectMesh'
+description: Separate hidden preview paths, an intentionally open model and disabled top closure. Use controlled slices to find the cause before changing the mesh.
+slug: missing-top-layers-in-slicer
+eyebrow: Slicer roof diagnosis
+heading: Why Are the Top Layers Missing in Your Slicer?
+---
+
+<p>
+  Start with the preview controls, then compare the source roof with the
+  effective slicing settings. A closed mesh can be sliced without top skin,
+  while an intentionally open vessel should remain open. Repairing the mesh is
+  useful only when the source geometry is actually wrong.
+</p>
+<p>
+  This guide concerns absent software paths. If the full preview has a
+  continuous roof but the produced surface has holes, investigate the actual
+  print process separately; a mesh check cannot diagnose that physical result.
+</p>
+<h2>Restore preview visibility first</h2>
+<p>
+  Restore the relevant full layer range, model-extrusion categories and any
+  object isolation in your native slicer. If the roof appears in the same exact
+  output, the display changed; reslicing or repairing the mesh is unnecessary.
+  Record the output hash before comparing views. A native before/after
+  visibility recording was not available for this experiment, so the figures
+  below show parsed retained output rather than a claimed UI filter
+  demonstration.
+</p>
+
+<h2 id="guide-roof-results">Same closed box, different top closure</h2>
+<p>
+  R-box is the original closed 30 x 30 x 10 mm control: one shell, 12 triangles
+  and 9,000 mm³ known material volume. All three runs use its identical bytes.
+  PrusaSlicer 2.9.6 uses the
+  <a href="{{ ExampleAsset.SlicerBaselineIni }}" download>full saved baseline</a
+  >: two perimeters, 15% rectilinear infill, four bottom layers, 0.20 mm
+  layer/first-layer heights, 0.4 mm nozzle and explicit 0.45 mm widths. Adaptive
+  layers and supports are disabled.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Run</th>
+      <th scope="col">Effective top setting</th>
+      <th scope="col">Actual output</th>
+      <th scope="col">Declared estimate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>R1</td>
+      <td>4 layers; minimum thickness 0 mm</td>
+      <td>
+        193 top-solid-infill extrusion moves at Z=10; underlying closure also
+        includes solid/bridge categories.
+      </td>
+      <td>4.35 g; 22m 1s</td>
+    </tr>
+    <tr>
+      <td>R2</td>
+      <td>0 layers; minimum thickness remains 0 mm</td>
+      <td>
+        No top-solid-infill paths. Sidewalls and ordinary infill still reach the
+        upper region.
+      </td>
+      <td>3.59 g; 16m 9s</td>
+    </tr>
+    <tr>
+      <td>R3</td>
+      <td>Saved 4-layer baseline reloaded</td>
+      <td>
+        Top-solid paths restored at Z=10 without repairing or changing source
+        bytes.
+      </td>
+      <td>4.35 g; 22m 1s</td>
+    </tr>
+  </tbody>
+</table>
+<figure>
+  <img
+    src="{{ ExampleAsset.SlicerRoofFigure }}"
+    width="1080"
+    height="388"
+    loading="lazy"
+    alt="Actual Z 10 paths: R1 and R3 contain a dense roof, while R2 retains perimeter and sparse infill paths without top skin."
+  />
+  <figcaption>
+    Original rendering of exact exported extrusion paths at Z=10. Maximum Z
+    alone would not distinguish these outcomes. These are software estimates,
+    not measured printer time or material.
+  </figcaption>
+</figure>
+<p>
+  Inspect the
+  <a href="{{ ExampleAsset.SlicerRoofStl }}" download>original box</a>,
+  <a href="{{ ExampleAsset.SlicerRoofOffIni }}" download>R2 configuration</a>
+  and
+  <a href="{{ ExampleAsset.SlicerPathObservations }}" download
+    >output hashes and feature observations</a
+  >. The
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >consumption guide</a
+  >
+  explains why the lower estimate is not an improvement when a roof is required.
+</p>
+
+<h2>A designed opening is a different source</h2>
+<p>
+  V2 has a 1.2 mm base and walls around an intentionally open cavity. Its
+  ordinary output has a cavity floor at Z=1.2 and no roof at Z=30. Inspect
+  source surfaces in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a>;
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >visual clipping</a
+  >
+  hides surfaces without generating a cap or extracting a solid section. Only an
+  actually defective missing face belongs in the
+  <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
+    >missing-surface repair workflow</a
+  >.
+</p>
+<h2>Check local settings and mode as well as the global profile</h2>
+<p>
+  The controlled P-roof/P-open Prusa-format projects retain the same box
+  geometry and global four-layer setting, but carry object-level top counts of
+  four and zero. Actual CLI reopening produces roof/no-roof paths. The official
+  exported STL has matching triangle geometry after the recorded placement
+  translation; slicing it with the fresh ordinary baseline restores the roof.
+  See the
+  <a
+    href="{{
+      GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings
+    }}#guide-project-state"
+    >project-state comparison</a
+  >
+  for construction, exact scope and resolver observations. This is a CLI
+  project-reader comparison, not a claimed GUI save/reopen test.
+</p>
+<p>
+  A
+  <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}">spiral-vase choice</a>
+  can intentionally remove top closure too.
+  <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748"
+    >Prusa's layer/perimeter documentation</a
+  >
+  describes its top-layer and minimum-shell controls. Check effective object
+  overrides and the selected version before interpreting a global number.
+</p>
+<h2>Layer count and nominal depth are separate</h2>
+<p>
+  Four nominal 0.20 mm layers represent 0.80 mm; four nominal 0.10 mm layers
+  represent 0.40 mm. That is arithmetic, not a universal shell calculation. In
+  R1, upper solid-infill categories occur at Z=9.2, 9.6 and 9.8, bridge infill
+  at Z=9.4, and top-solid infill at Z=10. Read actual categories and heights;
+  minimum thickness, variable schedules and other shell rules can change the
+  generated result.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Finding</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Display hides existing paths</td>
+      <td>Restore the full relevant visibility on the same output.</td>
+    </tr>
+    <tr>
+      <td>Source opening is intentional</td>
+      <td>Keep it; check the required cavity and mode.</td>
+    </tr>
+    <tr>
+      <td>Source lacks an intended face</td>
+      <td>Correct that geometry, reopen the derivative, then reslice.</td>
+    </tr>
+    <tr>
+      <td>Top closure disabled</td>
+      <td>
+        Preserve source bytes, restore the required effective setting and verify
+        top-solid paths.
+      </td>
+    </tr>
+    <tr>
+      <td>Mode or local override changes the result</td>
+      <td>
+        Review saved project state and the mode owner before modifying the mesh.
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -14,9 +14,15 @@ export interface GuideContent {
     readonly answer: string;
   }[];
   readonly html: string;
+  readonly sections?: readonly {
+    readonly id: string;
+    readonly heading: string;
+    readonly html: string;
+  }[];
 }
 
 export interface Guide extends GuideContent {
+  readonly searchTerms?: readonly string[];
   readonly group: string;
   readonly order: number;
   readonly publishDate: string;
@@ -24,6 +30,7 @@ export interface Guide extends GuideContent {
 }
 
 export interface GuideCard {
+  readonly searchTerms?: readonly string[];
   readonly title: string;
   readonly description: string;
   readonly slug: string;
@@ -92,6 +99,7 @@ function guideFromEntry(
   }
   return {
     ...content,
+    searchTerms: entry.searchTerms,
     group: entry.group,
     order: entry.order,
     publishDate: entry.publishDate,
@@ -102,6 +110,7 @@ function guideFromEntry(
 function guideCard(guide: Guide): GuideCard {
   return {
     title: guide.title,
+    searchTerms: guide.searchTerms,
     description: guide.description,
     slug: guide.slug,
     heading: guide.heading,

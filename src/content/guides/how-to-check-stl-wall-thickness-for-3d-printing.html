@@ -161,6 +161,19 @@ heading: How to Check STL Wall Thickness for 3D Printing
 <p>
   For lettering, distinguish solid strokes from the empty counters inside
   letters and separate XY width from Z relief. Follow the
-  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}">lettering checks</a>;
-  a sampled material ray is not a groove-width measurement.
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}">lettering checks</a>; a
+  sampled material ray is not a groove-width measurement.
+</p>
+<p>
+  On the exact T1 control, the current local method measured all 500 selected
+  face-centroid rays: 32 were below a 0.4 mm review threshold and none were
+  unmeasured. Named O-left side faces returned about 0.24999 mm, while other
+  directions crossed the longer material span. In T1-C, no model paths occur in
+  the O region above the plaque; T2's local widening restores them. This is a
+  matched source/slicer observation, not a threshold configuring the slicer or a
+  minimum-wall proof. The
+  <a href="{{ ExampleAsset.SlicerParserObservations }}" download
+    >implementation record</a
+  >
+  identifies source hashes, sampled triangles and settings.
 </p>

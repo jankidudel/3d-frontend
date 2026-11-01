@@ -149,6 +149,59 @@ faq:
   Do not assign an unreported corruption cause solely because a package failed
   to open.
 </p>
+<h2>Geometry present, preparation effect changed</h2>
+<p>
+  The controlled P pair resolves one ordinary build item and one 12-triangle
+  mesh in InspectMesh. In the Prusa-format object metadata it remains one
+  ModelPart; a top-layer override is attached to its object. There is no
+  separate modifier mesh or missing build placement in these controls. Native
+  CLI reopening restores the local setting and changes roof paths; the GUI
+  object tree was not recorded.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Inventory or role</th>
+      <th scope="col">Observed in this case</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ordinary model placement</td>
+      <td>Both P files resolve X/Y=85..115, Z=0..10 mm and 12 triangles</td>
+      <td>Compare the named placement before diagnosing a missing object</td>
+    </tr>
+    <tr>
+      <td>Object preparation property</td>
+      <td>
+        Global top count 4; local count 4 versus 0; actual roof paths differ
+      </td>
+      <td>
+        Use the
+        <a
+          href="{{
+            GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings
+          }}#guide-project-state"
+          >project-state observation</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Modifier role or GUI object-list row</td>
+      <td>No modifier mesh in this control; GUI tree unobserved</td>
+      <td>
+        Inspect the exact producing application instead of treating every row as
+        an independently printable core build mesh
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  This separates an absent ordinary placement from geometry whose preparation
+  effect changed. Exporting STL cannot recover an application's project state,
+  and not every apparently missing object is a modifier.
+</p>
 <h2>Interpret the actual receiver state</h2>
 <table>
   <thead>
@@ -205,5 +258,6 @@ faq:
   <a
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
     >3MF Core Specification resources, components and build sections</a
-  >. No external receiver or physical test is inferred from the local controls.
+  >. The earlier inventory controls do not establish external receiver support
+  or physical results.
 </p>

@@ -166,7 +166,12 @@ export class ExampleLoader {
   readonly fileIndex = signal<number | null>(null);
   readonly chosenIndex = computed(
     () =>
-      this.fileIndex() ?? (this.tool() === this.routeUrl.StlCompare ? 1 : 0),
+      this.fileIndex() ??
+      (this.tool() === this.routeUrl.StlCompare
+        ? 1
+        : this.selected().files.findIndex((asset) =>
+            this.supported(asset.name),
+          )),
   );
   readonly loading = signal(false);
   readonly loaded = signal(false);
@@ -183,7 +188,7 @@ export class ExampleLoader {
   }
   choose(event: Event): void {
     this.selectedId.set((event.target as HTMLSelectElement).value);
-    this.fileIndex.set(this.tool() === this.routeUrl.StlCompare ? 1 : 0);
+    this.fileIndex.set(null);
     this.loaded.set(false);
     this.status.set('');
     this.error.set('');

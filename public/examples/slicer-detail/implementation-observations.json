@@ -1,0 +1,93 @@
+{
+  "projects": [
+    {
+      "name": "P-roof",
+      "sha256": "c992b033589fef363eff649652874ec5bb103eb7dd5172479d547aabd6af3992",
+      "status": "Complete supported geometry",
+      "buildItems": 1,
+      "meshes": 1,
+      "triangles": 12,
+      "bounds": {
+        "min": [
+          85,
+          85,
+          0
+        ],
+        "max": [
+          115,
+          115,
+          10
+        ],
+        "spans": [
+          30,
+          30,
+          10
+        ]
+      },
+      "topology": {
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": 9000,
+        "volumeReliable": true
+      }
+    },
+    {
+      "name": "P-open",
+      "sha256": "5bbc3de620133c8c1f153f761c540c4c2c21593868c89eb732c110c9671ce94d",
+      "status": "Complete supported geometry",
+      "buildItems": 1,
+      "meshes": 1,
+      "triangles": 12,
+      "bounds": {
+        "min": [
+          85,
+          85,
+          0
+        ],
+        "max": [
+          115,
+          115,
+          10
+        ],
+        "spans": [
+          30,
+          30,
+          10
+        ]
+      },
+      "topology": {
+        "openEdges": 0,
+        "nonManifoldEdges": 0,
+        "degenerateTriangles": 0,
+        "duplicateTriangles": 0,
+        "shells": 1,
+        "orientationConflicts": 0,
+        "volume": 9000,
+        "volumeReliable": true
+      }
+    }
+  ],
+  "derivative": {
+    "sha256": "cb9dff4e386082686f9020a83bab1cc911a3edec01f63c5c6e6726dc3297e1bc",
+    "triangleRecordsMatch": true,
+    "sourceToDerivativeTranslation": [
+      85,
+      85,
+      0
+    ],
+    "topology": {
+      "openEdges": 0,
+      "nonManifoldEdges": 0,
+      "degenerateTriangles": 0,
+      "duplicateTriangles": 0,
+      "shells": 1,
+      "orientationConflicts": 0,
+      "volume": 9000,
+      "volumeReliable": true
+    }
+  }
+}

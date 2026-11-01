@@ -9,3 +9,5 @@ public/examples/feature-measurement/browser-stl-unknown-unit.json
 # Exact standard-library geometry generator and verifier outputs.
 docs/slicer-detail-evidence/inputs.json
 docs/slicer-detail-evidence/geometry-observations.json
+docs/slicer-detail-evidence/prusa-2.9.6/**/*.json
+public/examples/slicer-detail/

@@ -47,15 +47,29 @@ import { publicExamples } from './example-registry';
             <span class="example-category">{{ example.group }}</span>
             <h2 [id]="example.id + '-title'">{{ example.name }}</h2>
             <figure>
-              <img
-                [ngSrc]="example.preview"
-                width="720"
-                height="260"
-                [alt]="example.alt"
-              />
+              <div
+                [class.path-scroll]="!!example.previewCaption"
+                [attr.tabindex]="example.previewCaption ? 0 : null"
+                [attr.role]="example.previewCaption ? 'region' : null"
+                [attr.aria-label]="
+                  example.previewCaption
+                    ? example.name + ', scroll paths horizontally'
+                    : null
+                "
+              >
+                <img
+                  [ngSrc]="example.preview"
+                  [width]="example.previewWidth ?? 720"
+                  [height]="example.previewHeight ?? 260"
+                  [class.output-figure]="!!example.previewCaption"
+                  [alt]="example.alt"
+                />
+              </div>
               <figcaption>
-                Original explanatory diagram. Use the files to reproduce the
-                reported observation.
+                {{
+                  example.previewCaption ??
+                    'Original explanatory diagram. Use the files to reproduce the reported observation.'
+                }}
               </figcaption>
             </figure>
             <p>
@@ -70,8 +84,11 @@ import { publicExamples } from './example-registry';
             <ul>
               @for (asset of example.files; track asset.path) {
                 <li>
-                  <a [href]="asset.path" download>{{ asset.name }}</a> ·
-                  {{ asset.bytes }} bytes
+                  <a [href]="asset.path" download
+                    >{{ asset.label ? asset.label + ' - ' : ''
+                    }}{{ asset.name }}</a
+                  >
+                  · {{ asset.bytes }} bytes
                 </li>
               }
             </ul>
@@ -155,6 +172,18 @@ import { publicExamples } from './example-registry';
       color: var(--muted);
       font-size: 0.9rem;
       line-height: 1.5;
+    }
+    img.output-figure {
+      aspect-ratio: auto;
+      min-width: 67.5rem;
+    }
+    .path-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .path-scroll:focus-visible {
+      outline: 3px solid #0369a1;
+      outline-offset: 3px;
     }
     article p {
       margin-block: 1rem;

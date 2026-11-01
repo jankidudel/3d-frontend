@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GuideIndexGroup } from './guide-catalogue';
+import { guideIndexGroups } from './generated/guides.generated';
 import { filterGuideGroups } from './guide-search';
 
 const groups: readonly GuideIndexGroup[] = [
@@ -45,5 +46,32 @@ describe('filterGuideGroups', () => {
 
   it('requires every entered word and removes empty groups', () => {
     expect(filterGuideGroups(groups, 'stl units')).toEqual([]);
+  });
+});
+
+describe('slicer detail intent discovery', () => {
+  it('finds the established owner through spelling and symptom aliases', () => {
+    for (const [terms, slug] of [
+      [
+        ['lettering', 'engraved', 'debossed', 'logo', 'counter'],
+        'embossed-text-not-printing',
+      ],
+      [
+        ['vase', 'spiral', 'spiralize', 'spiralise'],
+        'vase-mode-vs-normal-printing',
+      ],
+      [
+        ['roof', 'top-solid', 'top-skin', 'missing-top'],
+        'missing-top-layers-in-slicer',
+      ],
+    ] as const) {
+      for (const term of terms) {
+        expect(
+          filterGuideGroups(guideIndexGroups, term)
+            .flatMap((group) => group.guides)
+            .map((guide) => guide.slug),
+        ).toContain(slug);
+      }
+    }
   });
 });

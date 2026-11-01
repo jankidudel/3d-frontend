@@ -83,7 +83,7 @@ endsolid sheet`);
   expect(help.querySelectorAll('li')).toHaveLength(2);
   expect(help.textContent).toContain('unsampled source regions');
   expect(help.querySelector('a')?.getAttribute('href')).toBe(
-    page.guideRouteUrl.Route3dPrintWallThicknessGuide,
+    page.guideRouteUrl.RouteEmbossedTextNotPrinting,
   );
 
   page.report.set({
@@ -151,6 +151,14 @@ it('keeps 3MF next actions tied to placed-geometry coverage and native project s
   expect(help.querySelector('a')?.getAttribute('href')).toBe(
     page.guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting,
   );
+
+  page.analyse();
+  fixture.detectChanges();
+  expect(page.report()?.measured).toBe(0);
+  expect(page.report()?.unmeasured).toBe(2);
+  help = element.querySelector('.next-actions')!;
+  expect(help.querySelectorAll('li')).toHaveLength(1);
+  expect(help.textContent).toContain('missing coverage');
 
   page.setThreshold(0.5);
   fixture.detectChanges();
