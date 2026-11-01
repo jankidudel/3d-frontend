@@ -41,6 +41,19 @@ faq:
   Take several measurements and record the direction because X/Y and vertical
   features can behave differently.
 </p>
+<h2>Choose the hardware target before correcting it</h2>
+<p>
+  A clearance passage, thread-forming pilot and insert seat need different
+  targets even with the same screw label. Choose
+  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
+    >screw role and passage sizing</a
+  >
+  first. In a hypothetical fixed-hardware example, a 3.95 mm passing envelope
+  plus 0.35 mm chosen diametral clearance gives a 4.30 mm produced target. With
+  assumed comparable hole error eH = -0.15 mm, the provisional source test is
+  4.30 - (-0.15) = 4.45 mm. The chosen gap is separate from local error; these
+  are not universal hardware settings.
+</p>
 <h2>Work a compensation example</h2>
 <p>
   In an illustrative example, a CAD hole is 10.00 mm and three controlled prints
@@ -105,22 +118,33 @@ faq:
   empirical offset does not transfer automatically across sizes or orientations.
 </p>
 
-<h2>Validate before changing the production model</h2>
+<h2>Validate a local, reversible change</h2>
 <ol>
   <li>
-    Use the intended nozzle, material, layer height, orientation and profile.
+    Use comparable sizes, the intended hardware, material, orientation and
+    profile. Keep raw direction-labelled readings; irregular roundness needs
+    diagnosis before an offset.
   </li>
-  <li>Print a compact coupon containing the relevant hole and pin range.</li>
   <li>
-    Measure after cooling and test the real mating component where possible.
+    Test a compact representative feature, including the local boss/wall and
+    intended post-processing. Measure pins as well as holes; a mean alone does
+    not bound variation.
   </li>
-  <li>Update a copy of the CAD model and inspect the exported dimensions.</li>
-  <li>Repeat after hardware, material or orientation changes.</li>
+  <li>
+    Edit a named source-CAD copy and record the correction. Reopen the exact
+    export, check surrounding walls/edge distances and inspect the actual sliced
+    paths.
+  </li>
+  <li>
+    Retest after hardware, material or orientation changes. When handing off a
+    compensated model, explain the baked-in correction so it is not applied
+    twice.
+  </li>
 </ol>
 <p>
-  If roundness is poor or values vary around the circumference, investigate
-  belts, motion, cooling, extrusion and seam placement before applying a scalar
-  offset.
+  Drilling or reaming may be a separate planned finishing operation. It needs
+  its own access, remaining-material and final-dimension checks; changing a
+  scalar offset does not establish those.
 </p>
 <h2>Localise the restriction before correcting size</h2>
 <p>
@@ -135,47 +159,14 @@ faq:
   for bed-facing interference. Their procedures should precede a scalar hole
   offset.
 </p>
-<h2>Prefer model-level evidence over one measurement</h2>
-<p>
-  Test several nominal sizes around the real feature and include the intended
-  pin, bearing or fastener. A consistent offset across sizes supports
-  compensation; a changing or irregular error suggests geometry, motion,
-  extrusion or cooling needs attention. Measure pins as well, since reducing a
-  pin may preserve more wall around a hole in some designs.
-</p>
-<p>
-  For holes near the first layer, check for bed compression before editing the
-  entire bore. For safety-critical or load-bearing assemblies, follow the
-  hardware and material design guidance and validate the finished joint
-  physically.
-</p>
 <h2>Check surrounding geometry</h2>
 <p>
-  Thin walls around a hole can deform or slice poorly. Inspect them with the STL
-  or 3MF Wall Thickness Checker, then verify line count and orientation in the
-  slicer.
-</p>
-<h2>Practical cautions</h2>
-<ul>
-  <li>Drilling or reaming may be better for precision holes.</li>
-  <li>Horizontal and vertical holes can need different compensation.</li>
-  <li>
-    Flow calibration makes extrusion more consistent but does not remove the
-    need for clearance.
-  </li>
-  <li>Record successful values by material and profile.</li>
-</ul>
-<p>
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    ><strong>Plan a test fit before altering your CAD model</strong></a
+  Enlarging a hole consumes local material. Use the
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}">STL</a> or
+  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+    >3MF Wall Thickness Checker</a
   >
-</p>
-<h2>Keep compensation local and reversible</h2>
-<p>
-  Apply the tested change to a named model revision or parametric feature rather
-  than silently rescaling the whole part. Note the printer, profile, axis and
-  coupon result in the design. When sending the model elsewhere, provide the
-  uncompensated source or explain the baked-in correction; another machine may
-  need a different value. Re-check wall thickness around enlarged holes and edge
-  distance around fasteners before export.
+  for a bounded screen, then inspect actual local paths and validate the
+  finished joint against its physical requirements. Flow consistency does not
+  remove the need to choose clearance.
 </p>

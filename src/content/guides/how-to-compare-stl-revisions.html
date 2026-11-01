@@ -18,6 +18,47 @@ heading: 'How to Review STL Revisions Without Losing Intended Geometry'
   face, ridge or source datum. The tool does not automatically identify holes or
   turn mesh picks into CAD feature measurements.
 </p>
+<table>
+  <caption>
+    An interface revision needs an explicit change and preservation brief.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Intended change record</th>
+      <th scope="col">Protected features / evidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Name the local
+        <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}">passage</a>,
+        <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+          >seat</a
+        >
+        or
+        <a href="{{ GuideSlug.RouteCaptiveNutPockets3dPrinting }}">pocket</a> to
+        change.
+      </td>
+      <td>
+        Retain mounting centres, source datums, contact faces and unrelated
+        external geometry.
+      </td>
+    </tr>
+    <tr>
+      <td>Retain the selected CAD dimensions and source revision.</td>
+      <td>
+        Check the exact reopened export; finite comparison samples supplement
+        named-feature inspection.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The existing same-bounds square-hole pair below demonstrates a local opening
+  change; it is not a counterbore or captive-nut control. A small average or
+  unchanged outer bounds cannot prove every protected interface survived.
+</p>
 <h2>Choose units and the coordinate frame</h2>
 <p>
   Start with original coordinates and independently confirmed units. A

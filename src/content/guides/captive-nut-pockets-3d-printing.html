@@ -1,0 +1,208 @@
+---
+title: 'Captive Nut Pockets for 3D Prints: Plan the Fit | InspectMesh'
+description: 'Check nut flats, corners, thickness and insertion access. Separate anti-rotation, retention and screw passage before choosing a pocket clearance.'
+slug: captive-nut-pockets-3d-printing
+eyebrow: Functional fit and calibration
+heading: 'How to Plan a Captive-Nut Pocket in a 3D Print'
+---
+
+<p>
+  A nut pocket must do more than match the thread label. Check the nut's outer
+  shape and thickness, how it enters, what stops it rotating and what keeps it
+  in place before the screw is installed. Screw passage and driver access are
+  separate features. A nut trap that fits at its final pose may still have no
+  usable insertion route.
+</p>
+<h2>Identify the exact hardware envelope</h2>
+<p>
+  As one specific reference,
+  <a href="https://www.accu.co.uk/thin-hexagon-nuts/73059-HFN-M4-A2"
+    >Accu HFN-M4-A2, DIN 439 thin hex nut</a
+  >
+  lists a 7 mm across-flats/socket dimension with +0/-0.22 mm tolerance, 2.2 mm
+  thickness with +0/-0.25 mm tolerance, 8.08 mm across points and 0.7 mm thread
+  pitch (reviewed 1 November 2026). These are published facts for this exact
+  product, not measured printed results or a universal M4 pocket specification.
+</p>
+<p>
+  A full-height nut, locknut or another series can need a different envelope and
+  depth. Keep the selected drawing, dimensional tolerances and your own hardware
+  readings separately. A generic M4 hex illustration cannot establish the nut
+  type, corner form or compatibility. This specification reference makes no
+  stock, price or shipping claim.
+</p>
+<h2 id="guide-hex-envelope">Separate flats, corners and depth</h2>
+<figure>
+  <img
+    src="/examples/functional-fit/nut-pocket.svg"
+    class="guide-lazy-image"
+    width="960"
+    height="520"
+    loading="lazy"
+    alt="Analytical plan shows nested ideal hexagons with across-flats F and across-corners K. A separate section labels pocket depth and nut thickness, with an open top insertion route and central screw passage."
+  />
+  <figcaption>
+    Original ideal geometry, not to scale or a tested assembly. Flats, corner
+    envelope and depth describe different dimensions; the open top illustrates
+    one possible insertion route.
+  </figcaption>
+</figure>
+<p>
+  For an ideal regular hexagon with across-flats dimension F, across corners
+  <code>K = F / cos(30 degrees)</code>. With F = 7.00 mm, ideal K is
+  approximately 8.0829 mm. The supplier's rounded 8.08 mm across-points listing
+  is a separate catalogue fact; an actual manufactured outline includes its own
+  tolerances and corner details.
+</p>
+<p>
+  Select a hypothetical pocket F = 7.20 mm only to demonstrate the geometry. Its
+  ideal K is approximately 8.3138 mm. Against an ideal concentric 7.00 mm
+  hexagon, this leaves 0.20 mm across opposing flats, or 0.10 mm per flat in
+  that alignment. A hypothetical 2.50 mm pocket depth against a 2.20 mm nut
+  thickness leaves
+  <code>2.50 - 2.20 = 0.30 mm</code> nominal axial difference. None of these
+  selected pocket values is a recommended default or a retention mechanism.
+</p>
+<p>
+  Rounded pocket corners, hardware chamfers, offsets and local print error can
+  obstruct insertion even when the flats appear suitable. A circle through three
+  hex vertices measures a constructed circumcircle, not across flats. Use
+  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">named mesh measurements</a>
+  to describe selected spans and source CAD to define the actual pocket. The
+  <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
+    >round hole/pin method</a
+  >
+  does not automatically size a hex pocket.
+</p>
+<h2>Choose the insertion route before enclosing it</h2>
+<table>
+  <caption>
+    A final pocket pose and a usable path to it are separate questions.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Route</th>
+      <th scope="col">Check before accepting the design</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Top drop-in</td>
+      <td>
+        The opening admits the nut in the intended orientation; the nut can be
+        held while assembling the next part.
+      </td>
+    </tr>
+    <tr>
+      <td>Side insertion</td>
+      <td>
+        The complete slot and approach admit the hardware, including corners and
+        thickness, without an obstructing rib or cover.
+      </td>
+    </tr>
+    <tr>
+      <td>Enclosed during manufacture</td>
+      <td>
+        The documented manufacturing sequence allows placement and continuation,
+        and the resulting hardware remains where required.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Do not infer a collision-free path from a fitted final pose. This article
+  supplies no print-pause commands or machine-specific insertion procedure.
+  Define that workflow for the actual equipment, then consider whether the nut
+  must be removable or replaceable after assembly.
+</p>
+<h2>Separate anti-rotation from retention</h2>
+<p>
+  Flats can limit rotation once seated. A lip, cover or assembly sequence may
+  keep the nut from falling out before the screw engages. These are distinct
+  requirements: a pocket may resist turning yet release the nut when inverted,
+  or retain it while allowing it to spin. Nominal interference does not
+  establish insertion force, resistance to spin or usable tightening torque.
+</p>
+<table>
+  <caption>
+    Choose a diagnostic branch rather than increasing every dimension.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Observed problem</th>
+      <th scope="col">Inspect next</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Nut will not enter</td>
+      <td>
+        Entrance orientation, corner envelope, local obstruction, pocket depth
+        and direction-labelled physical readings.
+      </td>
+    </tr>
+    <tr>
+      <td>Nut enters but spins</td>
+      <td>
+        Actual flat engagement, local shape and movement under the intended
+        assembly conditions.
+      </td>
+    </tr>
+    <tr>
+      <td>Nut falls out before assembly</td>
+      <td>
+        The chosen retention feature or sequence; flats alone do not provide
+        axial retention.
+      </td>
+    </tr>
+    <tr>
+      <td>Nut cannot be serviced</td>
+      <td>
+        Removal path, access to hold it and the order in which surrounding parts
+        can be removed.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Check screw passage, reach and surrounding material</h2>
+<p>
+  Confirm compatible thread/pitch, aligned passage axis, projected screw reach
+  and driver approach. Use the
+  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
+    >screw-role and projection guide</a
+  >
+  for those dimensions, and the
+  <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+    >head-seat guide</a
+  >
+  for the opposite side. A larger pocket cannot correct an incompatible thread
+  or a screw that bottoms out.
+</p>
+<p>
+  Inspect pocket corners, floor, boss root and nearby edges in source CAD and
+  the reopened export.
+  <a href="{{ GuideSlug.RouteStlViewer }}">View the geometry</a> and use
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}">clipping</a>
+  to locate expected material/void boundaries. A sampled wall screen is not a
+  nut reaction-load, pull-through or assembly collision calculation.
+</p>
+<h2>Compare the insert route and record your validation</h2>
+<p>
+  A captive nut requires a usable external-hardware insertion and retention
+  arrangement. A
+  <a href="{{ GuideSlug.Route3dPrintHeatSetInsertHoleSizing }}"
+    >heat-set insert</a
+  >
+  instead requires its exact series/length seat, installation method and
+  material applicability. Choose based on access, service and assembly
+  requirements; neither route is declared universally stronger here.
+</p>
+<p>
+  Retain source revision, exact nut reference, pocket/entrance dimensions,
+  intended orientation, local geometry and material/profile with your own
+  measurements. Record whether it entered, remained oriented, stayed retained
+  before fastening and could be replaced. Keep unresolved assembly requirements
+  and the next action alongside those observations. These analytical examples
+  have not been printed or assembled and supply no physical torque or strength
+  result.
+</p>

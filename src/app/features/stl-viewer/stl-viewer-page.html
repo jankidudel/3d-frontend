@@ -166,6 +166,20 @@
   <section class="content">
     <h2>Measure a named feature and retain its basis</h2>
     <p>
+      Point selections describe selected mesh geometry; they do not recognise
+      hardware or validate assembly. Choose the task:
+      <a [routerLink]="guideRouteUrl.Route3dPrintScrewHoleSizing"
+        >screw passage</a
+      >,
+      <a [routerLink]="guideRouteUrl.RouteCounterboreVsCountersink3dPrinting"
+        >head seat</a
+      >
+      or
+      <a [routerLink]="guideRouteUrl.RouteCaptiveNutPockets3dPrinting"
+        >nut pocket</a
+      >.
+    </p>
+    <p>
       Choose Distance, Angle or Circle through 3 points in Feature measurements.
       Surface point remains the initial selection method. Mesh vertex offers a
       bounded candidate from the visible hit triangle; it does not infer a CAD

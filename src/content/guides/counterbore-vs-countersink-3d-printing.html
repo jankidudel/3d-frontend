@@ -1,0 +1,185 @@
+---
+title: 'Counterbore vs Countersink for 3D Prints | InspectMesh'
+description: 'Match a screw-head recess to the exact head geometry. Compare flat seats, cone angles, remaining material and tool access with clear worked examples.'
+slug: counterbore-vs-countersink-3d-printing
+eyebrow: Functional fit and calibration
+heading: 'Counterbore or Countersink in a 3D-Printed Part?'
+---
+
+<p>
+  Match the recess to the head's bearing surface. A counterbore creates a
+  cylindrical recess with a flat seat; a countersink creates a conical seat.
+  Check the head drawing, passage and remaining material together before
+  choosing either shape. A flush appearance alone does not establish a suitable
+  bearing seat.
+</p>
+<table>
+  <caption>
+    Choose the surface and access result you actually need.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Arrangement</th>
+      <th scope="col">Geometry to establish</th>
+      <th scope="col">Access question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Head remains above the surface</td>
+      <td>Compatible bearing face, passage and washer if used</td>
+      <td>
+        Does the protruding head obstruct the adjoining part or service tool?
+      </td>
+    </tr>
+    <tr>
+      <td>Flat-seated counterbore</td>
+      <td>Recess diameter, axial depth, flat seat and local material</td>
+      <td>Can the head, washer and driver enter the cylindrical recess?</td>
+    </tr>
+    <tr>
+      <td>Conical countersink</td>
+      <td>Included angle, opening and throat planes, actual head profile</td>
+      <td>
+        Can the driver approach with the head at its intended seating position?
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Read the exact head drawing</h2>
+<p>
+  Thread size does not determine one universal head diameter or angle. Identify
+  the exact head style, under-head transition, drive envelope, washer and
+  dimensional tolerances. For a specific example,
+  <a
+    href="https://www.bossard.com/global-en/eshop/screws-and-bolts-with-internal-drive/hex-socket-flat-countersunk-head-screws-fully-threaded/p/2100/"
+    >Bossard BN 2100</a
+  >
+  lists a 90-degree countersunk family with ISO 10642 and approximate DIN 7991 /
+  UNI 5933 relationships (reviewed 1 November 2026). That identifies this
+  family; it neither makes all metric or imperial countersinks 90 degrees nor
+  establishes interchangeability between similarly named standards. Obtain the
+  selected variant drawing.
+</p>
+<figure>
+  <img
+    src="/examples/functional-fit/head-seats.svg"
+    class="guide-lazy-image"
+    width="960"
+    height="520"
+    loading="lazy"
+    alt="Analytical sections: a flat counterbore has recess diameter D, passage d and depth h; a conical countersink has opening D, throat d, axial depth z and included angle alpha. Driver approaches from above; material remains below each seat."
+  />
+  <figcaption>
+    Original analytical sections, not to scale and not a slicer or physical
+    assembly capture. The open centre is the passage; the text examples define
+    the planes and remaining material.
+  </figcaption>
+</figure>
+<h2 id="guide-flat-seat">Flat seat: separate axial and radial material</h2>
+<p>
+  In a hypothetical 5.0 mm-thick plate, a counterbore 2.0 mm deep leaves
+  <code>5.0 - 2.0 = 3.0 mm</code> axial material below its flat seat around the
+  through-hole. Within a concentric circular boss of diameter 14.0 mm, a 7.2 mm
+  recess leaves an ideal radial difference of
+  <code>(14.0 - 7.2) / 2 = 3.4 mm</code>.
+</p>
+<p>
+  These describe geometry, not required floor/wall values or strength. An
+  eccentric recess, nearby edge, boss root or other local shape changes the
+  material. Keep the through-hole diameter separate from the larger head recess:
+  passage follows the
+  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
+    >screw's role and passing envelope</a
+  >, while recess dimensions follow the head and assembly access.
+</p>
+<h2 id="guide-conical-seat">Conical seat: use the included angle</h2>
+<p>
+  Define D at the opening plane on the top surface and d at the lower plane
+  where the ideal cone meets the cylindrical passage. Their axial separation z
+  for an ideal conical frustum is
+  <code>z = (D - d) / (2 tan(alpha / 2))</code>. With hypothetical D = 7.2 mm, d
+  = 4.5 mm and included angle alpha = 90 degrees:
+  <code>z = (7.2 - 4.5) / (2 tan(45 degrees)) = 1.35 mm</code>.
+</p>
+<p>
+  The included angle is 90 degrees; the half-angle is 45 degrees. This equation
+  describes the ideal recess, not verified contact with a manufactured screw.
+  Under-head transitions, tolerances and a rounded or protruding head can change
+  the seating result. A small entrance chamfer is not automatically a matching
+  countersink. Compare the entire relevant head profile with the intended recess
+  in CAD rather than judging contact from a shaded viewport.
+</p>
+<h2>Recheck reach when the bearing position moves</h2>
+<p>
+  A deeper recess moves the bearing seat and changes screw projection into the
+  receiver. Include washers and every intervening plate in the stack. Head
+  styles can use different length-reference conventions, so nominal screw length
+  alone cannot establish reach. Follow the
+  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}#guide-screw-reach"
+    >projection example</a
+  >
+  and retain tip, runout and usable engagement as separate requirements. If the
+  receiver is a nut, check its
+  <a href="{{ GuideSlug.RouteCaptiveNutPockets3dPrinting }}"
+    >pocket and replacement route</a
+  >
+  as well as the head-side recess.
+</p>
+<h2>Check the whole assembly approach</h2>
+<ol>
+  <li>
+    Place the exact head and any washer at the intended bearing position in the
+    source design.
+  </li>
+  <li>
+    Check the bit or socket envelope and approach direction, including nearby
+    ribs and covers.
+  </li>
+  <li>
+    Check the screw insertion route and whether another component blocks it
+    before tightening.
+  </li>
+  <li>
+    Plan how the driver and hardware can be removed for service, not just the
+    final seated pose.
+  </li>
+</ol>
+<p>
+  The head can fit while the tool cannot reach it. A head-side recess is also
+  distinct from an
+  <a href="{{ GuideSlug.Route3dPrintHeatSetInsertHoleSizing }}"
+    >insert installation seat or counterbore</a
+  >
+  in the receiver. Do not borrow a headed insert's outer dimension for a
+  screw-head pocket.
+</p>
+<h2>Inspect saved geometry and the actual sliced region</h2>
+<p>
+  Open the exact saved copy in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Source CAD owns the
+  analytic cone angle, diameters and bearing planes. Viewer distance/angle picks
+  describe selected mesh points: a valid three-point angle can be a chord
+  construction rather than the intended head-seat profile. Use the
+  <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">measurement workflow</a> to
+  retain the selection basis and unit/frame.
+</p>
+<p>
+  Inspect above and below the recess shoulder with
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >visual clipping</a
+  >, recording expected void and material. Clipping does not measure contact or
+  extract a closed section. Then review the chosen
+  <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+    >bore orientation</a
+  >
+  and
+  <a href="{{ GuideSlug.RouteSupportsInsideHolesAndChannels }}"
+    >support-removal access</a
+  >
+  in your actual slicing workflow. Retain the final source revision, profile and
+  unresolved seat/access checks. No new slicer run or physical assembly result
+  is claimed here; representative physical seating and service checks remain
+  necessary for acceptance.
+</p>

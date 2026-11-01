@@ -101,6 +101,15 @@ import { publicExamples } from './example-registry';
               }
               <a [routerLink]="example.guide">Read the explanation</a>
             </p>
+            @if (example.relatedGuides; as guides) {
+              <ul aria-label="Related interface decisions">
+                @for (guide of guides; track guide.route) {
+                  <li>
+                    <a [routerLink]="guide.route">{{ guide.label }}</a>
+                  </li>
+                }
+              </ul>
+            }
           </article>
         }
       </div>

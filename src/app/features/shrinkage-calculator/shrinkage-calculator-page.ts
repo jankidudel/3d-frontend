@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { calculateShrinkage } from './shrinkage-calculator';
 
@@ -28,6 +29,7 @@ type InputGroup = (typeof InputGroup)[keyof typeof InputGroup];
   styleUrl: './shrinkage-calculator-page.scss',
 })
 export class ShrinkageCalculatorPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
   readonly axes: readonly Axis[] = [Axis.X, Axis.Y, Axis.Z];
   readonly inputGroup = InputGroup;

@@ -244,6 +244,10 @@ export const guideClusters: readonly GuideCluster[] = [
       '3d-print-hole-orientation-and-accuracy',
       '3d-print-elephants-foot-and-part-fit',
       '3d-print-heat-set-insert-hole-sizing',
+      GuideContentSlug.ThreeDPrintScrewHoleSizing,
+      GuideContentSlug.CounterboreVsCountersink3dPrinting,
+      GuideContentSlug.CaptiveNutPockets3dPrinting,
+
       '3d-print-snap-fit-clearance',
 
       'how-to-compensate-for-3d-print-shrinkage',

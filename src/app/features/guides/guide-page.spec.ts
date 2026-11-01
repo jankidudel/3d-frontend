@@ -1,12 +1,52 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { SeoService } from '../../core/seo/seo.service';
 import { GuidePage } from './guide-page';
 import { guideBySlug } from './generated/guides.generated';
 
 describe('guide evidence section rendering', () => {
   afterEach(() => TestBed.resetTestingModule());
+
+  it('retains safe lazy loading for opted-in diagrams through guide navigation', async () => {
+    const params = convertToParamMap({
+      guideSlug: 'counterbore-vs-countersink-3d-printing',
+    });
+    const paramMap = new BehaviorSubject(params);
+    TestBed.configureTestingModule({
+      imports: [GuidePage],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { paramMap, snapshot: { paramMap: params } },
+        },
+        { provide: SeoService, useValue: { apply: vi.fn() } },
+      ],
+    });
+    const fixture = TestBed.createComponent(GuidePage);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const page = fixture.nativeElement as HTMLElement;
+    expect(
+      page.querySelector('img.guide-lazy-image')?.getAttribute('loading'),
+    ).toBe('lazy');
+    paramMap.next(
+      convertToParamMap({ guideSlug: 'captive-nut-pockets-3d-printing' }),
+    );
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const image = page.querySelector('img.guide-lazy-image');
+    expect(image?.getAttribute('src')).toContain('nut-pocket.svg');
+    expect(image?.getAttribute('loading')).toBe('lazy');
+    expect(page.querySelector('script')).toBeNull();
+    paramMap.next(
+      convertToParamMap({ guideSlug: 'alignment-pins-for-split-3d-prints' }),
+    );
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(page.querySelector('img')?.hasAttribute('loading')).toBe(false);
+    paramMap.complete();
+  });
 
   for (const [slug, anchor] of [
     ['embossed-text-not-printing', 'guide-lettering-results'],

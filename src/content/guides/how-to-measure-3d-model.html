@@ -96,6 +96,64 @@ heading: How to Measure a 3D Model Before 3D Printing
   Unknown units leave physical length unavailable while valid angles remain
   available.
 </p>
+<h2>Identify the feature before naming a measurement</h2>
+<p>
+  Use the existing measurement name and your retained notes for revision,
+  feature role, selection basis, actual section/axis and unit assumption. The
+  viewer does not recognise hardware features automatically.
+</p>
+<table>
+  <caption>
+    Example feature-identification notes, not new viewer fields.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Named feature</th>
+      <th scope="col">Record the construction and remaining question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
+          >Through-hole rim</a
+        >
+      </td>
+      <td>
+        Selected rim points, section plane and bore axis; a constructed circle
+        is not minimum passage.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+          >Recess shoulder</a
+        >
+      </td>
+      <td>
+        Selected shoulder span or profile points; source CAD defines bearing
+        planes, analytic angle and seat contact.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCaptiveNutPockets3dPrinting }}"
+          >Pocket flat</a
+        >
+      </td>
+      <td>
+        Selected opposing surfaces and direction; source geometry and the
+        assembly sequence still define corner clearance and full insertion
+        access.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Save and download the existing local JSON measurement record before replacing
+  the model. Selected surface spans do not verify analytic bores, seating
+  contact or a collision-free insertion path.
+</p>
 <h2>Rotation changes an envelope without stretching a part</h2>
 <p>
   The 40 × 20 × 10 mm control has a 40 mm long edge. Rotating it 45° around Z

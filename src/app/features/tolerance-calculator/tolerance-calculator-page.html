@@ -230,6 +230,25 @@
         material, orientation and settings. This calculator does not guarantee
         that printed parts will fit.
       </p>
+      @if (matingMode() === matingModes.Fixed) {
+        <p>
+          For hardware, the external dimension is the relevant passing envelope.
+          Chosen clearance remains separate from measured local hole error.
+          Choose the
+          <a [routerLink]="guideRouteUrl.Route3dPrintScrewHoleSizing"
+            >screw-hole role</a
+          >
+          first; circular arithmetic does not size
+          <a
+            [routerLink]="guideRouteUrl.RouteCounterboreVsCountersink3dPrinting"
+            >head recesses</a
+          >
+          or
+          <a [routerLink]="guideRouteUrl.RouteCaptiveNutPockets3dPrinting"
+            >hex pockets</a
+          >.
+        </p>
+      }
       <div class="actions">
         <button class="button" type="button" (click)="copyDimensions()">
           Copy dimensions</button

@@ -87,6 +87,19 @@ heading: 'STL Scale Factor Explained: Percentages, Target Sizes, and Units'
   edit the design rather than scaling the entire mesh. Separate axis factors can
   distort circles and are a different design operation.
 </p>
+<p>
+  For a hypothetical hardware passage, factor 0.90 changes 4.50 mm to
+  <code>4.50 × 0.90 = 4.05 mm</code>. A desired 90% final size therefore also
+  changes that interface. Check
+  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
+    >the passage requirement</a
+  >
+  and the
+  <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
+    >hardware-aware scaling workflow</a
+  >
+  before saving; successive percentages still multiply as above.
+</p>
 <h2>Apply the operation and verify the saved copy</h2>
 <p>
   Use <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale</a> for the

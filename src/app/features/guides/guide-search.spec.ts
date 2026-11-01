@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { GuideIndexGroup } from './guide-catalogue';
 import { guideIndexGroups } from './generated/guides.generated';
 import { filterGuideGroups } from './guide-search';
+import { GuideContentSlug } from '../../../content/guides/guides.registry';
 
 const groups: readonly GuideIndexGroup[] = [
   {
@@ -31,6 +32,29 @@ const groups: readonly GuideIndexGroup[] = [
 ];
 
 describe('filterGuideGroups', () => {
+  it('finds distinct interface owners through their task aliases', () => {
+    for (const [slug, terms] of [
+      [
+        GuideContentSlug.ThreeDPrintScrewHoleSizing,
+        ['screw passage', 'pilot hole', 'screw clearance'],
+      ],
+      [
+        GuideContentSlug.CounterboreVsCountersink3dPrinting,
+        ['head recess', 'counterbore', 'countersink'],
+      ],
+      [
+        GuideContentSlug.CaptiveNutPockets3dPrinting,
+        ['nut trap', 'captive nut', 'nut pocket'],
+      ],
+    ] as const) {
+      for (const term of terms) {
+        const matches = filterGuideGroups(guideIndexGroups, term).flatMap(
+          (group) => group.guides,
+        );
+        expect(matches.filter((guide) => guide.slug === slug)).toHaveLength(1);
+      }
+    }
+  });
   it('keeps the complete index for an empty search', () => {
     expect(filterGuideGroups(groups, '   ')).toBe(groups);
   });

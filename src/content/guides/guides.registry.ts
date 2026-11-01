@@ -8,6 +8,10 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  ThreeDPrintScrewHoleSizing: '3d-print-screw-hole-sizing',
+  CounterboreVsCountersink3dPrinting: 'counterbore-vs-countersink-3d-printing',
+  CaptiveNutPockets3dPrinting: 'captive-nut-pockets-3d-printing',
+
   EmbossedTextNotPrinting: 'embossed-text-not-printing',
   VaseModeVsNormalPrinting: 'vase-mode-vs-normal-printing',
   MissingTopLayersInSlicer: 'missing-top-layers-in-slicer',
@@ -49,6 +53,40 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.ThreeDPrintScrewHoleSizing,
+    group: GuideGroupId.Calibration,
+    order: 247,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'screw passage',
+      'pilot hole',
+      'screw clearance',
+      'thread forming',
+      'tapped thread',
+    ],
+  },
+  {
+    slug: GuideContentSlug.CounterboreVsCountersink3dPrinting,
+    group: GuideGroupId.Calibration,
+    order: 248,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: ['head recess', 'counterbore', 'countersink', 'flat seat'],
+  },
+  {
+    slug: GuideContentSlug.CaptiveNutPockets3dPrinting,
+    group: GuideGroupId.Calibration,
+    order: 249,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: ['nut trap', 'captive nut', 'nut pocket', 'hex pocket'],
+  },
+
   {
     slug: GuideContentSlug.EmbossedTextNotPrinting,
     group: GuideGroupId.Stl,
@@ -106,6 +144,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 243,
     enabled: true,
     publishDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -269,7 +308,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -286,6 +325,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 12,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -294,6 +334,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 13,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
 
@@ -322,7 +363,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-10-08',
     checkEditorialTargets: true,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
   },
   {
     slug: 'stl-multiple-shells-disconnected-parts',
@@ -394,7 +435,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 100,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -403,12 +444,12 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 101,
     enabled: true,
     publishDate: '2026-10-04',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
     slug: 'inspect-customer-supplied-print-files',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-01',
     group: GuideGroupId.General,
     order: 102,
     enabled: true,
@@ -464,7 +505,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Calibration,
     order: 3,
     enabled: true,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-15',
     checkEditorialTargets: false,
   },
@@ -473,7 +514,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 12,
     enabled: true,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-14',
     checkEditorialTargets: false,
   },
@@ -518,7 +559,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 7,
     enabled: true,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-10',
     checkEditorialTargets: false,
   },
@@ -536,7 +577,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 4,
     enabled: true,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-09',
     checkEditorialTargets: false,
   },
@@ -555,7 +596,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 2,
     enabled: true,
     publishDate: '2026-09-09',
-    updatedDate: '2026-10-24',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -573,7 +614,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 5,
     enabled: true,
     publishDate: '2026-09-08',
-    updatedDate: '2026-10-24',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -688,7 +729,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Stl,
     order: 60,
     enabled: true,
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -698,7 +739,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 65,
     enabled: true,
     publishDate: '2026-09-06',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -867,6 +908,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 14,
     enabled: true,
     publishDate: '2026-10-17',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {

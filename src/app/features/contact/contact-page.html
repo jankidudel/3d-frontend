@@ -142,10 +142,22 @@
       correction.
     </p>
     @if (supportEmail) {
-      <p>
-        You can also email
-        <a [href]="'mailto:' + supportEmail">{{ supportEmail }}</a
-        >.
+      <p class="email-contact">
+        Prefer to email us directly?
+        <button
+          class="email-reveal"
+          type="button"
+          (click)="emailRevealed.set(!emailRevealed())"
+          [attr.aria-expanded]="emailRevealed()"
+          aria-controls="contact-support-email"
+        >
+          {{ emailRevealed() ? 'Hide email address' : 'Show email address' }}
+        </button>
+        <span id="contact-support-email" aria-live="polite">
+          @if (emailRevealed()) {
+            <a [href]="'mailto:' + supportEmail">{{ supportEmail }}</a>
+          }
+        </span>
       </p>
     }
     <h3>Report an error or unclear result</h3>

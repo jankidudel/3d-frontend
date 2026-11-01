@@ -1,9 +1,13 @@
 import { guideRoutePath } from '../../core/seo/public-routes';
 import {
+  AfterViewInit,
+  afterEveryRender,
   Component,
   computed,
+  ElementRef,
   effect,
   inject,
+  Renderer2,
   ViewEncapsulation,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -17,7 +21,9 @@ import { Guide, guideBySlug } from './generated/guides.generated';
   styleUrl: './guide-page.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class GuidePage {
+export class GuidePage implements AfterViewInit {
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
   private readonly seo = inject(SeoService);
   private readonly route = inject(ActivatedRoute);
   private readonly params = toSignal(this.route.paramMap, {
@@ -26,6 +32,7 @@ export class GuidePage {
   protected readonly guide = computed(() => this.guideForRoute());
 
   constructor() {
+    afterEveryRender(() => this.applyLazyLoading());
     effect(() => {
       const guide = this.guide();
       this.seo.apply({
@@ -36,6 +43,21 @@ export class GuidePage {
         structuredData: this.structuredData(guide),
       });
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.applyLazyLoading();
+  }
+
+  private applyLazyLoading(): void {
+    // Angular sanitizes innerHTML without retaining loading. Apply the fixed
+    // lazy value only to explicitly marked, build-sanitized guide images.
+    // Initial view setup covers prerendering; the render hook covers navigation.
+    for (const image of this.element.nativeElement.querySelectorAll(
+      'img.guide-lazy-image:not([loading])',
+    )) {
+      this.renderer.setAttribute(image, 'loading', 'lazy');
+    }
   }
 
   private guideForRoute(): Guide {

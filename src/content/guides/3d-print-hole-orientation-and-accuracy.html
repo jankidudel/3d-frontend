@@ -72,6 +72,50 @@ faq:
   <a href="{{ GuideSlug.RouteHowToMeasure3dModel }}">Two surface selections</a>
   establish a span, not an analytic diameter or hole centre.
 </p>
+<table>
+  <caption>
+    Assembly features can have different axes on the same part.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Feature question</th>
+      <th scope="col">Axis and access to retain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}">Screw passage</a>
+      </td>
+      <td>Bore axis and the entire portion the screw must pass.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+          >Head seat</a
+        >
+      </td>
+      <td>Bearing profile, driver approach and any support-removal route.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCaptiveNutPockets3dPrinting }}"
+          >Nut entrance</a
+        >
+      </td>
+      <td>
+        Entrance direction, flats/corners and the nut orientation along
+        insertion.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Rigidly rotating a part preserves its source distances while changing
+  build-relative features and accessible support-removal regions. That geometry
+  fact supplies neither a tested dimensional offset nor new sliced-accuracy
+  evidence.
+</p>
 <h2>Separate influences before correcting size</h2>
 <table>
   <thead>

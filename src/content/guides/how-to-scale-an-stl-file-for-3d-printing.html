@@ -37,6 +37,43 @@ heading: How to Scale an STL File for 3D Printing
   >
   explains percentage changes separately.
 </p>
+<h2>Does this part contain dimensions tied to existing hardware?</h2>
+<table>
+  <caption>
+    Analytical consequences of factor 0.90, not selected fastener
+    specifications.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Hypothetical source feature</th>
+      <th scope="col">After uniform 90% scale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>32.0 mm mounting spacing</td>
+      <td>28.8 mm</td>
+    </tr>
+    <tr>
+      <td>4.50 mm screw passage</td>
+      <td>4.05 mm</td>
+    </tr>
+    <tr>
+      <td>7.20 mm head recess</td>
+      <td>6.48 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Every length changes together. If mounting centres, a
+  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}">hardware passage</a> or
+  <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+    >head seat</a
+  >
+  must remain fixed, edit the relevant local features in source CAD. InspectMesh
+  performs uniform scale; it does not selectively enlarge bores or restore
+  hardware interfaces after scaling.
+</p>
 <h2>Resize a separate copy</h2>
 <ol>
   <li>

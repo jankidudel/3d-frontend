@@ -57,6 +57,7 @@ export class ContactPage implements AfterViewInit {
   protected readonly submitError = signal('');
   protected readonly captchaToken = signal('');
   protected readonly captchaError = signal('');
+  protected readonly emailRevealed = signal(false);
   private readonly siteConfig = inject(SITE_CONFIG);
   protected readonly supportEmail =
     this.siteConfig.contactEmail ?? this.siteConfig.privacyContactEmail;

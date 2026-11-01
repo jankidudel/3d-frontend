@@ -897,12 +897,12 @@
       "family": "F09",
       "owner": "InspectMesh",
       "decision": "retain",
-      "brief": "Own requested mm\u00b3/s arithmetic; distinguish nominal demand from calibrated machine/material capacity.",
+      "brief": "Own requested mm³/s arithmetic; distinguish nominal demand from calibrated machine/material capacity.",
       "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Plan your next job; Your planning result; Method and interpretation. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
-        "remainingEvidence": "Own requested mm\u00b3/s arithmetic; distinguish nominal demand from calibrated machine/material capacity."
+        "remainingEvidence": "Own requested mm³/s arithmetic; distinguish nominal demand from calibrated machine/material capacity."
       },
       "google": {
         "status": null,
@@ -7460,7 +7460,7 @@
       "url": "https://www.inspectmesh.com/tools/3d-printing-quote-generator",
       "sitemapMember": true,
       "local": {
-        "title": "3D Printing Quote Generator \u2014 Branded Quotations | InspectMesh",
+        "title": "3D Printing Quote Generator — Branded Quotations | InspectMesh",
         "description": "Turn your 3D printing price into a branded customer quotation. Add job specifications, a model reference and terms, then preview and download a PDF.",
         "headings": ["3D Printing Quote Generator"],
         "canonical": "https://www.inspectmesh.com/tools/3d-printing-quote-generator",
@@ -11478,7 +11478,7 @@
       "sitemapMember": true,
       "local": {
         "title": "3MF Quality Checker - Validate 3MF Files for 3D Printing | InspectMesh",
-        "description": "Check 3MF files for mesh problems before 3D printing. Inspect dimensions, triangle count, topology issues and the file\u2019s declared unit online.",
+        "description": "Check 3MF files for mesh problems before 3D printing. Inspect dimensions, triangle count, topology issues and the file’s declared unit online.",
         "headings": ["3MF Quality Checker"],
         "canonical": "https://www.inspectmesh.com/tools/3mf-quality-checker",
         "canonicalCount": 1,
@@ -14886,7 +14886,7 @@
       "sitemapMember": true,
       "local": {
         "title": "Will a 3D Model Fit Your Printer? | InspectMesh",
-        "description": "Compare X/Y/Z spans, a tested right-angle rotation and explicit allowances with the printer\u2019s usable space before checking final placement.",
+        "description": "Compare X/Y/Z spans, a tested right-angle rotation and explicit allowances with the printer’s usable space before checking final placement.",
         "headings": ["How to Check if a 3D Model Fits Your Printer"],
         "canonical": "https://www.inspectmesh.com/guides/how-to-check-if-a-3d-model-fits-your-printer",
         "canonicalCount": 1,
@@ -15841,7 +15841,7 @@
       "sitemapMember": true,
       "local": {
         "title": "How to Rotate a 3D Model to Fit Your Printer | InspectMesh",
-        "description": "Learn how changing a model\u2019s 90-degree orientation can help it fit a 3D printer, how to compare dimensions, and when scaling is still necessary.",
+        "description": "Learn how changing a model’s 90-degree orientation can help it fit a 3D printer, how to compare dimensions, and when scaling is still necessary.",
         "headings": ["How to Rotate a 3D Model to Fit Your Printer"],
         "canonical": "https://www.inspectmesh.com/guides/how-to-rotate-a-3d-model-to-fit-your-printer",
         "canonicalCount": 1,
@@ -21060,7 +21060,7 @@
       "local": {
         "title": "STL Will Not Slice: Diagnose the First Failing Step | InspectMesh",
         "description": "Triage a failed STL import or layer preview by symptom, then test geometry, placement or slicer settings without confusing the results.",
-        "headings": ["STL File Won\u2019t Slice? Find the First Failing Step"],
+        "headings": ["STL File Won’t Slice? Find the First Failing Step"],
         "canonical": "https://www.inspectmesh.com/guides/stl-file-wont-slice",
         "canonicalCount": 1,
         "robots": ["index, follow"],
@@ -21092,7 +21092,7 @@
         "observedAt": "2026-11-01T00:27:41.610Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
-      "primaryTask": "STL File Won\u2019t Slice? Find the First Failing Step",
+      "primaryTask": "STL File Won’t Slice? Find the First Failing Step",
       "baseline": {
         "mainContentSha256": "535bd24e60ccbc1828bf86207872097285dd5f93923cb76ac65566fc71c0db28",
         "observedAt": "2026-10-24T21:58:51.323Z",
@@ -21156,7 +21156,7 @@
         "title": "STL Will Not Slice: Diagnose the First Failing Step | InspectMesh",
         "canonical": ["https://www.inspectmesh.com/stl-file-wont-slice"],
         "robots": ["index, follow"],
-        "headings": ["STL File Won\u2019t Slice? Find the First Failing Step"],
+        "headings": ["STL File Won’t Slice? Find the First Failing Step"],
         "mainTextCharacters": 4172,
         "mainLinkCount": 17,
         "scope": "Settled browser DOM after the page H1 was available. Not initial HTTP, tool execution, visual/mobile acceptance or Google rendering.",
@@ -23165,7 +23165,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Provide a practical plane/face placement sequence and distinguish rotation from dropping to bed.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes First decide what \u201cflat\u201d should mean; Use a known tilted control; Compare the base face with the actual decision. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes First decide what “flat” should mean; Use a known tilted control; Compare the base face with the actual decision. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -23215,7 +23215,7 @@
         "mainTextCharacters": 3895,
         "mainContentSha256": "a8308ee04e6906df2fb7c6a629fe88be037fea2df216ffa5c39679ab6a400d8f",
         "sectionHeadings": [
-          "First decide what \u201cflat\u201d should mean",
+          "First decide what “flat” should mean",
           "Use a known tilted control",
           "Compare the base face with the actual decision",
           "Verify after placing on the face",
@@ -24786,9 +24786,9 @@
       "url": "https://www.inspectmesh.com/guides/why-wont-my-3mf-file-slice",
       "sitemapMember": true,
       "local": {
-        "title": "Why Won\u2019t My 3MF File Slice? | InspectMesh",
+        "title": "Why Won’t My 3MF File Slice? | InspectMesh",
         "description": "Diagnose common 3MF slicing failures, from package and extension support to topology, transforms, scale and slicer compatibility.",
-        "headings": ["Why Won\u2019t My 3MF File Slice?"],
+        "headings": ["Why Won’t My 3MF File Slice?"],
         "canonical": "https://www.inspectmesh.com/guides/why-wont-my-3mf-file-slice",
         "canonicalCount": 1,
         "robots": ["index, follow"],
@@ -24821,7 +24821,7 @@
         "observedAt": "2026-11-01T00:27:41.611Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
-      "primaryTask": "Why Won\u2019t My 3MF File Slice?",
+      "primaryTask": "Why Won’t My 3MF File Slice?",
       "baseline": {
         "mainContentSha256": "fb78554c44075de54de1d7948a9144c139193ead3bca5a0ee282415ea1b58447",
         "observedAt": "2026-10-24T21:58:51.324Z",
@@ -28828,6 +28828,102 @@
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
+      }
+    },
+    {
+      "path": "/guides/3d-print-screw-hole-sizing",
+      "url": "https://www.inspectmesh.com/guides/3d-print-screw-hole-sizing",
+      "priority": "P2",
+      "family": "functional-fit",
+      "owner": "Choose a screw-hole role before choosing its diameter.",
+      "primaryTask": "Choose a screw-hole role before choosing its diameter.",
+      "decision": "add",
+      "brief": "Passage/pilot/thread/insert selection and original passage/projection arithmetic, distinct from local compensation.",
+      "decisionReason": "No equivalent role owner in current guide/tool/cluster review. Passage/pilot/thread/insert selection and original passage/projection arithmetic, distinct from local compensation.",
+      "editorialReview": {
+        "scope": "Source, primary hardware references and original analytical geometry. No new physical test or slicer experiment.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production publication, Google status and representative physical assembly evidence remain separate."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-01"
+      }
+    },
+    {
+      "path": "/guides/counterbore-vs-countersink-3d-printing",
+      "url": "https://www.inspectmesh.com/guides/counterbore-vs-countersink-3d-printing",
+      "priority": "P2",
+      "family": "functional-fit",
+      "owner": "Choose and inspect a screw-head bearing recess.",
+      "primaryTask": "Choose and inspect a screw-head bearing recess.",
+      "decision": "add",
+      "brief": "Flat versus conical seats, ideal recess-depth arithmetic, remaining material and driver access.",
+      "decisionReason": "No equivalent role owner in current guide/tool/cluster review. Flat versus conical seats, ideal recess-depth arithmetic, remaining material and driver access.",
+      "editorialReview": {
+        "scope": "Source, primary hardware references and original analytical geometry. No new physical test or slicer experiment.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production publication, Google status and representative physical assembly evidence remain separate."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-01"
+      }
+    },
+    {
+      "path": "/guides/captive-nut-pockets-3d-printing",
+      "url": "https://www.inspectmesh.com/guides/captive-nut-pockets-3d-printing",
+      "priority": "P2",
+      "family": "functional-fit",
+      "owner": "Plan a nut pocket envelope, insertion, anti-rotation and retention.",
+      "primaryTask": "Plan a nut pocket envelope, insertion, anti-rotation and retention.",
+      "decision": "add",
+      "brief": "Exact thin-nut dimensional reference, original flats/corners geometry and service-access branches.",
+      "decisionReason": "No equivalent role owner in current guide/tool/cluster review. Exact thin-nut dimensional reference, original flats/corners geometry and service-access branches.",
+      "editorialReview": {
+        "scope": "Source, primary hardware references and original analytical geometry. No new physical test or slicer experiment.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production publication, Google status and representative physical assembly evidence remain separate."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-01"
       }
     }
   ],

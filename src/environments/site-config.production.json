@@ -1,5 +1,8 @@
 {
-  "contactEmail": "hello@inspectmesh.com",
+  "contactEmailParts": {
+    "localPart": "hello",
+    "domain": "inspectmesh.com"
+  },
   "siteUrl": "https://www.inspectmesh.com",
   "indexingEnabled": true,
   "contactCaptchaSiteKey": "0x4AAAAAAEw4cwKMZWR1v1Gz"

@@ -9,5 +9,6 @@ export const environment: SiteConfig & {
 } = {
   devWorkflowPreview: true,
   googleAnalyticsMeasurementId: 'G-S68WQPCH97',
+  contactEmail: 'hello@inspectmesh.com',
   ...siteConfig,
 };

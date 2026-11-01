@@ -2,8 +2,33 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ExamplesPage } from './examples-page';
 import { publicExamples } from './example-registry';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 
 describe('ExamplesPage layout and discovery', () => {
+  it('keeps hardware interpretation links on the relevant existing controls', () => {
+    TestBed.configureTestingModule({
+      imports: [ExamplesPage],
+      providers: [provideRouter([])],
+    });
+    const fixture = TestBed.createComponent(ExamplesPage);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    for (const [id, route] of [
+      ['feature-bore', GuideRouteUrl.Route3dPrintScrewHoleSizing],
+      [
+        'changed-square-hole',
+        GuideRouteUrl.RouteCounterboreVsCountersink3dPrinting,
+      ],
+      ['alignment-coupon', GuideRouteUrl.RouteCaptiveNutPockets3dPrinting],
+    ]) {
+      expect(host.querySelector(`#${id} a[href="${route}"]`)).not.toBeNull();
+    }
+    expect(
+      host.querySelector(
+        '#feature-angle ul[aria-label="Related interface decisions"]',
+      ),
+    ).toBeNull();
+  });
   it('keeps every example in one continuous grid with its category badge and stable anchor', () => {
     TestBed.configureTestingModule({
       imports: [ExamplesPage],

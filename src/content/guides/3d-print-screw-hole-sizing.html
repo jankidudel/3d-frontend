@@ -1,0 +1,234 @@
+---
+title: 'Screw Hole Sizing for 3D Prints: Choose the Fit | InspectMesh'
+description: 'Separate clearance holes, thread-forming pilots, tapped threads and insert seats. Use exact hardware dimensions and local print measurements before editing CAD.'
+slug: 3d-print-screw-hole-sizing
+eyebrow: Functional fit and calibration
+heading: 'How to Size Screw Holes in a 3D-Printed Part'
+---
+
+<p>
+  Choose what the hole must do before choosing its diameter. A clearance hole
+  lets the screw pass; a pilot supports a particular thread-forming or cutting
+  operation; an insert seat follows the selected insert drawing. The same screw
+  label does not give these holes the same dimensions.
+</p>
+<h2 id="guide-hole-role">Choose the hole's role</h2>
+<table>
+  <caption>
+    Start with the receiving feature, then obtain its dimensional basis.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Intended action</th>
+      <th scope="col">Dimension basis</th>
+      <th scope="col">Verify separately</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Screw passes to a nut or threaded counterpart</td>
+      <td>
+        Relevant maximum passing envelope plus chosen passage and positional
+        allowance
+      </td>
+      <td>Shank/thread passage, head seat, alignment and driver access</td>
+    </tr>
+    <tr>
+      <td>A specified screw forms a thread in plastic</td>
+      <td>Exact screw-family, material and application guidance</td>
+      <td>
+        Pilot, boss, usable depth, assembly method and process suitability
+      </td>
+    </tr>
+    <tr>
+      <td>Hole is tapped after printing</td>
+      <td>Exact thread, tap and preparation process</td>
+      <td>
+        Preparation diameter, usable depth, tap runout/access and finished
+        thread
+      </td>
+    </tr>
+    <tr>
+      <td>Thread is modelled and printed</td>
+      <td>Defined thread form and pitch for the intended process</td>
+      <td>
+        Exported detail, actual sliced paths and physical counterpart engagement
+      </td>
+    </tr>
+    <tr>
+      <td>An insert is installed</td>
+      <td>Exact insert series and length drawing</td>
+      <td>Seat, depth, boss, installation and service requirements</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A clearance passage is not intended to grip the screw's thread. Conversely,
+  increasing a thread-forming pilot until the screw falls through defeats that
+  receiving feature. For example,
+  <a
+    href="https://www.ejot.com/Industrial-Fasteners-Division/Products/DELTA-PT%C2%AE/p/VBT_DELTA_PT"
+    >EJOT's DELTA PT documentation</a
+  >
+  ties its direct-fastening design support to the particular screw, material and
+  pilot geometry (reviewed 1 November 2026). It does not supply a universal FDM
+  pilot prescription. A wood- or metal-drilling chart is not automatically a
+  thermoplastic printing specification either.
+</p>
+<h2>Identify the actual screw and receiver</h2>
+<p>
+  Record the thread system and pitch, exact part or drawing revision, head
+  style, washer if used and receiving nut, insert or plastic thread. Establish
+  which portion must pass through each plate: thread crests, a plain shank or a
+  larger shoulder may set the envelope. Keep nominal catalogue dimensions, their
+  tolerances and your actual hardware measurements in separate fields.
+</p>
+<p>
+  A single mean reading does not establish the maximum envelope of a hardware
+  batch. Likewise, a diameter allowance cannot by itself resolve misaligned hole
+  axes or mounting-centre errors. Record the intended alignment and inspect it
+  in source CAD before treating the problem as local hole compensation.
+</p>
+<h2 id="guide-passage-example">Work a clearance-passage example</h2>
+<p>
+  The following inputs are hypothetical arithmetic, not measured InspectMesh
+  hardware or recommendations for every nominal M4 screw. Assume the relevant
+  external passing envelope is 3.95 mm and choose a desired produced diametral
+  clearance of 0.35 mm.
+</p>
+<ol>
+  <li>Produced passage target: <code>H = 3.95 + 0.35 = 4.30 mm</code>.</li>
+  <li>
+    Assume comparable local hole error
+    <code>eH = produced - designed = -0.15 mm</code>.
+  </li>
+  <li>
+    Provisional source test diameter:
+    <code>H - eH = 4.30 - (-0.15) = 4.45 mm</code>.
+  </li>
+  <li>
+    For ideal concentric circles only, the chosen one-side gap is
+    <code>0.35 / 2 = 0.175 mm</code>.
+  </li>
+</ol>
+<p>
+  The chosen 0.35 mm gap and assumed -0.15 mm process error serve different
+  purposes. Enter the 3.95 mm external envelope and 0.35 mm clearance manually
+  in the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >tolerance worksheet</a
+  >
+  using <strong>Fixed external pin / hardware</strong>. Retain the source test
+  size and comparable produced readings for the hole-error calculation. Do not
+  enter an outside printing correction for hardware that is not being printed. A
+  local test must establish whether the assumed error transfers to this feature.
+</p>
+<p>
+  If the opening is irregular or tight only near one end, use the
+  <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+    >bore-orientation diagnosis</a
+  >
+  before applying a scalar change. For a stable local difference, follow
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >hole compensation</a
+  >; avoid applying the same baked-in correction again in the slicer.
+</p>
+<h2 id="guide-screw-reach">Check screw reach separately from passage</h2>
+<p>
+  For a hypothetical screw whose drawing defines 12.0 mm from the under-head
+  bearing plane to its tip, a bearing-seat-to-interface stack of 8.5 mm leaves
+  <code>12.0 - 8.5 = 3.5 mm</code> projection beyond that interface. If a blind
+  receiver has 5.0 mm available geometric depth, the corresponding end allowance
+  is <code>5.0 - 3.5 = 1.5 mm</code>.
+</p>
+<p>
+  Neither number establishes usable threaded engagement. The screw tip, thread
+  runout, incomplete receiver threads, washers and actual seating position still
+  matter. A deeper head recess changes that bearing position. Check the exact
+  drawing's length-reference convention, especially when changing head style,
+  and keep any load or engagement requirement separate from this stack
+  arithmetic.
+</p>
+<h2>Inspect the export and plan a representative check</h2>
+<p>
+  Open the saved model in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> with the intended
+  units and placement. Overall bounds do not measure the bore. A circle through
+  three selected rim points is a construction, not a passage gauge or thread
+  measurement; the
+  <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+    >bore-measurement guide</a
+  >
+  demonstrates that distinction with existing faceted controls. InspectMesh does
+  not drill, tap or selectively resize the mesh hole. Source CAD owns the local
+  edit.
+</p>
+<p>
+  A representative validation should retain the same nominal size, bore
+  orientation, local wall/boss, material and profile, with the intended
+  hardware. Prusa's
+  <a
+    href="https://help.prusa3d.com/article/modeling-with-3d-printing-in-mind_164135"
+    >modelling guidance</a
+  >
+  describes fit as dependent on geometry, orientation and process conditions
+  (reviewed 1 November 2026); its product-specific figures are not defaults
+  here. No physical assembly was tested for this article.
+</p>
+<table>
+  <caption>
+    Record your own result before accepting the interface.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Keep with the revision</th>
+      <th scope="col">Question to resolve</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Exact hardware reference and hole role</td>
+      <td>Which envelope passes, and which feature receives the thread?</td>
+    </tr>
+    <tr>
+      <td>CAD target, reopened mesh construction, unit/axis</td>
+      <td>Did the intended local edit survive export?</td>
+    </tr>
+    <tr>
+      <td>Raw physical readings, instrument, direction and conditions</td>
+      <td>Is the restriction repeatable or directional?</td>
+    </tr>
+    <tr>
+      <td>Passage, seating, reach and service observations</td>
+      <td>What remains unresolved before assembly acceptance?</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Choose the next interface decision</h2>
+<ul>
+  <li>
+    Head needs a recess: compare
+    <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+      >counterbores and countersinks</a
+    >.
+  </li>
+  <li>
+    Nut receives the screw: plan
+    <a href="{{ GuideSlug.RouteCaptiveNutPockets3dPrinting }}"
+      >flats, corners, insertion and retention</a
+    >.
+  </li>
+  <li>
+    Insert receives the screw: use the
+    <a href="{{ GuideSlug.Route3dPrintHeatSetInsertHoleSizing }}"
+      >exact-series insert seat workflow</a
+    >.
+  </li>
+  <li>
+    Two printed round features mate: use the distinct printed-pair basis in the
+    <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
+      >clearance guide</a
+    >.
+  </li>
+</ul>

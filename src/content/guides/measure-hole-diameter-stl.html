@@ -246,6 +246,61 @@ heading: Measure a Hole Diameter in an STL File
   intended cardinal reference gave 25 mm. That selection dependence is why the
   exact point record matters.
 </p>
+<h2>Match the construction to the hardware question</h2>
+<table>
+  <caption>
+    A valid construction can answer a different question from physical fit.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Application</th>
+      <th scope="col">Construction reported</th>
+      <th scope="col">Additional source geometry needed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
+          >Bore for screw passage</a
+        >
+      </td>
+      <td>Circle through three chosen vertices on one rim.</td>
+      <td>
+        Limiting passage along the bore and the relevant hardware envelope.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCaptiveNutPockets3dPrinting }}"
+          >Hex pocket</a
+        >
+      </td>
+      <td>
+        Distance between selected opposing surfaces; a vertex circle is across
+        corners.
+      </td>
+      <td>Actual flats, corner form, depth and insertion route.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+          >Conical head seat</a
+        >
+      </td>
+      <td>Selected opening/throat spans or point angle.</td>
+      <td>
+        Defined planes, analytic included angle and actual head bearing profile.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The constructed circle does not measure threaded engagement, minimum clear
+  diameter, hex across-flats or countersink contact. Reuse the bore controls
+  above to understand the construction; they are not nut-pocket or head-seat
+  fixtures.
+</p>
 <h2>Keep source and printed evidence separate</h2>
 <p>
   Compare three records before compensation: the intended CAD feature, the

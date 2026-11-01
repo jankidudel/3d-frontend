@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" role="img" aria-labelledby="title desc">
+<style>text{font-family:Arial,sans-serif;fill:#172e43;font-size:20px}.heading{font-size:26px;font-weight:700}.small{font-size:18px}.material{fill:#dcebf2;stroke:#284b63;stroke-width:3}.dim{fill:none;stroke:#076c80;stroke-width:2}.axis{stroke:#657887;stroke-dasharray:6 6}</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#076c80"/></marker></defs>
+<rect width="960" height="520" fill="#fff"/>
+<title id="title">Nut pocket flats, corners and depth</title><desc id="desc">Nested ideal hexagons distinguish across-flats F and across-corners K. Section separates pocket depth from nut thickness and screw passage. Open top indicates drop-in insertion.</desc>
+<text x="30" y="40" class="heading">Plan: ideal regular hexagons</text><text x="510" y="40" class="heading">Section: open top insertion</text>
+<polygon points="405.00,255.00 325.00,393.56 165.00,393.56 85.00,255.00 165.00,116.44 325.00,116.44" fill="#dcebf2" stroke="#284b63" stroke-width="3"/>
+<polygon points="382.00,255.00 313.50,373.65 176.50,373.65 108.00,255.00 176.50,136.35 313.50,136.35" fill="#fff" stroke="#284b63" stroke-width="3"/>
+<circle cx="245" cy="255" r="43" fill="#fff" stroke="#657887" stroke-width="2"/>
+<path class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)" d="M245 136.35V373.65 M85 428H405"/>
+<text x="265" y="210">F: across flats</text><text x="125" y="460">K: across corners</text>
+<path class="material" d="M520 180H605V320H685V400H520Z M765 320H845V180H925V400H765Z"/>
+<path d="M620 205H685V295H620Z M765 205H830V295H765Z" fill="#f5e4b8" stroke="#795a20" stroke-width="3"/>
+<path class="dim" marker-end="url(#arrow)" d="M725 75V160"/>
+<text x="535" y="115">Nut enters from above</text>
+<path class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)" d="M570 185V315 M875 210V290"/>
+<text x="515" y="445">Pocket depth</text><text x="800" y="445">Nut thickness</text>
+<path class="axis" d="M725 195V405"/>
+<text x="640" y="370" class="small">Screw passage</text>
+<text x="30" y="495" class="small">Analytical geometry - not to scale. Selected clearances do not establish printed fit or retention.</text></svg>

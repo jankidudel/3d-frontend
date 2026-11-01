@@ -13,6 +13,7 @@ import {
 } from '../../core/analytics/analytics.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   calculateCalibrationErrors,
   MatingMode,
@@ -46,6 +47,7 @@ const FIT_LABELS: Record<FitIntent, string> = {
   styleUrl: './tolerance-calculator-page.scss',
 })
 export class ToleranceCalculatorPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly matingModes = MatingMode;
   readonly matingMode = signal<MatingMode>(MatingMode.Fixed);
   readonly outsideReadings = signal<readonly Reading[]>([emptyReading()]);

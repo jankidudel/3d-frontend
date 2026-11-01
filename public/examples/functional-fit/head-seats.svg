@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" role="img" aria-labelledby="title desc">
+<style>text{font-family:Arial,sans-serif;fill:#172e43;font-size:20px}.heading{font-size:26px;font-weight:700}.small{font-size:18px}.material{fill:#dcebf2;stroke:#284b63;stroke-width:3}.dim{fill:none;stroke:#076c80;stroke-width:2}.axis{stroke:#657887;stroke-dasharray:6 6}</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#076c80"/></marker></defs>
+<rect width="960" height="520" fill="#fff"/>
+<title id="title">Flat and conical head seats</title><desc id="desc">Sections show separate passage and recess dimensions, axial depth, remaining plate material and driver approach. Analytical, not to scale.</desc>
+<text x="30" y="40" class="heading">Counterbore: flat seat</text><text x="515" y="40" class="heading">Countersink: conical seat</text>
+<path class="material" d="M35 160H135V260H195V400H35Z M285 260H345V160H445V400H285Z"/>
+<path class="material" d="M515 160H605L665 260V400H515Z M755 260L815 160H925V400H755Z"/>
+<path class="axis" d="M240 140V420 M710 140V420"/>
+<path class="dim" marker-end="url(#arrow)" d="M240 65V130 M710 65V130"/>
+<text x="45" y="100">Driver approach</text><text x="515" y="100">Driver approach</text>
+<path class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)" d="M135 145H345 M195 425H285 M605 145H815 M665 425H755"/>
+<text x="155" y="132">Recess D</text><text x="180" y="458">Passage d</text><text x="650" y="132">Opening D</text><text x="660" y="458">Throat d</text>
+<path class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)" d="M105 165V255 M550 165V255"/>
+<text x="45" y="220">h</text><text x="570" y="220">z</text>
+<path class="dim" d="M605 160L710 335L815 160 M690 300Q710 278 730 300"/>
+<text x="700" y="272">alpha</text>
+<text x="42" y="305" class="small">Material</text><text x="42" y="330" class="small">below seat</text>
+<text x="780" y="345" class="small">Remaining</text><text x="780" y="370" class="small">material</text>
+<text x="30" y="495" class="small">Analytical sections - not to scale. Dimensions and worked examples are defined in the guide.</text></svg>

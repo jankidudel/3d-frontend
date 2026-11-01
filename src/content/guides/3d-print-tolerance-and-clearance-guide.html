@@ -16,22 +16,11 @@ faq:
 ---
 
 <p>
-  A CAD model can be dimensionally correct and still produce parts that do not
-  fit together.
+  Clearance is the chosen gap between mating features; tolerance is the
+  acceptable dimensional variation. A local printing error is a separate
+  measured difference. Choose whether the counterpart is fixed hardware or
+  another printed part before calculating a target.
 </p>
-
-<h2>Source and further reading</h2>
-<p>
-  Formlabs publishes
-  <a href="https://formlabs.com/support/Design-Specs/"
-    >process-specific design specifications</a
-  >
-  with the printer, resin and layer assumptions attached. Use documents like
-  these as evidence for the stated system only, then validate your own machine,
-  material and orientation rather than treating one vendor's clearance as a
-  universal rule.
-</p>
-
 <h2>Worked fit example</h2>
 <p>
   Suppose a test peg designed at 10.00 mm measures 10.12 mm and a matching test
@@ -49,42 +38,15 @@ faq:
   fixed during the experiment, then validate more than one sample before
   applying the result to a long print or critical assembly.
 </p>
-<h2>Validate with a representative fit</h2>
-<p>
-  A designed 0.20 mm clearance may not produce the same result across materials,
-  axes or orientations. Print a small pin-and-hole or mating-feature test using
-  the intended profile, measure it, and record the result before committing it
-  to a functional assembly.
-</p>
-<p>
-  A pin may print slightly oversized. A hole may print slightly undersized. Two
-  parts that meet perfectly in the design may fuse, wobble or require more force
-  than intended after printing.
-</p>
-<p>
-  That is why functional 3D printing needs <strong>clearance</strong> and
-  <strong>tolerance</strong> planning.
-</p>
-<p>
-  The useful question is not “What is the one correct gap for every print?” It
-  is:
-</p>
-<blockquote>
-  <p>
-    <strong
-      >What fit do I want, and what does my own printer produce with this
-      material and these settings?</strong
-    >
-  </p>
-</blockquote>
 <p>
   Use the
   <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >3D Print Tolerance &amp; Clearance Calculator</a
+    >tolerance worksheet</a
   >
-  to turn that answer into model dimensions.
+  to retain your chosen gap and comparable raw readings. Validate a
+  representative feature with the actual counterpart and process before
+  accepting the assembly.
 </p>
-
 <h2>Tolerance and clearance are not the same thing</h2>
 <p>
   <strong>Tolerance</strong> is the acceptable variation around an intended
@@ -106,6 +68,57 @@ faq:
   tight as intended.
 </p>
 
+<h2>What is mating?</h2>
+<table>
+  <caption>
+    A round calculation does not choose every assembly feature.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Interface</th>
+      <th scope="col">Use this dimensional basis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
+          >Round pin or screw passage</a
+        >
+      </td>
+      <td>
+        Circular counterpart plus selected diametral clearance, with separate
+        local errors.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCaptiveNutPockets3dPrinting }}"
+          >Nut pocket</a
+        >
+      </td>
+      <td>Flats, corner envelope, depth and insertion route.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
+          >Head seat</a
+        >
+      </td>
+      <td>Actual bearing shape, recess planes and driver access.</td>
+    </tr>
+    <tr>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintHeatSetInsertHoleSizing }}">Insert</a>
+      </td>
+      <td>Exact series/length seat drawing and installation requirements.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The round hole/pin calculator does not automatically size a hex pocket, select
+  a screw-head recess or establish usable thread engagement.
+</p>
 <h2>Choose the intended fit first</h2>
 <p>
   Do not start by choosing a random number. First decide what the two parts need
@@ -167,6 +180,18 @@ faq:
   prints as 10.20 mm, its hole error is -0.10 mm. The
   <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">calculator</a>
   performs these calculations and keeps the sign convention visible.
+</p>
+
+<h2>Source and further reading</h2>
+<p>
+  Formlabs publishes
+  <a href="https://formlabs.com/support/Design-Specs/"
+    >process-specific design specifications</a
+  >
+  with the printer, resin and layer assumptions attached. Use documents like
+  these as evidence for the stated system only, then validate your own machine,
+  material and orientation rather than treating one vendor's clearance as a
+  universal rule.
 </p>
 
 <h2>Why nominal dimensions often do not print exactly</h2>

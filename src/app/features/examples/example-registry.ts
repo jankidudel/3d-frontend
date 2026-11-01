@@ -23,6 +23,10 @@ export interface PublicExample {
   readonly settings: string;
   readonly limitations: string;
   readonly guide: string;
+  readonly relatedGuides?: readonly {
+    readonly route: string;
+    readonly label: string;
+  }[];
   readonly tools: readonly string[];
   readonly provenance: string;
 }
@@ -123,6 +127,12 @@ const splitAssemblyExamples: readonly PublicExample[] = [
       'Open the meshes in the viewer, then slice and print with the intended material, orientation and profile before measuring or fitting.',
     limitations:
       'The 0.30 nominal diametral clearance is illustrative, not a recommendation. No coupon was physically printed.',
+    relatedGuides: [
+      {
+        route: GuideRouteUrl.RouteCaptiveNutPockets3dPrinting,
+        label: 'Plan separate nut retention',
+      },
+    ],
     guide: GuideRouteUrl.RouteAlignmentPinsForSplit3dPrints,
     tools: [PublicRouteUrl.Viewer],
     provenance:
@@ -216,6 +226,12 @@ export const publicExamples: readonly PublicExample[] = [
       'Cardinal-vertex constructions give diameter 20 for the polygon controls; two ellipse selections give 25 and 12.5. These are construction results, not clearance or roundness.',
     settings:
       'Assume mm for these controls. Choose Circle through 3 points and target three separated vertices on the same opening rim. See manifest point indices.',
+    relatedGuides: [
+      {
+        route: GuideRouteUrl.Route3dPrintScrewHoleSizing,
+        label: 'Apply the passage decision to hardware',
+      },
+    ],
     guide: GuideRouteUrl.RouteMeasureHoleDiameterStl,
     tools: [PublicRouteUrl.Viewer],
     group: 'Feature measurement',
@@ -1726,6 +1742,16 @@ export const publicExamples: readonly PublicExample[] = [
       'Both closed generated tubes span 40 × 30 × 10 mm and contain 32 triangles. Analytical volumes are 11,360 and 11,640 mm³.',
     observed:
       'Independent reopening confirms bounds, incidence, winding and volume. Existing two-way comparison at 0.1 mm reports 392 forward and 364 reverse samples above tolerance, out of 5,000 each.',
+    relatedGuides: [
+      {
+        route: GuideRouteUrl.Route3dPrintScrewHoleSizing,
+        label: 'Name the intended hardware passage',
+      },
+      {
+        route: GuideRouteUrl.RouteCounterboreVsCountersink3dPrinting,
+        label: 'Specify a head-seat revision separately',
+      },
+    ],
     guide: GuideRouteUrl.RouteHowToCompareStlRevisions,
     tools: [PublicRouteUrl.StlCompare, PublicRouteUrl.Viewer],
   },

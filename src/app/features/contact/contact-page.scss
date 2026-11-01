@@ -5,6 +5,24 @@
   margin-top: 2rem;
   padding: clamp(1.25rem, 4vw, 2rem);
 }
+.email-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+.email-reveal {
+  padding: 0;
+  border: 0;
+  color: var(--primary);
+  background: none;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.email-contact a {
+  overflow-wrap: anywhere;
+}
 .privacy-note,
 .delivery-note {
   color: var(--muted);
