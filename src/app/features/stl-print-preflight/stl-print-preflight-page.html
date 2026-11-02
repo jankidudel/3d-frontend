@@ -273,18 +273,24 @@
         </p>
         @if (printerProfile(); as profile) {
           <p>
-            Using your saved printer profile: {{ format(profile.width) }} ×
-            {{ format(profile.height) }} × {{ format(profile.depth) }}
+            Using your saved printer profile: {{ format(profile.x) }} ×
+            {{ format(profile.y) }} × {{ format(profile.z) }}
             {{ profile.unit }}. Edit it in the
             <a [routerLink]="routeUrl.DimensionsChecker"
               >STL Dimensions Checker</a
             >.
           </p>
+          <p>
+            Centred envelope only; zero additional edge exclusion and expansion.
+            Z is independent. No source-position, generated structures,
+            exclusions or kinematic assessment.
+          </p>
         }
         @if (orientation(); as fit) {
           <p>
-            Preset build volume: 220 × 220 × 250 mm. Normal orientation
-            {{ fit.current.fit.fits ? 'fits' : 'does not fit' }}.
+            Confirmed {{ printerProfile()!.shape }} region, X/Y/Z as above.
+            Centred envelope in current orientation
+            {{ fit.current.fit.fits ? 'contained' : 'not contained' }}.
             {{
               fit.recommended
                 ? 'A right-angle rotation fits.'
@@ -293,9 +299,9 @@
           </p>
         } @else {
           <p>
-            Printer fit has not been checked because no custom printer profile
-            is saved on this device. Use the Dimensions Checker to enter your
-            usable build volume.
+            Printer envelope unavailable: no confirmed X/Y/Z and shape profile
+            is active. Review saved legacy axes or enter a usable region in the
+            fit checker.
           </p>
         }
         <p>

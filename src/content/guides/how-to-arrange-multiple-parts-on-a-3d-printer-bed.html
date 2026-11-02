@@ -12,186 +12,121 @@ faq:
 ---
 
 <p>
-  Printing several parts together can save setup time, but it also concentrates
-  the risk: a loose part, poor adhesion or a failed support can affect the whole
-  batch.
+  Choose the usable region and independent allowances before judging how many
+  parts belong on a plate. A compact arrangement is useful only when its actual
+  sliced structures and printing risks are acceptable. Keep the accepted job
+  count separate from all uploaded files and from successful production.
+</p>
+<h2>Choose the usable region and active source</h2>
+<p>
+  In the
+  <a href="{{ GuideSlug.Route3dPrintBedLayoutPlanner }}">bed layout planner</a>,
+  choose a confirmed saved profile or explicitly use editable session settings.
+  A saved inch or centimetre profile is converted to millimetres; it does not
+  silently become the starter bed. X/Y span the bed and Z is checked separately.
+  Review ambiguous legacy axes before saving. Session edits control the active
+  session bed; saved-mode edits apply after explicit confirmation and save.
 </p>
 <p>
-  Record the final layout with the job: part count, profile, spacing rule and
-  any sequential-printing choice. That makes a successful batch repeatable and
-  helps explain whether a later failure came from geometry, placement or changed
-  process settings.
+  Choose Rectangle or Circle deliberately. The
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}"
+    >circular-envelope guide</a
+  >
+  explains why a rectangle narrower than the diameter can still put corners
+  outside. Irregular exclusions and height-dependent machine regions remain
+  native-profile questions.
 </p>
-<h2>A practical batch-layout workflow</h2>
+<h2>Set independent allowances</h2>
+<p>
+  Bed edge exclusion removes each rectangular edge or a radial band on a circle.
+  Extra XY allowance per part expands the model envelope. Inter-part spacing is
+  measured between those expanded rectangles. Do not apply one physical
+  allowance twice. Use the
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >process-space budgeting guide</a
+  >
+  for worked body-gap and expansion examples; a uniform reservation is not
+  generated brim, support or purge geometry.
+</p>
+<p>
+  The earlier rectangular control remains reproducible: on a 220 x 220 mm bed
+  with 5 mm edge exclusion, 5 mm inter-part spacing and zero expansion, two 100
+  x 80 mm envelopes can start at x=5 and x=110, y=5. The second ends at x=210,
+  leaving 10 mm at the right boundary. These are illustrative planning
+  coordinates, not a machine origin or a universal gap requirement.
+</p>
+<h2>Interpret the suggested placement</h2>
+<p>
+  Rectangle mode uses a shelf arrangement; circle mode tries centred, adjacent
+  and bounded grid candidates with optional 90-degree turns. Every accepted
+  reserved rectangle is inside the stated region and respects the selected gap.
+  The finite heuristic does not search every arrangement or nest arbitrary
+  outlines. Not placed by this layout means no accepted candidate was found, not
+  proof that another plate is necessary. Try a different arrangement, rotation,
+  lower count or native slicer.
+</p>
+<p>
+  The numbered diagram and text table report reserved rectangle positions in the
+  planner frame. Area use is accepted model-envelope or reserved-rectangle area
+  divided by effective region area, using a disc for circles. It is not actual
+  bed contact, deposited material or optimal nesting density.
+</p>
+<h2>Review the native generated plate</h2>
 <ol>
-  <li>Confirm each part's orientation, support needs and footprint.</li>
-  <li>Leave clearance for brims, skirts, toolhead travel and part removal.</li>
   <li>
-    Group parts with similar height and risk rather than simply filling every
-    gap.
+    Use the
+    <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
+      >orientation planner</a
+    >
+    to compare six directions, then apply the intended rotation in the slicer.
   </li>
   <li>
-    Inspect the slicer preview for collisions, travel paths and cooling time.
+    Keep compatible material, layer and support requirements together; review
+    object-level overrides.
   </li>
   <li>
-    Prefer smaller batches when a failed tall part would spoil several critical
-    pieces.
+    Generate adhesion structures, support bases and purge/wipe structures, then
+    inspect all their extents and relevant travel.
   </li>
+  <li>
+    For one-at-a-time printing, perform the separate
+    <a href="{{ GuideSlug.RouteSequential3dPrintingClearance }}"
+      >head/gantry and order checks</a
+    >. Nonoverlapping envelopes do not certify sequential clearance.
+  </li>
+  <li>Review the whole slice and save the native project and exact profile.</li>
 </ol>
+<h2>Choose the failure domain deliberately</h2>
 <p>
-  Sequential printing needs extra caution: the toolhead and gantry must clear
-  every completed part, and the printer's own sequential-print limits are
-  authoritative. Multiple parts can improve throughput, but they also create a
-  shared failure domain. A compact test batch is often more useful than a fully
-  packed long run. Check individual size first with the
+  Several parts share a failure domain: a detached object or failed support can
+  spoil otherwise valid neighbours. Group stable, inexpensive parts when
+  settings agree, and consider separate jobs for tall, delicate or critical
+  items. Cooling and repeated travel also change across a multi-part plate. A
+  full bed's nominal throughput does not establish lower expected loss or better
+  surface quality.
+</p>
+<p>
+  Do not respond to every unplaced rectangle by shrinking functional parts or
+  weakening adhesion settings. First check shape, orientation, actual
+  requirements and alternative arrangements. Individual
   <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >printer-fit guide</a
-  >.
-</p>
-<p>
-  Use the
-  <a href="{{ GuideSlug.Route3dPrintBedLayoutPlanner }}"
-    >3D Print Bed Layout Planner</a
+    >model fit</a
   >
-  to compare local STL and 3MF footprints with your saved printer bed. It is a
-  planning aid, not a slicer replacement.
+  remains distinct from this multi-part placement task.
 </p>
-<h2>Start with usable bed space</h2>
+<h2>Record the accepted job</h2>
 <p>
-  Use the printer's usable build area, not its advertised maximum. Set it in the
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">STL Dimensions Checker</a
-  >. Keep a margin from clips, probes, edge zones and any area your printer
-  profile does not reliably use.
-</p>
-<h2>Leave clearance for brims and removal</h2>
-<p>
-  Set space between parts for the brim, skirt, purge line and a tool to remove a
-  finished part. A layout that only fits bounding boxes may be too tight once
-  adhesion helpers are enabled.
-</p>
-<h2>Choose batches, not maximum density</h2>
-<p>
-  Put parts with similar material, layer height and support needs together.
-  Separate tall or unstable parts when a failure would make the whole batch
-  costly.
-</p>
-<h2>Confirm in the slicer</h2>
-<p>
-  Review each part in the
-  <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
-    >Orientation Planner</a
-  >, then rotate parts, generate supports and inspect travel moves in the slicer
-  before printing. The planner does not inspect collisions, actual outlines,
-  support contact, firmware offsets or first-layer behaviour.
-</p>
-<h2>Set spacing from real footprints</h2>
-<p>
-  Use the slicer's placed outlines, not only model bounding boxes. Leave room
-  for brims, skirts, support bases, purge structures and toolhead travel. Parts
-  that almost touch can merge through a brim or be struck when one edge lifts.
-  Check manufacturer and slicer guidance for printer-specific clearance rather
-  than using one universal gap.
-</p>
-<h2>Plan cooling and order</h2>
-<p>
-  Several small parts can give each layer more cooling time, but repeated travel
-  can also increase stringing and surface marks. Place delicate surfaces away
-  from heavy travel corridors and review the toolpath layer by layer. When parts
-  have very different heights or cooling needs, separate jobs may be more
-  predictable.
-</p>
-<h2>Control the failure domain</h2>
-<p>
-  A full bed maximizes nominal throughput but also puts more material and time
-  at risk. Group inexpensive, stable parts together and isolate tall, narrow,
-  warping-prone or customer-critical pieces. A failed part can detach and damage
-  every other item even when the remaining geometry is valid.
-</p>
-<h2>Sequential printing needs machine clearance</h2>
-<p>
-  Print-one-at-a-time modes require verified toolhead, gantry and carriage
-  clearance around completed parts. Use the printer profile and slicer's
-  collision model, keep within any height limit, and do not assume visual bed
-  spacing proves the nozzle assembly can pass safely.
-</p>
-<h2>Batching checklist</h2>
-<ol>
-  <li>Orient and support each part independently.</li>
-  <li>Add adhesion structures before judging clearance.</li>
-  <li>Group parts with compatible material, layer and cooling requirements.</li>
-  <li>
-    Inspect first-layer paths, travel, supports and sequential-clearance
-    warnings.
-  </li>
-  <li>Reduce the batch when one failure would make the loss unacceptable.</li>
-</ol>
-<h2>Brims and supports change the layout</h2>
-<p>
-  Arrange the models only after applying likely adhesion and support settings. A
-  wide brim can join neighboring parts and make removal harder; support bases
-  can occupy gaps that looked empty. Check that purge or wipe structures do not
-  reduce the usable area for multi-material jobs.
-</p>
-<h2>Choose between one batch and several jobs</h2>
-<p>
-  One plate is useful for identical settings and unattended throughput. Separate
-  jobs are safer when parts need different temperatures, cooling, support,
-  surface priorities or delivery urgency. Estimate the cost of losing the entire
-  plate, not only the small time saved by packing another item.
+  Confirm only the accepted placement count before offering it to the cost
+  calculator. Changing parts, profile, shape, units, edge exclusion, spacing or
+  expansion clears that confirmation. The recipient requires a deliberate apply
+  action and preserves existing job rows. The offered count is unsliced; it
+  supplies no successful-production count, grams or duration.
 </p>
 <p>
-  Label exported jobs with part count and revision, then count finished pieces
-  before repeating a batch. For repeated production, preserve a validated slicer
-  project rather than rebuilding an unrecorded layout each time.
-</p>
-<h2>Run a final plate review</h2>
-<p>
-  Before exporting G-code, zoom to the first layer and confirm every island has
-  an intended path and adequate adhesion strategy. Scrub through the tallest
-  layers to catch support collisions and isolated towers. Verify the displayed
-  part count, estimated material and print time against the batch record. If one
-  part was accidentally duplicated, scaled or placed outside the usable area,
-  correct the layout and regenerate the job rather than relying on printer-side
-  clipping.
-</p>
-
-<h2>Move from layout to slice to job record</h2>
-<ol>
-  <li>
-    Confirm which placed footprints represent the requested parts. The
-    rectangular planner is a fit screen, not a packing optimiser or slicer.
-  </li>
-  <li>
-    Slice the actual plate with agreed material, orientation and profile. Record
-    its complete consumption and duration; geometry supplies neither.
-  </li>
-  <li>
-    Enter it in
-    <a href="{{ GuideSlug.Route3dPrintCostCalculator }}"
-      >Several plates / one job</a
-    >, with run handling and intended units.
-  </li>
-  <li>
-    Repeat an unchanged slice only deliberately. Partial plates or changed
-    quantities require another slice; preparation may be shared but unloading
-    and inspection can repeat.
-  </li>
-</ol>
-<p>
-  The planner can offer confirmed counts as an unsliced cost row, leaving grams
-  and duration incomplete. It cannot establish successful output.
-  <a href="{{ GuideSlug.Route3dPrintBatchCostPerPart }}">Batch allocation</a>
-  owns how plate overhead differs from one job total.
-</p>
-
-<h2>Sequential mode needs a separate clearance review</h2>
-<p>
-  Rectangular footprint placement does not describe the space occupied by a
-  head, gantry, rods or cables beside completed objects. For
-  one-object-at-a-time jobs, use
-  <a href="{{ GuideSlug.RouteSequential3dPrintingClearance }}"
-    >sequential clearance and order review</a
-  >
-  with the native exact profile. This arrangement guide continues to own model
-  layout; it supplies no universal toolhead radius or collision approval.
+  Slice the accepted plate and enter complete consumption and time in the
+  <a href="{{ GuideSlug.RouteHowToCalculate3dPrintingCost }}"
+    >production-cost workflow</a
+  >. Record quantity, orientation, usable-region basis, allowances, profile and
+  unresolved machine checks together. Keep rejected suggestions separate from
+  accepted work and repeat the review after any material change.
 </p>

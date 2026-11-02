@@ -14,149 +14,96 @@ faq:
 ---
 
 <p>
-  A model can be too tall when it stands upright but fit comfortably on its
-  side. Rotating it does not change its size: it changes which model dimension
-  uses the printer’s X, Y and Z axes.
+  Rotation changes which source dimension uses printer X, Y or Z without
+  changing model size. Test explicit axis assignments before reducing a
+  functional part. Keep the current orientation result as the baseline, then
+  compare practical right-angle alternatives.
 </p>
+<h2>Map source axes to printer axes</h2>
 <p>
-  Save the fitting orientation in the slicer project so the verified placement
-  is not lost on re-import.
+  InspectMesh's model Width/Height/Depth convention is X/Y/Z. Printer inputs now
+  name those axes explicitly: X and Y span the bed; Z is the build height.
+  Confirm legacy saved values instead of assuming Height meant vertical Z. A
+  preset labelled 220 x 220 x 250 means X=220, Y=220, Z=250.
 </p>
-
-<h2>Check the rotated derivative</h2>
+<h2>Use one worked axis-permutation example</h2>
 <p>
-  Record the chosen rotation and compare dimensions after applying it in the
-  slicer or modeling tool. Right-angle rotations should permute the three
-  extents without changing their values; an unexpected change suggests scaling,
-  transformation order or unit conversion occurred as well. Reopen an exported
-  derivative before relying on it.
+  For a hypothetical source X=230, Y=160, Z=90 mm and rectangular region X=180,
+  Y=180, Z=240 mm, the current orientation exceeds X. Mapping source Z to
+  printer X, source Y to printer Y and source X to printer Z gives 90 x 160 x
+  230 mm: contained under those nominal dimensions. Mapping source Y to X,
+  source X to Y and source Z to Z gives 160 x 230 x 90 mm, which exceeds Y.
+  Comparing only the largest model span with the largest printer dimension would
+  miss that distinction.
 </p>
+<h2>Choose the correct shape screen</h2>
 <p>
-  For assemblies or multiple objects, rotate around the intended shared origin
-  and verify relative placement. Rotating each part around its own center can
-  make every part fit individually while destroying the prepared arrangement.
-</p>
-
-<h2>Worked axis-permutation example</h2>
-<p>
-  A model measures 230 × 160 × 90 mm and the usable build volume is 180 × 180 ×
-  240 mm. In its current XYZ assignment it fails X. A right-angle rotation can
-  permute the dimensions to 90 × 160 × 230 mm, which fits those three nominal
-  limits. Another permutation, 160 × 230 × 90 mm, still fails Y. Testing the six
-  axis-aligned permutations is more reliable than comparing only the largest
-  model number with the printer's largest axis.
-</p>
-<p>
-  Bounding-box fit remains only a screen. Reserve room for the bed boundary,
-  brim or raft, supports, purge structures, clips and any machine-specific
-  exclusion areas. A diagonal or arbitrary-angle rotation can sometimes reduce
-  one planar span, but its new bounding box must be measured rather than
-  inferred.
-</p>
-<p>
-  Once a fitting orientation is found, reassess support, strength direction,
-  surface finish and stability. If the only fitting orientation creates an
-  unsafe or poor-quality print, split the model or revise it instead of treating
-  geometric fit as approval to print.
-</p>
-<h2>Use axis permutations as a fit check</h2>
-<p>
-  A 200 x 120 x 80 mm model rotated 90 degrees can present 120 x 200 x 80 mm or
-  80 x 120 x 200 mm dimensions. This may solve a rectangular build-volume
-  mismatch, but it does not optimize arbitrary angles, supports, strength or
-  surface finish. Confirm the final orientation in the slicer.
-</p>
-
-<h2>Compare model dimensions with printer axes</h2>
-<p>
-  Printers describe a build volume as X × Y × Z. Your model is shown as width ×
-  height × depth. A fit needs each model dimension to be no larger than the
-  printer axis it is placed along. For example, moving a tall model’s height
-  onto the printer’s X axis can work when X is wider than Z is high.
-</p>
-
-<h2>Check practical 90-degree orientations in InspectMesh</h2>
-<p>
-  Upload the model and enter your printer’s usable build volume in the
-  appropriate Dimensions Checker. InspectMesh keeps the current-orientation
-  result, then compares the distinct practical 90-degree orientations. If
-  rotation helps, it names a recommended placement and shows the resulting
-  printer X × Y × Z dimensions. Open Compare orientations to see the other
-  tested choices.
-</p>
-<p>
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
-    >Check an STL model’s dimensions</a
+  The <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">fit checker</a> tests
+  distinct right-angle permutations in automatic mode, or the current assignment
+  only. For a circle it checks a centred full XY rectangle plus a separate Z
+  limit. A rigid centred rectangle keeps the same corner radius when turned in
+  its own plane: swapping X/Y cannot repair an excessive diagonal. Choosing a
+  different build axis changes XY and Z together. See the
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}"
+    >round-bed interpretation</a
   >
+  before treating an empty envelope corner as proof the actual outline must
+  shrink.
 </p>
 <p>
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}"
-    >Check a 3MF model’s dimensions</a
-  >
-</p>
-
-<h2>Apply the orientation in your slicer</h2>
-<ol>
-  <li>Import the model into your slicer.</li>
-  <li>
-    Choose the Rotate tool and use 90-degree turns to match the recommended axis
-    placement.
-  </li>
-  <li>
-    Recheck the slicer’s displayed X, Y and Z dimensions and confirm the model
-    remains inside the usable build area.
-  </li>
-  <li>Preview the slice before starting the print.</li>
-</ol>
-
-<h2>Fit is not the only orientation decision</h2>
-<p>
-  A placement that fits may still be a poor printing choice. A side-facing model
-  can need more supports, while another face may give better bed contact or
-  surface finish. Part strength can depend on layer direction, and a brim may
-  need extra room around the model. Check adhesion, supports, clamps and your
-  printer’s real usable area in the slicer.
-</p>
-
-<h2>When scaling is the better choice</h2>
-<p>
-  If no tested orientation fits, proportional scaling may be the right next
-  step. It reduces every dimension together, but it also changes the intended
-  size and can make thin features harder to print. Use the scaling controls to
-  calculate a size first; InspectMesh does not change or export your uploaded
-  model.
-</p>
-
-<h2>What this check does not cover</h2>
-<p>
-  InspectMesh checks practical right-angle, 90-degree orientations. It does not
-  exhaustively optimise arbitrary angled rotations. An angled placement may fit
-  differently, but it can change support needs, bed contact, print quality and
-  the reliability of the print. Confirm the final orientation in your slicer.
-</p>
-
-<h2>Rotation is a size decision as well as a support decision</h2>
-<p>
-  Consider an illustrative 200 × 100 × 50 mm box and a nominal 180 × 180 × 250
-  mm printer. In the original axis order, its 200 mm horizontal width exceeds
-  the bed. Turning the 200 mm axis upright produces a 100 × 50 × 200 mm box that
-  fits the nominal dimensions. This explains why testing axis permutations is
-  useful before scaling a functional part.
-</p>
-<p>
-  That successful box orientation may increase supports, reduce bed contact or
-  change strength across layers. Fit is therefore one input to orientation
-  choice. Arbitrary diagonal rotations can sometimes help but must be checked
-  against the actual model footprint and print envelope, rather than treated as
-  a promise from the box calculation.
-</p>
-<p>
+  The
   <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
-    >Review candidate orientations</a
-  >, compare the sliced supports and layer preview, then use
-  <a href="{{ GuideSlug.RouteFilamentRemainingCalculator }}"
-    >spool sufficiency</a
+    >orientation planner</a
   >
-  with the new complete-job estimate. Keep each interpretation and source unit
-  in the report so another person can reproduce the fit decision.
+  keeps six signed build directions and compares downward-facing area and
+  estimated coplanar contact alongside fit. Those measures answer different
+  questions. A contained candidate can increase support demand, worsen a
+  critical surface, reduce stable contact or change load direction across
+  layers. Exact exclusions and arbitrary-angle rotations still need the native
+  profile.
+</p>
+<h2>Apply and verify the candidate</h2>
+<ol>
+  <li>
+    Confirm STL units or resolved 3MF build scope and units. Several placed
+    objects can contribute to one total envelope.
+  </li>
+  <li>
+    Record the source-to-printer axis assignment and enter the documented usable
+    shape and dimensions.
+  </li>
+  <li>
+    Apply the rotation in the slicer or modelling application; this comparison
+    screen does not rotate or export your file.
+  </li>
+  <li>
+    Recheck resulting X/Y/Z and source position. For an assembly, preserve the
+    intended shared origin and relative placement.
+  </li>
+  <li>
+    Generate supports and adhesion structures, then review the
+    <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+      >additional process-space footprint</a
+    >, complete layers and native machine clearances.
+  </li>
+  <li>
+    Save the native project/profile so the chosen rotation remains reproducible.
+  </li>
+</ol>
+<h2>Decide whether scaling or splitting is appropriate</h2>
+<p>
+  If practical orientations still fail, compare a deliberate split with a design
+  revision before shrinking fixed hardware interfaces. An envelope scale value
+  is only a bound under its shape, Z and allowance inputs. The
+  Dimensions/Orientation comparison does not apply scaling. The separate
+  <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale Tool</a> exports a
+  uniformly resized copy; every hole, wall and mating feature changes too.
+  Preserve the original and reopen the derivative to check dimensions before
+  slicing.
+</p>
+<p>
+  For arbitrary angled placement, recompute the real geometry bounds after
+  rotation. Right-angle candidates are not an exhaustive search or a print
+  guarantee. A mathematically contained arrangement still needs support,
+  surface, strength and physical review.
 </p>

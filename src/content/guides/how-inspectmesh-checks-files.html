@@ -252,7 +252,10 @@ faq:
     </tr>
     <tr>
       <td>Axis-aligned bounds and six right-angle axis permutations</td>
-      <td>Nominal rectangular fit for the selected box</td>
+      <td>
+        Explicit X/Y/Z, confirmed rectangle or conservative centred circular
+        envelope
+      </td>
       <td>
         No arbitrary-rotation search, general collision check, automatic
         brim/support allowance or orientation recommendation for strength
@@ -265,6 +268,22 @@ faq:
     </tr>
   </tbody>
 </table>
+<p>
+  Fit uses confirmed X/Y/Z and shape, with legacy Width/Height/Depth records
+  held for explicit review. The shared circular screen checks a centred full XY
+  rectangle and Z independently;
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}"
+    >outside empty envelope corners</a
+  >
+  can be conservative. Envelope not contained, not placed by the layout
+  heuristic and unavailable inputs are distinct states. The dimensions-only
+  screens explicitly leave circles unassessed rather than accepting their
+  surrounding squares. Neither geometry containment nor completed topology
+  validates machine reach or
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >generated structures</a
+  >.
+</p>
 <h2>Viewer selection, coordinates and private records</h2>
 <p>
   Mesh vertex considers only the nearest eligible hit triangle's three vertices

@@ -241,93 +241,19 @@
           <h3 id="printer-fit-title">Will it fit my 3D printer?</h3>
           <p>
             Enter your printer’s usable build volume to compare it with this
-            model. When all three values are valid, they are saved only on this
-            device for the STL and 3MF fit checks.
+            model. Confirm X/Y/Z explicitly before saving them on this device.
           </p>
-          <label class="field">
-            <span>Start with a common printer size</span>
-            <select (change)="applyPrinterPreset($event)">
-              <option value="">Choose a preset (optional)</option>
-              @for (
-                preset of printerPresets;
-                track preset.label;
-                let index = $index
-              ) {
-                <option [value]="index">{{ preset.label }}</option>
-              }
-            </select>
-          </label>
-          <p class="slicer-note">
-            Presets are common nominal sizes, not printer profiles. Confirm your
-            machine’s usable X × Y × Z area before printing.
-          </p>
-          <div class="build-volume-fields">
-            <label class="field">
-              <span>Printer build width</span>
-              <input
-                type="number"
-                min="0"
-                step="any"
-                inputmode="decimal"
-                [value]="buildWidth() ?? ''"
-                [attr.aria-invalid]="buildVolumeInvalid()"
-                aria-describedby="build-volume-error"
-                (input)="setBuildDimension('width', $event)"
-                (change)="trackPrinterFitCheck()"
-              />
-            </label>
-            <label class="field">
-              <span>Printer build height</span>
-              <input
-                type="number"
-                min="0"
-                step="any"
-                inputmode="decimal"
-                [value]="buildHeight() ?? ''"
-                [attr.aria-invalid]="buildVolumeInvalid()"
-                aria-describedby="build-volume-error"
-                (input)="setBuildDimension('height', $event)"
-                (change)="trackPrinterFitCheck()"
-              />
-            </label>
-            <label class="field">
-              <span>Printer build depth</span>
-              <input
-                type="number"
-                min="0"
-                step="any"
-                inputmode="decimal"
-                [value]="buildDepth() ?? ''"
-                [attr.aria-invalid]="buildVolumeInvalid()"
-                aria-describedby="build-volume-error"
-                (input)="setBuildDimension('depth', $event)"
-                (change)="trackPrinterFitCheck()"
-              />
-            </label>
-            <label class="field">
-              <span>Build-volume unit</span>
-              <select [value]="buildUnit()" (change)="setBuildUnit($event)">
-                <option value="mm">Millimetres (mm)</option>
-                <option value="cm">Centimetres (cm)</option>
-                <option value="m">Metres (m)</option>
-                <option value="in">Inches (in)</option>
-              </select>
-            </label>
-          </div>
-
-          @if (hasSavedPrinterProfile()) {
+          <app-printer-profile-editor [controls]="printerFitControls" />
+          @if (printerFitControls.shape() === bedShapes.Circular) {
             <p>
-              Your custom printer profile is saved on this device.
-              <button
-                type="button"
-                class="text-button"
-                (click)="clearSavedPrinterProfile()"
+              <strong>Shape not assessed on this dimensions screen.</strong> The
+              saved circular diameter is not a rectangular fit. Use the
+              <a [routerLink]="routeUrl.PrinterFitChecker"
+                >shape-aware fit checker</a
               >
-                Forget saved profile
-              </button>
+              for the centred envelope and separate Z limit.
             </p>
           }
-
           @if (buildVolumeInvalid()) {
             <p id="build-volume-error" class="error" role="alert">
               Enter a finite value greater than zero for all three printer build

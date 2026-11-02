@@ -164,6 +164,8 @@ export const guideClusters: readonly GuideCluster[] = [
       'zero-thickness-stl-surface',
       'how-to-check-3mf-wall-thickness-for-3d-printing',
       'how-to-check-if-a-3d-model-fits-your-printer',
+      'round-3d-printer-bed-fit',
+      'brim-skirt-support-bed-space',
       'stl-model-off-build-plate',
       'how-to-rotate-a-3d-model-to-fit-your-printer',
       'how-to-orient-an-stl-file-for-3d-printing',

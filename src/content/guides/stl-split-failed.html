@@ -232,3 +232,21 @@ heading: STL Split Failed? Diagnose the Cut Before Retrying
     >alignment-pin planning and coupon workflow</a
   >.
 </p>
+
+<h2>A successful cut can still leave an oversized job</h2>
+<p>
+  If exports reopen successfully but a piece fails a subsequent fit screen,
+  investigate orientation, usable shape and allowance in the
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >fit workflow</a
+  >. A
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}"
+    >circular-envelope rejection</a
+  >
+  or excessive
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >process reservation</a
+  >
+  is a later planning finding, not evidence that parsing or capping failed.
+  Preserve the actual stage-specific error if the cut itself failed.
+</p>

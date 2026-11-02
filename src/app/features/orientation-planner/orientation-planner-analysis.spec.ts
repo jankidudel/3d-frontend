@@ -1,4 +1,8 @@
 import {
+  BedShape,
+  PRINTER_PROFILE_VERSION,
+} from '../../core/printer/printer-profile.service';
+import {
   planOrientations,
   printerProfileAfterEdgeAllowance,
 } from './orientation-planner-analysis';
@@ -33,9 +37,11 @@ describe('planOrientations', () => {
 
   it('reports fit without reordering the source-axis candidates', () => {
     const plans = planOrientations(mesh, 45, 'mm', {
-      width: 2,
-      height: 1,
-      depth: 1,
+      schemaVersion: PRINTER_PROFILE_VERSION,
+      shape: BedShape.Rectangular,
+      x: 2,
+      y: 1,
+      z: 1,
       unit: 'mm',
     });
 
@@ -45,19 +51,36 @@ describe('planOrientations', () => {
 
   it('deducts an edge allowance from both sides of printer X and Y only', () => {
     const adjusted = printerProfileAfterEdgeAllowance(
-      { width: 220, height: 260, depth: 200, unit: 'mm' },
+      {
+        schemaVersion: PRINTER_PROFILE_VERSION,
+        shape: BedShape.Rectangular,
+        x: 220,
+        y: 260,
+        z: 200,
+        unit: 'mm',
+      },
       5,
     );
 
     expect(adjusted).toEqual({
-      width: 210,
-      height: 250,
-      depth: 200,
+      schemaVersion: PRINTER_PROFILE_VERSION,
+      shape: BedShape.Rectangular,
+      x: 210,
+      y: 250,
+      z: 200,
+      diameter: undefined,
       unit: 'mm',
     });
     expect(
       printerProfileAfterEdgeAllowance(
-        { width: 10, height: 10, depth: 10, unit: 'mm' },
+        {
+          schemaVersion: PRINTER_PROFILE_VERSION,
+          shape: BedShape.Rectangular,
+          x: 10,
+          y: 10,
+          z: 10,
+          unit: 'mm',
+        },
         5,
       ),
     ).toBeNull();

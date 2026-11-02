@@ -18,6 +18,18 @@ faq:
   is only an early screen: the final placed job must still be checked in the
   slicer.
 </p>
+<h2>Choose the shape screen first</h2>
+<p>
+  A confirmed rectangle uses X/Y/Z envelope comparison. A circle uses the
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}"
+    >centred circular-envelope screen</a
+  >, checking its corners and Z separately. For irregular exclusions or
+  height-dependent reach, review the exact native machine profile. Then account
+  for
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >space added by generated structures</a
+  >; model size alone does not cover them.
+</p>
 <h2>Run a measured fit control</h2>
 <p>
   Download the original

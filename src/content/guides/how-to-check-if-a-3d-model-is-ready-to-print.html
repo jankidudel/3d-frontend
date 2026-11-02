@@ -162,6 +162,20 @@ faq:
   Do not carry a geometry pass forward as final assembly acceptance. Record the
   unresolved question in the existing checklist.
 </p>
+<p>
+  At the fit stage, record five separate questions: geometry dimensions, usable
+  shape, actual placement, generated structures and machine clearance. A
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}"
+    >contained circular envelope</a
+  >
+  answers only its centred geometry question. Use
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >process-space planning</a
+  >
+  for structures, source bounds for position and the exact native profile for
+  machine restrictions. Later slicer and physical stages remain open until their
+  own evidence is reviewed.
+</p>
 <h2>Keep physical acceptance and job planning explicit</h2>
 <p>
   Define any functional fit, loading, thermal or support-removal requirement

@@ -12,7 +12,7 @@ export const THREE_MF_WALL_THICKNESS_LIMITATION =
 export function threeMfPreflightStatus(
   integrity: MeshIntegrityReport,
   thinAreas: boolean,
-  fitsPrinter: boolean,
+  fitsPrinter: boolean | null,
   packageWarning: boolean,
 ): PreflightStatus {
   const status = preflightStatus(integrity, thinAreas, fitsPrinter);
@@ -25,7 +25,7 @@ export function threeMfPreflightStatus(
 export function threeMfPreflightActions(
   integrity: MeshIntegrityReport,
   thinAreas: boolean,
-  fitsPrinter: boolean,
+  fitsPrinter: boolean | null,
   triangleCount: number,
 ): readonly PreflightAction[] {
   const actions: PreflightAction[] = [];

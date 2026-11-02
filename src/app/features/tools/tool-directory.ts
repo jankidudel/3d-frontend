@@ -235,6 +235,17 @@ export const toolDirectoryGroups = definitions.map((group) => ({
     if (tags.length === 0) {
       throw new Error('Missing tool directory type: ' + route);
     }
+    const descriptions: Readonly<Partial<Record<string, string>>> = {
+      [PublicRouteUrl.PrinterFitChecker]:
+        'Check a centred STL or resolved 3MF envelope against a usable rectangle or circle, with explicit X/Y/Z and separate allowances.',
+      [PublicRouteUrl.OrientationPlanner]:
+        'Compare six build directions for shape-aware envelope containment, downward area and coplanar contact; apply the rotation in your slicer.',
+      [PublicRouteUrl.BedLayoutPlanner]:
+        'Suggest rectangle placements on rectangular or circular beds, with independent edge exclusion, spacing and per-part expansion.',
+    };
+    if (descriptions[route]) {
+      return { ...tool, tags, description: descriptions[route]! };
+    }
     if (
       route === PublicRouteUrl.Viewer ||
       route === PublicRouteUrl.ThreeMfViewer

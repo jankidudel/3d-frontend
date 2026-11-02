@@ -130,77 +130,18 @@
           </p>
           <p>
             Enter your printer's usable build volume. This is an axis-aligned
-            size check, not a guarantee of printability. Valid values are saved
-            only on this device for the STL and 3MF fit checks.
+            size check, not a guarantee of printability. Save confirmed X/Y/Z
+            explicitly to reuse them on this device.
           </p>
-          <label class="field">
-            <span>Start with a common printer size</span>
-            <select (change)="applyPrinterPreset($event)">
-              <option value="">Choose a preset (optional)</option>
-              @for (
-                preset of printerPresets;
-                track preset.label;
-                let index = $index
-              ) {
-                <option [value]="index">{{ preset.label }}</option>
-              }
-            </select>
-          </label>
-          <p class="slicer-note">
-            Presets are common nominal sizes, not printer profiles. Confirm your
-            machine’s usable X × Y × Z area before printing.
-          </p>
-          <div class="calculator-fields">
-            <label class="field"
-              ><span>Width</span
-              ><input
-                type="number"
-                min="0"
-                step="any"
-                inputmode="decimal"
-                [value]="buildWidth() ?? ''"
-                (input)="setBuildDimension('width', $event)"
-            /></label>
-            <label class="field"
-              ><span>Height</span
-              ><input
-                type="number"
-                min="0"
-                step="any"
-                inputmode="decimal"
-                [value]="buildHeight() ?? ''"
-                (input)="setBuildDimension('height', $event)"
-            /></label>
-            <label class="field"
-              ><span>Depth</span
-              ><input
-                type="number"
-                min="0"
-                step="any"
-                inputmode="decimal"
-                [value]="buildDepth() ?? ''"
-                (input)="setBuildDimension('depth', $event)"
-            /></label>
-            <label class="field"
-              ><span>Build volume unit</span
-              ><select [value]="buildUnit()" (change)="setBuildUnit($event)">
-                <option value="mm">Millimetres (mm)</option>
-                <option value="cm">Centimetres (cm)</option>
-                <option value="m">Metres (m)</option>
-                <option value="in">Inches (in)</option>
-              </select></label
-            >
-          </div>
-          @if (hasSavedPrinterProfile()) {
+          <app-printer-profile-editor [controls]="printerFitControls" />
+          @if (printerFitControls.shape() === bedShapes.Circular) {
             <p>
-              Your custom printer profile is saved on this device.
-              <button
-                type="button"
-                class="text-button"
-                (click)="clearSavedPrinterProfile()"
+              <strong>Shape not assessed on this dimensions screen.</strong> The
+              saved circular diameter is not a rectangular fit. Use the
+              <a [routerLink]="routeUrl.PrinterFitChecker"
+                >shape-aware fit checker</a
               >
-                Forget saved profile
-              </button>
+              for the centred envelope and separate Z limit.
             </p>
           }
           @if (buildVolumeInvalid()) {

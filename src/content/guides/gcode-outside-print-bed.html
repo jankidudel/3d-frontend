@@ -97,7 +97,7 @@ faq:
   </li>
   <li>
     Enter reviewed minima and maxima for X/Y/Z. A dimensions-only saved printer
-    profile supplies no origin or bed shape.
+    model profile does not establish a path origin or verified machine region.
   </li>
   <li>Inspect both scopes and any unsupported effects.</li>
   <li>
@@ -110,6 +110,41 @@ faq:
   is needed to relate logical values to physical position. InspectMesh marks XYZ
   resets as incomplete machine-space coverage. G2/G3 arcs are omitted from its
   linear extents.
+</p>
+<table>
+  <caption>
+    Model envelope and path frame are different evidence
+  </caption>
+  <thead>
+    <tr>
+      <th>Screen</th>
+      <th>Position basis</th>
+      <th>Remaining checks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Model circular fit</td>
+      <td>Centred planning rectangle, separate Z limit.</td>
+      <td>Source position and actual usable machine region.</td>
+    </tr>
+    <tr>
+      <td>G-code location</td>
+      <td>Actual logical coordinates with reliable state/metric coverage.</td>
+      <td>
+        Verified origin, offsets, exact machine restrictions and incomplete
+        effects.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A saved diameter or model profile cannot authenticate that frame.
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >Generated structures</a
+  >
+  can add extents beyond the source envelope. Never apply a disc to incomplete
+  paths as a machine-safe verdict.
 </p>
 <h2>Use the existing review tools</h2>
 <p>

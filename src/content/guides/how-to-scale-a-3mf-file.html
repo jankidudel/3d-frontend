@@ -63,6 +63,19 @@ heading: How to Scale a 3MF File for 3D Printing
     footprint and usable bed space before accepting the job.
   </li>
 </ol>
+<p>
+  A shape-aware fit screen applies to the selected resolved envelope, which may
+  include several placed build items. A
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}">centred circular bound</a>
+  does not validate their current source positions. Scale may change relative
+  layout as well as hardware dimensions; retain declared units and placement
+  scope. Keep
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >physical process allowances</a
+  >
+  separate. InspectMesh does not save a native 3MF project with every vendor
+  setting, orientation and scale applied.
+</p>
 <h2>Scaling an arrangement differs from scaling local objects</h2>
 <p>
   Analytical illustration: two 20 mm cubes have local X = 0 to 20; the second

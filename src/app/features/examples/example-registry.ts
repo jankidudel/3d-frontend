@@ -785,6 +785,16 @@ export const publicExamples: readonly PublicExample[] = [
   },
   {
     id: 'fit-layout',
+    relatedGuides: [
+      {
+        label: 'Circular envelope interpretation',
+        route: GuideRouteUrl.RouteRound3dPrinterBedFit,
+      },
+      {
+        label: 'Space added after the model',
+        route: GuideRouteUrl.RouteBrimSkirtSupportBedSpace,
+      },
+    ],
     name: 'Nominal fit and allowances',
     group: 'Fit / layout',
     question: 'Can a rotation fit after allowing space for a brim?',

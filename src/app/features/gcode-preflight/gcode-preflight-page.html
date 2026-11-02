@@ -465,14 +465,16 @@
       <h2>Coordinate-bound review</h2>
       @if (printerProfile(); as profile) {
         <p>
-          Using your saved printer profile: {{ format(profile.width) }} ×
-          {{ format(profile.depth) }} × {{ format(profile.height) }}
-          {{ profile.unit }}.
+          Saved {{ profile.shape }} model profile, X/Y/Z:
+          {{ format(profile.x) }} × {{ format(profile.y) }} ×
+          {{ format(profile.z) }} {{ profile.unit }}.
         </p>
         <p>
-          The saved profile supplies dimensions only. Enter coordinate
-          maxima/minima below using your verified origin. No origin, bed shape
-          or offset is inferred from its name.
+          The saved model profile and its shape do not establish a G-code
+          origin, supported path coverage or the full machine region. A centred
+          circular model screen cannot classify these paths as contained. Enter
+          coordinate maxima/minima below using your verified origin. No origin,
+          bed shape or offset is inferred from its name.
         </p>
       }
       <p>

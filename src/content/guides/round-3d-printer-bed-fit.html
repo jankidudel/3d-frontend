@@ -1,0 +1,178 @@
+---
+title: 'Will a Model Fit a Round 3D Printer Bed? | InspectMesh'
+description: 'Check a model envelope against a circular usable region. Understand corner clearance, centred placement and why separate X/Y spans can give a misleading fit.'
+slug: round-3d-printer-bed-fit
+eyebrow: Build space and placement
+heading: Will Your Model Fit a Round 3D Printer Bed?
+---
+
+<p>
+  A model can be narrower than the bed diameter in both X and Y and still put
+  its corners outside a round bed. Check the complete envelope against the
+  circle, then review actual placement and generated structures in the intended
+  slicer.
+</p>
+<h2>Start with the usable region</h2>
+<p>
+  Record a documented usable diameter D and usable Z height. If the diameter
+  already excludes an edge band, do not remove that same band again. An
+  additional radial edge exclusion e leaves radius <code>R = D/2 - e</code>.
+  These inputs describe an ideal disc at every height up to Z. They do not
+  establish height-dependent reach, clips, probe exclusions or complete machine
+  kinematics.
+</p>
+<p>
+  Choose Circle explicitly in the
+  <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">3D Printer Fit Checker</a>.
+  Equal X and Y entries never select a circle automatically. The named-printer
+  choices retain their documented nominal box basis; use a custom circle only
+  when you can supply its usable dimensions. Confirm legacy saved
+  Width/Height/Depth values as X/Y/Z before reusing them. The tool preserves old
+  stored values rather than guessing which meant vertical height.
+</p>
+<h2>Compare the diagonal, not just X and Y</h2>
+<p>
+  For a centred rectangular envelope W wide along bed X and H along bed Y, the
+  farthest corner is <code>r = hypot(W/2, H/2)</code> from the centre. The
+  envelope is contained when <code>hypot(W,H) &lt;= D - 2e</code>. The separate
+  model Z extent must also be no greater than usable Z. This calculation
+  encloses the full XY projection, not just the first layer touching the bed.
+</p>
+<table>
+  <caption>
+    Original hypothetical geometry, in millimetres
+  </caption>
+  <thead>
+    <tr>
+      <th>Diameter</th>
+      <th>XY envelope</th>
+      <th>Radial exclusion</th>
+      <th>Observation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>220</td>
+      <td>150 x 150</td>
+      <td>0</td>
+      <td>Diagonal 212.132; contained, with radius slack about 3.934.</td>
+    </tr>
+    <tr>
+      <td>220</td>
+      <td>150 x 150</td>
+      <td>5</td>
+      <td>
+        Effective diameter 210; envelope not contained, though each span is
+        below 210.
+      </td>
+    </tr>
+    <tr>
+      <td>220</td>
+      <td>160 x 160</td>
+      <td>0</td>
+      <td>Diagonal 226.274; envelope not contained.</td>
+    </tr>
+    <tr>
+      <td>220</td>
+      <td>180 x 20</td>
+      <td>0</td>
+      <td>Diagonal 181.108; centred envelope contained.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Radius slack <code>R-r</code> measures the closest ideal boundary distance at
+  the farthest corner. It is neither separate X/Y clearance nor a manufacturing
+  tolerance. The implementation compares stored numbers with a strict inclusive
+  boundary, without a hidden epsilon or physical allowance. Exact tangency
+  leaves no intentional reserve; rounded displayed values must not decide a
+  boundary case.
+</p>
+<h2>Understand what rotation can change</h2>
+<p>
+  A rigid rectangle rotated in its own plane around the disc centre keeps the
+  same corner radius. Swapping 150 x 150, or turning a 180 x 20 rectangle to 20
+  x 180, cannot repair an excessive diagonal. Choosing a different source axis
+  as build Z changes the XY envelope and height, so a different right-angle
+  candidate can work. The
+  <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
+    >orientation planner</a
+  >
+  compares six build directions, including their downward area and contact
+  estimates; containment alone does not select the best printing orientation.
+</p>
+<p>
+  An irregular model rotated and measured again can have different axis-aligned
+  bounds. That is a recomputed geometry question, not evidence that rotating the
+  original bounding rectangle shrank its diagonal. InspectMesh's fit comparison
+  neither searches all angles nor exports a rotated file.
+</p>
+<h2>Check position separately</h2>
+<p>
+  A 60 x 60 rectangle centred at planner offset (70,0) from a circle centre
+  (0,0) has its farthest corner at (100,30). Its radius is about 104.403 mm,
+  inside R=110. Shift the centre to (80,0) and that corner becomes (110,30),
+  about 114.018 mm away: outside. Identical spans can therefore produce
+  different placement observations.
+</p>
+<p>
+  The
+  <a href="{{ GuideSlug.Route3dPrintBedLayoutPlanner }}">bed layout planner</a>
+  checks all four corners at each suggested position. Its diagram uses an
+  internal planning frame; those coordinates are not inferred machine
+  coordinates or the source build origin. The centred fit checker assumes a
+  hypothetical centring operation and does not perform it. Diagnose actual
+  source minima/maxima with the
+  <a href="{{ GuideSlug.RouteStlModelOffBuildPlate }}"
+    >off-bed placement workflow</a
+  >.
+</p>
+<h2>Read conservative rejection correctly</h2>
+<p>
+  Envelope contained means the geometry enclosed by that rectangle is also
+  inside the ideal disc at the stated placement. Envelope not contained says the
+  rectangle is outside. Empty corners can make this conservative: an analytical
+  cross made from a 180 x 20 horizontal bar and a 20 x 180 vertical bar has
+  every outer corner within about 90.554 mm of its centre. Its 180 x 180
+  enclosing box has corner radius about 127.279 mm. On a radius-110 disc the
+  cross is inside while the box fails. This is a mathematical counterexample,
+  not a downloaded model, inspected customer file or printed test.
+</p>
+<h2>Reproduce a tool observation with an existing control</h2>
+<p>
+  Download the existing
+  <a
+    href="{{ ExampleAsset.EnglishMarketBatchPrinterFit250x210x180Stl }}"
+    download
+    >250 x 210 x 180 STL box</a
+  >. In the fit checker, retain the millimetre STL assumption, select Current
+  orientation only, enable custom/session profile, choose Circle, diameter 330
+  and usable Z 200. Leave edge exclusion and extra allowance at zero. The source
+  XY diagonal is about 326.497 mm, so the centred envelope is contained with
+  radius slack about 1.752 mm and Z slack 20 mm. Set radial edge exclusion to 2
+  mm: effective diameter becomes 326 and the envelope is not contained. These
+  are local software observations using original geometry, not a native slicer
+  or physical result.
+</p>
+<h2>Carry the basis into the sliced job</h2>
+<p>
+  Keep model scale, fixed physical allowances and placement distinct. With zero
+  extra expansion, the maximum uniform envelope factor is the smaller of
+  <code>(D-2e)/hypot(W,H)</code> and <code>usableZ/modelZ</code>. If an extra
+  per-side allowance a is entered, the tool instead solves
+  <code>(sW+2a)^2+(sH+2a)^2 &lt;= (2R)^2</code>: a stays in physical
+  millimetres. The suggested scale is capped at 100%, leaves the original
+  untouched and is not a hardware-fit recommendation.
+</p>
+<p>
+  Finish with the actual native placement and
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >space added by brims, skirts and supports</a
+  >. A decorative bed image is not verification of a printable region:
+  <a href="https://help.prusa3d.com/article/custom-bed-models_158431"
+    >Prusa's custom bed model documentation</a
+  >
+  describes a visual STL and its origin, not certification of your machine's
+  usable shape (reviewed 1 November 2026). Keep the exact project/profile for
+  the final machine checks.
+</p>

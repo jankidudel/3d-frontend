@@ -28,58 +28,89 @@
       <p class="error" role="alert">{{ error() }}</p>
     }
   </section>
-  @if (parts().length) {
-    <section class="card">
-      <h2>Layout settings</h2>
-      <label
-        >Bed width
-        <input
-          type="number"
-          min="1"
-          [value]="bed().width"
-          (input)="setBedDimension('width', $event)"
-        />
-        mm</label
-      ><label
-        >Bed depth
-        <input
-          type="number"
-          min="1"
-          [value]="bed().depth"
-          (input)="setBedDimension('depth', $event)"
-        />
-        mm</label
-      >
-      <label
-        >Clearance between parts
-        <input
-          type="number"
-          min="0"
-          [value]="margin()"
-          (input)="setMargin($event)"
-        />
-        mm</label
-      ><button class="button secondary" type="button" (click)="clear()">
-        Clear parts
-      </button>
-      @if (profile(); as printer) {
+  <section class="card">
+    <h2>Layout settings</h2>
+    <label
+      ><input
+        type="checkbox"
+        [checked]="useSaved()"
+        (change)="useSaved.set($any($event.target).checked)"
+      />Use saved profile (converted to mm)</label
+    >
+    @if (!useSaved()) {
+      <p>
+        Editable session region controls this layout. Initial 220 x 220 x 250 mm
+        values are illustrative starter settings.
+      </p>
+    }
+    @if (useSaved()) {
+      @if (profile(); as p) {
         <p>
-          Using saved bed: {{ format(printer.width) }} ×
-          {{ format(printer.depth) }} {{ printer.unit }}.
-          <a [routerLink]="routeUrl.DimensionsChecker">Edit printer profile</a>.
+          Active saved {{ p.shape }} region: X {{ p.x }}, Y {{ p.y }}, Z
+          {{ p.z }} {{ p.unit }}. Turn off saved profile to use editable session
+          settings.
         </p>
       } @else {
-        <p>
-          Using the editable 220 × 220 mm starter bed. Save a millimetre build
-          volume in the
-          <a [routerLink]="routeUrl.DimensionsChecker"
-            >STL Dimensions Checker</a
-          >
-          to plan a layout.
+        <p role="alert">
+          Saved profile unavailable. Review legacy axes below or choose session
+          settings explicitly.
         </p>
       }
-    </section>
-  }
+    }
+    <details [open]="!useSaved() || !profile()">
+      <summary>Session settings and saved-profile review</summary>
+      <app-printer-profile-editor [controls]="printerControls" />
+      <p>
+        {{
+          useSaved()
+            ? 'These edits update the active bed only after you confirm and save. Turn off saved profile for live session edits.'
+            : 'These editable session values control the active bed. Saving also updates the shared profile.'
+        }}
+      </p>
+    </details>
+    <label
+      >STL design unit<select
+        [value]="stlUnit()"
+        (change)="stlUnit.set($any($event.target).value)"
+      >
+        <option value="mm">Millimetres</option>
+        <option value="cm">Centimetres</option>
+        <option value="m">Metres</option>
+        <option value="in">Inches</option>
+      </select></label
+    >
+    <label
+      >Bed edge exclusion (mm)<input
+        type="number"
+        min="0"
+        step="any"
+        [value]="margin()"
+        (input)="setMargin($event)"
+    /></label>
+    <label
+      >Inter-part spacing (mm)<input
+        type="number"
+        min="0"
+        step="any"
+        [value]="gap()"
+        (input)="gap.set($any($event.target).valueAsNumber)"
+    /></label>
+    <label
+      >Extra XY allowance per part (mm)<input
+        type="number"
+        min="0"
+        step="any"
+        [value]="expansion()"
+        (input)="expansion.set($any($event.target).valueAsNumber)"
+    /></label>
+    <p>
+      Edge exclusion removes each rectangular edge or a radial band on a circle.
+      Spacing is the gap between expanded planning rectangles. Extra allowance
+      expands each body on all XY sides; it does not generate brims or supports.
+      Do not reserve the same space twice. Z is checked independently.
+    </p>
+    <button type="button" (click)="clear()">Clear parts</button>
+  </section>
   @if (parts().length > 0 && !loading() && !error()) {
     @if (plan(); as layout) {
       <section class="card">
@@ -90,49 +121,144 @@
             batch</strong
           >
           <span
-            >{{ format(bedUse().percentage) }}% of the bed footprint used</span
+            >{{ format(bedUse().percentage) }}% reserved rectangle area;
+            {{ format(bedUse().modelPercentage) }}% model-envelope area of the
+            effective usable region</span
           >
         </div>
-        <div
-          class="bed"
-          [style.aspect-ratio]="bed().width + ' / ' + bed().depth"
-        >
-          @for (part of layout.placed; track part.name) {
-            <div
-              class="part"
-              [style.left.%]="(part.x / bed().width) * 100"
-              [style.top.%]="(part.y / bed().depth) * 100"
-              [style.width.%]="(part.width / bed().width) * 100"
-              [style.height.%]="(part.depth / bed().depth) * 100"
-            >
-              {{ part.name }}
-            </div>
-          }
+        @if (bed(); as b) {
+          <p>
+            Planner frame: X/Y from the upper-left of the diagram's bounding
+            square; circle centre is ({{ format(b.x / 2) }},
+            {{ format(b.y / 2) }}) mm. This is not a source or firmware origin.
+          </p>
+          <svg
+            class="bed-diagram"
+            [attr.viewBox]="'0 0 ' + b.x + ' ' + b.y"
+            role="img"
+            aria-label="Numbered suggested planning rectangles inside the usable bed region"
+          >
+            @if (b.shape === bedShapes.Circular) {
+              <circle
+                [attr.cx]="b.x / 2"
+                [attr.cy]="b.y / 2"
+                [attr.r]="b.x / 2"
+                class="declared-boundary"
+              />
+              @if (b.x / 2 > margin()) {
+                <circle
+                  [attr.cx]="b.x / 2"
+                  [attr.cy]="b.y / 2"
+                  [attr.r]="b.x / 2 - margin()"
+                  class="usable-boundary"
+                />
+              }
+            } @else {
+              <rect
+                x="0"
+                y="0"
+                [attr.width]="b.x"
+                [attr.height]="b.y"
+                class="declared-boundary"
+              />
+              @if (plan().available) {
+                <rect
+                  [attr.x]="margin()"
+                  [attr.y]="margin()"
+                  [attr.width]="b.x - 2 * margin()"
+                  [attr.height]="b.y - 2 * margin()"
+                  class="usable-boundary"
+                />
+              }
+            }
+            @for (part of layout.placed; track $index; let i = $index) {
+              <rect
+                [attr.x]="part.x"
+                [attr.y]="part.y"
+                [attr.width]="part.width"
+                [attr.height]="part.depth"
+                class="reservation"
+              />
+              <rect
+                [attr.x]="part.x + expansion()"
+                [attr.y]="part.y + expansion()"
+                [attr.width]="part.modelWidth"
+                [attr.height]="part.modelDepth"
+                class="model-body"
+              />
+              <text
+                [attr.x]="part.x + part.width / 2"
+                [attr.y]="part.y + part.depth / 2"
+                text-anchor="middle"
+                dominant-baseline="central"
+              >
+                {{ i + 1 }}
+              </text>
+            }
+          </svg>
+          <p>
+            Outer solid boundary: declared region. Inner dashed boundary: usable
+            region after edge exclusion. Dashed part rectangle: reserved
+            expansion; solid inner rectangle: model envelope.
+          </p>
+        }
+        <div class="table-scroll">
+          <table>
+            <caption>
+              Accepted placements in planner coordinates (mm); X/Y are expanded
+              rectangle minima
+            </caption>
+            <thead>
+              <tr>
+                <th>Part</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Body X x Y</th>
+                <th>Reserved X x Y</th>
+                <th>Turn</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (part of layout.placed; track $index; let i = $index) {
+                <tr>
+                  <th>{{ i + 1 }}: {{ part.name }}</th>
+                  <td>{{ format(part.x) }}</td>
+                  <td>{{ format(part.y) }}</td>
+                  <td>
+                    {{ format(part.modelWidth) }} x
+                    {{ format(part.modelDepth) }}
+                  </td>
+                  <td>{{ format(part.width) }} x {{ format(part.depth) }}</td>
+                  <td>{{ part.rotated ? '90 degrees' : 'None' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
-        <h3>Placed parts</h3>
-        <ul class="placed-parts">
-          @for (part of layout.placed; track part.name) {
-            <li>
-              <strong>{{ part.name }}</strong
-              >: {{ format(part.width) }} × {{ format(part.depth) }} mm{{
-                part.rotated ? ' (rotated 90°)' : ''
-              }}
-            </li>
-          }
-        </ul>
         <p>
-          {{ layout.placed.length }} part(s) fit this simple
-          rectangular-footprint layout.
-          {{
-            layout.remaining.length
-              ? layout.remaining.length + ' part(s) need another batch.'
-              : 'All selected parts fit this suggested batch.'
-          }}
+          {{ layout.placed.length }} accepted; {{ layout.remaining.length }} not
+          placed by this layout. Try another arrangement, rotate, reduce count
+          or review the native slicer. This heuristic does not prove another
+          plate is necessary.
         </p>
+        @if (!layout.available) {
+          <p role="alert">
+            Layout unavailable. Check dimensions, shape and allowances; the
+            exclusion must leave a positive usable region.
+          </p>
+        }
+        @if (layout.limited) {
+          <p>
+            Only the first 200 sorted parts are searched. Remaining parts were
+            not placed.
+          </p>
+        }
         <p>
-          Rotate marks a 90° bed turn only. This is not a collision test, slicer
-          arrangement, support plan or print guarantee; confirm the final layout
-          in your slicer.
+          The rectangle shelf path or finite circular centre/neighbour/grid
+          search is conservative, with at most 1024 candidate positions per
+          orientation. Accepted rectangles pass boundary, nonoverlap and gap
+          checks; no arbitrary outlines, optimal packing, generated structures
+          or sequential head/gantry clearance are checked.
         </p>
       </section>
     }
@@ -156,11 +282,21 @@
     </p>
   </section>
   <section class="content">
+    <p>
+      <a [routerLink]="guideRouteUrl.RouteRound3dPrinterBedFit"
+        >Understand circular boundaries</a
+      >
+      and
+      <a [routerLink]="guideRouteUrl.RouteBrimSkirtSupportBedSpace"
+        >budget brims, skirts and support space</a
+      >. Rectangle-area percentages are not deposited material, optimal packing
+      density or bed-contact area.
+    </p>
     <h2>Footprints, spacing and rejected placements</h2>
     <p>
       This browser-local planner packs axis-aligned rectangular XY footprints,
-      with optional 90-degree turns, using a conservative shelf arrangement. STL
-      coordinates are treated as millimetres; 3MF units and supported build
+      with optional 90-degree turns, on rectangles or circular usable regions.
+      STL coordinates are treated as millimetres; 3MF units and supported build
       transforms are resolved. It does not nest arbitrary outlines or search
       every packing arrangement.
     </p>
@@ -171,9 +307,9 @@
       inter-part gap; reserve more space and verify the sliced footprints.
     </p>
     <p>
-      Rejected placements need another batch or a different layout. A suggested
-      fit does not certify sequential printing: toolhead clearance, gantry
-      collisions, supports, exclusions and Z heights belong in the
+      A part not placed by this layout may work in a different arrangement. A
+      suggested fit does not certify sequential printing: toolhead clearance,
+      gantry collisions, supports, exclusions and Z heights belong in the
       slicer/printer review. Failed file processing is separate from an empty
       selection.
     </p>
@@ -195,7 +331,12 @@
       intended units on this planned plate</label
     ><button
       type="button"
-      [disabled]="!countConfirmed() || !plan().placed.length"
+      [disabled]="
+        !countConfirmed() ||
+        !plan().placed.length ||
+        !plan().available ||
+        loading()
+      "
       (click)="offerCost()"
     >
       Offer confirmed count to cost calculator

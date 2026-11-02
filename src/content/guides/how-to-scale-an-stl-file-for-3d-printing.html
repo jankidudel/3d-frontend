@@ -123,6 +123,16 @@ heading: How to Scale an STL File for 3D Printing
   <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a>
   for physical readings rather than interpreting a mesh span as acceptance.
 </p>
+<p>
+  A circular-envelope scale value solves the stated XY-corner and independent Z
+  inequalities only. With physical per-side allowance a, scale s applies to the
+  body spans, giving <code>(sW+2a)^2+(sH+2a)^2 &lt;= (D-2e)^2</code>; it does
+  not scale the brim reservation. Review the
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}">shape decision</a> before
+  shrinking an irregular outline merely because empty envelope corners failed.
+  The comparison leaves the source untouched; applying scale in the tool changes
+  every source dimension in the exported copy.
+</p>
 <h2>Record the decision</h2>
 <table>
   <caption>

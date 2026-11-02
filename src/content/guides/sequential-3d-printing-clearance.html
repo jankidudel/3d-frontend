@@ -8,7 +8,7 @@ faq:
   - question: Does a bed layout establish sequential clearance?
     answer: No. The exact head and gantry geometry, completed object heights and print order require native slicer/profile checks.
   - question: 'Can I enter a generic clearance radius in the bed planner?'
-    answer: 'The bed planner screens rectangular model footprints. It does not model a toolhead or gantry; use exact native profile checks.'
+    answer: 'The bed planner screens model envelopes on declared usable regions. It does not model a toolhead or gantry; use exact native profile checks.'
 ---
 
 <p>
@@ -31,10 +31,21 @@ faq:
   </figcaption>
 </figure>
 <p>
-  The bed planner screens rectangular XY footprints. It does not have a verified
-  machine head shape, gantry height, cable motion or firmware routine. Its
-  confirmed count can help cost a planned plate, but that count does not approve
-  a sequential machine job.
+  The bed planner screens rectangular XY envelopes on rectangular or circular
+  usable regions. It does not have a verified machine head shape, gantry height,
+  cable motion or firmware routine. Its confirmed count can help cost a planned
+  plate, but that count does not approve a sequential machine job.
+</p>
+<p>
+  The planner now screens rectangular envelopes on declared rectangular or
+  circular regions and checks accepted reserved rectangles for nonoverlap and
+  selected spacing. Neither circle containment nor that gap supplies head shape,
+  gantry height or collision order. Use
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >process-space budgeting</a
+  >
+  for envelope reservations, then retain native sequential checks as a separate
+  stage.
 </p>
 <h2>A hypothetical order review</h2>
 <p>

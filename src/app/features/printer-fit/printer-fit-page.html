@@ -33,7 +33,7 @@
       </select></label
     >
     <label class="field"
-      ><span>Safety margin per axis (mm)</span
+      ><span>Additional XY bed edge exclusion (mm)</span
       ><input
         type="number"
         min="0"
@@ -48,28 +48,31 @@
         <option value="current">Current orientation only</option>
       </select></label
     >
-    <details>
-      <summary>Use custom build volume</summary>
-      <p>
-        Replace the selected nominal volume when your slicer or manufacturer
-        specifies a smaller usable region.
-      </p>
-      <div class="calculator-fields">
-        @for (axis of ['width', 'height', 'depth']; track axis) {
-          <label class="field"
-            ><span>{{ axis }} (mm)</span
-            ><input
-              type="number"
-              min="0"
-              step="any"
-              (input)="setCustom(axis, $event)"
-          /></label>
-        }
-      </div>
-      <button type="button" class="text-button" (click)="clearCustom()">
-        Use selected printer again
-      </button>
-    </details>
+    <label
+      ><input
+        type="checkbox"
+        [checked]="useCustom()"
+        (change)="useCustom.set($any($event.target).checked)"
+      />Use custom/session profile instead of named printer</label
+    >
+    @if (useCustom() || printerProfiles.needsReview()) {
+      <app-printer-profile-editor [controls]="printerControls" />
+    }
+    <label class="field"
+      ><span>Extra XY allowance per part (mm)</span
+      ><input
+        type="number"
+        min="0"
+        step="any"
+        [value]="expansion()"
+        (input)="expansion.set($any($event.target).valueAsNumber)"
+    /></label>
+    <p>
+      Edge exclusion removes space on each XY side, or radially on a circle.
+      Extra allowance expands the model envelope; Z is checked independently
+      with no automatic top/bottom reservation. Do not count a previously
+      excluded edge twice.
+    </p>
   </section>
   @if (fileKind() === 'stl') {
     <section class="card">
@@ -92,34 +95,54 @@
     <section class="card tool-result" aria-live="polite">
       <h2>{{ result.verdict }}</h2>
       <p>
-        <strong>Model:</strong> {{ format(resolvedDimensions()!.width) }} x
+        <strong>Model X/Y/Z:</strong>
+        {{ format(resolvedDimensions()!.width) }} x
         {{ format(resolvedDimensions()!.height) }} x
         {{ format(resolvedDimensions()!.depth) }} mm.
-        <strong>Effective build volume:</strong>
+        <strong
+          >Active {{ useCustom() ? 'custom/session' : 'named-printer nominal' }}
+          {{ result.shape }} region, X/Y/Z:</strong
+        >
         {{ format(result.effectiveVolume.width) }} x
         {{ format(result.effectiveVolume.height) }} x
         {{ format(result.effectiveVolume.depth) }} mm.
       </p>
       <p>
-        <strong>Best tested right-angle orientation:</strong> current
-        {{ result.orientation.axisSources.width }} to X,
-        {{ result.orientation.axisSources.height }} to Y and
-        {{ result.orientation.axisSources.depth }} to Z.
+        <strong>Tested source-to-printer mapping:</strong> source
+        {{ axisLabel(result.orientation.axisSources.width) }} to printer X,
+        source {{ axisLabel(result.orientation.axisSources.height) }} to Y and
+        source {{ axisLabel(result.orientation.axisSources.depth) }} to Z.
       </p>
       <p>
-        <strong>Clearance:</strong> X
-        {{ format(result.orientation.clearance.width) }} mm, Y
-        {{ format(result.orientation.clearance.height) }} mm, Z
-        {{ format(result.orientation.clearance.depth) }} mm.
-        <strong>Limiting axis:</strong>
-        {{ axisLabel(result.orientation.limitingAxes[0] ?? 'width') }}.
+        Position assumption: centred planning envelope, in millimetres. This
+        screen does not translate or export the source. Edge exclusion
+        {{ format(margin()) }} mm; extra expansion {{ format(expansion()) }} mm
+        per side.
       </p>
+      @if (result.envelope.radiusSlackMm !== null) {
+        <p>
+          <strong>Radius slack:</strong>
+          {{ format(result.envelope.radiusSlackMm) }} mm. This is the farthest
+          corner's distance from the effective circular boundary, not separate
+          X/Y clearance.
+        </p>
+      }
       <p>
-        <strong>Maximum uniform fit scale:</strong>
-        {{ format(result.orientation.fit.maximumScalePercentage) }}%.
-        Recommended print scale is capped at
-        {{ format(result.recommendedScalePercentage) }}%.
+        <strong>Z slack:</strong> {{ format(result.envelope.zSlackMm!) }} mm.
       </p>
+      @if (result.recommendedScalePercentage > 0) {
+        <p>
+          <strong>Maximum uniform fit scale:</strong>
+          {{ format(result.orientation.fit.maximumScalePercentage) }}%.
+          Suggested envelope scale is capped at
+          {{ format(result.recommendedScalePercentage) }}%.
+        </p>
+      } @else {
+        <p>
+          No positive source scale leaves room for the selected fixed allowance.
+          Review the usable region and process requirements.
+        </p>
+      }
       <p>
         <a [routerLink]="['/3d-printers', selectedPrinter().slug]"
           >View {{ selectedPrinter().displayName }} specifications</a
@@ -133,7 +156,23 @@
       </p>
     </section>
   }
+  @if (resolvedDimensions() && !assessment()) {
+    <p role="alert">
+      Envelope assessment unavailable. Enter positive finite dimensions and a
+      nonnegative edge exclusion and expansion; the exclusion must leave a
+      positive usable region.
+    </p>
+  }
   <section class="content">
+    <p>
+      <a [routerLink]="guideRouteUrl.RouteRound3dPrinterBedFit"
+        >Interpret circular envelope fit</a
+      >
+      and
+      <a [routerLink]="guideRouteUrl.RouteBrimSkirtSupportBedSpace"
+        >budget space added after the model</a
+      >.
+    </p>
     <h2>Establish physical size first</h2>
     <p>
       For STL,
@@ -146,10 +185,12 @@
     </p>
     <h2>How fit is calculated</h2>
     <p>
-      The checker compares resolved millimetre dimensions with the selected
-      usable build volume after subtracting your margin. Automatic mode tests
-      only axis-aligned, right-angle permutations; it does not claim
-      arbitrary-angle optimisation.
+      The checker compares resolved millimetre X/Y/Z spans with the chosen
+      usable rectangle or circle. Circular mode checks all corners of a centred
+      XY envelope; an outside empty corner does not prove an irregular outline
+      cannot fit. A circle plus Z assumes a simple cylindrical region, not
+      height-dependent machine reach. Automatic mode tests only axis-aligned,
+      right-angle permutations; it does not claim arbitrary-angle optimisation.
     </p>
     <h2>Why a slicer can still reject a model</h2>
     <p>

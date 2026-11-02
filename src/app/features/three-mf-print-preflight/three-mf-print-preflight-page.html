@@ -137,6 +137,12 @@
         </p>
       }
     </section>
+    <p>
+      Fit uses the confirmed shape and resolved X/Y/Z, zero additional edge
+      exclusion and expansion, and a separate Z limit. Unconfirmed saved axes
+      are unavailable; topology and volume remain independent. Source position,
+      generated structures and kinematics are not assessed.
+    </p>
     @if (integrity(); as report) {
       <section class="card">
         <h2>Mesh integrity</h2>
@@ -190,6 +196,17 @@
           </p>
         }
       </section>
+      @if (dimensions() && !orientation()) {
+        <section class="card">
+          <h2>Printer envelope unavailable</h2>
+          <p>
+            Review saved X/Y/Z, shape and units in the
+            <a [routerLink]="routeUrl.PrinterFitChecker">fit checker</a>. No fit
+            pass is inferred; completed topology and volume checks retain their
+            own coverage.
+          </p>
+        </section>
+      }
       @if (dimensions(); as size) {
         @if (orientation(); as fit) {
           <section class="card">
@@ -207,8 +224,8 @@
               >
                 @if (savedPrinterProfile(); as profile) {
                   <option value="saved">
-                    My saved printer: {{ format(profile.width) }} ×
-                    {{ format(profile.height) }} × {{ format(profile.depth) }}
+                    My saved printer: {{ format(profile.x) }} ×
+                    {{ format(profile.y) }} × {{ format(profile.z) }}
                     {{ profile.unit }}
                   </option>
                 }
@@ -226,8 +243,14 @@
               </p>
             }
             <p>
-              Normal orientation
-              {{ fit.current.fit.fits ? 'fits' : 'does not fit' }} this preset.
+              {{
+                printerPreset() === 'saved'
+                  ? savedPrinterProfile()!.shape
+                  : 'rectangular'
+              }}
+              centred envelope, X/Y/Z. Current orientation
+              {{ fit.current.fit.fits ? 'contained' : 'not contained' }} this
+              preset.
             </p>
             <p>
               {{

@@ -1,3 +1,5 @@
+import { PrinterProfileEditor } from '../../shared/printer-profile-editor';
+import { BedShape } from '../../core/printer/printer-profile.service';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
   Component,
@@ -44,17 +46,22 @@ const MILLIMETRES_PER_3MF_UNIT: Readonly<Record<string, number>> = {
 
 @Component({
   selector: 'app-three-mf-dimensions-page',
-  imports: [RouterLink, ThreeMfFilePicker, JobProgress, FeedbackLinkComponent],
+  imports: [
+    PrinterProfileEditor,
+    RouterLink,
+    ThreeMfFilePicker,
+    JobProgress,
+    FeedbackLinkComponent,
+  ],
   templateUrl: './threemf-dimensions-page.html',
   styleUrl: './threemf-dimensions-page.scss',
 })
 export class ThreeMfDimensionsPage {
   readonly guideRouteUrl = GuideRouteUrl;
   private readonly printerProfile = inject(PrinterProfileService);
-  private readonly printerFitControls = new PrinterFitControls(
-    this.printerProfile,
-  );
+  readonly printerFitControls = new PrinterFitControls(this.printerProfile);
   protected readonly routeUrl = PublicRouteUrl;
+  protected readonly bedShapes = BedShape;
   protected readonly jobStatus = JobStatus;
   protected readonly jobFailureMessage = (failure: Job['failure']) =>
     jobFailureMessageForFormat(failure, ModelFileFormat.ThreeMf);
@@ -106,6 +113,9 @@ export class ThreeMfDimensionsPage {
     };
   });
   protected readonly buildVolume = computed<ModelDimensions | null>(() => {
+    if (this.printerFitControls.shape() !== BedShape.Rectangular) {
+      return null;
+    }
     const width = this.buildWidth();
     const height = this.buildHeight();
     const depth = this.buildDepth();
@@ -121,7 +131,10 @@ export class ThreeMfDimensionsPage {
       : null;
   });
   protected readonly buildVolumeInvalid = computed(
-    () => this.buildVolumeTouched() && this.printerFit() === null,
+    () =>
+      this.printerFitControls.shape() === BedShape.Rectangular &&
+      this.buildVolumeTouched() &&
+      this.printerFit() === null,
   );
   protected readonly printerOrientations = computed(() => {
     const dimensions = this.convertedDimensions()?.mm;

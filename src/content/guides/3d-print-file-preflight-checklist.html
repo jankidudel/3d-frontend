@@ -77,8 +77,8 @@ faq:
     </tr>
     <tr>
       <th scope="row">
-        Nominal dimensions fit the usable bed in the intended orientation, with
-        brim/support space.
+        Confirmed X/Y/Z, units and shape; envelope result, actual placement and
+        generated structures each have recorded evidence.
       </th>
       <td>□ Pass<br />□ Review<br />□ Unknown</td>
       <td>____________________</td>
@@ -139,6 +139,20 @@ faq:
   can retain completed, failed and cancelled files separately. Do not average a
   failed input into a clean collection score. A new revision needs a new check,
   even if its filename matches an earlier one.
+</p>
+<p>
+  In the existing notes fields, record confirmed X/Y/Z, shape and units; centred
+  or actual placement basis; edge exclusion; and extra expansion separately.
+  Legacy axes pending review are Unknown. Circular shape on the dimensions-only
+  screen is Not assessed; run the
+  <a href="{{ GuideSlug.Route3dPrinterFitChecker }}">shape-aware checker</a>
+  rather than marking its surrounding square passed. Record unresolved excluded
+  regions and
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >generated structures</a
+  >
+  alongside the actual profile. Never promote an unrelated completed topology
+  check into a fit pass.
 </p>
 <h2>Optional functional-interface review</h2>
 <p>

@@ -1,3 +1,10 @@
+import { assessProfileOrientations } from '../../core/printer/build-space';
+import {
+  BedShape,
+  PRINTER_PROFILE_VERSION,
+  printerDimensionsMm,
+  PrinterProfile,
+} from '../../core/printer/printer-profile.service';
 import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
@@ -11,10 +18,7 @@ import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
-import {
-  assessPrinterOrientations,
-  ModelDimensions,
-} from '../../shared/model-dimensions';
+import { ModelDimensions } from '../../shared/model-dimensions';
 import {
   inspectMesh,
   meshDimensions,
@@ -84,7 +88,11 @@ export class ThreeMfPrintPreflightPage {
     return resolved ? meshDimensions(resolved.geometry) : null;
   });
   readonly wallReport = signal<WallThicknessReport | null>(null);
-  readonly printerPreset = signal('standard');
+  readonly printerPreset = signal(
+    this.savedPrinterProfile() || this.printerProfileService.needsReview()
+      ? 'saved'
+      : 'standard',
+  );
   readonly progress = signal('');
   readonly error = signal('');
   readonly analysing = signal(false);
@@ -92,31 +100,37 @@ export class ThreeMfPrintPreflightPage {
     const savedProfile = this.savedPrinterProfile();
     return this.printerPreset() === 'saved' && savedProfile
       ? {
-          width: savedProfile.width,
-          height: savedProfile.height,
-          depth: savedProfile.depth,
+          ...printerDimensionsMm(savedProfile),
         }
       : (PRINTER_PRESETS[this.printerPreset()] ?? PRINTER_PRESETS['standard']);
   });
   readonly buildVolumeUnit = computed(() => {
-    const savedProfile = this.savedPrinterProfile();
-    return this.printerPreset() === 'saved' && savedProfile
-      ? savedProfile.unit
-      : 'mm';
+    return 'mm';
   });
   readonly orientation = computed(() => {
     const dimensions = this.dimensions();
-    return dimensions
-      ? assessPrinterOrientations(
-          dimensions,
-          'mm',
-          this.buildVolume(),
-          this.buildVolumeUnit(),
-        )
-      : null;
+    if (
+      !dimensions ||
+      (this.printerPreset() === 'saved' && !this.savedPrinterProfile())
+    ) {
+      return null;
+    }
+    const d = this.buildVolume();
+    const p: PrinterProfile | null =
+      this.printerPreset() === 'saved'
+        ? this.savedPrinterProfile()
+        : {
+            schemaVersion: PRINTER_PROFILE_VERSION,
+            shape: BedShape.Rectangular,
+            x: d.width,
+            y: d.height,
+            z: d.depth,
+            unit: 'mm' as const,
+          };
+    return assessProfileOrientations(dimensions, 'mm', p);
   });
-  readonly fitsPrinter = computed(
-    () => this.orientation()?.recommended !== null,
+  readonly fitsPrinter = computed(() =>
+    this.orientation() ? this.orientation()!.recommended !== null : null,
   );
   readonly packageWarning = computed(
     () => !this.resolved()?.declaredUnitExplicitly,

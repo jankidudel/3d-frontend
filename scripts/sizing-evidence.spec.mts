@@ -1,4 +1,18 @@
 import '@angular/compiler';
+import { Injector, PLATFORM_ID, runInInjectionContext } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  PrinterProfileService,
+  BedShape,
+} from '../src/app/core/printer/printer-profile.service';
+import { SeoService } from '../src/app/core/seo/seo.service';
+import {
+  PrinterFitPage,
+  PrinterFitOrientationMode,
+} from '../src/app/features/printer-fit/printer-fit-page';
+import { BedLayoutPlannerPage } from '../src/app/features/bed-layout-planner/bed-layout-planner-page';
+import { JobPlanningSession } from '../src/app/features/planning/job-planning-session';
+import { EnvelopeState } from '../src/app/core/printer/build-space';
 import { describe, expect, it, vi } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -382,5 +396,74 @@ describe('actual quotation document and private archive', () => {
         archive,
       );
     }
+  });
+});
+
+describe('build-space observations from existing public model bytes', () => {
+  it('runs the real fit upload and layout paths without a new fixture or native slicing claim', async () => {
+    const injector = Injector.create({
+      providers: [
+        { provide: PLATFORM_ID, useValue: 'server' },
+        {
+          provide: PrinterProfileService,
+          useFactory: () => new PrinterProfileService(),
+        },
+        { provide: SeoService, useValue: { apply: vi.fn() } },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { queryParamMap: { get: () => null } } },
+        },
+        {
+          provide: Router,
+          useValue: { navigateByUrl: vi.fn().mockResolvedValue(true) },
+        },
+        { provide: JobPlanningSession, useValue: new JobPlanningSession() },
+      ],
+    });
+    const fit = runInInjectionContext(injector, () => new PrinterFitPage());
+    const bytes = await readFile(
+      resolve(directory, '../english-market-batch/printer-fit-250x210x180.stl'),
+    );
+    const file = new File([bytes], 'printer-fit-250x210x180.stl');
+    const picker = {
+      target: { files: { item: () => file } },
+    } as unknown as Event;
+    await fit.chooseFile(picker);
+    expect(fit.error()).toBe('');
+    expect(fit.resolvedDimensions()).toEqual({
+      width: 250,
+      height: 210,
+      depth: 180,
+    });
+    fit.useCustom.set(true);
+    fit.printerControls.shape.set(BedShape.Circular);
+    fit.printerControls.diameter.set(330);
+    fit.printerControls.buildDepth.set(200);
+    fit.orientationMode.set(PrinterFitOrientationMode.Current);
+    expect(fit.assessment()?.verdict).toBe(EnvelopeState.Contained);
+    expect(fit.assessment()?.envelope.radiusSlackMm).toBeCloseTo(
+      1.751722827,
+      6,
+    );
+    fit.margin.set(2);
+    expect(fit.assessment()?.verdict).toBe(EnvelopeState.Outside);
+    const layout = runInInjectionContext(
+      injector,
+      () => new BedLayoutPlannerPage(),
+    );
+    layout.printerControls.shape.set(BedShape.Circular);
+    layout.printerControls.diameter.set(330);
+    layout.margin.set(0);
+    await layout.chooseFiles({ target: { files: [file] } } as unknown as Event);
+    expect(layout.error()).toBe('');
+    expect(layout.plan().placed).toHaveLength(1);
+    expect(layout.plan().placed[0]).toMatchObject({
+      modelWidth: 250,
+      modelDepth: 210,
+      x: 40,
+      y: 60,
+    });
+    layout.margin.set(2);
+    expect(layout.plan().placed).toHaveLength(0);
   });
 });

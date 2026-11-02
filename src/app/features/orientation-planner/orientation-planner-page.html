@@ -85,12 +85,15 @@
         />
         degrees
       </label>
+      <details>
+        <summary>Review or change saved X/Y/Z and shape</summary>
+        <app-printer-profile-editor [controls]="printerControls" />
+      </details>
       @if (printerProfile(); as profile) {
         <p>
-          Using your saved rectangular printer envelope: X
-          {{ formatNumber(profile.width) }} × Y
-          {{ formatNumber(profile.height) }} × Z
-          {{ formatNumber(profile.depth) }} {{ profile.unit }}.
+          Using your saved {{ profile.shape }} printer region: X
+          {{ formatNumber(profile.x) }} × Y {{ formatNumber(profile.y) }} × Z
+          {{ formatNumber(profile.z) }} {{ profile.unit }}.
           <a
             [routerLink]="
               format() === '3mf'
@@ -101,7 +104,7 @@
           >.
         </p>
         <label
-          >Edge allowance on each X and Y side
+          >Additional XY edge exclusion (radial on circles)
           <input
             type="number"
             min="0"
@@ -109,14 +112,21 @@
             [value]="edgeAllowance()"
             (input)="setEdgeAllowance($event)"
           />
-          {{ profile.unit }}
+          mm
         </label>
+        <label
+          >Extra XY allowance per part (mm)<input
+            type="number"
+            min="0"
+            step="any"
+            [value]="expansion()"
+            (input)="expansion.set($any($event.target).valueAsNumber)"
+        /></label>
         <p>
-          Fit uses X {{ formatNumber(profile.width - edgeAllowance() * 2) }} × Y
-          {{ formatNumber(profile.height - edgeAllowance() * 2) }} × Z
-          {{ formatNumber(profile.depth) }} {{ profile.unit }} after this
-          allowance. It does not model circular-bed corners, excluded zones,
-          brims, supports, purge structures or machine clearances.
+          Fit uses a centred full XY envelope, a separate Z limit, and the saved
+          {{ profile.shape }} region converted to millimetres. No origin,
+          translation, generated support/brim geometry or machine clearance is
+          inferred.
         </p>
       } @else {
         <p>
@@ -129,7 +139,7 @@
             "
             >Dimensions Checker</a
           >
-          to include nominal rectangular-envelope fit.
+          to include shape-aware envelope containment.
         </p>
       }
     </section>
@@ -183,8 +193,8 @@
                   {{
                     plan.fit
                       ? plan.fit.fits
-                        ? 'Fits entered rectangular envelope and allowance'
-                        : 'Does not fit entered rectangular envelope and allowance'
+                        ? plan.fit.state
+                        : plan.fit.state
                       : 'Add a valid printer profile and allowance'
                   }}
                 </td>

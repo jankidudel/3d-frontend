@@ -1,8 +1,10 @@
 import {
-  calculateBuildVolumeFit,
-  ModelDimensions,
-  ModelUnit,
-} from '../../shared/model-dimensions';
+  assessEnvelope,
+  EnvelopeAssessment,
+  EnvelopeState,
+} from '../../core/printer/build-space';
+import { printerProfileMm } from '../../core/printer/printer-profile.service';
+import { ModelDimensions, ModelUnit } from '../../shared/model-dimensions';
 import { PrinterProfile } from '../../core/printer/printer-profile.service';
 import {
   analyseOverhangs,
@@ -19,7 +21,7 @@ export interface OrientationPlan {
   readonly sourceAxisUp: string;
   readonly transform: string;
   readonly dimensions: ModelDimensions;
-  readonly fit: ReturnType<typeof calculateBuildVolumeFit> | null;
+  readonly fit: (EnvelopeAssessment & { fits: boolean }) | null;
   readonly overhang: OverhangReport;
   readonly bedContactArea: number;
 }
@@ -40,12 +42,18 @@ export function printerProfileAfterEdgeAllowance(
   if (!Number.isFinite(allowance) || allowance < 0) {
     return null;
   }
-  const width = profile.width - allowance * 2;
-  const height = profile.height - allowance * 2;
-  if (width <= 0 || height <= 0) {
+  const p = printerProfileMm(profile);
+  const x = p.x - 2 * allowance,
+    y = p.y - 2 * allowance;
+  if (x <= 0 || y <= 0) {
     return null;
   }
-  return { ...profile, width, height };
+  return {
+    ...p,
+    x,
+    y,
+    diameter: p.diameter === undefined ? undefined : p.diameter - 2 * allowance,
+  };
 }
 
 function axisRanges(mesh: IndexedTriangleGeometry): Record<Axis, number> {
@@ -159,6 +167,8 @@ export function planOrientations(
   threshold: number,
   modelUnit: ModelUnit,
   printerProfile: PrinterProfile | null,
+  edge = 0,
+  expansion = 0,
 ): readonly OrientationPlan[] {
   const ranges = axisRanges(mesh);
   return OVERHANG_BUILD_DIRECTIONS.flatMap((direction, index) => {
@@ -176,16 +186,19 @@ export function planOrientations(
         transform: transform.transform,
         dimensions,
         fit: printerProfile
-          ? calculateBuildVolumeFit(
-              dimensions,
-              modelUnit,
-              {
-                width: printerProfile.width,
-                height: printerProfile.height,
-                depth: printerProfile.depth,
-              },
-              printerProfile.unit,
-            )
+          ? (() => {
+              const assessment = assessEnvelope(
+                dimensions,
+                modelUnit,
+                printerProfile,
+                edge,
+                expansion,
+              );
+              return {
+                ...assessment,
+                fits: assessment.state === EnvelopeState.Contained,
+              };
+            })()
           : null,
         overhang,
         bedContactArea: bedContactArea(mesh, direction.direction),

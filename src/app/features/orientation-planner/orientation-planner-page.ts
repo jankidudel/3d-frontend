@@ -1,3 +1,5 @@
+import { PrinterProfileEditor } from '../../shared/printer-profile-editor';
+import { PrinterFitControls } from '../../shared/printer-fit-controls';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
@@ -14,10 +16,7 @@ import {
   ResolvedThreeMfGeometry,
 } from '../shared/wall-thickness/three-mf-wall-thickness';
 import { readStl } from '../stl-reducer/stl-reducer';
-import {
-  planOrientations,
-  printerProfileAfterEdgeAllowance,
-} from './orientation-planner-analysis';
+import { planOrientations } from './orientation-planner-analysis';
 
 export const OrientationModelFormat = {
   Stl: 'stl',
@@ -29,7 +28,12 @@ export type OrientationModelFormat =
 
 @Component({
   selector: 'app-orientation-planner-page',
-  imports: [ExampleLoader, ToolEvidenceComponent, RouterLink],
+  imports: [
+    PrinterProfileEditor,
+    ExampleLoader,
+    ToolEvidenceComponent,
+    RouterLink,
+  ],
   templateUrl: './orientation-planner-page.html',
   styleUrl: './orientation-planner-page.scss',
 })
@@ -48,15 +52,9 @@ export class OrientationPlannerPage {
   readonly analysing = signal(false);
   private fileRevision = 0;
   private readonly printerProfiles = inject(PrinterProfileService);
+  readonly printerControls = new PrinterFitControls(this.printerProfiles);
+  readonly expansion = signal(0);
   readonly printerProfile = computed(() => this.printerProfiles.profile());
-  readonly effectivePrinterProfile = computed(() => {
-    const profile = this.printerProfile();
-    const allowance = this.edgeAllowance();
-    if (!profile) {
-      return null;
-    }
-    return printerProfileAfterEdgeAllowance(profile, allowance);
-  });
   readonly plans = computed(() => {
     const mesh = this.mesh();
     if (!mesh) {
@@ -66,7 +64,9 @@ export class OrientationPlannerPage {
       mesh,
       this.threshold(),
       this.format() === OrientationModelFormat.ThreeMf ? 'mm' : this.stlUnit(),
-      this.effectivePrinterProfile(),
+      this.printerProfile(),
+      this.edgeAllowance(),
+      this.expansion(),
     );
   });
   readonly selectedPlan = computed(
@@ -177,9 +177,7 @@ export class OrientationPlannerPage {
 
   setEdgeAllowance(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
-    if (Number.isFinite(value) && value >= 0) {
-      this.edgeAllowance.set(value);
-    }
+    this.edgeAllowance.set(value);
   }
 
   selectPlan(id: string): void {

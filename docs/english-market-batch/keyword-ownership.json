@@ -2125,6 +2125,38 @@
       "disposition": "publish",
       "adjacentExistingOwner": "https://www.inspectmesh.com/3d-print-tolerance-and-clearance-guide",
       "ownershipRationale": "Separate entry gap from catch engagement, deflection and reuse evidence. The adjacent owner retains its general correction, calibration or clearance procedure; a short cross-link cannot supply this specialist workflow."
+    },
+    {
+      "query": "round 3d printer bed fit",
+      "cluster": "Build space and process planning",
+      "primaryOwner": "https://www.inspectmesh.com/guides/round-3d-printer-bed-fit",
+      "pageType": "guide",
+      "visitorTask": "Interpret a rectangular model envelope on a declared circular usable region.",
+      "countryGroup": ["UK", "US", "CA", "AU", "NZ", "IE"],
+      "countryEvidence": "unknown",
+      "demandStatus": "unknown, not zero",
+      "averageMonthlySearches": null,
+      "sourceDate": "2026-11-01 workflow and source audit, not measured metrics",
+      "plannedOriginalContribution": "Centred diagonal, positioned corner cases, fixed-allowance scale and conservative cross counterexample.",
+      "disposition": "prepare locally",
+      "adjacentExistingOwner": "https://www.inspectmesh.com/guides/how-to-check-if-a-3d-model-fits-your-printer",
+      "ownershipRationale": "General fit owns the overall decision and arrangement owns heuristic placements. This specialist owner supplies Centred diagonal, positioned corner cases, fixed-allowance scale and conservative cross counterexample."
+    },
+    {
+      "query": "brim skirt support bed space",
+      "cluster": "Build space and process planning",
+      "primaryOwner": "https://www.inspectmesh.com/guides/brim-skirt-support-bed-space",
+      "pageType": "guide",
+      "visitorTask": "Budget generated-structure space separately from model bounds, bed exclusions and between-part spacing.",
+      "countryGroup": ["UK", "US", "CA", "AU", "NZ", "IE"],
+      "countryEvidence": "unknown",
+      "demandStatus": "unknown, not zero",
+      "averageMonthlySearches": null,
+      "sourceDate": "2026-11-01 workflow and source audit, not measured metrics",
+      "plannedOriginalContribution": "Independent controls, original expansion arithmetic, object/global settings and deliberate count handoff.",
+      "disposition": "prepare locally",
+      "adjacentExistingOwner": "https://www.inspectmesh.com/guides/how-to-check-if-a-3d-model-fits-your-printer",
+      "ownershipRationale": "General fit owns the overall decision and arrangement owns heuristic placements. This specialist owner supplies Independent controls, original expansion arithmetic, object/global settings and deliberate count handoff."
     }
   ],
   "slicedFileIntentOwners": [

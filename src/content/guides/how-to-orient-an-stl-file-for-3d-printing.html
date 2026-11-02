@@ -77,16 +77,28 @@ heading: How to Orient an STL File for 3D Printing
     >orientation planner</a
   >
   compares +Z, -Z, +X, -X, +Y and -Y from the source model. For each candidate
-  it exposes the rotated X/Y/Z envelope, nominal rectangular printer fit,
-  downward-facing triangle area and a coplanar contact estimate. It does not
-  search arbitrary angles, generate supports, predict warping or infer the most
-  important face. If the immediate problem is an imported tilted base, follow
-  the
+  it exposes the rotated X/Y/Z envelope, confirmed-shape printer-envelope
+  containment, downward-facing triangle area and a coplanar contact estimate. It
+  does not search arbitrary angles, generate supports, predict warping or infer
+  the most important face. If the immediate problem is an imported tilted base,
+  follow the
   <a href="{{ GuideSlug.RouteHowToLayAnStlFlatOnPrintBed }}"
     >lay-flat workflow</a
   >.
 </p>
 
+<p>
+  The fit column uses confirmed printer X/Y/Z and shape, converted to
+  millimetres, with a centred full XY envelope and separate Z. Bed edge
+  exclusion removes space; optional extra XY allowance expands the envelope. A
+  circular rejection can reflect empty bounding corners: see
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}"
+    >round-bed interpretation</a
+  >. Generated support bases and brims remain a
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >separate footprint review</a
+  >. Containment does not establish the best orientation or support adequacy.
+</p>
 <h2>3. Follow the critical feature</h2>
 <table>
   <caption>

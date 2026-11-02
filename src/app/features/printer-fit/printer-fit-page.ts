@@ -1,3 +1,18 @@
+import {
+  PrinterProfileService,
+  BedShape,
+  PRINTER_PROFILE_VERSION,
+  printerDimensionsMm,
+  printerProfileMm,
+  PrinterProfile,
+} from '../../core/printer/printer-profile.service';
+import {
+  assessEnvelope,
+  assessProfileOrientations,
+} from '../../core/printer/build-space';
+import { PrinterFitControls } from '../../shared/printer-fit-controls';
+import { PrinterProfileEditor } from '../../shared/printer-profile-editor';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -13,11 +28,7 @@ import { readStl } from '../stl-reducer/stl-reducer';
 import { meshDimensions } from '../stl-print-preflight/stl-print-preflight-analysis';
 import { resolveThreeMfWallGeometry } from '../shared/wall-thickness/three-mf-wall-thickness';
 import { printers, printerById } from '../printer-comparison/printer-catalogue';
-import {
-  assessPrinterFit,
-  axisLabel,
-  FitVerdict,
-} from './printer-fit-analysis';
+import { axisLabel } from './printer-fit-analysis';
 
 export const PrinterFitFileKind = {
   Stl: 'stl',
@@ -36,12 +47,33 @@ type OrientationMode =
 
 @Component({
   selector: 'app-printer-fit-page',
-  imports: [ToolEvidenceComponent, RouterLink],
+  imports: [PrinterProfileEditor, ToolEvidenceComponent, RouterLink],
   templateUrl: './printer-fit-page.html',
   styleUrl: './printer-fit-page.scss',
 })
 export class PrinterFitPage {
   readonly routeUrl = PublicRouteUrl;
+  readonly guideRouteUrl = GuideRouteUrl;
+  readonly printerProfiles = inject(PrinterProfileService);
+  readonly printerControls = new PrinterFitControls(this.printerProfiles);
+  readonly useCustom = signal(
+    !!this.printerProfiles.profile() || this.printerProfiles.needsReview(),
+  );
+  readonly expansion = signal(0);
+  readonly activeProfile = computed<PrinterProfile | null>(() => {
+    if (this.useCustom()) {
+      return this.printerControls.draft();
+    }
+    const [x, y, z] = this.selectedPrinter().buildVolumeMm;
+    return {
+      schemaVersion: PRINTER_PROFILE_VERSION,
+      shape: BedShape.Rectangular,
+      x,
+      y,
+      z,
+      unit: 'mm' as const,
+    };
+  });
   readonly printers = printers.filter((printer) => printer.published !== false);
   private readonly route = inject(ActivatedRoute);
   readonly selectedPrinterId = signal(
@@ -54,7 +86,6 @@ export class PrinterFitPage {
   readonly orientationMode = signal<OrientationMode>(
     PrinterFitOrientationMode.Automatic,
   );
-  readonly customVolume = signal<ModelDimensions | null>(null);
   readonly dimensions = signal<ModelDimensions | null>(null);
   readonly fileKind = signal<FileKind | null>(null);
   readonly error = signal('');
@@ -72,43 +103,55 @@ export class PrinterFitPage {
     }
     return dimensions;
   });
-  readonly buildVolume = computed(
-    () =>
-      this.customVolume() ??
-      (this.selectedPrinter().buildVolumeMm && {
-        width: this.selectedPrinter().buildVolumeMm[0],
-        height: this.selectedPrinter().buildVolumeMm[1],
-        depth: this.selectedPrinter().buildVolumeMm[2],
-      }),
-  );
+  readonly buildVolume = computed(() => {
+    const p = this.activeProfile();
+    return p ? printerDimensionsMm(p) : null;
+  });
   readonly assessment = computed(() => {
-    const model = this.resolvedDimensions();
-    const volume = this.buildVolume();
-    if (!model || !volume) {
+    const model = this.resolvedDimensions(),
+      profile = this.activeProfile();
+    if (!model || !profile) {
       return null;
     }
-    const assessment = assessPrinterFit(model, volume, this.margin());
-    if (
-      !assessment ||
-      this.orientationMode() === PrinterFitOrientationMode.Automatic
-    ) {
-      return assessment;
+    const tested = assessProfileOrientations(
+      model,
+      'mm',
+      profile,
+      this.margin(),
+      this.expansion(),
+    );
+    if (!tested) {
+      return null;
     }
-    const orientation = assessment.currentOrientation;
+    const orientation =
+      this.orientationMode() === PrinterFitOrientationMode.Current
+        ? tested.current
+        : (tested.recommended ?? tested.nearest!);
+    const envelope = assessEnvelope(
+      orientation.dimensions,
+      'mm',
+      profile,
+      this.margin(),
+      this.expansion(),
+    );
+    const p = printerProfileMm(profile);
     return {
-      ...assessment,
       orientation,
-      verdict: orientation.fit.fits
-        ? FitVerdict.Fits
-        : orientation.fit.maximumScalePercentage > 0
-          ? FitVerdict.RequiresScaling
-          : FitVerdict.DoesNotFit,
+      envelope,
+      shape: profile.shape,
+      effectiveVolume: {
+        width: p.x - 2 * this.margin(),
+        height: p.y - 2 * this.margin(),
+        depth: p.z,
+      },
+      verdict: envelope.state,
       recommendedScalePercentage: Math.min(
-        orientation.fit.maximumScalePercentage,
+        envelope.maximumScalePercentage ?? 0,
         100,
       ),
     };
   });
+  private fileRevision = 0;
   private readonly seo = inject(SeoService);
 
   constructor() {
@@ -121,6 +164,7 @@ export class PrinterFitPage {
   }
 
   async chooseFile(event: Event): Promise<void> {
+    const revision = ++this.fileRevision;
     const file = (event.target as HTMLInputElement).files?.item(0);
     this.error.set('');
     this.progress.set('');
@@ -151,6 +195,9 @@ export class PrinterFitPage {
               (await resolveThreeMfWallGeometry(await file.arrayBuffer()))
                 .geometry,
             );
+      if (revision !== this.fileRevision) {
+        return;
+      }
       if (
         Object.values(dimensions).some(
           (value) => !Number.isFinite(value) || value <= 0,
@@ -164,6 +211,9 @@ export class PrinterFitPage {
         'Fit check ready. Your file was processed locally in this browser.',
       );
     } catch {
+      if (revision !== this.fileRevision) {
+        return;
+      }
       this.error.set(
         kind === PrinterFitFileKind.Stl
           ? 'We could not read that STL file.'
@@ -174,31 +224,18 @@ export class PrinterFitPage {
 
   setPrinter(event: Event): void {
     this.selectedPrinterId.set((event.target as HTMLSelectElement).value);
-    this.customVolume.set(null);
+    this.useCustom.set(false);
   }
   setStlUnit(event: Event): void {
     this.stlUnit.set((event.target as HTMLSelectElement).value as ModelUnit);
   }
   setMargin(event: Event): void {
-    this.margin.set(
-      Math.max(0, Number((event.target as HTMLInputElement).value) || 0),
-    );
+    this.margin.set(Number((event.target as HTMLInputElement).value));
   }
   setOrientation(event: Event): void {
     this.orientationMode.set(
       (event.target as HTMLSelectElement).value as OrientationMode,
     );
-  }
-  setCustom(axis: string, event: Event): void {
-    if (axis !== 'width' && axis !== 'height' && axis !== 'depth') {
-      return;
-    }
-    const value = Number((event.target as HTMLInputElement).value);
-    const next = this.customVolume() ?? { width: 0, height: 0, depth: 0 };
-    this.customVolume.set({ ...next, [axis]: value });
-  }
-  clearCustom(): void {
-    this.customVolume.set(null);
   }
   format(value: number): string {
     return value.toLocaleString(undefined, { maximumFractionDigits: 2 });

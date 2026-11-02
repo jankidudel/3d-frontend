@@ -139,6 +139,15 @@ heading: How to Lay an STL Flat on the Print Bed
   </li>
 </ol>
 
+<p>
+  After face alignment, remeasure the full mapped XY/Z envelope: laying a large
+  face down can increase bed demand. Check the correct
+  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}">usable shape</a> and
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >generated-structure space</a
+  >. The comparison planner does not export a face-aligned model; apply and
+  retain that rotation in the native project.
+</p>
 <h2>When a face-alignment tool is not enough</h2>
 <p>
   Curved surfaces, tiny facets and noisy scanned meshes may not offer one useful

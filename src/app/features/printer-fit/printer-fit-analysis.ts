@@ -1,5 +1,9 @@
+import { assessProfileOrientations } from '../../core/printer/build-space';
 import {
-  assessPrinterOrientations,
+  BedShape,
+  PRINTER_PROFILE_VERSION,
+} from '../../core/printer/printer-profile.service';
+import {
   DimensionAxis,
   ModelDimensions,
   RotationFitResult,
@@ -34,11 +38,18 @@ export function assessPrinterFit(
   if (!effectiveVolume) {
     return null;
   }
-  const orientations = assessPrinterOrientations(
+  const orientations = assessProfileOrientations(
     model,
     'mm',
-    effectiveVolume,
-    'mm',
+    {
+      schemaVersion: PRINTER_PROFILE_VERSION,
+      shape: BedShape.Rectangular,
+      x: buildVolume.width,
+      y: buildVolume.height,
+      z: buildVolume.depth,
+      unit: 'mm',
+    },
+    margin,
   );
   if (!orientations) {
     return null;
@@ -72,7 +83,7 @@ export function subtractMargin(
   const effectiveVolume = {
     width: buildVolume.width - margin * 2,
     height: buildVolume.height - margin * 2,
-    depth: buildVolume.depth - margin * 2,
+    depth: buildVolume.depth,
   };
   if (
     Object.values(effectiveVolume).some(

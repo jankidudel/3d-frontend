@@ -1,3 +1,5 @@
+import { assessProfileOrientations } from '../../core/printer/build-space';
+import { printerDimensionsMm } from '../../core/printer/printer-profile.service';
 import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import {
@@ -12,11 +14,7 @@ import { getMaxFileUploadSizeLimit } from '../../core/api/upload-limits';
 import { PrinterProfileService } from '../../core/printer/printer-profile.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
-import {
-  assessPrinterOrientations,
-  ModelDimensions,
-  ModelUnit,
-} from '../../shared/model-dimensions';
+import { ModelDimensions, ModelUnit } from '../../shared/model-dimensions';
 import {
   analyseWallThickness,
   WallThicknessReport,
@@ -79,9 +77,7 @@ export class StlPrintPreflightPage {
   /** Printer fit is meaningful only after a custom printer profile is saved. */
   readonly buildVolume = computed(() => {
     const profile = this.printerProfile();
-    return profile
-      ? { width: profile.width, height: profile.height, depth: profile.depth }
-      : null;
+    return profile ? printerDimensionsMm(profile) : null;
   });
   readonly integrity = computed(() => this.integrityReport());
   readonly dimensions = computed(() => this.dimensionsReport());
@@ -89,11 +85,10 @@ export class StlPrintPreflightPage {
     const dimensions = this.dimensions();
     const buildVolume = this.buildVolume();
     return dimensions && buildVolume
-      ? assessPrinterOrientations(
+      ? assessProfileOrientations(
           dimensions,
           this.unit(),
-          buildVolume,
-          this.printerProfile()?.unit ?? 'mm',
+          this.printerProfile(),
         )
       : null;
   });
@@ -106,11 +101,7 @@ export class StlPrintPreflightPage {
     const baseStatus = preflightStatus(
       integrity,
       (this.wallReport()?.belowThreshold ?? 0) > 0,
-      this.orientation()?.recommended !== null
-        ? true
-        : this.orientation()
-          ? false
-          : null,
+      this.orientation() ? this.orientation()!.recommended !== null : null,
     );
     const intersection = this.intersectionReport();
     if (
@@ -167,7 +158,10 @@ export class StlPrintPreflightPage {
       return 'Sampled areas are below the generic 1.2 mm review threshold.';
     }
     if (!this.buildVolume()) {
-      return 'Printer fit has not been checked because no custom printer profile is saved.';
+      return 'Printer envelope unavailable: no confirmed X/Y/Z and shape profile is active. Review saved legacy axes or enter and save a usable region.';
+    }
+    if (this.orientation() && !this.orientation()!.recommended) {
+      return 'No tested right-angle envelope is contained in the confirmed region. Empty envelope corners can conservatively reject an irregular outline; review orientation, shape and process space.';
     }
     if (integrity.duplicateTriangles) {
       return 'Duplicate triangles were found and should be reviewed.';
@@ -186,11 +180,7 @@ export class StlPrintPreflightPage {
     return preflightActions(
       integrity,
       (this.wallReport()?.belowThreshold ?? 0) > 0,
-      this.orientation()?.recommended !== null
-        ? true
-        : this.orientation()
-          ? false
-          : null,
+      this.orientation() ? this.orientation()!.recommended !== null : null,
       mesh.indices.length / 3,
     );
   });

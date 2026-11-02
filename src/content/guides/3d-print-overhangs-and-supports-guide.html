@@ -102,6 +102,16 @@ heading: '3D Print Overhangs and Supports: How to Check a Model Before Slicing'
   and actual toolpaths.
 </p>
 
+<p>
+  Downward-facing surface area and estimated coplanar bed contact are not the
+  generated support-base footprint. Native support bases can extend outside the
+  model envelope or occupy an apparently empty gap. Review
+  <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+    >added process space</a
+  >
+  in the intended slicer profile. A triangle-angle count cannot determine
+  support volume or a required brim width.
+</p>
 <h2>5. Plan support removal before slicing</h2>
 <p>
   Support that is easy to generate may be trapped in a chamber or reachable only

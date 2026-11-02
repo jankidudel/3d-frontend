@@ -8,6 +8,8 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  Round3dPrinterBedFit: 'round-3d-printer-bed-fit',
+  BrimSkirtSupportBedSpace: 'brim-skirt-support-bed-space',
   ThreeDPrintScrewHoleSizing: '3d-print-screw-hole-sizing',
   CounterboreVsCountersink3dPrinting: 'counterbore-vs-countersink-3d-printing',
   CaptiveNutPockets3dPrinting: 'captive-nut-pockets-3d-printing',
@@ -53,6 +55,34 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.Round3dPrinterBedFit,
+    group: GuideGroupId.General,
+    order: 900,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'round bed',
+      'circular bed',
+      'delta bed',
+      'corner diagonal fit',
+    ],
+  },
+  {
+    slug: GuideContentSlug.BrimSkirtSupportBedSpace,
+    group: GuideGroupId.General,
+    order: 901,
+    enabled: true,
+    publishDate: '2026-11-01',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'brim footprint',
+      'skirt space',
+      'support base',
+      'usable area',
+    ],
+  },
   {
     slug: GuideContentSlug.ThreeDPrintScrewHoleSizing,
     group: GuideGroupId.Calibration,
@@ -187,6 +217,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 209,
     enabled: true,
     publishDate: '2026-10-18',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -238,6 +269,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 270,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -263,6 +295,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 273,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
 
@@ -389,6 +422,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 207,
     enabled: true,
     publishDate: '2026-10-15',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -520,7 +554,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-arrange-multiple-parts-on-a-3d-printer-bed',
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-11-01',
     group: GuideGroupId.General,
     order: 11,
     enabled: true,
@@ -569,7 +603,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 6,
     enabled: true,
     publishDate: '2026-09-09',
-    updatedDate: '2026-10-18',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -623,7 +657,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -658,7 +692,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 20,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-04',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -668,7 +702,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-01',
   },
   {
     slug: 'how-to-check-stl-for-errors',
@@ -881,7 +915,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Stl,
     order: 200,
     enabled: true,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-01',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -891,7 +925,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 210,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-17',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {
@@ -900,6 +934,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 211,
     enabled: true,
     publishDate: '2026-10-17',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: true,
   },
   {
@@ -998,7 +1033,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 70,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-01',
     checkEditorialTargets: false,
   },
   {

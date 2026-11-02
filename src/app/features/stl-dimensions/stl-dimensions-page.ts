@@ -1,3 +1,5 @@
+import { PrinterProfileEditor } from '../../shared/printer-profile-editor';
+import { BedShape } from '../../core/printer/printer-profile.service';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
 import {
@@ -43,6 +45,7 @@ type ReportRecord = Record<string, unknown>;
 @Component({
   selector: 'app-stl-dimensions-page',
   imports: [
+    PrinterProfileEditor,
     ToolEvidenceComponent,
     RouterLink,
     StlFilePicker,
@@ -55,15 +58,14 @@ type ReportRecord = Record<string, unknown>;
 export class StlDimensionsPage {
   readonly guideRouteUrl = GuideRouteUrl;
   readonly routeUrl = PublicRouteUrl;
+  readonly bedShapes = BedShape;
   readonly jobFailureMessage = jobFailureMessage;
   readonly jobStatus = JobStatus;
   private readonly jobsService = inject(JobsService);
   private readonly stlJobs = inject(StlJobService);
   private readonly analytics = inject(AnalyticsService);
   private readonly printerProfile = inject(PrinterProfileService);
-  private readonly printerFitControls = new PrinterFitControls(
-    this.printerProfile,
-  );
+  readonly printerFitControls = new PrinterFitControls(this.printerProfile);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private polling?: Subscription;
@@ -147,6 +149,9 @@ export class StlDimensionsPage {
       (this.desiredSize() === null || this.scaleResult() === null),
   );
   readonly buildVolume = computed<ModelDimensions | null>(() => {
+    if (this.printerFitControls.shape() !== BedShape.Rectangular) {
+      return null;
+    }
     const width = this.buildWidth();
     const height = this.buildHeight();
     const depth = this.buildDepth();
@@ -167,7 +172,10 @@ export class StlDimensionsPage {
       : null;
   });
   readonly buildVolumeInvalid = computed(
-    () => this.buildVolumeTouched() && this.buildVolumeFit() === null,
+    () =>
+      this.printerFitControls.shape() === BedShape.Rectangular &&
+      this.buildVolumeTouched() &&
+      this.buildVolumeFit() === null,
   );
   readonly printerOrientations = computed(() => {
     const dimensions = this.rawDimensions();
