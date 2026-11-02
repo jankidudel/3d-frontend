@@ -8,6 +8,8 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  BearingSeatSizing3dPrinting: 'bearing-seat-sizing-3d-printing',
+  PrintInPlaceClearance: 'print-in-place-clearance',
   Round3dPrinterBedFit: 'round-3d-printer-bed-fit',
   BrimSkirtSupportBedSpace: 'brim-skirt-support-bed-space',
   ThreeDPrintScrewHoleSizing: '3d-print-screw-hole-sizing',
@@ -55,6 +57,29 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.BearingSeatSizing3dPrinting,
+    group: GuideGroupId.Calibration,
+    order: 250,
+    enabled: true,
+    publishDate: '2026-11-02',
+    checkEditorialTargets: true,
+    searchTerms: ['bearing seat', 'bearing housing', '608', 'outer ring'],
+  },
+  {
+    slug: GuideContentSlug.PrintInPlaceClearance,
+    group: GuideGroupId.Calibration,
+    order: 251,
+    enabled: true,
+    publishDate: '2026-11-02',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'print in place',
+      'moving gap',
+      'hinge clearance',
+      'captive joint',
+    ],
+  },
   {
     slug: GuideContentSlug.Round3dPrinterBedFit,
     group: GuideGroupId.General,
@@ -174,7 +199,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 243,
     enabled: true,
     publishDate: '2026-10-31',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -234,6 +259,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 15,
     enabled: true,
     publishDate: '2026-10-18',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -341,7 +367,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -350,6 +376,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 11,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -367,7 +394,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 13,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
 
@@ -404,7 +431,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 205,
     enabled: true,
     publishDate: '2026-10-08',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -539,8 +566,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Calibration,
     order: 3,
     enabled: true,
-    updatedDate: '2026-11-01',
     publishDate: '2026-09-15',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -585,7 +612,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 9,
     enabled: true,
     publishDate: '2026-09-12',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -593,8 +620,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 7,
     enabled: true,
-    updatedDate: '2026-11-01',
     publishDate: '2026-09-10',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -611,8 +638,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 4,
     enabled: true,
-    updatedDate: '2026-11-01',
     publishDate: '2026-09-09',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -630,7 +657,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 2,
     enabled: true,
     publishDate: '2026-09-09',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -638,8 +665,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 1,
     enabled: true,
-    updatedDate: '2026-11-01',
     publishDate: '2026-09-08',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -648,7 +675,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 5,
     enabled: true,
     publishDate: '2026-09-08',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -728,8 +755,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 20,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-15',
   },
   {
     slug: 'how-to-tell-if-an-stl-is-watertight',
@@ -943,7 +970,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 14,
     enabled: true,
     publishDate: '2026-10-17',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {

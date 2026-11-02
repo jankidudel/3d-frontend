@@ -1,0 +1,277 @@
+---
+title: 'Print-in-Place Clearance: Gaps and Moving Parts | InspectMesh'
+description: 'Check radial, diametral and axial gaps in print-in-place parts, first layers and support access. Separate static clearance from release and movement.'
+slug: print-in-place-clearance
+eyebrow: Functional fit and calibration
+heading: How to Check Clearance in a Print-in-Place Model
+---
+
+<p>
+  A print-in-place part needs separation wherever neighbouring bodies must
+  remain free. Check the gap's direction, the first layers, the sliced paths and
+  any support-removal route. A visible gap in the model does not establish that
+  the printed joint will release or move through its intended range.
+</p>
+<h2>Identify moving bodies before repair</h2>
+<p>
+  Mark which bodies must remain separate, which surfaces retain them and which
+  are intended to contact during movement. A captive pin can be essential even
+  when much smaller than the surrounding hinge. Several
+  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+    >disconnected shells</a
+  >
+  can be intentional; a component count describes its connectivity method, not
+  whether a mechanism works. Keeping only the largest body or joining everything
+  can destroy the design. Preserve the original before
+  <a href="{{ GuideSlug.RouteStlRepair }}">choosing a repair or retained set</a
+  >.
+</p>
+<p>
+  A pin inserted after printing belongs to
+  <a href="{{ GuideSlug.RouteAlignmentPinsForSplit3dPrints }}"
+    >separate-part alignment</a
+  >. A flexing latch needs
+  <a href="{{ GuideSlug.Route3dPrintSnapFitClearance }}"
+    >deflection and engagement</a
+  >. A housing for separately manufactured hardware belongs to
+  <a href="{{ GuideSlug.RouteBearingSeatSizing3dPrinting }}"
+    >bearing-seat sizing</a
+  >. Here the task is preserving separation in bodies printed in position.
+</p>
+<h2>Name diametral, radial and axial gaps independently</h2>
+<p>
+  <strong
+    >Illustrative geometry, not recommended settings or a tested joint.</strong
+  >
+  Consider an ideal concentric circular pin and bore. Keep nominal model
+  dimensions separate from intended produced dimensions and observed printed
+  readings.
+</p>
+<table>
+  <caption>
+    Hypothetical model dimensions, in millimetres.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Value or arithmetic</th>
+      <th scope="col">Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Pin diameter</th>
+      <td>4.00 mm</td>
+      <td>Selected model dimension</td>
+    </tr>
+    <tr>
+      <th scope="row">Bore diameter</th>
+      <td>4.40 mm</td>
+      <td>Selected model dimension</td>
+    </tr>
+    <tr>
+      <th scope="row">Diametral gap</th>
+      <td>4.40 - 4.00 = 0.40 mm</td>
+      <td>Total difference across diameters</td>
+    </tr>
+    <tr>
+      <th scope="row">Ideal radial gap</th>
+      <td>0.40 / 2 = 0.20 mm</td>
+      <td>Each side only when concentric</td>
+    </tr>
+    <tr>
+      <th scope="row">Selected axial face gap</th>
+      <td>0.25 mm</td>
+      <td>
+        Spacing of two identified opposing end faces, independent of diameter
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  If there are two end gaps, identify each separately; the 0.25 mm value does
+  not silently apply to both. A pin displaced toward one side no longer has 0.20
+  mm on both sides. Retaining shoulders, noncircular geometry and facet flats
+  can govern the tightest region. A single nominal gap cannot describe every
+  surface in the joint.
+</p>
+<h2>Both printed interfaces can consume the gap</h2>
+<p>
+  Now assume hypothetical bore error -0.12 mm and pin error +0.08 mm, with error
+  defined as produced minus modelled size. These are invented inputs, not
+  measurements made by InspectMesh.
+</p>
+<table>
+  <caption>
+    A separate hypothetical produced result.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Arithmetic</th>
+      <th scope="col">Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Produced bore</th>
+      <td>4.40 - 0.12</td>
+      <td>4.28 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Produced pin</th>
+      <td>4.00 + 0.08</td>
+      <td>4.08 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Produced diametral gap</th>
+      <td>4.28 - 4.08</td>
+      <td>0.20 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Ideal concentric radial gap</th>
+      <td>0.20 / 2</td>
+      <td>0.10 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Produced axial gap</th>
+      <td>No axial error supplied</td>
+      <td>Unknown</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The nominal 0.40 mm diametral gap has halved under those assumptions. The
+  radial result cannot infer the produced axial spacing. For dimension planning
+  use <strong>Both parts printed</strong> in the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >tolerance calculator</a
+  >: it uses your target produced pin diameter and separate local errors. Its
+  target is not automatically the 4.00 mm nominal model input above. Keep
+  <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
+    >chosen clearance and calibration</a
+  >
+  distinct; the calculator does not assess release, supports or motion.
+</p>
+<h2>Inspect sections along the whole interface</h2>
+<ol>
+  <li>
+    Open the exact revision in the
+    <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> or
+    <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Confirm STL unit
+    interpretation or resolved 3MF units and placed-item scope.
+  </li>
+  <li>
+    Follow entry, middle, exit, shoulders and end stops with the
+    <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+      >visual clipping controls</a
+    >. Hiding a surface changes the view, not the exported geometry.
+  </li>
+  <li>
+    Compare source dimensions and retain selected mesh references. A
+    <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}">three-point circle</a>
+    cannot locate the tightest passage; arbitrary point distance is not
+    automatically normal face clearance.
+  </li>
+  <li>
+    Check other levels and poses in source CAD. A positive gap at one section is
+    not a global minimum or a swept-motion check.
+  </li>
+</ol>
+<h2>Follow the receiving slicer's layers</h2>
+<p>
+  In your actual printer/material profile, step through the interface from its
+  first layer to the retaining region. Look for distinct intended contours,
+  unintended connecting paths, seam locations, bridge/sag regions and generated
+  support within the movement envelope. These are reader inspection steps, not a
+  newly observed slicer experiment. A path preview describes that generated job;
+  it does not fully predict deposited shape.
+</p>
+<h2>Check the bed-facing gap separately</h2>
+<p>
+  First-layer widening can close a moving interface while the regions above
+  remain separated. Compare the location of binding with source geometry and
+  actual layers before changing every wall. Prusa describes the bounded purpose
+  of
+  <a href="https://help.prusa3d.com/article/elephant-foot-compensation_114487"
+    >elephant foot compensation</a
+  >
+  (checked 2 November 2026). A profile-specific adjustment or source chamfer
+  does not solve every joint problem. Follow the
+  <a href="{{ GuideSlug.Route3dPrintElephantsFootAndPartFit }}"
+    >base-interference investigation</a
+  >
+  and recheck small features and adhesion after a justified change.
+</p>
+<h2>Plan support removal before printing</h2>
+<p>
+  Locate any support generated between pin and housing, under a shoulder or
+  behind an end stop. Identify an opening and a direction through which tools
+  and removed material could leave. A narrow captive gap can trap support or
+  residue that blocks movement. Use the
+  <a href="{{ GuideSlug.RouteSupportsInsideHolesAndChannels }}"
+    >internal support-access workflow</a
+  >; settings alone do not establish access or removability. Consider
+  orientation, deliberate access geometry or printing separately when removal
+  cannot be planned. No support in a preview still does not prove release.
+</p>
+<h2>Distinguish release from useful movement</h2>
+<p>
+  The initial pose, intermediate positions and endpoints can have different
+  interference. Review the motion in source CAD where possible, including
+  shoulders and end stops. InspectMesh provides no swept-volume, friction, wear,
+  force or lifetime analysis. A joint that releases once can still bind later in
+  its travel or have unsuitable play.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">What it establishes</th>
+      <th scope="col">Next check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Separate shells in a mesh report</th>
+      <td>Separation under that connectivity method</td>
+      <td>Confirm intended bodies, gaps and contacts</td>
+    </tr>
+    <tr>
+      <th scope="row">Positive gap at one section</th>
+      <td>Separation at the chosen section and pose</td>
+      <td>Other levels, endpoints and intended motion</td>
+    </tr>
+    <tr>
+      <th scope="row">Slicer draws a connecting path</th>
+      <td>A generated connection under that profile</td>
+      <td>Geometry, local width, support and compensation settings</td>
+    </tr>
+    <tr>
+      <th scope="row">Paths separate in preview</th>
+      <td>Toolpath separation in the inspected view</td>
+      <td>Deposition behaviour and a representative physical trial</td>
+    </tr>
+    <tr>
+      <th scope="row">Joint releases once</th>
+      <td>That sample released under its test conditions</td>
+      <td>Movement, play, wear and application requirements separately</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Record one change and its outcome</h2>
+<p>
+  If you test a representative joint, retain revision, orientation, process and
+  profile, each gap's direction and basis, whether it released, and where in its
+  travel it bound. Keep unsuccessful variants and change one justified input
+  before comparing again. No such physical tests were performed for this guide.
+  Prusa's
+  <a
+    href="https://help.prusa3d.com/article/modeling-with-3d-printing-in-mind_164135"
+    >modelling guidance</a
+  >
+  describes fit as dependent on geometry, orientation, calibration, settings and
+  material (checked 2 November 2026). There is no universal clearance value;
+  intentional separate bodies and a viewer image alone cannot establish
+  movement.
+</p>

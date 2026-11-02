@@ -64,7 +64,18 @@
     <p>
       The target produced hole equals the selected counterpart diameter plus
       diametral clearance. Fixed hardware uses its measured/selected outside
-      diameter; a printed pair uses your target produced pin diameter.
+      diameter; a printed pair uses your target produced pin diameter. A
+      bearing's outer ring is a fixed counterpart for its printed housing; two
+      printed moving bodies use Both parts printed. Plan
+      <a [routerLink]="guideRouteUrl.RouteBearingSeatSizing3dPrinting"
+        >bearing seats</a
+      >
+      or
+      <a [routerLink]="guideRouteUrl.RoutePrintInPlaceClearance"
+        >print-in-place gaps</a
+      >
+      with that basis. Axial gaps, retention and movement remain separate
+      decisions.
     </p>
     <div class="fields">
       @if (matingMode() === matingModes.Fixed) {

@@ -54,6 +54,17 @@ faq:
   4.30 - (-0.15) = 4.45 mm. The chosen gap is separate from local error; these
   are not universal hardware settings.
 </p>
+<p>
+  For a
+  <a href="{{ GuideSlug.RouteBearingSeatSizing3dPrinting }}">bearing seat</a>,
+  the separately manufactured outer ring supplies the fixed OD; correct the
+  printed housing against that selected input. In a
+  <a href="{{ GuideSlug.RoutePrintInPlaceClearance }}">printed pin/bore pair</a
+  >, both errors matter: a 4.40 mm bore with -0.12 mm error and a 4.00 mm pin
+  with +0.08 mm error leave 4.28 - 4.08 = 0.20 mm diametral gap. Those are
+  illustrative assumptions, not print results. Neither local circular correction
+  sets axial allowance; no axial measurement was supplied.
+</p>
 <h2>Work a compensation example</h2>
 <p>
   In an illustrative example, a CAD hole is 10.00 mm and three controlled prints

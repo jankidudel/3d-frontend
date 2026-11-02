@@ -186,7 +186,16 @@
       corner or hole centre. Angle uses side A, vertex B, side C. Circle reports
       a constructed radius and diameter, not roundness or clear passage. Save up
       to 20 named measurements in this tab and download the local JSON record
-      before replacing the file.
+      before replacing the file. For a
+      <a [routerLink]="guideRouteUrl.RouteBearingSeatSizing3dPrinting"
+        >bearing seat</a
+      >, the circle is a construction through selected points, not a
+      fitted-hardware verdict. A
+      <a [routerLink]="guideRouteUrl.RoutePrintInPlaceClearance"
+        >moving interface's clearance</a
+      >
+      also depends on the opposing surface and pose. Point distance does not
+      find the minimum gap.
     </p>
     <p>
       Follow the

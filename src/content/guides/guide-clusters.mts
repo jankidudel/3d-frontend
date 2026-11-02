@@ -249,6 +249,8 @@ export const guideClusters: readonly GuideCluster[] = [
       GuideContentSlug.ThreeDPrintScrewHoleSizing,
       GuideContentSlug.CounterboreVsCountersink3dPrinting,
       GuideContentSlug.CaptiveNutPockets3dPrinting,
+      GuideContentSlug.BearingSeatSizing3dPrinting,
+      GuideContentSlug.PrintInPlaceClearance,
 
       '3d-print-snap-fit-clearance',
 

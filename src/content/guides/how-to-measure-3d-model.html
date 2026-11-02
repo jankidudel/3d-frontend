@@ -154,6 +154,55 @@ heading: How to Measure a 3D Model Before 3D Printing
   the model. Selected surface spans do not verify analytic bores, seating
   contact or a collision-free insertion path.
 </p>
+<table>
+  <caption>
+    Match an assembly interface to its measurement basis.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Question</th>
+      <th scope="col">Supported observation or next method</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Radial interface</th>
+      <td>
+        Use source diameters and a named
+        <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+          >mesh circle construction</a
+        >; the opposing surface and pose still determine clearance.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Axial face spacing</th>
+      <td>
+        Record chosen surface points and their direction. Euclidean point
+        distance is not automatically normal face clearance; source CAD defines
+        the datum.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Local housing wall</th>
+      <td>
+        Inspect material boundaries and
+        <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+          >sampled thickness coverage</a
+        >; thickness is separate from the seat gap.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Motion path</th>
+      <td>
+        Review intermediate poses and endpoints in source CAD. The viewer
+        performs no swept-motion analysis; follow the
+        <a href="{{ GuideSlug.RoutePrintInPlaceClearance }}"
+          >moving-joint workflow</a
+        >.
+      </td>
+    </tr>
+  </tbody>
+</table>
 <h2>Rotation changes an envelope without stretching a part</h2>
 <p>
   The 40 × 20 × 10 mm control has a 40 mm long edge. Rotating it 45° around Z

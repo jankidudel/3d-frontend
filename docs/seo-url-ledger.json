@@ -897,12 +897,12 @@
       "family": "F09",
       "owner": "InspectMesh",
       "decision": "retain",
-      "brief": "Own requested mm\u00b3/s arithmetic; distinguish nominal demand from calibrated machine/material capacity.",
+      "brief": "Own requested mm³/s arithmetic; distinguish nominal demand from calibrated machine/material capacity.",
       "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Plan your next job; Your planning result; Method and interpretation. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
-        "remainingEvidence": "Own requested mm\u00b3/s arithmetic; distinguish nominal demand from calibrated machine/material capacity."
+        "remainingEvidence": "Own requested mm³/s arithmetic; distinguish nominal demand from calibrated machine/material capacity."
       },
       "google": {
         "status": null,
@@ -7460,7 +7460,7 @@
       "url": "https://www.inspectmesh.com/tools/3d-printing-quote-generator",
       "sitemapMember": true,
       "local": {
-        "title": "3D Printing Quote Generator \u2014 Branded Quotations | InspectMesh",
+        "title": "3D Printing Quote Generator — Branded Quotations | InspectMesh",
         "description": "Turn your 3D printing price into a branded customer quotation. Add job specifications, a model reference and terms, then preview and download a PDF.",
         "headings": ["3D Printing Quote Generator"],
         "canonical": "https://www.inspectmesh.com/tools/3d-printing-quote-generator",
@@ -11478,7 +11478,7 @@
       "sitemapMember": true,
       "local": {
         "title": "3MF Quality Checker - Validate 3MF Files for 3D Printing | InspectMesh",
-        "description": "Check 3MF files for mesh problems before 3D printing. Inspect dimensions, triangle count, topology issues and the file\u2019s declared unit online.",
+        "description": "Check 3MF files for mesh problems before 3D printing. Inspect dimensions, triangle count, topology issues and the file’s declared unit online.",
         "headings": ["3MF Quality Checker"],
         "canonical": "https://www.inspectmesh.com/tools/3mf-quality-checker",
         "canonicalCount": 1,
@@ -14886,7 +14886,7 @@
       "sitemapMember": true,
       "local": {
         "title": "Will a 3D Model Fit Your Printer? | InspectMesh",
-        "description": "Compare X/Y/Z spans, a tested right-angle rotation and explicit allowances with the printer\u2019s usable space before checking final placement.",
+        "description": "Compare X/Y/Z spans, a tested right-angle rotation and explicit allowances with the printer’s usable space before checking final placement.",
         "headings": ["How to Check if a 3D Model Fits Your Printer"],
         "canonical": "https://www.inspectmesh.com/guides/how-to-check-if-a-3d-model-fits-your-printer",
         "canonicalCount": 1,
@@ -15841,7 +15841,7 @@
       "sitemapMember": true,
       "local": {
         "title": "How to Rotate a 3D Model to Fit Your Printer | InspectMesh",
-        "description": "Learn how changing a model\u2019s 90-degree orientation can help it fit a 3D printer, how to compare dimensions, and when scaling is still necessary.",
+        "description": "Learn how changing a model’s 90-degree orientation can help it fit a 3D printer, how to compare dimensions, and when scaling is still necessary.",
         "headings": ["How to Rotate a 3D Model to Fit Your Printer"],
         "canonical": "https://www.inspectmesh.com/guides/how-to-rotate-a-3d-model-to-fit-your-printer",
         "canonicalCount": 1,
@@ -21060,7 +21060,7 @@
       "local": {
         "title": "STL Will Not Slice: Diagnose the First Failing Step | InspectMesh",
         "description": "Triage a failed STL import or layer preview by symptom, then test geometry, placement or slicer settings without confusing the results.",
-        "headings": ["STL File Won\u2019t Slice? Find the First Failing Step"],
+        "headings": ["STL File Won’t Slice? Find the First Failing Step"],
         "canonical": "https://www.inspectmesh.com/guides/stl-file-wont-slice",
         "canonicalCount": 1,
         "robots": ["index, follow"],
@@ -21092,7 +21092,7 @@
         "observedAt": "2026-11-01T00:27:41.610Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
-      "primaryTask": "STL File Won\u2019t Slice? Find the First Failing Step",
+      "primaryTask": "STL File Won’t Slice? Find the First Failing Step",
       "baseline": {
         "mainContentSha256": "535bd24e60ccbc1828bf86207872097285dd5f93923cb76ac65566fc71c0db28",
         "observedAt": "2026-10-24T21:58:51.323Z",
@@ -21156,7 +21156,7 @@
         "title": "STL Will Not Slice: Diagnose the First Failing Step | InspectMesh",
         "canonical": ["https://www.inspectmesh.com/stl-file-wont-slice"],
         "robots": ["index, follow"],
-        "headings": ["STL File Won\u2019t Slice? Find the First Failing Step"],
+        "headings": ["STL File Won’t Slice? Find the First Failing Step"],
         "mainTextCharacters": 4172,
         "mainLinkCount": 17,
         "scope": "Settled browser DOM after the page H1 was available. Not initial HTTP, tool execution, visual/mobile acceptance or Google rendering.",
@@ -23165,7 +23165,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Provide a practical plane/face placement sequence and distinguish rotation from dropping to bed.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes First decide what \u201cflat\u201d should mean; Use a known tilted control; Compare the base face with the actual decision. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes First decide what “flat” should mean; Use a known tilted control; Compare the base face with the actual decision. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -23215,7 +23215,7 @@
         "mainTextCharacters": 3895,
         "mainContentSha256": "a8308ee04e6906df2fb7c6a629fe88be037fea2df216ffa5c39679ab6a400d8f",
         "sectionHeadings": [
-          "First decide what \u201cflat\u201d should mean",
+          "First decide what “flat” should mean",
           "Use a known tilted control",
           "Compare the base face with the actual decision",
           "Verify after placing on the face",
@@ -24786,9 +24786,9 @@
       "url": "https://www.inspectmesh.com/guides/why-wont-my-3mf-file-slice",
       "sitemapMember": true,
       "local": {
-        "title": "Why Won\u2019t My 3MF File Slice? | InspectMesh",
+        "title": "Why Won’t My 3MF File Slice? | InspectMesh",
         "description": "Diagnose common 3MF slicing failures, from package and extension support to topology, transforms, scale and slicer compatibility.",
-        "headings": ["Why Won\u2019t My 3MF File Slice?"],
+        "headings": ["Why Won’t My 3MF File Slice?"],
         "canonical": "https://www.inspectmesh.com/guides/why-wont-my-3mf-file-slice",
         "canonicalCount": 1,
         "robots": ["index, follow"],
@@ -24821,7 +24821,7 @@
         "observedAt": "2026-11-01T00:27:41.611Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
-      "primaryTask": "Why Won\u2019t My 3MF File Slice?",
+      "primaryTask": "Why Won’t My 3MF File Slice?",
       "baseline": {
         "mainContentSha256": "fb78554c44075de54de1d7948a9144c139193ead3bca5a0ee282415ea1b58447",
         "observedAt": "2026-10-24T21:58:51.324Z",
@@ -28989,6 +28989,70 @@
         "nextReview": null,
         "contentChangedAt": "2026-11-01"
       }
+    },
+    {
+      "path": "/guides/bearing-seat-sizing-3d-printing",
+      "url": "https://www.inspectmesh.com/guides/bearing-seat-sizing-3d-printing",
+      "priority": "P2",
+      "family": "functional-fit",
+      "owner": "Plan and inspect a printed housing for an identified manufactured rolling bearing.",
+      "primaryTask": "Plan and inspect a printed housing for an identified manufactured rolling bearing.",
+      "decision": "add",
+      "brief": "Exact nominal SKF 608-2RSH dimensions, separate radial/axial/retention decisions and original local-correction arithmetic.",
+      "decisionReason": "Distinct specialist workflow; generic definitions and equations remain with tolerance and measurement owners. Exact nominal SKF 608-2RSH dimensions, separate radial/axial/retention decisions and original local-correction arithmetic.",
+      "editorialReview": {
+        "scope": "Original explanatory arithmetic and checked primary dimensional/process references. No physical test or fresh slicer observation.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production publication and Google indexing remain separate; physical outcomes require representative tests."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-02"
+      }
+    },
+    {
+      "path": "/guides/print-in-place-clearance",
+      "url": "https://www.inspectmesh.com/guides/print-in-place-clearance",
+      "priority": "P2",
+      "family": "functional-fit",
+      "owner": "Preserve intentional gaps in an assembly printed in position and distinguish separation, release and movement.",
+      "primaryTask": "Preserve intentional gaps in an assembly printed in position and distinguish separation, release and movement.",
+      "decision": "add",
+      "brief": "Original printed-pair gap arithmetic, independently unknown axial spacing, support-access and pose-dependent inspection decisions.",
+      "decisionReason": "Distinct specialist workflow; generic definitions and equations remain with tolerance and measurement owners. Original printed-pair gap arithmetic, independently unknown axial spacing, support-access and pose-dependent inspection decisions.",
+      "editorialReview": {
+        "scope": "Original explanatory arithmetic and checked primary dimensional/process references. No physical test or fresh slicer observation.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production publication and Google indexing remain separate; physical outcomes require representative tests."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-02"
+      }
     }
   ],
   "additionalUrls": [
@@ -29136,238 +29200,238 @@
       "path": "AGENTS.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "d07009e580db2429c7d28aa5adaed2707ae268852127ecbd96cecd285b25aad4"
     },
     {
       "path": "PRODUCT_STRATEGY.MD",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "6393d87a6d586f034bb87f81c9f1d0ae895a78b33b312fef172030004437cdee"
     },
     {
       "path": "PROJECT_STATUS.MD",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "0129a12dcf99384f68ec89dc61bef08100612198565bf79dba43462deb8e1eca"
     },
     {
       "path": "README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "e33278679baedc4fa8e337c3b473dd87af9a203b6bf62b7e037da74c27d05029"
     },
     {
       "path": "docs/SEO_STRATEGY.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "c9d0a4acb4001e6ef98d63d6ce619d072f4519090f1fc162c43f087e95f96e0e"
     },
     {
       "path": "test-fixtures/stl/floating-parts/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "6e3063f8c1f2a6ede9a5146b20917a31fcadd5bf2addbf614851b3a2318f7127"
     },
     {
       "path": "3d-frontend/.github/copilot-instructions.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "ca024e19966d1f8d697750cfd5ad18e40f0c0656d42c7ed251aaa51464e39ead"
     },
     {
       "path": "3d-frontend/AGENTS.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "bf9a7e762466d833685b370ef73a7717fd3d463b494fa42c3c06400562e77716"
     },
     {
       "path": "3d-frontend/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "a9514934931f29a4605e3b3ee8b07c16be4098f89f94069efd03f474499767a1"
     },
     {
       "path": "3d-frontend/docs/FEATURE_MEASUREMENTS.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "99ebed03d2d89621ee2b9b582fc46cf78c2ceec5f4e18be8fb04c8cc280db8fd"
     },
     {
       "path": "3d-frontend/docs/SEO_OPERATIONS.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "b2e80d4bff73a8e2ceb0d4b1f7fbf32a9ff6b85d29fb1dd935a956ca92ce1716"
     },
     {
       "path": "3d-frontend/docs/english-market-batch/EVIDENCE.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "51ef2d85c2ee18c928d70f9f17723720b351e3c000dc8e07b469225bf2423125"
     },
     {
       "path": "3d-frontend/docs/slicer-detail-evidence/EVIDENCE.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "962c8fa6838e0d09a1372a2eaeb9a2031a313fa3e6c656b97176df27b2e1775a"
     },
     {
       "path": "3d-api/.github/copilot-instructions.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "dfa912ae1098a93d4f9e14d15277e55417359255c311d1d01c2b65def52ae6d3"
     },
     {
       "path": "3d-api/AGENTS.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "f8590bc61988f5e8d7abd03456d56009d577dfe693652331e5930374c412f593"
     },
     {
       "path": "3d-api/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "deb5e388efda545336d6a33b093202d99950a98644b37be9fa02d1f3d2e1f753"
     },
     {
       "path": "3d-infra/.github/copilot-instructions.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "97f26f405477b4f9fed8671376ac85a71466b34c28d869d1255f733c836e15b4"
     },
     {
       "path": "3d-infra/AGENTS.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "6e9a081c765f6607b06fafeb9cac3b5f631f88308101e35057cb36473fb2915f"
     },
     {
       "path": "3d-infra/PRODUCTION_LAUNCH.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "148e73dfcdfb88453c381960c21de90c18141c3282fb23d04da985f32e46c60f"
     },
     {
       "path": "3d-infra/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "4cade2cffeec15b35fc4689d50634cf1dd01489b8269d7c59ada5ab2ec774f67"
     },
     {
       "path": "3d-processor/.github/copilot-instructions.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "98057b71f2147c94a778931c58d1c69ed8bbfcf4f59df35a453730eb8adbca47"
     },
     {
       "path": "3d-processor/.github/instructions/.tests.instructions.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "8257932c52df7ae56bfae0d96874850d74484dfdf2d5d3c7dd0ea4c29d063edc"
     },
     {
       "path": "3d-processor/AGENTS.md",
       "classification": "active instruction",
       "reason": "Active repository or component development instructions.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "7e39e5195e583fad2fb0b5cfef8e94352dc66a2c63bd610de70abbab6d613eae"
     },
     {
       "path": "3d-processor/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "e1601b03eaee163fa0927cd764eaf1ba87d7d2be3ab3faba5c317c7228c6d67f"
     },
     {
       "path": "3d-processor/TESTING.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "acda288b91a543cc7934b82c620c1dbd174a7ce7c0c9faf4a35648250269a66f"
     },
     {
       "path": "3d-processor/TODO.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "9c7260b3b5df145eb2962db31456c05f56583fa054d49ae0354d6ccbe67743c1"
     },
     {
       "path": "3d-processor/tests/TestData/3mf/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "3dc9e0ae00e666dec15e47238a964dbec67940fc3ced7f77d9fa418e09fd74c8"
     },
     {
       "path": "3d-processor/tests/TestData/3mf/corpus/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "2737818a99ab1d22778334895e60251ae5bbb6f8ec3d6db564f3dabdacc58c3b"
     },
     {
       "path": "3d-processor/tests/TestData/3mf/repair/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "b58e1f03c688b5d0dbf378126d555c8030e4760102171aeacfc11a9c98d02b6c"
     },
     {
       "path": "3d-processor/tests/TestData/CORPUS-FIXTURE-TEMPLATE.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "eaac94255c28935c1421ea3c93a59bbe699a98e78b8615fdacd72b710f9c8ee9"
     },
     {
       "path": "3d-processor/tests/TestData/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "7b88ccc82d995fe0295f07cd1dcebecf8ab36523d6e41719f62340fd76615ca8"
     },
     {
       "path": "3d-processor/tests/TestData/stl/corpus/README.md",
       "classification": "permanent documentation",
       "reason": "Durable project strategy, operations, setup, reproducibility, fixture provenance or historical project context; inspected and retained.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "af749a4b54b305551669f75aaf4a577b8704af2462c0e1ebee042f78b0ed373c"
     },
     {
       "path": "3d-processor/trash.md",
       "classification": "uncertain",
       "reason": "Structural tree notes; no evidence of a completed temporary batch. Inspected and preserved for owner review.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "3ef863522422c7462a2fdc6cec734b58d706e2e1a05fc6beaea0a31bbd09bf51"
     },
     {
       "path": "3d-processor/wip.md",
       "classification": "uncertain",
       "reason": "Structural tree notes; no evidence of a completed temporary batch. Inspected and preserved for owner review.",
-      "inspectedDate": "2026-11-01",
+      "inspectedDate": "2026-11-02",
       "sha256": "974db5d195f771cd5158f1d088a6171823c42a8c9921c6d43c35235ae0b30c05"
     }
   ],

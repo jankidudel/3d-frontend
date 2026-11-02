@@ -1,0 +1,288 @@
+---
+title: 'Bearing Seat Sizing for 3D Printed Parts | InspectMesh'
+description: 'Check bearing dimensions, housing clearance, seat depth and retention. Work through a 608 example and separate model measurements from a tested physical fit.'
+slug: bearing-seat-sizing-3d-printing
+eyebrow: Functional fit and calibration
+heading: How to Size a Bearing Seat in a 3D Printed Part
+---
+
+<p>
+  Start with the exact bearing's outside diameter and width, then decide how the
+  housing will locate and retain its outer ring. The bore through the bearing
+  belongs to the shaft interface: an 8 mm bearing bore does not call for an 8 mm
+  housing hole. Choose a trial fit for your process and verify a printed seat
+  before making the complete part.
+</p>
+<h2>Identify three separate interfaces</h2>
+<table>
+  <caption>
+    Identify the contact before choosing a dimension.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Interface</th>
+      <th scope="col">Dimension or decision</th>
+      <th scope="col">Check separately</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Outer ring and printed housing</th>
+      <td>Bearing outside diameter and housing-seat diameter</td>
+      <td>How this ring is located and retained in the application</td>
+    </tr>
+    <tr>
+      <th scope="row">Inner ring and shaft</th>
+      <td>Bearing bore and shaft diameter</td>
+      <td>Shaft location and its own retention arrangement</td>
+    </tr>
+    <tr>
+      <th scope="row">Axial shoulder or retainer</th>
+      <td>Seat depth, ring-contact region and access</td>
+      <td>
+        Which ring it contacts, without rubbing a seal or casually clamping both
+        rings together
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The
+  <a
+    href="https://www.emarketplace.in.skf.com/deep-groove-ball-bearing/608-2rsh"
+    >SKF 608-2RSH technical specification</a
+  >
+  gives these nominal dimensions (checked 2 November 2026):
+</p>
+<table>
+  <caption>
+    Manufacturer nominal dimensions for this exact designation, not measured
+    sample values.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Bearing dimension</th>
+      <th scope="col">Nominal value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Bore</th>
+      <td>8 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Outside diameter</th>
+      <td>22 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Width</th>
+      <td>7 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  This regional manufacturer listing is a dimensional reference, not a stock,
+  shipping or printed-fit recommendation. Identify your actual bearing before
+  using these values. Its chamfer and abutment requirements need the current
+  dimensional drawing; 8/22/7 alone cannot determine shoulder diameters.
+</p>
+<h2>Decide which ring should be held</h2>
+<p>
+  A retained manufactured bearing ring has a different purpose from a
+  <a href="{{ GuideSlug.RoutePrintInPlaceClearance }}"
+    >freely moving printed joint</a
+  >. The manufacturer-hosted
+  <a
+    href="https://cdn.skfmediahub.skf.com/api/public/0941f795342272f4/pdf_preview_medium/Engineering_info_pdf_preview_medium.pdf"
+    >Shaft and Housing Fits reference</a
+  >
+  distinguishes ring rotation relative to radial load and identifies material
+  assumptions for its shaft and housing tables (printed pages 32-34, checked 2
+  November 2026). Fit depends on the load relationship and the housing/shaft
+  material. This does not supply an FDM offset. Do not transfer metal-housing
+  tolerance tables to a printed seat or assume that every rotating assembly
+  needs the same outer-ring fit.
+</p>
+<h2>Work a nominal seat example</h2>
+<p>
+  <strong>Illustrative arithmetic, not a tested bearing fit.</strong> Suppose
+  the user selects a produced seat target of 22.20 mm around the nominal 22.00
+  mm outer ring, inside a concentric circular 30.00 mm housing.
+</p>
+<table>
+  <caption>
+    Selected geometry and nominal gaps; all lengths are millimetres.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Calculation or input</th>
+      <th scope="col">Basis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Bearing OD</th>
+      <td>22.00 mm</td>
+      <td>Nominal SKF reference, not a measured sample</td>
+    </tr>
+    <tr>
+      <th scope="row">Trial produced seat</th>
+      <td>22.20 mm</td>
+      <td>Hypothetical user-selected target</td>
+    </tr>
+    <tr>
+      <th scope="row">Diametral gap</th>
+      <td>22.20 - 22.00 = 0.20 mm</td>
+      <td>Difference across the diameters</td>
+    </tr>
+    <tr>
+      <th scope="row">Ideal radial gap</th>
+      <td>0.20 / 2 = 0.10 mm</td>
+      <td>Each side only when concentric</td>
+    </tr>
+    <tr>
+      <th scope="row">Housing outside diameter</th>
+      <td>30.00 mm</td>
+      <td>Hypothetical circular geometry</td>
+    </tr>
+    <tr>
+      <th scope="row">Radial wall at target seat</th>
+      <td>(30.00 - 22.20) / 2 = 3.90 mm</td>
+      <td>Concentric annulus only</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The 3.90 mm wall does not establish stiffness or holding ability. An offset
+  bore, opening or screw slot can leave less material locally. A loose ring may
+  need a separate retention strategy; this example does not select one. Use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >tolerance calculator</a
+  >'s <strong>Fixed external pin / hardware</strong> mode and its
+  <strong>Fixed counterpart outside diameter (mm)</strong> field for the
+  outer-ring OD. Desired clearance is diametral. The
+  <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
+    >general fit guide</a
+  >
+  explains the shared equations. This calculation does not select a bearing or
+  verify retention.
+</p>
+<h2>Keep local correction separate from chosen clearance</h2>
+<p>
+  In a separate hypothetical calibration, a 22.20 mm CAD test seat produces
+  readings of 22.02, 22.04 and 22.06 mm. Mean = 22.04 mm; recorded range = 0.04
+  mm; mean error = 22.04 - 22.20 = -0.16 mm. These invented readings demonstrate
+  arithmetic; InspectMesh did not measure a printed seat.
+</p>
+<p>
+  Under the same local-error assumption, targeting a produced 22.20 mm seat
+  gives next CAD diameter = 22.20 - (-0.16) = <strong>22.36 mm</strong>. With an
+  unchanged concentric 30.00 mm outside, CAD radial wall becomes (30.00 - 22.36)
+  / 2 = <strong>3.82 mm</strong>. Recheck the actual edited housing. The
+  recorded range is neither instrument uncertainty nor an acceptance interval.
+</p>
+<p>
+  Keep raw readings and conditions in the existing worksheet. Validate a new
+  representative seat before transferring the correction to the full part. It
+  does not automatically apply to another orientation, material, printer or
+  axial depth. If a measured hardware OD replaces nominal 22.00 mm, recalculate
+  against that input. Follow the
+  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+    >local compensation workflow</a
+  >
+  for the measurement procedure.
+</p>
+<h2>Check depth, shoulders and removal access</h2>
+<p>
+  Seat depth is axial geometry, separate from radial clearance. A hypothetical
+  straight recess 7.30 mm deep, measured from its entry reference plane to its
+  shoulder, leaves 7.30 - 7.00 = <strong>0.30 mm</strong> of simple depth
+  allowance around the reference ring width. This is not a recommended end
+  float: it says nothing about retainer position, shoulder compatibility, seals,
+  preload or the shaft assembly. It is independent of the 0.20 mm diametral gap
+  above.
+</p>
+<p>
+  Identify insertion direction, the intended ring-contact area and a practical
+  removal route before closing the housing. Compare source shoulder and retainer
+  geometry with the exact bearing drawing. A convenient entry chamfer cannot
+  establish correct seating or compensate for an incompatible shoulder.
+</p>
+<h2>Inspect the exported seat at several levels</h2>
+<ol>
+  <li>
+    Reopen the exact STL or 3MF revision and confirm its unit and placed scope.
+  </li>
+  <li>
+    Inspect entrance, middle, shoulder and exit where present using
+    <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+      >visual cross-sections</a
+    >. A clip hides surfaces; it does not extract a measured contour.
+  </li>
+  <li>
+    Record selected references with the
+    <a href="{{ GuideSlug.RouteMeasureHoleDiameterStl }}"
+      >hole-diameter construction workflow</a
+    >. Three points define a circle, not the minimum passage; facet flats or
+    local entrance geometry may be more restrictive. A smooth shader is not an
+    analytic bore.
+  </li>
+  <li>
+    Inspect
+    <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}">local walls</a>,
+    slots and nearby openings after every bore edit.
+  </li>
+  <li>
+    Check the actual receiving-slicer paths and supports. Changing
+    <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+      >seat orientation</a
+    >
+    needs new local checks rather than an unqualified reused offset.
+  </li>
+</ol>
+<h2>Choose the next action from the observation</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Useful next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Hardware dimensions unknown</th>
+      <td>Identify the exact bearing and drawing.</td>
+    </tr>
+    <tr>
+      <th scope="row">Model seat uncertain</th>
+      <td>Compare source dimensions, reopened mesh and several sections.</td>
+    </tr>
+    <tr>
+      <th scope="row">Physical seat too tight or cracks</th>
+      <td>
+        Locate entrance/first-layer interference, local size error and remaining
+        material before choosing a correction.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Ring rocks or moves where it should be retained</th>
+      <td>
+        Revisit retention, local contact and the application requirements.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Unexplained rubbing or difficult removal</th>
+      <td>
+        Inspect axial contact, alignment and access separately from bore size.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A local test seat can investigate assembly under recorded conditions. Retain
+  its revision and distinguish cracking, rocking, ring movement and rubbing.
+  None of these questions is resolved by global scaling alone. Mesh checks
+  supply no insertion-force, speed, load, lifetime or physical acceptance
+  rating.
+</p>
