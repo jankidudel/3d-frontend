@@ -102,7 +102,7 @@ const PLANNERS = {
     method:
       'The nearest positive whole line count is round(intended wall thickness / chosen line width); nominal thickness is line count × line width. This is equal-width line arithmetic. The 80% nozzle-diameter layer check follows Prusa starting guidance.',
     caveat:
-      'This is equal-width line arithmetic. Your slicer may use variable widths, overlap and gap filling, so inspect the generated paths before choosing a wall dimension. For 1.3 mm requested and 0.45 mm chosen width, the nearest whole count is three: 1.35 mm nominal total.',
+      'Your slicer may use variable widths, overlap and gap filling, so inspect the generated paths before choosing a wall dimension. For 1.3 mm requested and 0.45 mm chosen width, the nearest whole count is three: 1.35 mm nominal total.',
     links: [
       PublicRouteUrl.StlWallThicknessChecker,
       PublicRouteUrl.VolumetricFlowCalculator,
@@ -273,6 +273,73 @@ export class PlanningPage implements OnDestroy {
           ? this.flow() !== null
           : this.finish() !== null,
   );
+  readonly fieldIssues = computed(() => {
+    const issues: Partial<Record<Field, string>> = {};
+    const values = this.values();
+    for (const field of this.config.fields) {
+      const value = values[field.key];
+      if (!Number.isFinite(value) || (field.min > 0 ? value <= 0 : value < 0)) {
+        issues[field.key] =
+          field.key === Field.Limit
+            ? 'Enter a positive tested throughput, or 0 to keep capacity unknown. A blank is not a capacity check.'
+            : field.min > 0
+              ? 'Enter a finite value greater than zero.'
+              : 'Enter a finite value of zero or more.';
+      }
+    }
+    if (
+      this.kind === PlannerKind.Spool &&
+      values[Field.Tare] > values[Field.Gross]
+    ) {
+      issues[Field.Tare] =
+        'Empty spool tare cannot exceed spool plus filament weight. Check both weights for this spool.';
+    }
+    if (this.kind === PlannerKind.Finish) {
+      if (values[Field.Minutes] >= 60) {
+        issues[Field.Minutes] =
+          'Enter minutes from 0 up to, but not including, 60. Put additional hours in the hours field.';
+      }
+      if (
+        values[Field.Hours] === 0 &&
+        values[Field.Minutes] === 0 &&
+        values[Field.Allowance] === 0
+      ) {
+        issues[Field.Hours] =
+          'Enter a positive elapsed duration using sliced hours/minutes or additional time.';
+      }
+    }
+    return issues;
+  });
+  readonly startIssue = computed(() => {
+    if (this.kind !== PlannerKind.Finish) {
+      return '';
+    }
+    if (!this.start()) {
+      return 'Enter a start date and time in the selected timezone.';
+    }
+    if (zonedStart(this.start(), this.zone(), this.occurrence()) === null) {
+      return 'Choose a valid date, timezone and local clock time. A skipped daylight-saving time does not exist; choose a time outside the gap.';
+    }
+    return '';
+  });
+  readonly validationSummary = computed(() => {
+    if (this.valid()) {
+      return 'Results update as you edit.';
+    }
+    switch (this.kind) {
+      case PlannerKind.Spool:
+        return 'Check the marked spool weights, reserve and complete compatible-job consumption, diameter or density.';
+      case PlannerKind.Wall:
+        return 'Check the marked nozzle, line width, wall thickness or layer height. All dimensions must be positive.';
+      case PlannerKind.Flow:
+        return 'Check the marked width, height, speed or optional tested throughput. Speed is in mm/s; 0 throughput means capacity unknown.';
+      case PlannerKind.Finish:
+        return (
+          this.startIssue() ||
+          'Check the marked duration, additional time or correction factor. Use a positive duration within the supported calendar range.'
+        );
+    }
+  });
   constructor() {
     inject(SeoService).apply({
       title: `${this.config.title} | InspectMesh`,

@@ -138,7 +138,12 @@
       comparing spool labels, planning stock and translating slicer estimates.
       Actual spool length can vary with diameter tolerance, density, additives
       and manufacturer specification. Use the value printed on your spool when
-      it differs.
+      it differs. Enter an independently established filament length, not the
+      last E coordinate:
+      <a [routerLink]="guides.RouteGcodeAbsoluteVsRelativeExtrusion"
+        >E mode, resets and retraction recovery</a
+      >
+      prevent that coordinate from establishing consumed length.
     </p>
   </section>
 

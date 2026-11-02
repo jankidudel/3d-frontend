@@ -39,6 +39,18 @@ faq:
   control after any change and keep the smallest correction that improves the
   intended measurement without degrading dimensions or surfaces.
 </p>
+<h2>Interpreting a command is not calibrating delivery</h2>
+<p>
+  <a href="{{ GuideSlug.RouteGcodeAbsoluteVsRelativeExtrusion }}"
+    >E coordinates and resets</a
+  >
+  explain requested extrusion state;
+  <a href="{{ GuideSlug.RouteGcodeFeedRateMmPerMinute }}">F values</a> explain
+  requested movement rate. Neither is evidence of a measured feed error. Feed
+  calibration compares actual motion with commanded motion; flow calibration
+  reviews material/profile delivery; throughput capacity needs applicable
+  testing. Do not change firmware because an isolated E value looks surprising.
+</p>
 <h2>A calibration order that avoids false fixes</h2>
 <ol>
   <li>

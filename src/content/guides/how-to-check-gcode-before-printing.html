@@ -207,6 +207,16 @@ faq:
   guidance. Do not edit a G-code file merely because a generic checker displays
   a value you did not expect.
 </p>
+<p>
+  Surprising solid/dashed classification needs the preceding
+  <a href="{{ GuideSlug.RouteGcodeAbsoluteVsRelativeExtrusion }}"
+    >M82/M83 and G92 state</a
+  >. A surprising F1800 needs
+  <a href="{{ GuideSlug.RouteGcodeFeedRateMmPerMinute }}"
+    >feed-rate units and modal interpretation</a
+  >. Neither the last E coordinate nor an F value supplies complete consumption
+  or elapsed duration.
+</p>
 <h2>Read coverage before relying on a path picture</h2>
 <p>
   Review linear, extrusion, duration and material coverage separately.

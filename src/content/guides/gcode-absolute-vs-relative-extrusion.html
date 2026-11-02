@@ -1,0 +1,250 @@
+---
+title: 'Absolute vs Relative Extrusion: M82, M83 and G92 | InspectMesh'
+description: 'Read M82, M83 and G92 E0 with worked extrusion-state tables. Understand repeated E values, resets and why positive E movement is not a complete material total.'
+slug: gcode-absolute-vs-relative-extrusion
+eyebrow: G-code interpretation
+heading: Absolute vs relative extrusion in G-code
+---
+
+<p>
+  With absolute extrusion, compare a command's E coordinate with the previous
+  logical E position. With relative extrusion, each E word requests a change.
+  G92 E0 resets the logical reference without requesting an ordinary extrusion
+  move. Repeated E1 fields can therefore describe different paths. Establish the
+  firmware, configuration and preceding mode commands before interpreting them.
+</p>
+<h2>Separate XYZ positioning from extrusion mode</h2>
+<p>
+  G90/G91 address positioning; M82/M83 address extrusion mode in the documented
+  contexts. XYZ-absolute movement can coexist with relative E, but command order
+  matters. Marlin documents
+  <a href="https://marlinfw.org/docs/gcode/M082.html">M82</a> as selecting
+  absolute E and <a href="https://marlinfw.org/docs/gcode/M083.html">M83</a>
+  as selecting relative E; its notes say G90/G91 clear that override. This is
+  named Marlin behaviour, not a promise about all firmware.
+</p>
+<p>
+  The worked tables below use millimetres and non-volumetric E, with initial
+  logical XYZ/E zero and the InspectMesh parser's disclosed state model. They do
+  not describe volumetric E, tool mappings or macro execution. Klipper's
+  <a href="https://www.klipper3d.org/G-Codes.html">command reference</a> and
+  <a href="https://www.klipper3d.org/Command_Templates.html"
+    >macro state guidance</a
+  >
+  provide separate configuration-specific context. Do not transfer mode-order
+  assumptions between firmware families.
+</p>
+<h2 id="guide-absolute-state">Read the retained absolute-E control</h2>
+<p>
+  This is the existing absolute-extrusion analytical control, including its
+  notice. It is incomplete and must never be executed on a printer. Line
+  references below count from the notice as source line 1.
+</p>
+<pre><code>; ANALYTICAL ONLY - hand-authored InspectMesh control. NEVER EXECUTE ON A PRINTER.
+G21
+G90
+M82
+G92 E0
+G1 X10 Y10 Z0.2 E1
+G1 X20 Y10 E1
+G92 E0
+G1 X30 Y10 E1</code></pre>
+<table>
+  <caption>
+    Absolute E under the stated millimetre, non-volumetric assumptions
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Original line</th>
+      <th scope="col">Logical E before to after</th>
+      <th scope="col">E change</th>
+      <th scope="col">Parser interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>6: first XYZ line, E1</td>
+      <td>0 to 1</td>
+      <td>+1 mm</td>
+      <td>Positive-E XYZ path</td>
+    </tr>
+    <tr>
+      <td>7: second XYZ line, E1</td>
+      <td>1 to 1</td>
+      <td>0 mm</td>
+      <td>XYZ path without additional E advance</td>
+    </tr>
+    <tr>
+      <td>8: G92 E0</td>
+      <td>1 to 0, logical reset</td>
+      <td>No commanded feed</td>
+      <td>No ordinary XYZ/extrusion move</td>
+    </tr>
+    <tr>
+      <td>9: third XYZ line, E1</td>
+      <td>0 to 1</td>
+      <td>+1 mm</td>
+      <td>Positive-E XYZ path</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  From the assumed XYZ origin, the first movement is diagonal in X, Y and Z: its
+  length is √(10² + 10² + 0.2²), approximately 14.144 mm. It is not a 10 mm
+  path. An E coordinate and a spatial path length describe different quantities.
+</p>
+<h2>Change only M82 to M83</h2>
+<p>
+  The retained relative-extrusion companion changes source line 4 to M83 and
+  leaves the three XYZ instructions and G92 resets unchanged. Each E1 motion
+  field now requests +1 mm under the stated relative model.
+</p>
+<table>
+  <caption>
+    Same instructions with relative E
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Original line</th>
+      <th scope="col">Logical E before to after</th>
+      <th scope="col">Requested change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>6: E1</td>
+      <td>0 to 1</td>
+      <td>+1 mm</td>
+    </tr>
+    <tr>
+      <td>7: E1</td>
+      <td>1 to 2</td>
+      <td>+1 mm</td>
+    </tr>
+    <tr>
+      <td>8: G92 E0</td>
+      <td>2 to 0</td>
+      <td>Logical reset only</td>
+    </tr>
+    <tr>
+      <td>9: E1</td>
+      <td>0 to 1</td>
+      <td>+1 mm</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Executing the current InspectMesh parser on the retained files gives two
+  extrusion moves and one travel move for absolute E, versus three and zero for
+  relative E. Both retain recognised linear/extrusion coverage and unavailable
+  duration/material declarations. These are software classification
+  observations, not firmware runs, physical deposition measurements or complete
+  job totals.
+</p>
+<h2>G92 changes the reference, not the consumed spool</h2>
+<p>
+  <a href="https://marlinfw.org/docs/gcode/G092.html"
+    >Marlin G92 documentation</a
+  >
+  describes setting logical position. E-only resets do not request an ordinary
+  extrusion move. G92 XYZ also changes the coordinate frame; relating it to
+  machine-space bounds is a separate question. InspectMesh marks XYZ resets as
+  incomplete machine-space coverage and flags firmware-dependent E transitions,
+  including G90/G91 after explicit E mode and M82 with relative XYZ. Follow
+  <a href="{{ GuideSlug.RouteGcodePreviewIncomplete }}"
+    >incomplete-preview findings</a
+  >
+  rather than clearing a warning because the picture looks familiar.
+</p>
+<h2>Positive E includes recovery, not just new part material</h2>
+<p>
+  Separate hypothetical accounting example: start at logical E=1.00 in absolute
+  millimetre E. E0.40 retracts 0.60; E1.00 restores 0.60; E1.20 advances a
+  further 0.20. Positive deltas sum to 0.80 mm, including recovery of that
+  retract. Net logical advance is 0.20 mm. Neither establishes complete
+  consumption or part mass. Purge, prime, tool changes, volumetric E, firmware
+  retraction, overrides and unsupported effects can introduce further accounting
+  requirements.
+</p>
+<p>
+  If an independently established length is 1,000 mm of 1.75 mm solid filament,
+  at illustrative density 1.24 g/cm³ its approximate mass is π × (1.75 / 2)² ×
+  1000 / 1000 × 1.24 = 2.98255 g. The division by 1,000 converts mm³ to cm³.
+  This original cylinder calculation converts a known length; it cannot recover
+  that length from ambiguous G-code. Use the
+  <a href="{{ GuideSlug.RouteFilamentLengthCalculator }}"
+    >filament-length converter</a
+  >
+  and the
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >complete consumption workflow</a
+  >
+  for their separate tasks.
+</p>
+<h2>Compare the existing examples locally</h2>
+<ol>
+  <li>
+    Open the
+    <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">G-code viewer</a>. It
+    reads locally and sends no commands to hardware.
+  </li>
+  <li>
+    Use its example selector to load the absolute-extrusion control
+    deliberately. Loading replaces the current file/result; preserve unsaved
+    exports first.
+  </li>
+  <li>
+    Review per-metric coverage, the solid extrusion and dashed travel paths,
+    then inspect original source lines around G92 in the source evidence.
+  </li>
+  <li>
+    Load the relative companion and compare the same lines and move counts. No
+    material or duration declaration becomes available merely by changing E
+    mode.
+  </li>
+</ol>
+<h2>Choose the next interpretation</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Symptom</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Repeated E appears non-extruding</td>
+      <td>
+        Trace preceding E position and M82/M83 mode before interpreting the
+        path.
+      </td>
+    </tr>
+    <tr>
+      <td>Final E looks too small</td>
+      <td>
+        Find resets and retractions; do not substitute the coordinate for
+        consumption.
+      </td>
+    </tr>
+    <tr>
+      <td>A mode transition makes coverage incomplete</td>
+      <td>
+        Read the source finding and exact firmware/configuration in the original
+        project/profile.
+      </td>
+    </tr>
+    <tr>
+      <td>Material metadata is absent</td>
+      <td>
+        Obtain complete per-material slicer totals; leave the unknown
+        declaration unavailable.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Command references reviewed 2 November 2026. Tables and accounting examples
+  are original explanatory work. Preserve unfamiliar production G-code and
+  return to its generating project/profile; these examples do not prescribe mode
+  edits.
+</p>

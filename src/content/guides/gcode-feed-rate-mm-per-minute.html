@@ -1,0 +1,253 @@
+---
+title: 'G-code Feed Rate: Convert mm/min to mm/s | InspectMesh'
+description: 'Convert G-code feed rate from mm/min to mm/s, follow modal F values and separate requested movement speed from extrusion throughput and elapsed print time.'
+slug: gcode-feed-rate-mm-per-minute
+eyebrow: G-code interpretation
+heading: 'G-code feed rate: mm/min, mm/s and actual print time'
+---
+
+<p>
+  In the documented G21 millimetre G0/G1 context, F1800 requests 1,800 mm/min,
+  equivalent to 30 mm/s. It is a requested movement rate, not a measured speed
+  or a guarantee throughout the move. Check units, preceding modal state and
+  exact firmware before reading an isolated F word. This guide interprets
+  instructions; it does not recommend a printer speed.
+</p>
+<h2 id="guide-feed-conversion">Convert the units before comparing values</h2>
+<p>
+  Divide millimetres per minute by 60 to obtain millimetres per second. Multiply
+  mm/s by 60 for the reverse conversion. These are unit conversions, not tuned
+  settings or evidence of machine capacity.
+</p>
+<table>
+  <caption>
+    Requested rates in the stated millimetre context
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">F in mm/min</th>
+      <th scope="col">Equivalent mm/s</th>
+      <th scope="col">Arithmetic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1,200</td>
+      <td>20</td>
+      <td>1200 / 60</td>
+    </tr>
+    <tr>
+      <td>1,500</td>
+      <td>25</td>
+      <td>1500 / 60</td>
+    </tr>
+    <tr>
+      <td>1,800</td>
+      <td>30</td>
+      <td>1800 / 60</td>
+    </tr>
+    <tr>
+      <td>3,600</td>
+      <td>60</td>
+      <td>3600 / 60</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  In reverse, a chosen 45 mm/s corresponds to F2700: 45 × 60 = 2700 mm/min.
+  <a href="https://marlinfw.org/docs/gcode/G000-G001.html"
+    >Marlin's G0/G1 reference</a
+  >
+  documents F in current units per minute and its persistence into following
+  moves. Other units, E-only movement, G0 configuration and machine kinematics
+  need their own documented interpretation; do not extend the table to them by
+  assumption.
+</p>
+<h2>Follow a modal rate through three instructions</h2>
+<p>
+  This original instruction-reading example assumes G21 millimetres, G90
+  absolute XYZ and initial logical X=0, Y=0, Z=0.2. Only X changes, with no E
+  movement, intervening override, different motion type or unsupported state.
+  These are travel-only analytical instructions, not a runnable printer job. No
+  firmware or printer was run.
+</p>
+<table>
+  <caption>
+    Ideal constant-rate arithmetic, ignoring acceleration and waits
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Instruction</th>
+      <th scope="col">Segment length</th>
+      <th scope="col">Requested rate</th>
+      <th scope="col">Ideal duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>G1 X30 F1800</code></td>
+      <td>30 mm</td>
+      <td>30 mm/s</td>
+      <td>30 / 30 = 1.0 s</td>
+    </tr>
+    <tr>
+      <td><code>G1 X60</code></td>
+      <td>30 mm</td>
+      <td>30 mm/s, inherited</td>
+      <td>30 / 30 = 1.0 s</td>
+    </tr>
+    <tr>
+      <td><code>G1 X90 F3600</code></td>
+      <td>30 mm</td>
+      <td>60 mm/s</td>
+      <td>30 / 60 = 0.5 s</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The total is 90 mm and 2.5 seconds in this deliberately idealised calculation.
+  Missing F on the second line means the applicable earlier rate persists under
+  these assumptions; it does not mean zero speed. An isolated line without its
+  earlier state may still lack enough information. There is no
+  deposited-material result in this travel example.
+</p>
+<p>
+  Acceleration, deceleration, corners, firmware limits and waits are excluded. A
+  short 30 mm segment may not reach the requested speed. The total is neither a
+  predicted real job duration nor a universal lower bound for all files and
+  overrides. Marlin's reference describes acceleration and
+  configuration-specific G0 behaviour; a simple distance/rate division cannot
+  replace that context.
+</p>
+<h2>Movement rate, extrusion throughput and elapsed time</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Example</th>
+      <th scope="col">What it cannot establish</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Requested movement rate</td>
+      <td>F1800 becomes 30 mm/s in this context</td>
+      <td>Measured speed throughout a segment</td>
+    </tr>
+    <tr>
+      <td>Requested extrusion throughput</td>
+      <td>0.45 × 0.20 × 30 = 2.7 mm³/s</td>
+      <td>A tested hotend ceiling</td>
+    </tr>
+    <tr>
+      <td>Elapsed sliced-job duration</td>
+      <td>A reviewed estimate from the generating slicer</td>
+      <td>An unconditional finish or delivery promise</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The throughput row is a separate hypothetical extruding-line approximation:
+  0.45 mm width and 0.20 mm height at 60 mm/s instead request 5.4 mm³/s. Neither
+  value measures deposition in the travel-only table above. Nozzle diameter
+  alone does not supply line width, layer height or an applicable measured
+  limit. Keep that decision with the
+  <a href="{{ GuideSlug.RouteMaximumVolumetricSpeedExplained }}"
+    >maximum-volumetric-speed guide</a
+  >
+  and <a href="{{ GuideSlug.RouteVolumetricFlowCalculator }}">flow planner</a>.
+</p>
+<h2>A feed percentage and a flow percentage differ</h2>
+<p>
+  In named Marlin context,
+  <a href="https://marlinfw.org/docs/gcode/M220.html">M220</a> changes the
+  global feedrate percentage for G-code moves, while
+  <a href="https://marlinfw.org/docs/gcode/M221.html">M221</a> changes the flow
+  percentage applied to E moves, with documented extruder selection. These
+  controls are not interchangeable calibration procedures. A percentage alone
+  cannot predict the complete job response; no new multiplier is recommended
+  here.
+</p>
+<p>
+  For other firmware and configured macros, use its exact primary documentation,
+  including
+  <a href="https://www.klipper3d.org/G-Codes.html">Klipper commands</a> and
+  <a href="https://www.klipper3d.org/Command_Templates.html"
+    >macro state handling</a
+  >
+  where applicable. InspectMesh does not execute those effects. Unrecognised
+  state remains an explicit coverage limitation rather than an invented speed
+  trace.
+</p>
+<h2>What the viewer and finish planner actually do</h2>
+<p>
+  The
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >read-only G-code viewer</a
+  >
+  provides bounded linear geometry/classification and supported declared
+  metadata. It does not expose a firmware feed-rate trace, acceleration
+  simulation or elapsed-time reconstruction. Recognising a token does not
+  simulate its effects; duration and material coverage remain independent of the
+  path picture. Use
+  <a href="{{ GuideSlug.RouteGcodePreviewIncomplete }}"
+    >the coverage explanation</a
+  >
+  when a reported metric is incomplete or unavailable.
+</p>
+<p>
+  For a finish instant, review the generating slicer's duration and
+  comparable-job evidence, then deliberately enter or apply it in the
+  <a href="{{ GuideSlug.Route3dPrintFinishTimeCalculator }}">finish planner</a>.
+  Choose the start, timezone, correction and separately omitted time. Queue,
+  finishing and dispatch remain the
+  <a href="{{ GuideSlug.Route3dPrintLeadTimeVsPrintTime }}"
+    >lead-time decision</a
+  >. Converting F does not supply those inputs.
+</p>
+<h2>Follow the question to the right next check</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Question</th>
+      <th scope="col">Next check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>F looks much higher than slicer mm/s</td>
+      <td>Confirm G21/current units and divide mm/min by 60.</td>
+    </tr>
+    <tr>
+      <td>A line has no F</td>
+      <td>
+        Trace the applicable earlier modal rate and intervening state changes.
+      </td>
+    </tr>
+    <tr>
+      <td>The print runs slower</td>
+      <td>
+        Compare the profile, short paths, waits and exact firmware context
+        against observed runs.
+      </td>
+    </tr>
+    <tr>
+      <td>I need a finish time</td>
+      <td>
+        Use a reviewed sliced duration and an explicit start, not a speed ratio.
+      </td>
+    </tr>
+    <tr>
+      <td>I want more throughput</td>
+      <td>
+        Return to applicable tested profile evidence; unit conversion
+        establishes no capacity.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Primary command references reviewed 2 November 2026. The tables and arithmetic
+  are original explanatory examples. No physical timing, new slicer experiment
+  or firmware conformance result is claimed.
+</p>

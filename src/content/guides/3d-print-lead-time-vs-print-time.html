@@ -44,6 +44,17 @@ faq:
   additional steps. Inspection is assumed included in the stated
   handling/finishing; assembly and dispatch transit are excluded.
 </p>
+<p>
+  A
+  <a href="{{ GuideSlug.RouteGcodeFeedRateMmPerMinute }}"
+    >requested G-code rate</a
+  >
+  precedes the sliced-duration estimate, which precedes this schedule.
+  Multiplying a speed setting does not proportionally guarantee less printing or
+  shorter lead time: short paths, waits, queue and completion work remain.
+  Retain the explicit timeline assumptions rather than deriving a new delivery
+  date from a speed ratio.
+</p>
 <h2>Reconcile elapsed time without counting twice</h2>
 <p>
   From a 09:30 first-run start, seven sliced hours plus 90 minutes of explicitly

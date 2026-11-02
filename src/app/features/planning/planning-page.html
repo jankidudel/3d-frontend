@@ -93,12 +93,22 @@
           >{{ field.label
           }}<input
             type="number"
+            [id]="'planner-' + field.key"
             step="any"
             [min]="field.min"
             [value]="values()[field.key]"
             (input)="setNumber(field.key, $event)"
-            aria-describedby="planner-validation"
-        /></label>
+            [attr.aria-invalid]="fieldIssues()[field.key] ? 'true' : null"
+            [attr.aria-describedby]="
+              fieldIssues()[field.key] ? 'planner-error-' + field.key : null
+            "
+          />
+          @if (fieldIssues()[field.key]; as issue) {
+            <span class="error" [id]="'planner-error-' + field.key">{{
+              issue
+            }}</span>
+          }
+        </label>
       }
       @if (kind === kinds.Flow) {
         <label
@@ -114,11 +124,25 @@
             type="datetime-local"
             [value]="start()"
             (input)="start.set($any($event.target).value)"
-        /></label>
+            [attr.aria-invalid]="startIssue() ? 'true' : null"
+            [attr.aria-describedby]="
+              startIssue() ? 'planner-start-error' : null
+            "
+          />
+          @if (startIssue()) {
+            <span class="error" id="planner-start-error">{{
+              startIssue()
+            }}</span>
+          }
+        </label>
         <label
           >Timezone<select
             [value]="zone()"
             (change)="zone.set($any($event.target).value)"
+            [attr.aria-invalid]="startIssue() ? 'true' : null"
+            [attr.aria-describedby]="
+              startIssue() ? 'planner-start-error' : null
+            "
           >
             @for (item of zones; track item) {
               <option [value]="item">{{ item }}</option>
@@ -143,14 +167,8 @@
       }
     </div>
     <button type="button" (click)="calculate()">Check these inputs</button>
-    <p id="planner-validation" [class.error]="!valid()">
-      @if (!valid()) {
-        Enter finite, valid values. Spool tare cannot exceed gross weight; job
-        usage and dimensions must be positive. Finish planning also rejects
-        nonexistent daylight-saving clock times.
-      } @else {
-        Results update as you edit.
-      }
+    <p id="planner-validation" [class.error]="!valid()" role="status">
+      {{ validationSummary() }}
     </p>
     @if (metadata()) {
       <p>{{ metadata() }}</p>
@@ -255,6 +273,36 @@
     <h2>Method and interpretation</h2>
     <p>{{ config.method }}</p>
     <p>{{ config.caveat }}</p>
+    @if (kind === kinds.Flow) {
+      <p>
+        Arriving with F1800? In G21 millimetre G1 context it requests 30 mm/s.
+        Enter linear speed in mm/s above. Read
+        <a [routerLink]="guides.RouteGcodeFeedRateMmPerMinute"
+          >feed-rate units and modal state</a
+        >. At 0.45 mm width, 0.20 mm height and 100 mm/s, requested flow is 9
+        mm³/s. Zero keeps the tested limit unknown; it does not validate
+        capacity.
+      </p>
+    }
+    @if (kind === kinds.Finish) {
+      <p>
+        Use a reviewed slicer duration.
+        <a [routerLink]="guides.RouteGcodeFeedRateMmPerMinute"
+          >G-code F values are requested movement rates</a
+        >, not a complete timing simulation or a finish estimate.
+      </p>
+    }
+    @if (kind === kinds.Spool) {
+      <p>
+        Enter complete consumption for this compatible material scope. The final
+        E coordinate cannot establish grams needed:
+        <a [routerLink]="guides.RouteGcodeAbsoluteVsRelativeExtrusion"
+          >extrusion modes, resets and recovery</a
+        >
+        change its interpretation. Reserve stays separate.
+      </p>
+    }
+
     <p>
       <a [href]="config.source" target="_blank" rel="noopener noreferrer"
         >Method and reference documentation</a

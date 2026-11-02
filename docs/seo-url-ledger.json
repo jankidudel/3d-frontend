@@ -29053,6 +29053,70 @@
         "nextReview": null,
         "contentChangedAt": "2026-11-02"
       }
+    },
+    {
+      "path": "/guides/gcode-absolute-vs-relative-extrusion",
+      "url": "https://www.inspectmesh.com/guides/gcode-absolute-vs-relative-extrusion",
+      "priority": "P2",
+      "family": "gcode-interpretation",
+      "owner": "Interpret M82/M83, logical E deltas and G92 resets without inferring complete consumption.",
+      "primaryTask": "Interpret M82/M83, logical E deltas and G92 resets without inferring complete consumption.",
+      "decision": "add",
+      "brief": "Retained absolute/relative controls, original state tables and recovery-accounting contrast; no printer run or E-derived consumption estimator.",
+      "decisionReason": "Distinct worked instruction-reading intent; general preflight, incomplete coverage, capacity and schedule retain existing owners.",
+      "editorialReview": {
+        "scope": "Primary command semantics checked 2 November 2026; original explanatory arithmetic and existing parser controls.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production delivery and Google indexing remain unobserved; no physical or firmware execution claimed."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-02"
+      }
+    },
+    {
+      "path": "/guides/gcode-feed-rate-mm-per-minute",
+      "url": "https://www.inspectmesh.com/guides/gcode-feed-rate-mm-per-minute",
+      "priority": "P2",
+      "family": "gcode-interpretation",
+      "owner": "Interpret modal G0/G1 F rates and convert mm/min to mm/s without predicting real elapsed time.",
+      "primaryTask": "Interpret modal G0/G1 F rates and convert mm/min to mm/s without predicting real elapsed time.",
+      "decision": "add",
+      "brief": "Original conversion and ideal travel table; requested movement, throughput and reviewed sliced duration remain separate.",
+      "decisionReason": "Distinct worked instruction-reading intent; general preflight, incomplete coverage, capacity and schedule retain existing owners.",
+      "editorialReview": {
+        "scope": "Primary command semantics checked 2 November 2026; original explanatory arithmetic and existing parser controls.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production delivery and Google indexing remain unobserved; no physical or firmware execution claimed."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-02"
+      }
     }
   ],
   "additionalUrls": [

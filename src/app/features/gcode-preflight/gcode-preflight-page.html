@@ -411,6 +411,13 @@
           <dd>{{ result.extrusionMode }}</dd>
         </div>
       </dl>
+      <p>
+        Extrusion classification follows logical E changes, including resets.
+        <a [routerLink]="guideRouteUrl.RouteGcodeAbsoluteVsRelativeExtrusion"
+          >Read M82/M83 and G92 state</a
+        >; positive E is not a complete consumed-material total. Keep
+        firmware-dependent mode-transition findings when coverage is incomplete.
+      </p>
       <details>
         <summary>Inspect heater target source lines</summary>
         @for (target of result.hotendTargets; track target.line) {
@@ -635,6 +642,12 @@
         are unverified declarations. No timing simulation or net-E material
         total is calculated.
       </p>
+      <p>
+        <a [routerLink]="guideRouteUrl.RouteGcodeFeedRateMmPerMinute"
+          >F values describe requested movement rates</a
+        >, not elapsed job time. Declared material and duration coverage stay
+        independent of path coverage.
+      </p>
       @if (result.duration; as duration) {
         <p>
           Duration: {{ duration.value }} hours; {{ duration.scope }}.
@@ -825,7 +838,15 @@
       With absolute millimetre coordinates and absolute extrusion, G1 X20 E1
       followed by G1 X40 E1 has a move with extrusion, then a move without
       additional extrusion. Under relative extrusion the same E1 fields mean
-      something different. Confirm mode commands before interpreting paths.
+      something different. Confirm mode commands before interpreting paths using
+      <a [href]="guideRouteUrl.RouteGcodeAbsoluteVsRelativeExtrusion"
+        >the worked extrusion-state tables</a
+      >. For a surprising F value, use
+      <a [href]="guideRouteUrl.RouteGcodeFeedRateMmPerMinute"
+        >mm/min versus mm/s</a
+      >. The existing example selector above includes both analytical
+      extrusion-mode controls; loading one deliberately replaces the current
+      result. These snippets are not printable jobs.
     </p>
     <p>
       The retained

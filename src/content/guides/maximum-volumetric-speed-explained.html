@@ -33,6 +33,16 @@ faq:
   observation date with a claimed limit. A material name cannot supply that
   context.
 </p>
+<p>
+  If your input is G21/G1 F1800, first convert 1800 / 60 = 30 mm/s; with the
+  same 0.45 mm width and 0.20 mm height that requests 2.7 mm³/s. F3600
+  corresponds to 60 mm/s and 5.4 mm³/s. Follow
+  <a href="{{ GuideSlug.RouteGcodeFeedRateMmPerMinute }}"
+    >modal feed-rate interpretation</a
+  >
+  before entering speed. These hypothetical requests establish no tested
+  capacity.
+</p>
 <h2>Read a speed claim without inventing a flow ceiling</h2>
 <p>
   The

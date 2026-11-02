@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { materials, materialSources } from '../materials/material-catalogue';
 import { MaterialProperty } from '../materials/material-evidence';
 import { SeoService } from '../../core/seo/seo.service';
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import {
   DensityOrigin,
@@ -33,6 +34,7 @@ type ConversionMode = (typeof CONVERSION_MODE)[keyof typeof CONVERSION_MODE];
 })
 export class FilamentLengthCalculatorPage {
   readonly routeUrl = PublicRouteUrl;
+  readonly guides = GuideRouteUrl;
   readonly conversionMode = CONVERSION_MODE;
   readonly filamentPreset = FilamentPreset;
   readonly diameterOptions = FILAMENT_DIAMETERS;

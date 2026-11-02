@@ -93,6 +93,11 @@ faq:
     </tr>
   </tbody>
 </table>
+<p>
+  A speed value or a longer estimated duration cannot establish head/gantry
+  clearance or correct object order. Those depend on geometry, the exact profile
+  and the reviewed sequence, even when every requested rate is understood.
+</p>
 <h2>Where native checks belong</h2>
 <p>
   Prusa's sequential-printing documentation describes Complete individual
@@ -130,23 +135,16 @@ faq:
     actually recognises.
   </li>
 </ol>
-<h2>Use the existing review tools</h2>
 <p>
-  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
-    >Open the read-only G-code viewer</a
-  >,
-  <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
-    >follow the general G-code review procedure</a
-  >, and
-  <a href="{{ GuideSlug.RouteExamples }}"
-    >download the owned analytical controls</a
-  >. Source geometry fit remains in
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >the model-fit guide</a
-  >; arrangement remains in
+  Use
   <a href="{{ GuideSlug.RouteHowToArrangeMultiplePartsOnA3dPrinterBed }}"
-    >the existing layout guide</a
-  >.
+    >the layout workflow</a
+  >
+  for placement, then keep native sequential collision checks separate. The
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
+    >read-only G-code viewer</a
+  >
+  retains supported path evidence; it cannot approve head clearance.
 </p>
 <h2>Sources and evidence boundary</h2>
 <p>

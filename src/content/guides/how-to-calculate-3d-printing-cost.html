@@ -47,6 +47,16 @@ heading: How to Calculate 3D Printing Cost
   first; use complete sliced totals for cost rather than inferring material from
   circular or rectangular occupancy.
 </p>
+<p>
+  Supply each job row with a reviewed sliced duration and complete material
+  total, not
+  <a href="{{ GuideSlug.RouteGcodeFeedRateMmPerMinute }}">an F movement rate</a>
+  or
+  <a href="{{ GuideSlug.RouteGcodeAbsoluteVsRelativeExtrusion }}"
+    >the final E coordinate</a
+  >. A supported one-run metadata offer adds only the deliberately selected run;
+  it does not replace or multiply every existing plate.
+</p>
 <h2>Work through the five-part baseline</h2>
 <table>
   <thead>

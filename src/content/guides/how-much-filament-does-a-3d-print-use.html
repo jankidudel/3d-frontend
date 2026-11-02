@@ -46,6 +46,18 @@ heading: 'How Much Filament Will a Print Use? Read the Complete Slicer Total'
   uses geometry and density; it omits the actual infill, walls and process
   structures and cannot replace this sliced consumption.
 </p>
+<h2>Why final E is not complete consumption</h2>
+<p>
+  Absolute E can reset with G92; relative E is incremental. Adding positive E
+  changes can include recovery after retraction and cannot identify complete
+  part, purge and prime consumption across unsupported effects or tools. The
+  last E coordinate and a sum of positive E fields are not complete totals.
+  Follow
+  <a href="{{ GuideSlug.RouteGcodeAbsoluteVsRelativeExtrusion }}"
+    >the worked mode and accounting tables</a
+  >; obtain complete per-material slicer totals when metadata is absent. Unknown
+  is not zero.
+</p>
 <h2>Check the available spool</h2>
 <p>
   Use the

@@ -238,3 +238,151 @@ it('adds one reviewed sliced plate after confirmation without changing existing 
   expect(added.source).toContain('line 3');
   expect(page.pending()).toBeNull();
 });
+
+function editPlannerNumber(root: HTMLElement, key: string, value: string) {
+  const input = root.querySelector<HTMLInputElement>(`#planner-${key}`)!;
+  input.value = value;
+  input.dispatchEvent(new Event('input'));
+  return input;
+}
+
+it('associates excessive tare with the spool control and recovers without clearing weights or reserve', () => {
+  configure(PlannerKind.Spool);
+  const fixture = TestBed.createComponent(PlanningPage);
+  fixture.detectChanges();
+  const root = fixture.nativeElement as HTMLElement;
+  editPlannerNumber(root, 'reserve', '12');
+  const tare = editPlannerNumber(root, 'tare', '400');
+  fixture.detectChanges();
+  expect(fixture.componentInstance.valid()).toBe(false);
+  expect(tare.getAttribute('aria-invalid')).toBe('true');
+  expect(
+    root.querySelector('#' + tare.getAttribute('aria-describedby'))
+      ?.textContent,
+  ).toContain('tare cannot exceed');
+  expect(root.querySelector('#planner-validation')?.textContent).not.toContain(
+    'daylight',
+  );
+  editPlannerNumber(root, 'tare', '210');
+  fixture.detectChanges();
+  expect(fixture.componentInstance.valid()).toBe(true);
+  expect(tare.hasAttribute('aria-invalid')).toBe(false);
+  expect(root.querySelector('#planner-error-tare')).toBeNull();
+  expect(fixture.componentInstance.values()).toMatchObject({
+    gross: 350,
+    tare: 210,
+    reserve: 12,
+    job: 45,
+  });
+});
+
+it.each(['nozzle', 'width', 'wall', 'layer'])(
+  'marks invalid wall %s and removes its error after correction',
+  (key) => {
+    configure(PlannerKind.Wall);
+    const fixture = TestBed.createComponent(PlanningPage);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    const input = editPlannerNumber(root, key, '0');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.valid()).toBe(false);
+    expect(input.getAttribute('aria-describedby')).toBe(`planner-error-${key}`);
+    expect(root.querySelector('#planner-validation')?.textContent).toContain(
+      'dimensions',
+    );
+    expect(
+      root.querySelector('#planner-validation')?.textContent,
+    ).not.toContain('Spool');
+    editPlannerNumber(root, key, '0.2');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.valid()).toBe(true);
+    expect(input.hasAttribute('aria-describedby')).toBe(false);
+  },
+);
+
+it.each(['width', 'layer', 'speed', 'limit'])(
+  'keeps blank flow %s invalid until corrected, without inventing a capacity limit',
+  (key) => {
+    configure(PlannerKind.Flow);
+    const fixture = TestBed.createComponent(PlanningPage);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    const input = editPlannerNumber(root, key, '');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.valid()).toBe(false);
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(root.querySelector('#planner-validation')?.textContent).toContain(
+      'mm/s',
+    );
+    editPlannerNumber(root, key, key === 'limit' ? '0' : '0.2');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.valid()).toBe(true);
+    expect(input.hasAttribute('aria-invalid')).toBe(false);
+    expect(fixture.componentInstance.flow()?.exceeds).toBeNull();
+    expect(fixture.componentInstance.values()['limit']).toBe(0);
+  },
+);
+
+it('explains a missing or skipped finish start and preserves duration through DST recovery and repeated-time selection', () => {
+  configure(PlannerKind.Finish);
+  const fixture = TestBed.createComponent(PlanningPage);
+  const page = fixture.componentInstance;
+  page.zone.set('Europe/London');
+  page.start.set('');
+  fixture.detectChanges();
+  const root = fixture.nativeElement as HTMLElement;
+  const start = root.querySelector<HTMLInputElement>(
+    'input[type="datetime-local"]',
+  )!;
+  expect(root.querySelector('#planner-validation')?.textContent).toContain(
+    'start date',
+  );
+  expect(root.querySelector('#planner-validation')?.textContent).not.toContain(
+    'tare',
+  );
+  start.value = '2026-03-29T01:30';
+  start.dispatchEvent(new Event('input'));
+  fixture.detectChanges();
+  expect(page.valid()).toBe(false);
+  expect(start.getAttribute('aria-describedby')).toBe('planner-start-error');
+  expect(root.querySelector('#planner-start-error')?.textContent).toContain(
+    'daylight',
+  );
+  start.value = '2026-03-29T02:30';
+  start.dispatchEvent(new Event('input'));
+  fixture.detectChanges();
+  expect(page.valid()).toBe(true);
+  expect(start.hasAttribute('aria-invalid')).toBe(false);
+  expect(root.querySelector('#planner-start-error')).toBeNull();
+  expect(page.values()).toMatchObject({ hours: 6, minutes: 30, correction: 1 });
+  page.start.set('2026-10-25T01:30');
+  const first = page.finish()!.finish;
+  page.occurrence.set(page.occurrences.Later);
+  expect(page.valid()).toBe(true);
+  expect(page.finish()!.finish - first).toBe(3600000);
+});
+
+it('associates finish duration and correction errors with controls and clears them independently', () => {
+  configure(PlannerKind.Finish);
+  const fixture = TestBed.createComponent(PlanningPage);
+  fixture.componentInstance.start.set('2026-11-02T12:00');
+  fixture.detectChanges();
+  const root = fixture.nativeElement as HTMLElement;
+  editPlannerNumber(root, 'hours', '0');
+  editPlannerNumber(root, 'minutes', '0');
+  fixture.detectChanges();
+  expect(root.querySelector('#planner-error-hours')).not.toBeNull();
+  editPlannerNumber(root, 'hours', '2');
+  editPlannerNumber(root, 'minutes', '60');
+  editPlannerNumber(root, 'correction', '0');
+  fixture.detectChanges();
+  expect(root.querySelector('#planner-error-hours')).toBeNull();
+  expect(root.querySelector('#planner-error-minutes')).not.toBeNull();
+  expect(root.querySelector('#planner-error-correction')).not.toBeNull();
+  editPlannerNumber(root, 'minutes', '15');
+  editPlannerNumber(root, 'correction', '1.2');
+  fixture.detectChanges();
+  expect(fixture.componentInstance.valid()).toBe(true);
+  expect(root.querySelectorAll('[aria-invalid="true"]')).toHaveLength(0);
+  expect(fixture.componentInstance.values()['hours']).toBe(2);
+});

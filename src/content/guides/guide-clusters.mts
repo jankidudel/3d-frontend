@@ -189,6 +189,8 @@ export const guideClusters: readonly GuideCluster[] = [
       'Open, navigate and inspect final G-code before committing a printer to a job.',
     pillar: 'how-to-check-gcode-before-printing',
     slugs: [
+      GuideContentSlug.GcodeAbsoluteVsRelativeExtrusion,
+      GuideContentSlug.GcodeFeedRateMmPerMinute,
       'gcode-outside-print-bed',
       'can-you-use-gcode-from-another-printer',
       'gcode-preview-incomplete',

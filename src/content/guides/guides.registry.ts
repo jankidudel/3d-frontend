@@ -8,6 +8,8 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  GcodeAbsoluteVsRelativeExtrusion: 'gcode-absolute-vs-relative-extrusion',
+  GcodeFeedRateMmPerMinute: 'gcode-feed-rate-mm-per-minute',
   BearingSeatSizing3dPrinting: 'bearing-seat-sizing-3d-printing',
   PrintInPlaceClearance: 'print-in-place-clearance',
   Round3dPrinterBedFit: 'round-3d-printer-bed-fit',
@@ -57,6 +59,30 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.GcodeAbsoluteVsRelativeExtrusion,
+    group: GuideGroupId.General,
+    order: 910,
+    enabled: true,
+    publishDate: '2026-11-02',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'M82',
+      'M83',
+      'absolute extrusion',
+      'relative extrusion',
+      'G92 E0',
+    ],
+  },
+  {
+    slug: GuideContentSlug.GcodeFeedRateMmPerMinute,
+    group: GuideGroupId.General,
+    order: 911,
+    enabled: true,
+    publishDate: '2026-11-02',
+    checkEditorialTargets: true,
+    searchTerms: ['feed rate', 'F1800', 'mm/min', 'mm/s'],
+  },
   {
     slug: GuideContentSlug.BearingSeatSizing3dPrinting,
     group: GuideGroupId.Calibration,
@@ -295,7 +321,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 270,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -304,6 +330,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 271,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -312,7 +339,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 272,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -321,7 +348,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 273,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
 
@@ -340,7 +367,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 261,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
   {
@@ -358,6 +385,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 263,
     enabled: true,
     publishDate: '2026-10-10',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: true,
   },
 
@@ -537,7 +565,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'maximum-volumetric-speed-explained',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-02',
     group: GuideGroupId.General,
     order: 105,
     enabled: true,
@@ -559,6 +587,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 2,
     enabled: true,
     publishDate: '2026-09-15',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -590,7 +619,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-open-and-view-gcode-files',
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-11-02',
     group: GuideGroupId.General,
     order: 13,
     enabled: true,
@@ -599,7 +628,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-check-gcode-before-printing',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     group: GuideGroupId.General,
     order: 8,
     enabled: true,
@@ -684,7 +713,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {
@@ -702,7 +731,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-02',
     checkEditorialTargets: false,
   },
   {

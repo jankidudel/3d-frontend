@@ -113,6 +113,18 @@
       estimating filament or time.
     </p>
     <p>
+      <a [routerLink]="routes.GcodePreflightChecker"
+        >Inspect sliced instructions</a
+      >,
+      <a [routerLink]="routes.VolumetricFlowCalculator"
+        >calculate requested throughput</a
+      >, then
+      <a [routerLink]="routes.PrintFinishTimeCalculator"
+        >add a reviewed duration to a chosen start</a
+      >. Requested speed alone supplies neither a tested flow limit nor elapsed
+      job time.
+    </p>
+    <p>
       If a file opens but detail disappears after slicing, start with the
       <a [href]="guides.RouteEmbossedTextNotPrinting"
         >stroke, gap and relief checks</a

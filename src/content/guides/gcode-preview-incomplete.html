@@ -128,7 +128,20 @@ faq:
   Mode assumptions also matter. G90/G91 after M82/M83 is disclosed as
   firmware-dependent extrusion classification in the conservative model. G92 E
   resets logical extrusion without ordinary XYZ movement; G92 XYZ changes the
-  frame and does not prove machine-space bounds.
+  frame and does not prove machine-space bounds. M82 with relative XYZ is also
+  conservatively flagged. Use the
+  <a href="{{ GuideSlug.RouteGcodeAbsoluteVsRelativeExtrusion }}"
+    >worked E-mode interpretation</a
+  >
+  to understand the state without clearing those limitations.
+</p>
+<p>
+  Recognising an F token is not acceleration or timing simulation. Read
+  <a href="{{ GuideSlug.RouteGcodeFeedRateMmPerMinute }}"
+    >requested feed rate</a
+  >
+  separately from the supported duration declaration; missing metadata stays
+  unavailable.
 </p>
 <h2 id="guide-preview-stages">
   A region absent from the picture: compare three places
@@ -213,23 +226,15 @@ faq:
   execute on a printer. No native software screenshots or physical print results
   are claimed.
 </p>
-<h2>Use the existing review tools</h2>
 <p>
   <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
-    >Open the read-only G-code viewer</a
-  >,
+    >Reopen the read-only viewer</a
+  >
+  with the exact file to preserve original source-line evidence. Use
   <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
-    >follow the general G-code review procedure</a
-  >, and
-  <a href="{{ GuideSlug.RouteExamples }}"
-    >download the owned analytical controls</a
-  >. Source geometry fit remains in
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >the model-fit guide</a
-  >; arrangement remains in
-  <a href="{{ GuideSlug.RouteHowToArrangeMultiplePartsOnA3dPrinterBed }}"
-    >the existing layout guide</a
-  >.
+    >the full review checklist</a
+  >
+  for remaining supported checks.
 </p>
 <h2>Sources and evidence boundary</h2>
 <p>
