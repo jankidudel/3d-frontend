@@ -784,7 +784,9 @@
       <p>
         This is read-only inspection. Unsupported commands may limit the preview
         or summary; the chosen printer profile in the slicer remains the source
-        of truth. Review the slicer preview before printing.
+        of truth. Recognised motion is not an automatic seam, top-fill or
+        ironing classification. Review native markers and categories for those
+        operations.
       </p>
       <p>
         Need help reading the preview? See
@@ -827,6 +829,16 @@
   />
   <section class="content">
     <h2>Parsed paths are only part of the machine instructions</h2>
+    <p>
+      For process-specific review, follow
+      <a [href]="guideRouteUrl.Route3dPrintZSeamPlacement">seam placement</a> or
+      <a [href]="guideRouteUrl.Route3dPrintIroningVsTopSurfacePattern"
+        >top-fill pattern versus ironing</a
+      >
+      in the native slicer and effective profile. The bounded viewer does not
+      automatically recognise every such feature; an endpoint, retraction, low-E
+      move or same-Z path is not a reliable category detector.
+    </p>
     <p>
       This browser-local review supports common linear moves and
       coordinate/extrusion mode changes. G2/G3 arcs are not included in preview

@@ -161,6 +161,8 @@ export const guideClusters: readonly GuideCluster[] = [
     slugs: [
       GuideContentSlug.ThreeDPrintLayerHeightVsDetail,
       GuideContentSlug.ThreeDPrintWallsVsInfill,
+      GuideContentSlug.ThreeDPrintZSeamPlacement,
+      GuideContentSlug.ThreeDPrintIroningVsTopSurfacePattern,
       '3d-print-wall-thickness-guide',
       'how-to-check-stl-wall-thickness-for-3d-printing',
       'zero-thickness-stl-surface',

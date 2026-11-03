@@ -182,10 +182,15 @@ heading: How to Check Clearance in a Print-in-Place Model
 <p>
   In your actual printer/material profile, step through the interface from its
   first layer to the retaining region. Look for distinct intended contours,
-  unintended connecting paths, seam locations, bridge/sag regions and generated
-  support within the movement envelope. These are reader inspection steps, not a
-  newly observed slicer experiment. A path preview describes that generated job;
-  it does not fully predict deposited shape.
+  unintended connecting paths,
+  <a href="{{ GuideSlug.Route3dPrintZSeamPlacement }}"
+    >seam locations at moving interfaces</a
+  >, bridge/sag regions and generated support within the movement envelope. Keep
+  the source gap, generated transition and observed physical release as separate
+  evidence; a placement setting guarantees neither movement nor a global minimum
+  clearance. These are reader inspection steps, not a newly observed slicer
+  experiment. A path preview describes that generated job; it does not fully
+  predict deposited shape.
 </p>
 <h2>Check the bed-facing gap separately</h2>
 <p>

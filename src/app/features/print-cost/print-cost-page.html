@@ -471,4 +471,16 @@
       [page]="routeUrl.PrintCostCalculator"
     />
   }
+  <section class="content">
+    <h2>When a surface process changes the slice</h2>
+    <p>
+      After a
+      <a [routerLink]="guideRouteUrl.Route3dPrintIroningVsTopSurfacePattern"
+        >top-pattern or ironing change</a
+      >, use the complete re-sliced duration and consumption. Do not add the
+      guide's partial straight-lane time to a job total that already includes
+      the pass. Keep any active inspection or hand finishing in its existing
+      run, part or order allowance, counting each task once.
+    </p>
+  </section>
 </main>

@@ -10,7 +10,11 @@ heading: Why Are the Top Layers Missing in Your Slicer?
   Start with the preview controls, then compare the source roof with the
   effective slicing settings. A closed mesh can be sliced without top skin,
   while an intentionally open vessel should remain open. Repairing the mesh is
-  useful only when the source geometry is actually wrong.
+  useful only when the source geometry is actually wrong. Resolve required
+  closure before considering
+  <a href="{{ GuideSlug.Route3dPrintIroningVsTopSurfacePattern }}"
+    >cosmetic top fill or ironing</a
+  >; an additional surface pass is not a roof repair.
 </p>
 <p>
   This guide concerns absent software paths. If the full preview has a

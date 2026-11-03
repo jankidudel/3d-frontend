@@ -1,0 +1,274 @@
+---
+title: '3D Print Ironing vs Top Surface Patterns | InspectMesh'
+description: 'Compare normal top-fill patterns with an additional ironing pass. Check eligible faces, raised detail and a worked path-length example before reslicing.'
+slug: 3d-print-ironing-vs-top-surface-pattern
+eyebrow: Surface process decisions
+heading: Ironing or a different top-surface pattern?
+---
+
+<p>
+  A top-fill pattern changes how normal surface paths are arranged. Ironing adds
+  another processing pass over selected eligible surfaces. Identify the face and
+  the problem first: an absent roof, a lost letter, a stepped slope and a change
+  in surface texture require different decisions.
+</p>
+<h2>Check that the required surface exists</h2>
+<p>
+  Compare source geometry and actual paths before choosing a cosmetic operation.
+  For an absent roof use the
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}"
+    >top-closure diagnosis</a
+  >; for missing strokes or relief use the
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}">lettering workflow</a>.
+  Additional top processing cannot recreate omitted source geometry or material
+  paths. A <a href="{{ GuideSlug.RouteStlViewer }}">source view</a> and a smooth
+  rendered image alone do not establish that the surface is generated.
+</p>
+<h2>Normal top fill and an additional pass are different</h2>
+<p>
+  Prusa's
+  <a href="https://help.prusa3d.com/article/infill-patterns_177130"
+    >pattern documentation</a
+  >
+  distinguishes surface-fill choices from internal infill. Its monotonic example
+  changes the ordering of normal rectilinear lines. That is a normal
+  fill-planning choice, not another pass or a universal best-finish ranking.
+</p>
+<p>
+  Prusa's
+  <a href="https://help.prusa3d.com/article/ironing_177488"
+    >ironing reference</a
+  >
+  describes a second phase over flat tops that includes small extrusion. It is
+  not simply non-extruding travel. The documented scope and edge trade-offs need
+  review for the intended software/profile. This is not sanding or mesh repair,
+  and the page supplies no universal flow, spacing or speed recipe.
+</p>
+<p>
+  Visible top fill, solid cap depth and sparse internal infill answer separate
+  questions. Use
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}"
+    >walls, caps and core allocation</a
+  >
+  when deciding which region needs material. Changing internal density alone
+  does not select a cosmetic top pattern or guarantee a continuous roof.
+</p>
+<h2>Define top relative to print orientation</h2>
+<table>
+  <caption>
+    Locate the face before reviewing process scope
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Face</th>
+      <th scope="col">Question to inspect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Bed-facing face</th>
+      <td>
+        Its contact and texture are a different condition from an exposed top
+        pass.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Vertical wall</th>
+      <td>
+        Review perimeter paths and
+        <a href="{{ GuideSlug.Route3dPrintZSeamPlacement }}"
+          >start/stop placement</a
+        >
+        rather than assuming top processing applies.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Sloped face</th>
+      <td>
+        Review orientation and
+        <a href="{{ GuideSlug.Route3dPrintLayerHeightVsDetail }}"
+          >layer sampling</a
+        >; a cosmetic pass does not remove all geometric steps.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Flat terrace or raised letter top</th>
+      <td>
+        Verify whether that specific region is selected and receives generated
+        paths.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A face displayed at the top of a CAD image can become vertical or bed-facing
+  after rotation. Compare
+  <a href="{{ GuideSlug.RouteHowToOrientAnStlFileFor3dPrinting }}"
+    >orientation requirements</a
+  >
+  before choosing a process; the six-direction planner cannot decide which
+  surfaces the native slicer will iron.
+</p>
+<h2 id="guide-lane-length">A bounded straight-pass calculation</h2>
+<p>
+  Original hypothetical geometry: a flat rectangle spans X=0..40 mm and Y=0..20
+  mm, area 800 mm². Parallel straight centrelines span the full 40 mm X width.
+  Their centres sit half a chosen spacing from the Y boundaries. These are
+  explanatory mathematical paths, not recommended settings or generated output.
+</p>
+<table>
+  <caption>
+    Only the straight lanes, at an assumed constant 20 mm/s
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Spacing s</th>
+      <th scope="col">Y centres</th>
+      <th scope="col">Lane count</th>
+      <th scope="col">Straight length</th>
+      <th scope="col">Ideal arithmetic time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">0.20 mm</th>
+      <td>0.10, 0.30, ... 19.90 mm</td>
+      <td>100</td>
+      <td>4,000 mm</td>
+      <td>200 s = 3 min 20 s</td>
+    </tr>
+    <tr>
+      <th scope="row">0.10 mm</th>
+      <td>0.05, 0.15, ... 19.95 mm</td>
+      <td>200</td>
+      <td>8,000 mm</td>
+      <td>400 s = 6 min 40 s</td>
+    </tr>
+  </tbody>
+</table>
+<ul>
+  <li>
+    <code>N = 20 / s</code>: both chosen spacings divide the Y width exactly.
+  </li>
+  <li>
+    <code>L_straight = N × 40 mm</code>: 100 × 40 = 4,000 mm or 200 × 40 = 8,000
+    mm.
+  </li>
+  <li><code>t_ideal = L_straight / (20 mm/s)</code>: 200 or 400 seconds.</li>
+</ul>
+<p>
+  Halving the assumed spacing doubles the counted lanes in this construction.
+  Other widths, angles, boundary insets and islands do not automatically obey
+  this integer formula. The X direction is arbitrary analytical geometry; it
+  does not reproduce PrusaSlicer's documented ironing angle or path generator.
+</p>
+<p>
+  The calculation excludes turns, connectors, travel, acceleration,
+  starts/stops, extrusion, normal top fill and all remaining job operations. It
+  is neither a complete ironing-time prediction nor a universally valid lower
+  bound. No hardware or firmware was run and no material consumption is
+  inferred. Do not transfer 200 or 400 seconds into planning tools as a complete
+  sliced job.
+</p>
+<h2>Topmost is not every visible terrace</h2>
+<p>
+  Consider a hypothetical label with a base terrace at Z=2.0 mm and raised glyph
+  tops at Z=2.6 mm. These heights do not imply a layer count. In the cited Prusa
+  reference, topmost-only scope differs from all-top-surfaces scope: letter tops
+  and the lower terrace need not both be processed. Verify actual coverage in
+  your application/version; do not extend a cosmetic choice to every internal
+  solid layer.
+</p>
+<p>
+  After required paths exist, inspect letter edges, counters, recesses, islands
+  and nearby mating lips. A smoother-looking preview does not prove sharp edges,
+  physical clearance or retained dimensions. The
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}#guide-lettering-results"
+    >existing lettering controls</a
+  >
+  establish their recorded stroke/relief observations, not a new ironing test.
+</p>
+<h2>Choose the first investigation</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation or requirement</th>
+      <th scope="col">Investigate first</th>
+      <th scope="col">Do not assume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Different directional sheen on an existing flat top</th>
+      <td>Normal pattern/order and viewing direction.</td>
+      <td>Every change needs an additional pass.</td>
+    </tr>
+    <tr>
+      <th scope="row">Additional processing on selected flat tops</th>
+      <td>Documented scope, effective profile and generated regions.</td>
+      <td>The whole model or every visible terrace is processed.</td>
+    </tr>
+    <tr>
+      <th scope="row">Stepped slope</th>
+      <td>Layer schedule and orientation.</td>
+      <td>Ironing removes all stair-stepping.</td>
+    </tr>
+    <tr>
+      <th scope="row">Absent roof or shallow glyph</th>
+      <td>Source/profile/output diagnosis.</td>
+      <td>A cosmetic operation restores missing paths.</td>
+    </tr>
+    <tr>
+      <th scope="row">Controlled letter edge or mating lip</th>
+      <td>Actual local paths and relevant physical comparison.</td>
+      <td>An attractive image proves fit or surface roughness.</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Compare complete saved jobs and agree the finish</h2>
+<ol>
+  <li>Identify source/revision, selected face and viewing requirement.</li>
+  <li>
+    Retain the slicer/version, effective normal pattern, additional-operation
+    scope and local overrides.
+  </li>
+  <li>
+    Compare ironing off/on or another single deliberate change. Record any other
+    settings that changed.
+  </li>
+  <li>
+    Inspect generated paths around boundaries and small islands, then identify
+    the exact saved output.
+  </li>
+  <li>
+    Record complete supplied duration and per-material consumption, leaving
+    absent values unknown. Record a physical outcome only after an actual
+    relevant trial.
+  </li>
+</ol>
+<p>
+  The
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">G-code checker</a> has no
+  general seam/ironing classifier; recognised motion is not a semantic legend.
+  Review native categories for process intent. After reslicing, use complete
+  totals in the
+  <a href="{{ GuideSlug.Route3dPrintCostCalculator }}">cost calculator</a>,
+  without adding this partial lane example again. Automatic machine passes
+  belong in machine duration; active inspection or hand finishing belongs in
+  <a href="{{ GuideSlug.Route3dPrintLabourCostAndPostProcessing }}"
+    >separately scoped work</a
+  >.
+</p>
+<p>
+  In the
+  <a href="{{ GuideSlug.Route3dPrintingQuoteGenerator }}"
+    >quotation's existing finish and agreed-scope fields</a
+  >, name the visible face, agreed process, protected interfaces and any agreed
+  physical reference/inspection. “Smooth finish” alone defines none of these and
+  certifies no sealing, strength or dimensional result.
+</p>
+<p>
+  Primary documentation reviewed 3 November 2026. The lane and label examples
+  are original hypothetical constructions. No new slicer experiment or physical
+  surface comparison was performed for this guide.
+</p>

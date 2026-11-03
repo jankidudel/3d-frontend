@@ -8,6 +8,9 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  ThreeDPrintZSeamPlacement: '3d-print-z-seam-placement',
+  ThreeDPrintIroningVsTopSurfacePattern:
+    '3d-print-ironing-vs-top-surface-pattern',
   ThreeDPrintLayerHeightVsDetail: '3d-print-layer-height-vs-detail',
   ThreeDPrintWallsVsInfill: '3d-print-walls-vs-infill',
   GcodeAbsoluteVsRelativeExtrusion: 'gcode-absolute-vs-relative-extrusion',
@@ -61,6 +64,37 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.ThreeDPrintZSeamPlacement,
+    group: GuideGroupId.General,
+    order: 914,
+    enabled: true,
+    publishDate: '2026-11-03',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'Z seam',
+      'layer seam',
+      'seam position',
+      'seam painting',
+      'random seam',
+      'scarf seam',
+    ],
+  },
+  {
+    slug: GuideContentSlug.ThreeDPrintIroningVsTopSurfacePattern,
+    group: GuideGroupId.General,
+    order: 915,
+    enabled: true,
+    publishDate: '2026-11-03',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'top surface',
+      'top fill',
+      'monotonic',
+      'ironing',
+      'smooth top',
+    ],
+  },
   {
     slug: GuideContentSlug.ThreeDPrintLayerHeightVsDetail,
     group: GuideGroupId.General,
@@ -121,6 +155,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 250,
     enabled: true,
     publishDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
     searchTerms: ['bearing seat', 'bearing housing', '608', 'outer ring'],
   },
@@ -130,6 +165,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 251,
     enabled: true,
     publishDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
     searchTerms: [
       'print in place',
@@ -294,7 +330,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 16,
     enabled: true,
     publishDate: '2026-10-24',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
   {
@@ -412,7 +448,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 262,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
   {
@@ -431,7 +467,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 10,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
   {
@@ -522,7 +558,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 208,
     enabled: true,
     publishDate: '2026-10-15',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
 
@@ -613,7 +649,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Calibration,
     order: 1,
     enabled: true,
-    updatedDate: '2026-10-10',
+    updatedDate: '2026-11-03',
     publishDate: '2026-09-15',
     checkEditorialTargets: false,
   },
@@ -623,7 +659,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 2,
     enabled: true,
     publishDate: '2026-09-15',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -655,7 +691,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-open-and-view-gcode-files',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     group: GuideGroupId.General,
     order: 13,
     enabled: true,
@@ -664,7 +700,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'how-to-check-gcode-before-printing',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     group: GuideGroupId.General,
     order: 8,
     enabled: true,

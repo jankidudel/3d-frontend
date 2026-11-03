@@ -1,0 +1,285 @@
+---
+title: 'Z-Seam Placement in 3D Printing | InspectMesh'
+description: 'Choose seam locations around visible and mating faces, compare placement strategies and inspect the native slice using a same-contour, different-start example.'
+slug: 3d-print-z-seam-placement
+eyebrow: Surface process decisions
+heading: Where should the Z seam go on a 3D print?
+---
+
+<p>
+  A perimeter loop has a start and an end, and their transition can leave a
+  visible mark. Choose a location that respects both visible and mating faces,
+  then verify the generated slice. Moving a start changes process placement; it
+  does not repair or resize the source mesh.
+</p>
+<h2>Identify the mark before moving it</h2>
+<p>
+  Compare three stages: the source surface, the native slicer's start/transition
+  markers and the physical sample if one exists. A ridge already present in CAD,
+  an open mesh boundary, support contact and inconsistent extrusion need
+  different investigations. An STL triangle edge does not automatically locate a
+  perimeter start. This Z-seam question also differs from the joining seam
+  between
+  <a href="{{ GuideSlug.RouteHowToSplitAnStlFileFor3dPrinting }}"
+    >separately printed sections</a
+  >.
+</p>
+<p>
+  Inspect the source in the
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a> and use
+  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}">mesh diagnosis</a>
+  for an actual source fault. Bounds, volume and triangle count cannot identify
+  how a slicer chooses loop starts.
+</p>
+<h2>Map visible faces and protected interfaces</h2>
+<table>
+  <caption>
+    Example planning labels, not measured part requirements
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Region</th>
+      <th scope="col">Decision before placement</th>
+      <th scope="col">Verification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Visible face A</th>
+      <td>
+        Identify the actual viewing side and the mark you want to relocate.
+      </td>
+      <td>Inspect the affected external loops through height.</td>
+    </tr>
+    <tr>
+      <th scope="row">Less-visible region B</th>
+      <td>Check whether it is also a contact, clip or locating surface.</td>
+      <td>
+        A rear-looking face is not automatically functionally unimportant.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Bore or bearing seat</th>
+      <td>Name the internal contact region, entrance and depth.</td>
+      <td>
+        Inspect its own starts; moving an external seam does not establish
+        internal clearance or retention.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Mating lip or moving gap</th>
+      <td>Protect the actual contacting and swept regions.</td>
+      <td>
+        Review native paths and, where required, a representative physical
+        interface.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Keep orientation a compromise among contact, supports, fit and feature needs.
+  Use the
+  <a href="{{ GuideSlug.RouteHowToOrientAnStlFileFor3dPrinting }}"
+    >orientation workflow</a
+  >
+  first if the face changes direction. An envelope-fit candidate does not choose
+  its best-looking seam.
+</p>
+<h2>Compare placement strategies</h2>
+<p>
+  Prusa's
+  <a href="https://help.prusa3d.com/article/seam-position_151069"
+    >seam-position reference</a
+  >
+  documents controls including Aligned and Random. Grouping starts concentrates
+  their locations; distributing them spreads the transitions. Neither strategy
+  establishes an invisible mark or a dimensionally better part. Compare where
+  the generated starts actually land rather than selecting a label alone.
+</p>
+<p>
+  Prusa's
+  <a href="https://help.prusa3d.com/article/seam-painting_168620"
+    >seam-painting reference</a
+  >
+  describes selecting allowed or blocked regions in the native application.
+  InspectMesh does not edit those selections or retain slicer painting. Review
+  the interaction with placement settings in your application/version, then
+  reslice the intended source.
+</p>
+<p>
+  The seam-position reference also describes scarf transitions: a
+  version-specific transition option, distinct from merely relocating a start.
+  Check availability and effective settings in your own application. This guide
+  does not claim that option was used in InspectMesh's retained PrusaSlicer
+  2.9.6 examples or establish a strength or visibility outcome.
+</p>
+<h2 id="guide-contour-starts">One contour with two different starts</h2>
+<p>
+  Consider an original mathematical 30 × 30 mm square centreline in the XY plane
+  at one selected layer. Each listed pair is (X,Y) in millimetres. This is
+  neither a deposited-width boundary nor exported slicer output. Both contours
+  traverse the same direction and close at their respective starts.
+</p>
+<ol>
+  <li>
+    A: <code>(0,0)</code> → <code>(30,0)</code> → <code>(30,30)</code> →
+    <code>(0,30)</code> → <code>(0,0)</code>.
+  </li>
+  <li>
+    B: <code>(15,0)</code> → <code>(30,0)</code> → <code>(30,30)</code> →
+    <code>(0,30)</code> → <code>(0,0)</code> → <code>(15,0)</code>.
+  </li>
+</ol>
+<table>
+  <caption>
+    Analytical contour comparison
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">A</th>
+      <th scope="col">B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Selected start/end (mm)</th>
+      <td>(0,0)</td>
+      <td>(15,0)</td>
+    </tr>
+    <tr>
+      <th scope="row">Bounds</th>
+      <td>X/Y = 0..30 mm</td>
+      <td>X/Y = 0..30 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Closed centreline length</th>
+      <td>120 mm</td>
+      <td>120 mm</td>
+    </tr>
+    <tr>
+      <th scope="row">Enclosed planar area</th>
+      <td>900 mm²</td>
+      <td>900 mm²</td>
+    </tr>
+    <tr>
+      <th scope="row">Source-shape change required</th>
+      <td>None for this comparison</td>
+      <td>None for this comparison</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A has four 30 mm sides. B splits the bottom side, giving 15 + 30 + 30 + 30 +
+  15 = 120 mm. Both enclose 30 × 30 = 900 mm². A corner start and a mid-face
+  start can therefore trace the same geometry. Identical source shape and its
+  mesh properties do not fix the start location.
+</p>
+<p>
+  This calculation simulates no candidate-selection algorithm, deposition,
+  retraction, pressure transition, total travel or duration. It assigns no
+  physical protrusion. Multiple islands, perimeters and transition methods mean
+  an actual job need not have one seam per layer; travel Z changes do not supply
+  a layer count.
+</p>
+<h2>Inspect the native slice through the affected heights</h2>
+<ol>
+  <li>
+    Retain the exact source revision, rotation, slicer/version and effective
+    profile, including local overrides or painting.
+  </li>
+  <li>
+    Use native markers/categories to inspect external and internal perimeter
+    transitions around the named face and interface.
+  </li>
+  <li>
+    Step through openings, contour changes and ledges, rather than approving the
+    whole part from one screenshot.
+  </li>
+  <li>
+    Recheck after rotation, profile or placement changes and identify the exact
+    saved output.
+  </li>
+  <li>
+    Compare a representative physical sample when appearance or fit requires
+    one; record its viewing or measuring direction and outcome.
+  </li>
+</ol>
+<p>
+  The
+  <a href="{{ GuideSlug.RouteGcodePreflightChecker }}">bounded G-code viewer</a>
+  recognises supported motion and state, not a complete seam or ironing legend.
+  Every endpoint, retraction or Z move is not automatically a seam. Use the
+  native slice for process intent and keep unsupported coverage visible.
+</p>
+<h2>Separate location from transition quality</h2>
+<p>
+  If placement is stable but blobs vary, return to the relevant delivery and
+  pressure/retraction evidence through
+  <a href="{{ GuideSlug.Route3dPrinterCalibrationGuide }}">calibration</a> and
+  <a href="{{ GuideSlug.Route3dPrintFlowRateVsESteps }}"
+    >feed versus profile flow</a
+  >. Do not prescribe a new firmware value just to move a mark. A different
+  <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}"
+    >continuous spiral process</a
+  >
+  has feature restrictions; it is not a general substitute when a part needs
+  ordinary walls, infill, separate regions or a roof.
+</p>
+<p>
+  For a
+  <a href="{{ GuideSlug.RouteBearingSeatSizing3dPrinting }}">bearing housing</a>
+  or <a href="{{ GuideSlug.RoutePrintInPlaceClearance }}">moving joint</a>,
+  review the actual interface separately. A three-point mesh circle does not
+  measure deposited protrusion, prove release or certify a retained ring.
+</p>
+<h2>Choose the next action from the observation</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Next action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Mark exists in the source</th>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
+          >Inspect geometry</a
+        >
+        before changing process placement.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Source unchanged, native starts differ</th>
+      <td>
+        Compare placement against the protected faces and recheck the saved
+        slice.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Transition blobs vary at stable placement</th>
+      <td>
+        Retain comparable controls and
+        <a href="{{ GuideSlug.Route3dPrintFlowRateVsESteps }}"
+          >investigate the responsible process</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Start lies on a mating surface</th>
+      <td>
+        Revise placement, then
+        <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+          >locate any physical restriction</a
+        >
+        before local compensation.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Primary documentation reviewed 3 November 2026. The square is original
+  analytical geometry. No new slicer run or physical seam test is claimed.
+</p>

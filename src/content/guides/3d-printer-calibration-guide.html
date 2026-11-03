@@ -12,291 +12,245 @@ faq:
 ---
 
 <p>
-  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
-    ><strong>Calculate a starting flow correction</strong></a
-  >
+  Calibrate from repeatable machine behaviour towards a stable material profile,
+  then validate the dimensions and features the part actually needs. Change one
+  named value at a time. Stop and return upstream when an earlier check becomes
+  inconsistent; a later compensation should not hide that fault.
 </p>
-<h2>Prerequisites before tuning</h2>
+<h2>Separate machine, material and model decisions</h2>
 <p>
-  Begin with a mechanically sound printer: clean motion, secure pulleys and
-  belts, an undamaged build surface, a clear nozzle, appropriate firmware and
-  dry, identified material. Use a known-good slicer profile as the baseline.
-  Calibration cannot make loose hardware or intermittent extrusion repeatable.
+  Machine variables include motion, offsets, extruder mechanics and firmware.
+  Material/profile variables include temperature, cooling and flow. Model and
+  process choices include orientation, walls, supports and seam placement.
+  Choosing a less-visible start location is a placement decision, not proof that
+  filament delivery needs calibration. Preserve a known-good profile and back up
+  adjustable values before editing them.
 </p>
-<h2>Ordered calibration workflow</h2>
-<ol>
-  <li>
-    <strong>Safety and mechanics:</strong> inspect wiring, fans, motion,
-    fasteners and end stops.
-  </li>
-  <li>
-    <strong>Bed and first layer:</strong> establish a repeatable surface, offset
-    and adhesion result.
-  </li>
-  <li>
-    <strong>Extruder motion:</strong> verify commanded filament travel before
-    changing firmware values.
-  </li>
-  <li>
-    <strong>Material temperature:</strong> choose a stable range using official
-    material/profile guidance and a controlled test.
-  </li>
-  <li>
-    <strong>Flow:</strong> tune the material profile after feed motion is
-    reliable.
-  </li>
-  <li>
-    <strong>Retraction and pressure behavior:</strong> address stringing, seams
-    and corners without masking flow faults.
-  </li>
-  <li>
-    <strong>Dimensional accuracy:</strong> measure axes, holes and mating
-    features with purpose-built coupons.
-  </li>
-  <li>
-    <strong>Application validation:</strong> print a small representative
-    feature before a long production job.
-  </li>
-</ol>
-
-<h2>Route the dimensional symptom to its owner</h2>
+<h2>One ordered calibration workflow</h2>
+<p>
+  Follow the exact printer, firmware and slicer manufacturer's procedure where
+  it differs from this general sequence. Begin with identified, suitably
+  conditioned material, an appropriate profile and an undamaged build surface.
+  Electrical damage, thermal faults or damaged motion hardware need qualified
+  attention, not tuning around the symptom.
+</p>
 <table>
+  <caption>
+    Prerequisites, evidence and stop/return checkpoints
+  </caption>
   <thead>
     <tr>
-      <th scope="col">Symptom</th>
-      <th scope="col">First distinction</th>
-      <th scope="col">Focused next step</th>
+      <th scope="col">Stage</th>
+      <th scope="col">Evidence before proceeding</th>
+      <th scope="col">Stop or return when</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Whole-part axis error</td>
-      <td>Comparable repeats and sizes support a scale question</td>
+      <th scope="row">1. Safety and mechanics</th>
       <td>
-        <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
-          >Shrinkage guide</a
-        >
-        and
-        <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
-          >axis worksheet</a
-        >
+        Secure fasteners, belts and pulleys; clear filament path/nozzle; smooth
+        repeatable motion; applicable firmware and end-stop checks.
+      </td>
+      <td>Motion slips, hardware is loose or a safety fault appears.</td>
+    </tr>
+    <tr>
+      <th scope="row">2. Bed and first layer</th>
+      <td>
+        Repeatable surface preparation, offset and first-layer result in
+        relevant bed regions.
+      </td>
+      <td>Contact or adhesion varies before the intended measurement.</td>
+    </tr>
+    <tr>
+      <th scope="row">3. Extruder motion</th>
+      <td>
+        Manufacturer-appropriate commanded-versus-actual feed comparison,
+        repeated before any adjustable machine value changes.
+      </td>
+      <td>
+        Feed varies or drag/slipping makes the comparison unreliable. Use the
+        <a href="{{ GuideSlug.Route3dPrintFlowRateVsESteps }}"
+          >feed-versus-flow workflow</a
+        >.
       </td>
     </tr>
     <tr>
-      <td>First-layer flare</td>
-      <td>Base differs from middle/upper readings</td>
+      <th scope="row">4. Material baseline</th>
       <td>
-        <a href="{{ GuideSlug.Route3dPrintElephantsFootAndPartFit }}"
-          >Local base diagnosis</a
-        >
+        One identified spool, stable condition and temperature chosen using
+        applicable material/profile guidance.
+      </td>
+      <td>Material condition or delivery changes between controls.</td>
+    </tr>
+    <tr>
+      <th scope="row">5. Profile flow</th>
+      <td>
+        Repeatable results from the manufacturer's prescribed wall or surface
+        test after feed is reliable.
+      </td>
+      <td>
+        A large or inconsistent correction suggests a wrong test basis, width or
+        unresolved feed fault.
       </td>
     </tr>
     <tr>
-      <td>Orientation-dependent bore</td>
-      <td>Axis, upper arc, seam or support contact changes restriction</td>
+      <th scope="row">6. Transition behaviour</th>
       <td>
-        <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
-          >Bore orientation diagnosis</a
-        >
-        then
-        <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-          >fit worksheet</a
-        >
+        Relevant pressure/retraction comparison with stable flow; retain the
+        unchanged control.
+      </td>
+      <td>
+        A change creates weak or unstable extrusion. Restore the stable profile
+        before continuing.
       </td>
     </tr>
     <tr>
-      <td>Inconsistent repeats</td>
-      <td>Instrument, conditioning or process varies</td>
+      <th scope="row">7. Dimensions and fit</th>
       <td>
-        Return to upstream checks and preserve raw readings; do not infer a
-        stable factor
+        Direction-labelled repeated readings from purpose-built axis, bore or
+        mating-feature coupons.
+      </td>
+      <td>
+        Repeated readings vary more than the intended change. Investigate rather
+        than infer a correction factor.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">8. Application validation</th>
+      <td>
+        Reviewed source and slice, followed by a representative feature under
+        the final conditions.
+      </td>
+      <td>
+        The actual requirement remains unmet; return to its responsible stage.
       </td>
     </tr>
   </tbody>
 </table>
-
-<h2>Stop conditions</h2>
 <p>
-  Stop when consecutive tests disagree more than the change you are trying to
-  measure, when a mechanical symptom appears, or when the next step depends on
-  an unresolved earlier one. Do not stack several setting changes into one
-  print: a better result would not identify which change helped.
+  Reprint the unchanged control after a setting change. If a new flow value
+  changes hole fit, confirm that flow test before compensating the hole.
+  Changing temperature, speed, flow and dimensions together cannot identify
+  which change helped. Calibration improves evidence; it certifies neither
+  strength nor surface quality.
 </p>
-<h2>Keep a calibration record</h2>
-<p>
-  Record date, printer, firmware, nozzle, build surface, material and condition,
-  slicer version, profile, test file, environmental notes, measurements and the
-  before/after value. Photograph or retain representative coupons. Separate
-  machine-level values from material/profile values so a new spool does not
-  cause an unnecessary firmware change.
-</p>
-<h2>Route focused problems to focused guides</h2>
-<p>
-  Use
-  <a href="{{ GuideSlug.Route3dPrintFlowRateVsESteps }}">flow versus E-steps</a>
-  for extrusion order, the
-  <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
-    >hole compensation guide</a
-  >
-  for circular features, and the
-  <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
-    >tolerance and clearance guide</a
-  >
-  for assemblies. Calibration improves evidence; it does not guarantee strength,
-  surface quality or successful printing for every design.
-</p>
-<h2>Separate machine, material and model variables</h2>
-<p>
-  Machine variables include motion, offsets, extruder mechanics and firmware.
-  Material variables include temperature, cooling, flow and moisture condition.
-  Model/profile variables include walls, infill, seam, support and orientation.
-  Change the setting at the layer that owns the symptom. This prevents a
-  material profile from compensating for loose hardware or a global firmware
-  value from being altered for one design.
-</p>
-<h2>Use stop-and-return checkpoints</h2>
+<h2>Route the symptom to a focused answer</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">First distinction</th>
+      <th scope="col">Next step</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Whole-part axis error</th>
+      <td>Comparable repeats and sizes support a scale question.</td>
+      <td>
+        <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
+          >Shrinkage workflow</a
+        >
+        and
+        <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+          >axis worksheet</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">First-layer flare</th>
+      <td>The base differs from middle/upper readings.</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintElephantsFootAndPartFit }}"
+          >Local base diagnosis</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Restricted bore</th>
+      <td>Axis, upper arc, seam or support contact changes the restriction.</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintHoleOrientationAndAccuracy }}"
+          >Locate the bore restriction</a
+        >
+        before
+        <a href="{{ GuideSlug.Route3dPrintHoleSizeCompensation }}"
+          >local compensation</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Mating parts do not fit</th>
+      <td>Chosen clearance differs from local process error.</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
+          >Tolerance and clearance</a
+        >
+        with the
+        <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+          >fit worksheet</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Start/stop mark on a critical face</th>
+      <td>Location differs from transition quality.</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintZSeamPlacement }}">Seam placement</a>;
+        use feed/flow evidence only for an actual delivery question.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Existing flat top needs a different appearance</th>
+      <td>Normal pattern differs from additional processing.</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintIroningVsTopSurfacePattern }}"
+          >Top-fill pattern versus ironing</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Inconsistent repeats</th>
+      <td>Instrument, conditioning or process varies.</td>
+      <td>
+        Keep raw readings and return upstream; do not average away the
+        instability.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Keep one calibration record</h2>
 <ul>
+  <li>Date, printer, firmware, extruder hardware, nozzle and build surface.</li>
+  <li>Material, spool condition and relevant environmental conditions.</li>
+  <li>Slicer/version, saved profile and source file/revision.</li>
   <li>
-    After mechanics, confirm smooth repeatable motion before heating or printing
-    tests.
+    Temperature, speed, layer height, line width and orientation for the test.
   </li>
   <li>
-    After the first layer, repeat on several bed regions before tuning cosmetic
-    settings.
+    Test method, instrument, raw direction-labelled readings and retained
+    photographs or coupons.
   </li>
-  <li>
-    After extrusion, compare repeated measurements before proceeding to
-    dimensional work.
-  </li>
-  <li>After each profile change, print the unchanged control again.</li>
+  <li>Original value, one changed value, result and any reason to revert.</li>
 </ul>
 <p>
-  If a checkpoint fails, return to the earliest changed condition. Do not
-  continue down the sequence and accumulate compensating settings.
+  Separate machine-level values from material/profile values. For an appropriate
+  repeatable single-wall test, the
+  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}">flow calculator</a>
+  provides transparent starting arithmetic; it cannot choose or measure the
+  test. Recheck the affected stages after hardware, nozzle, firmware, material
+  or profile changes, or actual drift. Stable evidence does not expire on a
+  calendar.
 </p>
-<h2>Calibration does not expire on a calendar</h2>
+<h2>Finish with representative validation</h2>
 <p>
-  Recheck when hardware changes, a nozzle is replaced, firmware or motion
-  settings change, measurements drift, or a new material/profile exposes a
-  repeatable problem. Avoid unnecessary tuning when controlled results remain
-  stable. A documented baseline makes it possible to distinguish real drift from
-  normal part-to-part variation.
-</p>
-<h2>Finish with a representative validation print</h2>
-<p>
-  Select a small model containing the feature you care about: a bridge, vertical
-  hole, thin wall, mating pair or loaded clip. Confirm its file dimensions and
-  mesh, inspect the layer preview, print it with the recorded profile and
-  measure the result. A generic cube alone cannot validate every future
-  geometry.
-</p>
-<p>
-  Calibration is easier when each test answers one question. Changing
-  temperature, flow, speed and dimensions together may improve a print, but it
-  does not reveal why. Work from basic motion and extrusion towards material
-  settings and finally parts that must fit.
-</p>
-<h2>A sensible calibration order</h2>
-<h3>1. Check mechanical basics</h3>
-<p>
-  Secure belts, pulleys, bed mounting and hot end. A loose pulley, slipping belt
-  or unstable frame creates inconsistent dimensions no slicer calculation can
-  fix. Start with a clean nozzle and smooth filament path.
-</p>
-<h3>2. Confirm extrusion broadly</h3>
-<p>
-  Check the manufacturer procedure for extruder steps or rotation distance where
-  adjustable. Do not hide a mechanical extrusion fault with extreme slicer flow
-  values.
-</p>
-<h3>3. Choose a stable material and temperature</h3>
-<p>
-  Use one dry spool and a known-good profile. Pick a temperature with stable
-  extrusion and acceptable layer bonding before judging fine fit.
-</p>
-<h3>4. Calibrate flow</h3>
-<p>
-  Print a purpose-made single-wall test, measure clean areas and use the
-  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
-    >Flow Rate Calculator</a
-  >
-  for a starting correction. It is a small material/profile adjustment, not a
-  cure for a blocked nozzle or wrong line width.
-</p>
-<h3>5. Check whole-part dimensions</h3>
-<p>
-  Measure a simple model with known X, Y and Z dimensions. Use the
-  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
-    >Shrinkage Calculator</a
-  >
-  for consistent axis error. Scaling a whole part does not necessarily make a
-  hole fit a shaft.
-</p>
-<h3>6. Tune mating tolerances</h3>
-<p>
-  Print a small fit test in the final orientation. The
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >Tolerance &amp; Clearance Calculator</a
-  >
-  turns test measurements into starting CAD dimensions; it is never a universal
-  clearance promise.
-</p>
-<h2>Keep a short calibration record</h2>
-<p>
-  For each material, record printer, nozzle, temperatures, layer height, line
-  width, flow, orientation and date. This makes a successful profile repeatable.
-</p>
-<h2>What calibration cannot replace</h2>
-<p>
-  Calibration does not make a broken model printable. Check downloaded files
-  with STL or 3MF Print Preflight, then confirm placement and supports in the
-  slicer.
-</p>
-<h2>Use a controlled calibration order</h2>
-<p>
-  Change one variable at a time and begin with the printer's mechanical
-  condition, extruder motion and temperature baseline before tuning flow,
-  pressure behaviour, dimensional compensation or cosmetic details. A useful
-  record names the printer, nozzle, material, spool condition, profile, measured
-  result and date. Stop when an earlier fault makes the next measurement
-  unreliable: a loose belt, unstable first layer or inconsistent extrusion makes
-  a precision clearance test poor evidence.
-</p>
-<h2>Validate with the part that matters</h2>
-<p>
-  A calibration coupon is a comparison tool, not a universal setting. After a
-  repeatable result, validate it with a small version of the actual feature: a
-  hole, pin, snap, wall or mating pair. Use the
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
-    >tolerance calculator</a
-  >
-  for deliberate fit dimensions and the
-  <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
-    >shrinkage guide</a
-  >
-  when the same axis error persists. Keep the slicer preview and real
-  measurement as the final checks; InspectMesh cannot certify a printer or
-  guarantee a print.
-</p>
-<p>
-  <a href="{{ GuideSlug.Route3dPrintFlowRateCalculator }}"
-    ><strong>Use the flow calculator for your next material profile</strong></a
-  >
-</p>
-<h2>Troubleshoot by returning upstream</h2>
-<p>
-  If dimensional tests are inconsistent, return to mechanics, first layer and
-  extrusion rather than adding compensation. If a new flow value changes hole
-  fit, confirm the flow test before tuning holes. If a cosmetic retraction test
-  causes weak extrusion, restore the last stable profile. The ordered workflow
-  is a dependency chain: later adjustments assume earlier results remain
-  repeatable.
-</p>
-<p>
-  Back up firmware and slicer values before editing them, change one named value
-  at a time, and keep factory or known-good defaults available. Follow the
-  printer and slicer manufacturer's procedure when it differs from a generic
-  calibration sequence. Stop and seek qualified help for electrical,
-  thermal-runaway or damaged-motion-system concerns rather than attempting to
-  tune around them.
+  Select a small model containing the feature that matters: a bridge, vertical
+  hole, thin wall, mating pair or loaded clip. Inspect file dimensions and mesh
+  with <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL preflight</a> or
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a>, then
+  review placement, supports and the actual layer paths. Print with the recorded
+  profile and assess the relevant requirement. A generic cube cannot validate
+  every future geometry, and calibration does not repair missing source
+  surfaces.
 </p>
