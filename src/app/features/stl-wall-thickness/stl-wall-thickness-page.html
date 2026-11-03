@@ -116,7 +116,12 @@
         <p>
           A sampled material-wall result and generated slicer paths answer
           different questions. Find the same region in both before changing the
-          model. The threshold does not configure the slicer.
+          model. This samples material geometry in the uploaded revision, before
+          future
+          <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
+            >wall, cap and infill decisions</a
+          >. The threshold does not configure the slicer or check a perimeter
+          count or print strength.
         </p>
         <ul>
           @if (result.belowThreshold > 0) {
@@ -226,6 +231,14 @@
       </tbody>
     </table>
     <h2>Method boundary</h2>
+    <p>
+      These are uploaded material-wall samples, not a preview of future slicer
+      regions. For a settings change, compare
+      <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
+        >walls, caps and sparse infill</a
+      >
+      in the actual slice.
+    </p>
     <p>
       The checker selects up to 2,000 triangles across input triangle order and
       casts one inward normal ray from each centroid. Degenerate faces and rays

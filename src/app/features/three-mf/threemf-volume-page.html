@@ -103,7 +103,15 @@
           <p>
             Weight (g) = volume (cm³) × density (g/cm³). This is not a slicer
             quote and excludes infill, walls, supports, purge and printer
-            settings.
+            settings. Resolved geometry volume does not reconstruct the
+            container's application/project material plan. Compare
+            <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
+              >wall/cap/core allocation</a
+            >
+            with
+            <a [href]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
+              >complete sliced consumption</a
+            >.
           </p>
           <label class="field"
             ><span>Material density (g/cm³)</span
@@ -175,7 +183,16 @@
       cavity.
     </p>
     <p>
-      Optional solid mass uses available cm³ and your density. Use
+      A 3MF can carry application/project information this tool does not use to
+      reconstruct a sliced wall, cap or infill plan. Supported build scope and
+      geometry volume do not establish complete consumption; compare
+      <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
+        >the process-region example</a
+      >
+      and use
+      <a [href]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
+        >complete sliced totals</a
+      >. Optional solid mass uses available cm³ and your density. Use
       <a [href]="guideRouteUrl.RouteHowToEstimateFilamentWeightFromA3mfFile"
         >solid-mass guidance</a
       >

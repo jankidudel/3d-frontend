@@ -250,7 +250,21 @@
             </dl>
           }
           <p>
-            This percentage adjustment is not a slicer consumption estimate.
+            This percentage adjustment is not a slicer consumption estimate. An
+            ordinary solid STL does not supply a future wall/cap/infill plan.
+            Compare the
+            <a
+              [href]="
+                guideRouteUrl.Route3dPrintWallsVsInfill +
+                '#guide-shell-core-budget'
+              "
+              >shell/core example</a
+            >
+            and use
+            <a [href]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
+              >complete sliced totals</a
+            >
+            for the actual job.
           </p>
           @if (material() === 'resin') {
             <p class="resin-note">
@@ -409,7 +423,18 @@
       material estimate in the
       <a [routerLink]="routeUrl.PrintCostCalculator"
         >production cost calculator</a
-      >. Missing volume supplies no mass estimate.
+      >. Missing volume supplies no mass estimate. An ordinary solid STL cannot
+      supply the future wall/cap/infill allocation: the
+      <a
+        [href]="
+          guideRouteUrl.Route3dPrintWallsVsInfill + '#guide-shell-core-budget'
+        "
+        >analytical contrast</a
+      >
+      explains why. Use
+      <a [href]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
+        >complete sliced consumption</a
+      >, rather than multiplying solid mass by an infill percentage.
     </p>
     <p>
       For interior design use

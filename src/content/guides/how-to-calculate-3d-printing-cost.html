@@ -15,6 +15,16 @@ heading: How to Calculate 3D Printing Cost
 </p>
 <h2>Set the job scope</h2>
 <p>
+  Re-slice after changing
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}"
+    >walls, caps or sparse infill</a
+  >, or the
+  <a href="{{ GuideSlug.Route3dPrintLayerHeightVsDetail }}">layer schedule</a>.
+  An unchanged source mesh does not establish unchanged duration or consumption.
+  Replace the affected per-run inputs with reviewed generated totals before
+  recomputing the order.
+</p>
+<p>
   Record agreed model revision, material, profile and planned quantity. The
   existing fictional five-identical-part job uses Plate A: three parts, 90 g,
   four hours; Plate B: two parts, 70 g, three hours. Run each once. These are

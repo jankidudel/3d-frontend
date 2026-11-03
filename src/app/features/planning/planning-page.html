@@ -219,6 +219,9 @@
           The planner rounds intended wall thickness divided by chosen line
           width to the nearest positive whole line count. This is equal-width
           arithmetic; inspect generated slicer paths before choosing a CAD wall.
+          A modelled material wall is not a selected perimeter count: compare
+          <a [href]="guides.Route3dPrintWallsVsInfill">walls, caps and infill</a
+          >.
         </p>
         <p>
           {{
@@ -226,6 +229,10 @@
               ? 'This layer exceeds the 80% starting limit in the cited Prusa guidance. Review the exact nozzle and printer profile.'
               : 'The layer is within that starting upper limit. This does not establish a suitable minimum layer height or guarantee this profile.'
           }}
+          For the feature decision, distinguish
+          <a [href]="guides.Route3dPrintLayerHeightVsDetail"
+            >layer sampling from XY detail</a
+          >. This ratio does not certify print quality or minimum detail.
         </p>
       }
     }
@@ -243,6 +250,14 @@
             }}
           </dd>
         </dl>
+        <p>
+          At the entered width and speed, changing layer height changes this
+          approximate request. It does not establish surface improvement or
+          elapsed duration; compare
+          <a [href]="guides.Route3dPrintLayerHeightVsDetail"
+            >the actual feature and layer schedule</a
+          >.
+        </p>
         @if (result.exceeds !== null) {
           <p>
             {{
@@ -273,6 +288,21 @@
     <h2>Method and interpretation</h2>
     <p>{{ config.method }}</p>
     <p>{{ config.caveat }}</p>
+    @if (kind === kinds.Wall) {
+      <p>
+        CAD material thickness belongs to the source geometry. A chosen
+        perimeter count belongs to generated paths, with variable widths and
+        overlap requiring slicer review. Use
+        <a [href]="guides.Route3dPrintWallsVsInfill"
+          >the wall/cap/core distinction</a
+        >
+        and
+        <a [href]="guides.Route3dPrintLayerHeightVsDetail"
+          >layer-detail comparison</a
+        >
+        to decide what to inspect before changing a setting.
+      </p>
+    }
     @if (kind === kinds.Flow) {
       <p>
         Arriving with F1800? In G21 millimetre G1 context it requests 30 mm/s.

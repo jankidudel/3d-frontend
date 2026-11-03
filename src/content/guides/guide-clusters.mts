@@ -154,11 +154,13 @@ export const guideClusters: readonly GuideCluster[] = [
   },
   {
     id: 'geometry',
-    label: 'Orientation, overhangs and support access',
+    label: 'Geometry, layers and support access',
     description:
-      'Choose an orientation, interpret downward geometry and plan support access before printing.',
+      'Separate source geometry from layer, wall and infill decisions; compare orientation and support access before printing.',
     pillar: 'how-to-orient-an-stl-file-for-3d-printing',
     slugs: [
+      GuideContentSlug.ThreeDPrintLayerHeightVsDetail,
+      GuideContentSlug.ThreeDPrintWallsVsInfill,
       '3d-print-wall-thickness-guide',
       'how-to-check-stl-wall-thickness-for-3d-printing',
       'zero-thickness-stl-surface',

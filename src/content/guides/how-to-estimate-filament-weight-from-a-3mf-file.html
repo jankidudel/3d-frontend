@@ -85,6 +85,16 @@ heading: 'Estimate Solid-Model Mass from a 3MF: Volume and Density'
 </p>
 <h2>Move to sliced consumption for a production decision</h2>
 <p>
+  Multiplying solid-equivalent mass by an infill percentage does not supply job
+  grams: perimeters and caps have their own allocation, while process structures
+  add other scopes. The original
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}#guide-shell-core-budget"
+    >shell/cap/core calculation</a
+  >
+  demonstrates this with unchanged outer volume. A supported 3MF geometry result
+  does not reconstruct that slicing plan.
+</p>
+<p>
   Slice the intended arrangement with the actual profile and use
   <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
     >complete per-material consumption</a

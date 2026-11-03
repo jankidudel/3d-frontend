@@ -122,6 +122,15 @@ heading: Why Are the Top Layers Missing in Your Slicer?
 </p>
 <h2>Check local settings and mode as well as the global profile</h2>
 <p>
+  Perimeter paths follow boundaries, solid caps close surfaces and sparse paths
+  occupy the remaining core. A nonzero core density does not replace disabled
+  top closure. Use the
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}"
+    >region and setting comparison</a
+  >
+  when choosing a change, then continue the effective-closure diagnosis below.
+</p>
+<p>
   The controlled P-roof/P-open Prusa-format projects retain the same box
   geometry and global four-layer setting, but carry object-level top counts of
   four and zero. Actual CLI reopening produces roof/no-roof paths. The official

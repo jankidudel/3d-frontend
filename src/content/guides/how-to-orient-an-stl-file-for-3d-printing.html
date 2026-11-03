@@ -100,6 +100,15 @@ heading: How to Orient an STL File for 3D Printing
   >. Containment does not establish the best orientation or support adequacy.
 </p>
 <h2>3. Follow the critical feature</h2>
+<p>
+  For a critical sloping face, compare its stepping relative to the horizontal
+  layer direction using the
+  <a href="{{ GuideSlug.Route3dPrintLayerHeightVsDetail }}#guide-ramp-sampling"
+    >ideal ramp example</a
+  >. Rotating that face also changes contact and support access. Balance those
+  requirements in the native slice rather than selecting a universally best
+  direction or inferring strength from the mesh.
+</p>
 <table>
   <caption>
     Illustrative choices, not tested print results

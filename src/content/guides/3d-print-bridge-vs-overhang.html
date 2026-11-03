@@ -96,6 +96,15 @@ heading: '3D Print Bridge vs Overhang: Identify the Geometry First'
 </p>
 
 <h2>Read the first affected layer</h2>
+<p>
+  For a roof above sparse internal paths, inspect the first solid closure paths,
+  their anchors and spans. The solid cap and supporting core are different
+  regions;
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}"
+    >infill percentage alone</a
+  >
+  cannot describe that roof or establish supportability.
+</p>
 <ol>
   <li>Find the first underside layer.</li>
   <li>

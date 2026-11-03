@@ -75,14 +75,14 @@ endsolid sheet`);
   expect(help.querySelectorAll('li')).toHaveLength(2);
   expect(help.textContent).toContain('flagged material region');
   expect(help.textContent).toContain('unmeasured directions');
-  expect(help.querySelector('a')).toBeNull();
+  expect(help.querySelector('li a')).toBeNull();
 
   page.report.set(noFlaggedSamples);
   fixture.detectChanges();
   help = element.querySelector('.next-actions')!;
   expect(help.querySelectorAll('li')).toHaveLength(2);
   expect(help.textContent).toContain('unsampled source regions');
-  expect(help.querySelector('a')?.getAttribute('href')).toBe(
+  expect(help.querySelector('li a')?.getAttribute('href')).toBe(
     page.guideRouteUrl.RouteEmbossedTextNotPrinting,
   );
 
@@ -101,7 +101,7 @@ endsolid sheet`);
   fixture.detectChanges();
   help = element.querySelector('.next-actions')!;
   expect(help.querySelectorAll('li')).toHaveLength(1);
-  expect(help.querySelector('a')).toBeNull();
+  expect(help.querySelector('li a')).toBeNull();
 
   page.setThreshold(0.5);
   fixture.detectChanges();
@@ -148,9 +148,9 @@ it('keeps 3MF next actions tied to placed-geometry coverage and native project s
   help = element.querySelector('.next-actions')!;
   expect(help.querySelectorAll('li')).toHaveLength(1);
   expect(help.textContent).toContain('effective object settings');
-  expect(help.querySelector('a')?.getAttribute('href')).toBe(
-    page.guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting,
-  );
+  expect(
+    [...help.querySelectorAll('a')].map((link) => link.getAttribute('href')),
+  ).toContain(page.guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting);
 
   page.analyse();
   fixture.detectChanges();

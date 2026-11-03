@@ -1,0 +1,219 @@
+---
+title: 'Layer Height vs Detail in 3D Printing | InspectMesh'
+description: 'Separate layer stair-stepping, XY line width and mesh faceting before changing layer height. Compare a ramp example and inspect the actual sliced feature.'
+slug: 3d-print-layer-height-vs-detail
+eyebrow: Geometry and slicing
+heading: 'When does a smaller layer height improve print detail?'
+---
+
+<p>
+  Smaller layers can represent changes through height more finely, but they do
+  not restore geometry missing from a coarse mesh or automatically make a narrow
+  XY stroke printable. Identify whether the visible problem follows the layer
+  direction, line width or source surface before changing the profile.
+</p>
+<h2>Identify the feature and its direction</h2>
+<p>
+  Start with one named feature on a particular revision. Check its source shape
+  and how it lies relative to the printer's horizontal bed plane. A
+  smooth-looking mesh preview and a dense layer preview answer different
+  questions; neither establishes the physical surface finish.
+</p>
+<table>
+  <caption>
+    Choose the investigation from the observed feature
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Useful investigation</th>
+      <th scope="col">Unjustified conclusion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Coarse steps on a shallow slope</td>
+      <td>Layer schedule, local slope and orientation</td>
+      <td>Every defect is caused by too few triangles</td>
+    </tr>
+    <tr>
+      <td>Narrow XY stroke omitted</td>
+      <td>Actual material width, source geometry and perimeter paths</td>
+      <td>Smaller layers must restore the stroke</td>
+    </tr>
+    <tr>
+      <td>Shallow raised or recessed Z detail missing</td>
+      <td>Relief, actual slice planes, first-layer and adaptive schedule</td>
+      <td>Relief divided by nominal layer height guarantees paths</td>
+    </tr>
+    <tr>
+      <td>Polygonal curve already visible in the mesh</td>
+      <td>Source tessellation and the exact exported derivative</td>
+      <td>A finer layer profile recreates the source CAD curve</td>
+    </tr>
+    <tr>
+      <td>Poor support-facing surface</td>
+      <td>Orientation and actual support interface</td>
+      <td>Finer layers alone establish a finished surface</td>
+    </tr>
+  </tbody>
+</table>
+<h2 id="guide-ramp-sampling">Work through a shallow ramp</h2>
+<p>
+  This original hypothetical geometry is an ideal planar ramp
+  <code>z = 0.1x</code> over X=0..30 mm, rising from Z=0 to Z=3 mm. Its angle
+  relative to the horizontal bed plane is <code>atan(0.1) ≈ 5.71 degrees</code>.
+  It is an upward surface, not an overhang threshold.
+</p>
+<p>
+  For successive equally spaced horizontal levels with vertical increment h, the
+  ramp equation gives <code>delta x = h / 0.1</code>. The table is geometric
+  sampling, not a measured print.
+</p>
+<table>
+  <caption>
+    Horizontal intersections on the ideal 5.71-degree ramp
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Hypothetical equal increment h</th>
+      <th scope="col">Horizontal level spacing</th>
+      <th scope="col">Calculation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.30 mm</td>
+      <td>3.00 mm</td>
+      <td>0.30 / 0.1</td>
+    </tr>
+    <tr>
+      <td>0.20 mm</td>
+      <td>2.00 mm</td>
+      <td>0.20 / 0.1</td>
+    </tr>
+    <tr>
+      <td>0.10 mm</td>
+      <td>1.00 mm</td>
+      <td>0.10 / 0.1</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  For a separate ideal 45-degree ramp, <code>z = x</code>, 0.20 mm increments
+  instead give 0.20 mm horizontal spacing. The same schedule therefore samples
+  different slopes differently. This does not select an approved print
+  orientation.
+</p>
+<p>
+  These spacings are not recommended settings, measured terrace widths, surface
+  roughness, cusp-height bounds or a finish guarantee. Deposition shape, actual
+  line width, layer-plane convention and slicer behaviour affect the appearance.
+  A curved surface changes slope, so it does not have one constant spacing from
+  this equation.
+</p>
+<h2>Keep XY width, Z sampling and source fidelity separate</h2>
+<p>
+  Nozzle diameter, actual line width and layer height are separate values.
+  Reducing the vertical increment does not widen a narrow stroke. Increasing the
+  source triangle count does not change the nominal layer schedule. Prusa's
+  <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748"
+    >layers and perimeters documentation</a
+  >
+  distinguishes vertical layer resolution from XY detail and describes perimeter
+  controls; its profile guidance is not a universal minimum-detail rule.
+</p>
+<p>
+  For dimensional planning, use the
+  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}"
+    >nozzle and wall planner</a
+  >
+  to compare an entered width and approximate equal-width count. Its
+  layer/nozzle ratio is a bounded starting screen, not a print-quality
+  certificate. If the source curve is already faceted, return to
+  <a href="{{ GuideSlug.RouteStlResolutionChordHeightExplained }}"
+    >chord deviation and tessellation</a
+  >; smaller layers cannot restore the omitted CAD curve.
+</p>
+<h2>Compare orientation with the other requirements</h2>
+<p>
+  Reorienting a slope changes its relation to horizontal layers. It also changes
+  bed contact, support access, critical faces and potentially the load
+  direction. Use the
+  <a href="{{ GuideSlug.RouteHowToOrientAnStlFileFor3dPrinting }}"
+    >orientation comparison</a
+  >
+  to rank those requirements before accepting a surface improvement. A mesh view
+  cannot certify the resulting finish or strength.
+</p>
+<h2>Review variable layers and effective settings</h2>
+<p>
+  Prusa's
+  <a href="https://help.prusa3d.com/article/variable-layer-height-function_1750"
+    >variable layer height reference</a
+  >
+  documents automatic and manual regional schedules. This can target a region
+  rather than apply one increment everywhere. Review the generated schedule,
+  first layer and effective object/profile overrides. A named profile or quality
+  slider does not establish that only layer height changed, or supply a fixed
+  time-saving ratio. No current menu walkthrough or new slicer run is claimed
+  here.
+</p>
+<h2>Inspect actual paths where the feature matters</h2>
+<p>
+  The retained
+  <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}#guide-lettering-results"
+    >T3 lettering evidence</a
+  >
+  gives a specific Z-detail comparison: the 0.10 mm relief has no deposition
+  above the base under the coarse 0.20 mm schedule, while the finer 0.10 mm
+  schedule records glyph paths at Z=2.1. Both nominal layer height and
+  first-layer height changed. This is an identified software observation, not an
+  isolated one-variable experiment or physical test. The lettering guide retains
+  the detailed conditions and counts.
+</p>
+<p>
+  Compare the source feature with the effective schedule and the exact exported
+  output, including the first affected layers and extrusion categories. Travel
+  height and a selected preview range can mislead. Dividing nominal feature
+  height by nominal layer height does not give an exact generated-layer count;
+  first layers, adaptive schedules and slice placement matter.
+</p>
+<h2>Compare the complete job before choosing</h2>
+<p>
+  At entered width and speed, changing height changes approximate requested
+  throughput; use the
+  <a href="{{ GuideSlug.RouteMaximumVolumetricSpeedExplained }}"
+    >volumetric-speed explanation</a
+  >
+  for that arithmetic and applicable capacity evidence. It does not predict
+  surface improvement or elapsed time. Halving layer height does not establish
+  exactly twice the duration, half the strength, smaller XY error or a
+  particular roughness.
+</p>
+<p>
+  Record actual generated duration and
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >complete per-material consumption</a
+  >
+  when supplied. Keep unknowns unknown. Reuse those reviewed inputs in
+  <a href="{{ GuideSlug.RouteHowToCalculate3dPrintingCost }}"
+    >production costing</a
+  >, rather than carrying an old job estimate into a changed schedule.
+</p>
+<ol>
+  <li>Record the named feature, revision, view and measurement direction.</li>
+  <li>Keep the effective width, first layer and full height schedule.</li>
+  <li>Make one justified change and retain any other effective overrides.</li>
+  <li>Identify the exact exported output and compare the affected paths.</li>
+  <li>
+    Record supplied duration and consumption; leave the physical result
+    unresolved until relevant testing.
+  </li>
+</ol>
+<p>
+  Primary documentation reviewed 3 November 2026. The ramp mathematics is an
+  original idealised example. The linked lettering observation retains its
+  original provenance; no new fixtures, slicer experiments or physical prints
+  were produced for this guide.
+</p>

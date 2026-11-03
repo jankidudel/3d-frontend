@@ -74,7 +74,13 @@ heading: 'How Much Filament Will a Print Use? Read the Complete Slicer Total'
   A lower consumption estimate does not prove that the revised part meets its
   requirements. Re-slice the changed profile and assess the affected walls,
   supports, layer direction and functional evidence before accepting the saving.
-  Infill percentage alone cannot describe the whole material use.
+  Infill percentage alone cannot describe the whole material use. The original
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}#guide-shell-core-budget"
+    >shell/core budget</a
+  >
+  shows why: two assigned shell thicknesses share the same solid geometry and
+  core fraction but different analytical material totals. That model explains
+  allocation; complete generated consumption remains the production input.
 </p>
 <h2>A lower total can mean a missing required feature</h2>
 <p>

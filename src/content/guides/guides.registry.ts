@@ -8,6 +8,8 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  ThreeDPrintLayerHeightVsDetail: '3d-print-layer-height-vs-detail',
+  ThreeDPrintWallsVsInfill: '3d-print-walls-vs-infill',
   GcodeAbsoluteVsRelativeExtrusion: 'gcode-absolute-vs-relative-extrusion',
   GcodeFeedRateMmPerMinute: 'gcode-feed-rate-mm-per-minute',
   BearingSeatSizing3dPrinting: 'bearing-seat-sizing-3d-printing',
@@ -59,6 +61,36 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.ThreeDPrintLayerHeightVsDetail,
+    group: GuideGroupId.General,
+    order: 912,
+    enabled: true,
+    publishDate: '2026-11-03',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'layer height',
+      'vertical detail',
+      'stair stepping',
+      'adaptive layers',
+      'XY resolution',
+    ],
+  },
+  {
+    slug: GuideContentSlug.ThreeDPrintWallsVsInfill,
+    group: GuideGroupId.General,
+    order: 913,
+    enabled: true,
+    publishDate: '2026-11-03',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'walls',
+      'perimeters',
+      'shell thickness',
+      'infill percentage',
+      'top bottom caps',
+    ],
+  },
   {
     slug: GuideContentSlug.GcodeAbsoluteVsRelativeExtrusion,
     group: GuideGroupId.General,
@@ -174,6 +206,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 244,
     enabled: true,
     publishDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
     searchTerms: [
       'lettering',
@@ -190,6 +223,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 245,
     enabled: true,
     publishDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
     searchTerms: ['vase', 'spiral', 'spiralise', 'spiralize', 'single wall'],
   },
@@ -199,6 +233,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 246,
     enabled: true,
     publishDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
     searchTerms: [
       'missing top',
@@ -277,6 +312,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 14,
     enabled: true,
     publishDate: '2026-10-18',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
   {
@@ -441,7 +477,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 203,
     enabled: true,
     publishDate: '2026-10-08',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
   {
@@ -450,8 +486,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 204,
     enabled: true,
     publishDate: '2026-10-08',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
-    updatedDate: '2026-11-01',
   },
   {
     slug: 'stl-multiple-shells-disconnected-parts',
@@ -565,11 +601,11 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'maximum-volumetric-speed-explained',
-    updatedDate: '2026-11-02',
     group: GuideGroupId.General,
     order: 105,
     enabled: true,
     publishDate: '2026-10-04',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
   {
@@ -695,7 +731,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 1,
     enabled: true,
     publishDate: '2026-09-08',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -713,7 +749,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -731,7 +767,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -847,8 +883,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 75,
     enabled: true,
     publishDate: '2026-09-06',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
-    updatedDate: '2026-11-01',
   },
   {
     slug: 'how-to-repair-an-stl-file',
@@ -971,8 +1007,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.Stl,
     order: 200,
     enabled: true,
-    updatedDate: '2026-11-01',
     publishDate: '2026-09-05',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -1008,7 +1044,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 220,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -1017,7 +1053,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 230,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -1151,8 +1187,8 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.ThreeMf,
     order: 145,
     enabled: true,
-    updatedDate: '2026-11-01',
     publishDate: '2026-09-06',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {
@@ -1161,7 +1197,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 140,
     enabled: true,
     publishDate: '2026-09-05',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-31',
   },
 ];

@@ -122,6 +122,14 @@ heading: How to Check STL Wall Thickness for 3D Printing
 
 <h2>4. Change the feature that needs changing</h2>
 <p>
+  Changing a modelled rib edits the uploaded geometry. Changing future
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}"
+    >perimeters, caps or infill</a
+  >
+  edits the slicing plan. This STL thickness screen does not reveal generated
+  infill, so compare native paths before choosing between those actions.
+</p>
+<p>
   In the source CAD, increase a specific wall or rib when its role requires more
   material. Global scale changes every dimension: a 1.2 mm wall scaled to 75%
   becomes 0.9 mm, while a 10 mm hole becomes 7.5 mm. That is dimensional

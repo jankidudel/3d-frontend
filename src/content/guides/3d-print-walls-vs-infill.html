@@ -1,0 +1,270 @@
+---
+title: 'Walls vs Infill in 3D Printing: What to Change | InspectMesh'
+description: 'Compare perimeter walls, solid caps and sparse infill. Work through an original material budget without treating infill percentage as a fraction of total mass.'
+slug: 3d-print-walls-vs-infill
+eyebrow: Geometry and slicing
+heading: 'Walls, top layers and infill: which setting affects your part?'
+---
+
+<p>
+  Walls follow the model's boundaries, solid top and bottom regions close its
+  surfaces, and sparse infill occupies the remaining internal region. Changing
+  one does not automatically replace the others. Choose the affected feature
+  first, then inspect its generated paths and complete material estimate.
+</p>
+<h2>Map the region before changing a count</h2>
+<table>
+  <caption>
+    Three process regions, with different questions
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Region</th>
+      <th scope="col">What to inspect</th>
+      <th scope="col">What its setting cannot prove</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Side and perimeter boundaries</td>
+      <td>Paths around outer faces, bosses, openings and thin ribs</td>
+      <td>
+        A count alone does not establish actual material thickness, retained
+        detail or strength
+      </td>
+    </tr>
+    <tr>
+      <td>Solid top and bottom caps</td>
+      <td>
+        Closure layers, effective depth, local overrides and the paths beneath a
+        roof
+      </td>
+      <td>
+        A nonzero top count does not establish a supported or correctly
+        generated roof
+      </td>
+    </tr>
+    <tr>
+      <td>Sparse interior</td>
+      <td>Pattern, density, anchors and local internal support</td>
+      <td>The density setting is not a percentage of the complete part mass</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A slicer wall/perimeter count differs from a material wall already modelled in
+  CAD. A narrow modelled wall may leave little or no sparse interior at all.
+  Neither term means a disconnected mesh shell; if the question is connectivity,
+  use
+  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+    >the separate-parts explanation</a
+  >.
+</p>
+<p>
+  Increasing infill does not necessarily restore an omitted rib, repair a source
+  hole or add a missing top surface. For a thin material region, keep the
+  measurement and generated-path comparison with
+  <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
+    >wall-thickness interpretation</a
+  >. For absent roof paths, follow
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}"
+    >the visibility, source and effective-settings diagnosis</a
+  >.
+</p>
+<h2>Width and overlap make counts approximate</h2>
+<p>
+  Perimeter count multiplied by one chosen width is equal-width arithmetic, not
+  exact slicer wall thickness. Actual widths can vary and adjoining lines can
+  overlap. Prusa's
+  <a href="https://help.prusa3d.com/article/layers-and-perimeters_1748"
+    >layers and perimeters reference</a
+  >
+  describes these concepts and separate top/bottom settings. Use the
+  <a href="{{ GuideSlug.RouteNozzleLayerHeightCalculator }}"
+    >nozzle and wall planner</a
+  >
+  for its bounded arithmetic, then inspect the native paths. A
+  <a href="{{ GuideSlug.RouteStlWallThicknessChecker }}"
+    >sampled STL thickness result</a
+  >
+  measures uploaded material geometry; it cannot see future infill or certify a
+  chosen perimeter count.
+</p>
+<h2 id="guide-shell-core-budget">
+  An original shell, cap and core material budget
+</h2>
+<p>
+  <strong
+    >This is a simplified geometry model, not a slicer prediction or tested
+    print.</strong
+  >
+  Start with a hypothetical solid 30 × 30 × 20 mm rectangular prism. Assign
+  uniform side-shell thickness t and solid top and bottom thickness of 1.00 mm
+  each. The remaining ideal rectangular core contains an assumed uniform
+  material fraction p.
+</p>
+<ul>
+  <li><code>V_outer = 30 × 30 × 20 = 18,000 mm³</code></li>
+  <li><code>V_core = (30 - 2t) × (30 - 2t) × (20 - 2)</code></li>
+  <li><code>V_shell_and_caps = V_outer - V_core</code></li>
+  <li><code>V_material_model = V_shell_and_caps + p × V_core</code></li>
+</ul>
+<p>
+  Here p=0.20 is an assumed core material fraction. It does not assert that any
+  slicer's 20% setting creates exactly this volume. Patterns, overlap, widths,
+  extra solid regions and local changes can differ. Subtract the core once to
+  count shell corners and caps once; independently adding six face volumes would
+  overlap regions.
+</p>
+<table>
+  <caption>
+    Analytical cases at the same exterior size and assumed core fraction
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Case A: t=1.20 mm</th>
+      <th scope="col">Case B: t=2.00 mm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Outer solid volume</td>
+      <td>18,000 mm³</td>
+      <td>18,000 mm³</td>
+    </tr>
+    <tr>
+      <td>Interior core dimensions</td>
+      <td>27.6 × 27.6 × 18 mm</td>
+      <td>26 × 26 × 18 mm</td>
+    </tr>
+    <tr>
+      <td>Core volume</td>
+      <td>13,711.68 mm³</td>
+      <td>12,168.00 mm³</td>
+    </tr>
+    <tr>
+      <td>Shell and caps, counted once</td>
+      <td>4,288.32 mm³</td>
+      <td>5,832.00 mm³</td>
+    </tr>
+    <tr>
+      <td>Assumed core material, p=0.20</td>
+      <td>2,742.336 mm³</td>
+      <td>2,433.60 mm³</td>
+    </tr>
+    <tr>
+      <td>Total analytical material</td>
+      <td>7,030.656 mm³</td>
+      <td>8,265.60 mm³</td>
+    </tr>
+    <tr>
+      <td>At illustrative density 1.24 g/cm³</td>
+      <td>8.718 g</td>
+      <td>10.249 g</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Divide mm³ by 1,000 to obtain cm³, then multiply by the illustrative density.
+  Full-precision masses are 8.71801344 g and 10.249344 g; the table rounds only
+  for display. The density is an input, not a universal material specification.
+  These thicknesses are not recommended settings, and their mass difference
+  proves no strength difference. An irregular shape, openings or variable
+  thickness needs a different construction; this is not a universal infill
+  estimator.
+</p>
+<h2>Why multiplying solid mass by infill fails</h2>
+<p>
+  The naive blanket calculation is
+  <code>18 cm³ × 1.24 g/cm³ × 0.20 = 4.464 g</code>. It omits the distinct
+  shell/cap allocation in both cases. Even this toy model shows that 20%
+  internal material does not mean 20% of solid part mass.
+</p>
+<p>
+  The original solid mesh stays at 18 cm³ in both hypothetical process
+  scenarios, with a solid-material equivalent of 22.32 g at that density. The
+  <a href="{{ GuideSlug.RouteStlVolumeCalculator }}">STL volume tool</a> and
+  <a href="{{ GuideSlug.Route3mfVolumeCalculator }}">3MF volume tool</a> cannot
+  detect these assigned process regions or output these two analytical print
+  estimates. Creating a real CAD cavity changes geometry and its exported
+  volume; that distinct operation belongs to
+  <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
+    >the hollowing guide</a
+  >.
+</p>
+<h2>Inspect caps and what supports them</h2>
+<p>
+  A solid top region and its underlying internal paths are related but separate.
+  Prusa's
+  <a href="https://help.prusa3d.com/article/infill_42">infill reference</a>
+  describes internal support for top layers as well as density and anchoring
+  controls. Inspect the first closure paths, their anchors and their spans. A
+  roof over sparse internal paths is not explained by the infill percentage
+  alone; use
+  <a href="{{ GuideSlug.Route3dPrintBridgeVsOverhang }}"
+    >bridge and overhang interpretation</a
+  >
+  for the actual path situation.
+</p>
+<p>
+  Zero sparse infill does not itself remove perimeters or disable top/bottom
+  closure. It also does not automatically select
+  <a href="{{ GuideSlug.RouteVaseModeVsNormalPrinting }}"
+    >continuous spiral-vase mode</a
+  >. A roof can still require a supportable process path. At the other end,
+  nominal 100% infill does not establish zero porosity, complete process
+  fidelity or structural suitability.
+</p>
+<p>
+  Prusa's
+  <a href="https://help.prusa3d.com/article/infill-patterns_177130"
+    >pattern reference</a
+  >
+  distinguishes internal patterns and surface-fill choices. Pattern labels do
+  not establish the strongest option for every load or a mechanical result for
+  this part.
+</p>
+<h2>Separate structural requirements from settings</h2>
+<p>
+  For a load-bearing part, identify the load path and direction, geometry,
+  material/process, orientation and joints. Compare representative physical
+  tests for the relevant requirement. A wall or infill change cannot certify
+  strength; vendor descriptions of settings do not establish a universally best
+  combination. No physical testing was performed for this guide.
+</p>
+<h2>Compare complete generated jobs</h2>
+<ol>
+  <li>
+    Retain the original project, revision, profile and requirement: preserve a
+    thin feature, close a roof, change mass or investigate a load path.
+  </li>
+  <li>
+    Change one setting group deliberately and retain all effective local
+    overrides. A named profile can change several settings.
+  </li>
+  <li>
+    Inspect the affected layers and required features in the exact output.
+  </li>
+  <li>
+    Compare
+    <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+      >complete per-material consumption</a
+    >
+    and supplied duration. Do not replace them with the box model or a blanket
+    infill multiplier.
+  </li>
+  <li>
+    Use the reviewed new totals for
+    <a href="{{ GuideSlug.RouteHowToCalculate3dPrintingCost }}"
+      >production cost</a
+    >
+    and conduct any required physical trial before accepting the revised part.
+  </li>
+</ol>
+<p>
+  Primary references reviewed 3 November 2026. The box/core arithmetic is
+  original and idealised. It is not printer measurement, a slicer experiment or
+  a production estimate, and establishes no finish, sealing, porosity, strength
+  or lifetime result.
+</p>

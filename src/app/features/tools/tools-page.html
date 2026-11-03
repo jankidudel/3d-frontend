@@ -108,6 +108,19 @@
       when the next action is uncertain.
     </p>
     <p>
+      Sample uploaded geometry first, then use the
+      <a [routerLink]="routes.NozzleLayerHeightCalculator"
+        >dimensional planner</a
+      >
+      for approximate line arithmetic and the
+      <a [routerLink]="routes.VolumetricFlowCalculator">flow planner</a>
+      for requested throughput. Review actual sliced paths and complete
+      consumption after changing
+      <a [href]="guides.Route3dPrintWallsVsInfill">walls or infill</a> or the
+      <a [href]="guides.Route3dPrintLayerHeightVsDetail">layer schedule</a>; a
+      geometry volume does not infer those settings.
+    </p>
+    <p>
       Cost estimates describe production inputs. Price planning adds quantity
       and margin to prepare a quote. Start with complete slicer values when
       estimating filament or time.

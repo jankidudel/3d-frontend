@@ -206,6 +206,14 @@ heading: '3D Print Wall Thickness: What a Thin Area Means'
 
 <h2>4. Use nozzle and line width correctly</h2>
 <p>
+  CAD material thickness describes the source solid; a generated perimeter
+  region and sparse internal infill describe future sliced paths. A modelled
+  wall can have no sparse interior. For choosing which process region to change,
+  use
+  <a href="{{ GuideSlug.Route3dPrintWallsVsInfill }}">walls, caps and infill</a
+  >; the sampled thickness result remains a geometry measurement.
+</p>
+<p>
   Three equal 0.45 mm lines total 3 × 0.45 = 1.35 mm nominal width. This is
   equal-width arithmetic, not a prediction that a 1.3 mm CAD wall produces
   exactly three paths. The

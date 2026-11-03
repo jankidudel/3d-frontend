@@ -178,6 +178,15 @@ heading: How to Reduce STL Triangle Count
 </figure>
 <h2>Named small features need their own review</h2>
 <p>
+  Reduction is not a fix for coarse layer sampling: changing file complexity
+  does not change the slicer's height schedule. Conversely, finer layers cannot
+  restore geometry removed from a candidate. Identify
+  <a href="{{ GuideSlug.Route3dPrintLayerHeightVsDetail }}"
+    >source faceting versus layer detail</a
+  >
+  before choosing a derivative.
+</p>
+<p>
   The
   <a href="{{ ExampleAsset.NarrowRibOriginalStl }}" download
     >original narrow-rib control</a

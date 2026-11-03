@@ -108,7 +108,13 @@
           Resolved placed geometry in millimetres is the measured basis. Native
           slicer object settings and modifiers require a separate comparison;
           this result does not check a printer profile or apply text-modifier
-          effects.
+          effects. Declared units and supported transforms establish the
+          geometry basis, not full interpretation of every package setting.
+          Review
+          <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
+            >wall, cap and infill settings</a
+          >
+          in the native project.
         </p>
         <ul>
           @if (result.belowThreshold > 0) {
@@ -180,6 +186,14 @@
   }
   <section class="content interpretation-guide">
     <h2>Placed-build interpretation</h2>
+    <p>
+      Supported resolved build geometry, declared units and transformations
+      define the sample basis. They do not reconstruct every slicer project
+      setting or future
+      <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
+        >perimeter and infill region</a
+      >.
+    </p>
     <p>
       The checker resolves supported mesh build items, repeated resources and
       nested component transforms into one millimetre scene. It samples at most

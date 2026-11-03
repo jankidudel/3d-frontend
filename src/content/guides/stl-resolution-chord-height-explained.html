@@ -63,6 +63,14 @@ heading: 'STL Resolution: Chord Height and Angular Tolerance'
 </p>
 <h2>What each setting means</h2>
 <p>
+  A polygonal curve already present in the mesh is a source-approximation
+  question. Stair stepping through height is a
+  <a href="{{ GuideSlug.Route3dPrintLayerHeightVsDetail }}"
+    >layer-sampling question</a
+  >. Finer layers do not restore omitted tessellated shape, and finer source
+  facets do not change the print schedule.
+</p>
+<p>
   Chord height/deviation is a length between the source curve and its straight
   approximation. Angular tolerance limits a change of direction. Other
   constraints, such as minimum facet width, can alter the result. A total
