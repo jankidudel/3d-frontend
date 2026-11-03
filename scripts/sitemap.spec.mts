@@ -22,7 +22,7 @@ describe('sitemap editorial dates', () => {
       '<loc>https://www.inspectmesh.com/tools/stl-viewer</loc><lastmod>2026-11-02</lastmod>',
     );
     expect(sitemap).toContain(
-      '<loc>https://www.inspectmesh.com/materials/pla</loc><lastmod>2026-10-29</lastmod>',
+      '<loc>https://www.inspectmesh.com/materials/pla</loc><lastmod>2026-11-03</lastmod>',
     );
     expect(sitemap).toContain(
       '<loc>https://www.inspectmesh.com/</loc><lastmod>2026-10-29</lastmod>',

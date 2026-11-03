@@ -8,6 +8,11 @@ export const GuideGroupId = {
 export type GuideGroupId = (typeof GuideGroupId)[keyof typeof GuideGroupId];
 
 export const GuideContentSlug = {
+  ThreeDPrintHeatResistanceHdtVsTg: '3d-print-heat-resistance-hdt-vs-tg',
+  ThreeDPrintCreepUnderSustainedLoad: '3d-print-creep-under-sustained-load',
+  ThreeDPrintMoistureAndDimensionalStability:
+    '3d-print-moisture-and-dimensional-stability',
+
   ThreeDPrintZSeamPlacement: '3d-print-z-seam-placement',
   ThreeDPrintIroningVsTopSurfacePattern:
     '3d-print-ironing-vs-top-surface-pattern',
@@ -64,6 +69,52 @@ export const guideGroups = {
 } as const;
 
 export const guideRegistry: readonly GuideRegistryEntry[] = [
+  {
+    slug: GuideContentSlug.ThreeDPrintHeatResistanceHdtVsTg,
+    group: GuideGroupId.General,
+    order: 916,
+    enabled: true,
+    publishDate: '2026-11-03',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'HDT',
+      'Tg',
+      'glass transition',
+      'heat resistance',
+      'test load',
+    ],
+  },
+  {
+    slug: GuideContentSlug.ThreeDPrintCreepUnderSustainedLoad,
+    group: GuideGroupId.General,
+    order: 917,
+    enabled: true,
+    publishDate: '2026-11-03',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'creep',
+      'sustained load',
+      'stress relaxation',
+      'force retention',
+      'cold flow',
+    ],
+  },
+  {
+    slug: GuideContentSlug.ThreeDPrintMoistureAndDimensionalStability,
+    group: GuideGroupId.General,
+    order: 918,
+    enabled: true,
+    publishDate: '2026-11-03',
+    checkEditorialTargets: true,
+    searchTerms: [
+      'moisture',
+      'conditioning',
+      'dimensional stability',
+      'water absorption',
+      'conditioned fit',
+    ],
+  },
+
   {
     slug: GuideContentSlug.ThreeDPrintZSeamPlacement,
     group: GuideGroupId.General,
@@ -494,7 +545,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 13,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: true,
   },
 
@@ -619,7 +670,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'filament-dryer-vs-dry-box',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-03',
     group: GuideGroupId.General,
     order: 103,
     enabled: true,
@@ -676,7 +727,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.General,
     order: 12,
     enabled: true,
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-03',
     publishDate: '2026-09-14',
     checkEditorialTargets: false,
   },
@@ -740,7 +791,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 4,
     enabled: true,
     publishDate: '2026-09-09',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-03',
     checkEditorialTargets: false,
   },
   {

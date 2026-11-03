@@ -1610,7 +1610,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Group material families by actual requirements and source the editorial classification.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Choose by the job and the equipment; Compare material families; PLA. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -1646,7 +1646,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials",
       "sitemapMember": true,
@@ -1657,8 +1658,8 @@
         "canonical": "https://www.inspectmesh.com/materials",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5619,
-        "mainContentSha256": "46be50bbe337db932b9a3dcb07eb190cf612b6b4650e314935b8211cabf75f9d",
+        "mainTextCharacters": 5917,
+        "mainContentSha256": "44e292ce8c92337e7e246429cbfaae9152d0e3e85a6ae5fc753e33424f15ee9d",
         "sectionHeadings": [
           "Choose by the job and the equipment",
           "Compare material families",
@@ -1673,7 +1674,7 @@
           "Polypropylene / PP"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 219,
+        "incomingLinkCount": 222,
         "contextualInlinkCount": 10,
         "contextualInlinkExamples": [
           "/guides/filament-dryer-vs-dry-box",
@@ -1682,10 +1683,10 @@
           "/materials/nylon",
           "/materials/petg"
         ],
-        "internalLinkCount": 61,
+        "internalLinkCount": 64,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.179Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "3D Printing Materials",
       "baseline": {
@@ -1703,7 +1704,7 @@
         "canonical": "https://www.inspectmesh.com/materials",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -1719,7 +1720,7 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/index.html",
         "sitemapCount": 1,
-        "incomingCount": 219,
+        "incomingCount": 222,
         "contextualIncomingCount": 10,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -1739,6 +1740,10 @@
         {
           "mainContentSha256": "90df8a943830cc7c3672c64df40b5c95bf7f6ed150c6ddeb8df50660df85c21b",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "46be50bbe337db932b9a3dcb07eb190cf612b6b4650e314935b8211cabf75f9d",
+          "observedAt": "2026-11-03T13:24:28.179Z"
         }
       ]
     },
@@ -1749,7 +1754,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Explain inputs and ranked-candidate limits; show why a recommendation changes and link exact profiles.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Suggested starting points; Trace the ranking to its basis; Why formulations and hardware matter. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -1785,7 +1790,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/tools/3d-printing-material-selector",
       "sitemapMember": true,
@@ -1796,8 +1802,8 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-printing-material-selector",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5719,
-        "mainContentSha256": "d86c906052f418bfec7b1f6e9bc1b2fa45e000de4c7ebc0bbf1898a7e6b7e3c1",
+        "mainTextCharacters": 5890,
+        "mainContentSha256": "6911ed8b63f5e116f1baceaa62067b5470158300fb0ea4b8da7a59a9e70fc9b2",
         "sectionHeadings": [
           "Optional exact-product hardware context",
           "Suggested starting points",
@@ -1805,8 +1811,8 @@
           "Why formulations and hardware matter"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 31,
-        "contextualInlinkCount": 31,
+        "incomingLinkCount": 32,
+        "contextualInlinkCount": 32,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -1814,10 +1820,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.179Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "3D Printing Material Selector",
       "baseline": {
@@ -1835,7 +1841,7 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-printing-material-selector",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -1851,8 +1857,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/3d-printing-material-selector/index.html",
         "sitemapCount": 1,
-        "incomingCount": 31,
-        "contextualIncomingCount": 31,
+        "incomingCount": 32,
+        "contextualIncomingCount": 32,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -1871,6 +1877,10 @@
         {
           "mainContentSha256": "1f7193e180931af826474717a3ad169a723c6f2070b038b7206952c75d680f43",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "d86c906052f418bfec7b1f6e9bc1b2fa45e000de4c7ebc0bbf1898a7e6b7e3c1",
+          "observedAt": "2026-11-03T13:24:28.179Z"
         }
       ]
     },
@@ -1881,7 +1891,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Provide a readable comparison matrix and links only to genuinely useful pairwise decisions.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Compare the requirement, then the family; PLA and PETG. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -1917,7 +1927,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/tools/compare-3d-printing-materials",
       "sitemapMember": true,
@@ -1928,16 +1939,16 @@
         "canonical": "https://www.inspectmesh.com/tools/compare-3d-printing-materials",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 4860,
-        "mainContentSha256": "7b523252a618ef6244a2eebc9139b346cc4426e60f7cf33db4ce5ffa5e2b3672",
+        "mainTextCharacters": 5382,
+        "mainContentSha256": "b74f84320f91c84236477b9756853284ff961225f13e78d9256b59ac32f9b1d3",
         "sectionHeadings": [
           "PLA and PETG",
           "Published product examples, separate from the family view",
           "Compare the requirement, then the family"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 13,
-        "contextualInlinkCount": 13,
+        "incomingLinkCount": 14,
+        "contextualInlinkCount": 14,
         "contextualInlinkExamples": [
           "/compare-materials/abs-vs-asa",
           "/compare-materials/nylon-vs-polycarbonate",
@@ -1945,10 +1956,10 @@
           "/compare-materials/petg-vs-asa",
           "/compare-materials/petg-vs-nylon"
         ],
-        "internalLinkCount": 54,
+        "internalLinkCount": 56,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.179Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "Compare 3D Printing Materials",
       "baseline": {
@@ -1966,7 +1977,7 @@
         "canonical": "https://www.inspectmesh.com/tools/compare-3d-printing-materials",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -1982,8 +1993,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/compare-3d-printing-materials/index.html",
         "sitemapCount": 1,
-        "incomingCount": 13,
-        "contextualIncomingCount": 13,
+        "incomingCount": 14,
+        "contextualIncomingCount": 14,
         "incomingExamples": [
           "/compare-materials/abs-vs-asa",
           "/compare-materials/nylon-vs-polycarbonate",
@@ -2002,6 +2013,10 @@
         {
           "mainContentSha256": "927a87ae50d1b68f278192cdf5453f262ebf72e54faf07503dac02d1ceb49b52",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "7b523252a618ef6244a2eebc9139b346cc4426e60f7cf33db4ce5ffa5e2b3672",
+          "observedAt": "2026-11-03T13:24:28.179Z"
         }
       ]
     },
@@ -2012,7 +2027,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PLA: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -2048,7 +2063,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/pla",
       "sitemapMember": true,
@@ -2059,8 +2075,8 @@
         "canonical": "https://www.inspectmesh.com/materials/pla",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7155,
-        "mainContentSha256": "b6dabbd16c82ce3e2b2baf8f6c5d972aa66ec845ff21c8deeee665d6754a45e8",
+        "mainTextCharacters": 7229,
+        "mainContentSha256": "af37b2bd1fabd4aa8dad174be89b2599c8bbd05558ff15c42b3a23c9a2472e9a",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2071,12 +2087,12 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "Indoor brackets and holders",
+          "Indoor fit before sustained service",
           "Prusament material guidance"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 16,
-        "contextualInlinkCount": 16,
+        "incomingLinkCount": 17,
+        "contextualInlinkCount": 17,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2084,10 +2100,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 57,
+        "internalLinkCount": 58,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.179Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PLA Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2104,6 +2120,10 @@
         {
           "mainContentSha256": "429d9e1324c1d01e06cc7694ac4e3308b2ddc90af983447ecf149579591fc201",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "b6dabbd16c82ce3e2b2baf8f6c5d972aa66ec845ff21c8deeee665d6754a45e8",
+          "observedAt": "2026-11-03T13:24:28.179Z"
         }
       ],
       "routeCoverage": {
@@ -2115,7 +2135,7 @@
         "canonical": "https://www.inspectmesh.com/materials/pla",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2131,8 +2151,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/pla/index.html",
         "sitemapCount": 1,
-        "incomingCount": 16,
-        "contextualIncomingCount": 16,
+        "incomingCount": 17,
+        "contextualIncomingCount": 17,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2173,7 +2193,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PETG: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -2209,7 +2229,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/petg",
       "sitemapMember": true,
@@ -2220,8 +2241,8 @@
         "canonical": "https://www.inspectmesh.com/materials/petg",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7982,
-        "mainContentSha256": "7a7feb437c8163f976dce346c57c37cb5249ea78c00fa9933126884ecd4303b0",
+        "mainTextCharacters": 7974,
+        "mainContentSha256": "ceb1aab9117ab864942193a882ad229aee3ad1773725abcf47b76e8615c0378b",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2232,13 +2253,13 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "Investigate moisture before buying a dryer",
+          "Handling toughness and holder shape retention",
           "Prusament material guidance",
           "Prusa USS Drybox documentation"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 20,
-        "contextualInlinkCount": 20,
+        "incomingLinkCount": 21,
+        "contextualInlinkCount": 21,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2246,10 +2267,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 60,
+        "internalLinkCount": 61,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.179Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PETG Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2266,6 +2287,10 @@
         {
           "mainContentSha256": "297d493535f58a911dcc3acdd28eadc86013c889f7984fec9f98176078b016cf",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "7a7feb437c8163f976dce346c57c37cb5249ea78c00fa9933126884ecd4303b0",
+          "observedAt": "2026-11-03T13:24:28.179Z"
         }
       ],
       "routeCoverage": {
@@ -2277,7 +2302,7 @@
         "canonical": "https://www.inspectmesh.com/materials/petg",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2293,8 +2318,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/petg/index.html",
         "sitemapCount": 1,
-        "incomingCount": 20,
-        "contextualIncomingCount": 20,
+        "incomingCount": 21,
+        "contextualIncomingCount": 21,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2317,7 +2342,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "ABS: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -2353,7 +2378,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/abs",
       "sitemapMember": true,
@@ -2364,8 +2390,8 @@
         "canonical": "https://www.inspectmesh.com/materials/abs",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6744,
-        "mainContentSha256": "62aeccdc5a2f0cda2209362253e0cbc55d97c80fb02930b32cdf5e093720e439",
+        "mainTextCharacters": 6748,
+        "mainContentSha256": "7c0aefe3473f08e5677d12c1af62ac8aec07a6d9a0af6c3972564c138b42cb6d",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2376,7 +2402,7 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "A housing near heat is a process decision",
+          "A warm housing needs more than a successful print",
           "Prusament material guidance"
         ],
         "exampleAssets": [],
@@ -2389,10 +2415,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 57,
+        "internalLinkCount": 58,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.179Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "ABS Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2409,6 +2435,10 @@
         {
           "mainContentSha256": "9ddb7114310c6fb0f9bd15c53de33671b1b67553fc02256460c81075f38c94b1",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "62aeccdc5a2f0cda2209362253e0cbc55d97c80fb02930b32cdf5e093720e439",
+          "observedAt": "2026-11-03T13:24:28.179Z"
         }
       ],
       "routeCoverage": {
@@ -2420,7 +2450,7 @@
         "canonical": "https://www.inspectmesh.com/materials/abs",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2460,7 +2490,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "ASA: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -2496,7 +2526,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/asa",
       "sitemapMember": true,
@@ -2507,8 +2538,8 @@
         "canonical": "https://www.inspectmesh.com/materials/asa",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7275,
-        "mainContentSha256": "a8f65d990566e11ebe5ada8a1ac24e1c8ddc066e782c132ad9d5a353c3d806e0",
+        "mainTextCharacters": 7307,
+        "mainContentSha256": "7a09c6d7a8ad9f16fecbeea3a12beb26509645d6a8af2783da64f06cf36bd99f",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2519,7 +2550,7 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "Outdoor parts need a full requirement list",
+          "An exposed cover and its heated mounts",
           "Prusament material guidance"
         ],
         "exampleAssets": [],
@@ -2532,10 +2563,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 56,
+        "internalLinkCount": 57,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.179Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "ASA Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2552,6 +2583,10 @@
         {
           "mainContentSha256": "24d9622634d8d5e514159f2da08820179dd6b035622b7757e7549cbd1801a5b3",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "a8f65d990566e11ebe5ada8a1ac24e1c8ddc066e782c132ad9d5a353c3d806e0",
+          "observedAt": "2026-11-03T13:24:28.179Z"
         }
       ],
       "routeCoverage": {
@@ -2563,7 +2598,7 @@
         "canonical": "https://www.inspectmesh.com/materials/asa",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2603,7 +2638,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "TPU: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -2639,7 +2674,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/tpu",
       "sitemapMember": true,
@@ -2650,8 +2686,8 @@
         "canonical": "https://www.inspectmesh.com/materials/tpu",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6822,
-        "mainContentSha256": "83ea813d7cdc213cbcc62e42d3a29fe8789094ab13db3fe129dd21375c5ea3cf",
+        "mainTextCharacters": 6835,
+        "mainContentSha256": "2e05de3cb9500f52d5a8142c4e6ca83c3a78d8dcab31cd177e5fbaf846918154",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2662,7 +2698,7 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "A protective case is a stiffness and fit experiment",
+          "Compliant contact and holding-force retention",
           "Prusament material guidance"
         ],
         "exampleAssets": [],
@@ -2675,10 +2711,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 56,
+        "internalLinkCount": 57,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "TPU Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2695,6 +2731,10 @@
         {
           "mainContentSha256": "1468cf04987646ed382841cd1096749112a1fc8b5e405d53d510df0e2021f3bc",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "83ea813d7cdc213cbcc62e42d3a29fe8789094ab13db3fe129dd21375c5ea3cf",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "routeCoverage": {
@@ -2706,7 +2746,7 @@
         "canonical": "https://www.inspectmesh.com/materials/tpu",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2746,7 +2786,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "NYLON: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -2782,7 +2822,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/nylon",
       "sitemapMember": true,
@@ -2795,8 +2836,8 @@
         "canonical": "https://www.inspectmesh.com/materials/nylon",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7701,
-        "mainContentSha256": "f1cf3decd7fb32c595ca0afe044798a6425c2ef491c4023a9ba6271df7446c8e",
+        "mainTextCharacters": 7691,
+        "mainContentSha256": "6e58bb510a07afbeddc1d0bc5ef5d2508e7cdb0682306cba136ea0fde53e1cbd",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2807,13 +2848,13 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "Drying and feeding during a long job",
+          "Unfilled PA11 fit after service exposure",
           "Prusament material guidance",
           "Prusa USS Drybox documentation"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 14,
-        "contextualInlinkCount": 14,
+        "incomingLinkCount": 15,
+        "contextualInlinkCount": 15,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2821,10 +2862,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 56,
+        "internalLinkCount": 57,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PA / Nylon Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2841,6 +2882,10 @@
         {
           "mainContentSha256": "fd5283a391ebf0cb1209b8b008a4e030e946e554a45b808ff0c1bed8fbc29a71",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "f1cf3decd7fb32c595ca0afe044798a6425c2ef491c4023a9ba6271df7446c8e",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "routeCoverage": {
@@ -2852,7 +2897,7 @@
         "canonical": "https://www.inspectmesh.com/materials/nylon",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2868,8 +2913,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/nylon/index.html",
         "sitemapCount": 1,
-        "incomingCount": 14,
-        "contextualIncomingCount": 14,
+        "incomingCount": 15,
+        "contextualIncomingCount": 15,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2892,7 +2937,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "POLYCARBONATE: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation. PC Blend now retains both explicit HDT loads and the directly verified 115 °C printed-modulus bed footnote.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -2928,7 +2973,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/polycarbonate",
       "sitemapMember": true,
@@ -2941,8 +2987,8 @@
         "canonical": "https://www.inspectmesh.com/materials/polycarbonate",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7165,
-        "mainContentSha256": "7e16d8051653fd61d7b95ca27f039ac4a57841ee7267ea6b8924a96b1ecdf218",
+        "mainTextCharacters": 7734,
+        "mainContentSha256": "bb5f8d722df5bbc460e68d9347faef139e2c861630a534be3954ad545471bc00",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2953,12 +2999,12 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "Verify the exact blend and printer environment",
+          "PC Blend test loads are separate observations",
           "Prusament material guidance"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 12,
-        "contextualInlinkCount": 12,
+        "incomingLinkCount": 14,
+        "contextualInlinkCount": 14,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2966,10 +3012,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 55,
+        "internalLinkCount": 56,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "Polycarbonate / PC Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2986,6 +3032,10 @@
         {
           "mainContentSha256": "8945810973a89cc9b4e2af8e703f85ac59b43098ddb0de813f010e1c40d695df",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "7e16d8051653fd61d7b95ca27f039ac4a57841ee7267ea6b8924a96b1ecdf218",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "routeCoverage": {
@@ -2997,7 +3047,7 @@
         "canonical": "https://www.inspectmesh.com/materials/polycarbonate",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3013,8 +3063,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/polycarbonate/index.html",
         "sitemapCount": 1,
-        "incomingCount": 12,
-        "contextualIncomingCount": 12,
+        "incomingCount": 14,
+        "contextualIncomingCount": 14,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -3037,7 +3087,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "POLYPROPYLENE: give material-specific selection/poor-fit criteria, exact-formulation preparation sources and a practical planning connection; retain honest research basis.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Best uses and poor fits; Preparation for the exact spool; Formulation and property evidence. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Refined the existing material-specific application and next observation for thermal, loaded-time or conditioned fit evidence; retained exact-grade claims and preparation.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -3073,7 +3123,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/materials/polypropylene",
       "sitemapMember": true,
@@ -3086,8 +3137,8 @@
         "canonical": "https://www.inspectmesh.com/materials/polypropylene",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6438,
-        "mainContentSha256": "7ceacbfed725da38c43fa1df1e060049db0bff849ccf371633d30fd415374fd3",
+        "mainTextCharacters": 6454,
+        "mainContentSha256": "2a644d266df6a4b63e704044a652f6751f1a5576723332dfb5f8f498625b9abf",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -3098,7 +3149,7 @@
           "Related comparisons",
           "Plan material and cost",
           "Sources",
-          "Low density does not solve adhesion or stiffness",
+          "Repeated bending versus a lid held deflected",
           "Prusament material guidance"
         ],
         "exampleAssets": [],
@@ -3111,10 +3162,10 @@
           "/3d-printers/bambu-lab-x1-carbon",
           "/3d-printers/creality-k1c"
         ],
-        "internalLinkCount": 55,
+        "internalLinkCount": 56,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "Polypropylene / PP Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -3131,6 +3182,10 @@
         {
           "mainContentSha256": "1ea6d4b3be4148a37509c82a8bd5909c8ca917da2eda27095c675b71a98c15a6",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "7ceacbfed725da38c43fa1df1e060049db0bff849ccf371633d30fd415374fd3",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "routeCoverage": {
@@ -3142,7 +3197,7 @@
         "canonical": "https://www.inspectmesh.com/materials/polypropylene",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3182,7 +3237,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PLA VERSUS PETG: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -3219,7 +3274,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/pla-vs-petg",
       "sitemapMember": true,
@@ -3230,8 +3285,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/pla-vs-petg",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5879,
-        "mainContentSha256": "95c34a2e128c9d98b89967f9eabce806e4b36fd0fa5b91c6a0a36ce155874f52",
+        "mainTextCharacters": 6293,
+        "mainContentSha256": "40d955d6c495a3487f54489c46f7932c749d953c2bdcc170a25ec35710ec8bbd",
         "sectionHeadings": [
           "Choose PLA when",
           "Choose PETG when",
@@ -3251,10 +3306,10 @@
           "/materials/pla",
           "/tools/compare-3d-printing-materials"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PLA vs PETG: Which Filament Should You Use?",
       "baseline": {
@@ -3270,6 +3325,10 @@
         {
           "mainContentSha256": "2423ffd210bb9a4570e6b0fa83704f084e70de82837e33b1bbb534110077a706",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "95c34a2e128c9d98b89967f9eabce806e4b36fd0fa5b91c6a0a36ce155874f52",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -3282,7 +3341,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/pla-vs-petg",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3339,7 +3398,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PLA VERSUS ABS: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -3376,7 +3435,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/pla-vs-abs",
       "sitemapMember": true,
@@ -3387,8 +3446,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/pla-vs-abs",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5098,
-        "mainContentSha256": "7efc3ace3b148c3c93a788a00b042d965f083f7b8b877c00246983ccd417b400",
+        "mainTextCharacters": 5530,
+        "mainContentSha256": "4f577664b300fb5fcc87521e754911f40a0df2e42eb76a2803531ce0a6e6cdbf",
         "sectionHeadings": [
           "Choose PLA when",
           "Choose ABS when",
@@ -3404,10 +3463,10 @@
         "incomingLinkCount": 2,
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": ["/materials/abs", "/materials/pla"],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PLA vs ABS: Which Filament Should You Use?",
       "baseline": {
@@ -3423,6 +3482,10 @@
         {
           "mainContentSha256": "616bca00aa0c5eaed26f2bd49708ed9070f6551ceb62b5f863551626fd09ce89",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "7efc3ace3b148c3c93a788a00b042d965f083f7b8b877c00246983ccd417b400",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -3435,7 +3498,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/pla-vs-abs",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3468,7 +3531,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PETG VERSUS ABS: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -3505,7 +3568,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/petg-vs-abs",
       "sitemapMember": true,
@@ -3516,8 +3579,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-abs",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5087,
-        "mainContentSha256": "8e41193b61b22ada522e47ae42a8f7b0eb896fbacf5a6c42d641c1dfe202b25f",
+        "mainTextCharacters": 5533,
+        "mainContentSha256": "517862eb407039aeef2dec9e341af429ac3c73e55d21a9031332f5ae94a0e113",
         "sectionHeadings": [
           "Choose PETG when",
           "Choose ABS when",
@@ -3533,10 +3596,10 @@
         "incomingLinkCount": 2,
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": ["/materials/abs", "/materials/petg"],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PETG vs ABS: Which Filament Should You Use?",
       "baseline": {
@@ -3552,6 +3615,10 @@
         {
           "mainContentSha256": "a997e19a1cdf92ecb93fe58b80b03651baab414ae2c70f8a25d777d034c9945f",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "8e41193b61b22ada522e47ae42a8f7b0eb896fbacf5a6c42d641c1dfe202b25f",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -3564,7 +3631,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-abs",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3597,7 +3664,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "ABS VERSUS ASA: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -3634,7 +3701,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/abs-vs-asa",
       "sitemapMember": true,
@@ -3645,8 +3712,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/abs-vs-asa",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5032,
-        "mainContentSha256": "fb2487a76b01644f844092de4d2bd78a21001b69c0a4a551e2bd5997ab3fcf01",
+        "mainTextCharacters": 5476,
+        "mainContentSha256": "29ab79651d0a8f89a0266bd1455565a71e17191c0fda39732e2d647f157a00f5",
         "sectionHeadings": [
           "Choose ABS when",
           "Choose ASA when",
@@ -3662,10 +3729,10 @@
         "incomingLinkCount": 2,
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": ["/materials/abs", "/materials/asa"],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "ABS vs ASA: Which Filament Should You Use?",
       "baseline": {
@@ -3681,6 +3748,10 @@
         {
           "mainContentSha256": "b8452f8cc41b7d3d1c5b9dfaaaa0da6116da334269535aa4fdca3d05d8819956",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "fb2487a76b01644f844092de4d2bd78a21001b69c0a4a551e2bd5997ab3fcf01",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -3693,7 +3764,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/abs-vs-asa",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3726,7 +3797,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PETG VERSUS ASA: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -3763,7 +3834,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/petg-vs-asa",
       "sitemapMember": true,
@@ -3774,8 +3845,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-asa",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5876,
-        "mainContentSha256": "857ba95492aa4acd5c4f405c528fbc4e28765bdf7cb031aca539db92c7f815f9",
+        "mainTextCharacters": 6309,
+        "mainContentSha256": "4d7c276752b8d727bf29f2322e4355a03d7972c22068ed1b9113839946892721",
         "sectionHeadings": [
           "Choose PETG when",
           "Choose ASA when",
@@ -3795,10 +3866,10 @@
           "/materials/petg",
           "/tools/compare-3d-printing-materials"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PETG vs ASA: Which Filament Should You Use?",
       "baseline": {
@@ -3814,6 +3885,10 @@
         {
           "mainContentSha256": "4f034d9fe26d12c63b729c97337be359a53f91f9d5276e0fb99200a21225799d",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "857ba95492aa4acd5c4f405c528fbc4e28765bdf7cb031aca539db92c7f815f9",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -3826,7 +3901,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-asa",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3863,7 +3938,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PLA VERSUS TPU: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -3900,7 +3975,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/pla-vs-tpu",
       "sitemapMember": true,
@@ -3911,8 +3986,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/pla-vs-tpu",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6156,
-        "mainContentSha256": "c2275b86747c1211fe880eeb27e048ed2ad29745e0ccd860f03d6c2274ddd5d1",
+        "mainTextCharacters": 6589,
+        "mainContentSha256": "d8485014a3f9b2c2b14f29f009765d1b172beee0708d05587d20867a9cf1fc3e",
         "sectionHeadings": [
           "Choose PLA when",
           "Choose TPU when",
@@ -3932,10 +4007,10 @@
           "/materials/tpu",
           "/tools/compare-3d-printing-materials"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PLA vs TPU: Which Filament Should You Use?",
       "baseline": {
@@ -3951,6 +4026,10 @@
         {
           "mainContentSha256": "8fb3675f387ea6f038089e399b52399ab6134dfbf30cfa6cee1295376a7f29e1",
           "observedAt": "2026-10-28T23:58:55.867Z"
+        },
+        {
+          "mainContentSha256": "c2275b86747c1211fe880eeb27e048ed2ad29745e0ccd860f03d6c2274ddd5d1",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -3963,7 +4042,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/pla-vs-tpu",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -4000,7 +4079,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PETG VERSUS TPU: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -4037,7 +4116,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/petg-vs-tpu",
       "sitemapMember": true,
@@ -4048,8 +4127,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-tpu",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6119,
-        "mainContentSha256": "2087dc4c32f31bbacacdccc2e968192de45d165da8729563b17d681426bccbe1",
+        "mainTextCharacters": 6555,
+        "mainContentSha256": "fee235780d5dea3ccf130edf58d9f0b27e1af04375042f7e259cfe47b2dc82b4",
         "sectionHeadings": [
           "Choose PETG when",
           "Choose TPU when",
@@ -4065,10 +4144,10 @@
         "incomingLinkCount": 2,
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": ["/materials/petg", "/materials/tpu"],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PETG vs TPU: Which Filament Should You Use?",
       "baseline": {
@@ -4084,6 +4163,10 @@
         {
           "mainContentSha256": "337bdffb592564e11b9daf88d46e89798a838ed7692973144a4dfda2bd82cc2e",
           "observedAt": "2026-10-28T23:58:55.868Z"
+        },
+        {
+          "mainContentSha256": "2087dc4c32f31bbacacdccc2e968192de45d165da8729563b17d681426bccbe1",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -4096,7 +4179,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-tpu",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -4129,7 +4212,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "PETG VERSUS NYLON: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -4166,7 +4249,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/petg-vs-nylon",
       "sitemapMember": true,
@@ -4177,8 +4260,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-nylon",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5598,
-        "mainContentSha256": "53594803993a69284fd4d129227291da40f7af3eb25ce3f3dafc7430fac1fd7b",
+        "mainTextCharacters": 6047,
+        "mainContentSha256": "42e426a87e5d00836652ff804a7ddc60932d82bc307d4d58d21b9e7cd0d461aa",
         "sectionHeadings": [
           "Choose PETG when",
           "Choose PA / Nylon when",
@@ -4194,10 +4277,10 @@
         "incomingLinkCount": 2,
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": ["/materials/nylon", "/materials/petg"],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PETG vs PA / Nylon: Which Filament Should You Use?",
       "baseline": {
@@ -4213,6 +4296,10 @@
         {
           "mainContentSha256": "cbf2bec9375aa174341f0bdc0dd329fb196a0be5653014020784cfbeb0218655",
           "observedAt": "2026-10-28T23:58:55.868Z"
+        },
+        {
+          "mainContentSha256": "53594803993a69284fd4d129227291da40f7af3eb25ce3f3dafc7430fac1fd7b",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -4225,7 +4312,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/petg-vs-nylon",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -4258,7 +4345,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "NYLON VERSUS POLYCARBONATE: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -4295,7 +4382,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/nylon-vs-polycarbonate",
       "sitemapMember": true,
@@ -4308,8 +4395,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/nylon-vs-polycarbonate",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5720,
-        "mainContentSha256": "a048348ce85dfa38e9be105d43f81a65e9d7c4543de85c18eb0736699cbd54e4",
+        "mainTextCharacters": 6582,
+        "mainContentSha256": "0d0ad728162e46aa66d6f953fc65ea21a997b4f59371fc1f57656723aee5ffeb",
         "sectionHeadings": [
           "Choose PA / Nylon when",
           "Choose Polycarbonate / PC when",
@@ -4328,10 +4415,10 @@
           "/materials/nylon",
           "/materials/polycarbonate"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "PA / Nylon vs Polycarbonate / PC: Which Filament Should You Use?",
       "baseline": {
@@ -4347,6 +4434,10 @@
         {
           "mainContentSha256": "9e3786e80616009fbc88bfb847cd5de0c9dfaa0d2d9058e8f81e1ebdd9a29a41",
           "observedAt": "2026-10-28T23:58:55.868Z"
+        },
+        {
+          "mainContentSha256": "a048348ce85dfa38e9be105d43f81a65e9d7c4543de85c18eb0736699cbd54e4",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -4359,7 +4450,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/nylon-vs-polycarbonate",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -4392,7 +4483,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "POLYPROPYLENE VERSUS PETG: replace brief generic choices with pair-specific decision criteria, sourced differences and a distinct illustrative application; review overlap if no independent value.",
-      "decisionReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
+      "decisionReason": "Refined this pair's existing evidence action for its actual application; linked the relevant detailed owner. HDT display keeps all reported loads, without a highest-value default or a cross-load substitution.",
       "editorialReview": {
         "scope": "Source copy, method/evidence and generated-output review; browser and production verification remain separate.",
         "status": "revised-or-retained-after-source-review",
@@ -4429,7 +4520,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/compare-materials/polypropylene-vs-petg",
       "sitemapMember": true,
@@ -4442,8 +4533,8 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/polypropylene-vs-petg",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5312,
-        "mainContentSha256": "bba11f08a4cb057136ce6516fee293861d940744372cd2da353e932b9ddff12a",
+        "mainTextCharacters": 5723,
+        "mainContentSha256": "204428e75d6bbada0cf6b179a795b5eda1c756a13a2802fa75490e2459e88d83",
         "sectionHeadings": [
           "Choose Polypropylene / PP when",
           "Choose PETG when",
@@ -4462,10 +4553,10 @@
           "/materials/petg",
           "/materials/polypropylene"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 3,
-        "observedAt": "2026-11-03T13:24:28.180Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "Polypropylene / PP vs PETG: Which Filament Should You Use?",
       "baseline": {
@@ -4481,6 +4572,10 @@
         {
           "mainContentSha256": "2f45ea58d6820dfb9f3095bb9874a2c45d4ce096b822848d331b52bfe46f63b3",
           "observedAt": "2026-10-28T23:58:55.868Z"
+        },
+        {
+          "mainContentSha256": "bba11f08a4cb057136ce6516fee293861d940744372cd2da353e932b9ddff12a",
+          "observedAt": "2026-11-03T13:24:28.180Z"
         }
       ],
       "changeReason": "Replaced a generic requirements checklist with a three-column pair-specific decision matrix. Retained distinct application, reversal, preparation and primary-source links. No physical test or family-wide numeric property was invented.",
@@ -4493,7 +4588,7 @@
         "canonical": "https://www.inspectmesh.com/compare-materials/polypropylene-vs-petg",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -8030,7 +8125,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Use per-axis nominal/measured inputs and explain why fit error is not automatically shrinkage.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Measure a calibration feature; Scale compensation; Measurement worksheet. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -8066,7 +8161,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
       "sitemapMember": true,
@@ -8077,8 +8173,8 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5714,
-        "mainContentSha256": "885412c6e48fe308d7ff7d3042e6954ed4c41835956a0ed6bb2608b1f33c7f91",
+        "mainTextCharacters": 6092,
+        "mainContentSha256": "fcdc4a7318a421b0a5ddb92eb790aa56feb43057bb4e6e82aeef05373fbece3d",
         "sectionHeadings": [
           "Measure a calibration feature",
           "Scale compensation",
@@ -8086,19 +8182,19 @@
           "Use compensation carefully"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 219,
-        "contextualInlinkCount": 6,
+        "incomingLinkCount": 222,
+        "contextualInlinkCount": 7,
         "contextualInlinkExamples": [
           "/guides/3d-print-flow-rate-vs-e-steps",
+          "/guides/3d-print-moisture-and-dimensional-stability",
           "/guides/3d-printer-calibration-guide",
           "/guides/how-to-compensate-for-3d-print-shrinkage",
-          "/guides/how-to-measure-3d-model",
-          "/tools/3d-print-flow-rate-calculator"
+          "/guides/how-to-measure-3d-model"
         ],
-        "internalLinkCount": 52,
+        "internalLinkCount": 53,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.182Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "3D Print Shrinkage Calculator",
       "baseline": {
@@ -8116,7 +8212,7 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-03",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -8132,8 +8228,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/3d-print-shrinkage-calculator/index.html",
         "sitemapCount": 1,
-        "incomingCount": 219,
-        "contextualIncomingCount": 6,
+        "incomingCount": 222,
+        "contextualIncomingCount": 7,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -8152,6 +8248,10 @@
         {
           "mainContentSha256": "ff1ae7910cd6a226e6ebb1506bc12a7016f7bd18cf9667f9bcea05043b7a7964",
           "observedAt": "2026-11-01T00:27:41.603Z"
+        },
+        {
+          "mainContentSha256": "885412c6e48fe308d7ff7d3042e6954ed4c41835956a0ed6bb2608b1f33c7f91",
+          "observedAt": "2026-11-03T13:24:28.182Z"
         }
       ]
     },
@@ -12876,7 +12976,7 @@
       "owner": "InspectMesh",
       "decision": "improve",
       "brief": "Keep all guide destinations crawlable; improve browsing by symptom and stage rather than a long undifferentiated list.",
-      "decisionReason": "Added compact problem-led entry panel while retaining searchable initial-HTML catalogue.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Source-to-slice revision on 1 November 2026; actual PrusaSlicer 2.9.6 CLI exports, controlled project-reader cases, production implementation and browser observations.",
         "status": "prepared-and-reviewed-locally",
@@ -12924,14 +13024,14 @@
         "canonical": "https://www.inspectmesh.com/guides",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 29335,
-        "mainContentSha256": "057f865574ebdb3866358862c69747dfca7ef2f59626e3ff1ac5ed0eab8a7a55",
+        "mainTextCharacters": 29947,
+        "mainContentSha256": "1abcd27cac4d4c5074a4261080f5f74359df8a5d3eb559f9108739667bf76597",
         "sectionHeadings": [
           "Find a guide",
           "STL encoding and candidate review",
           "CAD export and mesh interpretation",
           "Collections, revisions and customer files",
-          "Filament storage, nozzles and throughput",
+          "Material evidence, storage and throughput",
           "Print readiness and preflight",
           "STL diagnosis and repair",
           "STL size, scale and complexity",
@@ -12944,13 +13044,13 @@
           "Help choosing your next step"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 219,
+        "incomingLinkCount": 222,
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": ["/", "/tools/filament-length-calculator"],
-        "internalLinkCount": 175,
+        "internalLinkCount": 178,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.184Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "Find a diagnostic or decision guide",
       "baseline": {
@@ -13002,6 +13102,10 @@
         {
           "mainContentSha256": "5ce3031035279b0f408e4983ffef1348c793021a2a4d5001020a12684f7a6130",
           "observedAt": "2026-11-03T08:00:35.131Z"
+        },
+        {
+          "mainContentSha256": "057f865574ebdb3866358862c69747dfca7ef2f59626e3ff1ac5ed0eab8a7a55",
+          "observedAt": "2026-11-03T13:24:28.184Z"
         }
       ],
       "changeReason": "Registered two distinct surface-process owners once in geometry discovery with supported search terms; preserved search-first layout.",
@@ -13030,7 +13134,7 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/index.html",
         "sitemapCount": 1,
-        "incomingCount": 219,
+        "incomingCount": 222,
         "contextualIncomingCount": 2,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -14072,7 +14176,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Give a calibrated hole/pin workflow and explain illustrative values versus measured physical fit.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Source and further reading; Worked fit example; Validate with a representative fit. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -14108,7 +14212,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/guides/3d-print-tolerance-and-clearance-guide",
       "sitemapMember": true,
@@ -14121,8 +14226,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-tolerance-and-clearance-guide",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 10295,
-        "mainContentSha256": "b1418ae5b4b56b7852ac078d9a4e229ba89c8e923e960fa9a3186e83fa190483",
+        "mainTextCharacters": 10592,
+        "mainContentSha256": "7c55133db3a6e3d60c492254257b4db1e5d3ea57d84e3ac7ee13d2f25523d7c2",
         "sectionHeadings": [
           "Worked fit example",
           "Tolerance and clearance are not the same thing",
@@ -14147,10 +14252,10 @@
           "/guides/captive-nut-pockets-3d-printing",
           "/guides/how-to-check-if-a-3d-model-is-ready-to-print"
         ],
-        "internalLinkCount": 57,
+        "internalLinkCount": 58,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.184Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "3D Print Tolerance and Clearance: How to Design Parts That Fit",
       "baseline": {
@@ -14168,7 +14273,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-tolerance-and-clearance-guide",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-02",
+        "lastmod": "2026-11-03",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -14215,6 +14320,10 @@
         {
           "mainContentSha256": "77e510893f45c9ae7d62e6525e6574c43001bb29b4f5b1f0f7a5c90e6f63ce3f",
           "observedAt": "2026-11-01T00:27:41.605Z"
+        },
+        {
+          "mainContentSha256": "b1418ae5b4b56b7852ac078d9a4e229ba89c8e923e960fa9a3186e83fa190483",
+          "observedAt": "2026-11-03T13:24:28.184Z"
         }
       ]
     },
@@ -15297,7 +15406,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Show controlled per-axis measurement and separate shrinkage from local first-layer/hole errors.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Build a repeatable measurement record; Do not apply one factor to unrelated geometry; A tight hole does not establish global shrinkage. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -15333,7 +15442,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-compensate-for-3d-print-shrinkage",
       "sitemapMember": true,
@@ -15344,8 +15454,8 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-compensate-for-3d-print-shrinkage",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 8157,
-        "mainContentSha256": "8e4e1e39b56f2377343979ea678fc12f67c86ab4a2c7be96c6b3cff89588c98e",
+        "mainTextCharacters": 8488,
+        "mainContentSha256": "77dfb9a00d6090af712de1572cbe54d3386b6a90aec1171bae712b051a236ace",
         "sectionHeadings": [
           "Build a repeatable measurement record",
           "Do not apply one factor to unrelated geometry",
@@ -15360,19 +15470,19 @@
           "FAQ"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 5,
-        "contextualInlinkCount": 5,
+        "incomingLinkCount": 6,
+        "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
           "/guides/3d-print-elephants-foot-and-part-fit",
           "/guides/3d-print-hole-size-compensation",
+          "/guides/3d-print-moisture-and-dimensional-stability",
           "/guides/3d-printer-calibration-guide",
-          "/guides",
-          "/tools/3d-print-shrinkage-calculator"
+          "/guides"
         ],
-        "internalLinkCount": 51,
+        "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.184Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "How to Compensate for 3D Print Shrinkage",
       "baseline": {
@@ -15390,7 +15500,7 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-compensate-for-3d-print-shrinkage",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-03",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -15406,14 +15516,14 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/how-to-compensate-for-3d-print-shrinkage/index.html",
         "sitemapCount": 1,
-        "incomingCount": 5,
-        "contextualIncomingCount": 5,
+        "incomingCount": 6,
+        "contextualIncomingCount": 6,
         "incomingExamples": [
           "/guides/3d-print-elephants-foot-and-part-fit",
           "/guides/3d-print-hole-size-compensation",
+          "/guides/3d-print-moisture-and-dimensional-stability",
           "/guides/3d-printer-calibration-guide",
-          "/guides",
-          "/tools/3d-print-shrinkage-calculator"
+          "/guides"
         ],
         "depth": 2,
         "diagnosis": [
@@ -15426,6 +15536,10 @@
         {
           "mainContentSha256": "9d45e8f69156ac67b222831c9479c522a6fb7350449282a36f49e489c1032357",
           "observedAt": "2026-11-01T00:27:41.606Z"
+        },
+        {
+          "mainContentSha256": "8e4e1e39b56f2377343979ea678fc12f67c86ab4a2c7be96c6b3cff89588c98e",
+          "observedAt": "2026-11-03T13:24:28.184Z"
         }
       ]
     },
@@ -17159,7 +17273,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Compare drying and storage functions with exact spool/material constraints and attributable guidance.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Start with the material and task; An equipment decision without invented compatibility; Worked investigation: stringing after storage. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -17195,7 +17309,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/guides/filament-dryer-vs-dry-box",
       "sitemapMember": true,
@@ -17206,8 +17321,8 @@
         "canonical": "https://www.inspectmesh.com/guides/filament-dryer-vs-dry-box",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5066,
-        "mainContentSha256": "190a5c3b27889e092e9163884d16c415a765511f3d1bc7a31e2bc85f74f8bf9d",
+        "mainTextCharacters": 5440,
+        "mainContentSha256": "15faede6ce161528379c956dd1f80c780bccff44404331fbf70b1f71c26061e5",
         "sectionHeadings": [
           "Start with the material and task",
           "Keep a source-reading record for the exact spool",
@@ -17218,19 +17333,19 @@
           "FAQ"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 10,
-        "contextualInlinkCount": 10,
+        "incomingLinkCount": 11,
+        "contextualInlinkCount": 11,
         "contextualInlinkExamples": [
+          "/guides/3d-print-moisture-and-dimensional-stability",
           "/guides",
           "/materials/abs",
           "/materials/asa",
-          "/materials",
-          "/materials/nylon"
+          "/materials"
         ],
-        "internalLinkCount": 52,
+        "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.185Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "Filament Dryer vs Dry Box: Choose the Function You Need",
       "baseline": {
@@ -17248,7 +17363,7 @@
         "canonical": "https://www.inspectmesh.com/guides/filament-dryer-vs-dry-box",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-03",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -17264,14 +17379,14 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/filament-dryer-vs-dry-box/index.html",
         "sitemapCount": 1,
-        "incomingCount": 10,
-        "contextualIncomingCount": 10,
+        "incomingCount": 11,
+        "contextualIncomingCount": 11,
         "incomingExamples": [
+          "/guides/3d-print-moisture-and-dimensional-stability",
           "/guides",
           "/materials/abs",
           "/materials/asa",
-          "/materials",
-          "/materials/nylon"
+          "/materials"
         ],
         "depth": 2,
         "diagnosis": [
@@ -17284,6 +17399,10 @@
         {
           "mainContentSha256": "769cc598b21c573cd5b3943fd83c877eab529e52af56da5bd0d5e7049ae80404",
           "observedAt": "2026-10-28T23:58:55.872Z"
+        },
+        {
+          "mainContentSha256": "190a5c3b27889e092e9163884d16c415a765511f3d1bc7a31e2bc85f74f8bf9d",
+          "observedAt": "2026-11-03T13:24:28.185Z"
         }
       ]
     },
@@ -27115,7 +27234,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Order controlled measurements; change one cause at a time instead of prescribing global scale.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Prerequisites before tuning; Ordered calibration workflow; Route the dimensional symptom to its owner. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -27163,8 +27282,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-printer-calibration-guide",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5972,
-        "mainContentSha256": "8093231e874ff5cad92743393352e02f42be19bc0788a8823194832dfb36e46d",
+        "mainTextCharacters": 6173,
+        "mainContentSha256": "f3bdd8eb07e2c15a79ed2e1325ccdf829b0f5aff706d3bb7af084e83246eed41",
         "sectionHeadings": [
           "Separate machine, material and model decisions",
           "One ordered calibration workflow",
@@ -27182,10 +27301,10 @@
           "/guides/3d-print-z-seam-placement",
           "/guides"
         ],
-        "internalLinkCount": 57,
+        "internalLinkCount": 59,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.189Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "3D Printer Calibration Guide: What to Calibrate First",
       "baseline": {
@@ -27249,6 +27368,10 @@
         {
           "mainContentSha256": "26fedbf3d7fef082e77f06c4c1182927da77131a98ae42844f22c2565d669a48",
           "observedAt": "2026-11-03T08:00:35.136Z"
+        },
+        {
+          "mainContentSha256": "8093231e874ff5cad92743393352e02f42be19bc0788a8823194832dfb36e46d",
+          "observedAt": "2026-11-03T13:24:28.189Z"
         }
       ]
     },
@@ -27989,7 +28112,7 @@
       "owner": "InspectMesh",
       "decision": "retain",
       "brief": "Explain entry clearance, engagement and deflection with a specific illustrated joint.",
-      "decisionReason": "Retain the existing task owner. Its distinct answer/workflow includes Give each requirement its own input; Root geometry and process belong to the joint; Illustrative enclosure-tab plan. Search history, backlinks and current Google canonical remain unverified; no exclusion or URL move is approved.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Route, initial HTML, section and asset inventory; not a complete hands-on audit or Google indexing review.",
         "status": "inventoried",
@@ -28025,7 +28148,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
       },
       "url": "https://www.inspectmesh.com/guides/3d-print-snap-fit-clearance",
       "sitemapMember": true,
@@ -28036,8 +28160,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-snap-fit-clearance",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5230,
-        "mainContentSha256": "ac8303d1617d1577854df17eacc3667823dac6eb9a83cd9715a47b5ba5c265b4",
+        "mainTextCharacters": 5530,
+        "mainContentSha256": "307c9c683150eb6540b02182f45d41f6c21a7a5d4b1a9eadff1c88ccae8e4dac",
         "sectionHeadings": [
           "Give each requirement its own input",
           "Root geometry and process belong to the joint",
@@ -28047,18 +28171,19 @@
           "FAQ"
         ],
         "exampleAssets": ["/examples/functional-fit/snap-fit.svg"],
-        "incomingLinkCount": 4,
-        "contextualInlinkCount": 4,
+        "incomingLinkCount": 5,
+        "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
+          "/guides/3d-print-creep-under-sustained-load",
           "/guides/3d-print-tolerance-and-clearance-guide",
           "/guides/alignment-pins-for-split-3d-prints",
           "/guides",
           "/guides/print-in-place-clearance"
         ],
-        "internalLinkCount": 57,
+        "internalLinkCount": 58,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.189Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "primaryTask": "3D Print Snap-Fit Clearance and Engagement",
       "baseline": {
@@ -28076,7 +28201,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-snap-fit-clearance",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-02",
+        "lastmod": "2026-11-03",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -28092,9 +28217,10 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-snap-fit-clearance/index.html",
         "sitemapCount": 1,
-        "incomingCount": 4,
-        "contextualIncomingCount": 4,
+        "incomingCount": 5,
+        "contextualIncomingCount": 5,
         "incomingExamples": [
+          "/guides/3d-print-creep-under-sustained-load",
           "/guides/3d-print-tolerance-and-clearance-guide",
           "/guides/alignment-pins-for-split-3d-prints",
           "/guides",
@@ -28111,6 +28237,10 @@
         {
           "mainContentSha256": "df54c0e9956cb8d171ef56726eb13849efe0240d6373aa4e49d26139c8ae130d",
           "observedAt": "2026-11-01T00:27:41.612Z"
+        },
+        {
+          "mainContentSha256": "ac8303d1617d1577854df17eacc3667823dac6eb9a83cd9715a47b5ba5c265b4",
+          "observedAt": "2026-11-03T13:24:28.189Z"
         }
       ]
     },
@@ -29843,7 +29973,7 @@
       "primaryTask": "Plan and inspect a printed housing for an identified manufactured rolling bearing.",
       "decision": "add",
       "brief": "Exact nominal SKF 608-2RSH dimensions, separate radial/axial/retention decisions and original local-correction arithmetic.",
-      "decisionReason": "Distinct specialist workflow; generic definitions and equations remain with tolerance and measurement owners. Exact nominal SKF 608-2RSH dimensions, separate radial/axial/retention decisions and original local-correction arithmetic.",
+      "decisionReason": "Integrated thermal, sustained-load or measurement-state interpretation at the existing task/discovery decision; retained controls, scoring, worksheet values and established owners.",
       "editorialReview": {
         "scope": "Original explanatory arithmetic and checked primary dimensional/process references. No physical test or fresh slicer observation.",
         "status": "source-reviewed",
@@ -29873,8 +30003,8 @@
         "canonical": "https://www.inspectmesh.com/guides/bearing-seat-sizing-3d-printing",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7122,
-        "mainContentSha256": "9826dad5e36910b52fe923016661de6bf0a9a14fbfa61be01354239910d4a5ea",
+        "mainTextCharacters": 7337,
+        "mainContentSha256": "e700cb724eefbe1acb3b42d719834093b842c9124420e592de086e02c42ca9c2",
         "sectionHeadings": [
           "Identify three separate interfaces",
           "Decide which ring should be held",
@@ -29894,10 +30024,10 @@
           "/guides/3d-print-tolerance-and-clearance-guide",
           "/guides/3d-print-wall-thickness-guide"
         ],
-        "internalLinkCount": 57,
+        "internalLinkCount": 59,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.189Z",
-        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
       },
       "routeCoverage": {
         "id": "guides/bearing-seat-sizing-3d-printing",
@@ -29944,6 +30074,10 @@
         {
           "mainContentSha256": "7f24ba2216c6bd4bb14c4900283d1ee5599200e69c1339dee83fe28a3a262ef4",
           "observedAt": "2026-11-03T08:00:35.137Z"
+        },
+        {
+          "mainContentSha256": "9826dad5e36910b52fe923016661de6bf0a9a14fbfa61be01354239910d4a5ea",
+          "observedAt": "2026-11-03T13:24:28.189Z"
         }
       ]
     },
@@ -30712,6 +30846,329 @@
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
       }
+    },
+    {
+      "path": "/guides/3d-print-heat-resistance-hdt-vs-tg",
+      "url": "https://www.inspectmesh.com/guides/3d-print-heat-resistance-hdt-vs-tg",
+      "priority": "P2",
+      "family": "material-evidence",
+      "owner": "Interpret the thermal metric and test context for an exact formulation before evaluating a heated part.",
+      "primaryTask": "Interpret the thermal metric and test context for an exact formulation before evaluating a heated part.",
+      "decision": "add",
+      "brief": "Same-grade 113/93 °C HDT load contrast, Tg method criteria and an application requirement checklist.",
+      "decisionReason": "Material profiles identify products; no existing owner fully interprets HDT versus Tg or the two-load example. A service-temperature calculator or ranking is not created.",
+      "adjacentOwners": [
+        "/materials/polycarbonate",
+        "/tools/compare-3d-printing-materials"
+      ],
+      "editorialReview": {
+        "scope": "Primary source bodies reviewed 3 November 2026; historical PC Blend sheet and original arithmetic checked. No physical test or simulation.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production delivery and Google indexing remain unknown. Offline desktop/390px layouts were reviewed; comparison source disclosure and keyboard horizontal scrolling were exercised on script-free prerender output. Hydrated tool/AXE acceptance remains unverified: Chrome audit pipe closes before page 1 and preview server binding is denied. No physical tests or simulation."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
+      },
+      "local": {
+        "title": "3D Print Heat Resistance: HDT vs Tg | InspectMesh",
+        "description": "Read HDT and Tg with their test conditions. Compare two documented PC Blend HDT loads and separate thermal test results from sustained service.",
+        "headings": [
+          "What do HDT and glass transition tell you about a 3D print?"
+        ],
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-heat-resistance-hdt-vs-tg",
+        "canonicalCount": 1,
+        "robots": ["index, follow"],
+        "mainTextCharacters": 5195,
+        "mainContentSha256": "4d2860c1376cd3735c5862cfb94e4cc4504c57d7c94e7adb66b917e6036c91b5",
+        "sectionHeadings": [
+          "Name the temperature before comparing it",
+          "One PC Blend sheet, two test loads",
+          "Read Tg with its measurement basis",
+          "Translate the application into evidence",
+          "Choose the next check"
+        ],
+        "exampleAssets": [],
+        "incomingLinkCount": 12,
+        "contextualInlinkCount": 12,
+        "contextualInlinkExamples": [
+          "/compare-materials/nylon-vs-polycarbonate",
+          "/compare-materials/petg-vs-abs",
+          "/compare-materials/petg-vs-asa",
+          "/compare-materials/pla-vs-abs",
+          "/guides/3d-print-creep-under-sustained-load"
+        ],
+        "internalLinkCount": 53,
+        "clickDepth": 2,
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+      },
+      "routeCoverage": {
+        "id": "guides/3d-print-heat-resistance-hdt-vs-tg",
+        "path": "/guides/3d-print-heat-resistance-hdt-vs-tg",
+        "pageType": "guide",
+        "disposition": "indexable-canonical",
+        "reason": "Established canonical public task owner; retained in the maintained public/content registry.",
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-heat-resistance-hdt-vs-tg",
+        "noindex": false,
+        "rendering": "prerendered",
+        "lastmod": "2026-11-03",
+        "lastmodSource": "src/content/guides/guides.registry.ts",
+        "source": "Published guide registry",
+        "sitemap": true,
+        "expectedStatus": 200,
+        "queryPolicy": "canonical-base",
+        "owner": "InspectMesh",
+        "discoverySources": [
+          {
+            "path": "/guides/3d-print-heat-resistance-hdt-vs-tg",
+            "source": "/Users/jankidudel/soft/3d/3d-frontend/src/app/app.routes.ts:391",
+            "renderer": "() =>\n      import('./features/guides/guide-page').then((m) => m.GuidePage)"
+          }
+        ],
+        "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-heat-resistance-hdt-vs-tg/index.html",
+        "sitemapCount": 1,
+        "incomingCount": 12,
+        "contextualIncomingCount": 12,
+        "incomingExamples": [
+          "/compare-materials/nylon-vs-polycarbonate",
+          "/compare-materials/petg-vs-abs",
+          "/compare-materials/petg-vs-asa",
+          "/compare-materials/pla-vs-abs",
+          "/guides/3d-print-creep-under-sustained-load"
+        ],
+        "depth": 2,
+        "diagnosis": [
+          "Canonical route, built document, sitemap and incoming links agree."
+        ],
+        "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
+      }
+    },
+    {
+      "path": "/guides/3d-print-creep-under-sustained-load",
+      "url": "https://www.inspectmesh.com/guides/3d-print-creep-under-sustained-load",
+      "priority": "P2",
+      "family": "material-evidence",
+      "owner": "Investigate shape or force retention over time under identified loading or deformation constraints.",
+      "primaryTask": "Investigate shape or force retention over time under identified loading or deformation constraints.",
+      "decision": "add",
+      "brief": "Original immediate/elapsed/recovery record and lever-arm moments, with separate creep and relaxation decisions.",
+      "decisionReason": "Static stiffness, tolerance and snap-fit owners do not provide a complete time-dependent evidence interpretation. No lifetime or load-capacity model is created.",
+      "adjacentOwners": [
+        "/guides/3d-print-snap-fit-clearance",
+        "/tools/3d-printing-material-selector"
+      ],
+      "editorialReview": {
+        "scope": "Primary source bodies reviewed 3 November 2026; historical PC Blend sheet and original arithmetic checked. No physical test or simulation.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production delivery and Google indexing remain unknown. Offline desktop/390px layouts were reviewed; comparison source disclosure and keyboard horizontal scrolling were exercised on script-free prerender output. Hydrated tool/AXE acceptance remains unverified: Chrome audit pipe closes before page 1 and preview server binding is denied. No physical tests or simulation."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
+      },
+      "local": {
+        "title": "3D Print Creep Under Sustained Load | InspectMesh",
+        "description": "Separate immediate deformation, creep, relaxation and recovery. Read an illustrative time record and identify missing load and temperature evidence.",
+        "headings": ["Why can a 3D printed part deform under a steady load?"],
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-creep-under-sustained-load",
+        "canonicalCount": 1,
+        "robots": ["index, follow"],
+        "mainTextCharacters": 5714,
+        "mainContentSha256": "ee813bd6339b0fa2b1ec4aeef6b31ed96bd46c76ea770958fb2488f7f05d90cb",
+        "sectionHeadings": [
+          "Separate four observations",
+          "Read a time record from its unloaded reference",
+          "Geometry changes the load-path question",
+          "Define the evidence a representative observation needs",
+          "Choose a next action for the actual constraint"
+        ],
+        "exampleAssets": [],
+        "incomingLinkCount": 17,
+        "contextualInlinkCount": 17,
+        "contextualInlinkExamples": [
+          "/compare-materials/abs-vs-asa",
+          "/compare-materials/petg-vs-tpu",
+          "/compare-materials/pla-vs-petg",
+          "/compare-materials/pla-vs-tpu",
+          "/compare-materials/polypropylene-vs-petg"
+        ],
+        "internalLinkCount": 55,
+        "clickDepth": 2,
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+      },
+      "routeCoverage": {
+        "id": "guides/3d-print-creep-under-sustained-load",
+        "path": "/guides/3d-print-creep-under-sustained-load",
+        "pageType": "guide",
+        "disposition": "indexable-canonical",
+        "reason": "Established canonical public task owner; retained in the maintained public/content registry.",
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-creep-under-sustained-load",
+        "noindex": false,
+        "rendering": "prerendered",
+        "lastmod": "2026-11-03",
+        "lastmodSource": "src/content/guides/guides.registry.ts",
+        "source": "Published guide registry",
+        "sitemap": true,
+        "expectedStatus": 200,
+        "queryPolicy": "canonical-base",
+        "owner": "InspectMesh",
+        "discoverySources": [
+          {
+            "path": "/guides/3d-print-creep-under-sustained-load",
+            "source": "/Users/jankidudel/soft/3d/3d-frontend/src/app/app.routes.ts:391",
+            "renderer": "() =>\n      import('./features/guides/guide-page').then((m) => m.GuidePage)"
+          }
+        ],
+        "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-creep-under-sustained-load/index.html",
+        "sitemapCount": 1,
+        "incomingCount": 17,
+        "contextualIncomingCount": 17,
+        "incomingExamples": [
+          "/compare-materials/abs-vs-asa",
+          "/compare-materials/petg-vs-tpu",
+          "/compare-materials/pla-vs-petg",
+          "/compare-materials/pla-vs-tpu",
+          "/compare-materials/polypropylene-vs-petg"
+        ],
+        "depth": 2,
+        "diagnosis": [
+          "Canonical route, built document, sitemap and incoming links agree."
+        ],
+        "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
+      }
+    },
+    {
+      "path": "/guides/3d-print-moisture-and-dimensional-stability",
+      "url": "https://www.inspectmesh.com/guides/3d-print-moisture-and-dimensional-stability",
+      "priority": "P2",
+      "family": "material-evidence",
+      "owner": "Interpret fit measurements taken in different material/exposure states before compensation or acceptance.",
+      "primaryTask": "Interpret fit measurements taken in different material/exposure states before compensation or acceptance.",
+      "decision": "add",
+      "brief": "Independent 2% mass and 0.4% selected-length arithmetic, supplier humidity context and comparable-state checklist.",
+      "decisionReason": "The dryer guide owns spool preparation and shrinkage owns repeatable process compensation. Neither owns finished-part exposure-state interpretation.",
+      "adjacentOwners": [
+        "/guides/filament-dryer-vs-dry-box",
+        "/guides/how-to-compensate-for-3d-print-shrinkage"
+      ],
+      "editorialReview": {
+        "scope": "Primary source bodies reviewed 3 November 2026; historical PC Blend sheet and original arithmetic checked. No physical test or simulation.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production delivery and Google indexing remain unknown. Offline desktop/390px layouts were reviewed; comparison source disclosure and keyboard horizontal scrolling were exercised on script-free prerender output. Hydrated tool/AXE acceptance remains unverified: Chrome audit pipe closes before page 1 and preview server binding is denied. No physical tests or simulation."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-03"
+      },
+      "local": {
+        "title": "Moisture and 3D Print Dimensional Stability | InspectMesh",
+        "description": "Separate spool drying, finished-part condition and measured fit. Compare mass and length changes without inventing a swelling or scale factor.",
+        "headings": ["Can moisture change a 3D printed part's fit?"],
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-moisture-and-dimensional-stability",
+        "canonicalCount": 1,
+        "robots": ["index, follow"],
+        "mainTextCharacters": 5239,
+        "mainContentSha256": "1c237ad8ca81071daf1ddbdb1dc349de031bdf2810e93faf6b2d1f636459fa18",
+        "sectionHeadings": [
+          "Keep the stage and observation together",
+          "Read absorption with its exposure method",
+          "Two ratios describe different quantities",
+          "A supplier example with explicit humidity",
+          "Check comparability before compensation"
+        ],
+        "exampleAssets": [],
+        "incomingLinkCount": 14,
+        "contextualInlinkCount": 14,
+        "contextualInlinkExamples": [
+          "/compare-materials/petg-vs-nylon",
+          "/guides/3d-print-creep-under-sustained-load",
+          "/guides/3d-print-heat-resistance-hdt-vs-tg",
+          "/guides/3d-print-tolerance-and-clearance-guide",
+          "/guides/3d-printer-calibration-guide"
+        ],
+        "internalLinkCount": 55,
+        "clickDepth": 2,
+        "observedAt": "2026-11-03T21:03:27.004Z",
+        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+      },
+      "routeCoverage": {
+        "id": "guides/3d-print-moisture-and-dimensional-stability",
+        "path": "/guides/3d-print-moisture-and-dimensional-stability",
+        "pageType": "guide",
+        "disposition": "indexable-canonical",
+        "reason": "Established canonical public task owner; retained in the maintained public/content registry.",
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-moisture-and-dimensional-stability",
+        "noindex": false,
+        "rendering": "prerendered",
+        "lastmod": "2026-11-03",
+        "lastmodSource": "src/content/guides/guides.registry.ts",
+        "source": "Published guide registry",
+        "sitemap": true,
+        "expectedStatus": 200,
+        "queryPolicy": "canonical-base",
+        "owner": "InspectMesh",
+        "discoverySources": [
+          {
+            "path": "/guides/3d-print-moisture-and-dimensional-stability",
+            "source": "/Users/jankidudel/soft/3d/3d-frontend/src/app/app.routes.ts:391",
+            "renderer": "() =>\n      import('./features/guides/guide-page').then((m) => m.GuidePage)"
+          }
+        ],
+        "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-moisture-and-dimensional-stability/index.html",
+        "sitemapCount": 1,
+        "incomingCount": 14,
+        "contextualIncomingCount": 14,
+        "incomingExamples": [
+          "/compare-materials/petg-vs-nylon",
+          "/guides/3d-print-creep-under-sustained-load",
+          "/guides/3d-print-heat-resistance-hdt-vs-tg",
+          "/guides/3d-print-tolerance-and-clearance-guide",
+          "/guides/3d-printer-calibration-guide"
+        ],
+        "depth": 2,
+        "diagnosis": [
+          "Canonical route, built document, sitemap and incoming links agree."
+        ],
+        "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
+      }
     }
   ],
   "additionalUrls": [
@@ -30850,8 +31307,8 @@
     }
   ],
   "coverage": {
-    "sitemapUrls": 216,
-    "ledgerRows": 216,
+    "sitemapUrls": 219,
+    "ledgerRows": 219,
     "localFailures": []
   },
   "documentationAudit": [
@@ -33692,11 +34149,11 @@
   },
   "routeCoverage": {
     "counts": {
-      "R": 220,
-      "G": 220,
-      "L": 218,
-      "S": 216,
-      "I": 216
+      "R": 223,
+      "G": 223,
+      "L": 221,
+      "S": 219,
+      "I": 219
     },
     "differences": {
       "I-S": [],
@@ -35139,7 +35596,7 @@
           "exampleAssets": []
         },
         "sitemapCount": 0,
-        "incomingCount": 219,
+        "incomingCount": 222,
         "contextualIncomingCount": 11,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -35192,7 +35649,7 @@
           "exampleAssets": []
         },
         "sitemapCount": 0,
-        "incomingCount": 219,
+        "incomingCount": 222,
         "contextualIncomingCount": 1,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -35303,7 +35760,7 @@
       }
     ],
     "failures": [],
-    "observedAt": "2026-11-03T13:24:34.534Z",
+    "observedAt": "2026-11-03T21:03:27.004Z",
     "scope": "Local built route coverage, not HTTP delivery or Google indexing."
   },
   "recoveryBaseline": {

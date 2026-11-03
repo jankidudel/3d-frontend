@@ -1,0 +1,213 @@
+---
+title: '3D Print Heat Resistance: HDT vs Tg | InspectMesh'
+description: 'Read HDT and Tg with their test conditions. Compare two documented PC Blend HDT loads and separate thermal test results from sustained service.'
+slug: 3d-print-heat-resistance-hdt-vs-tg
+eyebrow: Material evidence
+heading: 'What do HDT and glass transition tell you about a 3D print?'
+---
+
+<p>
+  Heat deflection temperature (HDT) is a loaded deflection test result. Glass
+  transition (Tg) describes a material transition measured by a specified
+  analytical method. Neither number automatically gives the maximum operating
+  temperature of your printed part. Start with the exact formulation and the
+  test behind its number, then identify the part's temperature, load and
+  required duration.
+</p>
+<h2>Name the temperature before comparing it</h2>
+<table>
+  <caption>
+    Five temperatures that answer different questions
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Reported temperature</th>
+      <th scope="col">Purpose</th>
+      <th scope="col">What it leaves unresolved</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Nozzle setting</th>
+      <td>Processing the specified filament in a print profile</td>
+      <td>Finished-part heat resistance</td>
+    </tr>
+    <tr>
+      <th scope="row">Bed setting</th>
+      <td>Build-surface conditions during printing</td>
+      <td>A temperature rating for an assembled part</td>
+    </tr>
+    <tr>
+      <th scope="row">HDT</th>
+      <td>Deflection under the test's stated loading and heating conditions</td>
+      <td>Long-term deformation in a different geometry or load</td>
+    </tr>
+    <tr>
+      <th scope="row">Tg</th>
+      <td>A transition identified using a stated thermal-analysis method</td>
+      <td>Melting temperature or a permissible service temperature</td>
+    </tr>
+    <tr>
+      <th scope="row">Documented service limit</th>
+      <td>A separately supported application limit with its own scope</td>
+      <td>
+        Uses outside that load, duration, environment or part specification
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The
+  <a href="https://www.iso.org/standard/77576.html"
+    >ISO 75-1:2020 public abstract</a
+  >
+  describes deflection under flexural loading during a specified temperature
+  rise. It cautions against using the result to predict end-use performance or
+  endurance. This guide uses that public scope, not the purchased procedure, and
+  describes no standards-compliant test performed by InspectMesh.
+</p>
+<h2 id="guide-pc-blend-two-loads">One PC Blend sheet, two test loads</h2>
+<p>
+  Page 2 of the
+  <a
+    href="https://prusament.com/wp-content/uploads/2022/10/PCBlend_Prusament_TDS_2022_16_EN.pdf"
+    >Prusament PC Blend technical datasheet</a
+  >, version 1.1, updated 16 February 2022, gives both rows below. This
+  historical named blend is neither generic pure polycarbonate nor PC Blend
+  Carbon Fiber. The
+  <a href="{{ GuideSlug.RoutePolycarbonate }}#product-evidence"
+    >PC profile's named example</a
+  >
+  retains both observations with their loads.
+</p>
+<table>
+  <caption>
+    Published Prusament PC Blend HDT results, same document
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Test stress</th>
+      <th scope="col">Reported HDT</th>
+      <th scope="col">Method</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">0.45 MPa</th>
+      <td>113 °C</td>
+      <td>ISO 75</td>
+    </tr>
+    <tr>
+      <th scope="row">1.80 MPa</th>
+      <td>93 °C</td>
+      <td>ISO 75</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  The stated test stress changes by 1.80 / 0.45 = <strong>4 times</strong>,
+  while the reported temperatures differ by 113 - 93 = <strong>20 °C</strong>.
+  This describes these two rows. It provides no linear relationship, temperature
+  allowance or interpolation for another bracket stress. Replacing 93 °C with
+  113 °C would erase the different loading condition.
+</p>
+<p>
+  HDT specimen preparation, orientation and conditioning are not specified for
+  these rows. The sheet's separate printed-mechanical-specimen footnote must not
+  silently fill those gaps. Keep missing fields visible when comparing another
+  product. A higher number under a lower test stress does not establish better
+  performance in your part.
+</p>
+<h2>Read Tg with its measurement basis</h2>
+<p>
+  A DSC glass-transition result can use an onset, midpoint or endset criterion;
+  heating rate and thermal history can change the reported observation.
+  <a
+    href="https://www.tainstruments.com/applications-notes/exploring-the-sensitivity-of-thermal-analysis-techniques-to-the-glass-transition-ta082/"
+    >TA Instruments' thermal-analysis note</a
+  >
+  explains these method distinctions. Comparing a midpoint from one protocol
+  with an onset from another can confuse a method difference with a formulation
+  difference.
+</p>
+<p>
+  Tg is not a melting point or an automatic use limit. The cited PC Blend sheet
+  does not publish Tg, so a product Tg remains unavailable here. A different
+  polycarbonate in an analytical-method example cannot supply it. Nozzle or bed
+  settings cannot fill the missing field either.
+</p>
+<h2>Translate the application into evidence</h2>
+<p>
+  For a motor-adjacent guard, distinguish ambient air from the actual part and
+  contact temperatures. A sun-heated enclosure can also differ from surrounding
+  air; no fixed offset applies. Define the location, range and duration of
+  temperature exposure before choosing a datasheet comparison.
+</p>
+<table>
+  <caption>
+    Requirements to resolve before accepting a heated part
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Record</th>
+      <th scope="col">Why it changes the question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Actual part temperature and duration</th>
+      <td>A brief peak and sustained operation need different evidence.</td>
+    </tr>
+    <tr>
+      <th scope="row">Load, contact and support locations</th>
+      <td>
+        An unloaded cover and a fastened, loaded mount have different
+        constraints.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Geometry, orientation and print revision</th>
+      <td>
+        Test specimens do not reproduce every wall, root or layer direction.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Environment and material condition</th>
+      <td>Humidity, water or chemical exposure must match the intended use.</td>
+    </tr>
+    <tr>
+      <th scope="row">Allowable change and measurement method</th>
+      <td>
+        Acceptable movement or force loss is an application requirement, not a
+        derived HDT margin.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h2>Choose the next check</h2>
+<p>
+  In the
+  <a href="{{ GuideSlug.RouteCompare3dPrintingMaterials }}"
+    >existing material comparison tool</a
+  >, retain property identity, units, method, test load, specimen, orientation,
+  conditioning, heating protocol and formulation. Resolve missing or mismatched
+  data with the supplier; matching fields improves source interpretation but
+  does not approve the part. Request applicable grade data or obtain
+  representative part-level validation rather than subtracting an arbitrary
+  safety factor from HDT.
+</p>
+<p>
+  For shape change while loaded, continue to
+  <a href="{{ GuideSlug.Route3dPrintCreepUnderSustainedLoad }}"
+    >creep and force retention over time</a
+  >. For readings taken in different exposure states, use
+  <a href="{{ GuideSlug.Route3dPrintMoistureAndDimensionalStability }}"
+    >moisture and conditioned-fit interpretation</a
+  >. A short heating observation, an unloaded fit and long-term loaded service
+  remain separate evidence.
+</p>
+<p>
+  Sources reviewed 3 November 2026. Published tests and original arithmetic are
+  distinguished above; no physical heating test or service qualification was
+  performed for this guide.
+</p>

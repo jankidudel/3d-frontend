@@ -134,7 +134,10 @@ export class MaterialEvidenceComponent {
     <h2>Published product examples, separate from the family view</h2>
     <p>
       These are identified formulations chosen to show how to read evidence.
-      Selecting a family does not select a brand for your part.
+      Selecting a family does not select a brand for your part. HDT rows are
+      grouped by reported test load, never by the highest temperature. An absent
+      matching-load result remains unavailable; matching a load alone does not
+      establish matching specimen or conditioning.
     </p>
     <p>
       <a [href]="evidenceUrl(left())"
@@ -174,9 +177,14 @@ export class MaterialEvidenceComponent {
           </tr>
         </thead>
         <tbody>
-          @for (row of rows(); track row.property) {
+          @for (row of rows(); track row.key) {
             <tr>
-              <th scope="row">{{ row.property }}</th>
+              <th scope="row">
+                {{ row.property }}
+                @if (row.testLoad) {
+                  <span>({{ row.testLoad }})</span>
+                }
+              </th>
               @for (entry of row.entries; track $index) {
                 <td>
                   @if (entry.claim; as claim) {
@@ -238,17 +246,37 @@ export class MaterialProductComparisonComponent {
           ),
         ),
       )
-      .map((property) => {
-        const entries = [this.left(), this.right()].map((material) => ({
-          claim: material.productExample?.claims.find(
-            (claim) => claim.property === property,
-          ),
-        }));
-        return {
-          property,
-          entries,
-          comparison: compareClaims(entries[0].claim, entries[1].claim),
-        };
+      .flatMap((property) => {
+        const records = [this.left(), this.right()];
+        const testLoads =
+          property === MaterialProperty.Hdt
+            ? [
+                ...new Set(
+                  records.flatMap((material) =>
+                    (material.productExample?.claims ?? [])
+                      .filter((claim) => claim.property === property)
+                      .map((claim) => claim.testLoad),
+                  ),
+                ),
+              ]
+            : [undefined];
+        return testLoads.map((testLoad) => {
+          const entries = records.map((material) => ({
+            claim: material.productExample?.claims.find(
+              (claim) =>
+                claim.property === property &&
+                (property !== MaterialProperty.Hdt ||
+                  claim.testLoad === testLoad),
+            ),
+          }));
+          return {
+            key: `${property}/${testLoad ?? 'unspecified'}`,
+            property,
+            testLoad,
+            entries,
+            comparison: compareClaims(entries[0].claim, entries[1].claim),
+          };
+        });
       }),
   );
 }

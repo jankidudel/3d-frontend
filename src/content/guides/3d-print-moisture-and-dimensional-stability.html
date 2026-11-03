@@ -1,0 +1,195 @@
+---
+title: 'Moisture and 3D Print Dimensional Stability | InspectMesh'
+description: 'Separate spool drying, finished-part condition and measured fit. Compare mass and length changes without inventing a swelling or scale factor.'
+slug: 3d-print-moisture-and-dimensional-stability
+eyebrow: Material evidence
+heading: "Can moisture change a 3D printed part's fit?"
+---
+
+<p>
+  Preparing filament for printing and evaluating a finished part after service
+  exposure are different tasks. Record the state in which fit was measured.
+  Moisture-related material changes may matter, but a mass-uptake percentage is
+  not automatically the same percentage change in length, hole size or volume.
+  Establish comparable conditions before choosing a dimensional correction.
+</p>
+<h2>Keep the stage and observation together</h2>
+<table>
+  <caption>
+    Four stages that a label such as “dry nylon” can hide
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Stage</th>
+      <th scope="col">Useful record</th>
+      <th scope="col">Unresolved question</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Spool preparation</th>
+      <td>
+        Exact filament, supplier drying instruction and recorded preparation
+      </td>
+      <td>Condition reached by a finished part in service</td>
+    </tr>
+    <tr>
+      <th scope="row">Storage and feeding</th>
+      <td>Storage environment, exposure time and protection during printing</td>
+      <td>Whether later part measurements share that state</td>
+    </tr>
+    <tr>
+      <th scope="row">Cooled printed part</th>
+      <td>Cooling interval, temperature, axes and initial readings</td>
+      <td>Equilibrium or long-term fit</td>
+    </tr>
+    <tr>
+      <th scope="row">Finished part after exposure</th>
+      <td>Medium/humidity, temperature, duration, load and later readings</td>
+      <td>Cause of any difference and whether it stabilises</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Choose drying and storage equipment through the
+  <a href="{{ GuideSlug.RouteFilamentDryerVsDryBox }}"
+    >dryer versus dry-box guide</a
+  >. It owns filament preparation, not a drying recipe for an assembled part. A
+  reference reading cannot be called dry or equilibrium merely because it was
+  taken first.
+</p>
+<h2>Read absorption with its exposure method</h2>
+<p>
+  The <a href="https://store.astm.org/standards/d570">ASTM D570 public scope</a>
+  concerns water absorption under immersion. A humidity exposure or a supplier's
+  internal procedure is not automatically that test. Keep medium, temperature,
+  humidity where relevant, duration, specimen and initial state beside an uptake
+  result. This guide does not reproduce the full procedure or claim compliance.
+</p>
+<p>
+  PA6, PA11, PA12 and reinforced grades are different formulations. The site's
+  <a href="{{ GuideSlug.RouteNylon }}#product-evidence"
+    >named nylon example is unfilled Prusament PA11</a
+  >. It has no specified dry-versus-conditioned mechanical protocol in the cited
+  sheet. A PA6 or PA11-CF figure cannot supply the missing PA11 result,
+  dimensional coefficient or service fit.
+</p>
+<h2 id="guide-mass-and-length">Two ratios describe different quantities</h2>
+<p>
+  These are <strong>fictional readings</strong> from a hypothetical part. No
+  physical test was performed and no claim is made that moisture caused every
+  difference. The initial state is only a recorded reference, not an established
+  dry or equilibrium condition.
+</p>
+<table>
+  <caption>
+    Independent mass and selected-length arithmetic
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Reference</th>
+      <th scope="col">Later reading</th>
+      <th scope="col">Relative change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Mass</th>
+      <td>20.00 g</td>
+      <td>20.40 g</td>
+      <td>(20.40 - 20.00) / 20.00 × 100 = 2.00%</td>
+    </tr>
+    <tr>
+      <th scope="row">One selected length</th>
+      <td>50.00 mm</td>
+      <td>50.20 mm</td>
+      <td>(50.20 - 50.00) / 50.00 × 100 = 0.40%</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  A <strong>2% mass increase</strong> and a <strong>0.4% length change</strong>
+  are different observations. They supply no unmeasured axes, hole geometry,
+  volume expansion or universal compensation percentage. Surface liquid,
+  contamination, temperature and measurement method must be considered where
+  relevant. Instrument resolution alone does not establish measurement accuracy
+  or a causal moisture effect.
+</p>
+<p>
+  Do not enter the 2% mass value as dimensional shrinkage in the
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+    >shrinkage calculator</a
+  >. Keep reference-condition and service-condition readings separate in its
+  existing measurement/conditioning notes. A material-name change does not
+  justify automatically applying a new scale factor.
+</p>
+<h2>A supplier example with explicit humidity</h2>
+<p>
+  Page 2 of the historical
+  <a
+    href="https://prusament.com/wp-content/uploads/2022/10/PCBlend_Prusament_TDS_2022_16_EN.pdf"
+    >Prusament PC Blend sheet</a
+  >, version 1.1, updated 16 February 2022, reports moisture absorption of
+  <strong>0.13% at 24 hours</strong> and <strong>0.15% at seven days</strong>.
+  Its method is labelled Prusa Polymers; footnote (2) states
+  <strong>24 °C; humidity 22%</strong>.
+</p>
+<p>
+  Those labels belong together. These are reported supplier observations for
+  that blend, not generic PC properties, an immersion result or an ASTM D570
+  test. Neither row establishes saturation or a linear swelling model. They
+  cannot turn the hypothetical length readings above into a manufacturer
+  property or a scale correction. See the
+  <a href="{{ GuideSlug.RoutePolycarbonate }}#product-evidence"
+    >PC Blend profile</a
+  >
+  for its separate loaded thermal evidence.
+</p>
+<h2>Check comparability before compensation</h2>
+<ol>
+  <li>
+    Identify the exact grade, print revision, orientation and profile, then name
+    each measurement state and its elapsed exposure.
+  </li>
+  <li>
+    Retain the same axes, gauge references, feature definition and measuring
+    method. Record instrument, temperature, cooling/conditioning and repeats.
+  </li>
+  <li>
+    Specify the counterpart's state too. A sliding guide or bearing seat depends
+    on both mating components, not only an outer length.
+  </li>
+  <li>
+    Keep observations under different humidity, temperature, loading or time
+    conditions in separate sets. Mixed states do not establish one stable
+    printer correction.
+  </li>
+  <li>
+    Define the representative service condition and acceptable fit change.
+    Obtain exact-grade evidence or repeat a controlled comparison when it is
+    missing; do not prescribe a universal conditioning time.
+  </li>
+</ol>
+<p>
+  Use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+    >existing fit worksheet</a
+  >
+  for comparable dimensional readings. Use the
+  <a href="{{ GuideSlug.RouteHowToCompensateFor3dPrintShrinkage }}"
+    >shrinkage explanation</a
+  >
+  when a repeatable process-size correction is actually supported. If the part
+  changes while loaded, investigate
+  <a href="{{ GuideSlug.Route3dPrintCreepUnderSustainedLoad }}"
+    >time-dependent deformation and force retention</a
+  >
+  rather than attributing every movement to moisture. For thermal numbers, read
+  <a href="{{ GuideSlug.Route3dPrintHeatResistanceHdtVsTg }}">HDT versus Tg</a>.
+</p>
+<p>
+  Sources reviewed 3 November 2026. The supplier observations and original
+  arithmetic have different evidence bases; no uptake experiment, physical fit
+  test or swelling simulation was performed for this guide.
+</p>

@@ -27,7 +27,20 @@ faq:
   or conditioning interval. Record nominal size, each raw reading, axis,
   orientation, material, profile and ambient or chamber conditions that matter.
   Average only comparable readings; a warped corner should be diagnosed rather
-  than hidden inside a mean value.
+  than hidden inside a mean value. Keep readings from changing temperature,
+  moisture exposure, load or elapsed-time states in separate sets. They do not
+  establish one stable printer factor. The
+  <a
+    href="{{
+      GuideSlug.Route3dPrintMoistureAndDimensionalStability
+    }}#guide-mass-and-length"
+    >mass and length example</a
+  >
+  shows why an uptake percentage is not dimensional shrinkage; investigate
+  <a href="{{ GuideSlug.Route3dPrintCreepUnderSustainedLoad }}"
+    >loaded-time movement</a
+  >
+  before pooling later readings with cooled references.
 </p>
 <p>
   Print at least a confirming coupon after applying a factor. If the first

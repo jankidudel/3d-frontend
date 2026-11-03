@@ -124,6 +124,17 @@
     }
   </section>
 
+  <p>
+    Keep reference-condition and service-condition readings in separate sets,
+    using the measurement/conditioning notes below. Temperature, moisture,
+    loading and elapsed time can change comparability. A 2% mass increase is not
+    2% dimensional shrinkage;
+    <a [routerLink]="guideRouteUrl.Route3dPrintMoistureAndDimensionalStability"
+      >compare the independent mass and length ratios</a
+    >
+    before choosing a correction. Notes do not apply a factor or replace raw
+    readings.
+  </p>
   <app-measurement-worksheet
     [calculation]="worksheet()"
     [notes]="notes()"

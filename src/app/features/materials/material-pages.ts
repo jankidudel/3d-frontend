@@ -139,6 +139,29 @@ import {
         comparing numbers. InspectMesh has not physically tested these
         filaments.
       </p>
+      <ul>
+        <li>
+          <a [routerLink]="guideRouteUrl.Route3dPrintHeatResistanceHdtVsTg"
+            >What does HDT or Tg actually describe?</a
+          >
+          Read method and load before comparing thermal numbers.
+        </li>
+        <li>
+          <a [routerLink]="guideRouteUrl.Route3dPrintCreepUnderSustainedLoad"
+            >Will shape or holding force change over time?</a
+          >
+          Separate sustained loading from constrained deformation.
+        </li>
+        <li>
+          <a
+            [routerLink]="
+              guideRouteUrl.Route3dPrintMoistureAndDimensionalStability
+            "
+            >Were fit readings taken in comparable states?</a
+          >
+          Keep moisture uptake separate from dimensional change.
+        </li>
+      </ul>
     </section>
     <section class="tool-grid material-card-grid">
       @for (material of materialList; track material.id) {
@@ -315,6 +338,9 @@ export class MaterialHubPage {
       <p>{{ decision().example }}</p>
       <p>{{ decision().next }}</p>
       <p>
+        <a [routerLink]="decision().guide">{{ decision().guideLabel }}</a>
+      </p>
+      <p>
         Illustrative decision scenario, not a physical material test. Check
         <a href="https://help.prusa3d.com/article/drying-filament_332086"
           >the exact drying guidance</a
@@ -464,6 +490,11 @@ export class MaterialDetailPage {
         <p>{{ record.evidenceQuestion }}</p>
         <p>
           <strong>Next evidence to collect:</strong> {{ record.evidenceAction }}
+        </p>
+        <p>
+          <a [routerLink]="record.evidenceGuide">{{
+            record.evidenceGuideLabel
+          }}</a>
         </p>
         <p>
           Family context explains the trade-off above. The named examples below

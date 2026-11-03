@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { MaterialId } from './material-catalogue';
 import { PublicRouteSegment } from '../../core/seo/public-routes';
 import { MaterialComparisonSlug } from '../../core/seo/public-routes';
@@ -10,6 +11,8 @@ export type MaterialComparison = Readonly<{
   verdict: string;
   evidenceQuestion: string;
   evidenceAction: string;
+  evidenceGuide: string;
+  evidenceGuideLabel: string;
   criteria: readonly Readonly<{
     requirement: string;
     left: string;
@@ -24,7 +27,7 @@ export type MaterialComparison = Readonly<{
   chooseBWhen: readonly string[];
   lastReviewedAt: string;
 }>;
-const reviewed = '2026-10-29';
+const reviewed = '2026-11-03';
 export const materialComparisons: readonly MaterialComparison[] = [
   {
     slug: MaterialComparisonSlug.PlaVsPetg,
@@ -33,7 +36,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'A tensile modulus describes stiffness, not impact tolerance. The named sheets use different nozzle/bed conditions and omit mechanical conditioning, so their numbers are shown separately. Neither supplies long-term cable-holder creep evidence.',
     evidenceAction:
-      'Record actual mounting temperature and load duration, then compare the intended layer direction and handled feature.',
+      'For the 30 mm indoor holder, record immediate deflection and later movement under the same cable load at measured part temperature. Repeated handling can justify investigating PETG, but neither family earns sustained-load acceptance from the initial fit or stiffness.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintCreepUnderSustainedLoad,
+    evidenceGuideLabel: 'Read the loaded-time observation example',
 
     criteria: [
       {
@@ -96,7 +101,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'The PolyLite ABS chamber instruction is product-specific. Nozzle settings are not service-temperature ratings; the warm cover may need loaded-time evidence that neither sheet supplies.',
     evidenceAction:
-      'Measure the mounting environment, duration and deformation allowance. Verify a suitable chamber before repeating the corner trial with that exact ABS.',
+      'Keep the 60 x 40 mm room-temperature prototype record. For the motor-adjacent cover, obtain the thermal method and test load for the exact grade, plus actual part temperature, duration and allowed movement. Verify PolyLite ABS chamber capability separately; neither its nozzle setting nor a headline HDT approves warm service.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintHeatResistanceHdtVsTg,
+    evidenceGuideLabel: 'Read HDT with the load and method',
 
     criteria: [
       {
@@ -158,7 +165,10 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'Do not select ABS from a generic strength band. These product references give different setup instructions, and a neat cover does not establish loaded service performance for either.',
     evidenceAction:
-      'Identify which requirement currently fails; retain the actual temperature/load record and compare supported exact-grade profiles.',
+      'For the 100 mm bracket, retain cooled hole spacing as the fit reference, then identify operating temperature, sustained loading and duration separately. Obtain the exact-grade evidence for whichever requirement fails; an enclosed ABS process and a tidy PETG print do not supply that service record.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintHeatResistanceHdtVsTg,
+    evidenceGuideLabel:
+      'Separate processing temperatures from service evidence',
 
     criteria: [
       {
@@ -219,7 +229,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'Prusa reports UV stability for its ASA product without an exposure duration or protocol in the inspected sources. That statement is separate from mechanical specimen results and cannot predict the cover lifetime.',
     evidenceAction:
-      'Record sun, water paths, fastening load and colour/function observations over time, and request exposure evidence for the exact spool.',
+      'For the exterior 80 mm bracket, keep the sunlight/exposure record separate from fastening load and actual heated-mount temperature. Request grade-specific time-under-load evidence and measure fit in a stated condition; a UV statement cannot establish creep resistance, sealing or ring/fastener retention.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintCreepUnderSustainedLoad,
+    evidenceGuideLabel: 'Investigate the separate sustained-mounting question',
 
     criteria: [
       {
@@ -280,7 +292,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'The ASA product recommends a skirt or enclosure. That recommendation cannot mark every ASA impossible; a selected product or printer requirement must still be respected. Unknown setup evidence is not a pass.',
     evidenceAction:
-      'Record exposure and check the selected printer/profile, plate and enclosure instructions together before repeating the mounting-feature trial.',
+      'For the four-mount outdoor cover, record actual part-temperature range, fastening constraint and exposure duration before interpreting an outdoor family band. Check the selected printer, surface and enclosure instructions as a separate preparation decision; retain water paths and gasket testing independently.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintHeatResistanceHdtVsTg,
+    evidenceGuideLabel: 'Read the evidence needed for a heated part',
 
     criteria: [
       {
@@ -341,7 +355,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'TPU hardness on Shore A is not comparable with a rigid-material stiffness score. The TPU 95A name and its measured Shore A/D values have different roles; no numerical overall winner resolves the bumper function.',
     evidenceAction:
-      'Specify required travel, insertion force and retained clearance. Check a corner with the exact hardness and feed profile, keeping fatigue unknown.',
+      'For the locating plate, define allowed movement; for the compliant bumper, define constrained thickness and the holding force needed over time. Immediate rebound after one bend cannot establish relaxation, fatigue or completed recovery. Verify the exact hardness and feed profile before comparing observations.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintCreepUnderSustainedLoad,
+    evidenceGuideLabel: 'Separate compliance, relaxation and recovery',
 
     criteria: [
       {
@@ -403,7 +419,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'A toughness description does not say whether the part should bend. The named TPU sheet reports hardness and loaded deflection; neither property establishes impact protection for the intended insert.',
     evidenceAction:
-      'State whether bending is wanted, then record loaded movement and recovery with the intended geometry and actual feed setup.',
+      'For the removable 2 mm insert, separate the target compliance from sustained compression and force retention. Record whether load or deformation is held, actual temperature, elapsed time and recovery readings. A Shore number supplies neither whole-part force nor compression-set performance.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintCreepUnderSustainedLoad,
+    evidenceGuideLabel: 'Choose the right time-dependent observation',
 
     criteria: [
       {
@@ -463,7 +481,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'The nylon example is unfilled PA11, not PA6 or a filled grade. Its mechanical moisture-conditioning state is unspecified; do not compare it as a dry-versus-wet test or infer a scale correction.',
     evidenceAction:
-      'Date the product, chemistry/filler identity, drying/storage and feed record. Use the dryer guide before interpreting a dimensional change.',
+      'For the 50 mm sliding guide, retain cooled reference dimensions separately from service-condition readings at the same axes and mating references. Name the unfilled PA11 grade, preparation and exposure duration. Missing conditioned data remains unknown; a mass percentage cannot become a universal nylon scale correction.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintMoistureAndDimensionalStability,
+    evidenceGuideLabel: 'Compare reference and service-condition fit',
 
     criteria: [
       {
@@ -523,7 +543,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'The examples are unfilled PA11 and PC Blend. Their printed specimens use different printers, thermal settings and slicers; mechanical conditioning is not specified. Read their separate values without a numerical winner.',
     evidenceAction:
-      'Verify PA11 chamber capability or PC Blend surface/profile preparation, then record the cooled feature and actual service requirement.',
+      'For the 90 mm engineering cover, keep moisture-conditioned mounting fit, thermal method/load and print capability as three decisions. Verify PA11 chamber capability and PC Blend surface/profile requirements. Its 93 °C at 1.80 MPa and 113 °C at 0.45 MPa are separate historical tests; unmatched PA11/PC data remain separate.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintHeatResistanceHdtVsTg,
+    evidenceGuideLabel: 'Interpret the two PC Blend test loads',
 
     criteria: [
       {
@@ -583,7 +605,9 @@ export const materialComparisons: readonly MaterialComparison[] = [
     evidenceQuestion:
       'The PP example is carbon-filled, with density 0.91 g/cm³ versus the named PETG 1.27. Equal-volume arithmetic is not a sliced-weight comparison, and a filled PP example cannot establish unfilled hinge life.',
     evidenceAction:
-      'Check PP-specific adhesion and a compatible hardened nozzle independently of mass savings. Record attachment, flexure amplitude, load and observed cycles before a lifetime claim.',
+      'For a hinged lid, record repeated bend cycles separately from the force retained by a clip held deflected. Obtain exact unfilled-hinge-grade evidence when that is the design; the named PP Carbon Fiber density and hardware instructions do not establish unfilled hinge life or creep. Confirm adhesion before changing the joint.',
+    evidenceGuide: GuideRouteUrl.Route3dPrintCreepUnderSustainedLoad,
+    evidenceGuideLabel: 'Separate cycling from sustained deflection',
 
     criteria: [
       {

@@ -125,7 +125,7 @@ export const materialSources: readonly ResearchSource[] = [
     title: 'Prusament PC Blend technical sheet',
     url: 'https://prusament.com/wp-content/uploads/2022/10/PCBlend_Prusament_TDS_2022_16_EN.pdf',
     publisher: 'Prusa Polymers',
-    accessedAt: '2026-10-29',
+    accessedAt: '2026-11-03',
     documentVersion: '1.1',
     documentDate: '2022-02-16',
   },
@@ -956,7 +956,7 @@ export const materials: readonly MaterialRecord[] = [
       formulation: 'Polycarbonate blend; not pure PC or PC Blend Carbon Fiber',
       heading: 'Equipment evidence before a long print',
       interpretation:
-        'The blend identity matters. The sheet separates preparation settings and loaded deflection tests. Its values cannot qualify another PC or a filled variant. A large footprint needs warp evidence beyond a successful small fit sample.',
+        'The historical PC Blend v1.1 sheet reports 93 °C at 1.80 MPa and 113 °C at 0.45 MPa under ISO 75. These are different loaded observations, not a service-temperature range. HDT specimen, orientation and conditioning are unspecified; the printed-mechanical-test footnote does not fill them. Tg is not published in this sheet.',
       nextCheck:
         'Check the full printer profile, bed and surface-release instructions, enclosure guidance and footprint trial before the long guard. A maximum nozzle temperature alone leaves these questions unanswered.',
       claims: [
@@ -990,6 +990,21 @@ export const materials: readonly MaterialRecord[] = [
           testLoad: '1.80 MPa',
         },
         {
+          id: 'pc-hdt-045',
+          scope: EvidenceScope.Grade,
+          property: MaterialProperty.Hdt,
+          availability: EvidenceAvailability.Published,
+          sourceId: 'grade-pc',
+          sourceLocation: 'p. 2, typical properties',
+          limitations: [
+            'Test deflection temperature, not continuous operating capability.',
+          ],
+          value: 113,
+          unit: '°C',
+          method: 'ISO 75',
+          testLoad: '0.45 MPa',
+        },
+        {
           id: 'pc-modulus',
           scope: EvidenceScope.Grade,
           property: MaterialProperty.Modulus,
@@ -1004,7 +1019,7 @@ export const materials: readonly MaterialRecord[] = [
           unit: 'GPa',
           method: 'ISO 527-1',
           specimen:
-            'MK3S; PrusaSlicer 2.1.1; 0.20 mm FAST; 100% rectilinear infill; 2 perimeters; no top/bottom; 275 °C nozzle; 110 °C bed',
+            'MK3S; PrusaSlicer 2.1.1; 0.20 mm FAST; 100% rectilinear infill; 2 perimeters; no top/bottom; 275 °C nozzle; 115 °C bed',
           orientation: 'Horizontal',
         },
         {

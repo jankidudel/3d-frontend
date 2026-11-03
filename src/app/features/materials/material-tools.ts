@@ -1,3 +1,4 @@
+import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { MaterialComparisonRouteUrl } from '../../core/seo/public-routes';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -272,6 +273,27 @@ export function parseMaterialPair(left: string | null, right: string | null) {
         unverified requirements are shown separately. Rigid families are
         excluded from a flexible-part shortlist.
       </p>
+      @if (useCase() === useCases.Heat || useCase() === useCases.Outdoor) {
+        <p>
+          Still needed: actual part temperature, load and required duration. A
+          family rank is not a service limit.
+          <a [routerLink]="guideRouteUrl.Route3dPrintHeatResistanceHdtVsTg"
+            >Read thermal metrics with their test conditions</a
+          >.
+        </p>
+      }
+      @if (
+        useCase() === useCases.Functional || useCase() === useCases.Flexible
+      ) {
+        <p>
+          Still needed: the load or constrained deformation, temperature and
+          required retention over time. Initial fit or compliance does not
+          supply that evidence.
+          <a [routerLink]="guideRouteUrl.Route3dPrintCreepUnderSustainedLoad"
+            >Separate creep from force relaxation</a
+          >.
+        </p>
+      }
       <div class="tool-grid material-card-grid material-result-grid">
         @for (score of ranked(); track score.material.id; let rank = $index) {
           <article class="card tool-card">
@@ -355,6 +377,17 @@ export function parseMaterialPair(left: string | null, right: string | null) {
     <section>
       <h2>Why formulations and hardware matter</h2>
       <p>
+        A prepared spool and a finished part after exposure are different
+        states.
+        <a
+          [routerLink]="
+            guideRouteUrl.Route3dPrintMoistureAndDimensionalStability
+          "
+          >Compare fit in recorded material conditions</a
+        >
+        before transferring a prototype result into service.
+      </p>
+      <p>
         Base polymer names do not define every spool. Check the manufacturer
         profile, drying needs, build surface and printer documentation - maximum
         nozzle temperature alone is not proof of compatibility.
@@ -363,6 +396,8 @@ export function parseMaterialPair(left: string | null, right: string | null) {
   </main>`,
 })
 export class MaterialSelectorPage {
+  readonly useCases = UseCase;
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly materialList = materials;
   readonly hardware = HardwareEvidence;
   readonly productId = signal('');
@@ -559,6 +594,22 @@ export class MaterialSelectorPage {
     <section>
       <h2>Compare the requirement, then the family</h2>
       <p>
+        Property identity, method, test load and material condition must stay
+        with each value. PC Blend's two HDT loads remain separate observations;
+        unavailable creep or conditioned data is not zero and cannot rank
+        service performance.
+        <a [routerLink]="guideRouteUrl.Route3dPrintHeatResistanceHdtVsTg"
+          >Read the HDT load contrast</a
+        >
+        or
+        <a
+          [routerLink]="
+            guideRouteUrl.Route3dPrintMoistureAndDimensionalStability
+          "
+          >identify a comparable measurement state</a
+        >.
+      </p>
+      <p>
         Select two families to inspect their setup expectations. The numerical
         bands are editorial candidate-ordering aids, not tested temperatures,
         loads or universal performance scores. For a 40 mm locating plate versus
@@ -580,6 +631,7 @@ export class MaterialSelectorPage {
   </main>`,
 })
 export class MaterialComparisonPage {
+  readonly guideRouteUrl = GuideRouteUrl;
   readonly preparation = materialPreparation;
   readonly comparisonBase = `/${PublicRouteSegment.MaterialComparisons}`;
   readonly pair = computed(() =>

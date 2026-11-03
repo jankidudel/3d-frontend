@@ -62,12 +62,16 @@ export const guideClusters: readonly GuideCluster[] = [
   },
   {
     id: 'filament-nozzles',
-    label: 'Filament storage, nozzles and throughput',
+    label: 'Material evidence, storage and throughput',
     description:
-      'Match the equipment decision to the actual material and planning task.',
+      'Read thermal, time and condition evidence, then match preparation and throughput to the job.',
     pillar: 'maximum-volumetric-speed-explained',
     slugs: [
       'filament-dryer-vs-dry-box',
+      GuideContentSlug.ThreeDPrintHeatResistanceHdtVsTg,
+      GuideContentSlug.ThreeDPrintCreepUnderSustainedLoad,
+      GuideContentSlug.ThreeDPrintMoistureAndDimensionalStability,
+
       'brass-vs-hardened-nozzle',
       'maximum-volumetric-speed-explained',
     ],

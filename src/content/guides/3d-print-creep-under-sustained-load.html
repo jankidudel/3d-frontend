@@ -1,0 +1,219 @@
+---
+title: '3D Print Creep Under Sustained Load | InspectMesh'
+description: 'Separate immediate deformation, creep, relaxation and recovery. Read an illustrative time record and identify missing load and temperature evidence.'
+slug: 3d-print-creep-under-sustained-load
+eyebrow: Material evidence
+heading: 'Why can a 3D printed part deform under a steady load?'
+---
+
+<p>
+  An initially acceptable fit or deflection does not establish that a part will
+  remain unchanged under a sustained load. Creep concerns deformation developing
+  over time under stated loading conditions. Temperature, material condition,
+  geometry and exact formulation matter. A room-temperature stiffness or tensile
+  value is not a long-term deformation curve.
+</p>
+<h2>Separate four observations</h2>
+<table>
+  <caption>
+    Identify what is held and what is measured
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Controlled question</th>
+      <th scope="col">Keep separate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Immediate loaded deformation</th>
+      <td>How much does the measured geometry change when loading begins?</td>
+      <td>The subsequent time-dependent increment</td>
+    </tr>
+    <tr>
+      <th scope="row">Creep</th>
+      <td>
+        How does deformation develop while the stated loading arrangement and
+        conditions remain applied?
+      </td>
+      <td>
+        Changes caused by temperature drift, contact movement or settlement
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Recovery after unloading</th>
+      <td>What displacement remains at each recorded recovery time?</td>
+      <td>A permanent offset cannot be inferred from one early reading.</td>
+    </tr>
+    <tr>
+      <th scope="row">Stress relaxation</th>
+      <td>
+        How does stress or holding force change while deformation is
+        constrained?
+      </td>
+      <td>Visible geometry alone does not measure force retention.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  <a href="https://www.instron.com/en/resources/glossary/creep-test/"
+    >Instron's creep-test glossary</a
+  >
+  describes continuous loading and separately explains relaxation under a given
+  deformation. Those are distinct controlled questions. A hanging load, a
+  clamped fastener joint, a snap held open and a locating feature need their own
+  boundary conditions recorded; a real clamp can combine changing force, contact
+  and displacement.
+</p>
+<h2 id="guide-illustrative-time-record">
+  Read a time record from its unloaded reference
+</h2>
+<p>
+  This is <strong>fictional arithmetic</strong>, not an InspectMesh test or a
+  particular polymer's behaviour. Assume the same identified gauge references
+  and measurement direction, a constant stated loading arrangement, stable
+  temperature and material condition. The unloaded reference length is
+  <strong>50.00 mm</strong>. No instrument uncertainty or repeatability is
+  supplied.
+</p>
+<table>
+  <caption>
+    Hypothetical readings; nominal extension uses the 50.00 mm reference
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">State</th>
+      <th scope="col">Gauge length</th>
+      <th scope="col">Difference from reference</th>
+      <th scope="col">Total nominal extension / reference</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Immediately after loading</th>
+      <td>50.10 mm</td>
+      <td>0.10 mm</td>
+      <td>0.20%</td>
+    </tr>
+    <tr>
+      <th scope="row">After 1 hour under load</th>
+      <td>50.20 mm</td>
+      <td>0.20 mm</td>
+      <td>0.40%</td>
+    </tr>
+    <tr>
+      <th scope="row">After 24 hours under load</th>
+      <td>50.35 mm</td>
+      <td>0.35 mm</td>
+      <td>0.70%</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        10 minutes after unloading, illustrative recovery snapshot
+      </th>
+      <td>50.04 mm</td>
+      <td>0.04 mm</td>
+      <td>0.08%</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Each percentage is (reading - 50.00) / 50.00 × 100. The additional recorded
+  extension from immediate loading to 24 hours is 50.35 - 50.10 =
+  <strong>0.25 mm</strong>. Calling all 0.35 mm time-dependent creep would
+  include the immediate 0.10 mm deformation. The 0.04 mm residual is a snapshot
+  at the stated recovery time; it does not establish completed recovery or
+  permanence.
+</p>
+<p>
+  These geometry ratios are neither acceptance limits nor a creep law. They do
+  not identify a material, quantify measurement uncertainty, predict rupture or
+  justify extrapolating a straight line to a month or year. In an actual record,
+  thermal change, gauge drift, support settlement and contact movement can also
+  change displacement. Control those effects before assigning a cause.
+</p>
+<h2 id="guide-load-path-moment">Geometry changes the load-path question</h2>
+<p>
+  Consider an ideal perpendicular <strong>10 N</strong> force. At a
+  <strong>50 mm</strong> lever arm its moment is 10 × 50 =
+  <strong>500 N mm = 0.50 N m</strong>. At <strong>20 mm</strong> it is
+  <strong>200 N mm = 0.20 N m</strong>. Moving a support or load therefore
+  changes the mechanical question even with the same force.
+</p>
+<p>
+  This original arithmetic supplies no section stress, stiffness, creep,
+  allowable load or bracket suitability. The root section, constraints, layer
+  direction and contact geometry are still missing. A shorter arm is a design
+  change to investigate, not a validated load rating.
+</p>
+<h2>Define the evidence a representative observation needs</h2>
+<ol>
+  <li>
+    Identify grade/formulation, source revision, print revision, orientation,
+    profile, finishing and initial material condition.
+  </li>
+  <li>
+    Describe how the load is applied and supported, or which deformation is
+    constrained. Record force if holding-force retention is the requirement.
+  </li>
+  <li>
+    Record actual part temperature, exposure, elapsed loaded time and any
+    changes. Separate unload time from recovery time.
+  </li>
+  <li>
+    Use identified measurement points, direction and instrument; retain raw
+    readings, repeats and relevant uncertainty instead of only an average.
+  </li>
+  <li>
+    Agree the allowable geometry or force change and the relevant duration
+    before interpreting the outcome. Twenty-four hours is not universally
+    sufficient for service acceptance.
+  </li>
+</ol>
+<p>
+  <a
+    href="https://plastics-rubber.basf.com/emea/en/performance_polymers/services/service_ultrasim/Material-Modeling"
+    >BASF's material-characterisation discussion</a
+  >
+  identifies temperature, moisture, strain rate and direction as relevant
+  inputs. Its modelling context includes other processing methods;
+  moulded-polymer data and simulation capabilities do not become evidence for
+  your FDM part. This guide performs no simulation or physical trial.
+</p>
+<h2>Choose a next action for the actual constraint</h2>
+<p>
+  If a loaded holder moves, seek appropriate grade/time/temperature data and
+  examine its load path. Keep the unresolved performance requirement visible
+  when that evidence is absent. The
+  <a href="{{ GuideSlug.Route3dPrintingMaterialSelector }}"
+    >material selector</a
+  >
+  provides an editorial shortlist; initial success and a higher family band do
+  not establish long-term capacity. The
+  <a href="{{ GuideSlug.RoutePla }}">PLA</a> and
+  <a href="{{ GuideSlug.RoutePetg }}">PETG profiles</a> retain exact examples
+  without recommending an automatic material upgrade.
+</p>
+<p>
+  For a constrained grip or snap, measure the separate holding-force question;
+  it can lose force without an obvious position change. Hardness and HDT cannot
+  provide a relaxation or compression-set value. Use the
+  <a href="{{ GuideSlug.Route3dPrintSnapFitClearance }}">snap-fit guide</a> for
+  entry, engagement and reuse, and the
+  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a>
+  for comparable dimensions. Critical application qualification needs
+  appropriate engineering evidence beyond these planning tools.
+</p>
+<p>
+  Resolve
+  <a href="{{ GuideSlug.Route3dPrintHeatResistanceHdtVsTg }}"
+    >thermal-test scope</a
+  >
+  and
+  <a href="{{ GuideSlug.Route3dPrintMoistureAndDimensionalStability }}"
+    >measurement condition</a
+  >
+  separately. Sources reviewed 3 November 2026; the time record and moments are
+  original illustrative arithmetic, with no material lifetime claim.
+</p>

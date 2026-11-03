@@ -46,7 +46,7 @@ const complete: MaterialEvidenceClaim = {
 describe('published material evidence boundaries', () => {
   it('validates every published claim against the existing sources without requiring invented methods', () => {
     expect(
-      validateMaterialEvidence(materials, materialSources, '2026-10-29'),
+      validateMaterialEvidence(materials, materialSources, '2026-11-03'),
     ).toEqual([]);
     expect(
       materials.filter((material) => material.productExample),
@@ -59,6 +59,88 @@ describe('published material evidence boundaries', () => {
       }),
     ).toBe('not specified');
     expect(claimValue({ ...density, value: 0 })).toBe('0 g/cm³');
+  });
+  it('retains both same-grade HDT loads without filling unrelated specimen conditions', () => {
+    const pc = materials.find((material) => material.id === MaterialId.Pc)!;
+    const claims = pc.productExample!.claims.filter(
+      (claim) => claim.property === MaterialProperty.Hdt,
+    );
+    expect(
+      claims.map((claim) => [
+        claim.id,
+        claim.value,
+        claim.unit,
+        claim.testLoad,
+      ]),
+    ).toEqual([
+      ['pc-hdt-180', 93, '°C', '1.80 MPa'],
+      ['pc-hdt-045', 113, '°C', '0.45 MPa'],
+    ]);
+    for (const claim of claims) {
+      expect(claim.sourceId).toBe('grade-pc');
+      expect(claim.sourceLocation).toContain('p. 2');
+      expect(claim.method).toBe('ISO 75');
+      expect(claim.specimen).toBeUndefined();
+      expect(claim.orientation).toBeUndefined();
+      expect(claim.conditioning).toBeUndefined();
+    }
+    expect(compareClaims(claims[0], claims[1]).outcome).toBe(
+      ComparisonOutcome.Separate,
+    );
+    const source = materialSources.find((source) => source.id === 'grade-pc')!;
+    expect([
+      source.documentVersion,
+      source.documentDate,
+      source.accessedAt,
+    ]).toEqual(['1.1', '2022-02-16', '2026-11-03']);
+  });
+  it('renders every HDT load and never substitutes another load or picks the highest value', () => {
+    const pc = materials.find((material) => material.id === MaterialId.Pc)!;
+    const nylon = materials.find(
+      (material) => material.id === MaterialId.Nylon,
+    )!;
+    TestBed.configureTestingModule({
+      imports: [MaterialProductComparisonComponent],
+      providers: [provideRouter([])],
+    });
+    const fixture = TestBed.createComponent(MaterialProductComparisonComponent);
+    fixture.componentRef.setInput('left', pc);
+    fixture.componentRef.setInput('right', nylon);
+    fixture.detectChanges();
+    const hdtRows = () =>
+      fixture.componentInstance
+        .rows()
+        .filter((row) => row.property === MaterialProperty.Hdt);
+    expect(hdtRows().map((row) => row.entries[0].claim?.id)).toEqual([
+      'pc-hdt-180',
+      'pc-hdt-045',
+    ]);
+    for (const row of hdtRows()) {
+      expect(row.entries[1].claim).toBeUndefined();
+      expect(row.comparison.outcome).toBe(ComparisonOutcome.Unavailable);
+    }
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.textContent).toContain('93 °C');
+    expect(element.textContent).toContain('113 °C');
+    expect(element.textContent).toContain('(1.80 MPa)');
+    expect(element.textContent).toContain('(0.45 MPa)');
+    fixture.componentRef.setInput('right', {
+      ...pc,
+      productExample: {
+        ...pc.productExample!,
+        claims: [...pc.productExample!.claims].reverse(),
+      },
+    });
+    fixture.detectChanges();
+    expect(hdtRows()).toHaveLength(2);
+    for (const row of hdtRows()) {
+      expect(row.entries[0].claim?.testLoad).toBe(
+        row.entries[1].claim?.testLoad,
+      );
+      expect(row.entries[0].claim?.value).toBe(row.entries[1].claim?.value);
+      // Matching load does not fill missing specimen/condition metadata.
+      expect(row.comparison.outcome).toBe(ComparisonOutcome.Separate);
+    }
   });
   it('requires named identity and renders it alongside numeric claims', () => {
     const example = materials[0].productExample!;
