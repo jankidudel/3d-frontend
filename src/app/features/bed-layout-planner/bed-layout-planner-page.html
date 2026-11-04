@@ -304,7 +304,14 @@
       For a 220 x 220 mm bed and 5 mm margin, two 100 x 80 mm footprints can
       occupy x = 5 and x = 110, with y = 5. The second ends at x = 210, leaving
       10 mm to the right edge. A 10 mm-wide brim on each part exceeds the 5 mm
-      inter-part gap; reserve more space and verify the sliced footprints.
+      inter-part gap; reserve more space and verify the sliced footprints. The
+      packed rectangle reserves space. The native preview shows the actual brim
+      paths. If one copy shows loose lines during deposition, record its ID and
+      bed position and
+      <a [routerLink]="guideRouteUrl.Route3dPrintFirstLayerNotSticking"
+        >check the affected region</a
+      >. If you try a new position, keep the copy's identity and review the full
+      regenerated job, including its brims and print order.
     </p>
     <p>
       A part not placed by this layout may work in a different arrangement. A

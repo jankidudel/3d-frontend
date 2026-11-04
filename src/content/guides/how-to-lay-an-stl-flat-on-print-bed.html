@@ -133,7 +133,14 @@ heading: How to Lay an STL Flat on the Print Bed
     Inspect contact, brims/supports, overhangs, bridges and critical visible or
     mating faces.
   </li>
-  <li>Slice and inspect the first layer and first unsupported feature.</li>
+  <li>
+    Slice and inspect the first layer and first unsupported feature. Minimum Z
+    on the plate may represent a vertex, an edge or several separate patches.
+    Confirm the intended face and its model paths before
+    <a href="{{ GuideSlug.Route3dPrintFirstLayerNotSticking }}"
+      >diagnosing loose lines during deposition</a
+    >.
+  </li>
   <li>
     Save the slicer project/profile so the chosen rotation is reproducible.
   </li>

@@ -413,6 +413,12 @@
     <p>
       No. It identifies specific mesh, size and sampled-thickness concerns
       before slicing; it cannot account for your printer setup or use case.
+      Contained geometry can rest on an unintended face. In the native slice,
+      confirm the chosen face and its first deposited model paths. If those
+      paths are present but fail as filament goes down,
+      <a [routerLink]="guideRouteUrl.Route3dPrintFirstLayerNotSticking"
+        >check the deposition pattern and surface setup</a
+      >.
     </p>
     <h3>Why are STL units ambiguous?</h3>
     <p>

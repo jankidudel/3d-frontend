@@ -117,6 +117,17 @@ import {
     </section>
     <section>
       <h2>How to read the evidence</h2>
+      <p>
+        If lines separate as they go down, check
+        <a [routerLink]="guideRouteUrl.Route3dPrintFirstLayerNotSticking"
+          >the first-layer paths and surface setup</a
+        >
+        for the exact filament and sheet. If a continuous base lifts later,
+        <a [routerLink]="guideRouteUrl.Route3dPrintWarpingCornersLifting"
+          >record the corner and when it first rises</a
+        >
+        before revising the profile.
+      </p>
       <ul>
         <li>
           <strong>Family guidance:</strong> a qualitative starting point, such

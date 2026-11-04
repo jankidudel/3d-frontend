@@ -251,6 +251,8 @@ export const guideClusters: readonly GuideCluster[] = [
     pillar: '3d-printer-calibration-guide',
     slugs: [
       '3d-printer-calibration-guide',
+      GuideContentSlug.ThreeDPrintFirstLayerNotSticking,
+      GuideContentSlug.ThreeDPrintWarpingCornersLifting,
       '3d-print-flow-rate-vs-e-steps',
       '3d-print-hole-size-compensation',
       '3d-print-hole-orientation-and-accuracy',

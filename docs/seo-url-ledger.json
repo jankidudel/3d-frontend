@@ -1647,7 +1647,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/materials",
       "sitemapMember": true,
@@ -1658,8 +1658,8 @@
         "canonical": "https://www.inspectmesh.com/materials",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5917,
-        "mainContentSha256": "44e292ce8c92337e7e246429cbfaae9152d0e3e85a6ae5fc753e33424f15ee9d",
+        "mainTextCharacters": 6138,
+        "mainContentSha256": "5f7b24def95ebdc13d19cb6ce5178d61f99b4997ff124e5527835f307a80091c",
         "sectionHeadings": [
           "Choose by the job and the equipment",
           "Compare material families",
@@ -1674,7 +1674,7 @@
           "Polypropylene / PP"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 222,
+        "incomingLinkCount": 224,
         "contextualInlinkCount": 10,
         "contextualInlinkExamples": [
           "/guides/filament-dryer-vs-dry-box",
@@ -1683,10 +1683,10 @@
           "/materials/nylon",
           "/materials/petg"
         ],
-        "internalLinkCount": 64,
+        "internalLinkCount": 66,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.049Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Printing Materials",
       "baseline": {
@@ -1704,7 +1704,7 @@
         "canonical": "https://www.inspectmesh.com/materials",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -1720,7 +1720,7 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/index.html",
         "sitemapCount": 1,
-        "incomingCount": 222,
+        "incomingCount": 224,
         "contextualIncomingCount": 10,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -1744,6 +1744,10 @@
         {
           "mainContentSha256": "46be50bbe337db932b9a3dcb07eb190cf612b6b4650e314935b8211cabf75f9d",
           "observedAt": "2026-11-03T13:24:28.179Z"
+        },
+        {
+          "mainContentSha256": "44e292ce8c92337e7e246429cbfaae9152d0e3e85a6ae5fc753e33424f15ee9d",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ]
     },
@@ -2379,7 +2383,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/materials/abs",
       "sitemapMember": true,
@@ -2390,8 +2394,8 @@
         "canonical": "https://www.inspectmesh.com/materials/abs",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6748,
-        "mainContentSha256": "7c0aefe3473f08e5677d12c1af62ac8aec07a6d9a0af6c3972564c138b42cb6d",
+        "mainTextCharacters": 6851,
+        "mainContentSha256": "f72370d38f649d88b6f99a702e4dcd5bfb7a94f0b8635f234095a3588aa66501",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2417,8 +2421,8 @@
         ],
         "internalLinkCount": 58,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.049Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "ABS Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2439,6 +2443,10 @@
         {
           "mainContentSha256": "62aeccdc5a2f0cda2209362253e0cbc55d97c80fb02930b32cdf5e093720e439",
           "observedAt": "2026-11-03T13:24:28.179Z"
+        },
+        {
+          "mainContentSha256": "7c0aefe3473f08e5677d12c1af62ac8aec07a6d9a0af6c3972564c138b42cb6d",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ],
       "routeCoverage": {
@@ -2450,7 +2458,7 @@
         "canonical": "https://www.inspectmesh.com/materials/abs",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2527,7 +2535,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/materials/asa",
       "sitemapMember": true,
@@ -2538,8 +2546,8 @@
         "canonical": "https://www.inspectmesh.com/materials/asa",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7307,
-        "mainContentSha256": "7a09c6d7a8ad9f16fecbeea3a12beb26509645d6a8af2783da64f06cf36bd99f",
+        "mainTextCharacters": 7449,
+        "mainContentSha256": "44d5f1c6b3430cb846241ab6be4544ba10efcbc0a553d56f460d32800dbd9c13",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -2554,8 +2562,8 @@
           "Prusament material guidance"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 13,
-        "contextualInlinkCount": 13,
+        "incomingLinkCount": 14,
+        "contextualInlinkCount": 14,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2565,8 +2573,8 @@
         ],
         "internalLinkCount": 57,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.049Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "ASA Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -2587,6 +2595,10 @@
         {
           "mainContentSha256": "a8f65d990566e11ebe5ada8a1ac24e1c8ddc066e782c132ad9d5a353c3d806e0",
           "observedAt": "2026-11-03T13:24:28.179Z"
+        },
+        {
+          "mainContentSha256": "7a09c6d7a8ad9f16fecbeea3a12beb26509645d6a8af2783da64f06cf36bd99f",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ],
       "routeCoverage": {
@@ -2598,7 +2610,7 @@
         "canonical": "https://www.inspectmesh.com/materials/asa",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -2614,8 +2626,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/asa/index.html",
         "sitemapCount": 1,
-        "incomingCount": 13,
-        "contextualIncomingCount": 13,
+        "incomingCount": 14,
+        "contextualIncomingCount": 14,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -2974,7 +2986,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/materials/polycarbonate",
       "sitemapMember": true,
@@ -2987,8 +2999,8 @@
         "canonical": "https://www.inspectmesh.com/materials/polycarbonate",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7734,
-        "mainContentSha256": "bb5f8d722df5bbc460e68d9347faef139e2c861630a534be3954ad545471bc00",
+        "mainTextCharacters": 7841,
+        "mainContentSha256": "cd1d2fe8134b8b286673189cfa690bf720f3ad94601524796bb599be366abd53",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -3003,8 +3015,8 @@
           "Prusament material guidance"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 14,
-        "contextualInlinkCount": 14,
+        "incomingLinkCount": 15,
+        "contextualInlinkCount": 15,
         "contextualInlinkExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -3014,8 +3026,8 @@
         ],
         "internalLinkCount": 56,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.050Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Polycarbonate / PC Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -3036,6 +3048,10 @@
         {
           "mainContentSha256": "7e16d8051653fd61d7b95ca27f039ac4a57841ee7267ea6b8924a96b1ecdf218",
           "observedAt": "2026-11-03T13:24:28.180Z"
+        },
+        {
+          "mainContentSha256": "bb5f8d722df5bbc460e68d9347faef139e2c861630a534be3954ad545471bc00",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ],
       "routeCoverage": {
@@ -3047,7 +3063,7 @@
         "canonical": "https://www.inspectmesh.com/materials/polycarbonate",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -3063,8 +3079,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/materials/polycarbonate/index.html",
         "sitemapCount": 1,
-        "incomingCount": 14,
-        "contextualIncomingCount": 14,
+        "incomingCount": 15,
+        "contextualIncomingCount": 15,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -3124,7 +3140,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/materials/polypropylene",
       "sitemapMember": true,
@@ -3137,8 +3153,8 @@
         "canonical": "https://www.inspectmesh.com/materials/polypropylene",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6454,
-        "mainContentSha256": "2a644d266df6a4b63e704044a652f6751f1a5576723332dfb5f8f498625b9abf",
+        "mainTextCharacters": 6538,
+        "mainContentSha256": "41617f6f79ebacb023ea1406055fd72657603dbd45a5d8a9cacac79aed8017dc",
         "sectionHeadings": [
           "Best uses and poor fits",
           "Preparation for the exact spool",
@@ -3164,8 +3180,8 @@
         ],
         "internalLinkCount": 56,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.050Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Polypropylene / PP Filament: Uses, Properties and Printing Guide",
       "baseline": {
@@ -3186,6 +3202,10 @@
         {
           "mainContentSha256": "7ceacbfed725da38c43fa1df1e060049db0bff849ccf371633d30fd415374fd3",
           "observedAt": "2026-11-03T13:24:28.180Z"
+        },
+        {
+          "mainContentSha256": "2a644d266df6a4b63e704044a652f6751f1a5576723332dfb5f8f498625b9abf",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ],
       "routeCoverage": {
@@ -3197,7 +3217,7 @@
         "canonical": "https://www.inspectmesh.com/materials/polypropylene",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -8162,7 +8182,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
       "sitemapMember": true,
@@ -8173,8 +8193,8 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6092,
-        "mainContentSha256": "fcdc4a7318a421b0a5ddb92eb790aa56feb43057bb4e6e82aeef05373fbece3d",
+        "mainTextCharacters": 6278,
+        "mainContentSha256": "96e15b0e4e9730d5a483804b6d9b46790fb4a70812783554821cc93b2f021730",
         "sectionHeadings": [
           "Measure a calibration feature",
           "Scale compensation",
@@ -8182,19 +8202,19 @@
           "Use compensation carefully"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 222,
-        "contextualInlinkCount": 7,
+        "incomingLinkCount": 224,
+        "contextualInlinkCount": 8,
         "contextualInlinkExamples": [
           "/guides/3d-print-flow-rate-vs-e-steps",
           "/guides/3d-print-moisture-and-dimensional-stability",
+          "/guides/3d-print-warping-corners-lifting",
           "/guides/3d-printer-calibration-guide",
-          "/guides/how-to-compensate-for-3d-print-shrinkage",
-          "/guides/how-to-measure-3d-model"
+          "/guides/how-to-compensate-for-3d-print-shrinkage"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.052Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Shrinkage Calculator",
       "baseline": {
@@ -8212,7 +8232,7 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-print-shrinkage-calculator",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -8228,8 +8248,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/3d-print-shrinkage-calculator/index.html",
         "sitemapCount": 1,
-        "incomingCount": 222,
-        "contextualIncomingCount": 7,
+        "incomingCount": 224,
+        "contextualIncomingCount": 8,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -8252,6 +8272,10 @@
         {
           "mainContentSha256": "885412c6e48fe308d7ff7d3042e6954ed4c41835956a0ed6bb2608b1f33c7f91",
           "observedAt": "2026-11-03T13:24:28.182Z"
+        },
+        {
+          "mainContentSha256": "fcdc4a7318a421b0a5ddb92eb790aa56feb43057bb4e6e82aeef05373fbece3d",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ]
     },
@@ -8447,7 +8471,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/tools/3d-print-orientation-planner",
       "sitemapMember": true,
@@ -8470,18 +8494,18 @@
         "exampleAssets": [
           "/examples/orientation-support/tilted-asymmetric-block.stl"
         ],
-        "incomingLinkCount": 219,
-        "contextualInlinkCount": 12,
+        "incomingLinkCount": 224,
+        "contextualInlinkCount": 13,
         "contextualInlinkExamples": [
           "/examples",
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/3d-print-overhangs-and-supports-guide",
           "/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed",
-          "/guides/how-to-check-if-a-3d-model-fits-your-printer",
-          "/guides/how-to-lay-an-stl-flat-on-print-bed"
+          "/guides/how-to-check-if-a-3d-model-fits-your-printer"
         ],
         "internalLinkCount": 55,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.182Z",
+        "observedAt": "2026-11-04T07:53:44.052Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Orientation Planner",
@@ -8510,7 +8534,7 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-print-orientation-planner",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -8526,8 +8550,8 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/3d-print-orientation-planner/index.html",
         "sitemapCount": 1,
-        "incomingCount": 219,
-        "contextualIncomingCount": 12,
+        "incomingCount": 224,
+        "contextualIncomingCount": 13,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
           "/3d-printers/bambu-lab-a1-mini",
@@ -8586,7 +8610,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/tools/3d-print-bed-layout-planner",
       "sitemapMember": true,
@@ -8597,8 +8622,8 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-print-bed-layout-planner",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 4006,
-        "mainContentSha256": "0839056b6a1fc45300a2afecbb6c2f60c0e98f06fc279e8bf138da145526c4be",
+        "mainTextCharacters": 4328,
+        "mainContentSha256": "97653f418b3f3930adc55b8b8877f5d1ce5073d3c7ae91998ab1a5d6a0068836",
         "sectionHeadings": [
           "Choose parts",
           "Layout settings",
@@ -8608,7 +8633,7 @@
           "Model placement versus sliced motion"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 219,
+        "incomingLinkCount": 224,
         "contextualInlinkCount": 6,
         "contextualInlinkExamples": [
           "/guides/brim-skirt-support-bed-space",
@@ -8617,9 +8642,9 @@
           "/guides/round-3d-printer-bed-fit",
           "/"
         ],
-        "internalLinkCount": 54,
+        "internalLinkCount": 55,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.182Z",
+        "observedAt": "2026-11-04T07:53:44.052Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Bed Layout Planner",
@@ -8638,7 +8663,7 @@
         "canonical": "https://www.inspectmesh.com/tools/3d-print-bed-layout-planner",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -8654,7 +8679,7 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/3d-print-bed-layout-planner/index.html",
         "sitemapCount": 1,
-        "incomingCount": 219,
+        "incomingCount": 224,
         "contextualIncomingCount": 6,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -8674,6 +8699,10 @@
         {
           "mainContentSha256": "55f774c260fe53d408c01441508c71fea0aedfc2fd45babd5f5bf6d2d6fdde6d",
           "observedAt": "2026-11-01T00:27:41.603Z"
+        },
+        {
+          "mainContentSha256": "0839056b6a1fc45300a2afecbb6c2f60c0e98f06fc279e8bf138da145526c4be",
+          "observedAt": "2026-11-03T13:24:28.182Z"
         }
       ]
     },
@@ -9017,7 +9046,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-31"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/tools/stl-print-preflight",
       "sitemapMember": true,
@@ -9028,8 +9057,8 @@
         "canonical": "https://www.inspectmesh.com/tools/stl-print-preflight",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6230,
-        "mainContentSha256": "49c876164622044c1b1e0f083bf4755905690661609b76d6d91117ed6e02ad30",
+        "mainTextCharacters": 6470,
+        "mainContentSha256": "5c13847fb647e484a0f8a4761393f104a8a6a66ef0ce08456615a2ecc14cd12f",
         "sectionHeadings": [
           "Run an STL preflight",
           "Try an example",
@@ -9043,7 +9072,7 @@
           "/examples/english-market-batch/closed-20mm-cube.stl",
           "/examples/english-market-batch/open-face-cube.stl"
         ],
-        "incomingLinkCount": 219,
+        "incomingLinkCount": 224,
         "contextualInlinkCount": 27,
         "contextualInlinkExamples": [
           "/examples",
@@ -9052,9 +9081,9 @@
           "/guides/3d-printer-calibration-guide",
           "/guides/degenerate-triangles-stl"
         ],
-        "internalLinkCount": 57,
+        "internalLinkCount": 58,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.182Z",
+        "observedAt": "2026-11-04T07:53:44.052Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Print Preflight Checker",
@@ -9075,6 +9104,10 @@
         {
           "mainContentSha256": "55fe483a46683086d38b2905d4157aad98042e1cf243c181c2f89021a5d7de02",
           "observedAt": "2026-10-28T23:58:55.869Z"
+        },
+        {
+          "mainContentSha256": "49c876164622044c1b1e0f083bf4755905690661609b76d6d91117ed6e02ad30",
+          "observedAt": "2026-11-03T13:24:28.182Z"
         }
       ],
       "changeReason": "Retained local tool; added actual completed/review/unmeasured/skipped sample report; explained vertex versus edge connectivity and removed blanket repair-first advice.",
@@ -9087,7 +9120,7 @@
         "canonical": "https://www.inspectmesh.com/tools/stl-print-preflight",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -9103,7 +9136,7 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/stl-print-preflight/index.html",
         "sitemapCount": 1,
-        "incomingCount": 219,
+        "incomingCount": 224,
         "contextualIncomingCount": 27,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -11849,7 +11882,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/tools/3mf-print-preflight",
       "sitemapMember": true,
@@ -11860,8 +11893,8 @@
         "canonical": "https://www.inspectmesh.com/tools/3mf-print-preflight",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 3736,
-        "mainContentSha256": "f1604f0407d5b2e3d6d443c3be78f72017f79b30b0cccc6c783308456172b3d6",
+        "mainTextCharacters": 3931,
+        "mainContentSha256": "a4cf72aba9d03289d5fa3f993159b54f4456f2bc07bbc5263716c6ee7f01efe1",
         "sectionHeadings": [
           "Run a local 3MF preflight",
           "Try an example",
@@ -11871,7 +11904,7 @@
           "Interpret the resolved 3MF build"
         ],
         "exampleAssets": ["/examples/collection-review/two-placed-cubes.3mf"],
-        "incomingLinkCount": 219,
+        "incomingLinkCount": 224,
         "contextualInlinkCount": 18,
         "contextualInlinkExamples": [
           "/examples",
@@ -11880,9 +11913,9 @@
           "/guides/how-to-check-a-3mf-file-for-errors",
           "/guides/how-to-check-gcode-before-printing"
         ],
-        "internalLinkCount": 55,
+        "internalLinkCount": 56,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.183Z",
+        "observedAt": "2026-11-04T07:53:44.053Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3MF Print Preflight Checker",
@@ -11895,6 +11928,10 @@
         {
           "mainContentSha256": "6834566fe66c041a265181914d68487d4ceb243a285ae3ed8cdb420e38be4403",
           "observedAt": "2026-10-24T21:58:51.320Z"
+        },
+        {
+          "mainContentSha256": "f1604f0407d5b2e3d6d443c3be78f72017f79b30b0cccc6c783308456172b3d6",
+          "observedAt": "2026-11-03T13:24:28.183Z"
         }
       ],
       "changeReason": "Removed unrelated universal cube/3MF/G-code download paragraphs from shared evidence. Kept task-specific examples or omitted unrelated assets; preserved the working tool and assumptions.",
@@ -11907,7 +11944,7 @@
         "canonical": "https://www.inspectmesh.com/tools/3mf-print-preflight",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -11923,7 +11960,7 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/tools/3mf-print-preflight/index.html",
         "sitemapCount": 1,
-        "incomingCount": 219,
+        "incomingCount": 224,
         "contextualIncomingCount": 18,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -13013,7 +13050,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides",
       "sitemapMember": true,
@@ -13024,8 +13061,8 @@
         "canonical": "https://www.inspectmesh.com/guides",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 29947,
-        "mainContentSha256": "1abcd27cac4d4c5074a4261080f5f74359df8a5d3eb559f9108739667bf76597",
+        "mainTextCharacters": 30344,
+        "mainContentSha256": "79279907e4927f0fe9db400dd16e2528f842d86ec1e53ebcab54d9f4cd4848dd",
         "sectionHeadings": [
           "Find a guide",
           "STL encoding and candidate review",
@@ -13044,13 +13081,13 @@
           "Help choosing your next step"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 222,
+        "incomingLinkCount": 224,
         "contextualInlinkCount": 2,
         "contextualInlinkExamples": ["/", "/tools/filament-length-calculator"],
-        "internalLinkCount": 178,
+        "internalLinkCount": 180,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.053Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "Find a diagnostic or decision guide",
       "baseline": {
@@ -13106,6 +13143,10 @@
         {
           "mainContentSha256": "057f865574ebdb3866358862c69747dfca7ef2f59626e3ff1ac5ed0eab8a7a55",
           "observedAt": "2026-11-03T13:24:28.184Z"
+        },
+        {
+          "mainContentSha256": "1abcd27cac4d4c5074a4261080f5f74359df8a5d3eb559f9108739667bf76597",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ],
       "changeReason": "Registered two distinct surface-process owners once in geometry discovery with supported search terms; preserved search-first layout.",
@@ -13118,7 +13159,7 @@
         "canonical": "https://www.inspectmesh.com/guides",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "scripts/editorial-dates.mts",
         "source": "canonicalPublicRoutePaths",
         "sitemap": true,
@@ -13134,7 +13175,7 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/index.html",
         "sitemapCount": 1,
-        "incomingCount": 222,
+        "incomingCount": 224,
         "contextualIncomingCount": 2,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -13923,7 +13964,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/3d-print-file-preflight-checklist",
       "sitemapMember": true,
@@ -13934,8 +13975,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-file-preflight-checklist",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5167,
-        "mainContentSha256": "7dfdc58aecb56af6df6eeba542318f0c92f559440db94864de7c79f713076e3f",
+        "mainTextCharacters": 5597,
+        "mainContentSha256": "4129592fec0316cccd74a9d11847032cc61a5dd5a86515f2d8be2da0e9eb36a7",
         "sectionHeadings": [
           "Use the right evidence for each row",
           "Optional functional-interface review",
@@ -13952,9 +13993,9 @@
           "/guides/how-to-check-stl-for-errors",
           "/guides"
         ],
-        "internalLinkCount": 58,
+        "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.184Z",
+        "observedAt": "2026-11-04T07:53:44.054Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print File Preflight Checklist",
@@ -13971,6 +14012,10 @@
         {
           "mainContentSha256": "522af03dd7b70bcbf19ac1d81c4f1d398ff2124b3b69ffe07a624d0be0df7843",
           "observedAt": "2026-11-01T00:27:41.605Z"
+        },
+        {
+          "mainContentSha256": "7dfdc58aecb56af6df6eeba542318f0c92f559440db94864de7c79f713076e3f",
+          "observedAt": "2026-11-03T13:24:28.184Z"
         }
       ],
       "changeReason": "Replaced duplicated narrative with a printable mark-one-state job record and editable CSV. Its recorded decision is distinct from the readiness explanation.",
@@ -13983,7 +14028,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-file-preflight-checklist",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-02",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -14213,7 +14258,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/3d-print-tolerance-and-clearance-guide",
       "sitemapMember": true,
@@ -14226,8 +14271,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-tolerance-and-clearance-guide",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 10592,
-        "mainContentSha256": "7c55133db3a6e3d60c492254257b4db1e5d3ea57d84e3ac7ee13d2f25523d7c2",
+        "mainTextCharacters": 10800,
+        "mainContentSha256": "d2854586270602cdca386cf1cab03425557963ae17f10721bf5159639a5a9a60",
         "sectionHeadings": [
           "Worked fit example",
           "Tolerance and clearance are not the same thing",
@@ -14243,19 +14288,19 @@
           "FAQ"
         ],
         "exampleAssets": ["/examples/functional-fit/clearance.svg"],
-        "incomingLinkCount": 8,
-        "contextualInlinkCount": 8,
+        "incomingLinkCount": 9,
+        "contextualInlinkCount": 9,
         "contextualInlinkExamples": [
           "/guides/3d-print-screw-hole-sizing",
+          "/guides/3d-print-warping-corners-lifting",
           "/guides/3d-printer-calibration-guide",
           "/guides/bearing-seat-sizing-3d-printing",
-          "/guides/captive-nut-pockets-3d-printing",
-          "/guides/how-to-check-if-a-3d-model-is-ready-to-print"
+          "/guides/captive-nut-pockets-3d-printing"
         ],
-        "internalLinkCount": 58,
+        "internalLinkCount": 59,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.054Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Tolerance and Clearance: How to Design Parts That Fit",
       "baseline": {
@@ -14273,7 +14318,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-tolerance-and-clearance-guide",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -14289,14 +14334,14 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-tolerance-and-clearance-guide/index.html",
         "sitemapCount": 1,
-        "incomingCount": 8,
-        "contextualIncomingCount": 8,
+        "incomingCount": 9,
+        "contextualIncomingCount": 9,
         "incomingExamples": [
           "/guides/3d-print-screw-hole-sizing",
+          "/guides/3d-print-warping-corners-lifting",
           "/guides/3d-printer-calibration-guide",
           "/guides/bearing-seat-sizing-3d-printing",
-          "/guides/captive-nut-pockets-3d-printing",
-          "/guides/how-to-check-if-a-3d-model-is-ready-to-print"
+          "/guides/captive-nut-pockets-3d-printing"
         ],
         "depth": 2,
         "diagnosis": [
@@ -14324,6 +14369,10 @@
         {
           "mainContentSha256": "b1418ae5b4b56b7852ac078d9a4e229ba89c8e923e960fa9a3186e83fa190483",
           "observedAt": "2026-11-03T13:24:28.184Z"
+        },
+        {
+          "mainContentSha256": "7c55133db3a6e3d60c492254257b4db1e5d3ea57d84e3ac7ee13d2f25523d7c2",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ]
     },
@@ -14371,7 +14420,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-10-24"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-check-if-a-3d-model-is-ready-to-print",
       "sitemapMember": true,
@@ -14382,8 +14431,8 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-check-if-a-3d-model-is-ready-to-print",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6658,
-        "mainContentSha256": "eaacb18fe92fd8d5b43c98ac577489da90c461404ea1886a0734a1b7708ebd39",
+        "mainTextCharacters": 7013,
+        "mainContentSha256": "9df6bd59452d1031a95f6de3a83d870e868e4a9470b5f0823dc01fe069e59821",
         "sectionHeadings": [
           "Choose the next stage from the unresolved question",
           "Establish the intended object before analysing it",
@@ -14402,9 +14451,9 @@
           "/guides",
           "/guides/stl-file-wont-slice"
         ],
-        "internalLinkCount": 64,
+        "internalLinkCount": 66,
         "clickDepth": 1,
-        "observedAt": "2026-11-03T13:24:28.184Z",
+        "observedAt": "2026-11-04T07:53:44.054Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Check if a 3D Model Is Ready to Print",
@@ -14421,6 +14470,10 @@
         {
           "mainContentSha256": "18617cf61f1848fcb93775c8b6abb68896c85daacd4c627983a740f63a29e4f3",
           "observedAt": "2026-11-01T00:27:41.605Z"
+        },
+        {
+          "mainContentSha256": "eaacb18fe92fd8d5b43c98ac577489da90c461404ea1886a0734a1b7708ebd39",
+          "observedAt": "2026-11-03T13:24:28.184Z"
         }
       ],
       "changeReason": "Replaced repeated checklist/summary blocks with cross-format decisions, stage-specific evidence, stop conditions and links to the printable record and STL worked case.",
@@ -14433,7 +14486,7 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-check-if-a-3d-model-is-ready-to-print",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-02",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -15307,7 +15360,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed",
       "sitemapMember": true,
@@ -15318,8 +15372,8 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5099,
-        "mainContentSha256": "9f1327567f792fa80282afe7207d9ea501835c4ed3f88aa3634e831e653fc253",
+        "mainTextCharacters": 5402,
+        "mainContentSha256": "20ffde4ea3b42ed55fdd15d08ccc46603a9968d19530536a7ee2b061ddcd89ec",
         "sectionHeadings": [
           "Choose the usable region and active source",
           "Set independent allowances",
@@ -15339,9 +15393,9 @@
           "/guides/sequential-3d-printing-clearance",
           "/tools/3d-print-bed-layout-planner"
         ],
-        "internalLinkCount": 54,
+        "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.184Z",
+        "observedAt": "2026-11-04T07:53:44.054Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Arrange Multiple Parts on a 3D Printer Bed",
@@ -15360,7 +15414,7 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -15396,6 +15450,10 @@
         {
           "mainContentSha256": "bcd0aad86c870f0236d792f8613c1d7ce79a13869d2c3667c83533d7e6b17611",
           "observedAt": "2026-11-01T00:27:41.605Z"
+        },
+        {
+          "mainContentSha256": "9f1327567f792fa80282afe7207d9ea501835c4ed3f88aa3634e831e653fc253",
+          "observedAt": "2026-11-03T13:24:28.184Z"
         }
       ]
     },
@@ -15443,7 +15501,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-compensate-for-3d-print-shrinkage",
       "sitemapMember": true,
@@ -15454,8 +15512,8 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-compensate-for-3d-print-shrinkage",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 8488,
-        "mainContentSha256": "77dfb9a00d6090af712de1572cbe54d3386b6a90aec1171bae712b051a236ace",
+        "mainTextCharacters": 8654,
+        "mainContentSha256": "fef2bb3c28688a1802af95b944df3d9881d7c54e8adbcd651a168c415cc52248",
         "sectionHeadings": [
           "Build a repeatable measurement record",
           "Do not apply one factor to unrelated geometry",
@@ -15479,10 +15537,10 @@
           "/guides/3d-printer-calibration-guide",
           "/guides"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.054Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Compensate for 3D Print Shrinkage",
       "baseline": {
@@ -15500,7 +15558,7 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-compensate-for-3d-print-shrinkage",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -15540,6 +15598,10 @@
         {
           "mainContentSha256": "8e4e1e39b56f2377343979ea678fc12f67c86ab4a2c7be96c6b3cff89588c98e",
           "observedAt": "2026-11-03T13:24:28.184Z"
+        },
+        {
+          "mainContentSha256": "77dfb9a00d6090af712de1572cbe54d3386b6a90aec1171bae712b051a236ace",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ]
     },
@@ -22364,7 +22426,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-orient-an-stl-file-for-3d-printing",
       "sitemapMember": true,
@@ -22375,8 +22437,8 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-orient-an-stl-file-for-3d-printing",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5034,
-        "mainContentSha256": "9d2a9b86accf3ca6897aef14250c6260a6fc98b39275cbf59d482191f2e45143",
+        "mainTextCharacters": 5161,
+        "mainContentSha256": "69f92ce02abaadad81af69c8d03fb196b4cc522704674f750979818ad85b8efb",
         "sectionHeadings": [
           "1. Rank the requirement that cannot be fixed later",
           "2. Compare the six axis-aligned candidates",
@@ -22396,9 +22458,9 @@
           "/guides/3d-print-snap-fit-clearance",
           "/guides/3d-print-z-seam-placement"
         ],
-        "internalLinkCount": 59,
+        "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.187Z",
+        "observedAt": "2026-11-04T07:53:44.057Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Orient an STL File for 3D Printing",
@@ -22417,7 +22479,7 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-orient-an-stl-file-for-3d-printing",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -22461,6 +22523,10 @@
         {
           "mainContentSha256": "4df1bf57d23a782d46f6a12183d976b0e6726a3ad2a005d02d9f60a44776618f",
           "observedAt": "2026-11-03T08:00:35.134Z"
+        },
+        {
+          "mainContentSha256": "9d2a9b86accf3ca6897aef14250c6260a6fc98b39275cbf59d482191f2e45143",
+          "observedAt": "2026-11-03T13:24:28.187Z"
         }
       ]
     },
@@ -23386,7 +23452,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/stl-model-off-build-plate",
       "sitemapMember": true,
@@ -23397,8 +23464,8 @@
         "canonical": "https://www.inspectmesh.com/guides/stl-model-off-build-plate",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 3570,
-        "mainContentSha256": "45bf63034671531c4e609317bf534404d21dc826afedb2b73251fecfb86d742d",
+        "mainTextCharacters": 3808,
+        "mainContentSha256": "14e29cac0566523ecbe531498a290267972b46b941d891b52de44b26ad376dba",
         "sectionHeadings": [
           "Same size, different source positions",
           "Observed PrusaSlicer placement contrast",
@@ -23419,9 +23486,9 @@
           "/guides/how-to-lay-an-stl-flat-on-print-bed",
           "/guides"
         ],
-        "internalLinkCount": 52,
+        "internalLinkCount": 53,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.187Z",
+        "observedAt": "2026-11-04T07:53:44.057Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "STL Model Off the Build Plate",
@@ -23440,7 +23507,7 @@
         "canonical": "https://www.inspectmesh.com/guides/stl-model-off-build-plate",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -23476,6 +23543,10 @@
         {
           "mainContentSha256": "fc403591641c67a1d5d97febdfecca3222a7ea70e0ca30ea7fdb372bb7274b2a",
           "observedAt": "2026-11-01T00:27:41.610Z"
+        },
+        {
+          "mainContentSha256": "45bf63034671531c4e609317bf534404d21dc826afedb2b73251fecfb86d742d",
+          "observedAt": "2026-11-03T13:24:28.187Z"
         }
       ]
     },
@@ -23666,7 +23737,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/how-to-lay-an-stl-flat-on-print-bed",
       "sitemapMember": true,
@@ -23677,8 +23749,8 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-lay-an-stl-flat-on-print-bed",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 4247,
-        "mainContentSha256": "099ac96870be5d73db90491909f95ef068be165c18b7c60de1fc42686d7072de",
+        "mainTextCharacters": 4426,
+        "mainContentSha256": "3bafa3b7178e1cbfe825dfb40dbc882ebbaaeaf39acfd6938b00c99b2a2313f5",
         "sectionHeadings": [
           "First decide what “flat” should mean",
           "Use a known tilted control",
@@ -23687,17 +23759,18 @@
           "When a face-alignment tool is not enough"
         ],
         "exampleAssets": ["/examples/orientation-support/lay-flat-control.svg"],
-        "incomingLinkCount": 4,
-        "contextualInlinkCount": 4,
+        "incomingLinkCount": 5,
+        "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
           "/examples",
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/how-to-orient-an-stl-file-for-3d-printing",
           "/guides",
           "/tools/3d-print-orientation-planner"
         ],
-        "internalLinkCount": 55,
+        "internalLinkCount": 56,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.188Z",
+        "observedAt": "2026-11-04T07:53:44.058Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "How to Lay an STL Flat on the Print Bed",
@@ -23716,7 +23789,7 @@
         "canonical": "https://www.inspectmesh.com/guides/how-to-lay-an-stl-flat-on-print-bed",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -23732,10 +23805,11 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/how-to-lay-an-stl-flat-on-print-bed/index.html",
         "sitemapCount": 1,
-        "incomingCount": 4,
-        "contextualIncomingCount": 4,
+        "incomingCount": 5,
+        "contextualIncomingCount": 5,
         "incomingExamples": [
           "/examples",
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/how-to-orient-an-stl-file-for-3d-printing",
           "/guides",
           "/tools/3d-print-orientation-planner"
@@ -23751,6 +23825,10 @@
         {
           "mainContentSha256": "a8308ee04e6906df2fb7c6a629fe88be037fea2df216ffa5c39679ab6a400d8f",
           "observedAt": "2026-11-01T00:27:41.610Z"
+        },
+        {
+          "mainContentSha256": "099ac96870be5d73db90491909f95ef068be165c18b7c60de1fc42686d7072de",
+          "observedAt": "2026-11-03T13:24:28.188Z"
         }
       ]
     },
@@ -27271,7 +27349,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/3d-printer-calibration-guide",
       "sitemapMember": true,
@@ -27282,8 +27360,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-printer-calibration-guide",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6173,
-        "mainContentSha256": "f3bdd8eb07e2c15a79ed2e1325ccdf829b0f5aff706d3bb7af084e83246eed41",
+        "mainTextCharacters": 6477,
+        "mainContentSha256": "5a18e957995c070b500dea2b95fe645962f7a363dab80bf66d6a28348f6a5e38",
         "sectionHeadings": [
           "Separate machine, material and model decisions",
           "One ordered calibration workflow",
@@ -27293,18 +27371,19 @@
           "FAQ"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 4,
-        "contextualInlinkCount": 4,
+        "incomingLinkCount": 5,
+        "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
           "/guides/3d-print-elephants-foot-and-part-fit",
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/3d-print-flow-rate-vs-e-steps",
           "/guides/3d-print-z-seam-placement",
           "/guides"
         ],
-        "internalLinkCount": 59,
+        "internalLinkCount": 61,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T21:03:27.004Z",
-        "evidenceScope": "Final production prerender output; not a live response or hydrated browser result."
+        "observedAt": "2026-11-04T07:53:44.059Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Printer Calibration Guide: What to Calibrate First",
       "baseline": {
@@ -27322,7 +27401,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-printer-calibration-guide",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -27338,10 +27417,11 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-printer-calibration-guide/index.html",
         "sitemapCount": 1,
-        "incomingCount": 4,
-        "contextualIncomingCount": 4,
+        "incomingCount": 5,
+        "contextualIncomingCount": 5,
         "incomingExamples": [
           "/guides/3d-print-elephants-foot-and-part-fit",
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/3d-print-flow-rate-vs-e-steps",
           "/guides/3d-print-z-seam-placement",
           "/guides"
@@ -27372,6 +27452,10 @@
         {
           "mainContentSha256": "8093231e874ff5cad92743393352e02f42be19bc0788a8823194832dfb36e46d",
           "observedAt": "2026-11-03T13:24:28.189Z"
+        },
+        {
+          "mainContentSha256": "f3bdd8eb07e2c15a79ed2e1325ccdf829b0f5aff706d3bb7af084e83246eed41",
+          "observedAt": "2026-11-03T21:03:27.004Z"
         }
       ]
     },
@@ -27419,7 +27503,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/3d-print-flow-rate-vs-e-steps",
       "sitemapMember": true,
@@ -27430,8 +27514,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-flow-rate-vs-e-steps",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 5112,
-        "mainContentSha256": "736e059539c132ea89ff435e0ceea0e4e165c768bb44f0d20cfb7a140bae6248",
+        "mainTextCharacters": 5350,
+        "mainContentSha256": "b15f2d35e5dee0b6f4abfc90d53616f0f18bf95d15a2c4beab147bb7e107e4b9",
         "sectionHeadings": [
           "Which setting owns the evidence?",
           "One controlled testing sequence",
@@ -27441,16 +27525,17 @@
           "FAQ"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 3,
-        "contextualInlinkCount": 3,
+        "incomingLinkCount": 4,
+        "contextualInlinkCount": 4,
         "contextualInlinkExamples": [
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/3d-print-z-seam-placement",
           "/guides/3d-printer-calibration-guide",
           "/guides"
         ],
-        "internalLinkCount": 54,
+        "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.189Z",
+        "observedAt": "2026-11-04T07:53:44.059Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Flow Rate vs E-Steps: What Is the Difference?",
@@ -27469,7 +27554,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-flow-rate-vs-e-steps",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -27485,9 +27570,10 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-flow-rate-vs-e-steps/index.html",
         "sitemapCount": 1,
-        "incomingCount": 3,
-        "contextualIncomingCount": 3,
+        "incomingCount": 4,
+        "contextualIncomingCount": 4,
         "incomingExamples": [
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/3d-print-z-seam-placement",
           "/guides/3d-printer-calibration-guide",
           "/guides"
@@ -27518,6 +27604,10 @@
         {
           "mainContentSha256": "373dc17307d0394760a03b7f7093071f2c1126eef9bd5dc500dd77935dd122a7",
           "observedAt": "2026-11-03T08:00:35.136Z"
+        },
+        {
+          "mainContentSha256": "736e059539c132ea89ff435e0ceea0e4e165c768bb44f0d20cfb7a140bae6248",
+          "observedAt": "2026-11-03T13:24:28.189Z"
         }
       ]
     },
@@ -27732,7 +27822,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/3d-print-hole-orientation-and-accuracy",
       "sitemapMember": true,
@@ -27743,8 +27833,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-hole-orientation-and-accuracy",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6382,
-        "mainContentSha256": "565dc0d78d54667d7a1e569dd677cb543d7c8711502c9efb13c00d3cf413b18f",
+        "mainTextCharacters": 6605,
+        "mainContentSha256": "c4f1960bb61427692736c446711bd27371eb42f0e26299e1d15d1875a00b67e4",
         "sectionHeadings": [
           "Separate a digital section from a produced bore",
           "Define orientation by the bore axis",
@@ -27767,7 +27857,7 @@
         ],
         "internalLinkCount": 58,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.189Z",
+        "observedAt": "2026-11-04T07:53:44.059Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Hole Orientation and Accuracy",
@@ -27786,7 +27876,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-hole-orientation-and-accuracy",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -27838,6 +27928,10 @@
         {
           "mainContentSha256": "702bd4231b19fbe01d9acf74abb5dd7f004ccdc9cedc7c0c82eddf4cd29b96fe",
           "observedAt": "2026-11-03T08:00:35.136Z"
+        },
+        {
+          "mainContentSha256": "565dc0d78d54667d7a1e569dd677cb543d7c8711502c9efb13c00d3cf413b18f",
+          "observedAt": "2026-11-03T13:24:28.189Z"
         }
       ]
     },
@@ -27884,7 +27978,8 @@
       "release": {
         "deployedAt": null,
         "postUpdateCrawl": null,
-        "nextReview": null
+        "nextReview": null,
+        "contentChangedAt": "2026-11-04"
       },
       "url": "https://www.inspectmesh.com/guides/3d-print-elephants-foot-and-part-fit",
       "sitemapMember": true,
@@ -27895,8 +27990,8 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-elephants-foot-and-part-fit",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 4066,
-        "mainContentSha256": "6c768446f48cd7b5b10e1daeae507e482dbde92f1c5c9ca2806563ac95d0108c",
+        "mainTextCharacters": 4320,
+        "mainContentSha256": "ca9bb4d603e355d216da579303bab1b65f27ef08c366e6042e507e595121092e",
         "sectionHeadings": [
           "Measure by height before selecting a control",
           "Which operation changes which region?",
@@ -27904,17 +27999,18 @@
           "FAQ"
         ],
         "exampleAssets": ["/examples/functional-fit/base-flare.svg"],
-        "incomingLinkCount": 4,
-        "contextualInlinkCount": 4,
+        "incomingLinkCount": 5,
+        "contextualInlinkCount": 5,
         "contextualInlinkExamples": [
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/3d-print-hole-size-compensation",
           "/guides/3d-printer-calibration-guide",
           "/guides",
           "/guides/print-in-place-clearance"
         ],
-        "internalLinkCount": 54,
+        "internalLinkCount": 55,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.189Z",
+        "observedAt": "2026-11-04T07:53:44.059Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "primaryTask": "3D Print Elephant's Foot and Part Fit",
@@ -27933,7 +28029,7 @@
         "canonical": "https://www.inspectmesh.com/guides/3d-print-elephants-foot-and-part-fit",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-02",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -27949,9 +28045,10 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-elephants-foot-and-part-fit/index.html",
         "sitemapCount": 1,
-        "incomingCount": 4,
-        "contextualIncomingCount": 4,
+        "incomingCount": 5,
+        "contextualIncomingCount": 5,
         "incomingExamples": [
+          "/guides/3d-print-first-layer-not-sticking",
           "/guides/3d-print-hole-size-compensation",
           "/guides/3d-printer-calibration-guide",
           "/guides",
@@ -27968,6 +28065,10 @@
         {
           "mainContentSha256": "f938cfe19335ab4832594a9cb8a3541be7abc11a7cbc72be73ba920e02c3cfb6",
           "observedAt": "2026-11-01T00:27:41.612Z"
+        },
+        {
+          "mainContentSha256": "6c768446f48cd7b5b10e1daeae507e482dbde92f1c5c9ca2806563ac95d0108c",
+          "observedAt": "2026-11-03T13:24:28.189Z"
         }
       ]
     },
@@ -29887,7 +29988,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-01"
+        "contentChangedAt": "2026-11-04"
       },
       "sitemapMember": true,
       "local": {
@@ -29897,8 +29998,8 @@
         "canonical": "https://www.inspectmesh.com/guides/brim-skirt-support-bed-space",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 6442,
-        "mainContentSha256": "c438f42a05a46aa35eccf32987f8f8c3b3834996211b76e28ad6ddd1ee9d818d",
+        "mainTextCharacters": 6819,
+        "mainContentSha256": "22c5a8f8ab5aa030db5e94cf47b3997b9e3d39af5fb295231682c43b31840ab2",
         "sectionHeadings": [
           "Separate three different spaces",
           "Work out the remaining gap",
@@ -29909,18 +30010,18 @@
           "Record accepted quantity separately from material and time"
         ],
         "exampleAssets": [],
-        "incomingLinkCount": 20,
-        "contextualInlinkCount": 20,
+        "incomingLinkCount": 21,
+        "contextualInlinkCount": 21,
         "contextualInlinkExamples": [
           "/examples",
           "/guides/3d-print-file-preflight-checklist",
           "/guides/3d-print-overhangs-and-supports-guide",
-          "/guides/gcode-outside-print-bed",
-          "/guides/how-inspectmesh-checks-files"
+          "/guides/3d-print-warping-corners-lifting",
+          "/guides/gcode-outside-print-bed"
         ],
-        "internalLinkCount": 53,
+        "internalLinkCount": 54,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.185Z",
+        "observedAt": "2026-11-04T07:53:44.055Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "routeCoverage": {
@@ -29932,7 +30033,7 @@
         "canonical": "https://www.inspectmesh.com/guides/brim-skirt-support-bed-space",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-01",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -29948,21 +30049,27 @@
         ],
         "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/brim-skirt-support-bed-space/index.html",
         "sitemapCount": 1,
-        "incomingCount": 20,
-        "contextualIncomingCount": 20,
+        "incomingCount": 21,
+        "contextualIncomingCount": 21,
         "incomingExamples": [
           "/examples",
           "/guides/3d-print-file-preflight-checklist",
           "/guides/3d-print-overhangs-and-supports-guide",
-          "/guides/gcode-outside-print-bed",
-          "/guides/how-inspectmesh-checks-files"
+          "/guides/3d-print-warping-corners-lifting",
+          "/guides/gcode-outside-print-bed"
         ],
         "depth": 2,
         "diagnosis": [
           "Canonical route, built document, sitemap and incoming links agree."
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
-      }
+      },
+      "contentHistory": [
+        {
+          "mainContentSha256": "c438f42a05a46aa35eccf32987f8f8c3b3834996211b76e28ad6ddd1ee9d818d",
+          "observedAt": "2026-11-03T13:24:28.185Z"
+        }
+      ]
     },
     {
       "path": "/guides/bearing-seat-sizing-3d-printing",
@@ -30110,7 +30217,7 @@
         "deployedAt": null,
         "postUpdateCrawl": null,
         "nextReview": null,
-        "contentChangedAt": "2026-11-03"
+        "contentChangedAt": "2026-11-04"
       },
       "sitemapMember": true,
       "local": {
@@ -30120,8 +30227,8 @@
         "canonical": "https://www.inspectmesh.com/guides/print-in-place-clearance",
         "canonicalCount": 1,
         "robots": ["index, follow"],
-        "mainTextCharacters": 7189,
-        "mainContentSha256": "d7b22fa72135147a17394f06bf8de26578f42fdff491360158ae87ce6f15267e",
+        "mainTextCharacters": 7438,
+        "mainContentSha256": "750b356d87a13a7274c0d3828113ab762ead51281ae9e148aa8e160ca8126ee4",
         "sectionHeadings": [
           "Identify moving bodies before repair",
           "Name diametral, radial and axial gaps independently",
@@ -30143,9 +30250,9 @@
           "/guides/3d-print-snap-fit-clearance",
           "/guides/3d-print-tolerance-and-clearance-guide"
         ],
-        "internalLinkCount": 59,
+        "internalLinkCount": 60,
         "clickDepth": 2,
-        "observedAt": "2026-11-03T13:24:28.189Z",
+        "observedAt": "2026-11-04T07:53:44.060Z",
         "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
       },
       "routeCoverage": {
@@ -30157,7 +30264,7 @@
         "canonical": "https://www.inspectmesh.com/guides/print-in-place-clearance",
         "noindex": false,
         "rendering": "prerendered",
-        "lastmod": "2026-11-03",
+        "lastmod": "2026-11-04",
         "lastmodSource": "src/content/guides/guides.registry.ts",
         "source": "Published guide registry",
         "sitemap": true,
@@ -30193,6 +30300,10 @@
         {
           "mainContentSha256": "c80f11e06c8f81a780909783478af1f59d203fa860c7c575e2d370a25978918b",
           "observedAt": "2026-11-03T08:00:35.137Z"
+        },
+        {
+          "mainContentSha256": "d7b22fa72135147a17394f06bf8de26578f42fdff491360158ae87ce6f15267e",
+          "observedAt": "2026-11-03T13:24:28.189Z"
         }
       ]
     },
@@ -31169,6 +31280,219 @@
         ],
         "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
       }
+    },
+    {
+      "path": "/guides/3d-print-first-layer-not-sticking",
+      "url": "https://www.inspectmesh.com/guides/3d-print-first-layer-not-sticking",
+      "priority": "P2",
+      "family": "calibration",
+      "owner": "Diagnose missing or failing first-layer contact paths during filament deposition.",
+      "primaryTask": "Diagnose missing or failing first-layer contact paths during filament deposition.",
+      "decision": "add",
+      "brief": "Compare actual native preview paths with line shape and location, then select a comparable setup check. Includes a same-envelope geometric contact example and a hypothetical bed-region repeat.",
+      "decisionReason": "Calibration owns machine setup order. The lay-flat guide owns face placement. This guide owns the preview-to-deposition comparison for paths that fail as they go down.",
+      "adjacentOwners": [
+        "/guides/3d-printer-calibration-guide",
+        "/guides/how-to-lay-an-stl-flat-on-print-bed"
+      ],
+      "editorialReview": {
+        "scope": "Manufacturer and firmware references reviewed 4 November 2026. Worked observations are hypothetical.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production delivery and authenticated Google indexing and performance. Desktop and 390px prerender layouts were reviewed in Safari. Hydrated browser verification is pending because the Chrome audit stopped at startup."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-04"
+      },
+      "sitemapMember": true,
+      "local": {
+        "title": "3D Print First Layer Not Sticking: What to Check | InspectMesh",
+        "description": "Find where first-layer adhesion fails. Compare the sliced contact paths with what prints, then check nozzle gap, surface setup and the affected bed location.",
+        "headings": ["Why is my 3D print's first layer not sticking?"],
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-first-layer-not-sticking",
+        "canonicalCount": 1,
+        "robots": ["index, follow"],
+        "mainTextCharacters": 5112,
+        "mainContentSha256": "b4abdd862404fd4d9ae866f0f2f0e945cc1452207688d0068c856dd1a912213f",
+        "sectionHeadings": [
+          "Inspect the first deposited layer in the saved job",
+          "Match the observation to the next check",
+          "Separate nozzle gap, mechanical setup and bed mesh",
+          "Record one comparable change"
+        ],
+        "exampleAssets": [],
+        "incomingLinkCount": 14,
+        "contextualInlinkCount": 14,
+        "contextualInlinkExamples": [
+          "/guides/3d-print-file-preflight-checklist",
+          "/guides/3d-print-flow-rate-vs-e-steps",
+          "/guides/3d-print-warping-corners-lifting",
+          "/guides/3d-printer-calibration-guide",
+          "/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed"
+        ],
+        "internalLinkCount": 54,
+        "clickDepth": 2,
+        "observedAt": "2026-11-04T07:53:44.059Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+      },
+      "routeCoverage": {
+        "id": "guides/3d-print-first-layer-not-sticking",
+        "path": "/guides/3d-print-first-layer-not-sticking",
+        "pageType": "guide",
+        "disposition": "indexable-canonical",
+        "reason": "Established canonical public task owner; retained in the maintained public/content registry.",
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-first-layer-not-sticking",
+        "noindex": false,
+        "rendering": "prerendered",
+        "lastmod": "2026-11-04",
+        "lastmodSource": "src/content/guides/guides.registry.ts",
+        "source": "Published guide registry",
+        "sitemap": true,
+        "expectedStatus": 200,
+        "queryPolicy": "canonical-base",
+        "owner": "InspectMesh",
+        "discoverySources": [
+          {
+            "path": "/guides/3d-print-first-layer-not-sticking",
+            "source": "/Users/jankidudel/soft/3d/3d-frontend/src/app/app.routes.ts:391",
+            "renderer": "() =>\n      import('./features/guides/guide-page').then((m) => m.GuidePage)"
+          }
+        ],
+        "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-first-layer-not-sticking/index.html",
+        "sitemapCount": 1,
+        "incomingCount": 14,
+        "contextualIncomingCount": 14,
+        "incomingExamples": [
+          "/guides/3d-print-file-preflight-checklist",
+          "/guides/3d-print-flow-rate-vs-e-steps",
+          "/guides/3d-print-warping-corners-lifting",
+          "/guides/3d-printer-calibration-guide",
+          "/guides/how-to-arrange-multiple-parts-on-a-3d-printer-bed"
+        ],
+        "depth": 2,
+        "diagnosis": [
+          "Canonical route, built document, sitemap and incoming links agree."
+        ],
+        "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
+      }
+    },
+    {
+      "path": "/guides/3d-print-warping-corners-lifting",
+      "url": "https://www.inspectmesh.com/guides/3d-print-warping-corners-lifting",
+      "priority": "P2",
+      "family": "calibration",
+      "owner": "Locate when a base corner lifts and choose a comparable trial or cooled shape check.",
+      "primaryTask": "Locate when a base corner lifts and choose a comparable trial or cooled shape check.",
+      "decision": "add",
+      "brief": "Compare deposition, later lift, release and upper-feature curl. A hypothetical example distinguishes a local out-of-plane gap from projected dimensional change.",
+      "decisionReason": "Elephant’s foot owns lower-layer widening. Shrinkage owns comparable per-axis size errors. This guide owns the event timeline and the measurement decision for a lifted or rocking base.",
+      "adjacentOwners": [
+        "/guides/3d-print-elephants-foot-and-part-fit",
+        "/guides/how-to-compensate-for-3d-print-shrinkage"
+      ],
+      "editorialReview": {
+        "scope": "Manufacturer and firmware references reviewed 4 November 2026. Worked observations are hypothetical.",
+        "status": "source-reviewed",
+        "remainingEvidence": "Production delivery and authenticated Google indexing and performance. Desktop and 390px prerender layouts were reviewed in Safari. Hydrated browser verification is pending because the Chrome audit stopped at startup."
+      },
+      "google": {
+        "status": null,
+        "impressions": null,
+        "clicks": null,
+        "exportDate": null
+      },
+      "live": {
+        "status": null,
+        "observedAt": null
+      },
+      "release": {
+        "deployedAt": null,
+        "postUpdateCrawl": null,
+        "nextReview": null,
+        "contentChangedAt": "2026-11-04"
+      },
+      "sitemapMember": true,
+      "local": {
+        "title": "3D Print Warping: Why Corners Lift | InspectMesh",
+        "description": "Separate a failed first layer, later corner lift and distortion after cooling. Use the print timeline and cooled measurements to choose the next check.",
+        "headings": ["Why are the corners of my 3D print lifting?"],
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-warping-corners-lifting",
+        "canonicalCount": 1,
+        "robots": ["index, follow"],
+        "mainTextCharacters": 5101,
+        "mainContentSha256": "1c082eba70a94140f794329a509313d8f444a04cb59a536cc76954d7d2fc1a4a",
+        "sectionHeadings": [
+          "Find the earliest visible change",
+          "Choose one trial based on the affected corner",
+          "Worked example: corner gap and projected size"
+        ],
+        "exampleAssets": [],
+        "incomingLinkCount": 12,
+        "contextualInlinkCount": 12,
+        "contextualInlinkExamples": [
+          "/guides/3d-print-elephants-foot-and-part-fit",
+          "/guides/3d-print-file-preflight-checklist",
+          "/guides/3d-print-first-layer-not-sticking",
+          "/guides/3d-print-tolerance-and-clearance-guide",
+          "/guides/3d-printer-calibration-guide"
+        ],
+        "internalLinkCount": 56,
+        "clickDepth": 2,
+        "observedAt": "2026-11-04T07:53:44.059Z",
+        "evidenceScope": "Production prerender output; not a live HTTP response or Google rendering."
+      },
+      "routeCoverage": {
+        "id": "guides/3d-print-warping-corners-lifting",
+        "path": "/guides/3d-print-warping-corners-lifting",
+        "pageType": "guide",
+        "disposition": "indexable-canonical",
+        "reason": "Established canonical public task owner; retained in the maintained public/content registry.",
+        "canonical": "https://www.inspectmesh.com/guides/3d-print-warping-corners-lifting",
+        "noindex": false,
+        "rendering": "prerendered",
+        "lastmod": "2026-11-04",
+        "lastmodSource": "src/content/guides/guides.registry.ts",
+        "source": "Published guide registry",
+        "sitemap": true,
+        "expectedStatus": 200,
+        "queryPolicy": "canonical-base",
+        "owner": "InspectMesh",
+        "discoverySources": [
+          {
+            "path": "/guides/3d-print-warping-corners-lifting",
+            "source": "/Users/jankidudel/soft/3d/3d-frontend/src/app/app.routes.ts:391",
+            "renderer": "() =>\n      import('./features/guides/guide-page').then((m) => m.GuidePage)"
+          }
+        ],
+        "output": "/Users/jankidudel/soft/3d/3d-frontend/dist/3d-frontend/browser/guides/3d-print-warping-corners-lifting/index.html",
+        "sitemapCount": 1,
+        "incomingCount": 12,
+        "contextualIncomingCount": 12,
+        "incomingExamples": [
+          "/guides/3d-print-elephants-foot-and-part-fit",
+          "/guides/3d-print-file-preflight-checklist",
+          "/guides/3d-print-first-layer-not-sticking",
+          "/guides/3d-print-tolerance-and-clearance-guide",
+          "/guides/3d-printer-calibration-guide"
+        ],
+        "depth": 2,
+        "diagnosis": [
+          "Canonical route, built document, sitemap and incoming links agree."
+        ],
+        "limitation": "Local generated HTML only. HTTP transport, hydration, Google indexing and release state are independent."
+      }
     }
   ],
   "additionalUrls": [
@@ -31307,8 +31631,8 @@
     }
   ],
   "coverage": {
-    "sitemapUrls": 219,
-    "ledgerRows": 219,
+    "sitemapUrls": 221,
+    "ledgerRows": 221,
     "localFailures": []
   },
   "documentationAudit": [
@@ -34149,11 +34473,11 @@
   },
   "routeCoverage": {
     "counts": {
-      "R": 223,
-      "G": 223,
-      "L": 221,
-      "S": 219,
-      "I": 219
+      "R": 225,
+      "G": 225,
+      "L": 223,
+      "S": 221,
+      "I": 221
     },
     "differences": {
       "I-S": [],
@@ -35596,7 +35920,7 @@
           "exampleAssets": []
         },
         "sitemapCount": 0,
-        "incomingCount": 222,
+        "incomingCount": 224,
         "contextualIncomingCount": 11,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -35649,7 +35973,7 @@
           "exampleAssets": []
         },
         "sitemapCount": 0,
-        "incomingCount": 222,
+        "incomingCount": 224,
         "contextualIncomingCount": 1,
         "incomingExamples": [
           "/3d-printers/bambu-lab-a1",
@@ -35760,7 +36084,7 @@
       }
     ],
     "failures": [],
-    "observedAt": "2026-11-03T21:03:27.004Z",
+    "observedAt": "2026-11-04T07:53:49.778Z",
     "scope": "Local built route coverage, not HTTP delivery or Google indexing."
   },
   "recoveryBaseline": {

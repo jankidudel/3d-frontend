@@ -235,13 +235,18 @@
         Contact is the summed triangle surface area for downward-oriented,
         near-coplanar faces whose three vertices lie within max(range × 10⁻⁶,
         10⁻⁶ coordinate units) of the lowest build coordinate. Exact duplicate
-        triangles and degenerate triangles are excluded. This is not projected
-        footprint area, adhesion or a warping prediction.
+        triangles and degenerate triangles are excluded. Two 80 × 40 mm
+        envelopes can sit on a full underside (3,200 mm²) or four separate 10 ×
+        10 mm pads (400 mm² at the ideal plane). This hypothetical comparison
+        explains why equal bounds can yield different contact estimates.
+        <a [href]="guideRouteUrl.Route3dPrintFirstLayerNotSticking"
+          >Check the chosen face and deposited paths in the native slice</a
+        >
+        before drawing conclusions about adhesion.
       </p>
       <p>
-        Low flagged area does not establish bridgeability, finish or support
-        removability. Large contact does not establish adhesion. Geometry cannot
-        infer the most important cosmetic face or load path.
+        Low flagged area leaves bridgeability, finish and support removal
+        unresolved. Review the cosmetic face and load path separately.
       </p>
     </section>
     <section class="card">

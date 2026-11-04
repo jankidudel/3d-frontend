@@ -46,7 +46,7 @@ export const materialPreparation: Readonly<
     decision:
       'A housing that fits the nominal bed can still be difficult to produce if its corners lift. Establish the enclosure, draft control and material profile before choosing ABS solely from a temperature-resistance description.',
     trial:
-      'Print a representative housing corner with its mounting hole. After cooling, record corner lift and the mating dimension. Keep local hole adjustment separate from any measured whole-part scale change.',
+      'Print a representative housing corner with its mounting hole. Record whether the corner lifted during the print, shifted on release or only showed a gap at cooled seating. Keep that observation with the cooled mounting-hole readings and separate a local hole adjustment from any whole-part scale change.',
     reviewedAt: '2026-10-25',
   },
   [MaterialId.Asa]: {
@@ -59,7 +59,7 @@ export const materialPreparation: Readonly<
     decision:
       'UV resistance helps shortlist a material. It does not establish sealing at a lid, water entry around a fastener or acceptable movement under sustained load. Evaluate those features separately.',
     trial:
-      'Print the lid edge and attachment feature before the full cover. Record fit after cooling and inspect the intended seal geometry. This check does not establish outdoor lifetime or an ingress-protection rating.',
+      'Print the lid edge and attachment feature before the full cover. If a corner or mount rises, mark it and record how the cover was oriented in the approved print environment. Check cooled fit and the seal geometry, then keep any later outdoor exposure observations separate. This trial cannot establish outdoor lifetime or an ingress-protection rating.',
     reviewedAt: '2026-10-25',
   },
   [MaterialId.Tpu]: {
@@ -96,7 +96,7 @@ export const materialPreparation: Readonly<
     decision:
       'A small fit sample can answer a local assembly question while a larger footprint introduces a different warping challenge. Keep those observations separate when planning a large guard or cover.',
     trial:
-      'Start with the critical mating region, then evaluate a representative base section before a complete large part. Record cooled dimensions and corner lift, not just whether the print finished.',
+      'Start with a sample of the critical mating feature and compare it with a representative base section before printing the full part. Use the exact blend, approved sheet and specified release procedure for both. Record how each base sits after cooling and whether a corner lifted during either print.',
     reviewedAt: '2026-10-25',
   },
   [MaterialId.Pp]: {
@@ -106,7 +106,7 @@ export const materialPreparation: Readonly<
       'Prusa recommends its PP sheet or other PP-specific preparation for the appropriate product. A PEI setup used for PLA should not be assumed suitable for PP.',
     question: 'Is the challenge first-layer adhesion or the intended bend?',
     decision:
-      'Confirm a supported surface before changing the hinge design to compensate for a failed first layer. Once the geometry prints as intended, assess the actual bending requirement separately.',
+      'Use the surface instructions for the exact formulation. Record whether lines fail as they are deposited or whether the lid base lifts after a continuous first layer. Once the intended geometry prints, assess the bending requirement separately on the chosen hinge material.',
     trial:
       'Print a short hinge or insert section on the specified surface. Observe cooled fit and the required motion. A few successful bends do not establish fatigue life, sealing or suitability for a particular contact use.',
     reviewedAt: '2026-10-25',

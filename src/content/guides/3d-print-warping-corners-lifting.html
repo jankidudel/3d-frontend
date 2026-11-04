@@ -1,0 +1,207 @@
+---
+title: '3D Print Warping: Why Corners Lift | InspectMesh'
+description: 'Separate a failed first layer, later corner lift and distortion after cooling. Use the print timeline and cooled measurements to choose the next check.'
+slug: 3d-print-warping-corners-lifting
+eyebrow: Print-stage distortion
+heading: 'Why are the corners of my 3D print lifting?'
+---
+
+<p>
+  Record when the lift starts. Loose lines during deposition call for a
+  <a href="{{ GuideSlug.Route3dPrintFirstLayerNotSticking }}"
+    >first-layer check</a
+  >. If a corner rises after a continuous base has printed, review the actual
+  contact paths, footprint, cooling conditions, profile and build surface. If
+  you only see the distortion after removing the part, record the release and
+  how the cooled part sits before deciding what changed.
+</p>
+<p>
+  Uneven cooling and contraction restrained by the bed or adjoining material can
+  contribute to distortion. Geometry, surface grip, airflow, the profile and the
+  filament formulation can interact. A photo can identify the affected corner
+  but leaves the timing and dominant cause open.
+  <a href="https://help.prusa3d.com/article/warping_2011"
+    >Prusa's warping guidance</a
+  >
+  illustrates lifted corners and why cooling choices can have different effects
+  for different setups and features.
+</p>
+
+<h2>Find the earliest visible change</h2>
+<table>
+  <caption>
+    Checkpoints for distinguishing four similar-looking symptoms
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">When it appears</th>
+      <th scope="col">Useful checkpoint</th>
+      <th scope="col">Next check</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">As the first layer goes down</th>
+      <td>Look for loose lines or missing contact from the start.</td>
+      <td>
+        Compare the saved paths to deposition and check the printer and sheet
+        setup.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">While printing, after the base was continuous</th>
+      <td>
+        Mark the first layer or elapsed stage when the base corner separates and
+        where it sits on the plate.
+      </td>
+      <td>
+        Compare contact at that corner with the generated paths, footprint and
+        approved profile and operating environment.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">First noticed after release</th>
+      <td>
+        Record whether you saw the base before release, how it was removed and
+        how it sits after cooling.
+      </td>
+      <td>
+        Measure against a consistent reference. Record the onset as unknown if
+        the earlier state was unobserved.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">At an upper unsupported edge</th>
+      <td>
+        Check whether the base is still seated and identify the first affected
+        upper paths.
+      </td>
+      <td>Review the upper feature's orientation and support in the slice.</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  If a nozzle strike and a layer shift occur together, record what happened
+  first if you observed it. The finished shape alone leaves that sequence open.
+</p>
+
+<h2>Choose one trial based on the affected corner</h2>
+<ol>
+  <li>
+    Mark the corner or feature, its bed position and model orientation. Record
+    whether it was attached at the first sign of distortion.
+  </li>
+  <li>
+    Review the first-layer paths in the exact native slicer project. Check the
+    maker's surface, profile and cooling guidance. Follow printer and filament
+    requirements for the operating environment, enclosure, ventilation and
+    equipment limits.
+  </li>
+  <li>
+    Choose one supported change that addresses the observation, such as a brim,
+    a different placement or a revised base. If you change orientation, also
+    review supports, layer direction and the surfaces they affect.
+  </li>
+  <li>
+    Inspect the generated outlines and clearance around the affected feature.
+    Use the
+    <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
+      >brim and support spacing guide</a
+    >
+    for the clearance arithmetic. Keep access for removal and any specified
+    separation layer in the plan. Grip and release both matter.
+  </li>
+  <li>
+    Follow the maker's cooldown and removal procedure, then compare cooled
+    readings with the same support points and references. Keep the initial and
+    trial results separate before revising a production profile.
+  </li>
+</ol>
+
+<h2 id="guide-warping-shape-versus-size">
+  Worked example: corner gap and projected size
+</h2>
+<p>
+  Take a hypothetical 80 × 40 mm base with the intended first-layer paths
+  visible in the preview. In this example the first layer looks continuous, one
+  corner separates during printing, and a gap remains when the cooled part is
+  removed. The readings illustrate the method using invented data.
+</p>
+<table>
+  <caption>
+    Three quantities from the hypothetical base
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Reading</th>
+      <th scope="col">Interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Nominal X gauge span between two marked features</th>
+      <td>80.00 mm</td>
+      <td>Design reference for the X comparison.</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Cooled X span projected onto the reference direction at the same
+        features
+      </th>
+      <td>79.84 mm</td>
+      <td>
+        80.00 − 79.84 = 0.16 mm shorter in projection, or 0.16 ÷ 80.00 × 100 =
+        0.20%.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Local gap at the marked corner on a checked reference surface
+      </th>
+      <td>0.80 mm</td>
+      <td>
+        Out-of-plane reading at that corner with the part resting under its own
+        weight.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  For a repeat, identify the reference surface and supporting points, whether
+  the part rocks, the measurement direction, temperature and instrument. For
+  example, define X parallel to a marked edge on the reference, project the two
+  gauge points to that direction and record how you measured the distance. Use a
+  gap gauge at the marked corner without forcing the part flat. A new seating is
+  a separate observation. A single corner reading describes only the gap at that
+  point.
+</p>
+<p>
+  Dividing the corner gap by the nominal X span mixes an out-of-plane gap with
+  an in-plane dimension. Even the 0.20% projected difference can include the
+  effects of the distorted shape. Diagnose contact and distortion first. Set
+  this part aside from the
+  <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
+    >shrinkage calculator's measurement set</a
+  >
+  until the seating and gauge method support a comparison. For assembly, use the
+  <a href="{{ GuideSlug.Route3dPrintToleranceAndClearanceGuide }}"
+    >fit measurement record</a
+  >
+  to document how the mating pieces actually sit.
+</p>
+<p>
+  For material preparation, check the documented grade and sheet choices in the
+  <a href="{{ GuideSlug.RoutePolycarbonate }}">PC Blend profile</a> or the
+  <a href="{{ GuideSlug.RouteAsa }}">ASA profile</a>. A corner that changes
+  after
+  <a href="{{ GuideSlug.Route3dPrintMoistureAndDimensionalStability }}"
+    >conditioning</a
+  >
+  or under
+  <a href="{{ GuideSlug.Route3dPrintCreepUnderSustainedLoad }}"
+    >sustained service load</a
+  >
+  belongs in a separate observation with its own time and conditions.
+</p>
+<p>Manufacturer documentation checked 4 November 2026.</p>

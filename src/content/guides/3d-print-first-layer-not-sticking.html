@@ -1,0 +1,184 @@
+---
+title: '3D Print First Layer Not Sticking: What to Check | InspectMesh'
+description: 'Find where first-layer adhesion fails. Compare the sliced contact paths with what prints, then check nozzle gap, surface setup and the affected bed location.'
+slug: 3d-print-first-layer-not-sticking
+eyebrow: First-layer troubleshooting
+heading: "Why is my 3D print's first layer not sticking?"
+---
+
+<p>
+  Open the saved slicer job and find the first paths intended to touch the bed.
+  If they are missing, check placement, the chosen face and any intended
+  support. If the paths are present but fail as filament goes down, record the
+  location and line shape. Then check the exact build surface, material profile
+  and printer's first-layer procedure. If a corner separates after a continuous
+  base has printed,
+  <a href="{{ GuideSlug.Route3dPrintWarpingCornersLifting }}"
+    >trace when the corner lifts</a
+  >. These checks apply to filament extrusion printing.
+</p>
+
+<h2>Inspect the first deposited layer in the saved job</h2>
+<p>
+  Move the native slicer preview to the first deposited layer. Use its feature
+  legend to identify the intended model's paths, any supports and the brim. A
+  purge line or support can touch the plate beneath a raised body. If the body
+  is meant to start on support, record that and confirm the support paths. The
+  <a href="https://help.prusa3d.com/article/skirt-and-brim_133969"
+    >PrusaSlicer skirt and brim documentation</a
+  >
+  illustrates why a surrounding skirt and a brim at the first-layer outline
+  serve different purposes. Inspect which paths the saved job actually contains.
+</p>
+<p>
+  Imagine two models with the same 80 × 40 mm XY envelope. One rests on its
+  entire flat underside. The other rests on four separate 10 × 10 mm pads with
+  its spanning underside 2 mm above the plane. At the ideal lower plane the flat
+  model has 80 × 40 = 3,200 mm² of geometric contact. The pads total 4 × 10 × 10
+  = 400 mm², one eighth as much. This geometric example predicts neither the
+  deposited paths nor how firmly the part will hold. If contact is uncertain,
+  use the
+  <a href="{{ GuideSlug.Route3dPrintOrientationPlanner }}"
+    >orientation planner</a
+  >
+  to compare candidates and the
+  <a href="{{ GuideSlug.RouteHowToLayAnStlFlatOnPrintBed }}"
+    >lay-flat workflow</a
+  >
+  to verify the intended face in your slicer.
+</p>
+
+<h2>Match the observation to the next check</h2>
+<table>
+  <caption>
+    First-layer observations and checks
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Observation</th>
+      <th scope="col">Check next</th>
+      <th scope="col">What the check tells you</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Expected model paths are missing from the preview</th>
+      <td>
+        Inspect placement, chosen face, intended support and the saved profile.
+      </td>
+      <td>You can locate the discrepancy before a physical print.</td>
+    </tr>
+    <tr>
+      <th scope="row">Round, separate lines or gaps from the start</th>
+      <td>
+        Follow the maker's nozzle-to-sheet procedure and inspect extrusion
+        consistency.
+      </td>
+      <td>
+        A larger gap can leave loose lines. Insufficient extrusion can also
+        leave gaps.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Ridges, displaced material or apparent scraping</th>
+      <td>
+        Pause or cancel according to the printer's instructions and inspect the
+        sheet and nozzle setup.
+      </td>
+      <td>
+        A small effective gap is possible. Check for surface damage or
+        obstructed extrusion before attempting to improve adhesion.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Continuous lines in one region, repeatable failure in another
+      </th>
+      <td>
+        Check sheet seating, damage and surface preparation, then follow the
+        maker's probing or levelling guidance.
+      </td>
+      <td>
+        A position-dependent symptom gives you a way to check whether a
+        machine-wide adjustment would explain it.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Continuous first layer followed by corner separation</th>
+      <td>
+        Record the first visible lift and follow the
+        <a href="{{ GuideSlug.Route3dPrintWarpingCornersLifting }}"
+          >corner-lift diagnosis</a
+        >.
+      </td>
+      <td>The comparison now extends beyond first-layer deposition.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Separate nozzle gap, mechanical setup and bed mesh</h2>
+<p>
+  The initial nozzle-to-sheet gap sets the starting separation. Mechanical setup
+  includes how the sheet sits and how the bed and motion system are aligned. A
+  bed mesh applies position-dependent corrections from sampled heights.
+  <a href="https://www.klipper3d.org/Bed_Mesh.html"
+    >Klipper's Bed Mesh documentation</a
+  >
+  describes an approximation whose accuracy depends on the probe and mechanics.
+  Use your printer's instructions for the applicable Z offset, probing or
+  levelling procedure and the installed sheet.
+</p>
+<p>
+  The
+  <a href="https://help.prusa3d.com/article/first-layer-calibration-i3_112364"
+    >Prusa calibration photographs for supported i3 printers</a
+  >
+  show round lines and gaps at one extreme and ridges at the other. Use those
+  examples to describe the pattern you see and follow the procedure for your own
+  setup. Check the approved preparation for the exact sheet and filament.
+  <a href="https://help.prusa3d.com/article/first-layer-issues_1804"
+    >Prusa's first-layer guidance</a
+  >
+  distinguishes surface cleaning from separation layers specified for some sheet
+  and filament combinations. A treatment can help release the part and protect
+  the surface.
+</p>
+
+<h2>Record one comparable change</h2>
+<p>
+  In this hypothetical check, the saved preview shows paths at both approved
+  locations. A small calibration pattern leaves loose lines at left-front and
+  continuous lines at the centre. Repeating the approved pattern at left-front
+  reproduces the loose lines. That makes the affected bed region useful to
+  investigate. Contamination, sheet height, probe repeatability, surface damage
+  and extrusion remain possible explanations.
+</p>
+<ol>
+  <li>
+    Record the project revision, exact filament, nozzle, sheet, profile and
+    preparation sequence. Note the first visible symptom and its location.
+  </li>
+  <li>
+    Save the preview and check which paths and probing region the job uses. If
+    you move the pattern, check what else the new slice changes.
+  </li>
+  <li>
+    Follow one relevant maker-approved check and repeat a comparable
+    observation. Keep the original and changed observations separate in the
+    <a href="{{ GuideSlug.Route3dPrinterCalibrationGuide }}"
+      >calibration record</a
+    >.
+  </li>
+</ol>
+<p>
+  If extrusion stays discontinuous above the base, investigate persistent
+  extrusion shortage with the
+  <a href="{{ GuideSlug.Route3dPrintFlowRateVsESteps }}"
+    >flow versus E-steps guide</a
+  >. If the cooled part seats but is wider near the bed, measure the feature at
+  two heights using the
+  <a href="{{ GuideSlug.Route3dPrintElephantsFootAndPartFit }}"
+    >elephant's foot and fit guide</a
+  >.
+</p>
+<p>Manufacturer and firmware documentation checked 4 November 2026.</p>

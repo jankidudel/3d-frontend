@@ -170,10 +170,14 @@ heading: How to Orient an STL File for 3D Printing
 
 <h2>5. Check contact and support removal</h2>
 <p>
-  A larger coplanar contact estimate can be a useful stability signal, but it is
-  not an adhesion or warping prediction. Separately inspect whether generated
-  support can leave holes, channels and enclosed regions without damaging a
-  critical face. The
+  Compare the actual first-layer model paths for two candidate faces. A wider XY
+  projection can still start on isolated pads. Use the
+  <a href="{{ GuideSlug.Route3dPrintFirstLayerNotSticking }}"
+    >contact-pattern example</a
+  >
+  to interpret the estimate, then weigh the change in layer direction, access
+  and supported features. Inspect whether generated support can leave holes,
+  channels and enclosed regions without damaging a critical face. The
   <a href="{{ GuideSlug.RouteSupportsInsideHolesAndChannels }}"
     >internal support-access workflow</a
   >

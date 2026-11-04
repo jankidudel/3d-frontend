@@ -132,8 +132,15 @@
     <a [routerLink]="guideRouteUrl.Route3dPrintMoistureAndDimensionalStability"
       >compare the independent mass and length ratios</a
     >
-    before choosing a correction. Notes do not apply a factor or replace raw
-    readings.
+    before choosing a correction. Compare seated readings at the intended
+    reference points and record an out-of-plane gap separately. The
+    <a
+      [routerLink]="guideRouteUrl.Route3dPrintWarpingCornersLifting"
+      fragment="guide-warping-shape-versus-size"
+      >worked corner-gap example</a
+    >
+    shows how a lifted base can change a projected reading. Notes do not apply a
+    factor or replace raw readings.
   </p>
   <app-measurement-worksheet
     [calculation]="worksheet()"

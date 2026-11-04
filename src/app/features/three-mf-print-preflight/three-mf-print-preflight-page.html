@@ -365,8 +365,13 @@
     </p>
     <h3>Can this guarantee that a 3MF will print?</h3>
     <p>
-      No. It is a pre-slicing screen, not a replacement for the intended printer
-      profile and layer preview.
+      No. In the saved slicer project, identify the intended placed item and
+      inspect its first deposited paths. The lowest bound of the combined build
+      can belong to a different instance. If the intended paths are present but
+      separate during deposition,
+      <a [routerLink]="guideRouteUrl.Route3dPrintFirstLayerNotSticking"
+        >compare the first-layer preview with what prints</a
+      >.
     </p>
   </section>
   <app-tool-evidence

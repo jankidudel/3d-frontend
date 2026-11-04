@@ -60,7 +60,13 @@ faq:
         Repeatable surface preparation, offset and first-layer result in
         relevant bed regions.
       </td>
-      <td>Contact or adhesion varies before the intended measurement.</td>
+      <td>
+        Stop if the paths separate during deposition.
+        <a href="{{ GuideSlug.Route3dPrintFirstLayerNotSticking }}"
+          >Compare the preview with the deposited lines</a
+        >
+        before continuing.
+      </td>
     </tr>
     <tr>
       <th scope="row">3. Extruder motion</th>
@@ -155,6 +161,24 @@ faq:
         and
         <a href="{{ GuideSlug.Route3dPrintShrinkageCalculator }}"
           >axis worksheet</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Loose lines as filament goes down</th>
+      <td>Check that the intended model paths exist in the saved slice.</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintFirstLayerNotSticking }}"
+          >Trace first-layer deposition</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Corner lifts after a continuous base</th>
+      <td>Record the earliest affected layer or stage and the bed location.</td>
+      <td>
+        <a href="{{ GuideSlug.Route3dPrintWarpingCornersLifting }}"
+          >Trace later corner lift</a
         >.
       </td>
     </tr>
