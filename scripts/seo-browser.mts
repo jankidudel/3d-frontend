@@ -6,6 +6,7 @@ import {
   logBrowserFindings,
 } from './seo-browser-diagnostics.mts';
 import { spawn } from 'node:child_process';
+import { constants } from 'node:fs';
 import {
   access,
   mkdtemp,
@@ -15,7 +16,7 @@ import {
   writeFile,
 } from 'node:fs/promises';
 import { tmpdir, cpus, totalmem } from 'node:os';
-import { resolve, extname } from 'node:path';
+import { basename, resolve, extname } from 'node:path';
 import type { Readable, Writable } from 'node:stream';
 import { StringDecoder } from 'node:string_decoder';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -65,6 +66,7 @@ export class DevTools {
     input.on('end', () =>
       fail(new Error('Chrome DevTools pipe closed before completion')),
     );
+    input.on('error', fail);
     output.on('error', fail);
     let buffered = '';
     const decoder = new StringDecoder('utf8');
@@ -125,16 +127,20 @@ export class DevTools {
   }
 }
 async function browserBinary() {
+  const configured = process.env['CHROME_BIN'];
+  if (configured) {
+    await access(configured, constants.X_OK);
+    return configured;
+  }
   const candidates = [
-    process.env['CHROME_BIN'],
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     '/usr/bin/google-chrome',
     '/usr/bin/chromium',
     '/usr/bin/chromium-browser',
-  ].filter((path): path is string => !!path);
+  ];
   for (const path of candidates) {
     try {
-      await access(path);
+      await access(path, constants.X_OK);
       return path;
     } catch {
       continue;
@@ -144,6 +150,81 @@ async function browserBinary() {
     'Chrome unavailable. Install stable Chrome or set CHROME_BIN; required render audit cannot be skipped.',
   );
 }
+
+const browserStartupTimeoutMs = 45_000;
+const browserStartupAttempts = 2;
+
+export async function startAuditBrowser(
+  binary: string,
+  timeoutMs = browserStartupTimeoutMs,
+) {
+  const errors: string[] = [];
+  for (let attempt = 1; attempt <= browserStartupAttempts; attempt++) {
+    const profile = await mkdtemp(resolve(tmpdir(), 'inspectmesh-chrome-'));
+    const headlessFlags =
+      basename(binary) === 'chrome-headless-shell' ? [] : ['--headless=new'];
+    const chrome = spawn(
+      binary,
+      [
+        ...headlessFlags,
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-background-networking',
+        '--disable-component-update',
+        '--disable-sync',
+        '--no-first-run',
+        '--remote-debugging-pipe',
+        `--user-data-dir=${profile}`,
+        'about:blank',
+      ],
+      { stdio: ['ignore', 'ignore', 'pipe', 'pipe', 'pipe'] },
+    );
+    let stderr = '';
+    chrome.stderr?.setEncoding('utf8').on('data', (chunk: string) => {
+      stderr = (stderr + chunk).slice(-8_192);
+    });
+    const exited = new Promise<void>((resolveExit) => {
+      chrome.once('exit', () => resolveExit());
+      chrome.once('error', (error) => {
+        stderr += String(error);
+        resolveExit();
+      });
+    });
+    const client = new DevTools(
+      chrome.stdio[3] as Writable,
+      chrome.stdio[4] as Readable,
+    );
+    const close = async () => {
+      client.close();
+      const forceKill = setTimeout(() => chrome.kill('SIGKILL'), 2_000);
+      chrome.kill();
+      await exited;
+      clearTimeout(forceKill);
+      await rm(profile, {
+        recursive: true,
+        force: true,
+        maxRetries: 3,
+        retryDelay: 100,
+      }).catch(() => undefined);
+    };
+    try {
+      const version = await client.send(
+        'Browser.getVersion',
+        {},
+        undefined,
+        timeoutMs,
+      );
+      return { client, version, close, diagnostics: () => stderr.trim() };
+    } catch (error) {
+      await close();
+      const detail = `attempt ${attempt}/${browserStartupAttempts}: ${String(error)}${stderr ? `; Chrome: ${stderr.trim()}` : ''}`;
+      errors.push(detail);
+      console.warn(`[render:startup] ${detail}`);
+    }
+  }
+  throw new Error(`Chrome could not start at ${binary}. ${errors.join('\n')}`);
+}
+
 export function compareRendered(
   initial: ReturnType<typeof inspectPublicHtml>,
   rendered: Record<string, unknown>,
@@ -204,12 +285,11 @@ export async function auditRender() {
     githubRunAttempt: process.env['GITHUB_RUN_ATTEMPT'] ?? null,
     concurrency: 3,
     readinessTimeoutMs: 20000,
+    browserStartupTimeoutMs,
+    browserStartupAttempts,
   };
   console.log(`Browser audit environment: ${JSON.stringify(environment)}`);
-  let chrome: ReturnType<typeof spawn> | undefined;
-  let dev: DevTools | undefined;
-  let profile: string | undefined;
-  let browserError = '';
+  let browser: Awaited<ReturnType<typeof startAuditBrowser>> | undefined;
   let version: unknown = null;
   let artifactSha256: string | null = null;
   let sourceSha256: string | null = null;
@@ -221,41 +301,12 @@ export async function auditRender() {
     // Intercept and fulfill canonical URLs from the audited build. No request
     // reaches production and no localhost listener is required.
     const origin = productionOrigin;
-    profile = await mkdtemp(resolve(tmpdir(), 'inspectmesh-chrome-'));
-    chrome = spawn(
-      await browserBinary(),
-      [
-        '--headless=new',
-        '--no-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-background-networking',
-        '--disable-component-update',
-        '--disable-sync',
-        '--no-first-run',
-        '--remote-debugging-pipe',
-        `--user-data-dir=${profile}`,
-        'about:blank',
-      ],
-      { stdio: ['ignore', 'ignore', 'pipe', 'pipe', 'pipe'] },
-    );
-    let stderr = '';
-    chrome.stderr?.on('data', (bytes) => {
-      stderr += String(bytes);
-      browserError = stderr;
-    });
-    chrome.on('error', (error) => {
-      stderr += String(error);
-      browserError = stderr;
-    });
-    dev = new DevTools(
-      chrome.stdio[3] as Writable,
-      chrome.stdio[4] as Readable,
-    );
-    version = await dev.send('Browser.getVersion');
+    browser = await startAuditBrowser(await browserBinary());
+    version = browser.version;
     console.log(
       'Chrome started; auditing local artifact through intercepted requests.',
     );
-    const client = dev;
+    const client = browser.client;
     let next = 0;
     async function worker() {
       const target = await client.send('Target.createTarget', {
@@ -817,27 +868,19 @@ export async function auditRender() {
     await Promise.all([worker(), worker(), worker()]);
     complete = rows.length === routeSearchPolicy.length;
   } catch (error) {
+    const diagnostics = browser?.diagnostics();
     findings.push(
       finding(
         'H03',
         Severity.Unknown,
         '/',
         AuditStage.Render,
-        String(error) + (browserError ? `; Chrome: ${browserError}` : ''),
+        String(error) + (diagnostics ? `; Chrome: ${diagnostics}` : ''),
         'available Chrome pipe and local artifact browser audit',
       ),
     );
   } finally {
-    dev?.close();
-    chrome?.kill();
-    if (profile) {
-      await rm(profile, {
-        recursive: true,
-        force: true,
-        maxRetries: 3,
-        retryDelay: 100,
-      }).catch(() => undefined);
-    }
+    await browser?.close();
   }
   const report = {
     stage: AuditStage.Render,

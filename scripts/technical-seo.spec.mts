@@ -10,7 +10,14 @@ import {
 } from './seo-browser-diagnostics.mts';
 import { describe, expect, it } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import {
+  mkdtemp,
+  mkdir,
+  readFile,
+  stat,
+  writeFile,
+  rm,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import {
@@ -24,7 +31,11 @@ import {
 } from './technical-seo.mts';
 import { inspectPublicHtml } from './seo-audit.mts';
 import { PassThrough } from 'node:stream';
-import { DevTools, compareRendered } from './seo-browser.mts';
+import {
+  DevTools,
+  compareRendered,
+  startAuditBrowser,
+} from './seo-browser.mts';
 import { discoverRouter } from './router-source.mts';
 import { artifactFiles, artifactHash } from './seo-artifact.mts';
 import { documentUrl } from './document-urls.mts';
@@ -230,6 +241,50 @@ describe('Chrome pipe protocol', () => {
     input.end();
     await expect(request).rejects.toThrow('pipe closed');
     client.close();
+  });
+
+  it('restarts Chrome with a fresh profile when the startup handshake times out', async () => {
+    const directory = await mkdtemp(
+      resolve(tmpdir(), 'inspectmesh-browser-test-'),
+    );
+    const binary = resolve(directory, 'chrome-headless-shell');
+    const launchLog = resolve(directory, 'launches');
+    try {
+      await writeFile(
+        binary,
+        `#!/usr/bin/env node
+const fs = require('node:fs');
+const log = ${JSON.stringify(launchLog)};
+const first = !fs.existsSync(log);
+const profile = process.argv.find(arg => arg.startsWith('--user-data-dir=')).split('=')[1];
+fs.appendFileSync(log, profile + '\\n');
+if (first) {
+  setInterval(() => {}, 1000);
+} else {
+  fs.createReadStream('', { fd: 3 }).once('data', bytes => {
+    const request = JSON.parse(bytes.toString().split('\\0')[0]);
+    fs.writeSync(4, JSON.stringify({ id: request.id, result: { product: 'HeadlessChrome/test' } }) + '\\0');
+  });
+}
+`,
+        { mode: 0o700 },
+      );
+
+      const browser = await startAuditBrowser(binary, 1_000);
+      try {
+        expect(browser.version).toEqual({ product: 'HeadlessChrome/test' });
+      } finally {
+        await browser.close();
+      }
+
+      const profiles = (await readFile(launchLog, 'utf8')).trim().split('\n');
+      expect(new Set(profiles).size).toBe(2);
+      for (const profile of profiles) {
+        await expect(stat(profile)).rejects.toMatchObject({ code: 'ENOENT' });
+      }
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
   });
 });
 

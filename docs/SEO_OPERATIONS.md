@@ -190,7 +190,11 @@ source from reaching the manual deployment workflow. `npm run verify` still
 requires the browser audit and artifact seal before any deployment upload. Local
 hooks can be bypassed; deployment verification is mandatory.
 
-Chrome is required (`CHROME_BIN` may select its executable). The browser auditor
+Chrome is required (`CHROME_BIN` may select its executable). Deployment jobs
+install the stable Chrome Headless Shell from Google's Chrome for Testing
+distribution, and log the installed version. The auditor allows 45 seconds for
+the initial DevTools handshake and retries once with a fresh profile if startup
+fails. The browser auditor
 uses the Chrome DevTools pipe, fulfills every first-party request from the same
 build and blocks third-party requests. It submits no forms or production jobs.
 No localhost listener, remote debugging port or browser-driver download is

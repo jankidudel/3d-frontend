@@ -66,8 +66,9 @@ jobs:
       - name: Configure the production contact CAPTCHA
         if: ${{ env.STAGE == 'prod' }}
         run: node --experimental-strip-types scripts/configure-contact-captcha.mts
-      - name: Check browser audit environment
-        run: google-chrome --version
+      - name: Install Chrome Headless Shell for the render audit
+        timeout-minutes: 5
+        run: bash .github/scripts/install-audit-browser.sh
       - name: Generate frontend content once
         run: npm run verify:prepare
       - name: Check frontend source
