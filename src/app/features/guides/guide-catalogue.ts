@@ -30,6 +30,7 @@ export interface Guide extends GuideContent {
 }
 
 export interface GuideCard {
+  readonly category?: string;
   readonly searchTerms?: readonly string[];
   readonly title: string;
   readonly description: string;

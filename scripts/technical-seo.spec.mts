@@ -73,8 +73,8 @@ describe('guide search layout build gate', () => {
 
   it('rejects supporting content inserted between search and guide results', () => {
     const changed = template.replace(
-      '<div class="guide-results">',
-      '<p>Read this first</p><div class="guide-results">',
+      '<div class="guide-results" id="guide-results">',
+      '<p>Read this first</p><div class="guide-results" id="guide-results">',
     );
     expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toEqual([
       expect.objectContaining({
@@ -86,8 +86,8 @@ describe('guide search layout build gate', () => {
 
   it('rejects a supporting panel inserted inside the results wrapper', () => {
     const changed = template.replace(
-      '<div class="guide-results">',
-      '<div class="guide-results"><section><h2>Recommendations</h2></section>',
+      '<div class="guide-results" id="guide-results">',
+      '<div class="guide-results" id="guide-results"><section><h2>Recommendations</h2></section>',
     );
     expect(withHtmlDocument(changed, inspectGuideSearchLayout)).toHaveLength(1);
   });

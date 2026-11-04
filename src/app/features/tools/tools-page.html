@@ -23,6 +23,7 @@
         <span>Tool type</span>
         <select
           id="tool-type"
+          class="select-control"
           [value]="selectedType() ?? ''"
           (change)="updateType($event)"
           aria-controls="tool-results"

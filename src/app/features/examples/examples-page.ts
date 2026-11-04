@@ -1,9 +1,9 @@
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { NgOptimizedImage } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
-import { publicExamples } from './example-registry';
+import { publicExamples, type PublicExample } from './example-registry';
 
 @Component({
   selector: 'app-examples-page',
@@ -30,17 +30,36 @@ import { publicExamples } from './example-registry';
         for analysis scope and local versus optional server actions. The linked
         guide owns the full explanation; these cards help you choose a control.
       </p>
-      <nav aria-label="Example topics">
-        @for (group of groups; track group) {
-          <a [routerLink]="routeUrl.Examples" [fragment]="firstId(group)">{{
-            group
-          }}</a>
-        }
-      </nav>
+      <fieldset class="example-filters">
+        <legend>Filter by topic</legend>
+        <div class="filter-buttons">
+          @for (group of groups; track group) {
+            <button
+              type="button"
+              [attr.aria-pressed]="selectedGroups().includes(group)"
+              (click)="toggleGroup(group)"
+            >
+              {{ group }}
+            </button>
+          }
+          <button
+            type="button"
+            class="filter-reset"
+            [attr.aria-disabled]="selectedGroups().length === 0"
+            (click)="selectedGroups.set([])"
+          >
+            Clear filters
+          </button>
+        </div>
+        <p class="result-count" role="status">
+          {{ visibleExamples().length }} of {{ examples.length }} examples
+        </p>
+      </fieldset>
       <div class="example-grid">
-        @for (example of examples; track example.id) {
+        @for (example of visibleExamples(); track example.id) {
           <article
             class="card"
+            [class.example-wide]="!!example.previewCaption"
             [id]="example.id"
             [attr.aria-labelledby]="example.id + '-title'"
           >
@@ -119,20 +138,22 @@ import { publicExamples } from './example-registry';
     .examples-page {
       max-width: 72rem;
     }
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-block: 1.5rem;
+    .example-filters {
+      min-inline-size: 0;
+      margin: 1.5rem 0;
+      padding: 0;
+      border: 0;
     }
-    nav a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 2.75rem;
-      padding: 0.5rem 0.85rem;
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      background: var(--surface);
+    .example-filters legend {
+      margin-bottom: 0.25rem;
+      padding: 0;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .result-count {
+      margin: 0.35rem 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
     }
     .example-grid {
       display: grid;
@@ -144,6 +165,9 @@ import { publicExamples } from './example-registry';
       min-width: 0;
       padding: clamp(1rem, 3vw, 1.5rem);
       scroll-margin-top: 6rem;
+    }
+    .example-wide {
+      grid-column: 1 / -1;
     }
     .example-category {
       display: inline-flex;
@@ -227,6 +251,31 @@ export class ExamplesPage {
   readonly examples = this.groups.flatMap((group) =>
     publicExamples.filter((example) => example.group === group),
   );
+  protected readonly selectedGroups = signal<readonly string[]>([]);
+  protected readonly visibleExamples = computed(() => {
+    const selected = this.selectedGroups();
+    const ordered: PublicExample[] = [];
+    let unpaired: PublicExample | undefined;
+
+    for (const example of this.examples) {
+      if (selected.length > 0 && !selected.includes(example.group)) {
+        continue;
+      }
+      if (example.previewCaption) {
+        // Keep the pending half-width card for the next pair.
+        ordered.push(example);
+      } else if (unpaired) {
+        ordered.push(unpaired, example);
+        unpaired = undefined;
+      } else {
+        unpaired = example;
+      }
+    }
+    if (unpaired) {
+      ordered.push(unpaired);
+    }
+    return ordered;
+  });
   constructor() {
     inject(SeoService).apply({
       title:
@@ -236,8 +285,12 @@ export class ExamplesPage {
       path: PublicRouteUrl.Examples,
     });
   }
-  firstId(group: string): string {
-    return this.examples.find((example) => example.group === group)!.id;
+  protected toggleGroup(group: string): void {
+    this.selectedGroups.update((selected) =>
+      selected.includes(group)
+        ? selected.filter((item) => item !== group)
+        : [...selected, group],
+    );
   }
   toolName(path: string): string {
     return (path.split('/').at(-1) ?? '').replaceAll('-', ' ');

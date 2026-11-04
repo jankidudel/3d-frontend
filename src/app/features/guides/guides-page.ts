@@ -1,15 +1,18 @@
 import { GuideRouteUrl } from '../../core/seo/guide-routes';
 import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import { guideRoutePath, PublicRouteUrl } from '../../core/seo/public-routes';
 import {
   guideDiscoveryTasks,
+  guideIndexCategories,
   guideIndexGroups,
 } from './generated/guides.generated';
 import { filterGuideGroups } from './guide-search';
 
 @Component({
   selector: 'app-guides-page',
+  imports: [RouterLink],
   templateUrl: './guides-page.html',
   styleUrl: './guides-page.scss',
 })
@@ -17,12 +20,27 @@ export class GuidesPage {
   readonly discoveryTasks = guideDiscoveryTasks;
   readonly guideRouteUrl = GuideRouteUrl;
   protected readonly guidePath = guideRoutePath;
-  protected readonly query = signal('');
-  protected readonly guideGroups = computed(() =>
-    filterGuideGroups(guideIndexGroups, this.query()),
+  protected readonly categories = guideIndexCategories;
+  protected readonly tags = guideIndexGroups;
+  protected readonly totalGuides = guideIndexGroups.reduce(
+    (count, group) => count + group.guides.length,
+    0,
   );
-  protected readonly hasSearchQuery = computed(
-    () => this.query().trim() !== '',
+  protected readonly query = signal('');
+  protected readonly category = signal('');
+  protected readonly selectedTags = signal<readonly string[]>([]);
+  protected readonly filtersExpanded = signal(false);
+  protected readonly expandedGuides = signal<ReadonlySet<string>>(new Set());
+  protected readonly guideGroups = computed(() =>
+    filterGuideGroups(
+      guideIndexGroups,
+      this.query(),
+      this.category(),
+      this.selectedTags(),
+    ),
+  );
+  protected readonly hasFilters = computed(
+    () => !!(this.query() || this.category() || this.selectedTags().length),
   );
   protected readonly resultCount = computed(() =>
     this.guideGroups().reduce((count, group) => count + group.guides.length, 0),
@@ -51,7 +69,36 @@ export class GuidesPage {
     this.query.set((event.target as HTMLInputElement).value);
   }
 
-  protected clearQuery(): void {
+  protected toggleTag(tag: string): void {
+    this.selectedTags.update((selected) =>
+      selected.includes(tag)
+        ? selected.filter((item) => item !== tag)
+        : [...selected, tag],
+    );
+  }
+
+  protected toggleDescription(slug: string): void {
+    this.expandedGuides.update((current) => {
+      const expanded = new Set(current);
+      if (expanded.has(slug)) {
+        expanded.delete(slug);
+      } else {
+        expanded.add(slug);
+      }
+      return expanded;
+    });
+  }
+
+  protected clearFilters(): void {
     this.query.set('');
+    this.category.set('');
+    this.clearTopicFilters();
+  }
+
+  protected clearTopicFilters(): void {
+    if (this.selectedTags().length === 0) {
+      return;
+    }
+    this.selectedTags.set([]);
   }
 }

@@ -10,6 +10,49 @@ label.unit-label {
   font-weight: 650;
 }
 
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.filter-buttons :where(button) {
+  max-inline-size: 100%;
+  min-block-size: 1.875rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--primary);
+  background: var(--surface);
+  font-size: 0.85rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.filter-buttons button[aria-pressed='true'] {
+  border-color: var(--primary);
+  color: var(--surface);
+  background: var(--primary);
+}
+
+.filter-reset {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 7%, var(--surface));
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.filter-reset:not([aria-disabled='true']):hover {
+  border-color: var(--muted);
+  background: color-mix(in srgb, var(--ink) 13%, var(--surface));
+}
+
+.filter-reset[aria-disabled='true'] {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
 :root {
   --primary: #166534;
   --primary-hover: #14532d;

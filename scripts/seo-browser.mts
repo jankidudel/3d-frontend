@@ -680,6 +680,31 @@ export async function auditRender() {
             });
           }
           if (policy.path === PublicRouteUrl.Examples) {
+            phase = 'example-topic-filters';
+            const filters = '.filter-buttons button[aria-pressed]';
+            const cards = '.example-grid > article';
+            const filterState = (await evaluate(`(() => {
+              const buttons = [...document.querySelectorAll(${JSON.stringify(filters)})];
+              const cards = [...document.querySelectorAll(${JSON.stringify(cards)})];
+              const selected = buttons.slice(0, 2);
+              const topics = selected.map(button => button.textContent.trim());
+              selected.forEach(button => button.click());
+              return {
+                ids: cards.filter(card => topics.includes(card.querySelector('.example-category').textContent.trim())).map(card => card.id).sort(),
+                total: cards.length,
+                initialHash: location.hash,
+              };
+            })()`)) as { ids: string[]; total: number; initialHash: string };
+            await waitFor(
+              `document.querySelectorAll(${JSON.stringify(filters + '[aria-pressed="true"]')}).length === 2 && JSON.stringify([...document.querySelectorAll(${JSON.stringify(cards)})].map(card => card.id).sort()) === ${JSON.stringify(JSON.stringify(filterState.ids))} && location.hash === ${JSON.stringify(filterState.initialHash)}`,
+            );
+            await evaluate(
+              `document.querySelector('.filter-buttons button:last-child').click()`,
+            );
+            await waitFor(
+              `document.querySelectorAll(${JSON.stringify(cards)}).length === ${filterState.total}`,
+            );
+
             phase = 'fragment-navigation';
             await send('Emulation.setDeviceMetricsOverride', {
               width: 390,
@@ -687,19 +712,15 @@ export async function auditRender() {
               deviceScaleFactor: 1,
               mobile: true,
             });
-            const links = (await evaluate(
-              `[...document.querySelectorAll('nav[aria-label="Example topics"] a')].map(e=>({href:e.getAttribute('href'),id:new URL(e.href).hash.slice(1)}))`,
-            )) as { href: string; id: string }[];
-            for (const link of links) {
-              await evaluate(
-                `document.querySelector('a[href='+CSS.escape(${JSON.stringify(link.href)})+']').click()`,
-              );
+            const ids = (await evaluate(
+              `[...document.querySelectorAll('.example-grid > article[id]')].map(card => card.id)`,
+            )) as string[];
+            for (const id of ids) {
+              await send('Page.navigate', {
+                url: origin + policy.path + '#' + id,
+              });
               await waitFor(
-                `location.pathname===${JSON.stringify(policy.path)} && location.hash===${JSON.stringify('#' + link.id)} && document.getElementById(${JSON.stringify(link.id)})?.getBoundingClientRect().top<160 && document.getElementById(${JSON.stringify(link.id)})?.getBoundingClientRect().bottom>0`,
-              );
-              await send('Page.navigate', { url: origin + link.href });
-              await waitFor(
-                `document.documentElement?.dataset.appReady==='true' && document.getElementById(${JSON.stringify(link.id)})?.getBoundingClientRect().top<160`,
+                `document.documentElement?.dataset.appReady==='true' && location.hash===${JSON.stringify('#' + id)} && document.getElementById(${JSON.stringify(id)})?.getBoundingClientRect().top<160 && document.getElementById(${JSON.stringify(id)})?.getBoundingClientRect().bottom>0`,
               );
             }
             const history = await send('Page.getNavigationHistory');
@@ -716,7 +737,7 @@ export async function auditRender() {
                 entryId: entries[current].id,
               });
               await waitFor(
-                `location.hash===${JSON.stringify('#' + links.at(-1)!.id)}`,
+                `location.hash===${JSON.stringify('#' + ids.at(-1)!)}`,
               );
             }
             await mkdir(reportDirectory, { recursive: true });

@@ -5,16 +5,18 @@
 
 .subscription-form {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
 }
 
 .subscribe-controls {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 0.5rem;
 }
 
 .inline-label {
+  align-self: center;
   flex: none;
   color: var(--muted);
   font-size: 0.85rem;
@@ -22,8 +24,9 @@
 }
 
 input {
+  width: 0;
   min-width: 0;
-  flex: 1;
+  flex: 1 1 0;
   min-height: 2.5rem;
   padding: 0.55rem 0.65rem;
   border: 1px solid var(--border);
@@ -43,6 +46,7 @@ input.invalid:focus-visible {
 }
 
 .button {
+  flex: none;
   min-height: 2.5rem;
   padding-inline: 0.8rem;
 }
@@ -113,6 +117,10 @@ input.invalid:focus-visible {
     align-items: stretch;
     flex-direction: column;
     gap: 0.65rem;
+  }
+
+  .inline-label {
+    align-self: auto;
   }
 
   input,

@@ -58,22 +58,54 @@ describe('ExamplesPage layout and discovery', () => {
     expect(new Set(cards.map((card) => card.id)).size).toBe(
       publicExamples.length,
     );
-    const topics = Array.from(
-      host.querySelectorAll('nav[aria-label="Example topics"] a'),
-    );
+    const topics = [
+      ...host.querySelectorAll<HTMLButtonElement>(
+        '.filter-buttons [aria-pressed]',
+      ),
+    ];
     expect(topics).toHaveLength(
       new Set(publicExamples.map((example) => example.group)).size,
     );
-    for (const topic of topics) {
-      const url = new URL(
-        topic.getAttribute('href')!,
-        'https://www.inspectmesh.com',
-      );
-      const target = cards.find((card) => card.id === url.hash.slice(1));
-      expect(target).toBeDefined();
-      expect(
-        target?.querySelector('.example-category')?.textContent?.trim(),
-      ).toBe(topic.textContent?.trim());
+    let halfWidthCards = 0;
+    for (const card of cards) {
+      if (card.classList.contains('example-wide')) {
+        expect(halfWidthCards % 2).toBe(0);
+        expect(card.querySelector('.path-scroll')).not.toBeNull();
+      } else {
+        expect(card.querySelector('.path-scroll')).toBeNull();
+        halfWidthCards++;
+      }
     }
+
+    const selectedTopics = topics.slice(0, 2);
+    for (const topic of selectedTopics) {
+      topic.click();
+      fixture.detectChanges();
+      expect(topic.getAttribute('aria-pressed')).toBe('true');
+    }
+    const selectedGroups = selectedTopics.map((topic) =>
+      topic.textContent?.trim(),
+    );
+    expect([...grids[0].children].map((card) => card.id).sort()).toEqual(
+      publicExamples
+        .filter((example) => selectedGroups.includes(example.group))
+        .map((example) => example.id)
+        .sort(),
+    );
+
+    selectedTopics[0].click();
+    fixture.detectChanges();
+    expect(selectedTopics[0].getAttribute('aria-pressed')).toBe('false');
+    expect(
+      [...grids[0].children].every(
+        (card) => byId.get(card.id)?.group === selectedGroups[1],
+      ),
+    ).toBe(true);
+
+    host
+      .querySelector<HTMLButtonElement>('.filter-buttons button:last-child')!
+      .click();
+    fixture.detectChanges();
+    expect(grids[0].children).toHaveLength(publicExamples.length);
   });
 });

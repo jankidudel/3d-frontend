@@ -8,7 +8,7 @@ import {
 
 /** Recorded editorial dates for individual pages, never build time. */
 export const editorialDates: Readonly<Record<string, string>> = {
-  [PublicRouteUrl.Examples]: '2026-11-01',
+  [PublicRouteUrl.Examples]: '2026-11-04',
   [PublicRouteUrl.Home]: '2026-10-29',
   [PublicRouteUrl.AllTools]: '2026-11-03',
   [PublicRouteUrl.Guides]: '2026-11-04',

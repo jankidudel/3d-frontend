@@ -48,11 +48,14 @@
   flex: 0 1 12rem;
 }
 
+.search-controls :is(input, select, button) {
+  block-size: 3rem;
+}
+
 .search-controls input,
-.search-controls select,
 .clear-filters {
-  min-height: 2.75rem;
-  padding: 0.65rem 0.8rem;
+  min-height: 2.875rem;
+  padding: 0.55rem 0.8rem;
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   color: var(--ink);
