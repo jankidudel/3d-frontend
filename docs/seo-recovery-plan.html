@@ -1,0 +1,2048 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>InspectMesh SEO Recovery Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+    <style>
+      /* Layout: single reading column (max 1080px), wide tables scroll in their own box; a sticky section index on wide screens. */
+      :root {
+        --bg: #f6f7f9;
+        --surface: #ffffff;
+        --fg: #1a1f2b;
+        --muted: #5a6274;
+        --line: #dde1e8;
+        --accent: #2459c9;
+        --accent-soft: #e6edfb;
+        --high: #c2362b;
+        --high-bg: #fbe9e7;
+        --med: #b8650b;
+        --med-bg: #fdf1e2;
+        --low: #6b7385;
+        --low-bg: #eef0f4;
+        --ok: #1f7a4a;
+        --ok-bg: #e5f4ec;
+        --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+        --font-body: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+        --font-mono:
+          'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #11141b;
+          --surface: #181c25;
+          --fg: #e6e9f0;
+          --muted: #9aa3b6;
+          --line: #2a303d;
+          --accent: #7ea4f5;
+          --accent-soft: #1d2740;
+          --high: #f08a80;
+          --high-bg: #3a1d1b;
+          --med: #f0b067;
+          --med-bg: #3a2a16;
+          --low: #a6adbd;
+          --low-bg: #242a36;
+          --ok: #6fd19c;
+          --ok-bg: #16301f;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #11141b;
+        --surface: #181c25;
+        --fg: #e6e9f0;
+        --muted: #9aa3b6;
+        --line: #2a303d;
+        --accent: #7ea4f5;
+        --accent-soft: #1d2740;
+        --high: #f08a80;
+        --high-bg: #3a1d1b;
+        --med: #f0b067;
+        --med-bg: #3a2a16;
+        --low: #a6adbd;
+        --low-bg: #242a36;
+        --ok: #6fd19c;
+        --ok-bg: #16301f;
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font: 15px/1.6 var(--font-body);
+      }
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding-block: 40px 80px;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        display: grid;
+        gap: 48px;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-display);
+        text-wrap: balance;
+        line-height: 1.2;
+        margin: 0;
+      }
+      h1 {
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 24px;
+        font-weight: 600;
+      }
+      h3 {
+        font-size: 17px;
+        font-weight: 600;
+      }
+      p {
+        margin: 0;
+        max-width: 72ch;
+      }
+      a {
+        color: var(--accent);
+      }
+      a:focus-visible,
+      summary:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      code,
+      .url {
+        font-family: var(--font-mono);
+        font-size: 0.86em;
+        word-break: break-word;
+      }
+      .eyebrow {
+        font: 500 12px/1 var(--font-mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      section {
+        display: grid;
+        gap: 16px;
+        min-width: 0;
+      }
+      header.top {
+        display: grid;
+        gap: 14px;
+      }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .meta b {
+        color: var(--fg);
+        font-weight: 500;
+      }
+
+      .toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .toc a {
+        text-decoration: none;
+        font-size: 13px;
+        padding: 5px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--fg);
+        background: var(--surface);
+      }
+      .toc a:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .summary {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 20px 22px;
+        display: grid;
+        gap: 12px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+      }
+      .stat {
+        border-left: 3px solid var(--line);
+        padding: 2px 0 2px 12px;
+        display: grid;
+        gap: 2px;
+      }
+      .stat .n {
+        font: 600 24px/1.1 var(--font-display);
+        font-variant-numeric: tabular-nums;
+      }
+      .stat .l {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .stat.h {
+        border-color: var(--high);
+      }
+      .stat.m {
+        border-color: var(--med);
+      }
+      .stat.o {
+        border-color: var(--ok);
+      }
+
+      .tbl {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 13.5px;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+      th {
+        font: 600 12px/1.3 var(--font-body);
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        background: var(--bg);
+        position: sticky;
+        top: 0;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td.num {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .wide table {
+        min-width: 900px;
+      }
+      .mid table {
+        min-width: 720px;
+      }
+
+      .pill {
+        display: inline-block;
+        font: 600 11px/1 var(--font-body);
+        padding: 4px 8px;
+        border-radius: 999px;
+        white-space: nowrap;
+        letter-spacing: 0.02em;
+      }
+      .p-high {
+        color: var(--high);
+        background: var(--high-bg);
+      }
+      .p-med {
+        color: var(--med);
+        background: var(--med-bg);
+      }
+      .p-low {
+        color: var(--low);
+        background: var(--low-bg);
+      }
+      .p-ok {
+        color: var(--ok);
+        background: var(--ok-bg);
+      }
+      .p-acc {
+        color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      ul.clean {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 4px;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 16px 18px;
+        display: grid;
+        gap: 10px;
+        align-content: start;
+        min-width: 0;
+      }
+      .note {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .callout {
+        border: 1px solid var(--accent);
+        background: var(--accent-soft);
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: grid;
+        gap: 6px;
+      }
+
+      /* Timeline */
+      .timeline {
+        display: grid;
+        gap: 0;
+        border-left: 2px solid var(--line);
+        margin-left: 8px;
+      }
+      .ph {
+        position: relative;
+        padding: 0 0 24px 24px;
+        display: grid;
+        gap: 8px;
+      }
+      .ph::before {
+        content: '';
+        position: absolute;
+        left: -8px;
+        top: 4px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--surface);
+        border: 3px solid var(--accent);
+      }
+      .ph.release::before {
+        background: var(--accent);
+      }
+      .ph.eval::before {
+        border-color: var(--muted);
+      }
+      .ph .when {
+        font: 500 13px/1.3 var(--font-mono);
+        color: var(--accent);
+      }
+      .ph.eval .when {
+        color: var(--muted);
+      }
+      .ph ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 3px;
+      }
+
+      details {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 16px;
+      }
+      details > summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      details[open] > summary {
+        margin-bottom: 10px;
+      }
+      tr.group td {
+        background: var(--accent-soft);
+        color: var(--fg);
+        font: 600 13px/1.3 var(--font-display);
+        padding-block: 8px;
+      }
+      .urllist {
+        columns: 2 320px;
+        column-gap: 24px;
+        margin: 0;
+        padding-left: 18px;
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+      }
+      .urllist li {
+        break-inside: avoid;
+        margin-bottom: 3px;
+      }
+
+      .checklist {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+      }
+      .checklist li {
+        padding-left: 26px;
+        position: relative;
+      }
+      .checklist li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 4px;
+        width: 14px;
+        height: 14px;
+        border: 1.5px solid var(--muted);
+        border-radius: 3px;
+      }
+      footer {
+        color: var(--muted);
+        font-size: 12.5px;
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <span class="eyebrow"
+          >www.inspectmesh.com · Technical &amp; content SEO audit</span
+        >
+        <h1>InspectMesh SEO recovery plan</h1>
+        <p>
+          Why so many pages are not getting indexed, what is already fine, and a
+          phased plan for when and how to ship the fixes without breaking the
+          site's own 28-day measurement rule.
+        </p>
+        <div class="meta">
+          <span>Audit date <b>2026-11-19</b></span>
+          <span
+            >Last production deploy <b>2026-11-04</b> (live
+            <code>Last-Modified</code> header)</span
+          >
+          <span
+            >Scope <b>221 sitemap URLs</b>, built HTML, live site, git history,
+            CloudFront config</span
+          >
+        </div>
+        <nav class="toc" aria-label="Sections">
+          <a href="#summary">Summary</a><a href="#findings">Findings</a
+          ><a href="#fine">What's fine</a><a href="#clusters">Keyword map</a
+          ><a href="#lists">URL lists</a><a href="#timeline">Release timeline</a
+          ><a href="#workplan">Work plan</a
+          ><a href="#decisions">Decisions needed</a><a href="#kpis">KPIs</a
+          ><a href="#method">Method</a>
+        </nav>
+      </header>
+
+      <section id="summary">
+        <h2>Summary</h2>
+        <div class="summary">
+          <p>
+            <strong
+              >The technical setup is mostly sound. The problem is scale and
+              quality.</strong
+            >
+            A domain about three months old has published 221 indexable URLs.
+            Many of them overlap in intent, follow one template, carry little
+            crawlable text, or lead with caveats instead of answers. That
+            combination usually produces large "Crawled – currently not indexed"
+            and "Discovered – currently not indexed" counts in Search Console.
+          </p>
+          <div class="stats">
+            <div class="stat">
+              <span class="n">221</span
+              ><span class="l">indexable URLs in the sitemap</span>
+            </div>
+            <div class="stat h">
+              <span class="n">~100 days</span
+              ><span class="l">from first commit (2026-08-12) to now</span>
+            </div>
+            <div class="stat h">
+              <span class="n">~33</span
+              ><span class="l"
+                >URLs in 3 heavily overlapping intent clusters</span
+              >
+            </div>
+            <div class="stat h">
+              <span class="n">16</span
+              ><span class="l"
+                >tool pages with under 400 words of main content</span
+              >
+            </div>
+            <div class="stat m">
+              <span class="n">28</span
+              ><span class="l">guides with ≤ 2 contextual inbound links</span>
+            </div>
+            <div class="stat m">
+              <span class="n">6.2</span
+              ><span class="l">average commits per guide (rewrites)</span>
+            </div>
+          </div>
+          <p>
+            <strong>Approach (decided 2026-11-19):</strong> keep the existing
+            pages and expand them. Where two pages compete for the same query,
+            one keeps the head keyword and the other is retargeted to a
+            different, more specific keyword.
+          </p>
+          <p class="note">
+            Search Console data was not available for this audit, so the exact
+            exclusion reason per URL is not confirmed. The first step of the
+            plan is to export it.
+          </p>
+        </div>
+      </section>
+
+      <section id="findings">
+        <h2>Findings</h2>
+        <p>
+          Ranked by expected impact on indexing. Severity reflects how many URLs
+          are affected and how directly the issue maps to known Google exclusion
+          causes.
+        </p>
+        <div class="tbl wide">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Severity</th>
+                <th>Area</th>
+                <th>Finding</th>
+                <th>Evidence</th>
+                <th>Recommended fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num">1</td>
+                <td><span class="pill p-high">High</span></td>
+                <td>Publishing scale</td>
+                <td>
+                  Too many URLs too quickly for a new, low-authority domain.
+                  Google indexes only part of such a site until it earns trust,
+                  and the rest waits as "Discovered/Crawled – not indexed".
+                </td>
+                <td>
+                  First commit 2026-08-12. Guides added: 13 in Aug, 49 in Sep,
+                  44 in Oct, 21 in Nov. Sitemap: 128 guides, 50 tools, 31
+                  printer/comparison pages, 9 material pages.
+                </td>
+                <td>
+                  Freeze new URLs. Make each existing page clearly distinct and
+                  stronger (findings 2–6) instead of adding more. Resume at a
+                  slow cadence only once the index ratio improves.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">2</td>
+                <td><span class="pill p-high">High</span></td>
+                <td>Cannibalisation</td>
+                <td>
+                  Several URLs answer the same search intent. Google picks one
+                  and drops the others as duplicates or low value.
+                </td>
+                <td>
+                  STL errors cluster about 15 URLs, units/scale about 8,
+                  cost/price/quote about 10. See
+                  <a href="#clusters">Keyword map</a>.
+                </td>
+                <td>
+                  Keep the pages. Give each one a distinct primary keyword: the
+                  owner keeps the head term, the others are retargeted to a
+                  different query (new title, H1, description, opening and
+                  anchor text) and their overlapping passages are removed. See
+                  <a href="#clusters">keyword map</a>.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">3</td>
+                <td><span class="pill p-high">High</span></td>
+                <td>Thin STL/3MF twin tools</td>
+                <td>
+                  12 tools exist as STL and 3MF pairs (24 pages). Many have very
+                  little crawlable text beyond the upload widget.
+                </td>
+                <td>
+                  Main-content words: <code>3mf-overhang-checker</code> 186,
+                  <code>stl-triangle-counter</code> 193,
+                  <code>3mf-triangle-counter</code> 215,
+                  <code>stl-overhang-checker</code> 229,
+                  <code>3mf-wall-thickness-checker</code> 266,
+                  <code>stl-scale-tool</code> 297.
+                </td>
+                <td>
+                  Keep both formats and expand each with real format-specific
+                  content: worked examples, result interpretation, and what
+                  differs between STL and 3MF (3MF build items, components,
+                  transforms, multi-object builds). Where the pair competes for
+                  one query, retarget the 3MF page to a 3MF-specific query.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">4</td>
+                <td><span class="pill p-high">High</span></td>
+                <td>Templated printer pages</td>
+                <td>
+                  The printer spec pages are near-duplicates of each other and
+                  repeat information already published by manufacturers and
+                  review sites.
+                </td>
+                <td>
+                  10 printer pages share 51–70% of their 5-word phrases (A1 vs
+                  A1 Mini: 70%). Each says "specification research, not a
+                  hands-on review". Zero contextual links from non-hub pages.
+                </td>
+                <td>
+                  Either expand them with content only InspectMesh has (for
+                  example fit-checker results on sample models per printer), or
+                  noindex them and drop them from the sitemap until they do.
+                  Decision still open.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">5</td>
+                <td><span class="pill p-med">Med-High</span></td>
+                <td>Writing style</td>
+                <td>
+                  Pages lead with caveats instead of answers. Readers and
+                  Google's helpfulness signals both read this as low value.
+                </td>
+                <td>
+                  Across guides and tools: "does not" 534×, "not establish"
+                  162×, "physical" 306×, "observ…" 232×. Example opening: "An
+                  STL error report describes a finding, not the correction your
+                  design needs."
+                </td>
+                <td>
+                  Answer first in plain words in the first 2–3 sentences. Move
+                  limitations to one "Limits of this check" section. Cut
+                  repeated disclaimers.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">6</td>
+                <td><span class="pill p-med">Med-High</span></td>
+                <td>Titles</td>
+                <td>
+                  Titles drifted away from the words people search for, hurting
+                  relevance and click-through.
+                </td>
+                <td>
+                  <code>how-to-tell-if-a-3mf-file-is-manifold</code> → "3MF
+                  Topology: Mesh Fault or Build Placement?";
+                  <code>how-to-make-an-stl-file-printable</code> → "Prepare an
+                  STL: Repair and Verify a Saved Copy";
+                  <code>how-to-estimate-filament-weight-from-a-3mf-file</code> →
+                  "Estimate Solid-Model Mass from a 3MF". 25 titles exceed 65
+                  characters.
+                </td>
+                <td>
+                  Put the query wording first ("How to Tell If a 3MF File Is
+                  Manifold"), keep under ~60 characters, then the brand.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">7</td>
+                <td><span class="pill p-med">Medium</span></td>
+                <td>Constant rewrites</td>
+                <td>
+                  Pages change before Google has settled on them. This also
+                  breaks the 28-day evaluation rule in
+                  <code>docs/SEO_STRATEGY.md</code>.
+                </td>
+                <td>
+                  6.2 commits per guide on average (max 17). 42 guide-changing
+                  commits since 2026-10-01. About 145 sitemap
+                  <code>lastmod</code> dates fall between Oct 31 and Nov 4.
+                </td>
+                <td>
+                  Batch changes into planned releases (see
+                  <a href="#timeline">timeline</a>). No edits to live pages
+                  between releases except defect fixes.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">8</td>
+                <td><span class="pill p-med">Medium</span></td>
+                <td>Internal linking</td>
+                <td>Guides receive little link weight.</td>
+                <td>
+                  Header has 47 links, none to guides. <code>/guides</code> is
+                  one flat list of 128 links. 28 guides have ≤ 2 contextual
+                  inbound links; 3 have none (<code>what-is-an-stl-file</code>,
+                  <code>how-to-open-and-view-gcode-files</code>,
+                  <code>how-many-metres-in-1kg-filament</code>).
+                </td>
+                <td>
+                  Topic sub-hubs on <code>/guides</code> (STL, 3MF, G-code, fit
+                  &amp; tolerance, cost). Link each owner page from its tool and
+                  2–3 related guides.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">9</td>
+                <td><span class="pill p-med">Medium</span></td>
+                <td>Trust signals</td>
+                <td>Nothing says who is behind the site.</td>
+                <td>
+                  No About page, no Organization schema, no author or publisher
+                  in Article schema. Source citations are good (59 Prusa help
+                  links, Marlin, Klipper, 3mf.io).
+                </td>
+                <td>
+                  Add an About page (who builds it, how checks work, contact),
+                  Organization schema, and publisher on Article schema. Do not
+                  invent authors.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">10</td>
+                <td><span class="pill p-med">Med-Low</span></td>
+                <td>Page speed</td>
+                <td>
+                  Every guide page preloads one chunk containing the HTML of all
+                  128 guides.
+                </td>
+                <td>
+                  <code>chunk-4zUS4_Ed2.js</code>: 1.2 MB raw, about 300 KB
+                  gzipped, referenced by 128 pages. HTML is served uncompressed
+                  because the <code>CachingDisabled</code> policy does not
+                  negotiate compression.
+                </td>
+                <td>
+                  Load guide HTML per route (lazy import per slug). The
+                  compression issue is reported only: the project rules forbid
+                  cache-policy changes without an explicit request.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">11</td>
+                <td><span class="pill p-low">Low</span></td>
+                <td>WAF rate limit</td>
+                <td>
+                  A WAF block returns 403, which CloudFront maps to
+                  <strong>404</strong>. If Googlebot ever trips the limit, valid
+                  pages look "Not found".
+                </td>
+                <td>
+                  Limit 3,000 requests / 5 min per IP across all assets
+                  (<code>3d-infra/lib/constructs/cloudfront-web-acl.ts:5</code>);
+                  403→404 mapping in <code>frontend-hosting.ts</code>.
+                </td>
+                <td>
+                  Check GSC Crawl stats for 404s on valid URLs and WAF sampled
+                  requests for Googlebot. Change only if evidence appears.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">12</td>
+                <td><span class="pill p-low">Low</span></td>
+                <td>URL variants</td>
+                <td>
+                  Trailing-slash and query-string variants return 200 instead of
+                  redirecting.
+                </td>
+                <td>
+                  <code>/guides/how-to-check-stl-for-errors/</code> returns 200.
+                  Self-canonicals mitigate this.
+                </td>
+                <td>
+                  Optional: 301 trailing slash in the CloudFront function. Infra
+                  change, needs separate authorization.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">13</td>
+                <td><span class="pill p-low">Low</span></td>
+                <td>Schema</td>
+                <td>
+                  FAQPage schema on 73 pages has no effect. Google limits FAQ
+                  rich results to government and health sites since 2023.
+                </td>
+                <td>73 built pages contain FAQPage.</td>
+                <td>
+                  Harmless. Remove if it is maintenance burden; not a priority.
+                </td>
+              </tr>
+              <tr>
+                <td class="num">14</td>
+                <td><span class="pill p-low">Low</span></td>
+                <td>Utility pages</td>
+                <td>
+                  <code>/privacy</code> and <code>/cookies</code> are
+                  <code>index, follow</code> but not in the sitemap.
+                </td>
+                <td>Robots meta in built HTML.</td>
+                <td>Decide deliberately; noindex is the usual choice.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="fine">
+        <h2>What is already fine</h2>
+        <div class="tbl mid">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Result</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Server-rendered HTML</td>
+                <td>
+                  All 221 URLs prerendered with full content in
+                  <code>&lt;main&gt;</code>
+                </td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>Titles and meta descriptions</td>
+                <td>All unique; no duplicates across 221 pages</td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>Canonical tags</td>
+                <td>
+                  Every page has a correct absolute self-canonical on
+                  <code>www</code>
+                </td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>H1</td>
+                <td>Exactly one H1 on every page</td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>robots.txt and robots meta</td>
+                <td>
+                  Allow all; all sitemap pages <code>index, follow</code>; 404
+                  page noindex
+                </td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>Sitemap</td>
+                <td>Live sitemap has the same 221 URLs as the build</td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>Host canonicalisation</td>
+                <td>
+                  <code>inspectmesh.com</code> and <code>http://</code> 301 to
+                  <code>https://www.</code>
+                </td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>404 handling</td>
+                <td>
+                  Unknown and retired URLs return a real 404, no soft 404s
+                </td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+              <tr>
+                <td>External sources</td>
+                <td>
+                  Guides cite primary sources (Prusa, Marlin, Klipper, 3mf.io,
+                  Autodesk, NIST)
+                </td>
+                <td><span class="pill p-ok">OK</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="clusters">
+        <h2>Keyword map for overlapping pages</h2>
+        <p>
+          Every page is kept. Where pages compete for the same query, one page
+          owns the head term and the others are retargeted to a different, more
+          specific query. Retargeting means a new title, H1, meta description
+          and opening section aligned to the new keyword, internal links using
+          that keyword as anchor text, and removal of passages that repeat the
+          owner.
+        </p>
+        <div
+          class="stats"
+          style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
+        >
+          <div class="stat">
+            <span class="n"><span class="pill p-acc">Owner</span></span
+            ><span class="l">Keeps the head keyword. Expand it.</span>
+          </div>
+          <div class="stat">
+            <span class="n"><span class="pill p-med">Retarget</span></span
+            ><span class="l"
+              >Competes today. Move to the new keyword and remove overlap.</span
+            >
+          </div>
+          <div class="stat">
+            <span class="n"><span class="pill p-ok">Keep</span></span
+            ><span class="l">Already distinct. Expand and link.</span>
+          </div>
+        </div>
+        <div class="tbl wide">
+          <table>
+            <thead>
+              <tr>
+                <th>Page</th>
+                <th>Role</th>
+                <th>Primary keyword to own</th>
+                <th>Differentiate / expand with</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="group">
+                <td colspan="4">Checking an STL for errors</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/how-to-check-stl-for-errors</span>
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>check STL for errors</td>
+                <td>
+                  Walk through each error type with an example result and what
+                  to do next.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-print-preflight</span></td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>STL checker online; check STL before printing</td>
+                <td>
+                  Tool intent. Add a worked example result above the fold.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-quality-checker</span></td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>STL file validator; STL mesh analysis report</td>
+                <td>
+                  Position as the detailed downloadable report, not the quick
+                  check. Remove copy that repeats preflight.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-make-an-stl-file-printable</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>make STL printable; downloaded STL won&#x27;t print</td>
+                <td>Problem-to-fixed-file workflow for downloaded models.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-check-if-a-3d-model-is-ready-to-print</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>is my 3D model ready to print (design checks)</td>
+                <td>
+                  Design-side checks: minimum feature size, tolerances,
+                  orientation, overhangs. No mesh-error content.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/3d-print-file-preflight-checklist</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>3D printing checklist; pre-print checklist</td>
+                <td>Scannable checklist covering file, slicer and printer.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">Watertight and manifold (STL)</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/how-to-fix-non-manifold-stl</span>
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>fix non-manifold STL</td>
+                <td>
+                  Fix walkthroughs: InspectMesh, Blender, slicer auto-repair.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/what-is-non-manifold-geometry</span>
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>
+                  what is non-manifold geometry; non-manifold edges meaning
+                </td>
+                <td>
+                  Definition page: one diagram per non-manifold type. Link to
+                  the fix guide instead of repeating fix steps.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-tell-if-an-stl-is-watertight</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>
+                  what does watertight mean in 3D printing; watertight vs
+                  manifold
+                </td>
+                <td>Explain the difference and when it matters for slicing.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-watertight-checker</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>STL watertight checker</td>
+                <td>
+                  Expand with example results and how open edges are shown.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-manifold-checker</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>STL manifold checker; non-manifold edge checker</td>
+                <td>Expand with example results; link to the fix guide.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/self-intersecting-mesh-vs-non-manifold</span
+                  >
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>self-intersecting mesh</td>
+                <td>Already distinct.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">Repairing specific STL faults</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-repair</span></td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>repair STL online; STL repair tool</td>
+                <td>Tool intent.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/how-to-repair-an-stl-file</span>
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>how to repair an STL file</td>
+                <td>
+                  Overview with a fault → fix decision table. Link to the
+                  specific guides; do not repeat their steps.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-fix-holes-in-an-stl-file</span
+                  >
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>fix holes in STL</td>
+                <td>Distinct fault.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-fix-flipped-normals-in-an-stl-file</span
+                  >
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>flipped normals STL</td>
+                <td>Distinct fault.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-remove-duplicate-triangles-from-an-stl-file</span
+                  >
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>duplicate faces STL</td>
+                <td>Distinct fault; add inbound links.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/degenerate-triangles-stl</span>
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>degenerate triangles</td>
+                <td>Distinct fault; add inbound links.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/guides/internal-faces-in-stl</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>internal faces STL</td>
+                <td>Distinct fault; add inbound links.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">3MF errors and topology</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-check-a-3mf-file-for-errors</span
+                  >
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>check 3MF file for errors</td>
+                <td>
+                  3MF-specific: package structure, build items, components,
+                  missing objects.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-tell-if-a-3mf-file-is-manifold</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>
+                  non-manifold edges warning in a 3MF project (slicer warning)
+                </td>
+                <td>
+                  Start from the slicer warning people actually see and trace it
+                  to object/part level.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-tell-if-a-3mf-file-is-watertight</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>watertight check for multi-object 3MF builds</td>
+                <td>
+                  Per-object and per-component closure in multi-part builds,
+                  which STL cannot express.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/3mf-watertight-checker</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>3MF watertight checker</td>
+                <td>
+                  Expand with per-object results on a multi-object example.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/3mf-manifold-checker</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>3MF manifold checker</td>
+                <td>
+                  Expand with per-object results on a multi-object example.
+                </td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">Units and scale</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-scale-an-stl-file-for-3d-printing</span
+                  >
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>scale STL file</td>
+                <td>Step-by-step in common slicers and InspectMesh.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-scale-tool</span></td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>resize STL online</td>
+                <td>Tool intent; expand with example conversions.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/why-stl-files-have-no-units</span>
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>STL imported too small / too big; STL inches to mm</td>
+                <td>Symptom-led troubleshooting page.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/stl-scale-factor-explained</span>
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>scale factor 25.4; mm to inch scale factor</td>
+                <td>
+                  Conversion tables (mm, cm, inch, percent) with worked
+                  examples.
+                </td>
+              </tr>
+              <tr>
+                <td><span class="url">/guides/3mf-units-explained</span></td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>3MF wrong size after import; 3MF unit setting</td>
+                <td>3MF unit attribute and how slicers read it.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/how-to-scale-a-3mf-file</span>
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>scale 3MF file</td>
+                <td>Distinct format task.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-dimensions-checker</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>STL dimensions; measure STL size online</td>
+                <td>Distinct tool task.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/3mf-dimensions-checker</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>3MF dimensions</td>
+                <td>Distinct tool task.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">3MF to STL conversion</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/3mf-to-stl-converter</span></td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>3MF to STL converter online</td>
+                <td>Tool intent.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/how-to-convert-3mf-to-stl</span>
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>convert 3MF to STL</td>
+                <td>Main how-to.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/3mf-to-stl-wrong-size-or-position</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>STL off-centre or wrong size after exporting from 3MF</td>
+                <td>Symptom page; link back to the main how-to.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/3mf-to-stl-combined-or-separate-parts</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>export 3MF parts as separate STL files</td>
+                <td>Task page for multi-part projects.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">Production cost</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/tools/3d-print-cost-calculator</span>
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>3D print cost calculator</td>
+                <td>Tool intent.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-calculate-3d-printing-cost</span
+                  >
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>how to calculate 3D printing cost</td>
+                <td>Main method with one full worked example.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/3d-print-batch-cost-per-part</span>
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>
+                  cost per part for batch printing; print farm cost per part
+                </td>
+                <td>Plate and batch allocation examples.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/3d-print-support-and-purge-material-cost</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>multicolour purge waste cost; filament wasted on purge</td>
+                <td>Purge and support waste worked examples.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/3d-print-labour-cost-and-post-processing</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>
+                  post-processing time pricing; labour cost for 3D printing
+                </td>
+                <td>Labour time worksheet.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/3d-print-lead-time-vs-print-time</span
+                  >
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>3D printing lead time</td>
+                <td>Already distinct.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">Pricing and quotes</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/tools/3d-printing-price-calculator</span>
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>3D printing price calculator</td>
+                <td>Tool intent.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-much-to-charge-for-3d-prints</span
+                  >
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>how much to charge for 3D prints</td>
+                <td>Main pricing guide.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/3d-printing-quote-checklist</span>
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>what to ask a customer before quoting a 3D print</td>
+                <td>Intake questions and scope, not pricing.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/tools/3d-printing-quote-generator</span>
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>3D printing quote generator</td>
+                <td>Distinct document task.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">Triangle count</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-reduce-stl-triangle-count</span
+                  >
+                </td>
+                <td><span class="pill p-acc">Owner</span></td>
+                <td>reduce STL triangle / polygon count</td>
+                <td>Main how-to.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/guides/stl-triangle-count-explained</span>
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>how many triangles is too many for 3D printing</td>
+                <td>
+                  Thresholds by use case: slicer speed, upload limits, detail.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url"
+                    >/guides/how-to-check-3mf-triangle-count</span
+                  >
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>3MF triangle count</td>
+                <td>3MF-specific: stored meshes vs placed copies.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-triangle-counter</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>STL triangle counter</td>
+                <td>Expand with example results and what the count means.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/3mf-triangle-counter</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>3MF triangle counter</td>
+                <td>Expand with a multi-object example.</td>
+              </tr>
+              <tr class="group">
+                <td colspan="4">
+                  Overhangs and wall thickness (STL/3MF pairs)
+                </td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/stl-overhang-checker</span></td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>STL overhang checker</td>
+                <td>Expand with example results and angle interpretation.</td>
+              </tr>
+              <tr>
+                <td><span class="url">/tools/3mf-overhang-checker</span></td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>3MF overhang check for placed / rotated parts</td>
+                <td>Focus on how build transforms change overhangs.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/tools/stl-wall-thickness-checker</span>
+                </td>
+                <td><span class="pill p-ok">Keep</span></td>
+                <td>STL wall thickness checker</td>
+                <td>Expand with example results.</td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="url">/tools/3mf-wall-thickness-checker</span>
+                </td>
+                <td><span class="pill p-med">Retarget</span></td>
+                <td>wall thickness check for multi-part 3MF builds</td>
+                <td>Focus on per-part results in a build.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          55 pages mapped: 15 owners, 20 to retarget, 20 to keep. The keywords
+          are proposals based on page intent, not measured search volumes.
+          Before editing, confirm each one against GSC queries for the page and
+          a keyword tool, and record the final primary keyword per URL in
+          <code>docs/seo-url-ledger.json</code>. Expansion means worked
+          examples, result interpretation and format-specific behaviour, not
+          padding to a word count.
+        </p>
+      </section>
+
+      <section id="lists">
+        <h2>URL lists referenced above</h2>
+        <details>
+          <summary>
+            Tool pages with under 400 words of main content (16)
+          </summary>
+          <ul class="urllist">
+            <li>186 · /tools/3mf-overhang-checker</li>
+            <li>193 · /tools/stl-triangle-counter</li>
+            <li>215 · /tools/3mf-triangle-counter</li>
+            <li>229 · /tools/stl-overhang-checker</li>
+            <li>266 · /tools/3mf-wall-thickness-checker</li>
+            <li>297 · /tools/stl-scale-tool</li>
+            <li>300 · /tools/3d-print-finish-time-calculator</li>
+            <li>334 · /tools/3mf-watertight-checker</li>
+            <li>340 · /tools/3mf-manifold-checker</li>
+            <li>344 · /tools/stl-to-3mf-converter</li>
+            <li>360 · /tools/3mf-volume-calculator</li>
+            <li>361 · /tools/3d-print-flow-rate-calculator</li>
+            <li>372 · /tools/filament-remaining-calculator</li>
+            <li>378 · /tools/stl-watertight-checker</li>
+            <li>387 · /tools/stl-wall-thickness-checker</li>
+            <li>394 · /tools/stl-manifold-checker</li>
+          </ul>
+        </details>
+        <details>
+          <summary>
+            Guides with ≤ 2 contextual inbound links from non-hub pages (28)
+          </summary>
+          <ul class="urllist">
+            <li>/guides/how-many-metres-in-1kg-filament</li>
+            <li>/guides/how-to-open-and-view-gcode-files</li>
+            <li>/guides/what-is-an-stl-file</li>
+            <li>/guides/can-you-use-gcode-from-another-printer</li>
+            <li>/guides/how-to-check-3mf-wall-thickness-for-3d-printing</li>
+            <li>/guides/how-to-remove-duplicate-triangles-from-an-stl-file</li>
+            <li>/guides/how-to-rotate-a-3d-model-to-fit-your-printer</li>
+            <li>/guides/internal-faces-in-stl</li>
+            <li>/guides/stl-vs-obj-for-3d-printing</li>
+            <li>/guides/stl-vs-step-for-3d-printing</li>
+            <li>/guides/why-wont-my-3mf-file-slice</li>
+            <li>/guides/3d-print-labour-cost-and-post-processing</li>
+            <li>/guides/check-stl-files-before-selling</li>
+            <li>/guides/degenerate-triangles-stl</li>
+            <li>/guides/extract-part-from-3mf</li>
+            <li>/guides/how-to-check-3mf-triangle-count</li>
+            <li>/guides/how-to-check-a-3mf-file-for-errors</li>
+            <li>/guides/how-to-convert-stl-to-3mf</li>
+            <li>/guides/how-to-open-a-3mf-file</li>
+            <li>/guides/how-to-open-an-stl-file</li>
+            <li>/guides/how-to-tell-if-a-3mf-file-is-manifold</li>
+            <li>/guides/how-to-tell-if-an-stl-is-watertight</li>
+            <li>/guides/mirrored-stl-file</li>
+            <li>/guides/stl-scale-factor-explained</li>
+            <li>/guides/stl-split-failed</li>
+            <li>/guides/truncated-stl-file</li>
+            <li>/guides/what-is-non-manifold-geometry</li>
+            <li>/guides/zero-thickness-stl-surface</li>
+          </ul>
+        </details>
+        <details>
+          <summary>
+            Printer and printer-comparison pages: expand or noindex (21)
+          </summary>
+          <ul class="urllist">
+            <li>
+              /3d-printers (hub: keep indexable only if it gains unique value)
+            </li>
+            <li>/3d-printers/bambu-lab-a1</li>
+            <li>/3d-printers/bambu-lab-a1-mini</li>
+            <li>/3d-printers/bambu-lab-p1s</li>
+            <li>/3d-printers/bambu-lab-x1-carbon</li>
+            <li>/3d-printers/p2s</li>
+            <li>/3d-printers/creality-k1c</li>
+            <li>/3d-printers/elegoo-neptune-4-plus</li>
+            <li>/3d-printers/prusa-core-one</li>
+            <li>/3d-printers/prusa-mk4s</li>
+            <li>/3d-printers/sovol-sv06-ace</li>
+            <li>/compare/bambu-lab-p1s-vs-p2s</li>
+            <li>/compare/bambu-lab-a1-vs-p2s</li>
+            <li>/compare/bambu-lab-a1-vs-a1-mini</li>
+            <li>/compare/bambu-lab-p1s-vs-a1</li>
+            <li>/compare/bambu-lab-p1p-vs-p1s</li>
+            <li>/compare/bambu-lab-x1-carbon-vs-p2s</li>
+            <li>/compare/prusa-core-one-vs-bambu-lab-p1s</li>
+            <li>/compare/prusa-mk4s-vs-bambu-lab-a1</li>
+            <li>/compare/creality-k1c-vs-bambu-lab-p1s</li>
+            <li>/compare/elegoo-neptune-4-plus-vs-bambu-lab-a1</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Titles longer than 65 characters (25)</summary>
+          <ul class="urllist">
+            <li>/tools/batch-stl-checker</li>
+            <li>/tools/stl-compare</li>
+            <li>/tools/3d-printing-material-selector</li>
+            <li>/tools/3d-print-cost-calculator</li>
+            <li>/tools/3d-printing-price-calculator</li>
+            <li>/tools/3d-print-tolerance-calculator</li>
+            <li>/tools/stl-file-size-reducer</li>
+            <li>/tools/3mf-quality-checker</li>
+            <li>/materials/nylon</li>
+            <li>/materials/polycarbonate</li>
+            <li>/materials/polypropylene</li>
+            <li>/compare-materials/nylon-vs-polycarbonate</li>
+            <li>/compare-materials/polypropylene-vs-petg</li>
+            <li>/compare/bambu-lab-a1-vs-p2s</li>
+            <li>/compare/bambu-lab-x1-carbon-vs-p2s</li>
+            <li>/compare/prusa-core-one-vs-bambu-lab-p1s</li>
+            <li>/compare/prusa-mk4s-vs-bambu-lab-a1</li>
+            <li>/compare/creality-k1c-vs-bambu-lab-p1s</li>
+            <li>/compare/elegoo-neptune-4-plus-vs-bambu-lab-a1</li>
+            <li>/3d-printers/bambu-lab-a1-mini</li>
+            <li>/3d-printers/bambu-lab-x1-carbon</li>
+            <li>/3d-printers/prusa-core-one</li>
+            <li>/3d-printers/prusa-mk4s</li>
+            <li>/3d-printers/elegoo-neptune-4-plus</li>
+            <li>/examples</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="timeline">
+        <h2>Release timeline</h2>
+        <div class="callout">
+          <strong
+            >Next production update: Release 1 on or after Thursday
+            2026-12-03.</strong
+          >
+          <p>
+            The last deploy was 2026-11-04. Your SEO strategy requires a full
+            28-day window after a release before the next broad batch, which
+            ends 2026-12-02. Local preparation can and should happen during the
+            freeze. Defect, broken-tool and factual corrections can still ship
+            earlier.
+          </p>
+        </div>
+        <div class="timeline">
+          <div class="ph">
+            <span class="when">2026-11-19 → 2026-12-02 · Phase 0</span>
+            <h3>Freeze and baseline</h3>
+            <ul>
+              <li>No content edits or new URLs in production.</li>
+              <li>
+                Export GSC: Page indexing per URL, Performance (pages × queries,
+                28 days), Crawl stats.
+              </li>
+              <li>
+                Record baseline: indexed / submitted ratio, impressions and
+                clicks per URL, exclusion reasons.
+              </li>
+              <li>
+                Confirm the owner and retarget keywords in the keyword map
+                against GSC queries; record the final primary keyword per URL in
+                <code>docs/seo-url-ledger.json</code>.
+              </li>
+              <li>
+                Check GSC Crawl stats for 404s on valid URLs (WAF risk, finding
+                11).
+              </li>
+              <li>
+                Prepare Release 1 locally on <code>main</code>; run
+                <code>npm run verify</code>.
+              </li>
+            </ul>
+          </div>
+          <div class="ph release">
+            <span class="when">2026-12-03 → 12-08 · Release 1</span>
+            <h3>Retargeting and structure</h3>
+            <ul>
+              <li>
+                Retarget the 20 competing pages in the keyword map: new title,
+                H1, description, opening and anchor text; remove passages that
+                repeat the owner.
+              </li>
+              <li>Query-led titles for the owner pages.</li>
+              <li>
+                Printer and printer-comparison pages: apply the decision below
+                (noindex or expand).
+              </li>
+              <li>
+                Guide topic sub-hubs; contextual links to the 28 weakly linked
+                guides.
+              </li>
+              <li>
+                About page, Organization schema, publisher on Article schema.
+              </li>
+              <li>
+                Split the guide content chunk so each guide loads only its own
+                HTML.
+              </li>
+              <li>Privacy and cookies disposition.</li>
+              <li>
+                After deploy: verify live status, canonicals, sitemap; resubmit
+                sitemap in GSC.
+              </li>
+            </ul>
+          </div>
+          <div class="ph eval">
+            <span class="when">2026-12-08 → 2027-01-12 · Evaluation 1</span>
+            <h3>Measure Release 1</h3>
+            <ul>
+              <li>
+                Extended from 28 to about 35 days because of the Christmas and
+                New Year period.
+              </li>
+              <li>
+                Weekly: index ratio, retargeted pages gaining impressions for
+                their new keyword, owners no longer sharing queries with them.
+              </li>
+              <li>
+                Meanwhile, draft Release 2 rewrites locally, prioritised by
+                impressions.
+              </li>
+            </ul>
+          </div>
+          <div class="ph release">
+            <span class="when">2027-01-13 → 01-15 · Release 2</span>
+            <h3>Expansion and answer-first rewrites</h3>
+            <ul>
+              <li>
+                Expand the 16 thin tool pages, STL and 3MF alike: worked example
+                results, interpretation, format-specific behaviour.
+              </li>
+              <li>
+                Top ~30 pages by impressions: answer-first openings, one
+                limitations section, plain language.
+              </li>
+              <li>
+                Remaining titles back to query wording, under ~60 characters.
+              </li>
+            </ul>
+          </div>
+          <div class="ph eval">
+            <span class="when">2027-01-15 → 2027-02-12 · Evaluation 2</span>
+            <h3>Measure Release 2</h3>
+            <ul>
+              <li>
+                CTR and impressions on rewritten pages vs baseline; index ratio
+                trend.
+              </li>
+            </ul>
+          </div>
+          <div class="ph release">
+            <span class="when">From 2027-02-15 · Release 3+</span>
+            <h3>Second editorial wave, then cautious growth</h3>
+            <ul>
+              <li>Apply the Release 2 approach to the remaining pages.</li>
+              <li>
+                New URLs only when the index ratio is at least 80% and owners
+                are gaining impressions; at most 4–6 new pages per month.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="workplan">
+        <h2>Work plan by finding</h2>
+        <div class="tbl wide">
+          <table>
+            <thead>
+              <tr>
+                <th>Finding</th>
+                <th>Release</th>
+                <th>Main tasks</th>
+                <th>Where in code</th>
+                <th>Effort</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2 · Cannibalisation</td>
+                <td><span class="pill p-acc">R1</span></td>
+                <td>
+                  Retarget 20 pages to distinct keywords (title, H1,
+                  description, opening, anchor text); remove overlapping
+                  passages; record keywords in the ledger
+                </td>
+                <td>
+                  <code>src/content/guides/*.html</code>,
+                  <code>guides.registry.ts</code>, tool SEO config,
+                  <code>docs/seo-url-ledger.json</code>
+                </td>
+                <td>L</td>
+              </tr>
+              <tr>
+                <td>3 · Thin twin tools</td>
+                <td><span class="pill p-acc">R2</span></td>
+                <td>
+                  Keep both formats; add worked examples, interpretation and
+                  format-specific content to each thin tool page
+                </td>
+                <td>
+                  Tool feature components under <code>src/app/features</code>
+                </td>
+                <td>L</td>
+              </tr>
+              <tr>
+                <td>4 · Printer pages</td>
+                <td><span class="pill p-acc">R1</span></td>
+                <td>
+                  Noindex and sitemap exclusion; keep data for the fit checker
+                </td>
+                <td>
+                  <code>core/seo/seo-config.ts</code>,
+                  <code>scripts/sitemap.mts</code>
+                </td>
+                <td>S</td>
+              </tr>
+              <tr>
+                <td>8 · Internal linking</td>
+                <td><span class="pill p-acc">R1</span></td>
+                <td>
+                  Topic sub-hubs on <code>/guides</code>; related links on weak
+                  guides
+                </td>
+                <td>Guides hub component, guide HTML</td>
+                <td>M</td>
+              </tr>
+              <tr>
+                <td>9 · Trust signals</td>
+                <td><span class="pill p-acc">R1</span></td>
+                <td>About page; Organization and publisher schema</td>
+                <td>New route, <code>seo.service.ts</code></td>
+                <td>S</td>
+              </tr>
+              <tr>
+                <td>10 · Guide chunk</td>
+                <td><span class="pill p-acc">R1</span></td>
+                <td>Per-slug lazy loading of guide HTML</td>
+                <td><code>scripts/generate-guides.mts</code>, guide route</td>
+                <td>M</td>
+              </tr>
+              <tr>
+                <td>14 · Utility pages</td>
+                <td><span class="pill p-acc">R1</span></td>
+                <td>Noindex privacy and cookies</td>
+                <td><code>seo-config.ts</code></td>
+                <td>S</td>
+              </tr>
+              <tr>
+                <td>5 · Writing style</td>
+                <td>
+                  <span class="pill p-acc">R2</span>
+                  <span class="pill p-acc">R3</span>
+                </td>
+                <td>
+                  Answer-first leads; single limitations section; cut repeated
+                  disclaimers
+                </td>
+                <td><code>src/content/guides/*.html</code>, tool page copy</td>
+                <td>L</td>
+              </tr>
+              <tr>
+                <td>6 · Titles</td>
+                <td><span class="pill p-acc">R2</span></td>
+                <td>Query-led titles under ~60 characters</td>
+                <td><code>guides.registry.ts</code>, tool SEO config</td>
+                <td>S</td>
+              </tr>
+              <tr>
+                <td>7 · Rewrite churn</td>
+                <td>Ongoing</td>
+                <td>
+                  Changes only in planned releases; <code>lastmod</code> only on
+                  genuine edits
+                </td>
+                <td>Process, <code>scripts/editorial-dates.mts</code></td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>1 · Scale</td>
+                <td>Ongoing</td>
+                <td>Freeze new URLs until the index ratio recovers</td>
+                <td>Process</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>11 · WAF 404 risk</td>
+                <td>Phase 0 check</td>
+                <td>Read-only: GSC Crawl stats and WAF sampled requests</td>
+                <td><code>3d-infra</code> (no change)</td>
+                <td>S</td>
+              </tr>
+              <tr>
+                <td>12 · Trailing slash</td>
+                <td>Deferred</td>
+                <td>
+                  Optional CloudFront function redirect; needs infra
+                  authorization
+                </td>
+                <td><code>spa-rewrite-function.ts</code></td>
+                <td>S</td>
+              </tr>
+              <tr>
+                <td>13 · FAQ schema</td>
+                <td>Deferred</td>
+                <td>Optional cleanup</td>
+                <td><code>seo.service.ts</code></td>
+                <td>S</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="decisions">
+        <h2>Decisions needed before Release 1</h2>
+        <div class="cols">
+          <div class="card">
+            <span class="pill p-ok" style="justify-self: start"
+              >Decided 2026-11-19</span
+            >
+            <h3>Keep overlapping pages and retarget</h3>
+            <p>
+              Keep both pages in each pair and expand them. Where they compete
+              for one query, give one page a different keyword. No merges or
+              retirements are planned, so no redirect decision is needed now.
+            </p>
+          </div>
+          <div class="card">
+            <span class="pill p-high" style="justify-self: start"
+              >Blocking</span
+            >
+            <h3>Printer pages: noindex or invest</h3>
+            <p>
+              Noindex until they carry unique content, or expand them now with
+              content only InspectMesh has, such as fit-checker results on
+              sample models per printer. Spec sheets alone will not compete with
+              manufacturers and review sites. Still open.
+            </p>
+          </div>
+          <div class="card">
+            <span class="pill p-ok" style="justify-self: start"
+              >Decided 2026-11-19</span
+            >
+            <h3>STL/3MF twin tools: keep both</h3>
+            <p>
+              Keep separate STL and 3MF tool pages and expand both with
+              format-specific content. Where a pair still competes, retarget the
+              3MF page (see keyword map).
+            </p>
+          </div>
+          <div class="card">
+            <span class="pill p-med" style="justify-self: start"
+              >Before R1</span
+            >
+            <h3>Final keyword per retargeted page</h3>
+            <p>
+              Confirm or replace each proposed keyword in the keyword map using
+              GSC queries. A retarget that still overlaps its owner does not fix
+              cannibalisation.
+            </p>
+          </div>
+          <div class="card">
+            <span class="pill p-low" style="justify-self: start">Optional</span>
+            <h3>Infrastructure items</h3>
+            <p>
+              Trailing-slash redirect and HTML compression both touch
+              CloudFront. Each needs explicit authorization and an AWS cost
+              check. Neither is required for recovery.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="kpis">
+        <h2>How to measure success</h2>
+        <div class="tbl mid">
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Source</th>
+                <th>Baseline</th>
+                <th>Target after R1</th>
+                <th>Target after R2</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Indexed / submitted URLs</td>
+                <td>GSC Page indexing</td>
+                <td>Export in Phase 0</td>
+                <td>≥ 60%</td>
+                <td>≥ 80%</td>
+              </tr>
+              <tr>
+                <td>"Crawled – currently not indexed" count</td>
+                <td>GSC Page indexing</td>
+                <td>Export in Phase 0</td>
+                <td>Falling</td>
+                <td>&lt; 15% of submitted</td>
+              </tr>
+              <tr>
+                <td>"Duplicate, Google chose different canonical"</td>
+                <td>GSC Page indexing</td>
+                <td>Export in Phase 0</td>
+                <td>Near zero</td>
+                <td>Zero</td>
+              </tr>
+              <tr>
+                <td>Queries where 2+ InspectMesh URLs get impressions</td>
+                <td>GSC Performance (query × page)</td>
+                <td>Export in Phase 0</td>
+                <td>Falling for retargeted pairs</td>
+                <td>Near zero for mapped pairs</td>
+              </tr>
+              <tr>
+                <td>Impressions on cluster owners</td>
+                <td>GSC Performance</td>
+                <td>28 days to 2026-12-02</td>
+                <td>Up vs baseline</td>
+                <td>Up vs Evaluation 1</td>
+              </tr>
+              <tr>
+                <td>CTR on rewritten pages</td>
+                <td>GSC Performance</td>
+                <td>28 days before R2</td>
+                <td>—</td>
+                <td>Up vs pre-R2</td>
+              </tr>
+              <tr>
+                <td>404s on valid URLs</td>
+                <td>GSC Crawl stats</td>
+                <td>Check in Phase 0</td>
+                <td>Zero</td>
+                <td>Zero</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          The targets are working goals for this site, not Google guarantees.
+          Compare equal windows and separate holiday seasonality from release
+          effects.
+        </p>
+      </section>
+
+      <section id="method">
+        <h2>Method</h2>
+        <ul class="clean">
+          <li>
+            Parsed all 221 sitemap URLs from the production build
+            (<code>3d-frontend/dist</code>, built 2026-11-04) for title,
+            description, canonical, robots, H1 count and word counts inside
+            <code>&lt;main&gt;</code>.
+          </li>
+          <li>
+            Near-duplicates: 5-word shingle overlap of main content between
+            every pair of pages.
+          </li>
+          <li>
+            Internal links: links inside <code>&lt;main&gt;</code> of non-hub
+            pages, so header navigation and hub listings are excluded.
+          </li>
+          <li>
+            Live checks with curl against
+            <code>https://www.inspectmesh.com</code>: status codes, redirects,
+            headers, live sitemap.
+          </li>
+          <li>
+            Git history of <code>src/content/guides</code> for publishing dates
+            and rewrite counts; CloudFront and WAF configuration in
+            <code>3d-infra</code>.
+          </li>
+          <li>
+            Not available: Search Console, backlink data, field Core Web Vitals.
+          </li>
+        </ul>
+      </section>
+
+      <footer>
+        Prepared 2026-11-19 for planning the InspectMesh SEO recovery. Dates
+        assume the next production deploy waits for the 28-day window after the
+        2026-11-04 release.
+      </footer>
+    </div>
+  </body>
+</html>
