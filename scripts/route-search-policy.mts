@@ -74,13 +74,13 @@ const policies: readonly RouteSearchPolicy[] = [
     pageType: 'legal',
     disposition: RouteDisposition.Excluded,
     reason:
-      'Existing navigable legal/consent utility intentionally omitted from the sitemap. Existing index,follow and self-canonical are preserved; omission is not a noindex instruction.',
-    canonical: productionOrigin + path,
-    noindex: false,
+      'Navigable legal/consent utility with no search value: noindex, no canonical and omitted from the sitemap (decided 2026-11-21).',
+    canonical: null,
+    noindex: true,
     rendering: RouteRendering.Prerendered,
     lastmod: null,
     lastmodSource: 'No sitemap date required for this intentional exclusion.',
-    source: 'PublicRoutePath Legal pages and SeoService.apply',
+    source: 'PrivacyPage and CookiesPage SeoService.applyNoIndex',
   })),
   {
     id: 'printer-review-draft',

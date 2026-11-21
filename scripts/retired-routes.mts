@@ -1,4 +1,6 @@
 import {
+  MaterialRoutePath,
+  MaterialSlug,
   PageType,
   PublicRoutePath,
   PublicRouteUrl,
@@ -6,7 +8,21 @@ import {
 import { guideRegistry } from '../src/content/guides/guides.registry.ts';
 import { guideRoutePath } from '../src/app/core/seo/public-routes.ts';
 
-/** Known obsolete paths only. Correspondence is not a redirect instruction. */
+/**
+ * Guides were served at the site root (/<slug>) until commit 7e2055e moved
+ * them under /guides/ on this date. Every guide published on or before it
+ * was uploaded at the root, and deployments never delete objects, so those
+ * root copies stayed live as self-canonical duplicates.
+ */
+export const GUIDE_PREFIX_MOVE_DATE = '2026-10-28';
+/** The material section's previous name; its pages still exist under it. */
+export const LEGACY_MATERIALS_SEGMENT = '3d-printing-materials';
+
+/**
+ * Known obsolete paths. Since 2026-11-21 each clean path 301-redirects to its
+ * currentPath (owner-approved). The CloudFront viewer-request function holds the
+ * same map: keep 3d-infra/lib/constructs/legacy-redirects.ts identical.
+ */
 export const retiredRoutes = [
   ...Object.values(PublicRoutePath)
     .filter(
@@ -16,25 +32,35 @@ export const retiredRoutes = [
     .map((route) => ({
       path: '/' + route.path.slice('tools/'.length),
       currentPath: '/' + route.path,
-      expectedStatus: 404,
+      expectedStatus: 301,
       reason:
-        'Owner-approved retirement of a root-level tool; use its existing /tools/ page.',
+        'Owner-approved retirement of a root-level tool; 301 to its existing /tools/ page.',
     })),
-  // Confirmed duplicate main documents observed 29 October; router has no aliases.
+  ...guideRegistry
+    .filter(
+      (guide) => guide.enabled && guide.publishDate <= GUIDE_PREFIX_MOVE_DATE,
+    )
+    .map((guide) => ({
+      path: '/' + guide.slug,
+      currentPath: guideRoutePath(guide.slug),
+      expectedStatus: 301,
+      reason:
+        'Root-level copy left from before guides moved under /guides/; 301 to the /guides/ page.',
+    })),
   {
-    path: '/how-to-repair-an-stl-file',
-    currentPath: guideRoutePath('how-to-repair-an-stl-file'),
-    expectedStatus: 404,
-    reason:
-      'Obsolete independently self-canonical repair guide; the prefixed guide is the current owner.',
-  },
-  {
-    path: '/3d-printing-materials',
+    path: '/' + LEGACY_MATERIALS_SEGMENT,
     currentPath: PublicRouteUrl.Materials,
-    expectedStatus: 404,
+    expectedStatus: 301,
     reason:
-      'Obsolete independently self-canonical material hub; /materials is the current owner.',
+      'Obsolete independently self-canonical material hub; 301 to /materials, the current owner.',
   },
+  ...Object.entries(MaterialSlug).map(([key, slug]) => ({
+    path: `/${LEGACY_MATERIALS_SEGMENT}/${slug}`,
+    currentPath: '/' + MaterialRoutePath[key as keyof typeof MaterialSlug],
+    expectedStatus: 301,
+    reason:
+      'Material page under the old section name; 301 to its /materials/ page.',
+  })),
 ] as const;
 
 export interface Retirement {
@@ -49,11 +75,12 @@ export function retirementDocuments(
   const currentPaths = new Set<string>([
     ...Object.values(PublicRouteUrl),
     ...guideRegistry.map((guide) => guideRoutePath(guide.slug)),
+    ...Object.values(MaterialRoutePath).map((path) => '/' + path),
   ]);
   const keys = new Set<string>();
   for (const policy of policies) {
     if (
-      !/^\/[a-z0-9-]+$/.test(policy.path) ||
+      !/^\/[a-z0-9-]+(?:\/[a-z0-9-]+)?$/.test(policy.path) ||
       currentPaths.has(policy.path) ||
       !currentPaths.has(policy.currentPath) ||
       policy.path === policy.currentPath
@@ -88,6 +115,9 @@ export async function auditRetiredDelivery(request: typeof fetch = fetch) {
     failure: string | null;
   }[] = [];
   const objects = retirementDocuments();
+  const redirectTargets = new Map<string, string>(
+    retiredRoutes.map((policy) => [policy.path, policy.currentPath]),
+  );
   for (let index = 0; index < objects.length; index += 4) {
     const batch = await Promise.all(
       objects.slice(index, index + 4).map(async (objectKey) => {
@@ -99,6 +129,21 @@ export async function auditRetiredDelivery(request: typeof fetch = fetch) {
             signal: AbortSignal.timeout(15000),
           });
           await response.body?.cancel();
+          const target = redirectTargets.get(path);
+          if (target) {
+            const expectedLocation = 'https://www.inspectmesh.com' + target;
+            const location = response.headers.get('location');
+            return {
+              path,
+              objectKey,
+              expectedStatus: 301,
+              status: response.status,
+              failure:
+                response.status === 301 && location === expectedLocation
+                  ? null
+                  : `Retired URL ${path} returned ${response.status}${location ? ' -> ' + location : ''}; expected 301 -> ${expectedLocation}`,
+            };
+          }
           return {
             path,
             objectKey,
@@ -112,7 +157,7 @@ export async function auditRetiredDelivery(request: typeof fetch = fetch) {
           return {
             path,
             objectKey,
-            expectedStatus: 404,
+            expectedStatus: redirectTargets.has(path) ? 301 : 404,
             status: null,
             failure: `Retired URL ${path} unobserved: ${String(error)}`,
           };

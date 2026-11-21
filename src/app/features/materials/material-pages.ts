@@ -15,6 +15,7 @@ import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
+import { BreadcrumbsComponent } from '../../core/components/breadcrumbs/breadcrumbs';
 import {
   materialComparisons,
   materialComparisonsBySlug,
@@ -207,14 +208,16 @@ export class MaterialHubPage {
 
 @Component({
   selector: 'app-material-detail',
-  imports: [RouterLink, ProductLinkComponent, MaterialEvidenceComponent],
+  imports: [
+    RouterLink,
+    ProductLinkComponent,
+    MaterialEvidenceComponent,
+    BreadcrumbsComponent,
+  ],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-detail-page">
     @if (material(); as item) {
-      <p class="breadcrumbs">
-        <a [routerLink]="routeUrl.Materials">3D Printing Materials</a> /
-        {{ item.displayName }}
-      </p>
+      <app-breadcrumbs [trail]="breadcrumbTrail()" />
       <h1>
         {{ item.displayName }} Filament: Uses, Properties and Printing Guide
       </h1>
@@ -400,6 +403,16 @@ export class MaterialDetailPage {
   private readonly slug =
     inject(ActivatedRoute).snapshot.url.at(-1)?.path ?? '';
   readonly material = computed(() => materialsBySlug.get(this.slug));
+  readonly breadcrumbTrail = computed(() => {
+    const material = this.material()!;
+    return [
+      { label: '3D Printing Materials', href: PublicRouteUrl.Materials },
+      {
+        label: material.displayName,
+        href: `${PublicRouteUrl.Materials}/${material.slug}`,
+      },
+    ];
+  });
   readonly comparisons = computed(() =>
     materialComparisons.filter(
       (comparison) =>
@@ -428,15 +441,15 @@ export class MaterialDetailPage {
 
 @Component({
   selector: 'app-material-comparison-detail',
-  imports: [RouterLink, MaterialProductComparisonComponent],
+  imports: [
+    RouterLink,
+    MaterialProductComparisonComponent,
+    BreadcrumbsComponent,
+  ],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-comparison-detail-page">
     @if (comparison(); as record) {
-      <p class="breadcrumbs">
-        <a [routerLink]="routeUrl.CompareMaterials"
-          >Compare 3D Printing Materials</a
-        >
-      </p>
+      <app-breadcrumbs [trail]="breadcrumbTrail()" />
       <h1>
         {{ left().displayName }} vs {{ right().displayName }}: Which Filament
         Should You Use?
@@ -587,6 +600,16 @@ export class MaterialComparisonDetailPage {
       (material) => material.id === this.comparison()!.materialBId,
     )!,
   );
+  readonly breadcrumbTrail = computed(() => [
+    {
+      label: 'Compare 3D Printing Materials',
+      href: PublicRouteUrl.CompareMaterials,
+    },
+    {
+      label: `${this.left().displayName} vs ${this.right().displayName}`,
+      href: `/${PublicRouteSegment.MaterialComparisons}/${this.comparison()!.slug}`,
+    },
+  ]);
   constructor() {
     const comparison = this.comparison();
     if (!comparison) {

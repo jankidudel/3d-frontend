@@ -9,7 +9,44 @@
     "indexedUrls": null,
     "limitation": "No authenticated exports, URL Inspection, backlink history or delivery logs were supplied. Identify and protect the indexed cohort before structural changes."
   },
-  "indexationChanges": [],
+  "indexationChanges": [
+    {
+      "date": "2026-11-21",
+      "change": "redirect",
+      "paths": "159 retired URLs (scripts/retired-routes.mts): 49 root-level tools, 101 root-level guide copies from before the 2026-10-28 /guides/ move (100 were live duplicates), /3d-printing-materials and its 8 material pages",
+      "destination": "Each path's currentPath via a single 301 from the CloudFront viewer-request function",
+      "rationale": "Owner-approved. Root tools returned 404, discarding links and history. 100 root guide copies and 8 old material pages were live, self-canonical, indexable duplicates of the current /guides/ and /materials/ pages, left in S3 because deployments never delete objects. A 301 removes the duplicates and passes their signals to the current owner.",
+      "preservedContent": "Not applicable; the current pages already exist.",
+      "evidence": "Live checks 2026-11-21: root tools 404; 100 root guides and 8 /3d-printing-materials pages 200 with self-canonicals and Last-Modified 2026-10-28.",
+      "review": "Confirm in GSC that the old URLs move to 'Page with redirect' and the /guides/ and /materials/ owners are selected as canonical.",
+      "rollback": "Remove the lists in 3d-infra/lib/constructs/legacy-redirects.ts and restore expectedStatus 404 in scripts/retired-routes.mts.",
+      "status": "implemented locally; not deployed"
+    },
+    {
+      "date": "2026-11-21",
+      "change": "noindex",
+      "paths": "/privacy, /cookies",
+      "destination": null,
+      "rationale": "Legal utilities with no search value; previously indexable but omitted from the sitemap.",
+      "preservedContent": "Pages stay navigable and unchanged apart from title/description brand correction.",
+      "evidence": "Built HTML robots meta; route-search-policy.mts.",
+      "review": "Confirm in GSC as 'Excluded by noindex'.",
+      "rollback": "Restore SeoService.apply and the previous route policy.",
+      "status": "implemented locally; not deployed"
+    },
+    {
+      "date": "2026-11-21",
+      "change": "robots-disallow",
+      "paths": "/examples/ downloadable fixtures (images .svg/.jpg/.png/.webp still allowed)",
+      "destination": null,
+      "rationale": "About 190 linked fixture downloads (STL, 3MF, G-code, JSON, CSV, INI, ZIP) were crawlable and inflated GSC not-indexed counts. They are fetched only after explicit user action, so page rendering is unaffected.",
+      "preservedContent": "Files remain downloadable.",
+      "evidence": "Live link inventory 2026-11-21.",
+      "review": "Confirm in GSC that these move to 'Blocked by robots.txt'.",
+      "rollback": "Remove the rules in scripts/generate-seo-assets.mts.",
+      "status": "implemented locally; not deployed"
+    }
+  ],
   "pages": [
     {
       "path": "/",

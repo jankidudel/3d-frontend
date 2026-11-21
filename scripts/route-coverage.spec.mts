@@ -73,8 +73,8 @@ describe('independent router coverage', () => {
     ]);
     expect(routeSearchPolicy.find((p) => p.path === '/privacy')).toMatchObject({
       disposition: RouteDisposition.Excluded,
-      noindex: false,
-      canonical: productionOrigin + '/privacy',
+      noindex: true,
+      canonical: null,
     });
   });
   it('publishes only the new guide and materials URLs, without old aliases', () => {

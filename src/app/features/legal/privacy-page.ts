@@ -17,11 +17,10 @@ export class PrivacyPage {
   private readonly seo = inject(SeoService);
 
   constructor() {
-    this.seo.apply({
-      title: 'Privacy - 3D Quality Tools',
-      description:
-        'Learn how 3D Quality Tools handles uploaded STL files and optional analytics cookies.',
-      path: PublicRouteUrl.Privacy,
-    });
+    // Legal utility: reachable from every page, deliberately kept out of search.
+    this.seo.applyNoIndex(
+      'Privacy | InspectMesh',
+      'How InspectMesh handles uploaded 3D files and optional analytics cookies.',
+    );
   }
 }

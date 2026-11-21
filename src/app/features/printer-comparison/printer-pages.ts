@@ -12,6 +12,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { PrinterSlug, PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
+import { BreadcrumbsComponent } from '../../core/components/breadcrumbs/breadcrumbs';
 import { curatedComparisons } from './comparison-catalogue';
 import { printers, printersBySlug } from './printer-catalogue';
 import { compatibilityFor, materials } from '../materials/material-catalogue';
@@ -98,13 +99,10 @@ export class PrinterHubPage {
 
 @Component({
   selector: 'app-printer-detail-page',
-  imports: [RouterLink, ProductLinkComponent],
+  imports: [RouterLink, ProductLinkComponent, BreadcrumbsComponent],
   styleUrl: './printer-pages.scss',
   template: `<main class="page printer-detail-page">
-    <p class="breadcrumbs">
-      <a [routerLink]="routeUrl.Printers">3D Printers</a> /
-      {{ printer().displayName }}
-    </p>
+    <app-breadcrumbs [trail]="breadcrumbTrail()" />
     <h1>{{ printer().displayName }}: Specs, Build Volume and Fit Checker</h1>
     <p class="lead">{{ printer().summary }}</p>
     <p><strong>Best for:</strong> {{ printer().bestFor }}</p>
@@ -342,6 +340,13 @@ export class PrinterDetailPage {
     }
     return printer;
   });
+  readonly breadcrumbTrail = computed(() => [
+    { label: '3D Printers', href: PublicRouteUrl.Printers },
+    {
+      label: this.printer().displayName,
+      href: `${PublicRouteUrl.Printers}/${this.printer().slug}`,
+    },
+  ]);
   readonly comparisons = computed(() =>
     curatedComparisons.filter(
       (comparison) =>

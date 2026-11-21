@@ -287,7 +287,10 @@ it('opens profile evidence deep links and pair query URLs without treating fragm
           component: MaterialComparisonDetailPage,
         },
       ]),
-      { provide: SeoService, useValue: { apply: () => undefined } },
+      {
+        provide: SeoService,
+        useValue: { apply: () => undefined, setBreadcrumbs: () => undefined },
+      },
     ],
   });
   const harness = await RouterTestingHarness.create(

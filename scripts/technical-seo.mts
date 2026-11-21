@@ -556,9 +556,18 @@ export async function auditHtml(pages?: GeneratedPage[]) {
               raw,
               productionOrigin + policy.path,
             );
+            // Downloadable example fixtures are deliberately disallowed in
+            // robots.txt (see generate-seo-assets.mts): they are not search
+            // pages and are not needed to render the page. Rendering resources
+            // (scripts, styles, images) must still be crawlable.
+            const intentionallyBlockedDownload =
+              element.tagName === 'A' && url.pathname.startsWith('/examples/');
             if (url.origin === productionOrigin) {
               assets.add(url.pathname);
-              if (!robotsAccess(robots, url.pathname, 'Googlebot')) {
+              if (
+                !intentionallyBlockedDownload &&
+                !robotsAccess(robots, url.pathname, 'Googlebot')
+              ) {
                 findings.push(
                   finding(
                     'I04',

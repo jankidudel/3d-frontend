@@ -136,7 +136,7 @@ Audit tracked Markdown case-insensitively in the workspace and each component. K
 
 The reader in `scripts/router-source.mts` walks actual router declarations, nested arrays, finite catalogue mappings and supported lazy child exports without importing Angular or executing components. Only explicitly allowlisted pure catalogue modules execute in its isolated data loader. New unresolved route expressions, matcher patterns or data imports fail with their source location. The published guide matcher is resolved through its existing generated finite slug registry; `**` remains a separately recorded not-found handler. No upload, job/result, account or private-file route exists in the current concrete router; transient tool state does not create sitemap URLs.
 
-`scripts/route-search-policy.mts` adapts the established canonical public list and published guide data rather than introducing another hand-maintained slug list. It also records the existing exclusions: privacy/cookies remain navigable, self-canonical and indexable but intentionally absent from the sitemap; the unpublished printer review and 404 document retain noindex and no canonical. Exclusion from the sitemap does not itself mean noindex. A change to these decisions needs its own editorial review.
+`scripts/route-search-policy.mts` adapts the established canonical public list and published guide data rather than introducing another hand-maintained slug list. It also records the existing exclusions: privacy/cookies remain navigable but are noindex, without a canonical, and absent from the sitemap (decided 21 November 2026); the unpublished printer review and 404 document retain noindex and no canonical. Exclusion from the sitemap does not itself mean noindex. A change to these decisions needs its own editorial review.
 
 Run `npm run check:route-coverage -- --write` after a production build to store one inventory in `docs/seo-url-ledger.json`. Existing page rows receive `routeCoverage`; excluded documents and the summary live under the ledger's top-level `routeCoverage`. The sets are concrete router paths (R), generated page paths (G), linked same-site page destinations (L), parsed sitemap records including duplicates (S), and intended canonical sitemap owners (I). The report includes all six differences, source/render locations, dates and their source, incoming/contextual counts, homepage reachability and query-state diagnostics. Root and intentional error/draft orphans are distinct from an unreachable public tool. Exact XML membership is checked before deduplication. Paths retain case and reserved encodings; query states are recorded but are not new canonical pages. Same-page and cross-page fragment targets use the built-link validator.
 
@@ -281,15 +281,20 @@ generated guide links, canonicals, breadcrumbs and the sitemap share this struct
 Interactive tools and the STL/3MF tool hubs use `/tools/<slug>`; `/tools` remains
 the directory. The Tools navigation label links to `/tools`; the adjacent button
 controls the dropdown. Materials and printer catalogues retain their own sections.
-No redirects or old route aliases are provided. The URL ledger records moved URLs
-in each page's `previousPaths`; historical observations retain their original URLs.
+Since 21 November 2026 the retired root-level paths 301-redirect to their
+current page (owner-approved; see `indexationChanges` in the URL ledger). There
+are no other aliases. The URL ledger records moved URLs in each page's
+`previousPaths`; historical observations retain their original URLs.
 
 The retired root-level tool, repair-guide and material-hub HTML objects were
-removed from the production bucket by a one-time deployment cleanup step; all of
+removed from the production bucket by a one-time deployment cleanup step (the
+root guide copies and `/3d-printing-materials/<material>` pages were not, and are
+covered by the redirects instead); all of
 them were confirmed to return 404 on 21 November 2026, and the cleanup step has
 since been removed from both deployment workflows. Deployments never delete
-objects, so the removed keys cannot reappear. `npm run seo:live` still verifies
-after each release that every retired clean and `.html` URL returns 404/410;
+objects, so the removed keys cannot reappear. `npm run seo:live` verifies after
+each release that every retired clean URL returns a single 301 to its current
+page and every retired `.html` object URL returns 404/410;
 current tool URLs must return 200 and remain the only tool destinations in
 navigation and the sitemap. If a future retirement leaves an old HTML object in
 the bucket, remove that object as a separately authorized cleanup.
@@ -306,14 +311,21 @@ or Google indexing. Initial guide-index coverage is reconciled against the
 published registry; missing format-hub links and visible/schema breadcrumb drift
 fail L06. Paths retain case, reserved encodings, meaningful queries and fragments.
 
-`scripts/retired-routes.mts` is the narrow reviewable obsolete-path policy.
-Correspondences never create redirects. Current `/tools/` and `/guides/` pages
-remain independently required. Only the sampled obsolete repair guide and old
-material hub join the existing retired tools; other historical guide URLs are
-not assumed equivalent. Empty policy inventories and policies that point at a
+`scripts/retired-routes.mts` is the narrow reviewable obsolete-path policy. Each
+correspondence is now an approved 301; the CloudFront viewer-request function in
+`3d-infra/lib/constructs/legacy-redirects.ts` holds the identical map, and the
+two must be changed together. Current `/tools/` and `/guides/` pages
+remain independently required. The policy covers the root-level tools, every
+guide published on or before 28 October 2026 (served at `/<slug>` until commit
+`7e2055e` moved guides under `/guides/`; deployments never delete objects, so
+100 of those root copies stayed live as self-canonical duplicates until the
+redirects), and the old `/3d-printing-materials` section with its eight material
+pages. Each is derived from the route, guide and material registries rather
+than a hand-maintained list. Empty policy inventories and policies that point at a
 current path or an unregistered replacement fail. Retirement verification uses
-GET and accepts only 404/410; a successful obsolete page or redirect fails the
-manual deployment. A failed verification must leave the workflow failed; inspect
+GET without following redirects: a clean retired path must return 301 to its
+exact current URL, and its `.html` object must return 404/410; anything else
+fails the manual deployment. A failed verification must leave the workflow failed; inspect
 the exact path and resolve it before retrying. No production deletion is
 authorized by local checks.
 

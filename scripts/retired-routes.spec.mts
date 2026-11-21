@@ -39,21 +39,50 @@ it('rejects empty policy inventories, current outputs and unregistered replaceme
   ).toThrow('Unsafe retirement policy');
 });
 
-it('reports the exact obsolete clean or .html object still served publicly', async () => {
-  const good = await auditRetiredDelivery(
-    async () => new Response(null, { status: 404 }),
-  );
+const redirectingDelivery =
+  (override?: (path: string) => Response | undefined) =>
+  async (url: string | URL | Request) => {
+    const path = new URL(String(url)).pathname;
+    const custom = override?.(path);
+    if (custom) {
+      return custom;
+    }
+    const policy = retiredRoutes.find((entry) => entry.path === path);
+    return policy
+      ? new Response(null, {
+          status: 301,
+          headers: {
+            location: 'https://www.inspectmesh.com' + policy.currentPath,
+          },
+        })
+      : new Response(null, { status: 404 });
+  };
+
+it('expects clean retired paths to 301 to their owner and .html objects to be absent', async () => {
+  const good = await auditRetiredDelivery(redirectingDelivery());
   expect(good.complete).toBe(true);
   expect(good.failures).toEqual([]);
   const stale = await auditRetiredDelivery(
-    async (url) =>
-      new Response(null, {
-        status: String(url).endsWith('/how-to-repair-an-stl-file.html')
-          ? 200
-          : 404,
-      }),
+    redirectingDelivery((path) =>
+      path === '/how-to-repair-an-stl-file.html'
+        ? new Response(null, { status: 200 })
+        : undefined,
+    ),
   );
   expect(stale.failures).toEqual([
     'Retired URL /how-to-repair-an-stl-file.html (object how-to-repair-an-stl-file.html) returned 200; expected 404/410',
+  ]);
+});
+
+it('reports a retired clean path that is not redirected to its owner', async () => {
+  const result = await auditRetiredDelivery(
+    redirectingDelivery((path) =>
+      path === '/3d-printing-materials'
+        ? new Response(null, { status: 404 })
+        : undefined,
+    ),
+  );
+  expect(result.failures).toEqual([
+    'Retired URL /3d-printing-materials returned 404; expected 301 -> https://www.inspectmesh.com/materials',
   ]);
 });

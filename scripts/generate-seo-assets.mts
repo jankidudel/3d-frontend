@@ -40,10 +40,22 @@ const siteUrl = validSiteUrl(config.siteUrl);
 const indexingEnabled = config.indexingEnabled === true && siteUrl !== null;
 
 await mkdir(publicDirectory, { recursive: true });
+// Downloadable example fixtures (STL, 3MF, G-code, JSON, CSV, INI, ZIP...) are
+// not search pages; keep crawlers off them. The /examples page itself and the
+// preview images shown inside pages stay crawlable. Example files are fetched
+// only after an explicit user action, so blocking them does not affect page
+// rendering.
+const exampleFixtureRules = [
+  'Disallow: /examples/',
+  'Allow: /examples/*.svg$',
+  'Allow: /examples/*.jpg$',
+  'Allow: /examples/*.png$',
+  'Allow: /examples/*.webp$',
+].join('\n');
 await writeFile(
   resolve(publicDirectory, 'robots.txt'),
   indexingEnabled
-    ? `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`
+    ? `User-agent: *\nAllow: /\n${exampleFixtureRules}\nSitemap: ${siteUrl}/sitemap.xml\n`
     : 'User-agent: *\nAllow: /\n',
 );
 

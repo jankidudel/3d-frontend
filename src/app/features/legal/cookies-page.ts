@@ -1,4 +1,3 @@
-import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { Component, inject } from '@angular/core';
 import { CookieConsentService } from '../../core/analytics/cookie-consent.service';
 import { SeoService } from '../../core/seo/seo.service';
@@ -30,11 +29,11 @@ export class CookiesPage {
   private readonly seo = inject(SeoService);
 
   constructor() {
-    this.seo.apply({
-      title: 'Cookie Settings - 3D Quality Tools',
-      description: 'Manage optional analytics cookies for 3D Quality Tools.',
-      path: PublicRouteUrl.Cookies,
-    });
+    // Legal utility: reachable from every page, deliberately kept out of search.
+    this.seo.applyNoIndex(
+      'Cookie Settings | InspectMesh',
+      'Manage optional analytics cookies for InspectMesh.',
+    );
   }
 
   change(): void {
