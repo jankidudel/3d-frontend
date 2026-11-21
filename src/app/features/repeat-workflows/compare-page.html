@@ -144,22 +144,41 @@
       rescale or register features. Record its offset if placement is
       intentionally irrelevant.
     </p>
-    <button type="button" (click)="example()" [disabled]="busy()">
-      Replace revisions: compare 20 → 24 mm
-    </button>
-    <button type="button" (click)="example(true)" [disabled]="busy()">
-      Replace revisions: unchanged surface, new triangles
-    </button>
-    <button
-      type="button"
-      (click)="compare()"
-      [disabled]="busy() || !before() || !after()"
-    >
-      Measure surface samples
-    </button>
-    <button type="button" (click)="cancel()" [disabled]="!busy()">
-      Cancel comparison
-    </button>
+    <div class="batch-actions" role="group" aria-label="Example revisions">
+      <button
+        type="button"
+        class="secondary"
+        (click)="example()"
+        [disabled]="busy()"
+      >
+        Replace revisions: compare 20 → 24 mm
+      </button>
+      <button
+        type="button"
+        class="secondary"
+        (click)="example(true)"
+        [disabled]="busy()"
+      >
+        Replace revisions: unchanged surface, new triangles
+      </button>
+    </div>
+    <div class="batch-actions" role="group" aria-label="Comparison">
+      <button
+        type="button"
+        (click)="compare()"
+        [disabled]="busy() || !before() || !after()"
+      >
+        Measure surface samples
+      </button>
+      <button
+        type="button"
+        class="secondary"
+        (click)="cancel()"
+        [disabled]="!busy()"
+      >
+        Cancel comparison
+      </button>
+    </div>
     <p role="status">
       {{
         busy()

@@ -13,7 +13,11 @@ spec.loader.exec_module(reader)
 
 
 def figure(name, panels, columns=3, envelope=(40, 24)):
+    # Panel rows: title (baseline 27), subtitle (baseline 50), drawing area
+    # (DRAW_TOP..DRAW_BOTTOM), optional glyph labels, then the move count
+    # (baseline 325). The drawing starts below the subtitle so they never overlap.
     width, panel_height = 1080, 340
+    draw_top, draw_bottom = 64, 284
     cell = width / columns
     height = ((len(panels) + columns - 1) // columns) * panel_height + 48
     svg = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}" role="img">',
@@ -22,8 +26,8 @@ def figure(name, panels, columns=3, envelope=(40, 24)):
     for index, (run, z, label) in enumerate(panels):
         origin_x, origin_y = index % columns * cell, index // columns * panel_height
         w, h = envelope
-        scale = min((cell - 54) / w, 235 / h)
-        x0, y0 = origin_x + 28, origin_y + 278
+        scale = min((cell - 54) / w, (draw_bottom - draw_top) / h)
+        x0, y0 = origin_x + 28, origin_y + draw_bottom
         offset = (80, 88) if run.startswith('T') else ((85, 85) if run.startswith('R') else (88, 88))
         segments = reader.parse((PUBLIC / f'{run}.gcode').read_text())
         if run.endswith('-S'):
@@ -40,7 +44,7 @@ def figure(name, panels, columns=3, envelope=(40, 24)):
             svg.append('<line x1="%.3f" y1="%.3f" x2="%.3f" y2="%.3f" stroke="#086b65" stroke-width="1.6"/>' % coordinates)
         if run.startswith('T'):
             for glyph, left in [('O', 4), ('H', 17), ('I', 30)]:
-                svg.append(f'<text x="{x0 + left * scale}" y="{y0 + 24}" font-family="sans-serif" font-size="16" fill="#172b32">{glyph}</text>')
+                svg.append(f'<text x="{x0 + left * scale}" y="{y0 + 20}" font-family="sans-serif" font-size="16" fill="#172b32">{glyph}</text>')
         svg.append(f'<text x="{origin_x + 22}" y="{origin_y + 325}" font-family="sans-serif" font-size="14" fill="#384f59">{len(selected)} retained extrusion moves in this view</text>')
     svg.append(f'<text x="22" y="{height - 17}" font-family="sans-serif" font-size="15" fill="#172b32">Parsed linear paths, not a native screenshot or a printed-plastic outline. Source XY translation removed.</text></svg>')
     (PUBLIC / name).write_text('\n'.join(svg))

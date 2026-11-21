@@ -81,3 +81,21 @@ app-job-status {
     animation: none;
   }
 }
+
+app-example-loader {
+  max-width: 58rem;
+}
+.finding-table {
+  min-width: 34rem;
+}
+.finding-table th:first-child,
+.finding-table td:first-child {
+  width: 34%;
+}
+.finding-table td {
+  color: var(--muted);
+}
+.finding-table td:first-child {
+  color: var(--ink);
+  font-weight: 600;
+}

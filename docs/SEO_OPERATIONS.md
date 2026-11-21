@@ -284,16 +284,15 @@ controls the dropdown. Materials and printer catalogues retain their own section
 No redirects or old route aliases are provided. The URL ledger records moved URLs
 in each page's `previousPaths`; historical observations retain their original URLs.
 
-Both application deployment workflows remove only the explicitly retired root-level tool, repair-guide and material-hub
-HTML keys after uploading the replacement `/tools/<slug>/index.html` documents.
-`scripts/retire-tool-documents.mts` derives these keys from the route registry,
-requires every replacement in the build and target bucket, rejects old HTML in
-the build, and fails on S3 deletion errors. Hashed assets remain available for
-open tabs. No redirects, cache changes or invalidations are added. Cleanup uses
-ordinary S3 HEAD/delete requests and requires `s3:DeleteObject` on the frontend
-bucket. Infrastructure-only deployments retain the existing application files.
-Verify retired clean URLs return 404 after release; current tool URLs must return
-200 and remain the only tool destinations in navigation and the sitemap.
+The retired root-level tool, repair-guide and material-hub HTML objects were
+removed from the production bucket by a one-time deployment cleanup step; all of
+them were confirmed to return 404 on 21 November 2026, and the cleanup step has
+since been removed from both deployment workflows. Deployments never delete
+objects, so the removed keys cannot reappear. `npm run seo:live` still verifies
+after each release that every retired clean and `.html` URL returns 404/410;
+current tool URLs must return 200 and remain the only tool destinations in
+navigation and the sitemap. If a future retirement leaves an old HTML object in
+the bucket, remove that object as a separately authorized cleanup.
 
 ### Discovery relationships and retirement safety
 
@@ -311,14 +310,12 @@ fail L06. Paths retain case, reserved encodings, meaningful queries and fragment
 Correspondences never create redirects. Current `/tools/` and `/guides/` pages
 remain independently required. Only the sampled obsolete repair guide and old
 material hub join the existing retired tools; other historical guide URLs are
-not assumed equivalent. Cleanup requires local and uploaded replacement documents,
-rejects current paths and stale local artifacts, and stops on CLI or per-key S3
-failures. Empty policy inventories fail; an empty quiet-mode S3 delete response
-remains valid success. Neither response is an object inventory from a bucket.
-Retirement verification uses GET and accepts only 404/410; a successful obsolete
-page or redirect fails the manual deployment. A failed cleanup/verification must
-leave the workflow failed; inspect the exact path and retry the existing manual
-release after resolving it. No production deletion is authorized by local checks.
+not assumed equivalent. Empty policy inventories and policies that point at a
+current path or an unregistered replacement fail. Retirement verification uses
+GET and accepts only 404/410; a successful obsolete page or redirect fails the
+manual deployment. A failed verification must leave the workflow failed; inspect
+the exact path and resolve it before retrying. No production deletion is
+authorized by local checks.
 
 The durable URL ledger holds a twelve-page observation cohort with old/current
 URL mapping and explicit `NOT_OBSERVED` Google fields. Set the release date and
@@ -326,8 +323,7 @@ artifact identity only after an authorized release. Review public delivery and
 Google-selected canonical/crawl evidence at 7, 14 and 28 days; missing data is
 unknown. These are observation intervals, not promised indexing deadlines.
 The implementation adds no AWS resources, cache changes or invalidations.
-The expanded retirement check uses a small number of ordinary S3 HEAD/delete and
-public GET requests when the owner separately deploys it.
+The retirement check uses a small number of ordinary public GET requests.
 
 ### Live resource verification
 

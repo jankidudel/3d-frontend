@@ -46,56 +46,65 @@
       physical unit, so interpret these coordinates as millimetres only when you
       choose that assumption.
     </p>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Control</th>
-          <th scope="col">Actual report meaning</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <a [href]="exampleAsset.Closed20mmCubeStl" download>Closed cube</a>
-          </td>
-          <td>
-            12 triangles, zero listed edge or face issues. Baseline only, not
-            print approval.
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a [href]="exampleAsset.OpenFaceCubeStl" download
-              >Missing-face cube</a
-            >
-          </td>
-          <td>
-            10 triangles and four boundary edges; the known square face is
-            absent.
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a [href]="exampleAsset.DuplicateFaceCubeStl" download
-              >Duplicate-face cube</a
-            >
-          </td>
-          <td>
-            13 triangles, one exact duplicate and three over-shared edges.
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a [href]="exampleAsset.DiagnosisMalformedStl" download
-              >Malformed file</a
-            >
-          </td>
-          <td>
-            Parsing fails. It must not be read as a clean zero-finding report.
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div
+      class="table-scroll"
+      role="region"
+      aria-label="Known control files"
+      tabindex="0"
+    >
+      <table class="finding-table">
+        <thead>
+          <tr>
+            <th scope="col">Control</th>
+            <th scope="col">Actual report meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a [href]="exampleAsset.Closed20mmCubeStl" download
+                >Closed cube</a
+              >
+            </td>
+            <td>
+              12 triangles, zero listed edge or face issues. Baseline only, not
+              print approval.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a [href]="exampleAsset.OpenFaceCubeStl" download
+                >Missing-face cube</a
+              >
+            </td>
+            <td>
+              10 triangles and four boundary edges; the known square face is
+              absent.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a [href]="exampleAsset.DuplicateFaceCubeStl" download
+                >Duplicate-face cube</a
+              >
+            </td>
+            <td>
+              13 triangles, one exact duplicate and three over-shared edges.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a [href]="exampleAsset.DiagnosisMalformedStl" download
+                >Malformed file</a
+              >
+            </td>
+            <td>
+              Parsing fails. It must not be read as a clean zero-finding report.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <app-example-loader
@@ -129,87 +138,94 @@
 
   <section class="content" aria-labelledby="next-title">
     <h2 id="next-title">Turn a finding into one next action</h2>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Report finding</th>
-          <th scope="col">Next action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Parse failure, failed or unavailable report</td>
-          <td>
-            No healthy zero-finding result exists.
-            <a [href]="guideRouteUrl.RouteStlFileWontSlice"
-              >Check file/format diagnosis</a
-            >
-            and the stated failure before retrying.
-          </td>
-        </tr>
-        <tr>
-          <td>Boundary edge</td>
-          <td>
-            Use the
-            <a [href]="routeUrl.WatertightChecker">boundary checker</a> and
-            <a [href]="guideRouteUrl.RouteHowToTellIfAnStlIsWatertight"
-              >interpret the exposed boundary</a
-            >
-            before closing a surface. A designed passage can have closed
-            material walls.
-          </td>
-        </tr>
-        <tr>
-          <td>A visible wall with no enclosed thickness</td>
-          <td>
-            Compare the
-            <a [href]="guideRouteUrl.RouteZeroThicknessStlSurface"
-              >open sheet and closed plate controls</a
-            >
-            before changing slicer settings.
-          </td>
-        </tr>
-        <tr>
-          <td>Over-shared edge</td>
-          <td>
-            Read the
-            <a [href]="routeUrl.FixNonManifoldStlGuide"
-              >topology correction workflow</a
-            >; do not guess the extra face.
-          </td>
-        </tr>
-        <tr>
-          <td>Exact duplicate or degenerate face</td>
-          <td>
-            Review the source and the
-            <a [href]="routeUrl.StlRepair">standard cleanup report</a>, then
-            recheck its downloaded copy.
-          </td>
-        </tr>
-        <tr>
-          <td>Winding conflict</td>
-          <td>
-            Compare the
-            <a [href]="guideRouteUrl.RouteHowToFixFlippedNormalsInAnStlFile"
-              >known orientation controls</a
-            >
-            before changing a component.
-          </td>
-        </tr>
-        <tr>
-          <td>No listed blockers or an uncertain shape</td>
-          <td>
-            Check the
-            <a [href]="routeUrl.StlPrintPreflight">local preflight</a>, source
-            CAD and the selected slicer preview.
-            <a [href]="guideRouteUrl.RouteInternalFacesInStl"
-              >Inspect hidden internal faces</a
-            >
-            when the outside looks right but interior layers do not.
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div
+      class="table-scroll"
+      role="region"
+      aria-label="Report findings and next actions"
+      tabindex="0"
+    >
+      <table class="finding-table">
+        <thead>
+          <tr>
+            <th scope="col">Report finding</th>
+            <th scope="col">Next action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Parse failure, failed or unavailable report</td>
+            <td>
+              No healthy zero-finding result exists.
+              <a [href]="guideRouteUrl.RouteStlFileWontSlice"
+                >Check file/format diagnosis</a
+              >
+              and the stated failure before retrying.
+            </td>
+          </tr>
+          <tr>
+            <td>Boundary edge</td>
+            <td>
+              Use the
+              <a [href]="routeUrl.WatertightChecker">boundary checker</a> and
+              <a [href]="guideRouteUrl.RouteHowToTellIfAnStlIsWatertight"
+                >interpret the exposed boundary</a
+              >
+              before closing a surface. A designed passage can have closed
+              material walls.
+            </td>
+          </tr>
+          <tr>
+            <td>A visible wall with no enclosed thickness</td>
+            <td>
+              Compare the
+              <a [href]="guideRouteUrl.RouteZeroThicknessStlSurface"
+                >open sheet and closed plate controls</a
+              >
+              before changing slicer settings.
+            </td>
+          </tr>
+          <tr>
+            <td>Over-shared edge</td>
+            <td>
+              Read the
+              <a [href]="routeUrl.FixNonManifoldStlGuide"
+                >topology correction workflow</a
+              >; do not guess the extra face.
+            </td>
+          </tr>
+          <tr>
+            <td>Exact duplicate or degenerate face</td>
+            <td>
+              Review the source and the
+              <a [href]="routeUrl.StlRepair">standard cleanup report</a>, then
+              recheck its downloaded copy.
+            </td>
+          </tr>
+          <tr>
+            <td>Winding conflict</td>
+            <td>
+              Compare the
+              <a [href]="guideRouteUrl.RouteHowToFixFlippedNormalsInAnStlFile"
+                >known orientation controls</a
+              >
+              before changing a component.
+            </td>
+          </tr>
+          <tr>
+            <td>No listed blockers or an uncertain shape</td>
+            <td>
+              Check the
+              <a [href]="routeUrl.StlPrintPreflight">local preflight</a>, source
+              CAD and the selected slicer preview.
+              <a [href]="guideRouteUrl.RouteInternalFacesInStl"
+                >Inspect hidden internal faces</a
+              >
+              when the outside looks right but interior layers do not.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p>
       The server compares exact stored coordinates and excludes degenerate
       triangles from edge counts. Its report components join through shared

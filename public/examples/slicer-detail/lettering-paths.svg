@@ -3,92 +3,92 @@
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="22.0" y="27" font-family="sans-serif" font-size="19" font-weight="bold" fill="#172b32">Narrow original / Classic</text>
 <text x="22.0" y="50" font-family="sans-serif" font-size="15" fill="#384f59">T1-C; deposition Z near 2.2 mm</text>
-<rect x="28.0" y="94.39999999999998" width="306.0" height="183.60000000000002" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
-<line x1="259.221" y1="142.021" x2="259.221" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="259.221" y1="230.379" x2="261.899" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="261.899" y1="230.379" x2="261.899" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="261.899" y1="142.021" x2="259.680" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="159.771" y1="186.705" x2="159.771" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="159.771" y1="186.200" x2="202.229" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="202.229" y1="186.200" x2="202.229" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="202.229" y1="230.379" x2="202.229" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="202.229" y1="142.021" x2="202.229" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="202.229" y1="186.200" x2="159.771" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="159.771" y1="186.200" x2="159.771" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="159.771" y1="142.021" x2="159.771" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="159.771" y1="230.379" x2="159.771" y2="187.164" stroke="#086b65" stroke-width="1.6"/>
-<text x="58.6" y="302" font-family="sans-serif" font-size="16" fill="#172b32">O</text>
-<text x="158.05" y="302" font-family="sans-serif" font-size="16" fill="#172b32">H</text>
-<text x="257.5" y="302" font-family="sans-serif" font-size="16" fill="#172b32">I</text>
+<rect x="28.0" y="100.39999999999998" width="306.0" height="183.60000000000002" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
+<line x1="259.221" y1="148.021" x2="259.221" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="259.221" y1="236.379" x2="261.899" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="261.899" y1="236.379" x2="261.899" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="261.899" y1="148.021" x2="259.680" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="159.771" y1="192.705" x2="159.771" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="159.771" y1="192.200" x2="202.229" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="202.229" y1="192.200" x2="202.229" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="202.229" y1="236.379" x2="202.229" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="202.229" y1="148.021" x2="202.229" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="202.229" y1="192.200" x2="159.771" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="159.771" y1="192.200" x2="159.771" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="159.771" y1="148.021" x2="159.771" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="159.771" y1="236.379" x2="159.771" y2="193.164" stroke="#086b65" stroke-width="1.6"/>
+<text x="58.6" y="304" font-family="sans-serif" font-size="16" fill="#172b32">O</text>
+<text x="158.05" y="304" font-family="sans-serif" font-size="16" fill="#172b32">H</text>
+<text x="257.5" y="304" font-family="sans-serif" font-size="16" fill="#172b32">I</text>
 <text x="22.0" y="325" font-family="sans-serif" font-size="14" fill="#384f59">13 retained extrusion moves in this view</text>
 <text x="382.0" y="27" font-family="sans-serif" font-size="19" font-weight="bold" fill="#172b32">Same bytes / Arachne</text>
 <text x="382.0" y="50" font-family="sans-serif" font-size="15" fill="#384f59">T1-A; deposition Z near 2.2 mm</text>
-<rect x="388.0" y="94.39999999999998" width="306.0" height="183.60000000000002" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
-<line x1="619.114" y1="141.914" x2="619.114" y2="230.486" stroke="#086b65" stroke-width="1.6"/>
-<line x1="619.114" y1="230.486" x2="622.006" y2="230.486" stroke="#086b65" stroke-width="1.6"/>
-<line x1="622.006" y1="230.486" x2="622.006" y2="141.914" stroke="#086b65" stroke-width="1.6"/>
-<line x1="622.006" y1="141.914" x2="619.573" y2="141.914" stroke="#086b65" stroke-width="1.6"/>
-<line x1="562.229" y1="230.379" x2="562.229" y2="187.761" stroke="#086b65" stroke-width="1.6"/>
-<line x1="562.229" y1="187.761" x2="562.099" y2="187.240" stroke="#086b65" stroke-width="1.6"/>
-<line x1="562.099" y1="187.240" x2="561.969" y2="186.720" stroke="#086b65" stroke-width="1.6"/>
-<line x1="561.969" y1="186.720" x2="561.839" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="561.839" y1="186.200" x2="561.448" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="561.448" y1="186.200" x2="561.058" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="561.058" y1="186.200" x2="560.668" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="560.668" y1="186.200" x2="520.161" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="520.161" y1="186.200" x2="519.771" y2="187.761" stroke="#086b65" stroke-width="1.6"/>
-<line x1="519.771" y1="187.761" x2="519.771" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="561.839" y1="186.200" x2="561.969" y2="185.680" stroke="#086b65" stroke-width="1.6"/>
-<line x1="561.969" y1="185.680" x2="562.099" y2="185.160" stroke="#086b65" stroke-width="1.6"/>
-<line x1="562.099" y1="185.160" x2="562.229" y2="184.639" stroke="#086b65" stroke-width="1.6"/>
-<line x1="562.229" y1="184.639" x2="562.229" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="519.771" y1="142.021" x2="519.771" y2="184.639" stroke="#086b65" stroke-width="1.6"/>
-<line x1="519.771" y1="184.639" x2="519.901" y2="185.160" stroke="#086b65" stroke-width="1.6"/>
-<line x1="519.901" y1="185.160" x2="520.031" y2="185.680" stroke="#086b65" stroke-width="1.6"/>
-<line x1="520.031" y1="185.680" x2="520.161" y2="186.200" stroke="#086b65" stroke-width="1.6"/>
-<line x1="419.656" y1="230.998" x2="420.352" y2="231.144" stroke="#086b65" stroke-width="1.6"/>
-<line x1="420.352" y1="231.144" x2="463.383" y2="231.144" stroke="#086b65" stroke-width="1.6"/>
-<line x1="463.383" y1="231.144" x2="463.544" y2="230.348" stroke="#086b65" stroke-width="1.6"/>
-<line x1="463.544" y1="230.348" x2="463.544" y2="141.417" stroke="#086b65" stroke-width="1.6"/>
-<line x1="463.544" y1="141.417" x2="462.748" y2="141.256" stroke="#086b65" stroke-width="1.6"/>
-<line x1="462.748" y1="141.256" x2="419.717" y2="141.256" stroke="#086b65" stroke-width="1.6"/>
-<line x1="419.717" y1="141.256" x2="419.556" y2="142.052" stroke="#086b65" stroke-width="1.6"/>
-<line x1="419.556" y1="142.052" x2="419.556" y2="230.624" stroke="#086b65" stroke-width="1.6"/>
-<text x="418.6" y="302" font-family="sans-serif" font-size="16" fill="#172b32">O</text>
-<text x="518.05" y="302" font-family="sans-serif" font-size="16" fill="#172b32">H</text>
-<text x="617.5" y="302" font-family="sans-serif" font-size="16" fill="#172b32">I</text>
+<rect x="388.0" y="100.39999999999998" width="306.0" height="183.60000000000002" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
+<line x1="619.114" y1="147.914" x2="619.114" y2="236.486" stroke="#086b65" stroke-width="1.6"/>
+<line x1="619.114" y1="236.486" x2="622.006" y2="236.486" stroke="#086b65" stroke-width="1.6"/>
+<line x1="622.006" y1="236.486" x2="622.006" y2="147.914" stroke="#086b65" stroke-width="1.6"/>
+<line x1="622.006" y1="147.914" x2="619.573" y2="147.914" stroke="#086b65" stroke-width="1.6"/>
+<line x1="562.229" y1="236.379" x2="562.229" y2="193.761" stroke="#086b65" stroke-width="1.6"/>
+<line x1="562.229" y1="193.761" x2="562.099" y2="193.240" stroke="#086b65" stroke-width="1.6"/>
+<line x1="562.099" y1="193.240" x2="561.969" y2="192.720" stroke="#086b65" stroke-width="1.6"/>
+<line x1="561.969" y1="192.720" x2="561.839" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="561.839" y1="192.200" x2="561.448" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="561.448" y1="192.200" x2="561.058" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="561.058" y1="192.200" x2="560.668" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="560.668" y1="192.200" x2="520.161" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="520.161" y1="192.200" x2="519.771" y2="193.761" stroke="#086b65" stroke-width="1.6"/>
+<line x1="519.771" y1="193.761" x2="519.771" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="561.839" y1="192.200" x2="561.969" y2="191.680" stroke="#086b65" stroke-width="1.6"/>
+<line x1="561.969" y1="191.680" x2="562.099" y2="191.160" stroke="#086b65" stroke-width="1.6"/>
+<line x1="562.099" y1="191.160" x2="562.229" y2="190.639" stroke="#086b65" stroke-width="1.6"/>
+<line x1="562.229" y1="190.639" x2="562.229" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="519.771" y1="148.021" x2="519.771" y2="190.639" stroke="#086b65" stroke-width="1.6"/>
+<line x1="519.771" y1="190.639" x2="519.901" y2="191.160" stroke="#086b65" stroke-width="1.6"/>
+<line x1="519.901" y1="191.160" x2="520.031" y2="191.680" stroke="#086b65" stroke-width="1.6"/>
+<line x1="520.031" y1="191.680" x2="520.161" y2="192.200" stroke="#086b65" stroke-width="1.6"/>
+<line x1="419.656" y1="236.998" x2="420.352" y2="237.144" stroke="#086b65" stroke-width="1.6"/>
+<line x1="420.352" y1="237.144" x2="463.383" y2="237.144" stroke="#086b65" stroke-width="1.6"/>
+<line x1="463.383" y1="237.144" x2="463.544" y2="236.348" stroke="#086b65" stroke-width="1.6"/>
+<line x1="463.544" y1="236.348" x2="463.544" y2="147.417" stroke="#086b65" stroke-width="1.6"/>
+<line x1="463.544" y1="147.417" x2="462.748" y2="147.256" stroke="#086b65" stroke-width="1.6"/>
+<line x1="462.748" y1="147.256" x2="419.717" y2="147.256" stroke="#086b65" stroke-width="1.6"/>
+<line x1="419.717" y1="147.256" x2="419.556" y2="148.052" stroke="#086b65" stroke-width="1.6"/>
+<line x1="419.556" y1="148.052" x2="419.556" y2="236.624" stroke="#086b65" stroke-width="1.6"/>
+<text x="418.6" y="304" font-family="sans-serif" font-size="16" fill="#172b32">O</text>
+<text x="518.05" y="304" font-family="sans-serif" font-size="16" fill="#172b32">H</text>
+<text x="617.5" y="304" font-family="sans-serif" font-size="16" fill="#172b32">I</text>
 <text x="382.0" y="325" font-family="sans-serif" font-size="14" fill="#384f59">30 retained extrusion moves in this view</text>
 <text x="742.0" y="27" font-family="sans-serif" font-size="19" font-weight="bold" fill="#172b32">Local widening / Classic</text>
 <text x="742.0" y="50" font-family="sans-serif" font-size="15" fill="#384f59">T2-C; deposition Z near 2.2 mm</text>
-<rect x="748.0" y="94.39999999999998" width="306.0" height="183.60000000000002" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
-<line x1="979.221" y1="142.021" x2="979.221" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="979.221" y1="230.379" x2="981.899" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="981.899" y1="230.379" x2="981.899" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="981.899" y1="142.021" x2="979.680" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="882.954" y1="184.861" x2="882.449" y2="184.861" stroke="#086b65" stroke-width="1.6"/>
-<line x1="882.449" y1="184.861" x2="882.449" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="882.449" y1="142.021" x2="879.771" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="879.771" y1="142.021" x2="879.771" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="879.771" y1="230.379" x2="882.449" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="882.449" y1="230.379" x2="882.449" y2="187.539" stroke="#086b65" stroke-width="1.6"/>
-<line x1="882.449" y1="187.539" x2="919.551" y2="187.539" stroke="#086b65" stroke-width="1.6"/>
-<line x1="919.551" y1="187.539" x2="919.551" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="919.551" y1="230.379" x2="922.229" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="922.229" y1="230.379" x2="922.229" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="922.229" y1="142.021" x2="919.551" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="919.551" y1="142.021" x2="919.551" y2="184.861" stroke="#086b65" stroke-width="1.6"/>
-<line x1="919.551" y1="184.861" x2="883.413" y2="184.861" stroke="#086b65" stroke-width="1.6"/>
-<line x1="820.101" y1="145.204" x2="820.101" y2="144.699" stroke="#086b65" stroke-width="1.6"/>
-<line x1="820.101" y1="144.699" x2="782.999" y2="144.699" stroke="#086b65" stroke-width="1.6"/>
-<line x1="782.999" y1="144.699" x2="782.999" y2="227.701" stroke="#086b65" stroke-width="1.6"/>
-<line x1="782.999" y1="227.701" x2="820.101" y2="227.701" stroke="#086b65" stroke-width="1.6"/>
-<line x1="820.101" y1="227.701" x2="820.101" y2="145.663" stroke="#086b65" stroke-width="1.6"/>
-<line x1="822.779" y1="142.021" x2="780.321" y2="142.021" stroke="#086b65" stroke-width="1.6"/>
-<line x1="780.321" y1="142.021" x2="780.321" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="780.321" y1="230.379" x2="822.779" y2="230.379" stroke="#086b65" stroke-width="1.6"/>
-<line x1="822.779" y1="230.379" x2="822.779" y2="142.480" stroke="#086b65" stroke-width="1.6"/>
-<text x="778.6" y="302" font-family="sans-serif" font-size="16" fill="#172b32">O</text>
-<text x="878.05" y="302" font-family="sans-serif" font-size="16" fill="#172b32">H</text>
-<text x="977.5" y="302" font-family="sans-serif" font-size="16" fill="#172b32">I</text>
+<rect x="748.0" y="100.39999999999998" width="306.0" height="183.60000000000002" fill="none" stroke="#65767e" stroke-dasharray="5 4"/>
+<line x1="979.221" y1="148.021" x2="979.221" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="979.221" y1="236.379" x2="981.899" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="981.899" y1="236.379" x2="981.899" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="981.899" y1="148.021" x2="979.680" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="882.954" y1="190.861" x2="882.449" y2="190.861" stroke="#086b65" stroke-width="1.6"/>
+<line x1="882.449" y1="190.861" x2="882.449" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="882.449" y1="148.021" x2="879.771" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="879.771" y1="148.021" x2="879.771" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="879.771" y1="236.379" x2="882.449" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="882.449" y1="236.379" x2="882.449" y2="193.539" stroke="#086b65" stroke-width="1.6"/>
+<line x1="882.449" y1="193.539" x2="919.551" y2="193.539" stroke="#086b65" stroke-width="1.6"/>
+<line x1="919.551" y1="193.539" x2="919.551" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="919.551" y1="236.379" x2="922.229" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="922.229" y1="236.379" x2="922.229" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="922.229" y1="148.021" x2="919.551" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="919.551" y1="148.021" x2="919.551" y2="190.861" stroke="#086b65" stroke-width="1.6"/>
+<line x1="919.551" y1="190.861" x2="883.413" y2="190.861" stroke="#086b65" stroke-width="1.6"/>
+<line x1="820.101" y1="151.204" x2="820.101" y2="150.699" stroke="#086b65" stroke-width="1.6"/>
+<line x1="820.101" y1="150.699" x2="782.999" y2="150.699" stroke="#086b65" stroke-width="1.6"/>
+<line x1="782.999" y1="150.699" x2="782.999" y2="233.701" stroke="#086b65" stroke-width="1.6"/>
+<line x1="782.999" y1="233.701" x2="820.101" y2="233.701" stroke="#086b65" stroke-width="1.6"/>
+<line x1="820.101" y1="233.701" x2="820.101" y2="151.663" stroke="#086b65" stroke-width="1.6"/>
+<line x1="822.779" y1="148.021" x2="780.321" y2="148.021" stroke="#086b65" stroke-width="1.6"/>
+<line x1="780.321" y1="148.021" x2="780.321" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="780.321" y1="236.379" x2="822.779" y2="236.379" stroke="#086b65" stroke-width="1.6"/>
+<line x1="822.779" y1="236.379" x2="822.779" y2="148.480" stroke="#086b65" stroke-width="1.6"/>
+<text x="778.6" y="304" font-family="sans-serif" font-size="16" fill="#172b32">O</text>
+<text x="878.05" y="304" font-family="sans-serif" font-size="16" fill="#172b32">H</text>
+<text x="977.5" y="304" font-family="sans-serif" font-size="16" fill="#172b32">I</text>
 <text x="742.0" y="325" font-family="sans-serif" font-size="14" fill="#384f59">26 retained extrusion moves in this view</text>
 <text x="22" y="371" font-family="sans-serif" font-size="15" fill="#172b32">Parsed linear paths, not a native screenshot or a printed-plastic outline. Source XY translation removed.</text></svg>

@@ -208,7 +208,8 @@ import { publicExamples, type PublicExample } from './example-registry';
     }
     img.output-figure {
       aspect-ratio: auto;
-      min-width: 67.5rem;
+      /* Scale to the card; scroll only once labels would become too small. */
+      min-width: 50rem;
     }
     .path-scroll {
       max-width: 100%;
