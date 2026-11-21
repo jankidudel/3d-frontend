@@ -11,7 +11,7 @@ import {
   OVERHANG_BUILD_DIRECTIONS,
   OverhangReport,
 } from '../shared/overhang/overhang-analysis';
-import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 
 type Axis = 'x' | 'y' | 'z';
 

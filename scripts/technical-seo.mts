@@ -26,7 +26,6 @@ import {
   reportDirectory,
   sourceIdentity,
 } from './seo-artifact.mts';
-import { guideRegistry } from '../src/content/guides/guides.registry.ts';
 import { PublicRouteUrl } from '../src/app/core/seo/public-routes.ts';
 
 export const Severity = {
@@ -240,18 +239,14 @@ export function inspectSchema(document: Document, path: string): Finding[] {
           'Article headline matching visible H1',
         );
       }
-      const guide = guideRegistry.find((entry) => '/' + entry.slug === path);
-      if (
-        guide &&
-        (item['datePublished'] !== guide.publishDate ||
-          (item['dateModified'] ?? guide.publishDate) !==
-            (guide.updatedDate ?? guide.publishDate))
-      ) {
+      // Guides show no publication or update dates, so structured data must
+      // not claim dates that readers cannot see on the page.
+      if ('datePublished' in item || 'dateModified' in item) {
         report(
           'D02',
           Severity.Error,
-          'Article dates differ from authored registry',
-          'traceable publication and modification dates',
+          'Article structured data declares publication dates',
+          'no datePublished/dateModified while guides show no visible dates',
         );
       }
       for (const key of ['author', 'image']) {

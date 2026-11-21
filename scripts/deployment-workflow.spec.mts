@@ -102,6 +102,9 @@ describe('frontend deployment workflow', () => {
       writeFile(join(buildDirectory, 'main-12345678.js'), 'asset'),
       writeFile(join(buildDirectory, 'styles-abcdefgh.css'), 'asset'),
       writeFile(join(buildDirectory, 'manifest.webmanifest'), 'mutable'),
+      // Hand-named public files must revalidate even when their names are long.
+      writeFile(join(buildDirectory, 'logo-header.webp'), 'mutable'),
+      writeFile(join(buildDirectory, 'cost-fee-price.svg'), 'mutable'),
       writeFile(join(buildDirectory, 'index.html'), 'document'),
       writeFile(join(executableDirectory, 'node'), '#!/bin/sh\nexit 0\n'),
       writeFile(
@@ -134,8 +137,12 @@ describe('frontend deployment workflow', () => {
       'main-12345678.js public, max-age=31536000, immutable',
       'styles-abcdefgh.css public, max-age=31536000, immutable',
     ]);
-    expect(uploads.slice(2)).toEqual([
+    expect(uploads.slice(2, 5).sort()).toEqual([
+      'cost-fee-price.svg no-cache, max-age=0, must-revalidate',
+      'logo-header.webp no-cache, max-age=0, must-revalidate',
       'manifest.webmanifest no-cache, max-age=0, must-revalidate',
+    ]);
+    expect(uploads.slice(5)).toEqual([
       'index.html no-cache, max-age=0, must-revalidate',
     ]);
   });

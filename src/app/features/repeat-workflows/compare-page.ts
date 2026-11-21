@@ -4,16 +4,7 @@ import { ReviewSession, ReviewDestination } from './review-session';
 import { DecimalPipe } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import {
-  Group,
-  Mesh,
-  MeshBasicMaterial,
-  Points,
-  PointsMaterial,
-  BufferGeometry,
-  BufferAttribute,
-  DoubleSide,
-} from 'three';
+import type { Group } from 'three';
 import {
   AnalyticsEvent,
   AnalyticsService,
@@ -21,18 +12,18 @@ import {
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
-import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 import { meshDimensions } from '../stl-print-preflight/stl-print-preflight-analysis';
 import { exampleFile, MeshExample } from './example-meshes';
 import { loadWorkflowModel } from './load-model';
-import {
-  bufferGeometry,
-  ModelUnits,
-  SurfaceDifference,
-  WorkflowLimits,
-  meshSurfaceArea,
-  GeometryCheck,
-} from './mesh-workflows';
+import { ModelUnits, WorkflowLimits } from './workflow-settings';
+import type { GeometryCheck, SurfaceDifference } from './mesh-workflows';
+
+type CompareScene = typeof import('./compare-scene');
+let compareScene: Promise<CompareScene> | undefined;
+/** Loads the three.js comparison scene only once a model is chosen. */
+const loadCompareScene = (): Promise<CompareScene> =>
+  (compareScene ??= import('./compare-scene'));
 import { MeshWorkerMode, runMeshWorker } from './mesh-worker';
 const Alignment = { Original: 'original', Centres: 'centres' } as const;
 type Alignment = (typeof Alignment)[keyof typeof Alignment];
@@ -90,6 +81,8 @@ export class ComparePage {
   readonly busy = signal(false);
   readonly byteEquality = signal<boolean | null>(null);
   readonly object = signal<Group | null>(null);
+  private sceneRevision = 0;
+  private loadedScene: CompareScene | null = null;
   readonly extent = signal(20);
   readonly offset = computed(() => {
     const before = this.before();
@@ -176,7 +169,7 @@ export class ComparePage {
         file,
         mesh,
         dimensions: meshDimensions(mesh),
-        area: meshSurfaceArea(mesh),
+        area: (await loadCompareScene()).meshSurfaceArea(mesh),
       };
       (side === RevisionSide.Before ? this.before : this.after).set(revision);
       this.redraw();
@@ -314,85 +307,31 @@ export class ComparePage {
     this.controller?.abort();
   }
   redraw(): void {
-    this.disposeObject();
-    const group = new Group();
-    const items = [this.before()?.mesh, this.alignedAfter()];
-    items.forEach((mesh, index) => {
-      if (mesh) {
-        const geometry = bufferGeometry(mesh);
-        const colors = new Float32Array(mesh.positions.length);
-        for (let i = 0; i < colors.length; i += 3) {
-          colors.set(index === 0 ? [0.05, 0.65, 0.8] : [0.85, 0.25, 0.1], i);
-        }
-        geometry.setAttribute('color', new BufferAttribute(colors, 3));
-        group.add(
-          new Mesh(
-            geometry,
-            new MeshBasicMaterial({
-              vertexColors: true,
-              transparent: true,
-              opacity: this.opacity(),
-              side: DoubleSide,
-              depthWrite: false,
-            }),
-          ),
-        );
-      }
-    });
-    const difference = this.difference();
-    if (difference) {
-      const changed = [...difference.forward, ...difference.reverse].filter(
-        (sample) => sample.distance > difference.toleranceMm,
-      );
-      if (changed.length) {
-        const geometry = new BufferGeometry();
-        geometry.setAttribute(
-          'position',
-          new BufferAttribute(
-            new Float32Array(changed.flatMap((sample) => sample.point)),
-            3,
-          ),
-        );
-        group.add(
-          new Points(
-            geometry,
-            new PointsMaterial({
-              color: '#941647',
-              size: 1.5,
-              sizeAttenuation: false,
-            }),
-          ),
-        );
-      }
+    void this.renderScene();
+  }
+  private async renderScene(): Promise<void> {
+    const token = ++this.sceneRevision;
+    const scene = await loadCompareScene();
+    if (token !== this.sceneRevision) {
+      return;
     }
-    if (group.children.length) {
-      const minimum = [Infinity, Infinity, Infinity];
-      const maximum = [-Infinity, -Infinity, -Infinity];
-      for (const item of items) {
-        if (item) {
-          for (let i = 0; i < item.positions.length; i++) {
-            const axis = i % 3;
-            minimum[axis] = Math.min(minimum[axis], item.positions[i]);
-            maximum[axis] = Math.max(maximum[axis], item.positions[i]);
-          }
-        }
-      }
-      this.extent.set(
-        Math.max(...minimum.map((value, axis) => maximum[axis] - value), 1),
-      );
-      this.object.set(group);
+    this.loadedScene = scene;
+    this.disposeObject();
+    const built = scene.buildComparisonScene(
+      [this.before()?.mesh, this.alignedAfter()],
+      this.difference(),
+      this.opacity(),
+    );
+    if (built) {
+      this.extent.set(built.extent);
+      this.object.set(built.group);
     }
   }
   private disposeObject(): void {
-    this.object()?.traverse((object) => {
-      if (object instanceof Mesh || object instanceof Points) {
-        object.geometry.dispose();
-        const materials = Array.isArray(object.material)
-          ? object.material
-          : [object.material];
-        materials.forEach((material) => material.dispose());
-      }
-    });
+    const object = this.object();
+    if (object && this.loadedScene) {
+      this.loadedScene.disposeComparisonScene(object);
+    }
     this.object.set(null);
   }
   export(): void {

@@ -126,7 +126,7 @@ export class DevTools {
     this.output.end();
   }
 }
-async function browserBinary() {
+export async function browserBinary() {
   const configured = process.env['CHROME_BIN'];
   if (configured) {
     await access(configured, constants.X_OK);

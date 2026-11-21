@@ -22,7 +22,7 @@ import {
   ModelUnits,
   WorkflowLimits,
   collectionAllowance,
-} from './mesh-workflows';
+} from './workflow-settings';
 import { loadWorkflowModel } from './load-model';
 import { MeshWorkerMode, runMeshWorker } from './mesh-worker';
 

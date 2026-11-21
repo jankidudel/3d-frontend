@@ -5,7 +5,7 @@ import {
   inspectMesh,
   type MeshIntegrityReport,
 } from '../stl-print-preflight/stl-print-preflight-analysis';
-import { WorkflowLimits } from '../repeat-workflows/mesh-workflows';
+import { WorkflowLimits } from '../repeat-workflows/workflow-settings';
 export const ReductionMethod = {
   Encoding: 'encoding',
   Reduction: 'reduction',

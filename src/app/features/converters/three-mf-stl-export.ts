@@ -4,7 +4,7 @@ import {
   type ResolvedThreeMfGeometry,
   type GeometryBounds,
 } from '../shared/wall-thickness/three-mf-wall-thickness';
-import type { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import type { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 import { readStl, writeBinaryStl } from '../stl-reducer/stl-reducer';
 
 export const CoordinatePolicy = {

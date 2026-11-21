@@ -16,10 +16,9 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { ModelDimensions, ModelUnit } from '../../shared/model-dimensions';
 import {
-  analyseWallThickness,
   WallThicknessReport,
   WallThicknessUnit,
-} from '../shared/wall-thickness/wall-thickness-analysis';
+} from '../shared/wall-thickness/wall-thickness-model';
 import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
 import {
   inspectMesh,
@@ -32,8 +31,12 @@ import {
 import {
   IntersectionCheckState,
   SelfIntersectionReport,
-} from './self-intersections';
-import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+} from './self-intersection-model';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
+
+/** The wall-thickness engine uses three.js, so it loads only once a file is checked. */
+const loadWallThicknessAnalysis = () =>
+  import('../shared/wall-thickness/wall-thickness-analysis');
 
 @Component({
   selector: 'app-stl-print-preflight-page',
@@ -260,6 +263,10 @@ export class StlPrintPreflightPage {
       this.dimensionsReport.set(meshDimensions(mesh));
       await this.yieldToBrowser();
       this.progress.set('Sampling wall thickness...');
+      const { analyseWallThickness } = await loadWallThicknessAnalysis();
+      if (generation !== this.analysisGeneration) {
+        return;
+      }
       const report = analyseWallThickness(mesh, 1.2, this.wallUnit());
       this.wallReport.set(report);
       this.analytics.trackPreflightWallThickness(
@@ -308,6 +315,15 @@ export class StlPrintPreflightPage {
     this.unit.set(value);
     const mesh = this.mesh();
     if (mesh) {
+      void this.refreshWallReport(mesh);
+    }
+  }
+
+  private async refreshWallReport(
+    mesh: IndexedTriangleGeometry,
+  ): Promise<void> {
+    const { analyseWallThickness } = await loadWallThicknessAnalysis();
+    if (this.mesh() === mesh) {
       this.wallReport.set(analyseWallThickness(mesh, 1.2, this.wallUnit()));
     }
   }

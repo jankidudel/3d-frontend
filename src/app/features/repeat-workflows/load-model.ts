@@ -1,5 +1,5 @@
-import { WorkflowLimits, ModelUnits } from './mesh-workflows';
-import type { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import { WorkflowLimits, ModelUnits } from './workflow-settings';
+import type { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 export interface LoadedModel {
   mesh: IndexedTriangleGeometry;
   unit: string;

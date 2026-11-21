@@ -15,6 +15,7 @@ import {
   type Finding,
 } from './technical-seo.mts';
 import { productionOrigin, routeSearchPolicy } from './route-search-policy.mts';
+import { initialScripts } from './page-js-budget.mts';
 import {
   artifactFiles,
   artifactHash,
@@ -218,6 +219,67 @@ export async function wireSample(path: string, encoding: string) {
     request.on('error', reject);
   });
 }
+/** Angular's content-hashed outputs; keep in step with deploy-frontend.sh. */
+export const hashedAssetPath =
+  /^\/(?:chunk|main|polyfills|worker|styles)[-.][A-Za-z0-9_-]{8,}\.(?:js|css)$/;
+
+/** Hashed JS/CSS and the stylesheet a page references up front. */
+export function hashedAssetPaths(html: string): string[] {
+  const stylesheets = [
+    ...html.matchAll(/<link\b[^>]*\bhref="([^"]+\.css)"/g),
+  ].map((match) => match[1].replace(/^\.?\//, ''));
+  return [...new Set([...initialScripts(html), ...stylesheets])]
+    .map((file) => '/' + file)
+    .filter((path) => hashedAssetPath.test(path))
+    .sort();
+}
+
+/** Content-hashed assets must be cacheable for a year; anything else revalidates per visit. */
+export function assetCacheFindings(
+  samples: readonly {
+    readonly path: string;
+    readonly status: number | null;
+    readonly cacheControl: string | null;
+  }[],
+): Finding[] {
+  return samples
+    .filter(
+      (sample) =>
+        sample.status !== 200 ||
+        !/\bmax-age=31536000\b/.test(sample.cacheControl ?? '') ||
+        !/\bimmutable\b/.test(sample.cacheControl ?? ''),
+    )
+    .map((sample) =>
+      finding(
+        'P06',
+        Severity.Error,
+        sample.path,
+        AuditStage.Live,
+        JSON.stringify(sample),
+        'content-hashed asset served with public, max-age=31536000, immutable',
+      ),
+    );
+}
+
+/** A trailing-slash URL must permanently redirect to its one canonical URL. */
+export function trailingSlashFinding(
+  path: string,
+  status: number,
+  location: string | null,
+): Finding | null {
+  const expected = productionOrigin + path;
+  return status === 301 && location === expected
+    ? null
+    : finding(
+        'R08',
+        Severity.Error,
+        path + '/',
+        AuditStage.Live,
+        JSON.stringify({ status, location }),
+        `301 to ${expected}`,
+      );
+}
+
 export async function auditLive() {
   const started = performance.now();
   const findings: Finding[] = [];
@@ -401,6 +463,73 @@ export async function auditLive() {
       }
     }
   }
+  const assetCache = [];
+  const trailingSlash = [];
+  if (result.responses.length) {
+    const samplePaths = [
+      '/',
+      '/tools',
+      '/tools/stl-viewer',
+      '/guides',
+      '/guides/how-to-hollow-an-stl-file-for-3d-printing',
+    ];
+    const assetPaths = new Set<string>();
+    for (const path of samplePaths) {
+      try {
+        const page = await fetch(productionOrigin + path, {
+          redirect: 'manual',
+          signal: AbortSignal.timeout(8000),
+        });
+        const html = new TextDecoder().decode(await boundedBytes(page));
+        hashedAssetPaths(html).forEach((asset) => assetPaths.add(asset));
+        if (path !== '/') {
+          const slashed = await fetch(productionOrigin + path + '/', {
+            redirect: 'manual',
+            signal: AbortSignal.timeout(8000),
+          });
+          const location = slashed.headers.get('location');
+          trailingSlash.push({ path, status: slashed.status, location });
+          const redirectFinding = trailingSlashFinding(
+            path,
+            slashed.status,
+            location,
+          );
+          if (redirectFinding) {
+            findings.push(redirectFinding);
+          }
+        }
+      } catch (error) {
+        findings.push(
+          finding(
+            'P06',
+            Severity.Unknown,
+            path,
+            AuditStage.Live,
+            String(error),
+            'sampled page, its hashed assets and trailing-slash redirect',
+          ),
+        );
+      }
+    }
+    for (const path of [...assetPaths].sort()) {
+      try {
+        const sample = await wireSample(path, 'gzip, br');
+        assetCache.push({ path, ...sample });
+      } catch (error) {
+        findings.push(
+          finding(
+            'P06',
+            Severity.Unknown,
+            path,
+            AuditStage.Live,
+            String(error),
+            'measured hashed asset cache headers',
+          ),
+        );
+      }
+    }
+    findings.push(...assetCacheFindings(assetCache));
+  }
   const complete =
     result.complete &&
     retirement.complete &&
@@ -426,6 +555,8 @@ export async function auditLive() {
     elapsedMs: Math.round(performance.now() - started),
     releaseIdentity,
     transport,
+    assetCache,
+    trailingSlash,
     findings,
     rows: pageResponses,
     delivery: result,

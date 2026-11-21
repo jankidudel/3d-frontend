@@ -24,10 +24,10 @@ import {
   subtract,
   type Point3,
 } from '../feature-measurement/measurement';
-import { pickMeasurement } from '../feature-measurement/measurement-picking';
 
 interface ViewerRuntime {
   readonly THREE: typeof import('three');
+  readonly pickMeasurement: typeof import('../feature-measurement/measurement-picking').pickMeasurement;
   readonly renderer: import('three').WebGLRenderer;
   readonly scene: import('three').Scene;
   readonly camera: import('three').PerspectiveCamera;
@@ -499,9 +499,10 @@ export class ObjectViewerComponent {
       return;
     }
     try {
-      const [THREE, controlsModule] = await Promise.all([
+      const [THREE, controlsModule, picking] = await Promise.all([
         import('three'),
         import('three/examples/jsm/controls/OrbitControls.js'),
+        import('../feature-measurement/measurement-picking'),
       ]);
       if (this.object() !== object) {
         this.disposeObject(object);
@@ -544,6 +545,7 @@ export class ObjectViewerComponent {
       }
       const runtime: ViewerRuntime = {
         THREE,
+        pickMeasurement: picking.pickMeasurement,
         renderer,
         scene,
         camera,
@@ -769,7 +771,7 @@ export class ObjectViewerComponent {
     if (!runtime || !host) {
       return null;
     }
-    return pickMeasurement(
+    return runtime.pickMeasurement(
       runtime.object,
       runtime.camera,
       host.getBoundingClientRect(),

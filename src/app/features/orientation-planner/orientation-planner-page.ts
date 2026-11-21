@@ -10,7 +10,7 @@ import { SeoService } from '../../core/seo/seo.service';
 import { ModelUnit } from '../../shared/model-dimensions';
 import { ExampleLoader } from '../examples/example-loader';
 import { ToolEvidenceComponent } from '../repeat-workflows/tool-evidence';
-import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 import {
   resolveThreeMfWallGeometry,
   ResolvedThreeMfGeometry,

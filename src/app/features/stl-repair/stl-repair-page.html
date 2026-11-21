@@ -69,11 +69,14 @@
     </p>
   }
   @if (selectedFile()) {
-    <app-floating-parts
-      [file]="selectedFile()"
-      [autoReview]="true"
-      (inspectRetained)="inspectRetained($event)"
-    />
+    <!-- The parts review uses three.js; load it only once a file is chosen. -->
+    @defer (on immediate) {
+      <app-floating-parts
+        [file]="selectedFile()"
+        [autoReview]="true"
+        (inspectRetained)="inspectRetained($event)"
+      />
+    }
   }
   @if (job(); as currentJob) {
     <section class="tool-result results card" aria-live="polite">

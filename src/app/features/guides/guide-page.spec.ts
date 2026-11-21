@@ -1,24 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
 import { SeoService } from '../../core/seo/seo.service';
 import { GuidePage } from './guide-page';
-import { guideBySlug } from './generated/guides.generated';
+import { guideBySlug } from './generated/guide-content-all.generated';
 
 describe('guide evidence section rendering', () => {
   afterEach(() => TestBed.resetTestingModule());
 
   it('retains safe lazy loading for opted-in diagrams through guide navigation', async () => {
-    const params = convertToParamMap({
-      guideSlug: 'counterbore-vs-countersink-3d-printing',
-    });
-    const paramMap = new BehaviorSubject(params);
+    const initial = {
+      guide: guideBySlug['counterbore-vs-countersink-3d-printing'],
+    };
+    const data = new BehaviorSubject(initial);
     TestBed.configureTestingModule({
       imports: [GuidePage],
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { paramMap, snapshot: { paramMap: params } },
+          useValue: { data, snapshot: { data: initial } },
         },
         { provide: SeoService, useValue: { apply: vi.fn() } },
       ],
@@ -30,22 +30,18 @@ describe('guide evidence section rendering', () => {
     expect(
       page.querySelector('img.guide-lazy-image')?.getAttribute('loading'),
     ).toBe('lazy');
-    paramMap.next(
-      convertToParamMap({ guideSlug: 'captive-nut-pockets-3d-printing' }),
-    );
+    data.next({ guide: guideBySlug['captive-nut-pockets-3d-printing'] });
     fixture.detectChanges();
     await fixture.whenStable();
     const image = page.querySelector('img.guide-lazy-image');
     expect(image?.getAttribute('src')).toContain('nut-pocket.svg');
     expect(image?.getAttribute('loading')).toBe('lazy');
     expect(page.querySelector('script')).toBeNull();
-    paramMap.next(
-      convertToParamMap({ guideSlug: 'alignment-pins-for-split-3d-prints' }),
-    );
+    data.next({ guide: guideBySlug['alignment-pins-for-split-3d-prints'] });
     fixture.detectChanges();
     await fixture.whenStable();
     expect(page.querySelector('img')?.hasAttribute('loading')).toBe(false);
-    paramMap.complete();
+    data.complete();
   });
 
   for (const [slug, anchor] of [
@@ -56,13 +52,13 @@ describe('guide evidence section rendering', () => {
     ['how-to-inspect-stl-3mf-cross-sections', 'guide-observed-clips'],
   ]) {
     it(`retains the incoming result anchor and full article for ${slug}`, () => {
-      const params = convertToParamMap({ guideSlug: slug });
+      const initial = { guide: guideBySlug[slug] };
       TestBed.configureTestingModule({
         imports: [GuidePage],
         providers: [
           {
             provide: ActivatedRoute,
-            useValue: { paramMap: of(params), snapshot: { paramMap: params } },
+            useValue: { data: of(initial), snapshot: { data: initial } },
           },
           { provide: SeoService, useValue: { apply: vi.fn() } },
         ],
@@ -84,6 +80,9 @@ describe('guide evidence section rendering', () => {
       ).toBeGreaterThan(0);
       expect(page.querySelectorAll('.guide-body script')).toHaveLength(0);
       expect(page.textContent).not.toContain('{{');
+      expect(page.textContent).not.toMatch(
+        /First published|Substantially updated/,
+      );
     });
   }
 });

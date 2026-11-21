@@ -152,7 +152,7 @@ it('keeps 3MF next actions tied to placed-geometry coverage and native project s
     [...help.querySelectorAll('a')].map((link) => link.getAttribute('href')),
   ).toContain(page.guideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting);
 
-  page.analyse();
+  await page.analyse();
   fixture.detectChanges();
   expect(page.report()?.measured).toBe(0);
   expect(page.report()?.unmeasured).toBe(2);

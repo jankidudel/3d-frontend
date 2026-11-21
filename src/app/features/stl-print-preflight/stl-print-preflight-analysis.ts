@@ -1,6 +1,6 @@
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { ModelDimensions } from '../../shared/model-dimensions';
-import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 
 export type PreflightStatus =
   'Needs attention' | 'Check before slicing' | 'No issue found in this check';

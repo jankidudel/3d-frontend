@@ -29,6 +29,7 @@ describe('release verification contract', () => {
       'node --experimental-strip-types scripts/fingerprint-static-assets.mts',
       'node --experimental-strip-types scripts/seo-check.mts',
       'node --experimental-strip-types scripts/technical-seo.mts',
+      'node --experimental-strip-types scripts/page-js-budget.mts',
       'node --experimental-strip-types scripts/seo-audit.mts',
       'node --experimental-strip-types scripts/seo-browser.mts',
       'node --experimental-strip-types scripts/seo-artifact.mts --seal',

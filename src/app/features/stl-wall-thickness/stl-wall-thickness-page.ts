@@ -7,15 +7,17 @@ import { SeoService } from '../../core/seo/seo.service';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
-import { createWallThicknessHeatmap } from '../shared/wall-thickness/wall-thickness-heatmap';
-import { wallThicknessLegend } from '../shared/wall-thickness/wall-thickness-heatmap';
+import { wallThicknessLegend } from '../shared/wall-thickness/wall-thickness-legend';
 import { WallThicknessSummaryComponent } from '../shared/wall-thickness/wall-thickness-summary';
 import {
-  analyseWallThickness,
   validThreshold,
   WallThicknessReport,
   WallThicknessUnit,
-} from '../shared/wall-thickness/wall-thickness-analysis';
+} from '../shared/wall-thickness/wall-thickness-model';
+import {
+  loadWallThicknessEngine,
+  WallThicknessEngine,
+} from '../shared/wall-thickness/wall-thickness-engine-loader';
 
 @Component({
   selector: 'app-stl-wall-thickness-page',
@@ -39,11 +41,13 @@ export class StlWallThicknessPage {
   readonly threshold = signal(1.2);
   readonly report = signal<WallThicknessReport | null>(null);
   readonly showHeatmap = signal(true);
+  private readonly engine = signal<WallThicknessEngine | null>(null);
   readonly heatmap = computed(() => {
+    const engine = this.engine();
     const mesh = this.mesh();
     const report = this.report();
-    return mesh && report && this.showHeatmap()
-      ? createWallThicknessHeatmap(mesh, report)
+    return engine && mesh && report && this.showHeatmap()
+      ? engine.createWallThicknessHeatmap(mesh, report)
       : null;
   });
   readonly heatmapExtent = computed(() => {
@@ -144,8 +148,10 @@ export class StlWallThicknessPage {
     const threshold = this.threshold();
     const unit = this.assumedUnit();
     try {
+      const engine = await loadWallThicknessEngine();
+      this.engine.set(engine);
       await new Promise((resolve) => setTimeout(resolve));
-      const result = analyseWallThickness(mesh, threshold, unit);
+      const result = engine.analyseWallThickness(mesh, threshold, unit);
       if (revision === this.revision) {
         this.report.set(result);
       }

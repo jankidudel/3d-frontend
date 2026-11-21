@@ -7,7 +7,7 @@ import {
   materialPairPaths,
   PublicRoutePathValue as PublicRoutePath,
 } from './core/seo/public-routes';
-import { guideCanMatch } from './features/guides/guide-route';
+import { guideCanMatch, guideResolver } from './features/guides/guide-route';
 import { curatedComparisonPaths } from './features/printer-comparison/comparison-catalogue';
 import { printers } from './features/printer-comparison/printer-catalogue';
 
@@ -391,6 +391,7 @@ const breadcrumbRoutes: Routes = [
   {
     path: `${PublicRouteSegment.Guide}/:guideSlug`,
     canMatch: [guideCanMatch],
+    resolve: { guide: guideResolver },
     loadComponent: () =>
       import('./features/guides/guide-page').then((m) => m.GuidePage),
   },

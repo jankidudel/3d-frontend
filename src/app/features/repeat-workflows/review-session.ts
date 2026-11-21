@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CheckSettings, ModelUnits } from './mesh-workflows';
+import { CheckSettings, ModelUnits } from './workflow-settings';
 import { QueueEntry } from './collection-report';
 
 export const ReviewDestination = {

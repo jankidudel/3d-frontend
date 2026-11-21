@@ -14,10 +14,8 @@ import {
   comparisonLimit,
   type ReviewedCandidate,
 } from './candidate-review';
-import {
-  ModelUnits,
-  type SurfaceDifference,
-} from '../repeat-workflows/mesh-workflows';
+import { ModelUnits } from '../repeat-workflows/workflow-settings';
+import type { SurfaceDifference } from '../repeat-workflows/mesh-workflows';
 import { runMeshWorker, MeshWorkerMode } from '../repeat-workflows/mesh-worker';
 import { ExampleLoader } from '../examples/example-loader';
 import { GuideRouteUrl } from '../../core/seo/guide-routes';

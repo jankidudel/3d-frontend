@@ -1,9 +1,9 @@
 import { unzipSync } from 'fflate';
-import { Matrix4, Vector3 } from 'three';
+import { PlacementMatrix } from '../geometry/placement-matrix';
 import {
   IndexedTriangleGeometry,
   WallThicknessUnit,
-} from './wall-thickness-analysis';
+} from './wall-thickness-model';
 
 const UNIT_TO_WALL_UNIT: Readonly<Record<string, WallThicknessUnit>> = {
   millimeter: WallThicknessUnit.Millimetres,
@@ -201,16 +201,16 @@ export function geometryBounds(
   }
   return { min, max, spans: max.map((value, axis) => value - min[axis]) };
 }
-function transform(element: Element): Matrix4 {
+function transform(element: Element): PlacementMatrix {
   const text = element.getAttribute('transform');
   if (text === null) {
-    return new Matrix4();
+    return new PlacementMatrix();
   }
   const values = text.trim().split(/\s+/).map(Number);
   if (values.length !== 12 || !values.every(Number.isFinite)) {
     fail('Invalid placement transform.');
   }
-  const m = new Matrix4().set(
+  const m = new PlacementMatrix().set(
     values[0],
     values[3],
     values[6],
@@ -309,7 +309,7 @@ export async function resolveThreeMfWallGeometry(
     const placement = transform(item);
     const walk = (
       reference: Element,
-      matrix: Matrix4,
+      matrix: PlacementMatrix,
       ancestry: readonly string[],
     ) => {
       if (
@@ -374,10 +374,9 @@ export async function resolveThreeMfWallGeometry(
           }
           return Number(text);
         });
-        const point = new Vector3(...(coords as [number, number, number]))
-          .applyMatrix4(matrix)
-          .multiplyScalar(scale);
-        const values = [point.x, point.y, point.z];
+        const values = matrix
+          .applyToPoint(...(coords as [number, number, number]))
+          .map((value) => value * scale);
         if (
           !values.every(
             (value) =>

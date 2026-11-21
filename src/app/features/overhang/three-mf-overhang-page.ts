@@ -14,7 +14,6 @@ import {
   OverhangReport,
   validOverhangThreshold,
 } from '../shared/overhang/overhang-analysis';
-import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
 import {
   resolveThreeMfWallGeometry,
   ResolvedThreeMfGeometry,
@@ -278,11 +277,19 @@ export class ThreeMfOverhangPage {
   readonly selectedBuildDirection = computed(() =>
     overhangBuildDirection(this.buildDirectionId()),
   );
-  readonly heatmap = computed(() =>
-    this.resolved() && this.report()
-      ? createOverhangHeatmap(this.resolved()!.geometry, this.report()!)
-      : null,
-  );
+  /** three.js heatmap renderer, loaded once a model is analysed. */
+  private readonly heatmapRenderer = signal<
+    typeof import('../shared/overhang/overhang-heatmap') | null
+  >(null);
+  readonly heatmap = computed(() => {
+    const renderer = this.heatmapRenderer();
+    return renderer && this.resolved() && this.report()
+      ? renderer.createOverhangHeatmap(
+          this.resolved()!.geometry,
+          this.report()!,
+        )
+      : null;
+  });
   private readonly seo = inject(SeoService);
 
   constructor() {
@@ -378,6 +385,15 @@ export class ThreeMfOverhangPage {
         ),
       );
       this.status.set('Downward-facing geometry analysis complete.');
+      void this.loadHeatmapRenderer();
+    }
+  }
+
+  private async loadHeatmapRenderer(): Promise<void> {
+    if (!this.heatmapRenderer()) {
+      this.heatmapRenderer.set(
+        await import('../shared/overhang/overhang-heatmap'),
+      );
     }
   }
 

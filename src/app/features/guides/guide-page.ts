@@ -13,7 +13,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
-import { Guide, guideBySlug } from './generated/guides.generated';
+import type { Guide } from './generated/guides.generated';
 
 @Component({
   selector: 'app-guide-page',
@@ -26,8 +26,8 @@ export class GuidePage implements AfterViewInit {
   private readonly renderer = inject(Renderer2);
   private readonly seo = inject(SeoService);
   private readonly route = inject(ActivatedRoute);
-  private readonly params = toSignal(this.route.paramMap, {
-    initialValue: this.route.snapshot.paramMap,
+  private readonly data = toSignal(this.route.data, {
+    initialValue: this.route.snapshot.data,
   });
   protected readonly guide = computed(() => this.guideForRoute());
 
@@ -61,9 +61,9 @@ export class GuidePage implements AfterViewInit {
   }
 
   private guideForRoute(): Guide {
-    const slug = this.params().get('guideSlug');
-    if (slug && slug in guideBySlug) {
-      return guideBySlug[slug];
+    const guide = this.data()['guide'] as Guide | undefined;
+    if (guide) {
+      return guide;
     }
     throw new Error('A guide route must resolve to a known guide.');
   }
@@ -76,8 +76,6 @@ export class GuidePage implements AfterViewInit {
           '@type': 'Article',
           headline: guide.heading,
           description: guide.description,
-          datePublished: guide.publishDate,
-          ...(guide.updatedDate ? { dateModified: guide.updatedDate } : {}),
         },
         ...(guide.faqs.length
           ? [

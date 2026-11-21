@@ -1,9 +1,5 @@
-import {
-  CheckSettings,
-  GeometryCheck,
-  QueueState,
-  csvCell,
-} from './mesh-workflows';
+import { CheckSettings, QueueState, csvCell } from './workflow-settings';
+import type { GeometryCheck } from './mesh-workflows';
 
 export interface QueueEntry {
   readonly id: number;

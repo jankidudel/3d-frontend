@@ -2,12 +2,6 @@
   <article>
     <p class="eyebrow">{{ guide().eyebrow }}</p>
     <h1>{{ guide().heading }}</h1>
-    @if (guide().updatedDate) {
-      <p>
-        Substantially updated {{ guide().updatedDate }}. First published
-        {{ guide().publishDate }}.
-      </p>
-    }
     @if (guide().sections; as sections) {
       <div class="guide-body">
         @for (section of sections; track section.id) {

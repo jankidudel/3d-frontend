@@ -7,6 +7,8 @@
 /public/sitemap.xml
 /src/app/features/guides/generated/
 /tmp
+# Manual live-site screenshots (npm run screenshots:live)
+/images/screenshots/
 /out-tsc
 /bazel-out
 

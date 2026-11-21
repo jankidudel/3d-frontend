@@ -7,13 +7,15 @@ import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
 import { ObjectViewerComponent } from '../shared/object-viewer/object-viewer';
 import {
-  analyseWallThickness,
   validThreshold,
   WallThicknessReport,
   WallThicknessUnit,
-} from '../shared/wall-thickness/wall-thickness-analysis';
-import { createWallThicknessHeatmap } from '../shared/wall-thickness/wall-thickness-heatmap';
-import { wallThicknessLegend } from '../shared/wall-thickness/wall-thickness-heatmap';
+} from '../shared/wall-thickness/wall-thickness-model';
+import {
+  loadWallThicknessEngine,
+  WallThicknessEngine,
+} from '../shared/wall-thickness/wall-thickness-engine-loader';
+import { wallThicknessLegend } from '../shared/wall-thickness/wall-thickness-legend';
 import { WallThicknessSummaryComponent } from '../shared/wall-thickness/wall-thickness-summary';
 import {
   resolveThreeMfWallGeometry,
@@ -43,11 +45,13 @@ export class ThreeMfWallThicknessPage {
   readonly showHeatmap = signal(true);
   readonly thresholdValid = computed(() => validThreshold(this.threshold()));
   readonly fileLimitMiB = getMaxFileUploadSizeLimit() / (1024 * 1024);
+  private readonly engine = signal<WallThicknessEngine | null>(null);
   readonly heatmap = computed(() => {
+    const engine = this.engine();
     const resolved = this.resolved();
     const report = this.report();
-    return resolved && report && this.showHeatmap()
-      ? createWallThicknessHeatmap(resolved.geometry, report)
+    return engine && resolved && report && this.showHeatmap()
+      ? engine.createWallThicknessHeatmap(resolved.geometry, report)
       : null;
   });
   readonly legend = wallThicknessLegend;
@@ -126,13 +130,19 @@ export class ThreeMfWallThicknessPage {
       }
     }
   }
-  analyse(): void {
+  async analyse(): Promise<void> {
     const resolved = this.resolved();
     if (!resolved || !this.thresholdValid()) {
       return;
     }
+    const revision = this.revision;
+    const engine = await loadWallThicknessEngine();
+    if (revision !== this.revision || this.resolved() !== resolved) {
+      return;
+    }
+    this.engine.set(engine);
     this.report.set(
-      analyseWallThickness(
+      engine.analyseWallThickness(
         resolved.geometry,
         this.threshold(),
         WallThicknessUnit.Millimetres,

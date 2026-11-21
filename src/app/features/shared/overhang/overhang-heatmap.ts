@@ -6,7 +6,7 @@ import {
   Mesh,
   MeshStandardMaterial,
 } from 'three';
-import { IndexedTriangleGeometry } from '../wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../wall-thickness/wall-thickness-model';
 import { OverhangReport } from './overhang-analysis';
 
 export function createOverhangHeatmap(

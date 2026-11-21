@@ -25,13 +25,6 @@ import {
   resolveThreeMfWallGeometry,
   type ResolvedThreeMfGeometry,
 } from '../shared/wall-thickness/three-mf-wall-thickness';
-import {
-  Group,
-  Mesh,
-  BufferGeometry,
-  BufferAttribute,
-  MeshStandardMaterial,
-} from 'three';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../../core/api/jobs.service';
 import { AnalyticsService } from '../../core/analytics/analytics.service';
@@ -270,12 +263,21 @@ export class ThreeMfViewerPage {
     const run = ++this.loadRun;
     this.loading.set(true);
     try {
-      const resolved = await resolveThreeMfWallGeometry(
-        await file.arrayBuffer(),
-      );
+      const [resolved, THREE] = await Promise.all([
+        file.arrayBuffer().then((data) => resolveThreeMfWallGeometry(data)),
+        // three.js loads with the first chosen file, not with the page.
+        import('three'),
+      ]);
       if (run !== this.loadRun) {
         return;
       }
+      const {
+        Group,
+        Mesh,
+        BufferGeometry,
+        BufferAttribute,
+        MeshStandardMaterial,
+      } = THREE;
       const centre = resolved.bounds.min.map(
         (value, axis) => (value + resolved.bounds.max[axis]) / 2,
       );

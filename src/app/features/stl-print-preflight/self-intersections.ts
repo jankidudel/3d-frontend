@@ -1,31 +1,24 @@
 import { BufferAttribute, BufferGeometry, Box3, Vector3 } from 'three';
 import { ExtendedTriangle, MeshBVH } from 'three-mesh-bvh';
-import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 
-export const IntersectionCheckState = {
-  Complete: 'complete',
-  Found: 'found',
-  Skipped: 'skipped',
-  Incomplete: 'incomplete',
-} as const;
-export type IntersectionCheckState =
-  (typeof IntersectionCheckState)[keyof typeof IntersectionCheckState];
+import {
+  IntersectionCheckState,
+  MAX_INTERSECTION_FINDINGS,
+  MAX_INTERSECTION_TRIANGLES,
+  SelfIntersectionReport,
+  TriangleIntersectionFinding,
+} from './self-intersection-model';
 
-export interface TriangleIntersectionFinding {
-  readonly triangles: readonly [number, number];
-  readonly location: readonly [number, number, number];
-  readonly kind: 'crossing' | 'ambiguous';
-}
-
-export interface SelfIntersectionReport {
-  readonly state: IntersectionCheckState;
-  readonly findings: readonly TriangleIntersectionFinding[];
-  readonly reason?: string;
-  readonly candidatePairs: number;
-}
-
-export const MAX_INTERSECTION_TRIANGLES = 100_000;
-export const MAX_INTERSECTION_FINDINGS = 500;
+export {
+  IntersectionCheckState,
+  MAX_INTERSECTION_FINDINGS,
+  MAX_INTERSECTION_TRIANGLES,
+} from './self-intersection-model';
+export type {
+  SelfIntersectionReport,
+  TriangleIntersectionFinding,
+} from './self-intersection-model';
 
 /** BVH-accelerated triangle-pair screen. The cap keeps browser memory bounded. */
 export function findSelfIntersections(

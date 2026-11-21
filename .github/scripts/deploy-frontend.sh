@@ -17,9 +17,14 @@ fi
 
 node --experimental-strip-types scripts/seo-artifact.mts "$build_directory"
 
+# Only Angular's content-hashed build outputs are immutable. Hand-named public
+# files such as logo-header.webp or examples/*/plain-name.svg must revalidate,
+# otherwise an edited file would stay cached for a year under the same URL.
+# Keep this list identical to the infra BucketDeployment immutable patterns.
 is_hashed_asset() {
-  local file_name="${1##*/}"
-  [[ "$file_name" =~ (^|[-.])[A-Za-z0-9_-]{8,}\.(js|mjs|css|map|woff|woff2|ttf|otf|eot|svg|png|jpe?g|gif|webp|avif)$ ]]
+  local relative_path="${1#"$build_directory"/}"
+  [[ "$relative_path" =~ ^(chunk|main|polyfills|worker|styles)[-.][A-Za-z0-9_-]{8,}\.(js|css)$ ]] ||
+    [[ "$relative_path" =~ ^media/[^/]+-[A-Za-z0-9_-]{8,}\.[A-Za-z0-9]+$ ]]
 }
 
 upload_file() {

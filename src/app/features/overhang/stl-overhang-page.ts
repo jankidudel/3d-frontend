@@ -15,7 +15,6 @@ import {
   OverhangReport,
   validOverhangThreshold,
 } from '../shared/overhang/overhang-analysis';
-import { createOverhangHeatmap } from '../shared/overhang/overhang-heatmap';
 import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
 
 @Component({
@@ -274,11 +273,16 @@ export class StlOverhangPage {
   readonly selectedBuildDirection = computed(() =>
     overhangBuildDirection(this.buildDirectionId()),
   );
-  readonly heatmap = computed(() =>
-    this.mesh() && this.report()
-      ? createOverhangHeatmap(this.mesh()!, this.report()!)
-      : null,
-  );
+  /** three.js heatmap renderer, loaded once a model is analysed. */
+  private readonly heatmapRenderer = signal<
+    typeof import('../shared/overhang/overhang-heatmap') | null
+  >(null);
+  readonly heatmap = computed(() => {
+    const renderer = this.heatmapRenderer();
+    return renderer && this.mesh() && this.report()
+      ? renderer.createOverhangHeatmap(this.mesh()!, this.report()!)
+      : null;
+  });
   private readonly seo = inject(SeoService);
 
   constructor() {
@@ -377,6 +381,15 @@ export class StlOverhangPage {
         ),
       );
       this.status.set('Downward-facing geometry analysis complete.');
+      void this.loadHeatmapRenderer();
+    }
+  }
+
+  private async loadHeatmapRenderer(): Promise<void> {
+    if (!this.heatmapRenderer()) {
+      this.heatmapRenderer.set(
+        await import('../shared/overhang/overhang-heatmap'),
+      );
     }
   }
 

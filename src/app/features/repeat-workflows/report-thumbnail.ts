@@ -1,4 +1,4 @@
-import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../shared/wall-thickness/wall-thickness-model';
 const THUMBNAIL_WIDTH = 256;
 const THUMBNAIL_HEIGHT = 180;
 const MAX_THUMBNAIL_FACES = 750;

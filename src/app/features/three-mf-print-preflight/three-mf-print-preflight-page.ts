@@ -24,10 +24,10 @@ import {
   meshDimensions,
 } from '../stl-print-preflight/stl-print-preflight-analysis';
 import {
-  analyseWallThickness,
   WallThicknessReport,
   WallThicknessUnit,
-} from '../shared/wall-thickness/wall-thickness-analysis';
+} from '../shared/wall-thickness/wall-thickness-model';
+import { loadWallThicknessEngine } from '../shared/wall-thickness/wall-thickness-engine-loader';
 import {
   resolveThreeMfWallGeometry,
   ResolvedThreeMfGeometry,
@@ -245,6 +245,10 @@ export class ThreeMfPrintPreflightPage {
         return;
       }
       this.progress.set('Sampling wall thickness...');
+      const { analyseWallThickness } = await loadWallThicknessEngine();
+      if (run !== this.run) {
+        return;
+      }
       this.wallReport.set(
         analyseWallThickness(
           resolved.geometry,

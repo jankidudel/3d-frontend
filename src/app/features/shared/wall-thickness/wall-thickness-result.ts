@@ -1,4 +1,4 @@
-import { WallThicknessReport } from './wall-thickness-analysis';
+import { WallThicknessReport } from './wall-thickness-model';
 
 export const WallThicknessOutcomeText = {
   ThinAreas: 'Sampled areas below your threshold',

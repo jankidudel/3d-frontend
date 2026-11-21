@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
+  assetCacheFindings,
   auditLiveResources,
+  hashedAssetPaths,
+  trailingSlashFinding,
   liveAuditExitCode,
   logLiveFindings,
 } from './seo-live.mts';
@@ -155,5 +158,54 @@ describe('complete live resource audit', () => {
     expect(lines[0]).toContain('/examples/offline.stl');
     expect(lines[0]).toContain('request failed');
     expect(lines[0]).not.toContain('\n');
+  });
+});
+
+describe('live caching and canonical redirect checks', () => {
+  it('collects only content-hashed JS and CSS referenced up front', () => {
+    const html = `
+      <link rel="stylesheet" href="styles-XPS5CLCW.css" media="print">
+      <link rel="modulepreload" href="chunk-QvcD1X1m.js">
+      <script src="main-PNWTFHWB.js" type="module"></script>
+      <link rel="preload" as="image" href="/logo-header.webp">
+      <link rel="icon" href="/favicon.ico">`;
+    expect(hashedAssetPaths(html)).toEqual([
+      '/chunk-QvcD1X1m.js',
+      '/main-PNWTFHWB.js',
+      '/styles-XPS5CLCW.css',
+    ]);
+  });
+
+  it('requires a one-year immutable policy on hashed assets', () => {
+    const findings = assetCacheFindings([
+      {
+        path: '/chunk-AAAAAAAA.js',
+        status: 200,
+        cacheControl: 'public, max-age=31536000, immutable',
+      },
+      {
+        path: '/chunk-BBBBBBBB.js',
+        status: 200,
+        cacheControl: 'no-cache, max-age=0, must-revalidate',
+      },
+    ]);
+    expect(findings.map((item) => [item.rule, item.url])).toEqual([
+      ['P06', productionOrigin + '/chunk-BBBBBBBB.js'],
+    ]);
+  });
+
+  it('accepts only a permanent redirect to the slashless canonical URL', () => {
+    expect(
+      trailingSlashFinding(
+        '/guides',
+        301,
+        'https://www.inspectmesh.com/guides',
+      ),
+    ).toBeNull();
+    expect(trailingSlashFinding('/guides', 200, null)?.rule).toBe('R08');
+    expect(
+      trailingSlashFinding('/guides', 302, 'https://www.inspectmesh.com/guides')
+        ?.rule,
+    ).toBe('R08');
   });
 });

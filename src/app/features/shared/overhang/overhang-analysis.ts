@@ -1,4 +1,4 @@
-import { IndexedTriangleGeometry } from '../wall-thickness/wall-thickness-analysis';
+import { IndexedTriangleGeometry } from '../wall-thickness/wall-thickness-model';
 
 export interface OverhangFace {
   readonly triangle: number;

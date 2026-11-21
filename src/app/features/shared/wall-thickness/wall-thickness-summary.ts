@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { WallThicknessReport } from './wall-thickness-analysis';
+import { WallThicknessReport } from './wall-thickness-model';
 import {
   roundedThickness,
   wallThicknessNextAction,
