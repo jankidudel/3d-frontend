@@ -170,8 +170,7 @@ export class PrintPricePage implements OnDestroy {
       this.currency.set(draft['currency'] as PlannerCurrency);
     }
     inject(SeoService).apply({
-      title:
-        '3D Printing Price Calculator - Calculate What to Charge | InspectMesh',
+      title: '3D Printing Price Calculator: What to Charge | InspectMesh',
       description:
         'Price an entered job production total or identical parts with explicit margin or markup, user-entered selling fees and a minimum order price.',
       path: PublicRouteUrl.PrintPriceCalculator,

@@ -1,3 +1,4 @@
+import { usePageBreadcrumbs } from '../../core/components/breadcrumbs/breadcrumbs';
 import {
   MaterialEvidenceComponent,
   MaterialProductComparisonComponent,
@@ -15,7 +16,6 @@ import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PublicRouteUrl } from '../../core/seo/public-routes';
 import { SeoService } from '../../core/seo/seo.service';
-import { BreadcrumbsComponent } from '../../core/components/breadcrumbs/breadcrumbs';
 import {
   materialComparisons,
   materialComparisonsBySlug,
@@ -28,17 +28,31 @@ import {
   MaterialId,
 } from './material-catalogue';
 
+const TITLE_SUFFIX = ' | InspectMesh';
+/** Longest page title shown in full in most search results. */
+const MAX_TITLE_LENGTH = 65;
+
+/** Uses the preferred title unless it would be truncated in search results. */
+function fittedTitle(preferred: string, short: string): string {
+  const full = preferred + TITLE_SUFFIX;
+  return full.length <= MAX_TITLE_LENGTH ? full : short + TITLE_SUFFIX;
+}
+
 @Component({
   selector: 'app-material-hub',
   imports: [RouterLink],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-hub-page">
     <p class="eyebrow">Filament decisions</p>
-    <h1>3D Printing Materials</h1>
+    <h1>Types of 3D Printing Filament</h1>
     <p class="lead">
-      Compare typical FDM filament families. Formulations, pigments and filled
-      variants can differ, so use these sourced ranges as a starting point and
-      check your spool maker’s profile.
+      The eight common FDM filament types are PLA, PETG, ABS, ASA, TPU, nylon,
+      polycarbonate and polypropylene. PLA is the easy choice for visual and
+      low-heat indoor parts, PETG for everyday functional parts. ABS (heat) and
+      ASA (outdoor UV) usually need an enclosure. TPU is flexible. Nylon,
+      polycarbonate and polypropylene are demanding engineering filaments for
+      wear, high-heat and chemical-contact parts. Formulations and filled
+      variants differ, so check your spool maker's profile.
     </p>
     <p>
       <a class="button" [routerLink]="routeUrl.MaterialSelector"
@@ -74,7 +88,7 @@ import {
       </p>
     </section>
     <section class="material-section">
-      <h2>Compare material families</h2>
+      <h2>Each filament type at a glance</h2>
       <p>
         Start with the part's function, then check the exact spool and printer
         workflow. Product-sheet values describe the named formulation and test,
@@ -181,10 +195,37 @@ import {
           <h2>{{ material.displayName }}</h2>
           <p>{{ material.summary }}</p>
           <a [routerLink]="[routeUrl.Materials, material.slug]"
-            >Uses and printing guide</a
+            >{{ material.displayName }} uses and printing</a
           >
         </article>
       }
+    </section>
+    <section id="methodology">
+      <h2>How these material pages are researched</h2>
+      <ul>
+        <li>
+          Preparation advice summarises the linked material-family guidance and
+          shows the date it was checked. Use the exact spool and printer profile
+          for temperatures and drying.
+        </li>
+        <li>
+          Five-point ratings are editorial comparison bands for typical unfilled
+          families, not laboratory measurements.
+        </li>
+        <li>
+          Suggested test prints are checks for your own process, not tests
+          InspectMesh has performed. Record the product, orientation, settings
+          and result before applying it to a larger part.
+        </li>
+        <li>
+          Decision scenarios are illustrative, not physical material tests.
+        </li>
+        <li>
+          Safety notes are generic. Follow normal workshop practice and the
+          manufacturer's safety information; nothing here is a spool review or
+          safety certification.
+        </li>
+      </ul>
     </section>
   </main>`,
 })
@@ -197,10 +238,9 @@ export class MaterialHubPage {
   readonly materialList = materials;
   constructor() {
     inject(SeoService).apply({
-      title:
-        '3D Printing Materials - Compare Filament Properties | InspectMesh',
+      title: 'Types of 3D Printing Filament and Their Uses | InspectMesh',
       description:
-        'Compare eight FDM filament families, their practical trade-offs and setup expectations.',
+        'The eight common FDM filament types, from PLA and PETG to ABS, ASA, TPU, nylon, PC and PP: what each is used for and the setup it needs.',
       path: PublicRouteUrl.Materials,
     });
   }
@@ -208,37 +248,29 @@ export class MaterialHubPage {
 
 @Component({
   selector: 'app-material-detail',
-  imports: [
-    RouterLink,
-    ProductLinkComponent,
-    MaterialEvidenceComponent,
-    BreadcrumbsComponent,
-  ],
+  imports: [RouterLink, ProductLinkComponent, MaterialEvidenceComponent],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-detail-page">
     @if (material(); as item) {
-      <app-breadcrumbs [trail]="breadcrumbTrail()" />
-      <h1>
-        {{ item.displayName }} Filament: Uses, Properties and Printing Guide
-      </h1>
+      <h1>{{ item.displayName }} Filament: Uses and How to Print It</h1>
       <p class="lead">{{ item.summary }}</p>
       <p>
         <a
           class="button"
           [routerLink]="routeUrl.MaterialSelector"
           [queryParams]="{ material: item.id }"
-          >Check whether it fits your part</a
+          >Check {{ item.displayName }} against your part</a
         >
       </p>
       <section>
-        <h2>Best uses and poor fits</h2>
-        <h3>Commonly selected for</h3>
+        <h2>What {{ item.displayName }} is good for</h2>
+        <h3>Good choices</h3>
         <ul>
           @for (entry of item.bestFor; track entry) {
             <li>{{ entry }}</li>
           }
         </ul>
-        <h3>Consider another material for</h3>
+        <h3>Choose something other than {{ item.displayName }} for</h3>
         <ul>
           @for (entry of item.poorFitFor; track entry) {
             <li>{{ entry }}</li>
@@ -246,26 +278,16 @@ export class MaterialHubPage {
         </ul>
       </section>
       <section>
-        <h2>Preparation for the exact spool</h2>
+        <h2>How to print {{ item.displayName }}</h2>
         <p><strong>Printing difficulty:</strong> {{ item.difficulty }}.</p>
         <p>{{ preparation().setup }}</p>
         <p>{{ preparation().surface }}</p>
-        <p>
-          These starting points summarise the linked material-family guidance,
-          checked {{ preparation().reviewedAt }}. Use the exact spool and
-          printer profile for temperatures and drying instructions.
-        </p>
       </section>
       <section>
         <h2>{{ preparation().question }}</h2>
         <p>{{ preparation().decision }}</p>
-        <h3>A small check before the full part</h3>
+        <h3>Test {{ item.displayName }} before the full part</h3>
         <p>{{ preparation().trial }}</p>
-        <p>
-          This is a proposed check for your own process, not a test already
-          performed by InspectMesh. Record the product, orientation, settings
-          and observation before applying the result to a larger part.
-        </p>
       </section>
       <app-material-evidence [material]="item" />
       <p>
@@ -278,7 +300,7 @@ export class MaterialHubPage {
         >
       </p>
       <section>
-        <h2>Printing and design cautions</h2>
+        <h2>{{ item.displayName }} printing and design cautions</h2>
         <ul>
           @for (entry of item.risks; track entry) {
             <li>{{ entry }}</li>
@@ -289,20 +311,15 @@ export class MaterialHubPage {
         </ul>
       </section>
       <section>
-        <h2>Major limitations and safety notes</h2>
+        <h2>{{ item.displayName }} limitations and safety notes</h2>
         <ul>
           @for (entry of item.limitations; track entry) {
             <li>{{ entry }}</li>
           }
         </ul>
-        <p>
-          Use normal good workshop practice and manufacturer safety information.
-          This is generic guidance, not a hands-on spool review or a safety
-          certification.
-        </p>
       </section>
       <section>
-        <h2>Related comparisons</h2>
+        <h2>Compare {{ item.displayName }} with other filaments</h2>
         <ul>
           @for (comparison of comparisons(); track comparison.slug) {
             <li>
@@ -314,7 +331,7 @@ export class MaterialHubPage {
         </ul>
       </section>
       <section>
-        <h2>Plan material and cost</h2>
+        <h2>Plan {{ item.displayName }} use and cost</h2>
         <p>
           <a
             [routerLink]="routeUrl.PrintCostCalculator"
@@ -332,9 +349,11 @@ export class MaterialHubPage {
       <section>
         <h2>Sources</h2>
         <p>
-          Catalogue baseline {{ item.lastVerifiedAt }}. Preparation guidance
-          reviewed {{ preparation().reviewedAt }} against the linked family
-          source; no physical spool test is claimed.
+          Catalogue checked {{ item.lastVerifiedAt }}; preparation guidance
+          checked {{ preparation().reviewedAt }}.
+          <a [routerLink]="routeUrl.Materials" fragment="methodology"
+            >How these pages are researched</a
+          >.
         </p>
         <ul>
           @for (source of sources(item); track source.id) {
@@ -355,24 +374,11 @@ export class MaterialHubPage {
         <a [routerLink]="decision().guide">{{ decision().guideLabel }}</a>
       </p>
       <p>
-        Illustrative decision scenario, not a physical material test. Check
+        Check
         <a href="https://help.prusa3d.com/article/drying-filament_332086"
           >the exact drying guidance</a
         >
-        and product datasheet before using a numerical cycle.
-      </p>
-      <p>
-        <a [routerLink]="routeUrl.FilamentRemainingCalculator"
-          >Check your partial spool against the job</a
-        >
-        ·
-        <a [routerLink]="routeUrl.VolumetricFlowCalculator"
-          >Calculate requested throughput</a
-        >
-        ·
-        <a [routerLink]="routeUrl.MaterialSelector"
-          >Compare requirements in the selector</a
-        >
+        and product datasheet before using a numerical drying cycle.
       </p>
     </section>
     <app-product-link [product]="referral" />
@@ -403,16 +409,6 @@ export class MaterialDetailPage {
   private readonly slug =
     inject(ActivatedRoute).snapshot.url.at(-1)?.path ?? '';
   readonly material = computed(() => materialsBySlug.get(this.slug));
-  readonly breadcrumbTrail = computed(() => {
-    const material = this.material()!;
-    return [
-      { label: '3D Printing Materials', href: PublicRouteUrl.Materials },
-      {
-        label: material.displayName,
-        href: `${PublicRouteUrl.Materials}/${material.slug}`,
-      },
-    ];
-  });
   readonly comparisons = computed(() =>
     materialComparisons.filter(
       (comparison) =>
@@ -426,11 +422,21 @@ export class MaterialDetailPage {
       throw new Error('Unknown material');
     }
     inject(SeoService).apply({
-      title: `${material.displayName} Filament: Uses, Properties and Printing Guide | InspectMesh`,
+      title: fittedTitle(
+        `${material.displayName} Filament: Uses and How to Print It`,
+        `${material.displayName} Filament: Uses and Printing`,
+      ),
       description: material.summary,
       path: `${PublicRouteUrl.Materials}/${material.slug}`,
       openGraphType: 'article',
     });
+    usePageBreadcrumbs([
+      { label: '3D Printing Materials', href: PublicRouteUrl.Materials },
+      {
+        label: material.displayName,
+        href: `${PublicRouteUrl.Materials}/${material.slug}`,
+      },
+    ]);
   }
   sources(material: MaterialRecord) {
     return materialSources.filter((source) =>
@@ -441,15 +447,10 @@ export class MaterialDetailPage {
 
 @Component({
   selector: 'app-material-comparison-detail',
-  imports: [
-    RouterLink,
-    MaterialProductComparisonComponent,
-    BreadcrumbsComponent,
-  ],
+  imports: [RouterLink, MaterialProductComparisonComponent],
   styleUrl: './material-pages.scss',
   template: `<main class="page material-page material-comparison-detail-page">
     @if (comparison(); as record) {
-      <app-breadcrumbs [trail]="breadcrumbTrail()" />
       <h1>
         {{ left().displayName }} vs {{ right().displayName }}: Which Filament
         Should You Use?
@@ -600,16 +601,6 @@ export class MaterialComparisonDetailPage {
       (material) => material.id === this.comparison()!.materialBId,
     )!,
   );
-  readonly breadcrumbTrail = computed(() => [
-    {
-      label: 'Compare 3D Printing Materials',
-      href: PublicRouteUrl.CompareMaterials,
-    },
-    {
-      label: `${this.left().displayName} vs ${this.right().displayName}`,
-      href: `/${PublicRouteSegment.MaterialComparisons}/${this.comparison()!.slug}`,
-    },
-  ]);
   constructor() {
     const comparison = this.comparison();
     if (!comparison) {
@@ -618,10 +609,23 @@ export class MaterialComparisonDetailPage {
     const left = this.left();
     const right = this.right();
     inject(SeoService).apply({
-      title: `${left.displayName} vs ${right.displayName}: Which Filament Should You Use? | InspectMesh`,
+      title: fittedTitle(
+        `${left.displayName} vs ${right.displayName}: Which Filament Should You Use?`,
+        `${left.displayName} vs ${right.displayName} Filament Compared`,
+      ),
       description: comparison.summary,
       path: `/${PublicRouteSegment.MaterialComparisons}/${comparison.slug}`,
       openGraphType: 'article',
     });
+    usePageBreadcrumbs([
+      {
+        label: 'Compare 3D Printing Materials',
+        href: PublicRouteUrl.CompareMaterials,
+      },
+      {
+        label: `${left.displayName} vs ${right.displayName}`,
+        href: `/${PublicRouteSegment.MaterialComparisons}/${comparison.slug}`,
+      },
+    ]);
   }
 }

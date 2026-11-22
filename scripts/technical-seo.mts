@@ -260,6 +260,14 @@ export function inspectSchema(document: Document, path: string): Finding[] {
         }
       }
     }
+    if (types.includes('WebApplication') && item['name'] !== h1) {
+      report(
+        'D02',
+        Severity.Error,
+        String(item['name']),
+        'WebApplication name matching visible H1',
+      );
+    }
     if (types.includes('BreadcrumbList')) {
       const entries = item['itemListElement'];
       if (!Array.isArray(entries) || !entries.length) {

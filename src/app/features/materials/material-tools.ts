@@ -461,8 +461,7 @@ export class MaterialSelectorPage {
   );
   constructor() {
     inject(SeoService).apply({
-      title:
-        '3D Printing Material Selector - Choose the Right Filament | InspectMesh',
+      title: '3D Printing Material Selector: Choose a Filament | InspectMesh',
       description:
         'Rank filament material families using explicit use-case priorities and practical setup cautions.',
       path: PublicRouteUrl.MaterialSelector,
@@ -664,9 +663,9 @@ export class MaterialComparisonPage {
         this.rightId.set(pair.right);
       });
     inject(SeoService).apply({
-      title: 'Compare 3D Printing Materials | InspectMesh',
+      title: 'Compare 3D Printing Materials Side by Side | InspectMesh',
       description:
-        'Compare practical filament setup needs and editorial property bands for two material families.',
+        'Pick two filament families, such as PLA and PETG, and compare their setup needs and editorial property bands side by side.',
       path: PublicRouteUrl.CompareMaterials,
     });
   }

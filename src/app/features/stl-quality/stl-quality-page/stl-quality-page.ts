@@ -63,9 +63,10 @@ export class StlQualityPage {
 
   constructor() {
     this.seo.apply({
-      title: 'STL Quality Checker: Mesh Findings and Next Steps | InspectMesh',
+      title:
+        'STL Quality Checker: Validate Mesh Errors in Detail | InspectMesh',
       description:
-        'Check STL boundaries, over-shared edges, exact duplicates, degenerate faces and winding findings with controlled examples and clear next steps.',
+        'Validate an STL mesh in detail: open boundaries, over-shared edges, exact duplicates, degenerate faces and winding, each with a clear next step.',
       path: PublicRouteUrl.QualityCheck,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());

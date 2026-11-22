@@ -279,8 +279,7 @@ export class ExamplesPage {
   });
   constructor() {
     inject(SeoService).apply({
-      title:
-        'Model and G-code Evidence Controls - Visual Diagnosis | InspectMesh',
+      title: 'Model and G-code Evidence Controls | InspectMesh',
       description:
         'Download original known-geometry controls for orientation, bridge and overhang comparison, internal support access, 3MF transforms and mesh diagnosis.',
       path: PublicRouteUrl.Examples,

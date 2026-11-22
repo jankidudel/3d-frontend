@@ -13,6 +13,18 @@ import {
 } from './comparison-catalogue';
 import { PrinterRecord } from './printer-catalogue';
 
+const CUBIC_MM_PER_LITRE = 1_000_000;
+const PERCENT = 100;
+
+function nominalLitres(printer: PrinterRecord): number {
+  const [x, y, z] = printer.buildVolumeMm;
+  return (x * y * z) / CUBIC_MM_PER_LITRE;
+}
+
+function formatLitres(litres: number): string {
+  return litres.toFixed(1);
+}
+
 @Component({
   selector: 'app-printer-pair-page',
   imports: [RouterLink],
@@ -26,6 +38,26 @@ export class PrinterPairPage {
   readonly printers: readonly [PrinterRecord, PrinterRecord];
   readonly left = computed(() => this.printers[0]);
   readonly right = computed(() => this.printers[1]);
+  readonly publishedPrinters = computed(() =>
+    this.printers.filter((printer) => printer.published !== false),
+  );
+  readonly sizeSummary = computed(() => {
+    const left = this.left();
+    const right = this.right();
+    const leftLitres = nominalLitres(left);
+    const rightLitres = nominalLitres(right);
+    if (leftLitres === rightLitres) {
+      return `Both have the same nominal build volume of ${formatLitres(leftLitres)} litres.`;
+    }
+    const [larger, smaller, largerLitres, smallerLitres] =
+      leftLitres > rightLitres
+        ? [left, right, leftLitres, rightLitres]
+        : [right, left, rightLitres, leftLitres];
+    const percent = Math.round(
+      ((largerLitres - smallerLitres) / smallerLitres) * PERCENT,
+    );
+    return `The ${larger.displayName} has about ${percent}% more nominal build volume (${formatLitres(largerLitres)} litres) than the ${smaller.displayName} (${formatLitres(smallerLitres)} litres).`;
+  });
 
   constructor() {
     const path = inject(Router).url;

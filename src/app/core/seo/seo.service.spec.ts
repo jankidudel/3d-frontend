@@ -211,4 +211,131 @@ describe('SeoService', () => {
     ).toBe('noindex, nofollow');
     expect(document.head.querySelector('link[rel="canonical"]')).toBeNull();
   });
+
+  describe('site identity and social previews', () => {
+    const origin = 'https://tools.example.com';
+    function setUp(): { service: SeoService; document: Document } {
+      TestBed.configureTestingModule({
+        providers: [
+          {
+            provide: SEO_CONFIG,
+            useValue: { indexingEnabled: true, siteUrl: origin },
+          },
+        ],
+      });
+      return {
+        service: TestBed.inject(SeoService),
+        document: TestBed.inject(DOCUMENT),
+      };
+    }
+    function graph(document: Document): Record<string, unknown>[] {
+      const text = document.head.querySelector(
+        'script[data-seo-structured-data]',
+      )?.textContent;
+      const data = JSON.parse(text ?? '{}') as Record<string, unknown>;
+      return (
+        (data['@graph'] as Record<string, unknown>[] | undefined) ?? [data]
+      );
+    }
+    function meta(document: Document, selector: string): string | null {
+      return (
+        document.head.querySelector(selector)?.getAttribute('content') ?? null
+      );
+    }
+
+    it('adds the share image and large Twitter card on canonical pages', () => {
+      const { service, document } = setUp();
+      service.apply({
+        title: 'Tools',
+        description: 'All tools.',
+        path: '/tools',
+      });
+
+      expect(meta(document, "meta[property='og:image']")).toBe(
+        `${origin}/images/social/inspectmesh-share.png`,
+      );
+      expect(meta(document, "meta[property='og:image:width']")).toBe('1200');
+      expect(meta(document, "meta[property='og:image:height']")).toBe('630');
+      expect(meta(document, "meta[property='og:site_name']")).toBe(
+        'InspectMesh',
+      );
+      expect(meta(document, "meta[name='twitter:card']")).toBe(
+        'summary_large_image',
+      );
+    });
+
+    it('declares Organization and WebSite on the home page only', () => {
+      const { service, document } = setUp();
+      service.apply({ title: 'Home', description: 'Home.', path: '/' });
+      expect(graph(document).map((node) => node['@type'])).toEqual([
+        'Organization',
+        'WebSite',
+      ]);
+
+      service.apply({
+        title: 'Tools',
+        description: 'All tools.',
+        path: '/tools',
+      });
+      expect(
+        document.head.querySelector('script[data-seo-structured-data]'),
+      ).toBeNull();
+    });
+
+    it('adds a WebApplication node to tool pages', () => {
+      const { service, document } = setUp();
+      service.apply({
+        title: 'STL Viewer',
+        description: 'Open an STL.',
+        path: '/tools/stl-viewer',
+      });
+      const node = graph(document).find(
+        (item) => item['@type'] === 'WebApplication',
+      );
+      expect(node?.['name']).toBe('Free STL Viewer Online');
+      expect(node?.['url']).toBe(`${origin}/tools/stl-viewer`);
+    });
+
+    it('adds the canonical URL and publisher to Article nodes without dates', () => {
+      const { service, document } = setUp();
+      service.apply({
+        title: 'Guide',
+        description: 'Guide description.',
+        path: '/guides/example',
+        structuredData: {
+          '@context': 'https://schema.org',
+          '@graph': [{ '@type': 'Article', headline: 'Guide' }],
+        },
+      });
+      const article = graph(document)[0];
+      expect(article['url']).toBe(`${origin}/guides/example`);
+      expect(article['mainEntityOfPage']).toBe(`${origin}/guides/example`);
+      expect(article['publisher']).toEqual(
+        expect.objectContaining({ name: 'InspectMesh' }),
+      );
+      expect('datePublished' in article).toBe(false);
+      expect('dateModified' in article).toBe(false);
+    });
+
+    it('omits the share image and identity nodes without a canonical URL', () => {
+      TestBed.configureTestingModule({
+        providers: [
+          {
+            provide: SEO_CONFIG,
+            useValue: { indexingEnabled: false, siteUrl: '' },
+          },
+        ],
+      });
+      const service = TestBed.inject(SeoService);
+      const document = TestBed.inject(DOCUMENT);
+      service.apply({ title: 'Home', description: 'Home.', path: '/' });
+
+      expect(
+        document.head.querySelector("meta[property='og:image']"),
+      ).toBeNull();
+      expect(
+        document.head.querySelector('script[data-seo-structured-data]'),
+      ).toBeNull();
+    });
+  });
 });

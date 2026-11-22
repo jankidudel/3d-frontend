@@ -46,14 +46,13 @@
       Status: {{ right().status }}.
     </p>
     <p>
-      Prices are historical USD snapshots, region- and bundle-sensitive,
-      recorded
-      {{ left().lastVerified }}. Compare like-for-like base printers, combos and
-      accessories before deciding.
+      Historical USD snapshots from {{ left().lastVerified }}, not current
+      offers. Compare like-for-like bundles before deciding.
     </p>
   </section>
   <section>
     <h2>Key differences</h2>
+    <p>{{ sizeSummary() }}</p>
     <table tabindex="0" aria-label="Key printer differences">
       <thead>
         <tr>
@@ -146,16 +145,6 @@
     }
   </section>
   <section>
-    <h2>Running-cost considerations</h2>
-    <p>
-      Maximum speed is not a job-cost result. Filament, purge waste, print time,
-      energy use and failure allowance all depend on the sliced job.
-      <a [routerLink]="routeUrl.PrintCostCalculator"
-        >Estimate the real cost of a job on either printer</a
-      >.
-    </p>
-  </section>
-  <section>
     <h2>Questions</h2>
     @for (item of comparison.faq; track item.question) {
       <h3>{{ item.question }}</h3>
@@ -163,20 +152,15 @@
     }
   </section>
   <section>
-    <h2>Methodology and limitations</h2>
-    <p>
-      InspectMesh compares stated specifications and use-case implications. It
-      has not hands-on tested these printers for this page. Maximum speeds are
-      manufacturer claims, material results vary, and prices are time-sensitive.
-    </p>
-    <p>
-      Source dates: {{ left().displayName }} {{ left().lastVerified }};
-      {{ right().displayName }} {{ right().lastVerified }}. Unverified fields
-      are explicitly marked.
-    </p>
-  </section>
-  <section>
     <h2>Sources</h2>
+    <p>
+      Specifications checked: {{ left().displayName }}
+      {{ left().lastVerified }}; {{ right().displayName }}
+      {{ right().lastVerified }}. Maximum speeds are manufacturer claims.
+      <a [routerLink]="routeUrl.Printers" fragment="methodology"
+        >How these printer pages are researched</a
+      >.
+    </p>
     <ul>
       @for (source of left().sources; track source.url) {
         <li>
@@ -195,6 +179,12 @@
     </ul>
   </section>
   <p>
-    <a [routerLink]="routeUrl.Compare3dPrinters">Compare other 3D printers</a>
+    @for (printer of publishedPrinters(); track printer.id) {
+      <a [routerLink]="[routeUrl.Printers, printer.slug]"
+        >{{ printer.displayName }} build volume and specifications</a
+      >
+      ·
+    }
+    <a [routerLink]="routeUrl.Compare3dPrinters">Compare other printers</a>
   </p>
 </main>

@@ -123,6 +123,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 917,
     enabled: true,
     publishDate: '2026-11-03',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
     searchTerms: [
       'creep',
@@ -185,6 +186,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 912,
     enabled: true,
     publishDate: '2026-11-03',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
     searchTerms: [
       'layer height',
@@ -278,7 +280,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 901,
     enabled: true,
     publishDate: '2026-11-01',
-    updatedDate: '2026-11-04',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
     searchTerms: [
       'brim footprint',
@@ -415,7 +417,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 16,
     enabled: true,
     publishDate: '2026-10-24',
-    updatedDate: '2026-11-03',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
   {
@@ -459,7 +461,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 311,
     enabled: true,
     publishDate: '2026-10-11',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
   {
@@ -468,7 +470,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 312,
     enabled: true,
     publishDate: '2026-10-11',
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
 
@@ -487,7 +489,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 271,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
   {
@@ -505,7 +507,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 273,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
 
@@ -524,7 +526,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 261,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
   {
@@ -570,7 +572,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 12,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
   {
@@ -825,7 +827,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 4,
     enabled: true,
     publishDate: '2026-09-09',
-    updatedDate: '2026-11-04',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {
@@ -843,7 +845,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 2,
     enabled: true,
     publishDate: '2026-09-09',
-    updatedDate: '2026-11-04',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {
@@ -924,7 +926,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-22',
   },
   {
     slug: 'how-to-make-an-stl-file-printable',
@@ -932,7 +934,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 15,
     enabled: true,
     publishDate: '2026-09-09',
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: true,
   },
   {
@@ -941,7 +943,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 20,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {
@@ -951,7 +953,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-22',
   },
   {
     slug: 'stl-triangle-count-explained',
@@ -960,7 +962,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-22',
   },
   {
     slug: 'why-stl-files-have-no-units',
@@ -969,7 +971,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-29',
+    updatedDate: '2026-11-22',
   },
   {
     slug: 'how-to-scale-an-stl-file-for-3d-printing',
@@ -986,7 +988,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 65,
     enabled: true,
     publishDate: '2026-09-06',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {
@@ -1013,7 +1015,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {
@@ -1032,7 +1034,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-22',
   },
   {
     slug: 'how-to-remove-duplicate-triangles-from-an-stl-file',
@@ -1067,6 +1069,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 132,
     enabled: true,
     publishDate: '2026-10-15',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {
@@ -1219,7 +1222,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-25',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {
@@ -1254,7 +1257,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.ThreeMf,
     order: 80,
     enabled: true,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-22',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -1300,7 +1303,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 130,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-25',
+    updatedDate: '2026-11-22',
     checkEditorialTargets: false,
   },
   {

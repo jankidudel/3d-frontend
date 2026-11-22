@@ -159,8 +159,7 @@ export class PrintCostPage {
   constructor() {
     this.currency.set(chosenCurrency());
     inject(SeoService).apply({
-      title:
-        '3D Print Cost Calculator: Material, Energy and Print Cost | InspectMesh',
+      title: '3D Print Cost Calculator: Material and Energy | InspectMesh',
       description:
         'Cost a single print or several sliced plates with complete material, run work, shared preparation and order costs. Export a local job estimate.',
       path: PublicRouteUrl.PrintCostCalculator,

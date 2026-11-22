@@ -1,9 +1,9 @@
 ---
-title: 'Is My STL Watertight? Read the Open-Edge Result | InspectMesh'
-description: Run a closure check on known cube controls, interpret open edges and separate shells, and decide what the result cannot prove.
+title: 'Watertight STL: Meaning, Manifold and How to Check | InspectMesh'
+description: What watertight means for an STL, how it differs from manifold, and how to read open-edge and separate-shell results on known cube controls.
 slug: how-to-tell-if-an-stl-is-watertight
 eyebrow: STL topology guide
-heading: How to Tell If an STL File Is Watertight
+heading: What Watertight Means for an STL and How to Check It
 faq:
   - question: Is zero open edges a printability result?
     answer: No. It is a closure finding under the check method; geometry, slicing and physical suitability need separate review.
@@ -109,6 +109,52 @@ faq:
   >
   before choosing a supported correction. Closure alone does not select a
   repair.
+</p>
+<h2>Watertight versus manifold</h2>
+<p>
+  Watertight means closed: every triangle edge has a neighbouring face, so the
+  surface has no open boundary. Manifold is stricter. Each edge must also be
+  shared by exactly two faces, so a mesh can be watertight yet non-manifold. Two
+  closed cubes that touch along one edge have zero open edges, but that shared
+  edge belongs to four faces.
+</p>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Check</th>
+      <th scope="col">Question it answers</th>
+      <th scope="col">Tool</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Watertight</td>
+      <td>Does any edge belong to only one face?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlWatertightChecker }}"
+          >STL Watertight Checker</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>Manifold</td>
+      <td>Does any edge belong to one face, or to more than two faces?</td>
+      <td>
+        <a href="{{ GuideSlug.RouteStlManifoldChecker }}"
+          >STL Manifold Checker</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Neither check finds crossing surfaces; see
+  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
+    >self-intersection versus non-manifold geometry</a
+  >. For the edge types themselves, read
+  <a href="{{ GuideSlug.RouteWhatIsNonManifoldGeometry }}"
+    >what non-manifold geometry is</a
+  >.
 </p>
 <h2>Recheck the file you will slice</h2>
 <ol>

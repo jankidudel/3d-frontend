@@ -239,6 +239,65 @@ import { readStl, StlMesh } from '../stl-reducer/stl-reducer';
       </section>
     }
     <section class="content">
+      <h2>Read the angle the same way as your slicer</h2>
+      <p>
+        This checker measures a face's slope from vertical: 0° is a vertical
+        wall and 90° is a flat underside. Some slicers and design guides quote
+        the angle from horizontal instead. Convert with angle from horizontal =
+        90° - angle from vertical before comparing numbers.
+      </p>
+      <div
+        class="table-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Overhang angle reference, scroll horizontally"
+      >
+        <table>
+          <caption>
+            Downward-facing slopes at the default 45° threshold
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">From vertical</th>
+              <th scope="col">From horizontal</th>
+              <th scope="col">Flagged at 45°?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>30°</td>
+              <td>60°</td>
+              <td>No: a steep underside</td>
+            </tr>
+            <tr>
+              <td>45°</td>
+              <td>45°</td>
+              <td>No: equal to the threshold is not strictly greater</td>
+            </tr>
+            <tr>
+              <td>60°</td>
+              <td>30°</td>
+              <td>Yes: a shallow underside</td>
+            </tr>
+            <tr>
+              <td>90°</td>
+              <td>0°</td>
+              <td>Yes: a flat roof or underside</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2>STL winding decides which way is down</h2>
+      <p>
+        The checker derives each face's outward direction from the order of its
+        three vertices, not from the normal vector stored in the STL. If a
+        surface you expect to point down is not highlighted, or a top surface
+        is, the mesh may have
+        <a [href]="guideRouteUrl.RouteHowToFixFlippedNormalsInAnStlFile"
+          >flipped faces</a
+        >
+        or the build direction differs from the one you intend.
+      </p>
       <h2>Area needs an explicit STL unit assumption</h2>
       <p>
         Uniform positive scale leaves the angle classification unchanged but

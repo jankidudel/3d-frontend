@@ -77,8 +77,7 @@ export class ThreeMfQualityPage {
   private polling?: Subscription;
   constructor() {
     this.seo.apply({
-      title:
-        '3MF Quality Checker - Validate 3MF Files for 3D Printing | InspectMesh',
+      title: '3MF Quality Checker: Validate 3MF Files | InspectMesh',
       description:
         'Check 3MF files for mesh problems before 3D printing. Inspect dimensions, triangle count, topology issues and the file’s declared unit online.',
       path: PublicRouteUrl.ThreeMfQualityCheck,

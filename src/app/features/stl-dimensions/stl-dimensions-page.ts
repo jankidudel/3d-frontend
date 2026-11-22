@@ -200,9 +200,9 @@ export class StlDimensionsPage {
 
   constructor() {
     this.seo.apply({
-      title: 'STL Dimensions Checker: Size, Units and Scale | InspectMesh',
+      title: 'STL Dimensions Checker: Measure STL Size Online | InspectMesh',
       description:
-        'Measure STL bounds, choose the intended coordinate unit and calculate proportional scale. Confirm final placement and allowances in your slicer.',
+        'Measure the size of an STL file online: X, Y and Z bounds under the coordinate unit you choose. Confirm final placement and allowances in your slicer.',
       path: PublicRouteUrl.DimensionsChecker,
     });
     this.destroyRef.onDestroy(() => this.polling?.unsubscribe());

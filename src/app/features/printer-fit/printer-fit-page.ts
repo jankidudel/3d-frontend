@@ -156,9 +156,9 @@ export class PrinterFitPage {
 
   constructor() {
     this.seo.apply({
-      title: '3D Printer Fit Checker - Will Your STL or 3MF Fit?',
+      title: '3D Printer Fit Checker for STL and 3MF Files | InspectMesh',
       description:
-        'Upload an STL or 3MF file, choose a 3D printer and check build-volume fit, orientation, clearance and required scaling.',
+        'Choose a 3D printer and check whether your STL or 3MF fits its build volume, with right-angle rotation, clearance and the scale needed if it does not.',
       path: PublicRouteUrl.PrinterFitChecker,
     });
   }

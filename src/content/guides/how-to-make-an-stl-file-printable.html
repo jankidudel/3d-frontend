@@ -1,9 +1,9 @@
 ---
-title: 'Prepare an STL: Repair and Verify a Saved Copy | InspectMesh'
-description: 'Follow a duplicate-face STL through a narrow repair, saved output and reopened checks. Preserve the source and understand what the local case establishes.'
+title: 'How to Make an STL File Printable: Worked Example | InspectMesh'
+description: 'Take an STL that will not print cleanly from finding to fixed, reopened copy: interpret the fault, make a narrow repair and verify it in the slicer.'
 slug: how-to-make-an-stl-file-printable
 eyebrow: STL repair and preparation guide
-heading: 'Prepare an STL: repair and verify a saved copy'
+heading: 'How to Make an STL File Printable: A Worked Example'
 faq:
   - question: Can every STL file be repaired automatically?
     answer: No. Some simple mesh clean-up issues can be repaired safely, but holes, self-intersections and ambiguous geometry may need manual modelling work because a tool cannot reliably infer the original design intent.
@@ -16,9 +16,11 @@ faq:
 ---
 
 <p>
-  Follow one complete example from an STL with a duplicate face to a saved,
-  reopened copy. Use the steps to understand what changed and how to check your
-  own output. For holes, missing geometry or a slicer-only problem, start with
+  To make an STL printable, identify the actual fault, change only that, save a
+  separate copy and reopen it before slicing. This guide follows one complete
+  example from an STL with a duplicate face to a saved, reopened copy. Use the
+  steps to understand what changed and how to check your own output. For holes,
+  missing geometry or a slicer-only problem, start with
   <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
     >the matching diagnostic guide</a
   >.

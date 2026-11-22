@@ -1,11 +1,15 @@
 ---
-title: 'Why STL Files Have No Units: Diagnose Wrong Size | InspectMesh'
-description: 'Diagnose STL size errors using known dimensions and unit hypotheses. Distinguish changing an import assumption from resizing the saved coordinates.'
+title: STL Imported Too Small or Too Big? Check the Units | InspectMesh
+description: An STL that imports far too small or too big usually has a unit mix-up. Test millimetre and inch hypotheses against a known dimension before resizing.
 slug: why-stl-files-have-no-units
 eyebrow: STL scale guide
-heading: Why STL Files Have No Units
+heading: Why STL Files Have No Units, and Import at the Wrong Size
 ---
 
+<p>
+  An STL that imports about 25.4 times too small or too large often points to an
+  inch and millimetre mix-up, and a factor of 10 to a centimetre one.
+</p>
 <p>
   STL stores coordinate values without an authoritative unit declaration. A span
   of 20 can describe 20 mm or 20 inches, depending on the intended source unit.

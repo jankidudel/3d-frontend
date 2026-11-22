@@ -1,6 +1,6 @@
 ---
-title: 'Is Your 3MF Watertight? Interpret Open Edges | InspectMesh'
-description: 'Interpret 3MF open-edge findings, distinguish intended openings from defects, and understand why a closed surface does not prove clean topology.'
+title: Is Your 3MF Watertight? Check Each Part of a Build | InspectMesh
+description: 'Check closure part by part in a multi-object 3MF build: tell intended openings from defects and see why a closed surface does not prove clean topology.'
 slug: how-to-tell-if-a-3mf-file-is-watertight
 eyebrow: 3MF mesh guide
 heading: How to Tell if a 3MF File Is Watertight
@@ -13,6 +13,11 @@ heading: How to Tell if a 3MF File Is Watertight
   incorrect placement.
 </p>
 <h2>Use a closed-but-defective package as a counterexample</h2>
+<p>
+  A 3MF is watertight when each placed part has no open boundary edges. Check
+  every part of a multi-object build separately, decide whether any opening is
+  intended, and remember that a closed surface can still contain other faults.
+</p>
 <p>
   The
   <a href="/examples/cad-export/duplicate-face-cube.3mf" download

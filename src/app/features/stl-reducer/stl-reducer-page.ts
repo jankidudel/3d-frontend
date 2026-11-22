@@ -151,8 +151,7 @@ export class StlReducerPage {
       this.disposePreview();
     });
     this.seo.apply({
-      title:
-        'STL File Size Reducer: Compress and Simplify STL Files | InspectMesh',
+      title: 'STL File Size Reducer: Compress STL Files | InspectMesh',
       description:
         'Reduce STL file size online. Convert ASCII STL to compact binary STL or simplify a dense mesh with before-and-after triangle counts and size comparison.',
       path: PublicRouteUrl.StlFileSizeReducer,

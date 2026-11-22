@@ -244,6 +244,17 @@ import {
       </section>
     }
     <section class="content">
+      <h2>Example: the same part, placed two ways</h2>
+      <p>
+        Suppose one 100 x 50 x 5 mm plate object is placed twice in a 3MF build:
+        once lying flat, and once rotated 90° to stand on its long edge. The
+        flat copy has a 5,000 mm² face pointing straight down; the standing
+        copy's large faces become vertical walls, leaving only its 500 mm²
+        bottom edge face downward. Both values include the face resting on the
+        bed, which this geometry screen does not separate from a real overhang.
+        Because the checker screens the placed build, two copies of one stored
+        object can give different results, so check the build you will slice.
+      </p>
       <h2>Transforms come before the screen</h2>
       <p>
         Translation alone does not change a face angle. Rotation can change
@@ -294,9 +305,9 @@ export class ThreeMfOverhangPage {
 
   constructor() {
     this.seo.apply({
-      title: '3MF Overhang Checker - Review Placed Geometry | InspectMesh',
+      title: '3MF Overhang Checker for Placed and Rotated Parts | InspectMesh',
       description:
-        'Resolve 3MF units, items and transforms before screening downward-facing triangles by build direction and a strict angle-from-vertical threshold.',
+        'Check overhangs on 3MF parts as placed and rotated in the build: units, items and transforms are resolved before downward-facing triangles are screened.',
       path: PublicRouteUrl.ThreeMfOverhangChecker,
     });
   }

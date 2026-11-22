@@ -177,8 +177,7 @@ export class ToleranceCalculatorPage {
 
   constructor() {
     inject(SeoService).apply({
-      title:
-        '3D Print Tolerance & Clearance Calculator: Size Holes and Pins | InspectMesh',
+      title: '3D Print Tolerance Calculator: Hole and Pin Sizes | InspectMesh',
       description:
         'Calculate editable hole and pin model dimensions from a chosen 3D print fit and your own calibration measurements. Browser-local, with no fit guarantees.',
       path: PublicRouteUrl.ToleranceCalculator,

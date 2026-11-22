@@ -1,9 +1,9 @@
 ---
-title: 'Fix Flipped STL Faces: Check Winding Before Repair | InspectMesh'
+title: 'Fix Flipped Normals in an STL: Check Winding First | InspectMesh'
 description: 'Use known cube controls to separate display shading, a reversed patch and an inward shell, then verify the repaired STL.'
 slug: how-to-fix-flipped-normals-in-an-stl-file
 eyebrow: STL orientation guide
-heading: 'Fix Flipped STL Faces: Check Winding Before Repair'
+heading: 'Fix Flipped Normals in an STL: Check Winding Before Repair'
 faq:
   - question: Why does the inward cube report no winding conflicts?
     answer: Every neighbouring pair still traverses its shared edge compatibly. That test checks consistency, not the intended global outside.
@@ -12,11 +12,11 @@ faq:
 ---
 
 <p class="lead">
-  A dark face in a viewer is not proof that its STL triangle order is wrong.
-  Check a saved copy's winding against neighbouring faces and a known outside
-  surface. Reverse an entire closed component only when its orientation is
-  consistently inward; treat a local reversed patch and an open or intersecting
-  model as different cases.
+  To fix flipped normals in an STL, first confirm the faces really are reversed:
+  a dark face in a viewer is not proof. Check a saved copy's winding against
+  neighbouring faces and a known outside surface. Reverse an entire closed
+  component only when its orientation is consistently inward; treat a local
+  reversed patch and an open or intersecting model as different cases.
 </p>
 <h2>Is it display shading or triangle winding?</h2>
 <p>

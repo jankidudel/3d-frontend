@@ -3,6 +3,29 @@ import { inject, Service } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { SEO_CONFIG } from './seo-config';
 import { Breadcrumb, breadcrumbStructuredData } from './breadcrumbs';
+import {
+  SHARE_IMAGE,
+  SITE_NAME,
+  TWITTER_CARD,
+  publisherNode,
+  siteIdentityNodes,
+} from './site-identity';
+import { webApplicationNode } from './web-applications';
+
+const HOME_PATH = '/';
+const SOCIAL_PROPERTIES = [
+  'og:title',
+  'og:description',
+  'og:type',
+  'og:url',
+  'og:site_name',
+  'og:image',
+  'og:image:width',
+  'og:image:height',
+  'og:image:type',
+  'og:image:alt',
+] as const;
+const TWITTER_NAMES = ['twitter:card', 'twitter:image:alt'] as const;
 
 export interface PageSeo {
   readonly title: string;
@@ -32,7 +55,7 @@ export class SeoService {
     });
     this.updateCanonical(canonicalUrl);
     this.updateOpenGraph(page, canonicalUrl);
-    this.pageStructuredData = page.structuredData;
+    this.pageStructuredData = this.pageGraph(page, canonicalUrl);
     this.updateStructuredData();
   }
 
@@ -51,6 +74,43 @@ export class SeoService {
     this.updateStructuredData();
   }
 
+  /**
+   * Adds the site identity (home page only) and WebApplication node (tool
+   * pages only) to the page's own structured data. Nothing is added to
+   * non-canonical deployments.
+   */
+  private pageGraph(
+    page: PageSeo,
+    canonicalUrl: string | null,
+  ): Record<string, unknown> | undefined {
+    if (!canonicalUrl) {
+      return page.structuredData;
+    }
+    const origin = new URL(canonicalUrl).origin;
+    const path = normalizedPath(page.path);
+    const own = page.structuredData
+      ? withArticleIdentity(page.structuredData, canonicalUrl, origin)
+      : undefined;
+    const extra = [
+      ...(path === HOME_PATH ? siteIdentityNodes(origin) : []),
+      webApplicationNode(path, canonicalUrl, page.description),
+    ].filter((node): node is Record<string, unknown> => node !== undefined);
+    if (!extra.length) {
+      return own;
+    }
+    if (!own) {
+      return { '@context': 'https://schema.org', '@graph': extra };
+    }
+    const graph = own['@graph'];
+    if (Array.isArray(graph)) {
+      return { ...own, '@graph': [...graph, ...extra] };
+    }
+    const node = Object.fromEntries(
+      Object.entries(own).filter(([key]) => key !== '@context'),
+    );
+    return { '@context': 'https://schema.org', '@graph': [node, ...extra] };
+  }
+
   private canonicalUrl(path: string): string | null {
     if (!this.config.indexingEnabled || !this.config.siteUrl) {
       return null;
@@ -61,7 +121,7 @@ export class SeoService {
       if (siteUrl.protocol !== 'https:') {
         return null;
       }
-      return `${siteUrl.origin}${path === '/' ? '/' : `/${path.replace(/^\/+/, '')}`}`;
+      return `${siteUrl.origin}${normalizedPath(path)}`;
     } catch {
       return null;
     }
@@ -94,21 +154,56 @@ export class SeoService {
       property: 'og:type',
       content: page.openGraphType ?? 'website',
     });
+    this.meta.updateTag({ property: 'og:site_name', content: SITE_NAME });
+    this.meta.updateTag({ name: 'twitter:card', content: TWITTER_CARD });
     if (canonicalUrl) {
+      const origin = new URL(canonicalUrl).origin;
       this.meta.updateTag({ property: 'og:url', content: canonicalUrl });
+      this.meta.updateTag({
+        property: 'og:image',
+        content: `${origin}${SHARE_IMAGE.path}`,
+      });
+      this.meta.updateTag({
+        property: 'og:image:width',
+        content: String(SHARE_IMAGE.width),
+      });
+      this.meta.updateTag({
+        property: 'og:image:height',
+        content: String(SHARE_IMAGE.height),
+      });
+      this.meta.updateTag({
+        property: 'og:image:type',
+        content: SHARE_IMAGE.type,
+      });
+      this.meta.updateTag({
+        property: 'og:image:alt',
+        content: SHARE_IMAGE.alt,
+      });
+      this.meta.updateTag({
+        name: 'twitter:image:alt',
+        content: SHARE_IMAGE.alt,
+      });
       return;
     }
-    this.meta.removeTag("property='og:url'");
+    for (const property of [
+      'og:url',
+      'og:image',
+      'og:image:width',
+      'og:image:height',
+      'og:image:type',
+      'og:image:alt',
+    ]) {
+      this.meta.removeTag(`property='${property}'`);
+    }
+    this.meta.removeTag("name='twitter:image:alt'");
   }
 
   private removeOpenGraph(): void {
-    for (const property of [
-      'og:title',
-      'og:description',
-      'og:type',
-      'og:url',
-    ]) {
+    for (const property of SOCIAL_PROPERTIES) {
       this.meta.removeTag(`property='${property}'`);
+    }
+    for (const name of TWITTER_NAMES) {
+      this.meta.removeTag(`name='${name}'`);
     }
   }
 
@@ -151,4 +246,39 @@ export class SeoService {
       '@graph': [this.pageStructuredData, breadcrumb],
     };
   }
+}
+
+function normalizedPath(path: string): string {
+  const trimmed = path.replace(/^\/+/, '');
+  return trimmed ? `/${trimmed}` : HOME_PATH;
+}
+
+const ARTICLE_TYPE = 'Article';
+
+/** Adds the canonical URL and publisher to Article nodes. */
+function withArticleIdentity(
+  data: Record<string, unknown>,
+  canonicalUrl: string,
+  origin: string,
+): Record<string, unknown> {
+  const enrich = (node: unknown): unknown => {
+    if (
+      !node ||
+      typeof node !== 'object' ||
+      (node as Record<string, unknown>)['@type'] !== ARTICLE_TYPE
+    ) {
+      return node;
+    }
+    return {
+      ...node,
+      url: canonicalUrl,
+      mainEntityOfPage: canonicalUrl,
+      publisher: publisherNode(origin),
+    };
+  };
+  const graph = data['@graph'];
+  if (Array.isArray(graph)) {
+    return { ...data, '@graph': graph.map(enrich) };
+  }
+  return enrich(data) as Record<string, unknown>;
 }

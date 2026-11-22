@@ -122,8 +122,7 @@ export class ComparePage {
   }
   constructor() {
     inject(SeoService).apply({
-      title:
-        'Compare STL Files - Revision Overlay and Surface Samples | InspectMesh',
+      title: 'Compare STL Files: Revision Overlay | InspectMesh',
       description:
         'Compare two STL revisions locally in a shared coordinate frame. Review dimensions, surface area and bidirectional sampled geometric differences with explicit tolerance.',
       path: PublicRouteUrl.StlCompare,

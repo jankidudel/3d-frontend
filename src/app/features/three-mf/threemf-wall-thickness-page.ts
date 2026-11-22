@@ -64,10 +64,9 @@ export class ThreeMfWallThicknessPage {
 
   constructor() {
     this.seo.apply({
-      title:
-        '3MF Wall Thickness Checker: Inspect Resolved Builds | InspectMesh',
+      title: '3MF Wall Thickness Checker for Multi-Part Builds | InspectMesh',
       description:
-        'Screen sampled wall thickness in a resolved 3MF build. Check declared units, transforms, unmeasured samples and combined-scene ray limits.',
+        'Screen sampled wall thickness across the placed parts of a multi-part 3MF build. Check declared units, transforms, unmeasured samples and combined-scene limits.',
       path: PublicRouteUrl.ThreeMfWallThicknessChecker,
     });
   }

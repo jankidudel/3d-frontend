@@ -1,15 +1,18 @@
 ---
-title: 'STL Triangle Count: Detail, File Size and Slicing | InspectMesh'
-description: Learn what STL triangle count means, how it affects file size and model detail, and when a high-poly STL can make slicing slower without improving a print.
+title: 'STL Triangle Count: How Many Is Too Many? | InspectMesh'
+description: How many triangles is too many in an STL? Learn how the count affects file size, detail and slicing speed, and when a high-poly STL needs reducing.
 slug: stl-triangle-count-explained
 eyebrow: STL mesh guide
 heading: STL Triangle Count Explained
 ---
 
 <p>
-  Triangle count tells you how many facets an STL stores. Use it to investigate
-  a handling problem or an under-resolved curve; it does not measure whether the
-  right features survived or whether the file is ready to print.
+  There is no universal triangle limit for 3D printing. A count is too high when
+  it causes a real problem, such as an upload limit, a slow slicer or a file too
+  large to share, without adding visible detail at your nozzle size. It is too
+  low when curves print visibly faceted. Triangle count tells you how many
+  facets an STL stores; it does not measure whether the right features survived
+  or whether the file is ready to print.
 </p>
 <h2>Interpret the count with the observed problem</h2>
 <table>

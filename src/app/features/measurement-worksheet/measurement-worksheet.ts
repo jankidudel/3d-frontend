@@ -53,7 +53,13 @@ import {
     <p role="status">{{ status() }}</p>
     <details class="preview" open>
       <summary>Worksheet preview and copy fallback</summary>
-      <pre>{{ text() }}</pre>
+      <!-- The empty preview is page-independent filler for crawlers; render it
+        only in the browser, where it reflects the visitor's entries. -->
+      @defer (on idle) {
+        <pre>{{ text() }}</pre>
+      } @placeholder {
+        <p>The worksheet text appears here as you enter values.</p>
+      }
     </details>
   </section>`,
   styles: `

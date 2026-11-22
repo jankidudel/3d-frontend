@@ -127,8 +127,7 @@ export class BatchPage {
   private settings: CheckSettings | null = null;
   constructor() {
     inject(SeoService).apply({
-      title:
-        'Batch STL and 3MF Checker - Local Collection Reports | InspectMesh',
+      title: 'Batch STL and 3MF Checker for Collections | InspectMesh',
       description:
         'Check a collection of STL and supported 3MF files locally. Review units, mesh findings, printer fit and sampled walls, then export a consistent report.',
       path: PublicRouteUrl.BatchStlChecker,

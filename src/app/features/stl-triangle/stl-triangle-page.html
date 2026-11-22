@@ -86,6 +86,63 @@
       count does not prove valid topology or preserved detail. Malformed input
       and processing failures are not zero-triangle results.
     </p>
+    <h2>Triangle count and binary STL file size</h2>
+    <p>
+      A binary STL stores an 80-byte header, a 4-byte triangle count and exactly
+      50 bytes per triangle, so its size follows directly from the count: bytes
+      = 84 + 50 x triangles. ASCII STL writes each triangle as text and is
+      typically several times larger for the same mesh.
+    </p>
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      aria-label="Binary STL size by triangle count, scroll horizontally"
+    >
+      <table>
+        <caption>
+          Binary STL size calculated from triangle count
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Triangles</th>
+            <th scope="col">Binary STL size</th>
+            <th scope="col">Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>12</td>
+            <td>684 bytes</td>
+            <td>
+              The
+              <a [href]="exampleAsset.Closed20mmCubeStl" download
+                >closed 20 mm cube control</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>100,000</td>
+            <td>about 4.8 MiB</td>
+            <td>A moderately detailed functional part</td>
+          </tr>
+          <tr>
+            <td>524,286</td>
+            <td>just under 25 MiB</td>
+            <td>The largest binary STL this counter accepts</td>
+          </tr>
+          <tr>
+            <td>1,000,000</td>
+            <td>about 47.7 MiB</td>
+            <td>Too large here; consider reducing it first</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      If a binary file's size does not match this formula, the file may be
+      truncated or padded, which is worth checking before you trust any count.
+    </p>
     <h2>Choose the next review</h2>
     <div
       class="table-scroll"
