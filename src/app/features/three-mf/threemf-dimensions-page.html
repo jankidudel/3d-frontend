@@ -313,56 +313,51 @@
     <h2>How to measure a 3MF file</h2>
     <ol>
       <li>Choose or drop a <code>.3mf</code> file.</li>
+      <li>Read the width, depth and height of the build as placed.</li>
       <li>
-        Inspect the width, height and depth of the resolved build geometry.
-      </li>
-      <li>
-        Confirm the declared 3MF unit and compare converted measurements with
-        your intended size.
+        Check the unit the file declares and compare the size with what you
+        expect.
       </li>
       <li>
         Enter your printer's usable build volume to check whether the model fits
         before slicing.
       </li>
     </ol>
-    <h2>Read the declared unit and the measured scope</h2>
+    <h2>Understanding the result</h2>
     <p>
-      A unit declaration explains the coordinate convention. The measured bounds
-      describe the supported resolved build, including its placements. A wider
-      build can contain several unchanged small parts; it does not mean each
-      part grew to the overall width. The primary server result is displayed in
-      its declared/effective source unit; the conversion panel shows the
-      corresponding millimetres, centimetres and inches.
+      The file's unit tells you how to read its numbers. The size shown is for
+      the whole build as placed, so a wide build may simply hold several small
+      parts side by side; it does not mean any part grew. The main result uses
+      the file's own unit, and the conversion panel shows the same size in
+      millimetres, centimetres and inches.
     </p>
     <p>
       To resize the project, use
-      <a [href]="guideRouteUrl.RouteHowToScaleA3mfFile"
-        >the application workflow in the scaling guide</a
-      >. Changing a display unit here does not save a resized 3MF. Before making
-      a derivative,
+      <a [href]="guideRouteUrl.RouteHowToScaleA3mfFile">how to scale a 3MF</a>.
+      Changing the display unit here does not resize or save the file. Before
+      exporting an STL,
       <a [href]="guideRouteUrl.Route3mfToStlWrongSizeOrPosition"
-        >record a known dimension and placement</a
-      >, then choose scope in the
-      <a [routerLink]="routeUrl.ThreeMfToStlConverter">converter</a>.
-      Printer-fit bounds remain a geometric screen, not a print guarantee.
+        >note a size and position you know</a
+      >, then choose what to export in the
+      <a [routerLink]="routeUrl.ThreeMfToStlConverter">converter</a>. The
+      printer-fit check compares sizes only; it does not guarantee a print.
     </p>
 
-    <h2>One resource, two placements, different bounds</h2>
+    <h2>Example: the same cube placed twice</h2>
     <p>
-      A 20 mm cube placed at X = 0 spans 20 mm on that axis. Place another copy
-      at X + 40 mm and the combined bounds span 60 mm, including the 20 mm gap.
-      The wider build does not make either cube 60 mm wide. This is expected
-      geometry, not a retained observation of this deployed checker.
+      A 20 mm cube at X 0 is 20 mm wide. Place a second copy 40 mm along and the
+      whole build is 60 mm wide, including the 20 mm gap, but each cube is still
+      20 mm. (Simple arithmetic, not a saved test result.)
     </p>
     <p>
-      Compare the owned
+      Compare our
       <a href="/examples/collection-review/one-placed-cube.3mf" download
-        >one-placement package</a
+        >one-cube file</a
       >
       and
       <a href="/examples/collection-review/two-placed-cubes.3mf" download
-        >two-placement package</a
-      >. Changing a display unit does not resize or re-export either package.
+        >two-cube file</a
+      >. Changing the display unit does not resize or re-export either file.
     </p>
     <p>
       For a focused closed-surface check, use the
@@ -378,14 +373,14 @@
     <h2>FAQ</h2>
     <h3>Does my 3MF file get uploaded?</h3>
     <p>
-      Yes. Pressing Measure 3MF dimensions submits the selected file for server
-      processing. For local viewing without upload, use the
+      Yes. Pressing Measure 3MF dimensions uploads the file to our server. For
+      local viewing without upload, use the
       <a [routerLink]="routeUrl.ThreeMfViewer">3MF Viewer</a>.
     </p>
-    <h3>Are the dimensions measured before or after build-item transforms?</h3>
+    <h3>Do the dimensions include each object's position and scale?</h3>
     <p>
-      They are measured from the resolved build geometry, including supported
-      build-item and component transforms.
+      Yes. They are measured after applying each object's position, scale and
+      rotation, including nested sub-parts.
     </p>
     <h3>Does a fitting result guarantee that I can print the file?</h3>
     <p>

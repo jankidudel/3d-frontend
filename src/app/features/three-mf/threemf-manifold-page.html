@@ -1,5 +1,5 @@
 <main class="page tool-page manifold-page">
-  <p class="eyebrow">Supported edge-sharing checks</p>
+  <p class="eyebrow">3MF non-manifold check</p>
   <h1>3MF Manifold Checker</h1>
   <p class="lead">
     Check whether every edge in your 3MF build joins exactly two triangles. This
@@ -130,7 +130,7 @@
     <div
       class="interpretation-table"
       role="region"
-      aria-label="Supported topology findings"
+      aria-label="What each finding means"
       tabindex="0"
     >
       <table>
@@ -142,74 +142,73 @@
         </thead>
         <tbody>
           <tr>
-            <td>Boundary edge</td>
+            <td>Open edge</td>
             <td>
-              An edge is used by one triangle under the implemented incidence
-              rule.
+              Only one triangle uses this edge, so the surface has a hole or
+              gap.
             </td>
           </tr>
           <tr>
-            <td>Over-shared edge</td>
+            <td>Non-manifold edge</td>
             <td>
-              More than two triangles use an edge; the report labels this
-              non-manifold.
+              Three or more triangles meet at this edge, often because of a
+              duplicate face.
             </td>
           </tr>
           <tr>
-            <td>Component count</td>
+            <td>Number of pieces</td>
             <td>
-              Vertex-connected groups within each placed build item, summed
-              across items; not a count of defective parts.
+              How many separate pieces each placed object has, added up across
+              the build. This is not a count of errors.
             </td>
           </tr>
           <tr>
-            <td>Winding conflict</td>
+            <td>Flipped face</td>
             <td>
-              Two incident triangles follow the shared edge in the same
-              direction. This does not establish the intended outside.
+              Two neighbouring triangles face opposite ways. The check cannot
+              tell which side was meant to be outside.
             </td>
           </tr>
           <tr>
-            <td>Completed with no listed findings</td>
+            <td>Finished with no problems listed</td>
             <td>
-              Supported checks completed without those findings; untested
-              properties remain unresolved.
+              None of these problems were found. Things this check does not test
+              (such as overlaps) are still unknown.
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      Supported component and build transforms and source-unit conversion are
-      applied before each build item is inspected independently. Exact endpoint
-      coordinates define edges; there is no distance-tolerance welding.
-      Invalid-coordinate and degenerate faces do not contribute to edge
-      incidence; duplicate faces do. Components connect through any shared
-      vertex coordinate. The displayed counts aggregate placed-item results,
-      without per-resource localisation.
+      Each placed object is checked on its own, after applying the file's unit
+      and the object's position and scale. Edges are matched by exact corner
+      positions; nearby points are not merged. Zero-area and invalid triangles
+      are skipped, but duplicate faces are counted. Pieces that share a corner
+      count as one. The totals cover the whole build and do not say which object
+      a problem is in.
     </p>
     <p>
-      Edge incidence is one topology screen. A point-only contact or crossing
-      surface can require additional inspection even when no over-shared edge is
-      reported. Several intended closed parts should not be fused solely to make
-      a component count smaller. This method does not run spatial intersection
-      checks.
+      This is one kind of check. Parts touching at a single point, or surfaces
+      that cross, need a closer look even when no non-manifold edges are found,
+      because this check does not look for overlaps. Don't merge separate parts
+      just to get a lower piece count.
     </p>
-    <h2>Choose the next investigation</h2>
+    <h2>What to do next</h2>
     <p>
       Use
       <a [href]="guideRouteUrl.RouteHowToTellIfA3mfFileIsWatertight"
-        >boundary interpretation</a
+        >which part has holes</a
       >
-      for exposed edges,
-      <a [routerLink]="routeUrl.ThreeMfRepair">local triangle cleanup</a> for an
-      understood redundant-face removal, and
+      for holes,
+      <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair</a> to remove extra
+      faces once you know they are duplicates, and
       <a [href]="guideRouteUrl.RouteHowToTellIfA3mfFileIsManifold"
-        >the resource versus placement guide</a
+        >mesh problem or placement problem</a
       >
-      for uncertain joins. A resource may be reused by several build items;
-      changing its triangles differs from removing a placement. Keep the
-      original and verify the saved package in the receiving slicer.
+      when parts look fine but still trigger a warning. One stored object can be
+      placed several times, so editing it changes every copy, which is different
+      from deleting one placement. Keep the original and check the saved file in
+      your slicer.
     </p>
   </section>
 </main>

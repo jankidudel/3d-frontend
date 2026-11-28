@@ -454,6 +454,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 310,
     enabled: true,
     publishDate: '2026-10-11',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -481,7 +482,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 270,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -490,7 +491,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 271,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -499,7 +500,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 272,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-02',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -592,7 +593,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 250,
     enabled: true,
     publishDate: '2026-10-10',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -656,7 +657,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 200,
     enabled: true,
     publishDate: '2026-10-07',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -665,7 +666,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 201,
     enabled: true,
     publishDate: '2026-10-07',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -1205,7 +1206,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 25,
     enabled: true,
     publishDate: '2026-09-15',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1232,7 +1233,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 50,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-27',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1278,7 +1279,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-26',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'how-to-repair-a-3mf-file',

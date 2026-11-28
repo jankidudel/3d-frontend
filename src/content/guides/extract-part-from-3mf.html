@@ -1,22 +1,22 @@
 ---
-title: 'Extract One Placed Part from a 3MF | InspectMesh'
-description: 'Select one top-level placed 3MF item, retain its placement and verify the generated STL using an owned repeated-cube control.'
+title: 'How to Extract One Part from a 3MF as an STL | InspectMesh'
+description: 'Export just one object from a multi-part 3MF as an STL: pick the part in the 3MF to STL Converter, keep or reset its position, and check the result.'
 slug: extract-part-from-3mf
 eyebrow: Placed geometry and derivative review
-heading: 'Extract One Placed Part from a 3MF'
+heading: 'How to Extract One Part from a 3MF File'
 faq:
-  - question: 'Does one selected placement include its nested components?'
-    answer: 'Yes. All supported descendants belong to the selected top-level placed item; this workflow does not separately select nested children.'
-  - question: 'Does isolation change export scope?'
-    answer: 'No. Isolation changes the preview. Choose export scope explicitly in the converter.'
+  - question: 'If a part is made of sub-parts, are they all included?'
+    answer: 'Yes. Selecting a part includes everything nested inside it. You cannot pick a single sub-part on its own yet.'
+  - question: 'Does hiding the other parts change what gets exported?'
+    answer: 'No. Isolating a part only changes the preview. Choose what to export in the converter itself.'
 ---
 
-<p>
-  To extract one placed part, open the 3MF in
+<p class="lead">
+  To extract one part from a 3MF, open the file in the
   <a href="{{ GuideSlug.Route3mfToStlConverter }}">3MF to STL Converter</a>,
-  choose its top-level placed item and generate a geometry-only STL. Preserve
-  placement unless you deliberately choose translation. Inspect the reopened
-  derivative before downloading, and retain the original project.
+  select the part you want, and export it as an STL. By default it keeps the
+  part's position from the build plate; you can choose to move it to the origin
+  instead. Check the exported STL before you use it, and keep the original 3MF.
 </p>
 <figure>
   <img
@@ -27,73 +27,73 @@ faq:
     alt="One resource, two placements: mathematical schematic."
   />
   <figcaption>
-    One stored 20 mm cube is referenced twice. The selections belong to
-    placements, not two different resources.
+    One 20 mm cube stored once and placed twice. You select a placed copy, not
+    the stored cube.
   </figcaption>
 </figure>
-<h2>Which kind of object are you choosing?</h2>
+<h2>What exactly are you selecting?</h2>
 <table>
   <thead>
     <tr>
-      <th>Concept</th>
-      <th>Meaning</th>
-      <th>Selection boundary</th>
+      <th>Term</th>
+      <th>What it is</th>
+      <th>What that means for export</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Stored resource</td>
-      <td>A reusable definition in the package</td>
+      <td>Stored object</td>
+      <td>A shape saved in the file</td>
       <td>
-        May be used twice or never placed; resource count is not export count
+        It may be placed twice or not at all, so the number of stored objects is
+        not the number of parts you can export
       </td>
     </tr>
     <tr>
-      <td>Placed build item</td>
-      <td>A top-level reference plus placement</td>
-      <td>
-        One selectable item, even when the same resource is referenced again
-      </td>
+      <td>Placed part</td>
+      <td>An object put on the build plate at a position</td>
+      <td>Each placement is selectable, even if two use the same shape</td>
     </tr>
     <tr>
-      <td>Nested component</td>
-      <td>A child resource composed into a placed item</td>
-      <td>Supported descendants export together with their top-level parent</td>
+      <td>Sub-part</td>
+      <td>A shape nested inside a placed part</td>
+      <td>Exported together with its parent part</td>
     </tr>
     <tr>
-      <td>Disconnected shell</td>
-      <td>A connected triangle surface</td>
-      <td>Connectivity does not recover original project identity</td>
+      <td>Separate shell</td>
+      <td>A connected piece of surface</td>
+      <td>Being separate does not tell you which part it belonged to</td>
     </tr>
   </tbody>
 </table>
-<h2>Worked example: select the second cube</h2>
+<h2>Example: export the second of two cubes</h2>
 <ol>
   <li>
-    Download the two-placed-cubes control from the
-    <a href="{{ GuideSlug.RouteExamples }}">example collection</a>. Its one
-    resource has 12 triangles; two placements resolve 24.
+    Download the two-placed-cubes file from the
+    <a href="{{ GuideSlug.RouteExamples }}">example collection</a>. It stores
+    one 12-triangle cube and places it twice (24 triangles in total).
   </li>
   <li>
-    Load it in <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Select
-    build-2 using the row or the geometry. The selected spans are 20 × 20 × 20
-    mm; X runs from 40 to 60 mm.
+    Open it in the <a href="{{ GuideSlug.Route3mfViewer }}">3MF viewer</a> and
+    select <strong>build-2</strong> from the list or by clicking it. It is 20 x
+    20 x 20 mm and sits between 40 and 60 mm on X.
   </li>
   <li>
-    Use Isolate selected to inspect it and Show all to restore the other cube.
-    Isolation affects viewing only.
+    Use <strong>Isolate selected</strong> to look at it alone, then
+    <strong>Show all</strong> to bring the other cube back. This only changes
+    the view.
   </li>
   <li>
-    Open the same source in the converter and explicitly select build-2. Review
-    the scope before generation.
+    Open the same file in the converter and select build-2. Check what will be
+    exported before generating.
   </li>
   <li>
-    Leave Preserve resolved placement selected. Generate and verify: the
-    reopened derivative must have 12 triangles and X=40..60 mm.
+    Leave <strong>Preserve resolved placement</strong> on and generate. The
+    result should have 12 triangles and sit between 40 and 60 mm on X.
   </li>
   <li>
-    Download the STL and report. Open it in the receiving application using
-    millimetres and check a 20 mm edge and the retained location.
+    Download the STL and report. Open it as millimetres in your slicer and check
+    a 20 mm edge and its position.
   </li>
 </ol>
 <figure>
@@ -105,42 +105,34 @@ faq:
     alt="Entire build and selected item: mathematical schematic."
   />
   <figcaption>
-    All-build X spans 60 mm while the selected placement spans 20 mm. These are
-    different measurement scopes.
+    The whole build is 60 mm wide; the selected cube is 20 mm wide.
   </figcaption>
 </figure>
-<h2>Nested composites and unplaced resources</h2>
+<h2>Nested parts and unused shapes</h2>
 <p>
-  A nested composite remains one selectable top-level item. Its technical
-  details show component paths; selecting it includes every supported
-  descendant. This first version does not offer individual nested-child or
-  multiple-file selection. The unplaced-resource control stores an additional
-  100 mm cube without a build reference. It must not become an exported part
-  merely because its definition exists.
+  A part made of nested sub-parts is selected as one item, and everything inside
+  it is exported together. You cannot yet pick a single sub-part or export
+  several separate files at once. A shape stored in the file but never placed
+  (our example includes an unused 100 mm cube) is not exported just because it
+  exists.
 </p>
-<h2>Keep design intent with its source</h2>
+<h2>What the STL cannot carry</h2>
 <p>
-  Labels come from the uploaded file or neutral generated names. They do not
-  authenticate the designer or intended machine. Extracting triangles cannot
-  reconstruct editable CAD, material assignments or project settings. See
+  Part names come from the file or are generated, and do not prove who made the
+  design. An STL holds only triangles: editable CAD, colours, materials and
+  slicer settings are lost. See
   <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
-    >the general conversion guide</a
+    >how to convert 3MF to STL</a
   >
-  for format losses. If a required extension or invalid reference prevents
-  resolution, use the original authoring application and request a supported
-  geometry export rather than stripping package declarations.
+  for what changes. If the file uses a feature InspectMesh cannot read, export
+  the part from the program that made it instead.
 </p>
+<p>Keep the original 3MF together with the exported STL and its report.</p>
 <p>
-  Next step: reproduce the second placement, then choose the required scope in
-  your own file. Store the original project alongside the derivative and its
-  report.
-</p>
-<p>
-  Technical basis:
+  Based on the
   <a
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
     >3MF Core specification 1.4.0</a
-  >, sections 3.3, 3.4 and 4.2; reviewed 11 October 2026. Examples are original
-  mathematical controls, not physical print measurements or tests of every
-  slicer.
+  >, sections 3.3, 3.4 and 4.2, reviewed 11 October 2026. The examples are
+  made-up geometry, not print tests or tests of every slicer.
 </p>

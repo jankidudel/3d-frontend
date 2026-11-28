@@ -260,7 +260,7 @@ export const materialSources: readonly ResearchSource[] = [
   {
     id: 'bambu-filament',
     title: 'Filament guide',
-    url: 'https://wiki.bambulab.com/en/filament-acc/filament/filament-guide',
+    url: 'https://wiki.bambulab.com/en/general/filament-guide-material-table',
     publisher: 'Bambu Lab',
     accessedAt: checked,
   },

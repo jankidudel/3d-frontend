@@ -31,7 +31,7 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
   [PublicRouteUrl.StlRepair]: {
     heading: 'Local part removal and explicit server cleanup',
     example:
-      'The owned cube plus an exact duplicate triangle has 13 faces. Removing that duplicate should restore 12 without inventing a surface. A missing whole cube face is a different problem: cleanup cannot recreate its intended design.',
+      'Our example cube with one duplicate triangle has 13 faces. Removing that duplicate should restore 12 without inventing a surface. A missing whole cube face is a different problem: cleanup cannot recreate its intended design.',
     interpretation:
       'Standard STL cleanup explicitly uploads your selected file, up to the current 25 MiB guest limit, for server processing. Disconnected-piece detection and selection-only export run locally and never silently combine with that action. STL has no declared unit. Review the actual removal counts and skipped reasons, download the separate copy, then reselect it for preflight and revision comparison. No unconditional printability claim is made.',
     next: PublicRouteUrl.StlCompare,
@@ -65,24 +65,25 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
   [PublicRouteUrl.ThreeMfPrintPreflight]: {
     guide: PublicRouteUrl.MissingThreeMfObjectsGuide,
     guideLabel: 'Trace missing 3MF parts and placements',
-    heading: 'Interpret the resolved 3MF build',
+    heading: 'Reading a 3MF build',
     example:
-      'A mesh-based 3MF can declare physical units and place build items with transforms. Review the resolved dimensions, not just one object in the archive. Missing explicit units use the format default; unsupported package behaviour must stay unresolved rather than receive a clean badge.',
+      'A 3MF states its unit and places each object at a position and scale. Check the size of the whole build as placed, not just one object in the file. If no unit is given, millimetres are used; features InspectMesh cannot read are reported as unchecked, never as passed.',
     interpretation:
-      'A two-item build can contain legitimate disconnected parts. Shared topology and volume interpretation need care: multiple shells do not automatically establish a single solid. Fit uses the selected nominal printer box and does not validate slicer reservations, embedded profiles or supports.',
+      'A build with two objects can be two perfectly good separate parts. Several separate pieces do not make one solid, which affects volume. The printer fit uses the listed build volume of the printer and does not account for slicer no-print areas, saved profiles or supports.',
     next: PublicRouteUrl.BatchStlChecker,
-    cta: 'Check supported 3MF collections',
+    cta: 'Check several 3MF files together',
   },
   [PublicRouteUrl.DimensionsChecker]: {
     guide: GuideRouteUrl.RouteHowToCheckIfA3dModelFitsYourPrinter,
-    guideLabel: 'Check brims, excluded areas and placement after nominal fit',
-    heading: 'Reproduce a unit error and a fit decision',
+    guideLabel:
+      'Will a model fit your printer? Brims, no-print areas and placement',
+    heading: 'Worked example: a unit mix-up and a printer fit',
     example:
-      'A 2-unit CAD width intended as inches is 50.8 mm, not 2 mm. Confirm a known reference dimension before applying a 25.4 correction. The batch cube similarly changes from 20 mm to 508 mm under an inch interpretation, without changing its source coordinates.',
+      'A part drawn 2 inches wide is 50.8 mm, not 2 mm. Check one dimension you know before multiplying by 25.4. Likewise, our 20 mm example cube reads as 508 mm if you choose inches, even though the file itself is unchanged.',
     interpretation:
-      'An illustrative 250 \u00d7 210 \u00d7 180 mm box cannot fit a nominal 180 mm cube bed in any right-angle orientation. It fits a nominal 256 mm cube geometrically, but its 6 mm margin on one axis does not reserve space for brims or excluded regions. Check the real slicer bed before printing.',
+      'A 250 \u00d7 210 \u00d7 180 mm box does not fit a 180 mm cube printer, however you turn it. It does fit a 256 mm cube printer, but with only 6 mm to spare on one side, leaving little room for a brim or no-print areas. Check the real bed in your slicer before printing.',
     next: PublicRouteUrl.PrinterFitChecker,
-    cta: 'Compare the same model against named printers',
+    cta: 'Check this model against specific printers',
   },
   [PublicRouteUrl.PrintCostCalculator]: {
     heading: 'A complete material and energy example',
@@ -130,20 +131,20 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
     cta: 'Estimate the finish date and time',
   },
   [PublicRouteUrl.PrinterFitChecker]: {
-    heading: 'Compare nominal bed fit without changing intended scale',
+    heading: 'Worked example: checking printer fit without rescaling',
     example:
-      'An illustrative 250 \u00d7 210 \u00d7 180 mm bounding box fails a 180 \u00d7 180 \u00d7 180 mm A1 Mini envelope and fits the A1 nominal 256 mm cube. A 200 \u00d7 100 \u00d7 50 mm box on a 180 \u00d7 180 \u00d7 250 mm envelope can fit when its 200 mm axis is upright.',
+      'A 250 \u00d7 210 \u00d7 180 mm box does not fit the 180 \u00d7 180 \u00d7 180 mm A1 Mini, but fits the A1 (256 mm cube). A 200 \u00d7 100 \u00d7 50 mm box fits a 180 \u00d7 180 \u00d7 250 mm printer only when stood on end, with the 200 mm side upright.',
     interpretation:
-      'These are geometric box decisions. Do not equate nominal fit with available brim clearance, support practicality or wearer fit for a helmet. Verify the model footprint in the actual slicer; split or scale only when the changed real-world dimensions and joints are acceptable.',
+      'These checks compare boxes. Fitting the listed volume does not guarantee room for a brim, sensible supports, or that a wearable part like a helmet will fit a person. Check the footprint in your slicer, and only split or scale the model if the new size and joints are acceptable.',
     next: PublicRouteUrl.BatchStlChecker,
     cta: 'Record printer fit consistently across a collection',
   },
   [PublicRouteUrl.OrientationPlanner]: {
     heading: 'Recheck filament and fit after changing orientation',
     example:
-      'Rotating a 200 \u00d7 100 \u00d7 50 mm box so the 200 mm axis is vertical can fit a nominal 180 \u00d7 180 \u00d7 250 mm envelope that rejects the original horizontal width. That same choice can reduce contact area and alter supports, layer direction and elapsed time.',
+      'A 200 \u00d7 100 \u00d7 50 mm box is too wide to lie flat on a 180 \u00d7 180 \u00d7 250 mm printer, but fits when stood on end with the 200 mm side upright. That also means less contact with the bed, different supports, layers running the other way and a different print time.',
     interpretation:
-      'Compare the actual sliced layers, supports and complete consumption before deciding. An orientation that fits a box is not a guarantee of strength or print success. Feed the updated slicer estimate into the spool planner rather than reusing a different orientation\u2019s material figure.',
+      'Compare the sliced layers, supports and total filament before deciding. Fitting the printer does not guarantee strength or a good print. Use the new slicer estimate in the spool planner, not the figure from a different orientation.',
     next: PublicRouteUrl.FilamentRemainingCalculator,
     cta: 'Check the updated job estimate against your spool',
   },
@@ -166,7 +167,7 @@ export const toolEvidence: Readonly<Record<string, ToolEvidence>> = {
         </p>
       }
       <p>{{ item.example }}</p>
-      <h3>Interpret the result and choose the next step</h3>
+      <h3>What the result means and what to do next</h3>
       <p>{{ item.interpretation }}</p>
       <a [href]="item.next" (click)="track()">{{ item.cta }}</a>
       @if (samples[page()]; as files) {
@@ -198,47 +199,47 @@ export class ToolEvidenceComponent {
     [PublicRouteUrl.Viewer]: [
       {
         href: '/examples/quality-evidence/keyed-cylinder-100.stl',
-        label: 'Owned curved measurement control (STL; assume mm)',
+        label: 'Example curved part for measuring (STL; open as mm)',
       },
     ],
     [PublicRouteUrl.StlRepair]: [
       {
         href: ExampleAsset.DuplicateFaceCubeStl,
-        label: 'Owned cube with a repeated face',
+        label: 'Example cube with a duplicate face (STL)',
       },
     ],
     [PublicRouteUrl.ThreeMfRepair]: [
       {
         href: ExampleAsset.DuplicateFaceCube3mf,
-        label: 'Owned 3MF with a repeated face',
+        label: 'Example cube with a duplicate face (3MF)',
       },
     ],
     [PublicRouteUrl.StlPrintPreflight]: [
       {
         href: ExampleAsset.Closed20mmCubeStl,
-        label: 'Closed 20-unit cube (STL; assume mm)',
+        label: 'Closed 20 mm example cube (STL; open as mm)',
       },
       {
         href: ExampleAsset.OpenFaceCubeStl,
-        label: 'Same cube with a missing face',
+        label: 'The same cube with one side missing',
       },
     ],
     [PublicRouteUrl.ThreeMfPrintPreflight]: [
       {
         href: ExampleAsset.TwoPlacedCubes3mf,
-        label: 'One resource, two placed cubes',
+        label: 'One cube placed twice (3MF)',
       },
     ],
     [PublicRouteUrl.DimensionsChecker]: [
       {
         href: ExampleAsset.EnglishMarketBatchPrinterFit250x210x180Stl,
-        label: 'Nominal-fit control: 250 x 210 x 180 coordinate spans',
+        label: 'Example 250 x 210 x 180 box for printer fit (STL; open as mm)',
       },
     ],
     [PublicRouteUrl.PrinterFitChecker]: [
       {
         href: ExampleAsset.EnglishMarketBatchPrinterFit250x210x180Stl,
-        label: '250 x 210 x 180 nominal-fit control',
+        label: 'Example 250 x 210 x 180 box for printer fit',
       },
     ],
     [PublicRouteUrl.GcodePreflightChecker]: [
@@ -251,7 +252,7 @@ export class ToolEvidenceComponent {
     [PublicRouteUrl.OrientationPlanner]: [
       {
         href: ExampleAsset.TiltedAsymmetricBlockStl,
-        label: 'Owned asymmetric orientation control',
+        label: 'Example lopsided part for orientation (STL)',
       },
     ],
   };

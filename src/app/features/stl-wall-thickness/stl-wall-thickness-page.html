@@ -1,10 +1,11 @@
 <main class="page tool-page wall-thickness-page">
-  <p class="eyebrow">Local STL geometry screen</p>
+  <p class="eyebrow">STL wall check in your browser</p>
   <h1>STL Wall Thickness Checker</h1>
   <p class="lead">
-    Estimate wall thickness at sampled STL surface locations. Confirm the
-    coordinate unit, choose a review threshold and inspect flagged locations
-    before checking important features in CAD and your slicer.
+    Find walls that may be too thin to print. Choose the unit your STL was
+    designed in and a minimum thickness, and the checker measures walls at up to
+    2,000 points and highlights the thin spots. It runs in your browser. Then
+    check those spots in CAD and your slicer.
   </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose an STL</h2>
@@ -21,8 +22,8 @@
       />
     </div>
     <p class="hint">
-      ASCII and binary STL files up to {{ fileLimitMiB }} MiB are supported.
-      Your file is processed in this browser.
+      ASCII and binary STL files up to {{ fileLimitMiB }} MiB. Your file is
+      measured in this browser and never uploaded.
     </p>
     @if (error()) {
       <p class="error" role="alert">{{ error() }}</p>
@@ -38,7 +39,7 @@
   />
   <p>
     <a [href]="exampleAsset.ThinWallBarsStl" download
-      >Download the thin-bar STL control</a
+      >Download the thin-bar STL example</a
     >
   </p>
 
@@ -182,80 +183,79 @@
     </section>
   }
   <section class="content interpretation-guide">
-    <h2>How to act on a sampled result</h2>
+    <h2>What to do with the result</h2>
     <table>
       <thead>
         <tr>
-          <th scope="col">Observation</th>
+          <th scope="col">Result</th>
           <th scope="col">Next action</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Measured sample below threshold</td>
+          <td>Some walls are thinner than your limit</td>
           <td>
-            Inspect that geometry and the same sliced region.
+            Look at those spots in the model and in the sliced layers.
             <a [href]="routeUrl.NozzleLayerHeightCalculator"
-              >Compare nominal line widths</a
+              >Compare with your nozzle's line width</a
             >
-            only after checking the actual wall.
+            once you've confirmed the wall really is thin.
           </td>
         </tr>
         <tr>
-          <td>No measured sample below threshold</td>
+          <td>No thin walls found</td>
           <td>
-            Review unmeasured locations and critical features that finite
-            sampling can miss.
+            Still check important features: the sample can miss small areas, and
+            some points may not have been measurable.
           </td>
         </tr>
         <tr>
-          <td>Unmeasured sample, possibly alongside a thin sample</td>
+          <td>Some points could not be measured</td>
           <td>
-            Inspect open, degenerate or ambiguous geometry in CAD and the mesh
-            viewer.
+            Usually holes, zero-area triangles or unclear geometry; check them
+            in CAD and the viewer.
           </td>
         </tr>
         <tr>
-          <td>No valid measurement</td>
+          <td>Nothing could be measured</td>
           <td>
-            Check unit, geometry and method limits; no zero or success is
-            implied.
+            Check the unit and the model. This is not a pass, and not a zero.
           </td>
         </tr>
         <tr>
           <td>File could not be analysed</td>
           <td>
-            Choose a supported nonempty STL within the file limit and try again.
+            Choose a valid, non-empty STL under the size limit and try again.
           </td>
         </tr>
       </tbody>
     </table>
-    <h2>Method boundary</h2>
+    <h2>What the check covers</h2>
     <p>
-      These are uploaded material-wall samples, not a preview of future slicer
-      regions. For a settings change, compare
+      These are measurements of the model's walls, not a preview of what your
+      slicer will do. For slicer settings, compare
       <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
-        >walls, caps and sparse infill</a
+        >walls, top layers and infill</a
       >
       in the actual slice.
     </p>
     <p>
-      The checker selects up to 2,000 triangles across input triangle order and
-      casts one inward normal ray from each centroid. Degenerate faces and rays
-      without an accepted opposing hit remain unmeasured. Unsampled triangles
-      receive no estimate. A ray may hit another body, so this is neither a
-      per-part result nor a whole-model minimum certificate.
-      <a [href]="routeUrl.Methods">Read the sampling method</a>.
+      The checker picks up to 2,000 triangles spread through the file and
+      measures straight inward from the centre of each one to the opposite wall.
+      Zero-area triangles, and points with no opposite wall, are not measured;
+      triangles not picked get no reading. A measurement can reach a different
+      part, so this is neither a per-part result nor a guarantee of the thinnest
+      wall.
+      <a [href]="routeUrl.Methods">How the measurement works</a>.
     </p>
     <p>
       For a
       <a [href]="guideRouteUrl.RouteBearingSeatSizing3dPrinting"
         >bearing housing</a
-      >, compare sampled locations with the material surrounding the seat,
-      including slots and offset walls. That wall is different from the empty
-      gap between separate bodies. No sample establishes minimum clearance,
-      interference, strength or bearing retention; critical unsampled regions
-      still need review.
+      >, check the wall thickness around the seat, including slots and offset
+      walls. That wall is different from the gap between separate parts. This
+      check does not measure clearance, fit, strength or whether a bearing will
+      stay in place, and important areas it didn't sample still need checking.
     </p>
   </section>
 </main>

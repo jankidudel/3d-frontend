@@ -1,23 +1,64 @@
 ---
 title: 'How InspectMesh Checks Files: Methods and Processing'
-description: 'Understand local mesh checks, unit assumptions, 3MF build resolution, sampled measurements and optional server analysis before interpreting a result.'
+description: 'Which InspectMesh tools run in your browser and which upload, what each result means, and the limits of every check, in plain words and full technical detail.'
 slug: how-inspectmesh-checks-files
 eyebrow: Methods and processing
 heading: How InspectMesh Checks Files
 faq:
   - question: Does a completed check mean print ready?
-    answer: No. Completed describes a software operation. Unsupported intersections, unsampled detail, design intent and the physical process still need review.
+    answer: No. Completed means the check finished. Overlaps, areas that were not sampled, what the designer intended and the print itself still need checking.
   - question: Do examples upload my model?
-    answer: Loading a public example downloads that fixed control and uses the tool's local workflow. Optional viewer issue analysis is a separate deliberate server upload.
+    answer: No. Loading an example downloads our public example file and checks it in your browser. Your own file is only uploaded when you press a button that says so.
 ---
 
-<p>
-  InspectMesh reports bounded geometry observations, not a print certification.
-  Read the method, assumptions and unavailable checks alongside a finding. A
-  closed-looking picture, zero edge findings or a completed operation each
-  answers only part of the question.
+<p class="lead">
+  InspectMesh checks the geometry of your file: its size, holes, edges, faces,
+  wall thickness and volume. Most tools run entirely in your browser; a few
+  upload the file to our server, and they always say so before you press the
+  button. A result tells you what the check found, not that the print will
+  succeed.
 </p>
-<h2>Placed identity and export verification contract</h2>
+<h2>The short version</h2>
+<ul>
+  <li>
+    <strong>In your browser (nothing uploaded):</strong> the STL and 3MF
+    viewers, STL and 3MF preflight, wall thickness, overhang checkers, printer
+    fit checker, orientation planner, batch STL checker, STL compare, STL scale,
+    STL file size reducer, format converters, 3MF Repair and STL Repair's piece
+    review.
+  </li>
+  <li>
+    <strong>Uploaded to our server, only when you press the button:</strong>
+    the STL and 3MF quality, manifold, watertight, dimensions and volume
+    checkers, STL Repair cleanup, the STL Splitter's split step, and the
+    viewer's optional issue analysis. See the
+    <a href="{{ GuideSlug.RoutePrivacy }}">privacy policy</a>.
+  </li>
+  <li>
+    <strong>Units:</strong> STL files have no units, so you choose one. 3MF
+    files declare their unit, and each object's position and scale are applied
+    before measuring.
+  </li>
+  <li>
+    <strong>Samples:</strong> wall thickness is measured at up to 2,000 points,
+    not everywhere, so "no thin walls" is not a guarantee.
+  </li>
+  <li>
+    <strong>Blank is not zero:</strong> a check that failed, was skipped or
+    could not give a value (such as volume for an open model) never counts as a
+    pass.
+  </li>
+  <li>
+    <strong>Not checked anywhere:</strong> whether the print will succeed, part
+    strength, slicer settings and, except in STL preflight, surfaces that cross
+    each other.
+  </li>
+</ul>
+<p>
+  The rest of this page is the technical detail behind each check, for when you
+  need to know exactly what a result means.
+</p>
+<h2>How 3MF files are read and exports are verified</h2>
 <p>
   The local viewer, converter, local preflight and collection path share a
   bounded core geometry resolver. It follows the package root model
@@ -103,7 +144,7 @@ faq:
   mathematical controls, not physical print measurements or tests of every
   slicer.
 </p>
-<h2>What the local methods can establish</h2>
+<h2>What each browser check can and cannot tell you</h2>
 <table>
   <thead>
     <tr>
@@ -284,7 +325,7 @@ faq:
     >generated structures</a
   >.
 </p>
-<h2>Viewer selection, coordinates and private records</h2>
+<h2>Measuring in the viewer, and what stays private</h2>
 <p>
   Mesh vertex considers only the nearest eligible hit triangle's three vertices
   within 24 CSS pixels, or 40 on touch, with visibility, clipping and occlusion
@@ -315,7 +356,7 @@ faq:
   file replacement clears the record after warning; failed/cancelled replacement
   preserves it.
 </p>
-<h2>Which actions process locally and which upload</h2>
+<h2>What runs in your browser and what is uploaded</h2>
 <p>
   The STL/3MF viewers open geometry locally. STL/3MF preflight, revision
   comparison, STL scale, STL reduction and the geometry converter also run
@@ -360,7 +401,7 @@ faq:
     >method-aware 3MF volume interpretation</a
   >.
 </p>
-<h2>Local 3MF triangle cleanup</h2>
+<h2>3MF Repair (in your browser)</h2>
 <p>
   3MF Repair accepts supported mesh packages up to the current 25 MiB file limit
   and processes them in this browser. A package must resolve before a removal
@@ -388,34 +429,34 @@ faq:
   local preflight has its separate bounded BVH screen. No method here certifies
   full package or extension validity.
 </p>
-<h2>Read result states literally</h2>
+<h2>What each result status means</h2>
 <ul>
   <li>
-    <strong>Completed:</strong> the supported operation returned a result;
-    inspect warnings and scope.
+    <strong>Completed:</strong> the check finished. Read any warnings and what
+    was covered.
   </li>
   <li>
-    <strong>Warning / needs attention:</strong> review a finding against units,
-    design intent and the intended process.
+    <strong>Warning / needs attention:</strong> something to look at, in light
+    of the unit, the design and how you will print it.
   </li>
   <li>
-    <strong>Skipped / unsupported:</strong> the method did not run or cannot
-    answer this question. It is not a passing result.
+    <strong>Skipped / unsupported:</strong> the check did not run or cannot
+    answer this question. It is not a pass.
   </li>
   <li>
-    <strong>Sampled:</strong> a bounded set of observations, not exhaustive
-    coverage.
+    <strong>Sampled:</strong> measured at a limited number of points, not
+    everywhere.
   </li>
   <li>
-    <strong>Failed:</strong> no usable result from that operation. Do not read
-    an empty report as zero defects.
+    <strong>Failed:</strong> no usable result. An empty report does not mean no
+    problems.
   </li>
   <li>
-    <strong>Unavailable volume:</strong> no supported solid-volume
-    interpretation, not zero material.
+    <strong>Blank volume:</strong> the model is not a clean closed solid, so no
+    volume could be given. It is not zero.
   </li>
 </ul>
-<h2>How the examples were produced and verified</h2>
+<h2>How the example files were made and checked</h2>
 <table>
   <thead>
     <tr>
@@ -512,7 +553,7 @@ faq:
   identify local-function observations, not CAD, deployed-server or
   physical-print tests.
 </p>
-<h2>Technical basis and review boundary</h2>
+<h2>Sources and limits</h2>
 <p>
   The
   <a
@@ -531,7 +572,7 @@ faq:
   claimed.
 </p>
 
-<h2>G-code evidence and per-metric coverage</h2>
+<h2>How the G-code viewer reads a file</h2>
 <p>
   The browser worker reviews a conservative linear model: G0/G1, G20/G21,
   G90/G91, G92, M82/M83 and temperature targets M104/M109/M140/M190. It starts
@@ -584,7 +625,7 @@ faq:
   separate metrics.
 </p>
 
-<h2>Operation-specific reducer verification</h2>
+<h2>How the STL file size reducer checks its output</h2>
 <p>
   Reducer candidates start independently from the retained original. Each is
   serialized once, then those exact bytes reopen through the STL parser; the

@@ -115,9 +115,9 @@ describe('StlQualityPage', () => {
     fixture.detectChanges();
     const text = fixture.nativeElement.textContent as string;
 
-    expect(text).toContain('Choose a known 20-unit control');
-    expect(text).toContain('Turn a finding into one next action');
-    expect(text).toContain('crossing-surface guide');
+    expect(text).toContain('Try an example file first');
+    expect(text).toContain('What to do about each finding');
+    expect(text).toContain('overlapping surfaces guide');
     expect(text).not.toContain('Use defect fixtures to interpret');
     expect(text).not.toContain('declared-inch 3MF');
     expect(text).not.toContain('Arachne slicer export');

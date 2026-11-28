@@ -102,57 +102,56 @@
   }
 
   <section class="content">
-    <h2>Compare the closed and open controls</h2>
+    <h2>Example: a closed cube and an open cube</h2>
     <p>
       The
       <a [href]="exampleAsset.OpenFaceCubeStl" download
         >20 mm cube with one face removed</a
       >
-      has 10 triangles and four boundary edges; the
+      has 10 triangles and four open edges; the
       <a [href]="exampleAsset.Closed20mmCubeStl" download>closed 20 mm cube</a>
-      has 12 triangles, zero boundary edges and screened volume 8,000 mm³ under
-      the millimetre assumption. The open control's volume is unavailable, not
-      zero. These are owned geometry controls with retained
+      has 12 triangles, no open edges and a volume of 8,000 mm³ when opened as
+      millimetres. The open cube has no volume, which is not the same as zero.
+      See our saved
       <a href="/examples/quality-evidence/local-preflight.json" download
-        >local algorithm observations</a
-      >; they are not a new production-endpoint observation.
-    </p>
-    <p>
-      The missing-face control shows the boundary around a known absent square.
-      In an unknown model, a reported boundary still needs a design decision.
-      Closed material walls can surround an intended passage without exposed
-      mesh edges. Do not cap that passage merely because it looks open. Use
-      <a [routerLink]="routeUrl.WatertightStlGuide">the watertight guide</a> to
-      interpret the opening.
-      <a [routerLink]="routeUrl.QualityCheck"
-        >Check other supported mesh issues</a
+        >test results</a
       >
-      when closure is not the only question, or use
+      (run on our code locally, not the live server).
+    </p>
+    <p>
+      In the example, the open edges outline the missing side. In your own
+      model, decide whether an opening is a mistake: a designed hole or channel
+      is surrounded by closed walls and has no open edges, so don't fill it just
+      because it looks open. Use
+      <a [routerLink]="routeUrl.WatertightStlGuide">the watertight guide</a> to
+      decide.
+      <a [routerLink]="routeUrl.QualityCheck">Check for other mesh problems</a>
+      if holes aren't the only question, or use
       <a [routerLink]="routeUrl.ManifoldChecker">the manifold checker</a> for
-      edge-sharing questions.
+      non-manifold warnings.
     </p>
-    <h2>Read this method alongside the result</h2>
+    <h2>How the check works</h2>
     <p>
-      Server edge incidence matches exact endpoint coordinates without tolerance
-      welding. Invalid-coordinate and degenerate triangles are excluded;
-      duplicate triangles still contribute. An edge used by one triangle is a
-      boundary; more than two incident faces is a separate over-sharing finding.
-      Components connect through shared vertex coordinates, not necessarily
-      printable connections. This check does not prove vertex-manifoldness or
-      run a spatial intersection test.
+      The server matches edges by exact corner positions; nearby points are not
+      merged. Zero-area and invalid triangles are skipped, but duplicate
+      triangles are counted. An edge used by one triangle is an open edge (a
+      hole); an edge used by three or more is a separate non-manifold problem.
+      Pieces sharing a corner count as connected, even if that would not hold
+      together when printed. It does not check corners for non-manifold problems
+      or look for overlapping surfaces.
     </p>
     <p>
-      A completed zero-boundary result, an exposed boundary and unavailable
-      analysis are distinct outcomes. Volume can be withheld by separate
-      validity gates, including multi-component ambiguity; do not read
-      unavailable volume as an additional failed closure test.
+      "No open edges", "open edges found" and "could not be checked" are three
+      different results. Volume can be blank for other reasons, such as the
+      model being several separate pieces; a blank volume does not mean the
+      model has holes.
     </p>
-    <h2>Choose a deliberate correction</h2>
+    <h2>How to fix a hole</h2>
     <p>
-      If a required surface is missing, restore it through a deliberate
-      source-model or mesh-editing workflow. Supported cleanup removes selected
-      existing triangles; it does not reconstruct a missing face. Reopen the
-      saved copy and inspect both topology and affected slicer layers.
+      If a surface really is missing, rebuild it in your CAD program or a mesh
+      editor; see how to fix holes in an STL. InspectMesh cleanup only removes
+      existing triangles and cannot create a missing face. Reopen the saved
+      copy, check it again, and look at the sliced layers around the repair.
     </p>
   </section>
 </main>

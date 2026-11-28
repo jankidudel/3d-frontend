@@ -2,9 +2,10 @@
   <p class="eyebrow">3MF volume and material estimate</p>
   <h1>3MF Volume Calculator</h1>
   <p class="lead">
-    Request a volume result for supported placed geometry in a 3MF build. The
-    declared unit and transforms affect the measurement, while the processor's
-    validity conditions determine whether a value is available.
+    Find the volume of a 3MF model in mm³ or cm³. The file's own unit and each
+    object's position and scale are applied automatically. A volume is shown
+    only when the build is one closed, connected part; otherwise it is left
+    blank, which never means zero.
   </p>
   <section class="upload card">
     <h2>Calculate 3MF volume</h2>
@@ -144,64 +145,56 @@
     </section>
   }
   <section class="content">
-    <h2>One placed cube versus a repeated build</h2>
+    <h2>Example: one cube vs two cubes</h2>
     <p>
       The
       <a href="/examples/collection-review/one-placed-cube.3mf" download
-        >one-placement cube</a
+        >one-cube file</a
       >
       declares millimetres and has 12 triangles. The
       <a href="/examples/collection-review/two-placed-cubes.3mf" download
-        >two-placement control</a
+        >two-cube file</a
       >
-      reuses that 20 mm cube at X=0 and X=40 mm. Analytical volumes are 8,000
-      mm³ for one cube and 16,000 mm³ for two separate disjoint cubes.
+      places the same 20 mm cube twice, at X 0 and X 40 mm. By simple maths,
+      that is 8,000 mm³ for one cube and 16,000 mm³ for two separate cubes.
     </p>
     <p>
       The
       <a href="/examples/file-handoff/processor-observation.json" download
-        >27 October 2026 local processor capture</a
+        >27 October 2026 test result</a
       >
-      reports approximately 8,000 mm³ for one placement but unavailable volume
-      for the two-component build, despite no listed mesh issues. This is the
-      server processor code path executed locally, not a deployed endpoint
-      observation. Supported placements resolve before the volume screen; their
-      count does not guarantee a published aggregate total.
+      shows about 8,000 mm³ for one cube, but a blank volume for the two-cube
+      build even though it has no mesh problems, because it is two separate
+      parts (our server code, run locally).
     </p>
     <p>
-      Downloading either example does not upload or calculate it. Select the
-      file above and press Calculate 3MF volume deliberately to request a server
-      result.
+      Downloading an example does not upload or calculate it. Choose the file
+      above and press Calculate 3MF volume when you're ready.
     </p>
-    <h2>Use the result within its scope</h2>
+    <h2>Reading the result</h2>
     <p>
-      Read the availability state first. Unavailable is not zero, and a failed
-      or reportless attempt provides no completed volume measurement. Declared
-      units and supported transforms affect physical geometry; an STL comparison
-      must use the same selected scope and its stated millimetre convention.
-      Separate shell sums do not perform a Boolean union or resolve an ambiguous
-      cavity.
+      Check first whether a volume was shown. Blank is not zero, and an error
+      means nothing was measured. When comparing with an STL, compare the same
+      objects and open the STL as millimetres. Adding up separate parts does not
+      merge overlaps or settle whether a hollow was intended.
     </p>
     <p>
-      A 3MF can carry application/project information this tool does not use to
-      reconstruct a sliced wall, cap or infill plan. Supported build scope and
-      geometry volume do not establish complete consumption; compare
-      <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
-        >the process-region example</a
-      >
+      Volume is the size of the solid shape, not the filament a print will use:
+      slicer settings for walls, top layers and infill are not applied here. See
+      <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill">walls vs infill</a>
       and use
       <a [href]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
-        >complete sliced totals</a
-      >. Optional solid mass uses available cm³ and your density. Use
+        >your slicer's filament total</a
+      >. For the weight of a solid part, multiply the volume in cm³ by your
+      filament's density; see
       <a [href]="guideRouteUrl.RouteHowToEstimateFilamentWeightFromA3mfFile"
-        >solid-mass guidance</a
+        >estimating weight from a 3MF</a
       >
-      for those assumptions and complete slicer consumption for actual material
-      planning. Follow
+      for details. Follow
       <a [href]="guideRouteUrl.RouteHowToCalculate3mfVolume"
-        >the method-aware volume guide</a
+        >the 3MF volume guide</a
       >
-      to interpret a missing or implausible value, then
+      if the volume is blank or looks wrong, then
       <a [routerLink]="routeUrl.PrintCostCalculator"
         >cost the actual sliced job</a
       >.

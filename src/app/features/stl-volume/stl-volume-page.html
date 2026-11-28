@@ -2,9 +2,10 @@
   <p class="eyebrow">STL volume and weight</p>
   <h1>STL Volume Calculator</h1>
   <p class="lead">
-    Calculate a supported enclosed-volume value from an STL mesh and interpret
-    it under an explicit coordinate-unit assumption. Optional density arithmetic
-    estimates solid mass; it does not predict the material used by a sliced job.
+    Find the volume of an STL in mm³ or cm³ and, with a material density, its
+    solid weight. STL files have no units, so choose the unit the model was
+    designed in. Volume is the size of the solid shape; it is not the filament a
+    sliced print will use.
   </p>
 
   <section class="upload card" aria-labelledby="upload-title">
@@ -353,15 +354,15 @@
         </thead>
         <tbody>
           <tr>
-            <td>Available supported volume</td>
-            <td>
-              This method supplied an enclosed-volume value under its screens
-            </td>
-            <td>Confirm unit and intended solid scope</td>
+            <td>A volume is shown</td>
+            <td>The model passed the checks and has a measurable volume</td>
+            <td>Check the unit and that the whole model was measured</td>
           </tr>
           <tr>
-            <td>Unavailable</td>
-            <td>A validity or scope condition prevented a supported value</td>
+            <td>Volume is blank</td>
+            <td>
+              The model is not a clean closed solid, so no reliable volume
+            </td>
             <td>
               <a [href]="routeUrl.StlVolumeWrongGuide"
                 >Diagnose the volume finding</a
@@ -369,72 +370,71 @@
             </td>
           </tr>
           <tr>
-            <td>Processing error or missing report</td>
-            <td>No completed measurement from this attempt</td>
-            <td>Resolve the stated input or processing issue</td>
+            <td>Error or no report</td>
+            <td>The file could not be measured</td>
+            <td>Fix the file or processing problem shown</td>
           </tr>
           <tr>
-            <td>Available volume plus density</td>
-            <td>Optional solid-mass arithmetic</td>
-            <td>Use complete sliced consumption for material planning</td>
+            <td>Volume plus a density</td>
+            <td>The weight of the model if printed fully solid</td>
+            <td>Use your slicer's filament total for real material planning</td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      The current server method requires valid geometry, one connected
-      component, no open or over-shared edges and consistent winding. An
-      available magnitude does not determine the intended cavity or establish a
-      Boolean union of overlapping surfaces. Screens can miss intersections.
+      A volume is only shown when the model is one connected part with no holes,
+      no non-manifold edges and all faces pointing the same way. It does not
+      merge overlapping parts or check for surfaces that cross each other, and
+      it cannot tell whether a hollow inside was intended.
     </p>
-    <h2>Interpret a known control under its unit</h2>
+    <h2>Example: the same cube in different units</h2>
     <p>
       The
       <a [href]="exampleAsset.Closed20mmCubeStl" download
-        >closed 20-coordinate cube</a
+        >closed 20 mm example cube</a
       >
-      has 12 triangles and analytical volume 8,000 mm³ = 8 cm³ under a
-      millimetre assumption. With the same bytes interpreted as inches, its span
-      becomes 508 mm and volume increases by 25.4³. The result's unit selector
-      changes interpretation; it does not re-export a resized model.
+      has 12 triangles and a volume of 8,000 mm³ (8 cm³) when opened as
+      millimetres. Opened as inches, the same file is 508 mm wide and its volume
+      is 25.4³ (about 16,387) times larger. Changing the unit here only changes
+      how the numbers are read; it does not resize or save the model.
     </p>
     <p>
       A
       <a [href]="exampleAsset.Hole8Stl" download
         >40 × 30 × 10 block with an 8 mm square passage</a
       >
-      can have zero exposed edges and analytical material volume 11,360 mm³. A
+      has no open edges and 11,360 mm³ of material. A
       <a [href]="exampleAsset.OpenFaceCubeStl" download>missing-face cube</a>
-      instead leaves an unfinished boundary. The
+      has a hole in its surface instead. The
       <a href="/examples/file-handoff/processor-observation.json" download
         >27 October 2026 local processor record</a
       >
-      reports approximately 8,000 and 11,360 mm³ for the closed controls and
-      unavailable volume for the open cube. It is the processor code path run
-      locally, not a deployed endpoint test. Downloading an example never
-      submits a server job; choose the file above and press Calculate volume
-      deliberately.
+      shows about 8,000 and 11,360 mm³ for the closed models and a blank volume
+      for the open cube (our server code, run locally). Downloading an example
+      never uploads anything; choose the file above and press Calculate volume
+      when you're ready.
     </p>
-    <h2>Use sliced consumption for production planning</h2>
+    <h2>For real filament use, use your slicer</h2>
     <p>
-      Density multiplied by available volume gives solid mass. A percentage
-      adjustment does not include the slicer's separate walls, top/bottom
-      layers, supports, purge or arrangement. Use the final job's complete
-      material estimate in the
+      Volume times density gives the weight of a fully solid part. Real prints
+      use walls, top and bottom layers, infill, supports and purge, which a
+      simple percentage cannot capture. Use your slicer's filament total in the
       <a [routerLink]="routeUrl.PrintCostCalculator"
         >production cost calculator</a
-      >. Missing volume supplies no mass estimate. An ordinary solid STL cannot
-      supply the future wall/cap/infill allocation: the
+      >. A blank volume gives no weight. An STL cannot tell you how a slicer
+      will split it into walls and infill: the
       <a
         [href]="
           guideRouteUrl.Route3dPrintWallsVsInfill + '#guide-shell-core-budget'
         "
-        >analytical contrast</a
+        >walls vs infill example</a
       >
       explains why. Use
       <a [href]="guideRouteUrl.RouteHowMuchFilamentDoesA3dPrintUse"
-        >complete sliced consumption</a
-      >, rather than multiplying solid mass by an infill percentage.
+        >your slicer's filament total</a
+      >
+      rather than multiplying solid weight by an infill percentage.
     </p>
     <p>
       For interior design use

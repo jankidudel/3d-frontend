@@ -1,133 +1,104 @@
 ---
-title: '3MF Missing Objects After Import: Trace the Build | InspectMesh'
-description: 'Trace an expected 3MF placement through resource identity, isolation, coordinates and receiver state, using owned controls and a receiving record.'
+title: 'Objects Missing After 3MF Import? Why | InspectMesh'
+description: 'Objects can look missing after a 3MF import because they were never placed, sit off-screen, are hidden in the slicer, or use features it cannot read.'
 slug: 3mf-missing-objects-after-import
-eyebrow: File diagnosis with owned examples
+eyebrow: File diagnosis with example files
 heading: 'Why Are Objects Missing After Importing a 3MF?'
 faq:
-  - question: 'Does one stored resource mean one visible part?'
-    answer: 'No. A resource can be placed more than once or remain unused. Compare expected build items and transforms with the original project.'
-  - question: 'Can conversion recover missing parts?'
-    answer: "No. It exports the supported chosen build geometry and cannot recover missing resources, unsupported semantics or the author\u2019s intent."
+  - question: 'Does one stored object mean one visible part?'
+    answer: 'No. A stored object can be placed several times or not at all. Compare the placed parts with the original project.'
+  - question: 'Can converting the file bring missing parts back?'
+    answer: 'No. Conversion exports the parts that are placed and readable. It cannot recover missing objects, unsupported features or what the designer intended.'
 ---
 
-<p>
-  A 3MF can store resources without placing them, reuse a resource for several
-  build items or put geometry outside the current view. Investigate expected
-  inventory and placed-item identity before mesh repair. Hidden or disabled
-  state in an authoring application is another thing to verify; it is not a
-  universal 3MF visibility rule.
+<p class="lead">
+  Objects usually "go missing" after a 3MF import for one of four reasons: the
+  object was stored in the file but never placed on the build plate, it is
+  placed off-screen or below the bed, it is hidden or disabled in the program
+  you opened it in, or the file uses a feature that program cannot read. Check
+  which parts the file actually places before trying any mesh repair.
 </p>
-<h2>Start with the expected inventory</h2>
+<h2>Step 1: know what should be there</h2>
 <p>
-  Keep the source revision and ask which placements the recipient expects. A
-  named part, resource definition, top-level build item and connected shell are
-  different concepts. A single placed item can contain nested components;
-  splitting shells cannot reliably reconstruct that identity.
+  Keep the original file and ask which parts the recipient expects. A part name,
+  a stored shape, a placed part and a connected piece of surface are four
+  different things. One placed part can contain nested sub-parts, and splitting
+  a model into pieces will not tell you which part each piece belonged to.
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Package control</th>
-      <th scope="col">Stored mesh resources / placements</th>
-      <th scope="col">Resolved reference</th>
+      <th scope="col">Example file</th>
+      <th scope="col">Stored shapes / placed parts</th>
+      <th scope="col">What you see</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>One placed cube</td>
       <td>1 / 1</td>
-      <td>12 triangles; 20 mm spans</td>
+      <td>12 triangles; 20 mm cube</td>
     </tr>
     <tr>
       <td>Two placed cubes</td>
       <td>1 / 2</td>
-      <td>24 triangles; X=0..60 mm; second item X=40..60 mm</td>
+      <td>24 triangles; X 0 to 60 mm; second cube at X 40 to 60 mm</td>
     </tr>
     <tr>
-      <td>Unplaced-resource control</td>
+      <td>Extra unplaced shape</td>
       <td>2 / 2</td>
       <td>
-        Stored count rises, but the build stays 24 triangles at X=0..60 mm
+        One more stored shape, but the build is still 24 triangles at X 0 to 60
+        mm
       </td>
     </tr>
     <tr>
-      <td>Declared-inch transformed control</td>
+      <td>Inch file, moved</td>
       <td>1 / 1</td>
-      <td>12 triangles; 25.4 mm spans; X=50.8..76.2 mm</td>
+      <td>12 triangles; 25.4 mm cube at X 50.8 to 76.2 mm</td>
     </tr>
   </tbody>
 </table>
-<h2>Trace the selected placement</h2>
-<p>
-  Identify the intended item, inspect its placement and reference, check the
-  receiver's support, then compare the actual export. A stored but unplaced
-  resource and an unresolved reference need different responses; conversion
-  cannot recover missing intent.
-</p>
+<h2>Step 2: find the part you expect</h2>
 <ol>
   <li>
     Open the
-    <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
-      >two-placement package</a
-    >
-    in <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a>. Both build-1 and
-    build-2 reference resource 1.
+    <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download>two-cube example</a>
+    in the <a href="{{ GuideSlug.Route3mfViewer }}">3MF viewer</a>. Both build-1
+    and build-2 use the same stored cube.
   </li>
   <li>
-    Select build-2, choose Isolate selected and Frame selected. Read its
-    X=40..60 mm bounds beside the all-build bounds.
+    Select build-2, then <strong>Isolate selected</strong> and
+    <strong>Frame selected</strong>. Its position (X 40 to 60 mm) appears next
+    to the whole build's size.
   </li>
   <li>
-    Choose Show all, then compare the receiver's object/plate list and its
-    current framing, visibility and enabled state.
+    Choose <strong>Show all</strong>, then compare with the object list in your
+    slicer: is the part there but hidden, disabled or off-screen?
   </li>
   <li>
-    Record any receiving recentering, scale or below-bed movement. A part may
-    exist without appearing in the current view.
+    Note if your slicer moved, scaled or re-centred anything, or pushed a part
+    below the bed. A part can exist without being in view.
   </li>
 </ol>
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Placement record</th>
-      <th scope="col">Known reference</th>
-      <th scope="col">Receiving observation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>build-2 / source resource 1</td>
-      <td>
-        X=40..60, Y/Z=0..20 mm; visible when shown and isolated by its local row
-      </td>
-      <td>
-        External receiver untested; record app/version and actual visibility
-        separately
-      </td>
-    </tr>
-  </tbody>
-</table>
 <p>
-  The local resolver and exact saved-byte check were rerun on 27 October 2026;
-  see the
+  We reran this check on 27 October 2026; see the
   <a href="/examples/file-handoff/receiving-check-filled.json" download
-    >filled evidence record</a
-  >. Nested components remain one top-level selection. Viewer isolation changes
-  the preview, while converter scope remains a separate deliberate choice.
+    >filled-in check record</a
+  >. We have not tested other slicers, so note your slicer's name and version
+  with what you see. Isolating a part only changes the view; choosing what to
+  export happens separately in the converter.
 </p>
-<h2>Stored but unplaced is different from unreadable</h2>
+<h2>Never placed is different from unreadable</h2>
 <p>
   Compare the
-  <a href="{{ ExampleAsset.OnePlacedCube3mf }}" download
-    >one-placement control</a
-  >
+  <a href="{{ ExampleAsset.OnePlacedCube3mf }}" download>one-cube file</a>
   with the
   <a href="{{ ExampleAsset.PartInspectionUnplacedResource3mf }}" download
-    >unplaced-resource control</a
-  >. A resource absent from the build contributes no build triangles. Do not
-  automatically promote stored resources or delete repeated placements as
-  duplicate meshes.
+    >file with an extra unplaced shape</a
+  >. A shape that is stored but not placed adds nothing to the build. Don't
+  place every stored shape automatically, and don't delete repeated placements
+  as if they were duplicate meshes.
 </p>
 <figure>
   <img
@@ -138,126 +109,119 @@ faq:
     alt="One stored resource is referenced by two placements; an unused resource contributes no placed geometry."
   />
   <figcaption>
-    Original mathematical schematic, not a receiving-application screenshot.
+    One stored cube placed twice; an unplaced shape adds nothing to the build.
   </figcaption>
 </figure>
 <p>
-  A missing resource reference stops the bounded local load with a specific
-  diagnostic; it cannot silently omit the failed item and report complete-build
-  success. Required unsupported semantics, component cycles and cross-part
-  references also require the original application or a supported source export.
-  Do not assign an unreported corruption cause solely because a package failed
-  to open.
+  If a placed part points to a shape that does not exist, InspectMesh stops with
+  a specific error instead of quietly dropping that part. Files that rely on
+  features InspectMesh does not read, or that reference parts in a loop, need
+  the original program. A file failing to open does not by itself tell you why.
 </p>
-<h2>Geometry present, preparation effect changed</h2>
+<h2>The part is there, but a setting changed</h2>
 <p>
-  The controlled P pair resolves one ordinary build item and one 12-triangle
-  mesh in InspectMesh. In the Prusa-format object metadata it remains one
-  ModelPart; a top-layer override is attached to its object. There is no
-  separate modifier mesh or missing build placement in these controls. Native
-  CLI reopening restores the local setting and changes roof paths; the GUI
-  object tree was not recorded.
+  Sometimes nothing is missing: a part's settings changed instead. Our "P"
+  example pair both open as one part with 12 triangles at the same position (X/Y
+  85 to 115 mm, Z 0 to 10 mm). The only difference is a per-object setting for
+  top layers (4 versus 0), which changes whether a top surface is printed. There
+  is no separate modifier or missing part.
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Inventory or role</th>
-      <th scope="col">Observed in this case</th>
-      <th scope="col">Next action</th>
+      <th scope="col">What to check</th>
+      <th scope="col">In this example</th>
+      <th scope="col">Next step</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Ordinary model placement</td>
-      <td>Both P files resolve X/Y=85..115, Z=0..10 mm and 12 triangles</td>
-      <td>Compare the named placement before diagnosing a missing object</td>
+      <td>Is the part placed?</td>
+      <td>Yes, in both files, same position and 12 triangles</td>
+      <td>Compare positions before assuming a part is missing</td>
     </tr>
     <tr>
-      <td>Object preparation property</td>
+      <td>Did a per-object setting change?</td>
+      <td>Top layers: global 4; per-object 4 vs 0; the top surface differs</td>
       <td>
-        Global top count 4; local count 4 versus 0; actual roof paths differ
-      </td>
-      <td>
-        Use the
+        See
         <a
           href="{{
             GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings
           }}#guide-project-state"
-          >project-state observation</a
+          >settings saved in a 3MF</a
         >
       </td>
     </tr>
     <tr>
-      <td>Modifier role or GUI object-list row</td>
-      <td>No modifier mesh in this control; GUI tree unobserved</td>
+      <td>Is a row in the slicer a modifier?</td>
+      <td>No modifier in this example; slicer object list not recorded</td>
       <td>
-        Inspect the exact producing application instead of treating every row as
-        an independently printable core build mesh
+        Check in the program that made the file; not every row is a printable
+        part
       </td>
     </tr>
   </tbody>
 </table>
-<p>
-  This separates an absent ordinary placement from geometry whose preparation
-  effect changed. Exporting STL cannot recover an application's project state,
-  and not every apparently missing object is a modifier.
-</p>
-<h2>Interpret the actual receiver state</h2>
+<p>Exporting to STL cannot bring back project settings.</p>
+<h2>What you see, and what to do</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Observation</th>
-      <th scope="col">Interpretation to test</th>
-      <th scope="col">Next action</th>
+      <th scope="col">What you see</th>
+      <th scope="col">Likely cause</th>
+      <th scope="col">What to do</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Expected item outside view</td>
-      <td>Transform, scale, camera framing or receiver movement</td>
-      <td>Compare its named interval and frame the complete scene</td>
+      <td>The part is out of view</td>
+      <td>Its position, scale, the camera, or the slicer moved it</td>
+      <td>Check its position and zoom out to the whole scene</td>
     </tr>
     <tr>
-      <td>Resource stored without a build item</td>
-      <td>Not selected for this build</td>
-      <td>Ask the source author whether it should be placed</td>
+      <td>A shape is stored but not placed</td>
+      <td>It was not meant to be in this build</td>
+      <td>Ask the designer whether it should be placed</td>
     </tr>
     <tr>
-      <td>Required unsupported semantics</td>
-      <td>This importer cannot establish complete intended geometry</td>
-      <td>Use the original application and preserve the source</td>
+      <td>The file uses unsupported features</td>
+      <td>The program cannot read the whole design</td>
+      <td>Use the original program and keep the original file</td>
     </tr>
     <tr>
-      <td>Geometry present but project differs</td>
-      <td>A separate property or setting was not retained</td>
+      <td>The part is there, but the project differs</td>
+      <td>A setting or property was not kept</td>
       <td>
         <a href="{{ GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings }}"
-          >Verify property portability</a
+          >Check what 3MF keeps</a
         >
       </td>
     </tr>
   </tbody>
 </table>
 <p>
-  <a href="{{ GuideSlug.Route3mfTools }}">Choose another 3MF build check</a>
-  when the inventory is resolved. For the initial opening sequence use
-  <a href="{{ GuideSlug.RouteHowToOpenA3mfFile }}">the 3MF opening guide</a>.
-  For a subsequent processing failure use
-  <a href="{{ GuideSlug.RouteWhyWontMy3mfFileSlice }}">slicing diagnosis</a>.
-  Resolved counts do not establish supported solid volume: the two disjoint
-  cubes still leave volume unavailable under the current single-component
-  screen.
+  Once everything is accounted for,
+  <a href="{{ GuideSlug.Route3mfTools }}">choose another 3MF check</a>. To open
+  a 3MF for the first time, see
+  <a href="{{ GuideSlug.RouteHowToOpenA3mfFile }}">how to open a 3MF file</a>;
+  if it then fails to slice, see
+  <a href="{{ GuideSlug.RouteWhyWontMy3mfFileSlice }}">why won't my 3MF slice</a
+  >. Note that a correct part count does not guarantee a volume: our two
+  separate cubes still give no volume, because InspectMesh only measures a
+  single connected part.
 </p>
 <p>
+  Decide
   <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
-    >Choose a delivery scope</a
+    >whether to export combined or separate STLs</a
   >
-  only after the inventory is understood. The derivative can retain placed
-  coordinates but flattens resource/build identity. Representation source
-  reviewed 27 October 2026:
+  only once you know what the file contains. An exported STL can keep the
+  positions, but loses which stored shape each part came from. Based on the
   <a
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
-    >3MF Core Specification resources, components and build sections</a
-  >. The earlier inventory controls do not establish external receiver support
-  or physical results.
+    >3MF Core Specification</a
+  >
+  sections on resources, components and the build, reviewed 27 October 2026. The
+  example files do not prove how other slicers behave or how a print turns out.
 </p>

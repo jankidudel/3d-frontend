@@ -138,63 +138,60 @@
         </thead>
         <tbody>
           <tr>
-            <td>One or more exposed boundaries</td>
+            <td>One or more open edges</td>
             <td>
-              At least one checked edge has no adjacent face under this method.
+              At least one edge has no neighbouring face, so there is a hole or
+              gap.
             </td>
+            <td>Check whether that surface was meant to be closed.</td>
+          </tr>
+          <tr>
+            <td>No open edges</td>
+            <td>No holes were found.</td>
             <td>
-              Inspect whether the affected surface was intended to be closed.
+              Check the other results and your parts too; closed does not mean
+              error-free.
             </td>
           </tr>
           <tr>
-            <td>Zero exposed boundaries</td>
-            <td>No boundary was detected in the supported completed check.</td>
-            <td>
-              Review other findings and intended parts; do not infer that all
-              topology is valid.
-            </td>
-          </tr>
-          <tr>
-            <td>Failed or unsupported input</td>
-            <td>This operation has no completed boundary result.</td>
-            <td>Return to the producing application or a supported export.</td>
+            <td>File failed or not supported</td>
+            <td>The check did not finish, so there is no result.</td>
+            <td>Export the file again from the program that made it.</td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      The server checks each supported placed build item independently after
-      unit conversion and component/build transforms, then aggregates counts. It
-      matches exact endpoint coordinates, with no distance-tolerance welding.
-      Invalid-coordinate and degenerate triangles are excluded from edge
-      incidence; duplicate triangles remain included. Components connect at
-      shared vertex coordinates. No spatial intersection screen runs here.
+      The server checks each placed object on its own, after applying the file's
+      unit and each object's position and scale, then adds up the results. Edges
+      are matched by exact corner positions; nearby points are not merged.
+      Zero-area and invalid triangles are skipped, but duplicate triangles are
+      counted. Pieces sharing a corner count as connected. It does not look for
+      overlapping surfaces.
     </p>
     <p>
-      A legitimate repeated build item is different from a repeated triangle
-      inside one mesh resource. A package may contain several closed parts.
-      Neither their quantity nor zero exposed boundaries establishes that their
-      placement or intersections are acceptable. Volume availability has
-      separate validity gates; unavailable volume is not another failed boundary
-      test.
+      Placing the same object twice is fine; the same triangle stored twice
+      inside one object is a problem. A file can hold several closed parts, and
+      having no open edges does not mean their positions or overlaps are right.
+      A blank volume has other causes and does not mean the file has holes.
     </p>
-    <h2>Expected boundary arithmetic for repeated placements</h2>
+    <h2>Example: the same hole, placed twice</h2>
     <p>
-      A cube missing one square face has four boundary edges. Placing two
-      separate copies gives eight under independent per-item checking; it does
-      not repair the resource. This is expected mathematics, not an observation
-      from the production endpoint or a physical print.
+      A cube missing one side has four open edges. Place two copies of it in a
+      build and the check reports eight, because each copy is checked
+      separately; fixing the hole once fixes both. This is simple arithmetic,
+      not a test result.
     </p>
     <p>
       Use
       <a [href]="guideRouteUrl.RouteHowToTellIfA3mfFileIsWatertight"
-        >the 3MF closure guide</a
+        >which part of my 3MF has holes</a
       >
-      to interpret the boundary and
+      to find the affected part and
       <a [routerLink]="routeUrl.ThreeMfManifoldChecker"
-        >the edge-sharing check</a
+        >the 3MF manifold checker</a
       >
-      for topology questions.
+      for non-manifold warnings.
     </p>
   </section>
 </main>

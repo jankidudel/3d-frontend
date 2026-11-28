@@ -1,30 +1,32 @@
 ---
-title: 'G-code Outside the Bed: Origin and Travel | InspectMesh'
-description: 'Compare G-code path bounds, coordinate origin and travel moves. Learn why a small extrusion path can still lie outside the entered print-bed frame.'
+title: 'G-code Outside the Print Bed: Why and What to Check | InspectMesh'
+description: 'A small print can still go off the bed if its G-code starts in the wrong place or travels outside. Check the coordinates, the origin and the travel moves.'
 slug: gcode-outside-print-bed
 eyebrow: Sliced-file review
 heading: 'G-code Outside the Print Bed: Size, Origin and Travel'
 faq:
-  - question: Does a small width prove the path fits?
-    answer: No. Compare minima and maxima in an explicitly reviewed coordinate frame; travel and unsupported effects also matter.
-  - question: 'Does travel outside entered bounds mean a collision?'
-    answer: 'No. The record describes observed logical coordinates. Homing, offsets, mechanical reach and usable print area require exact machine interpretation.'
+  - question: If the print is small, does it fit?
+    answer: No. What matters is where it sits, not just its width. Compare the lowest and highest X, Y and Z coordinates with your bed's coordinates, and check travel moves too.
+  - question: 'Does a travel move outside the bed mean a crash?'
+    answer: 'Not necessarily. The viewer shows the coordinates in the file. Whether your printer can reach them safely depends on its homing, offsets and mechanics.'
 ---
 
-<p>
-  A small path can lie outside a print bed because its location, the coordinate
-  origin and travel moves matter as well as its width. Compare explicit minimum
-  and maximum coordinates in a reviewed frame. An observed out-of-bounds path
-  asks a machine-specific question; it does not establish a collision.
+<p class="lead">
+  G-code can go outside the print bed even when the print is small, because what
+  matters is <em>where</em> the moves are, not just how wide the print is. A
+  part can be placed off to one side, the file can assume a different bed
+  origin, or travel moves at the start or end can leave the bed. Compare the
+  lowest and highest X, Y and Z coordinates in the file with your bed's
+  coordinates. A move outside the bed is a question to check for your printer,
+  not proof of a crash.
 </p>
-<h2>Ten millimetres wide, outside the entered frame</h2>
+<h2>Example: 10 mm wide but off the bed</h2>
 <p>
-  In the analytical shifted-location control, a travel reaches X=230 and the
-  following positive-extrusion path ends at X=240. Its extrusion width is only
-  10 mm. Against explicitly entered X=0..220, that entire extrusion segment is
-  outside. Comparing 10 with 220 would miss the location problem. The initial
-  model state is logical XYZ=0, millimetres and absolute XYZ/E after the mode
-  commands. This is hypothetical geometry, not a manufacturer's usable area.
+  In our example file, a travel move goes to X 230 and the next printing move
+  ends at X 240. The printed line is only 10 mm wide, but on a bed from X 0 to
+  220 the whole line is off the bed. Comparing 10 mm with 220 mm would miss
+  this. The file starts at X/Y/Z 0, in millimetres, with absolute positions.
+  This is made-up geometry, not a real printer's usable area.
 </p>
 <figure>
   <img
@@ -33,17 +35,15 @@ faq:
     height="260"
     alt="A 10 mm wide path at X230 to 240 lies beyond entered X0 to 220"
   />
-  <figcaption>
-    Original schematic in millimetres; no software screenshot or physical print.
-  </figcaption>
+  <figcaption>Diagram in millimetres; not a screenshot or a print.</figcaption>
 </figure>
-<h2>Separate extrusion from travel</h2>
+<h2>Printing moves vs travel moves</h2>
 <p>
-  The second control extrudes from X=10..110, Y=20..120 and Z=0.2..20, then
-  travels to X=230. In a reviewed X/Y=0..220 and Z=0..200 frame, positive
-  extrusion is inside while all parsed motion extends outside. Both observations
-  belong in the record. Prime/purge paths may also extrude outside the intended
-  object envelope, and travel includes start/end moves and Z hops.
+  Our second example prints between X 10 and 110, Y 20 and 120, and Z 0.2 and
+  20, then travels to X 230. On a 220 x 220 x 200 mm bed, everything printed is
+  on the bed, but the travel move goes off it. Note both. Prime or purge lines
+  can also print outside the part's area, and travel includes start and end
+  moves and Z hops.
 </p>
 <figure>
   <img
@@ -53,132 +53,123 @@ faq:
     alt="Solid extrusion inside the entered bounds and dashed travel reaching X230"
   />
   <figcaption>
-    Hypothetical scopes. Neither envelope is automatically the source model's
-    dimensions.
+    Printed area (solid) and travel (dashed). Neither is the size of the
+    original model.
   </figcaption>
 </figure>
-<h2>Choose the next review</h2>
+<h2>What to check next</h2>
 <table>
   <thead>
     <tr>
-      <th>Observed path</th>
-      <th>Available evidence</th>
-      <th>Machine-specific question</th>
-      <th>Next action</th>
+      <th>What you see</th>
+      <th>Look at</th>
+      <th>Question for your printer</th>
+      <th>What to do</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Small shifted extrusion</td>
-      <td>Positive-extrusion minima/maxima</td>
-      <td>Is the logical origin correct for this profile?</td>
-      <td>Compare source placement and exact machine coordinates</td>
+      <td>Small print, shifted off the bed</td>
+      <td>Lowest and highest printing coordinates</td>
+      <td>Is the bed origin right for this profile?</td>
+      <td>Compare the model's placement with your printer's coordinates</td>
     </tr>
     <tr>
-      <td>Travel outside, extrusion inside</td>
-      <td>Separate scope extents and line excerpts</td>
-      <td>Is this a documented start/end move within mechanical reach?</td>
-      <td>
-        Inspect that routine in the native preview and printer instructions
-      </td>
+      <td>Travel outside, printing inside</td>
+      <td>Travel and printing ranges, and the lines involved</td>
+      <td>Is this a normal start or end move your printer can reach?</td>
+      <td>Check that routine in the slicer preview and printer manual</td>
     </tr>
     <tr>
       <td>Unsupported offset, arc or macro</td>
-      <td>Incomplete coverage plus source lines</td>
-      <td>Which state or motion does it change?</td>
-      <td>Use the exact firmware configuration; do not infer complete fit</td>
+      <td>The commands the viewer could not follow</td>
+      <td>What position or move does it change?</td>
+      <td>Check your firmware's documentation; don't assume it fits</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A feed-rate value changes no logical endpoints in this comparison. Coordinate
-  or mode/frame changes can change their interpretation. Trace
+  Speed values don't move anything. Commands that reset the position or change
+  modes do: see
   <a href="{{ GuideSlug.RouteGcodeAbsoluteVsRelativeExtrusion }}"
-    >G92 and mode history</a
+    >G92 and absolute vs relative mode</a
   >
-  before relating the record to a machine; a speed conversion establishes no
-  reach or collision clearance.
+  before comparing with your machine.
 </p>
-<h2>Enter a frame deliberately</h2>
+<h2>How to check your file</h2>
 <ol>
   <li>
-    Open the file in the existing viewer and read coverage before geometry.
+    Open it in the G-code viewer and first check which commands it could read.
   </li>
   <li>
-    Enter reviewed minima and maxima for X/Y/Z. A dimensions-only saved printer
-    model profile does not establish a path origin or verified machine region.
+    Enter your bed's minimum and maximum X, Y and Z. A saved printer size alone
+    does not tell you where the bed origin is.
   </li>
-  <li>Inspect both scopes and any unsupported effects.</li>
+  <li>Look at printing moves, travel moves and any unsupported commands.</li>
   <li>
-    Keep the review record with its assumptions, then verify placement and
-    machine-specific moves in the native slicer.
+    Keep the result with your assumptions, then confirm the placement and start
+    and end moves in your slicer.
   </li>
 </ol>
 <p>
-  G92 can set logical position without an ordinary move; firmware documentation
-  is needed to relate logical values to physical position. InspectMesh marks XYZ
-  resets as incomplete machine-space coverage. G2/G3 arcs are omitted from its
-  linear extents.
+  G92 can change the reported position without moving the printer, so your
+  firmware's documentation is needed to relate file coordinates to the real bed.
+  InspectMesh flags G92 position resets as incomplete, and leaves G2/G3 arcs out
+  of its size ranges.
 </p>
 <table>
   <caption>
-    Model envelope and path frame are different evidence
+    Checking a model vs checking G-code
   </caption>
   <thead>
     <tr>
-      <th>Screen</th>
-      <th>Position basis</th>
-      <th>Remaining checks</th>
+      <th>Check</th>
+      <th>Based on</th>
+      <th>Still to confirm</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Model circular fit</td>
-      <td>Centred planning rectangle, separate Z limit.</td>
-      <td>Source position and actual usable machine region.</td>
+      <td>Model fit on a round bed</td>
+      <td>The model's outline centred on the bed, plus height</td>
+      <td>Where the model is placed and your printer's real usable area</td>
     </tr>
     <tr>
-      <td>G-code location</td>
-      <td>Actual logical coordinates with reliable state/metric coverage.</td>
-      <td>
-        Verified origin, offsets, exact machine restrictions and incomplete
-        effects.
-      </td>
+      <td>G-code position</td>
+      <td>The actual coordinates in the file, where they could be read</td>
+      <td>Bed origin, offsets, printer limits and unread commands</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A saved diameter or model profile cannot authenticate that frame.
+  A saved bed size cannot confirm the coordinates.
   <a href="{{ GuideSlug.RouteBrimSkirtSupportBedSpace }}"
-    >Generated structures</a
+    >Brims, skirts and supports</a
   >
-  can add extents beyond the source envelope. Never apply a disc to incomplete
-  paths as a machine-safe verdict.
+  can extend beyond the model. Never treat a partly read file as safe for your
+  machine.
 </p>
-<h2>Use the existing review tools</h2>
+<h2>Tools that help</h2>
 <p>
   <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
-    >Open the read-only G-code viewer</a
-  >,
-  <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
-    >follow the general G-code review procedure</a
-  >, and
-  <a href="{{ GuideSlug.RouteExamples }}"
-    >download the owned analytical controls</a
-  >. Source geometry fit remains in
-  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >the model-fit guide</a
-  >, while
-  <a href="{{ GuideSlug.RouteStlModelOffBuildPlate }}"
-    >the shifted STL control</a
+    >Open the G-code viewer</a
   >
-  compares pre-slice source coordinates with a tested placement; arrangement
-  remains in
+  (it never sends anything to a printer), follow
+  <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
+    >how to check G-code before printing</a
+  >, or <a href="{{ GuideSlug.RouteExamples }}">download our example files</a>.
+  For whether the model fits, see
+  <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
+    >will a model fit your printer</a
+  >; for a model placed off the plate before slicing, see
+  <a href="{{ GuideSlug.RouteStlModelOffBuildPlate }}"
+    >STL model off the build plate</a
+  >; for layouts, see
   <a href="{{ GuideSlug.RouteHowToArrangeMultiplePartsOnA3dPrinterBed }}"
-    >the existing layout guide</a
+    >arranging parts on the bed</a
   >.
 </p>
-<h2>Sources and evidence boundary</h2>
+<h2>Sources</h2>
 <p>
   Official sources reviewed 10 October 2026:
   <a href="https://help.prusa3d.com/article/prusaslicer-g-code-viewer_193152"
@@ -191,6 +182,6 @@ faq:
   <a href="https://www.klipper3d.org/G-Codes.html">Klipper commands</a>, and
   <a href="https://help.prusa3d.com/article/sequential-printing_124589"
     >Prusa sequential printing</a
-  >. InspectMesh's declarations are bounded file observations; diagrams and
-  snippets are original analytical examples, not machine approval.
+  >. InspectMesh only reads what is in the file; the diagrams and snippets are
+  our own examples, not approval for any machine.
 </p>

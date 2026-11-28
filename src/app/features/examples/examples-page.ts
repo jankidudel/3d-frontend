@@ -10,25 +10,25 @@ import { publicExamples, type PublicExample } from './example-registry';
   imports: [NgOptimizedImage, RouterLink],
   template: `
     <main class="page examples-page">
-      <p class="eyebrow">Known geometry, reproducible questions</p>
-      <h1>Explore model and G-code evidence controls</h1>
+      <p class="eyebrow">Free example files</p>
+      <h1>Free STL, 3MF and G-code Example Files for Testing</h1>
       <p class="lead">
-        Recognise a finding, download a small owned analytical control and try
-        it in the tool. Each example separates generated geometry from observed
-        software output and the decision you still need to make.
+        Download small example files with one known problem each (a hole, a
+        duplicate face, a wrong unit, a tricky overhang and more) and open them
+        in our tools to see exactly what that problem looks like before you
+        check your own model.
       </p>
       <p>
-        Models are original InspectMesh mathematical geometry. G-code parser
-        snippets are hand-authored analytical controls, incomplete and never for
-        printer execution. All controls are available to download, modify and
-        redistribute with attribution to InspectMesh. They contain no customer
-        data. Slicer exports are preview-only records, never instructions to run
-        a printer. No physical print success is claimed.
+        All models are original shapes made by InspectMesh, and you may
+        download, change and share them with credit to InspectMesh. They contain
+        no customer data. The G-code files are hand-written test snippets or
+        slicer exports for viewing only: never run them on a printer. These are
+        software examples, not print tests.
       </p>
       <p>
-        <a [routerLink]="routeUrl.Methods">Read methods and processing</a>
-        for analysis scope and local versus optional server actions. The linked
-        guide owns the full explanation; these cards help you choose a control.
+        <a [routerLink]="routeUrl.Methods">How InspectMesh checks files</a>
+        explains what each check covers and which tools upload. Each card links
+        to a guide with the full explanation.
       </p>
       <fieldset class="example-filters">
         <legend>Filter by topic</legend>
@@ -87,18 +87,16 @@ import { publicExamples, type PublicExample } from './example-registry';
               <figcaption>
                 {{
                   example.previewCaption ??
-                    'Original explanatory diagram. Use the files to reproduce the reported observation.'
+                    'Diagram of the example. Download the files to see the same result in the tool.'
                 }}
               </figcaption>
             </figure>
             <p>
               <strong>{{ example.question }}</strong>
             </p>
-            <p><strong>Known geometry:</strong> {{ example.known }}</p>
-            <p>
-              <strong>Reproduction settings:</strong> {{ example.settings }}
-            </p>
-            <p><strong>Software observation:</strong> {{ example.observed }}</p>
+            <p><strong>What the file contains:</strong> {{ example.known }}</p>
+            <p><strong>Settings to use:</strong> {{ example.settings }}</p>
+            <p><strong>What our tool shows:</strong> {{ example.observed }}</p>
             <p>{{ example.limitations }}</p>
             <ul>
               @for (asset of example.files; track asset.path) {
@@ -121,7 +119,7 @@ import { publicExamples, type PublicExample } from './example-registry';
               <a [routerLink]="example.guide">Read the explanation</a>
             </p>
             @if (example.relatedGuides; as guides) {
-              <ul aria-label="Related interface decisions">
+              <ul aria-label="Related guides">
                 @for (guide of guides; track guide.route) {
                   <li>
                     <a [routerLink]="guide.route">{{ guide.label }}</a>
@@ -279,9 +277,9 @@ export class ExamplesPage {
   });
   constructor() {
     inject(SeoService).apply({
-      title: 'Model and G-code Evidence Controls | InspectMesh',
+      title: 'Free STL, 3MF and G-code Test Files | InspectMesh',
       description:
-        'Download original known-geometry controls for orientation, bridge and overhang comparison, internal support access, 3MF transforms and mesh diagnosis.',
+        'Free example STL, 3MF and G-code files, each with one known problem such as a hole, duplicate face or wrong unit, to try in our checking tools.',
       path: PublicRouteUrl.Examples,
     });
   }

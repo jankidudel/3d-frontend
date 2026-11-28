@@ -2,9 +2,10 @@
   <p class="eyebrow">Print preparation</p>
   <h1>3D Print Orientation Planner</h1>
   <p class="lead">
-    Compare six axis-aligned STL or 3MF directions locally. Review the rotated
-    envelope, nominal printer fit, downward-facing area and estimated coplanar
-    bed contact without treating one metric as a universal winner.
+    Which way up should you print? Load an STL or 3MF and compare the six ways
+    it can sit on the bed: size, whether it fits your printer, how much surface
+    faces down (needing support) and how much touches the bed. It runs in your
+    browser. There is no single winner; pick what matters for your part.
   </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose a model</h2>
@@ -283,11 +284,11 @@
   <section class="card">
     <h2>What this planner can and cannot decide</h2>
     <p>
-      It compares +Z, -Z, +X, -X, +Y and -Y as source-axis-up directions. The +Z
-      candidate preserves the source rotation. It does not test every face or
-      arbitrary angle, generate supports, simulate bridge paths, predict warping
-      or calculate strength. Confirm the selected candidate in the intended
-      slicer, printer, material and profile.
+      It tries each of the model's six axes pointing up (+Z, -Z, +X, -X, +Y,
+      -Y); +Z is the model as it is now. It does not try every face or angle,
+      create supports, simulate bridges, predict warping or calculate strength.
+      Check your chosen orientation in your slicer with your real printer,
+      filament and profile.
     </p>
   </section>
   <app-tool-evidence
@@ -295,18 +296,18 @@
     [page]="routeUrl.OrientationPlanner"
   />
   <section class="content">
-    <h2>Compare candidates, then choose for the actual job</h2>
+    <h2>Compare the options, then choose for your part</h2>
     <p>
-      The local planner exposes each supported metric rather than compressing
-      them into an overall score. STL uses your unit assumption; supported 3MF
-      build geometry is resolved to physical millimetres before analysis.
+      The planner shows each measurement separately instead of a single score.
+      For STL it uses the unit you choose; 3MF files are converted to
+      millimetres using the unit they declare.
     </p>
     <p>
-      Keep intended strength, surface finish and support removal as separate
-      decisions. Review the selected candidate in your slicer and include every
-      brim, support and machine allowance. See
+      Strength, surface finish and how easy supports are to remove are separate
+      decisions. Check your choice in your slicer, including brim, supports and
+      any no-print areas. See
       <a [href]="guideRouteUrl.RouteHowToOrientAnStlFileFor3dPrinting"
-        >the orientation procedure</a
+        >how to orient an STL</a
       >
       for the full trade-off. A numeric fit candidate cannot choose
       <a [href]="guideRouteUrl.Route3dPrintZSeamPlacement"

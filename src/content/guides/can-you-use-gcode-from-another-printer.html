@@ -1,24 +1,24 @@
 ---
 title: 'Can You Use G-code From Another Printer? | InspectMesh'
-description: 'Review supplied sliced-file provenance, exact profiles and firmware before deciding whether to obtain source files and re-slice.'
+description: 'Usually not safely. G-code is made for one printer, firmware and filament. What to ask for instead, and how to re-slice the model for your own printer.'
 slug: can-you-use-gcode-from-another-printer
 eyebrow: Sliced-file review
 heading: 'Can You Use G-code From Another Printer?'
 faq:
-  - question: Do equal bed dimensions prove compatibility?
-    answer: No. Source project, exact machine profile, firmware, tools and routines need review; obtain source geometry and re-slice when provenance is unknown.
-  - question: 'Can the local file hash authenticate a supplier?'
-    answer: 'No. SHA-256 matches exact bytes. It does not authenticate the author, intended printer or generating profile.'
+  - question: If two printers have the same bed size, will the G-code work?
+    answer: Not necessarily. Firmware, start and end code, nozzle, tool setup and homing can all differ. Ask for the model and re-slice it when you don't know exactly how the G-code was made.
+  - question: 'Does a file hash prove who made the G-code?'
+    answer: 'No. A SHA-256 hash only proves two files are byte-for-byte identical. It says nothing about the author, the printer or the profile used.'
 ---
 
-<p>
-  Usually not safely. Re-slice the model for your own printer instead, because
-  matching bed dimensions or a comment label do not make G-code compatible. A
-  sliced file contains machine instructions chosen for a profile, firmware and
-  material workflow. When that provenance is unknown, obtain the source model or
-  slicer project and re-slice with your known exact profile.
+<p class="lead">
+  Usually not safely. G-code is a list of machine instructions made for one
+  printer, firmware, nozzle and filament setup. A matching bed size or a comment
+  naming a printer does not make it compatible with yours. Ask for the original
+  model (STL or 3MF) or slicer project instead, and slice it yourself with your
+  own printer profile.
 </p>
-<h2>What each file lets you review</h2>
+<h2>What each kind of file gives you</h2>
 <figure>
   <img
     src="/examples/gcode-evidence/provenance.svg"
@@ -27,160 +27,146 @@ faq:
     alt="Model geometry becomes a profile and placement in a slicer project, then sliced machine instructions"
   />
   <figcaption>
-    Original conceptual relationship. A model and a sliced job have different
-    review scopes.
+    A model becomes a slicer project with a profile, which is then turned into
+    G-code for one machine.
   </figcaption>
 </figure>
 <table>
   <thead>
     <tr>
-      <th>Received item</th>
-      <th>Useful evidence</th>
-      <th>What remains missing</th>
+      <th>What you received</th>
+      <th>What it tells you</th>
+      <th>What is missing</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>STL or geometry 3MF</td>
-      <td>Shape, scale and resolved placement where supported</td>
-      <td>Chosen machine profile, material and start/end instructions</td>
+      <td>STL or 3MF model</td>
+      <td>The shape, size and (in 3MF) placement</td>
+      <td>Printer profile, filament and start/end code</td>
     </tr>
     <tr>
       <td>Slicer project</td>
-      <td>
-        Retained settings and placement if that application's project format
-        supports them
-      </td>
-      <td>
-        Whether the settings match the recipient's actual hardware and firmware
-      </td>
+      <td>The settings and placement, if that slicer saves them</td>
+      <td>Whether those settings suit your hardware and firmware</td>
     </tr>
     <tr>
       <td>Only G-code</td>
-      <td>Declared comments, recognised paths and command lines</td>
+      <td>Its comments, moves and commands</td>
       <td>
-        Editable source geometry, complete profile provenance and actual machine
-        configuration
+        An editable model, the full profile used and the printer it was made for
       </td>
     </tr>
   </tbody>
 </table>
-<h2>A received-file worksheet</h2>
+<h2>What to ask the sender</h2>
 <p>
-  Record the revision before reviewing instructions. An unchanged filename is
-  insufficient: a local SHA-256 can match exact bytes but cannot authenticate
-  the author. Keep private filenames and notes in your own record, never public
-  URLs.
+  Note which version you received before reviewing it. A filename alone is not
+  enough. A SHA-256 hash proves a file is identical byte for byte, but not who
+  made it. Keep private filenames and notes in your own records, not in public
+  links.
 </p>
 <table>
   <thead>
     <tr>
-      <th>Field to record</th>
-      <th>Evidence to request</th>
+      <th>Record</th>
+      <th>Ask for</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Revision and intended output</td>
+      <td>Version and purpose</td>
       <td>
-        Supplier revision, received date, file byte identity, part quantity and
-        selected run
+        Their version, the date received, the file hash, the number of parts and
+        which run it is
       </td>
     </tr>
     <tr>
-      <td>Source availability</td>
+      <td>Source files</td>
       <td>
-        Model, original project, generating application/version and retained
-        configuration
+        The model, the original project, and the slicer name and version used
       </td>
     </tr>
     <tr>
-      <td>Intended printer and firmware</td>
-      <td>
-        Exact model/revision, hardware modifications, firmware/configuration
-        version
-      </td>
+      <td>Printer and firmware</td>
+      <td>Exact model and revision, any modifications, firmware version</td>
     </tr>
     <tr>
-      <td>Profile and material scope</td>
+      <td>Profile and filament</td>
       <td>
-        Nozzle, filament/tool mapping, usable area and origin;
+        Nozzle, filament and tool assignments, usable bed area and origin, and
         <a href="{{ GuideSlug.RouteGcodeAbsoluteVsRelativeExtrusion }}"
-          >units and extrusion/coordinate modes</a
+          >units and extrusion mode</a
         >
       </td>
     </tr>
     <tr>
-      <td>Requested rates and overrides</td>
+      <td>Speeds and overrides</td>
       <td>
         <a href="{{ GuideSlug.RouteGcodeFeedRateMmPerMinute }}"
-          >F units, feed percentage and flow percentage</a
-        >, with the exact firmware/profile basis
+          >Feed rate units, speed and flow percentages</a
+        >, and which firmware and profile they assume
       </td>
     </tr>
     <tr>
       <td>Machine routines</td>
-      <td>Homing, offsets, macros, start/end code and tool changes</td>
+      <td>Homing, offsets, macros, start and end code, tool changes</td>
     </tr>
     <tr>
-      <td>Only sliced instructions supplied?</td>
-      <td>Explicit yes/no plus the unresolved source/project request</td>
+      <td>Only G-code received?</td>
+      <td>Yes or no, plus your request for the model or project</td>
     </tr>
   </tbody>
 </table>
-<h2>Hypothetical exact-profile comparison</h2>
+<h2>Example: same bed size, different printer</h2>
 <p>
-  Printer A and printer B both have nominal 220 × 220 mm beds. A's project
-  assumes X/Y start at zero, a single tool and a particular homing macro. B's
-  configured frame, tool offsets or macro implementation differ. Equal
-  dimensions answer none of those differences. A comment naming A is only a
-  declaration. Request the project, check the intended revision and select B's
-  verified profile in the native slicer; do not guess edits to individual
-  commands.
+  Printers A and B both have 220 x 220 mm beds. A's G-code assumes the bed
+  starts at X/Y zero, one tool and a particular homing macro. B's bed origin,
+  tool offsets or macros differ. The equal bed size does not cover any of these
+  differences, and a comment naming printer A is just a label. Ask for the
+  project, check you have the right version, and slice it with B's own profile
+  in the slicer. Don't try to edit individual commands by guesswork.
 </p>
 <p>
-  A profile comparison should identify concrete differences and unknowns, not
-  produce a universal translation. A browser linear preview does not execute
-  macros, authenticate profiles or certify temperatures. Klipper documents
-  configurable macro commands and firmware-specific extrusion behaviour; Marlin
-  documents its own mode behaviour. Neither document proves the other's
-  semantics.
+  There is no universal way to "translate" G-code between printers. A browser
+  preview shows the moves but does not run macros, identify the profile or
+  approve temperatures. Klipper and Marlin each document their own macros and
+  extrusion behaviour, and one does not tell you how the other behaves.
 </p>
-<h2>Choose the next action</h2>
+<h2>What to do</h2>
 <ol>
-  <li>Inventory the received files and intended machine.</li>
+  <li>List the files you received and the printer they are for.</li>
   <li>
-    Use source evidence to identify unsupported effects, without executing the
-    file.
+    Look through the file for commands your printer may not support, without
+    running it.
   </li>
   <li>
-    Request missing project/profile details. Prefer re-slicing source geometry
-    when compatibility is uncertain.
+    Ask for any missing project or profile details. If in doubt, re-slice the
+    model yourself.
   </li>
   <li>
-    Retain one-run estimates only after reviewing their declared units and
-    scope.
+    Only rely on the file's time or filament estimates once you know which units
+    and settings they assume.
   </li>
 </ol>
-<h2>Use the existing review tools</h2>
+<h2>Tools that help</h2>
 <p>
   <a href="{{ GuideSlug.RouteGcodePreflightChecker }}"
-    >Open the read-only G-code viewer</a
-  >,
+    >Open the G-code viewer</a
+  >
+  (it never sends anything to a printer), follow
   <a href="{{ GuideSlug.RouteHowToCheckGcodeBeforePrinting }}"
-    >follow the general G-code review procedure</a
-  >, and
-  <a href="{{ GuideSlug.RouteExamples }}"
-    >download the owned analytical controls</a
-  >. Source geometry fit remains in
+    >how to check G-code before printing</a
+  >, or <a href="{{ GuideSlug.RouteExamples }}">download our example files</a>.
+  For whether the model fits your bed, see
   <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelFitsYourPrinter }}"
-    >the model-fit guide</a
-  >; arrangement remains in
+    >will a model fit your printer</a
+  >; for layouts, see
   <a href="{{ GuideSlug.RouteHowToArrangeMultiplePartsOnA3dPrinterBed }}"
-    >the existing layout guide</a
+    >arranging parts on the bed</a
   >.
 </p>
-<h2>Sources and evidence boundary</h2>
+<h2>Sources</h2>
 <p>
   Official sources reviewed 10 October 2026:
   <a href="https://help.prusa3d.com/article/prusaslicer-g-code-viewer_193152"
@@ -193,6 +179,6 @@ faq:
   <a href="https://www.klipper3d.org/G-Codes.html">Klipper commands</a>, and
   <a href="https://help.prusa3d.com/article/sequential-printing_124589"
     >Prusa sequential printing</a
-  >. InspectMesh's declarations are bounded file observations; diagrams and
-  snippets are original analytical examples, not machine approval.
+  >. InspectMesh only reads what is in the file; the diagrams and snippets are
+  our own examples, not approval for any machine.
 </p>

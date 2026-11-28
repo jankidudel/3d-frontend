@@ -12,9 +12,9 @@
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL topology</h2>
     <p>
-      Choosing and submitting a file uploads it for server analysis. The guest
-      limit is 25 MiB. Download the public controls below without uploading your
-      own model.
+      Pressing the button uploads your file for checking on our server (up to 25
+      MiB). To try it first without uploading your own model, download one of
+      the example files below.
     </p>
     <app-stl-file-picker
       #filePicker
@@ -50,22 +50,31 @@
       <tbody>
         <tr>
           <td>One triangle at an edge</td>
-          <td>Boundary or open edge; design intent remains unknown.</td>
+          <td>
+            Open edge: there is a hole or gap here. Check whether the opening
+            was intended.
+          </td>
         </tr>
         <tr>
           <td>Two triangles at an edge</td>
-          <td>Ordinary shared edge; winding is checked separately.</td>
+          <td>
+            A normal, properly closed edge. Face direction is checked
+            separately.
+          </td>
         </tr>
         <tr>
           <td>Three or more triangles at an edge</td>
-          <td>Over-shared edge, labelled “non-manifold edge” in the report.</td>
+          <td>
+            Non-manifold edge: extra faces meet here, often a duplicate
+            triangle.
+          </td>
         </tr>
         <tr>
-          <td>Component count</td>
+          <td>Number of pieces</td>
           <td>
-            Groups connected by any exact shared vertex in this server report,
-            not defect count. Local repair selection uses complete shared edges
-            instead.
+            How many separate pieces the model is made of (pieces sharing any
+            corner count as one). This is not a count of errors. The STL Repair
+            piece selector groups pieces slightly differently.
           </td>
         </tr>
       </tbody>
@@ -73,15 +82,15 @@
     <p>
       The
       <a [href]="exampleAsset.OpenFaceCubeStl" download>10-face open cube</a>
-      reports four boundary edges. The
+      has four open edges. The
       <a [href]="exampleAsset.DuplicateFaceCubeStl" download
         >13-face duplicate cube</a
       >
-      reports three over-shared edges.
+      has three non-manifold edges.
       <a [href]="exampleAsset.DiagnosisSeparatedCubesStl" download
         >Two intended closed cubes</a
       >
-      report two components with no edge defect.
+      show as two pieces with no edge problems.
     </p>
   </section>
 
@@ -278,11 +287,11 @@
       </tbody>
     </table>
     <p>
-      Method and limits: the server compares exact stored vertex positions,
-      excludes degenerate triangles from edge counts, and connects components
-      through shared vertices. It does not run a complete vertex-manifold or
-      spatial-intersection test. A malformed STL returns an error, not a clean
-      zero. For exposed-boundary interpretation alone, use the
+      How it works: the server compares exact corner positions, skips zero-area
+      triangles when counting edges, and groups pieces that share a corner. It
+      does not check every corner for non-manifold problems or look for surfaces
+      that cross each other. A damaged STL gives an error, never a clean result.
+      If you only want to know about holes, use the
       <a [routerLink]="routeUrl.WatertightChecker">STL Watertight Checker</a>.
     </p>
   </section>

@@ -227,28 +227,28 @@
     </p>
     <h2>What the report means</h2>
     <p>
-      Only supported resolved build geometry is analysed. Unplaced resources,
-      unsupported required semantics and missing results cannot be treated as
-      zero issues.
+      Only objects actually placed on the build plate are checked. Shapes stored
+      but not placed, features InspectMesh cannot read, and failed checks never
+      count as "no problems".
       <a [routerLink]="routeUrl.ThreeMfViewer"
-        >Review intended parts and placements locally</a
+        >Check which parts are placed in the 3MF viewer</a
       >, or
       <a [routerLink]="guideRouteUrl.Route3mfMissingObjectsAfterImport"
-        >trace a missing item</a
+        >find a missing part</a
       >
-      before mesh cleanup.
+      before cleaning the mesh.
     </p>
     <div
       class="interpretation-table"
       role="region"
-      aria-label="3MF finding interpretation"
+      aria-label="What each 3MF finding means"
       tabindex="0"
     >
       <table>
         <thead>
           <tr>
             <th scope="col">Finding</th>
-            <th scope="col">Interpretation</th>
+            <th scope="col">What it means</th>
             <th scope="col">Next action</th>
           </tr>
         </thead>
@@ -256,87 +256,84 @@
           <tr>
             <th scope="row">Could not analyse this 3MF file</th>
             <td>
-              No completed mesh result. A corrupt archive, unresolved reference
-              or unsupported package feature can prevent analysis.
+              The check did not finish. The file may be damaged, point to a
+              missing part, or use a feature InspectMesh cannot read.
             </td>
             <td>
-              Open the original in its producing application; re-export a
-              supported mesh package. A failed check is not zero findings.
+              Open it in the program that made it and export it again. A failed
+              check is not the same as no problems.
             </td>
           </tr>
           <tr>
             <th scope="row">Open edge</th>
             <td>
-              An exposed boundary was found in a placed mesh. It can be a
-              missing surface or an intended sheet.
+              A placed object has a hole or gap. It may be a missing surface or
+              an intended thin sheet.
             </td>
-            <td>
-              Inspect the boundary against the source design before closing it.
-            </td>
+            <td>Compare with the original design before filling it.</td>
           </tr>
           <tr>
             <th scope="row">Non-manifold edge</th>
             <td>
-              More than two faces share an edge. Repeated faces can cause this
-              too.
+              Three or more faces meet at one edge, often because of a duplicate
+              face.
             </td>
             <td>
-              Review duplicate findings and the affected region; distinguish
-              redundant faces from intersecting solids.
+              Check the duplicate findings and that area; an extra face is fixed
+              differently from overlapping parts.
             </td>
           </tr>
           <tr>
             <th scope="row">Duplicate or degenerate triangle</th>
-            <td>A repeated face or face with no useful area was found.</td>
+            <td>A face is stored twice, or has no area.</td>
             <td>
               Use
-              <a [routerLink]="routeUrl.ThreeMfRepair">supported 3MF cleanup</a>
-              only for an understood change, then recheck the saved package.
+              <a [routerLink]="routeUrl.ThreeMfRepair">3MF Repair</a>
+              once you know what it will remove, then check the saved file
+              again.
             </td>
           </tr>
           <tr>
-            <th scope="row">Inconsistent orientation</th>
+            <th scope="row">Flipped faces</th>
             <td>
-              Neighbouring triangle winding disagrees. This is different from a
-              display normal or an intentionally inward cavity wall.
+              Neighbouring faces point opposite ways. This is not the same as
+              dark shading in a viewer, or the inside wall of a hollow.
             </td>
             <td>
-              Inspect the source surfaces and the reported location before
-              changing winding.
+              Look at that area in the original model before flipping anything.
             </td>
           </tr>
           <tr>
             <th scope="row">No mesh problems found</th>
-            <td>The completed supported checks returned no listed findings.</td>
+            <td>None of these problems were found.</td>
             <td>
-              Continue with size, wall, placement and sliced-layer review.
-              Self-intersections, strength and print success remain unchecked.
+              Next, check size, walls, placement and the sliced layers.
+              Overlaps, strength and print success are not checked here.
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <h2>One mesh resource can produce two placed parts</h2>
+    <h2>Example: one cube placed twice</h2>
     <p>
-      These owned packages were run through the local server processor on 24
-      October 2026. Both declare millimetres. The repeated build places the same
-      cube again at X + 40; it contains one stored mesh resource, two placed
-      items and 24 analysed triangles. Separate build items are checked
-      independently, so repeating a legitimate object is not itself a
-      duplicate-triangle error.
+      We ran these example files through our server code on 24 October 2026.
+      Both use millimetres. The two-cube file stores one cube and places it
+      twice, 40 mm apart: 24 triangles in total. Each placed object is checked
+      on its own, so placing the same object twice is not a duplicate-triangle
+      error.
     </p>
     <div
       class="interpretation-table"
       role="region"
-      aria-label="Observed 3MF control reports"
+      aria-label="Example 3MF results"
       tabindex="0"
     >
       <table>
         <thead>
           <tr>
-            <th scope="col">Exact input</th>
-            <th scope="col">Observed output</th>
-            <th scope="col">Retained report</th>
+            <th scope="col">Example file</th>
+            <th scope="col">Result</th>
+            <th scope="col">Saved report</th>
           </tr>
         </thead>
         <tbody>
@@ -347,8 +344,8 @@
               >
             </th>
             <td>
-              1 resource, 1 item, 12 triangles, 20 x 20 x 20 mm, no listed mesh
-              findings.
+              1 stored cube, placed once: 12 triangles, 20 x 20 x 20 mm, no
+              problems.
             </td>
             <td>
               <a href="/examples/quality-evidence/one-item-report.json" download
@@ -363,8 +360,8 @@
               >
             </th>
             <td>
-              1 resource, 2 items, 24 triangles, 60 x 20 x 20 mm, no listed mesh
-              findings.
+              1 stored cube, placed twice: 24 triangles, 60 x 20 x 20 mm, no
+              problems.
             </td>
             <td>
               <a href="/examples/quality-evidence/two-item-report.json" download
@@ -379,8 +376,8 @@
               >
             </th>
             <td>
-              13 triangles, 1 duplicate triangle and 3 non-manifold edges. These
-              findings describe the same redundant face from different checks.
+              13 triangles, 1 duplicate triangle and 3 non-manifold edges. Both
+              findings come from the same extra face.
             </td>
             <td>
               <a
@@ -394,51 +391,43 @@
       </table>
     </div>
     <p>
-      The reports are reproducible software observations, not physical print
-      tests or evidence that the deployed server is running this revision.
+      These are repeatable software results, not print tests.
       <a href="/examples/quality-evidence/provenance.json" download
-        >Inputs, hashes and reproduction details</a
-      >. For size, nominal fit and sampled wall checks, use
-      <a [routerLink]="routeUrl.ThreeMfPrintPreflight"
-        >browser-local 3MF Print Preflight</a
-      >.
+        >Files, hashes and how to reproduce them</a
+      >. For size, printer fit and wall thickness, use
+      <a [routerLink]="routeUrl.ThreeMfPrintPreflight">3MF Print Preflight</a>.
     </p>
     <h2>Questions about this check</h2>
     <h3>Does this validate my slicer settings?</h3>
     <p>
-      No. It checks supported mesh geometry, not embedded printer profiles,
-      toolpaths, materials or every 3MF extension. Reopen the original project
-      in its native slicer for those settings.
+      No. It checks the mesh only, not printer profiles, toolpaths, materials or
+      every 3MF feature. Open the project in its own slicer to check settings.
     </p>
     <h3>Which geometry did this report analyse?</h3>
     <p>
-      Supported placed build items, including their resolved component and build
-      transforms. Unplaced resources are not additional printed objects.
-      Separate placements retain independent topology analysis on the server;
-      browser-local combined-build checks can interpret coincident geometry
-      differently.
+      Every object placed on the build plate, with its position and scale
+      applied. Shapes stored but not placed are ignored, because they will not
+      print. The server checks each placed object separately; browser checks
+      combine them, so results for overlapping objects can differ.
     </p>
     <h3>What happens to units and placed items?</h3>
     <p>
-      The report retains the declared source unit, or the format's millimetre
-      default, and measures resolved placements in that unit. It does not
-      rewrite the package. The local converter instead writes physical
-      millimetre coordinates into its STL derivative, which has no unit
-      declaration.
+      The report uses the unit the file declares (millimetres if none) and does
+      not change the file. The 3MF to STL converter, by contrast, writes
+      millimetre coordinates into the STL, because STL has no unit.
     </p>
     <h3>Why can volume be unavailable when the mesh check completes?</h3>
     <p>
-      The server publishes volume only when its validity and single-component
-      screen passes. Two separate valid cubes can therefore have unavailable
-      volume without being invalid build items. Do not read an unavailable value
-      as zero material.
+      Volume is only shown when the build is one valid, connected part. Two
+      separate, perfectly good cubes therefore get a blank volume. Blank never
+      means zero material.
     </p>
     <h3>Where is my file processed?</h3>
     <p>
-      Submitting this checker uploads the selected file for server processing.
-      Viewing a file locally or running local preflight is a separate action.
-      Read <a [routerLink]="routeUrl.Methods">the processing methods</a> before
-      choosing a workflow for confidential designs.
+      Pressing Check uploads the file to our server. Viewing it or running 3MF
+      preflight happens in your browser and uploads nothing. Read
+      <a [routerLink]="routeUrl.Methods">how the checks work</a> before choosing
+      a workflow for confidential designs.
     </p>
   </section>
 </main>

@@ -450,7 +450,7 @@ export const printers: readonly PrinterRecord[] = [
       false,
       299,
       'Value-focused open-frame FDM printer with a 220 x 220 x 250 mm stated build volume.',
-      'https://sovol3d.com/products/sovol-sv06-ace-3d-printer',
+      'https://www.sovol3d.com/products/sovol-sv06-ace',
       'For cost-conscious common-material printing with a conventional build size.',
     ],
   ].map(

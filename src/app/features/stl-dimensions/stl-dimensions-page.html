@@ -630,35 +630,38 @@
         <thead>
           <tr>
             <th scope="col">Result</th>
-            <th scope="col">Next action</th>
+            <th scope="col">What to do</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>The known reference dimension agrees</td>
+            <td>A dimension you know matches</td>
             <td>
               <a [href]="routeUrl.PrinterFitChecker"
-                >Check the intended orientation and nominal usable envelope</a
-              >, then verify the sliced placement.
+                >Check it fits your printer in the orientation you want</a
+              >, then check the placement in your slicer.
             </td>
           </tr>
           <tr>
-            <td>All dimensions differ by one plausible unit factor</td>
+            <td>Every dimension is off by the same factor (like 25.4 or 10)</td>
             <td>
               <a [href]="routeUrl.StlUnitsGuide"
-                >Establish a known dimension and source unit</a
+                >Work out which unit it was designed in</a
               >
-              before choosing a correction.
+              before fixing the size.
             </td>
           </tr>
           <tr>
-            <td>One functional feature differs while overall size agrees</td>
-            <td>Inspect that feature or source CAD; do not globally resize</td>
+            <td>
+              One feature is the wrong size, but the overall size is right
+            </td>
+            <td>Fix that feature in CAD; don't scale the whole model</td>
           </tr>
           <tr>
-            <td>A nominal printer comparison is close</td>
+            <td>It only just fits your printer</td>
             <td>
-              Check actual supports, brim and bed exclusions in the slicer
+              Check supports, brim and any no-print areas of the bed in your
+              slicer
             </td>
           </tr>
         </tbody>
@@ -668,7 +671,7 @@
       class="table-scroll"
       tabindex="0"
       role="region"
-      aria-label="Coordinate and fit meanings, scroll horizontally"
+      aria-label="What each value means, scroll horizontally"
     >
       <table>
         <thead>
@@ -679,49 +682,48 @@
         </thead>
         <tbody>
           <tr>
-            <td>Coordinate span</td>
+            <td>Size in file units</td>
             <td>
-              Maximum minus minimum on a measured axis; it has no inherent
-              physical unit in STL.
+              How far the model extends along an axis, in the file's own
+              numbers. STL has no unit, so these are not yet mm or inches.
             </td>
           </tr>
           <tr>
-            <td>Interpreted size</td>
+            <td>Real size</td>
             <td>
-              The span expressed under the unit assumption supported by your
-              source dimension.
+              The size in the unit you chose, which a dimension you know should
+              confirm.
             </td>
           </tr>
           <tr>
-            <td>Proposed proportional scale</td>
+            <td>Suggested scale</td>
             <td>
-              Target span divided by current span; other axes change by the same
-              factor.
+              Target size divided by current size; the other axes change by the
+              same amount.
             </td>
           </tr>
           <tr>
-            <td>Nominal printer comparison</td>
+            <td>Printer fit</td>
             <td>
-              A comparison within the implemented orientation and bed
-              assumptions; the final sliced placement still needs review.
+              Whether the model fits your printer's listed build volume, turning
+              it in 90 degree steps. Still check the placement in your slicer.
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      Coordinate spans have no inherent physical unit in STL. Interpreted size
-      follows your chosen assumption. A nominal printer comparison tests only
-      the implemented orientation and bed assumptions, not a physical fit
-      tolerance.
+      STL files store numbers without units, so the real size depends on the
+      unit you choose. The printer fit uses the printer's listed build volume,
+      without extra room for brims or no-print areas.
     </p>
     <p>
       <a [href]="guideRouteUrl.RouteHowToScaleAnStlFileFor3dPrinting"
-        >Resize and reopen a separate copy</a
+        >Scale a copy to the right size</a
       >
       or
       <a [href]="guideRouteUrl.RouteHowToMeasure3dModel"
-        >choose the appropriate measurement method</a
+        >choose how to measure a model</a
       >.
     </p>
   </section>

@@ -57,7 +57,7 @@ export async function fetchPublicExample(
     <section class="example-loader" aria-labelledby="example-title">
       <h2 id="example-title">Try an example</h2>
       <label
-        >Question to explore
+        >Example to try
         <select
           class="select-control"
           [value]="selected().id"
@@ -99,7 +99,7 @@ export async function fetchPublicExample(
         </p>
       }
       <p>
-        Downloads this public control, then opens it locally.
+        Downloads our example file and opens it in your browser.
         {{
           active()
             ? tool() === routeUrl.StlCompare
@@ -128,7 +128,7 @@ export async function fetchPublicExample(
       }
       @if (loaded()) {
         <p>
-          <strong>Reference observation:</strong>
+          <strong>Expected result:</strong>
           {{ selected().files[chosenIndex()].reference ?? selected().observed }}
         </p>
         <p>{{ selected().limitations }}</p>
@@ -136,10 +136,10 @@ export async function fetchPublicExample(
       <p>
         <a [routerLink]="selected().guide">Read the explanation</a> ·
         <a [routerLink]="routeUrl.Examples" [fragment]="selected().id"
-          >Download and compare controls</a
+          >Download all example files</a
         >
         ·
-        <a [routerLink]="routeUrl.Methods">Methods and processing</a>
+        <a [routerLink]="routeUrl.Methods">How the checks work</a>
       </p>
     </section>
   `,

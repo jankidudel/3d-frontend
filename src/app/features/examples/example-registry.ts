@@ -332,10 +332,10 @@ export const publicExamples: readonly PublicExample[] = [
   },
   {
     id: 'quality-control-selection',
-    name: 'Quality report controls',
+    name: 'Quality report examples',
     group: 'Boundaries / topology',
     question:
-      'How do a missing face, duplicate face and malformed file differ in the report?',
+      'What does the report show for a missing face, a duplicate face and a broken file?',
     files: [
       {
         path: ExampleAsset.Closed20mmCubeStl,
@@ -365,7 +365,7 @@ export const publicExamples: readonly PublicExample[] = [
     observed:
       'The processor reports zero listed issues, four open edges, one exact duplicate with three over-shared edges, and a parse error, respectively.',
     settings:
-      'Download controls without uploading. Explicitly submit one at a time to the Quality Checker for a server report.',
+      'Download the examples (nothing is uploaded), then check them one at a time with the Quality Checker.',
     limitations:
       'A clean report covers supported findings only. Parsing failure is not a zero-finding result.',
     guide: GuideRouteUrl.RouteHowToCheckStlForErrors,
@@ -375,10 +375,10 @@ export const publicExamples: readonly PublicExample[] = [
   },
   {
     id: 'topology-edge-controls',
-    name: 'Open edges, over-shared edges and separate parts',
+    name: 'Holes, non-manifold edges and separate parts',
     group: 'Boundaries / topology',
     question:
-      'Does this STL have an exposed edge, an over-shared edge, or two intentional closed pieces?',
+      'Does this STL have a hole, a non-manifold edge, or just two separate closed parts?',
     files: [
       {
         path: ExampleAsset.OpenFaceCubeStl,
@@ -412,7 +412,7 @@ export const publicExamples: readonly PublicExample[] = [
     observed:
       'The processor reports four boundary edges, three over-shared edges, or two vertex-connected components without an edge defect, respectively.',
     settings:
-      'Load a public control locally. Press Check manifold geometry only if you want to submit it for a server report; selecting the file alone does not submit it.',
+      'Load an example in your browser. It is only uploaded if you press Check manifold geometry.',
     limitations:
       'Edge counts do not establish design intent or detect every spatial crossing.',
     guide: GuideRouteUrl.RouteWhatIsNonManifoldGeometry,
@@ -635,7 +635,7 @@ export const publicExamples: readonly PublicExample[] = [
     name: 'Thin features in a slicer',
     group: 'Thin features / detail',
     question:
-      'Why can sampled thickness and slicer paths tell different stories?',
+      'Why can the wall check and the slicer disagree about thin features?',
     files: [
       {
         path: ExampleAsset.ThinWallBarsStl,
@@ -660,7 +660,7 @@ export const publicExamples: readonly PublicExample[] = [
     observed:
       'Local sampled checker, mm and 1.2 mm threshold: 36 attempted, 36 measured, 12 below threshold, zero unmeasured, smallest about 0.29999 mm. Retained PrusaSlicer 2.9.6 second-layer previews show four Classic versus six Arachne extrusion moves. These are software observations, not prints.',
     settings:
-      'STL coordinate unit mm; review threshold 1.2 mm. Slicer experiment: 0.4 mm nozzle, 0.2 mm layers, 0.45 mm width, two perimeters, zero infill, thin-wall option off.',
+      'STL unit: mm; minimum thickness 1.2 mm. Slicer experiment: 0.4 mm nozzle, 0.2 mm layers, 0.45 mm width, two perimeters, zero infill, thin-wall option off.',
     limitations:
       'Review measured and unmeasured rays and the native slicer preview. Preview-only G-code must not be run on a printer. No universal minimum wall is established.',
     guide: GuideRouteUrl.Route3dPrintWallThicknessGuide,
@@ -676,8 +676,7 @@ export const publicExamples: readonly PublicExample[] = [
     id: 'placed-wall-scales',
     name: 'One 3MF slab at two placed scales',
     group: 'Thin features / detail',
-    question:
-      'Does the checker include a repeated resource after a 50% placement scale?',
+    question: 'Does the checker measure a copy that was placed at half size?',
     files: [
       {
         path: ExampleAsset.TwoScaleSlabs3mf,
@@ -692,7 +691,7 @@ export const publicExamples: readonly PublicExample[] = [
     observed:
       'The resolver returns two placed items with 0.8 mm and 0.4 mm X spans, separated by 29.2 mm. The sampled result must be read separately from these designed dimensions.',
     settings:
-      'Declared unit: millimetre. Review threshold: 0.6 mm. Load locally, then run the sampled check.',
+      'Unit: millimetres. Minimum thickness: 0.6 mm. Load it in your browser, then run the check.',
     limitations:
       'Combined-scene rays are not labelled by instance. The sample is a geometry control, not a print test.',
     guide: GuideRouteUrl.RouteHowToCheck3mfWallThicknessFor3dPrinting,
@@ -1534,10 +1533,9 @@ export const publicExamples: readonly PublicExample[] = [
   },
   {
     id: 'axis-orientation-control',
-    name: 'Tilted asymmetric orientation control',
+    name: 'Tilted lopsided part',
     group: 'Orientation / support access',
-    question:
-      'Which source axis and face should become the base after a tilted import?',
+    question: 'Which side should sit on the bed when a model imports tilted?',
     files: [
       {
         path: ExampleAsset.TiltedAsymmetricBlockStl,
@@ -1554,7 +1552,7 @@ export const publicExamples: readonly PublicExample[] = [
     observed:
       'The published Float32 STL has 16 triangles and bounds about X -0.4203..46.0500, Y -8.5487..25.4604 and Z 3..31.4687 coordinate units.',
     settings:
-      'Load locally in the orientation planner, assume millimetres, and compare all six source-axis-up rows at a 45° threshold.',
+      'Load it in the orientation planner as millimetres and compare all six options with a 45° overhang limit.',
     limitations:
       'This mathematical control is not a physical adhesion test. The planner does not export a transformed STL.',
     guide: GuideRouteUrl.RouteHowToLayAnStlFlatOnPrintBed,

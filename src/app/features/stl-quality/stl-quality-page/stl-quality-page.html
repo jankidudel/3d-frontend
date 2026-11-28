@@ -12,10 +12,10 @@
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose your file</h2>
     <p>
-      Select a non-empty .stl file up to 25 MiB. Pressing Check explicitly
-      uploads it for server analysis; local viewing does not. Review the
-      <a [href]="routeUrl.Privacy">privacy policy</a> before submitting private
-      geometry.
+      Choose an STL file up to 25 MiB. Pressing Check uploads it to our server
+      for analysis; just viewing it does not. Read the
+      <a [href]="routeUrl.Privacy">privacy policy</a> before uploading a private
+      model.
     </p>
     <app-stl-file-picker
       #filePicker
@@ -42,23 +42,23 @@
   </section>
 
   <section class="content" aria-labelledby="controls-title">
-    <h2 id="controls-title">Choose a known 20-unit control</h2>
+    <h2 id="controls-title">Try an example file first</h2>
     <p>
-      Download first; downloading does not submit your model. STL declares no
-      physical unit, so interpret these coordinates as millimetres only when you
-      choose that assumption.
+      Downloading an example does not upload anything. Each is a 20 mm cube (STL
+      has no units, so open them as millimetres) with one known problem, so you
+      can see what each finding looks like.
     </p>
     <div
       class="table-scroll"
       role="region"
-      aria-label="Known control files"
+      aria-label="Example files"
       tabindex="0"
     >
       <table class="finding-table">
         <thead>
           <tr>
-            <th scope="col">Control</th>
-            <th scope="col">Actual report meaning</th>
+            <th scope="col">Example</th>
+            <th scope="col">What the report shows</th>
           </tr>
         </thead>
         <tbody>
@@ -69,8 +69,8 @@
               >
             </td>
             <td>
-              12 triangles, zero listed edge or face issues. Baseline only, not
-              print approval.
+              12 triangles and no problems. A clean result, not a guarantee it
+              will print.
             </td>
           </tr>
           <tr>
@@ -80,8 +80,7 @@
               >
             </td>
             <td>
-              10 triangles and four boundary edges; the known square face is
-              absent.
+              10 triangles and four open edges: one side of the cube is missing.
             </td>
           </tr>
           <tr>
@@ -91,7 +90,8 @@
               >
             </td>
             <td>
-              13 triangles, one exact duplicate and three over-shared edges.
+              13 triangles: one duplicate triangle, which creates three
+              non-manifold edges.
             </td>
           </tr>
           <tr>
@@ -101,7 +101,8 @@
               >
             </td>
             <td>
-              Parsing fails. It must not be read as a clean zero-finding report.
+              The file can't be read, so you get an error. That is not a clean
+              result.
             </td>
           </tr>
         </tbody>
@@ -139,106 +140,105 @@
   }
 
   <section class="content" aria-labelledby="next-title">
-    <h2 id="next-title">Turn a finding into one next action</h2>
+    <h2 id="next-title">What to do about each finding</h2>
     <div
       class="table-scroll"
       role="region"
-      aria-label="Report findings and next actions"
+      aria-label="Findings and what to do"
       tabindex="0"
     >
       <table class="finding-table">
         <thead>
           <tr>
-            <th scope="col">Report finding</th>
+            <th scope="col">Finding</th>
             <th scope="col">Next action</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Parse failure, failed or unavailable report</td>
+            <td>File can't be read, or no report</td>
             <td>
-              No healthy zero-finding result exists.
+              You have no result, not a clean one.
               <a [href]="guideRouteUrl.RouteStlFileWontSlice"
-                >Check file/format diagnosis</a
+                >See STL file won't slice</a
               >
-              and the stated failure before retrying.
+              and the error message before trying again.
             </td>
           </tr>
           <tr>
-            <td>Boundary edge</td>
+            <td>Open edges (holes)</td>
             <td>
               Use the
-              <a [href]="routeUrl.WatertightChecker">boundary checker</a> and
+              <a [href]="routeUrl.WatertightChecker">watertight checker</a> and
               <a [href]="guideRouteUrl.RouteHowToTellIfAnStlIsWatertight"
-                >interpret the exposed boundary</a
+                >read about watertight STLs</a
               >
-              before closing a surface. A designed passage can have closed
-              material walls.
+              before filling anything. A designed hole or channel is not an
+              error.
             </td>
           </tr>
           <tr>
-            <td>A visible wall with no enclosed thickness</td>
+            <td>A wall that looks solid but has no thickness</td>
             <td>
               Compare the
               <a [href]="guideRouteUrl.RouteZeroThicknessStlSurface"
-                >open sheet and closed plate controls</a
+                >sheet vs plate examples</a
               >
-              before changing slicer settings.
+              before changing slicer settings; the fix is usually in CAD.
             </td>
           </tr>
           <tr>
-            <td>Over-shared edge</td>
+            <td>Non-manifold edge</td>
             <td>
               Read the
               <a [href]="routeUrl.FixNonManifoldStlGuide"
-                >topology correction workflow</a
-              >; do not guess the extra face.
+                >non-manifold fix guide</a
+              >; don't guess which face is extra.
             </td>
           </tr>
           <tr>
-            <td>Exact duplicate or degenerate face</td>
+            <td>Duplicate or zero-area triangle</td>
             <td>
-              Review the source and the
-              <a [href]="routeUrl.StlRepair">standard cleanup report</a>, then
-              recheck its downloaded copy.
+              Run <a [href]="routeUrl.StlRepair">STL Repair cleanup</a>, read
+              its report, then check the downloaded copy again.
             </td>
           </tr>
           <tr>
-            <td>Winding conflict</td>
+            <td>Flipped faces</td>
             <td>
               Compare the
               <a [href]="guideRouteUrl.RouteHowToFixFlippedNormalsInAnStlFile"
-                >known orientation controls</a
+                >flipped-normals examples</a
               >
-              before changing a component.
+              before flipping a whole part.
             </td>
           </tr>
           <tr>
-            <td>No listed blockers or an uncertain shape</td>
+            <td>No problems found, but something looks wrong</td>
             <td>
               Check the
-              <a [href]="routeUrl.StlPrintPreflight">local preflight</a>, source
-              CAD and the selected slicer preview.
+              <a [href]="routeUrl.StlPrintPreflight">STL preflight</a>, the CAD
+              model and your slicer preview.
               <a [href]="guideRouteUrl.RouteInternalFacesInStl"
-                >Inspect hidden internal faces</a
+                >Look for hidden internal faces</a
               >
-              when the outside looks right but interior layers do not.
+              when the outside looks right but the inside slices wrongly.
             </td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      The server compares exact stored coordinates and excludes degenerate
-      triangles from edge counts. Its report components join through shared
-      vertices; local STL Repair part selection uses shared edges. A clean
-      report means only that supported checks found no listed blockers. Volume
-      is unavailable for open or inconsistent reports; even a reported
-      closed-mesh value cannot establish that untested spatial crossings or
-      cavity intent are correct. If two closed surfaces overlap despite a clean
-      edge count, compare them with the
-      <a [href]="routeUrl.MeshIntersectionsGuide">crossing-surface guide</a>
-      before changing the source model.
+      How it works: the server compares exact corner positions and skips
+      zero-area triangles when counting edges. It counts pieces that share a
+      corner as one (STL Repair's piece selector groups them slightly
+      differently). A clean report means none of these problems were found, not
+      that the model is perfect. Volume is left blank for open or inconsistent
+      models, and even a volume cannot tell you whether overlapping surfaces or
+      hollows are right. If two closed parts overlap even though the edges look
+      clean, see the
+      <a [href]="routeUrl.MeshIntersectionsGuide">overlapping surfaces guide</a>
+      before changing the model.
     </p>
   </section>
 </main>

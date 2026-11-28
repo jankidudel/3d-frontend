@@ -1,16 +1,18 @@
 <main class="page tool-page quality-page">
-  <p class="eyebrow">Browser-local 3MF cleanup</p>
+  <p class="eyebrow">3MF cleanup in your browser</p>
   <h1>Repair a 3MF File</h1>
   <p class="lead">
-    Review supported triangle cleanup and save a separate 3MF copy to verify.
+    Remove duplicate and zero-area triangles from a 3MF in your browser, keep
+    every object, position and unit, and save a repaired copy. It cannot fill
+    holes or flip faces.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose a 3MF file</h2>
     <p>
-      Processing stays in this browser. Review the removal plan before saving a
-      separate copy. This tool removes supported triangle records; it does not
-      fill holes, weld vertices or correct winding. The original remains
-      unchanged.
+      Your file stays in this browser. Check the list of triangles it plans to
+      remove, then save a separate copy. It only removes triangles; it does not
+      fill holes, merge nearby points or flip faces. Your original file is not
+      changed.
     </p>
     <app-three-mf-file-picker
       [selectedFileFromParent]="file()"
@@ -196,28 +198,25 @@
     </section>
   }
   <section class="content">
-    <h2>A duplicate-face example</h2>
+    <h2>Example: removing a duplicate face</h2>
     <p>
       Download the
       <a [href]="exampleAsset.DuplicateFaceCube3mf" download
-        >duplicate-face cube package</a
-      >. It declares millimetres, one mesh and one build item. The retained
-      local repair control observes 13 source triangles and one duplicate. Leave
-      only duplicate removal selected, run the local repair and compare the
-      before/after counts: 13 to 12 triangles, with no intended dimension
-      change. Save the repaired package and open it again in 3MF Preflight and
-      your receiving slicer. This is generated mathematical geometry, not a
-      physical print test.
+        >cube with a duplicate face</a
+      >. It is one cube in millimetres with 13 triangles, one of them a
+      duplicate. Leave only duplicate removal selected and run the repair: it
+      should go from 13 to 12 triangles with no change in size. Save the copy
+      and open it again in 3MF Preflight and your slicer. This is a made-up test
+      shape, not a print test.
     </p>
     <p>
-      These observations use the browser repair implementation with duplicate
-      removal alone.
+      These results come from the browser repair with only duplicate removal
+      selected.
       <a href="/examples/quality-evidence/repair-observation.json" download
-        >Retained repair evidence</a
+        >The saved test record</a
       >
-      records fixture/output hashes, settings, source revision and reopened
-      unit/build checks. This is not a production processor or receiving-slicer
-      observation.
+      lists the file hashes, settings and the checks on the reopened file. It
+      was not tested in other slicers.
     </p>
   </section>
   <section class="content">
@@ -287,51 +286,44 @@
         </text>
       </svg>
       <figcaption>
-        Schematic: triangle elements change in a separate package; unit and
-        build context are retained rather than flattened into STL.
+        Only triangles change, in a separate copy; units and object positions
+        are kept, unlike converting to STL.
       </figcaption>
     </figure>
-    <h3>Source mesh counts and placed geometry answer different questions</h3>
+    <h3>Stored shapes vs placed objects</h3>
     <p>
-      The removable-triangle plan examines mesh definitions in the model XML;
-      the preview resolves supported build items, component references and
-      transforms. A shared resource can have several placements without several
-      independent repair operations. Compare the declared unit, resolved build
-      count and dimensions before trusting the saved copy.
+      The removal plan looks at each stored shape in the file, while the preview
+      shows the objects as placed. One stored shape can be placed several times,
+      so fixing it once fixes every copy. Compare the unit, the number of
+      objects and the size before trusting the saved copy.
     </p>
     <p>
-      The removal-plan screen matches triangle vertex-index triples within each
-      mesh, ignoring order, and skips duplicate, degenerate and invalid-index
-      records before counting edges. Its edge keys use source indexes across the
-      model part, so these are limited plan diagnostics, not a per-resource or
-      placed-build topology proof. Invalid indexes that prevent the resolver
-      completing do not reach a repair plan. Recheck the saved build with a
-      separate method.
+      It finds triangles that use the same three corners as another triangle in
+      the same shape, in any order, and leaves out duplicate, zero-area and
+      broken triangles when counting edges. These counts are a rough guide for
+      the plan, not a full check of each object. A file too broken to open never
+      reaches the plan. Check the saved file again with another tool.
     </p>
     <p>
-      Unsupported or unresolved packages produce an error rather than a
-      flattened replacement. Open edges, non-manifold connectivity,
-      self-intersections and missing surfaces are not reconstructed. This local
-      plan does not correct winding. An empty plan means no supported removal is
-      selected, not that every possible issue has been checked.
+      Files it cannot read give an error instead of a half-converted result. It
+      does not rebuild holes, non-manifold joins, overlaps or missing surfaces,
+      and it does not flip faces. An empty plan means there is nothing it can
+      remove, not that the file has no other problems.
     </p>
     <p>
-      <a [href]="guideRouteUrl.RouteHowToRepairA3mfFile"
-        >Choose the right repair route</a
-      >
+      <a [href]="guideRouteUrl.RouteHowToRepairA3mfFile">How to repair a 3MF</a>
       and
-      <a [routerLink]="routeUrl.ThreeMfPrintPreflight"
-        >recheck the saved build</a
-      >. Several placed items can reference one edited resource; confirm
-      quantity, transforms and bounds after saving. These links do not transmit
-      the selected file.
+      <a [routerLink]="routeUrl.ThreeMfPrintPreflight">check the saved file</a>.
+      Several placed objects can share the shape you edited, so check the number
+      of objects, their positions and the size after saving. These links do not
+      send your file anywhere.
     </p>
     <p>
-      Preserve the original project, especially where colours, textures or
-      printer profiles matter. If the receiving slicer loses an assignment, stop
-      and review the original package there;
+      Keep the original project, especially if colours, textures or printer
+      profiles matter. If your slicer loses a colour or material, stop and check
+      the original file there;
       <a [href]="guideRouteUrl.RouteDoes3mfKeepColoursMaterialsAndSettings"
-        >check core geometry and slicer-project information separately</a
+        >shapes and slicer settings are checked separately</a
       >.
     </p>
   </section>

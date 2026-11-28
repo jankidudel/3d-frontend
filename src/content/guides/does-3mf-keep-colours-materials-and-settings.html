@@ -1,293 +1,250 @@
 ---
-title: 'Does 3MF Preserve Colours, Materials and Settings? | InspectMesh'
-description: 'Separate 3MF property capability from actual receiver preservation. Use one portability matrix and record observed versus untested information.'
+title: 'Does 3MF Keep Colours, Materials and Settings? | InspectMesh'
+description: 'A 3MF can store colours, materials and slicer settings, but the receiving program may ignore or change them. What carries over, what does not, and how to check.'
 slug: does-3mf-keep-colours-materials-and-settings
 eyebrow: 3MF file guide
 heading: 'Does 3MF Keep Colours, Materials and Print Settings?'
 faq:
-  - question: 'Does every 3MF preserve slicer settings?'
-    answer: 'No. Project settings can be application-specific, ignored or mapped differently. Verify the exact receiver and intended printer/material.'
-  - question: 'Does an STL export keep placement?'
-    answer: 'Its vertex coordinates can retain resolved locations, but separate build transforms, resource identities and units are absent. STL is not a project backup.'
-  - question: 'Does a grey preview prove colour data is missing?'
-    answer: 'No. A geometry preview is not a full audit of source properties. Inspect the required appearance in a supporting receiving application.'
+  - question: 'Does every 3MF keep slicer settings?'
+    answer: 'No. Slicer settings are often specific to one program and can be ignored or read differently by another. Check them in the exact program and version you will print from.'
+  - question: 'Does an STL export keep the part positions?'
+    answer: 'The triangles can stay in the same place, but STL has no separate placements, part names or units. An STL is not a backup of your project.'
+  - question: 'If the preview is grey, is the colour data missing?'
+    answer: 'Not necessarily. A shape preview does not show every property in the file. Check the colours in a program that supports them.'
 ---
 
-<p>
-  A property can be present in a 3MF package, recognised by an application and
-  still be interpreted differently at the receiving step. Record what the
-  handoff requires and what was actually observed. A grey geometry preview is
-  not a complete audit of the source's appearance data.
+<p class="lead">
+  A 3MF <em>can</em> store colours, materials and slicer settings, but whether
+  they survive depends on the program that opens it. The shape and units usually
+  carry over reliably. Colours and materials carry over only if the receiving
+  program supports them, and slicer settings are often specific to one slicer.
+  Keep the original project, and check each property you need in the program you
+  will actually print from.
 </p>
-<h2>One property-portability matrix</h2>
+<h2>What carries over, and what to check</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Required information</th>
-      <th scope="col">Possible representation</th>
-      <th scope="col">What InspectMesh establishes</th>
-      <th scope="col">What the receiver must verify</th>
+      <th scope="col">Information</th>
+      <th scope="col">How 3MF stores it</th>
+      <th scope="col">What InspectMesh checks</th>
+      <th scope="col">What you check in the receiving program</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Geometry and units</td>
-      <td>Core meshes, components and declared unit</td>
-      <td>
-        Supported local resolved surfaces, physical bounds and unit
-        interpretation
-      </td>
-      <td>Named dimensions and actual imported geometry</td>
+      <td>Shape and units</td>
+      <td>Standard meshes, sub-parts and a declared unit</td>
+      <td>The shape, real size and unit</td>
+      <td>Known dimensions and the imported shape</td>
     </tr>
     <tr>
-      <td>Build identity and placement</td>
-      <td>Resource definitions and build-item transforms</td>
-      <td>
-        Supported top-level identities before flattening; selected/all-build
-        bounds
-      </td>
-      <td>Expected inventory, coordinate location and any recentering</td>
+      <td>Parts and positions</td>
+      <td>Stored objects and where each is placed</td>
+      <td>Which parts are placed and their positions</td>
+      <td>All expected parts, positions, and any re-centring</td>
     </tr>
     <tr>
-      <td>Display appearance</td>
-      <td>
-        Core base-material display colour or defined property/texture extensions
-      </td>
-      <td>
-        Geometry preview is not a complete property audit; appearance
-        preservation untested
-      </td>
-      <td>
-        Required face assignments, texture paths/orientation and visual
-        interpretation
-      </td>
+      <td>Display colours</td>
+      <td>A basic colour per material, or colour and texture extensions</td>
+      <td>Not checked: the preview shows shape only</td>
+      <td>Colours on each face, textures and how they look</td>
     </tr>
     <tr>
-      <td>Requested manufactured material/colour</td>
-      <td>Supported property data plus agreed process mapping</td>
-      <td>Does not validate physical material or machine mapping</td>
-      <td>Actual material/tool assignments and process requirements</td>
+      <td>Real material and filament colour</td>
+      <td>Material data plus how you map it to filaments</td>
+      <td>Not checked</td>
+      <td>Which filament or tool each part is assigned to</td>
     </tr>
     <tr>
-      <td>Preparation state</td>
-      <td>Application-specific settings, profiles and plate/support data</td>
-      <td>Does not certify slicer project or printer profile</td>
-      <td>
-        Exact application/version import and suitability of each required
-        setting
-      </td>
+      <td>Slicer settings</td>
+      <td>Program-specific settings, profiles, plates and supports</td>
+      <td>Not checked</td>
+      <td>Every setting you rely on, in the exact program and version</td>
     </tr>
   </tbody>
 </table>
 <p>
-  Core base-material entries can include display colour; appearance is not all
-  one universal extension. A rendering colour also does not promise the
-  manufactured part's colour or formulation. Optional unsupported properties,
-  required unsupported semantics and vendor-private project state need different
-  treatment. A successful geometry load cannot produce a global compatibility
-  score.
+  A colour shown on screen is not a promise of the printed colour or material. A
+  file that opens correctly only tells you the shape loaded, not that every
+  property survived.
 </p>
-<h2 id="guide-project-state">
-  Same geometry, different saved preparation state
-</h2>
+<h2 id="guide-project-state">Example: same shape, different saved setting</h2>
 <p>
-  The P-roof and P-open controls use the official PrusaSlicer 2.9.6 CLI geometry
-  exporter, with its complete saved profile and an explicitly constructed
-  object-level top-layer override packaged alongside the geometry. The exact
-  published packages were reopened and sliced by that same CLI. This is a
-  controlled project-reader persistence experiment, not a recording of GUI Save
-  Project, appearance preservation or another slicer's importer.
+  We made two PrusaSlicer 2.9.6 projects of the same box, "P-roof" and "P-open".
+  They differ only in one per-object setting: the number of top layers. We
+  reopened and sliced both with the same PrusaSlicer version from the command
+  line. This tests one setting in one program, not the PrusaSlicer interface,
+  colours or other slicers.
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Exact stage</th>
-      <th scope="col">Geometry / effective setting</th>
-      <th scope="col">Actual observation</th>
+      <th scope="col">File</th>
+      <th scope="col">Shape and setting</th>
+      <th scope="col">Result</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <a href="{{ ExampleAsset.SlicerProjectRoof }}" download
-          >P-roof reopened</a
-        >
+        <a href="{{ ExampleAsset.SlicerProjectRoof }}" download>P-roof</a>
       </td>
       <td>
-        One 30 x 30 x 10 mm box, X/Y=85..115; global top count 4, object count 4
+        30 x 30 x 10 mm box at X/Y 85 to 115; top layers 4 (global and
+        per-object)
       </td>
-      <td>Top-solid paths at Z=10</td>
+      <td>Top surface printed at Z 10</td>
     </tr>
     <tr>
       <td>
-        <a href="{{ ExampleAsset.SlicerProjectOpen }}" download
-          >P-open reopened</a
-        >
+        <a href="{{ ExampleAsset.SlicerProjectOpen }}" download>P-open</a>
       </td>
-      <td>Same intended box and placement; global count 4, object count 0</td>
-      <td>No top-solid paths; the local override changes the slice</td>
+      <td>Same box and position; global 4, per-object 0</td>
+      <td>No top surface: the per-object setting wins</td>
     </tr>
     <tr>
       <td>
         <a href="{{ ExampleAsset.SlicerProjectDerivative }}" download
-          >Official geometry derivative</a
+          >Exported STL</a
         >
-        in fresh baseline
+        in a fresh project
       </td>
       <td>
-        Triangle records match the source after the measured +85,+85,0 placement
-        translation; fresh baseline top count 4
+        Same triangles (moved by +85, +85, 0); fresh default of 4 top layers
       </td>
-      <td>
-        Top-solid paths return at Z=10; the STL does not carry the object
-        override
-      </td>
+      <td>Top surface is back: the STL did not keep the per-object setting</td>
     </tr>
     <tr>
-      <td>Current InspectMesh resolver</td>
+      <td>InspectMesh</td>
+      <td>Both projects: one part, 12 triangles, same size</td>
       <td>
-        Both project packages resolve one placement, one mesh and 12 triangles;
-        same bounds
-      </td>
-      <td>
-        Complete supported geometry; local topology reports one closed shell and
-        9,000 mm³. Native shell settings are not applied by this view.
+        Shape fully read; one closed part, 9,000 mm³. InspectMesh does not apply
+        slicer settings.
       </td>
     </tr>
   </tbody>
 </table>
 <p>
-  The
+  Details are in the
   <a href="{{ ExampleAsset.SlicerProjectObservations }}" download
-    >project-reader record</a
+    >project test record</a
   >
-  identifies construction and output hashes; the
+  and the
   <a href="{{ ExampleAsset.SlicerImplementationObservations }}" download
-    >independent geometry record</a
-  >
-  compares actual triangle coordinates and winding, rather than relying on
-  bounds or byte equality. Unnecessary source-file metadata was removed before
-  the published packages were reopened. Neither control contains a modifier
-  mesh: the override belongs to the ordinary model object. A GUI object-tree
-  observation, GUI save/reopen, textures, appearance and other applications
-  remain untested.
+    >shape comparison record</a
+  >, which compares the actual triangles, not just sizes. The setting belongs to
+  the ordinary object; there is no modifier mesh. Saving and reopening in the
+  PrusaSlicer interface, textures, colours and other programs were not tested.
 </p>
 <p>
-  A geometry export can reproduce the intended surfaces while leaving
-  preparation choices to a new project. If the
-  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">roof changes</a>,
-  review that saved state; if an ordinary placement is absent, follow the
-  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}">inventory trace</a
+  So an exported shape can be perfect while the print settings are lost. If the
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">top layers</a> change
+  after import, check the saved settings; if a whole part is missing, see
+  <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
+    >missing objects after import</a
   >.
   <a href="https://help.prusa3d.com/article/saving-projects-as-3mf_1773"
     >Prusa's project documentation</a
   >
-  describes its project workflow; this observation covers only the named version
-  and operations.
+  explains how PrusaSlicer saves projects; our test covers only the version and
+  steps named here.
 </p>
-<h2>Record one real path, leave unknown properties unknown</h2>
+<h2>Example: what the two-cube file keeps</h2>
 <p>
-  The
-  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download
-    >two-placed-cubes control</a
-  >
-  tests core geometry and placement. The 27 October 2026 local resolver → scoped
-  STL writer → reopened STL check retains the second placement at X=40..60 mm
-  and all-build X=0..60 mm. It verifies intended triangles under the converter's
-  Float32 basis, as recorded in the
+  We converted our
+  <a href="{{ ExampleAsset.TwoPlacedCubes3mf }}" download>two-cube example</a>
+  to STL on 27 October 2026 and reopened it. The second cube stayed at X 40 to
+  60 mm and the whole build at X 0 to 60 mm (see the
   <a href="/examples/file-handoff/receiving-check-filled.json" download
-    >filled evidence record</a
-  >.
+    >check record</a
+  >).
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Requirement</th>
-      <th scope="col">Reference / observation</th>
-      <th scope="col">Remaining check</th>
+      <th scope="col">What you need</th>
+      <th scope="col">Result</th>
+      <th scope="col">Still to check</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Second placement geometry</td>
-      <td>12 triangles; X=40..60 mm; local saved-byte verification passed</td>
-      <td>External receiver import options remain untested</td>
+      <td>Second cube's shape and position</td>
+      <td>12 triangles at X 40 to 60 mm; saved file verified</td>
+      <td>How other programs import it</td>
     </tr>
     <tr>
-      <td>Original build identity</td>
-      <td>Two placements reference one resource in 3MF</td>
-      <td>STL derivative has no editable resource/build records</td>
+      <td>Parts as separate objects</td>
+      <td>In the 3MF, one cube placed twice</td>
+      <td>The STL has no separate parts or placements</td>
     </tr>
     <tr>
-      <td>Appearance</td>
-      <td>
-        No appearance preservation observation from this geometry-only path
-      </td>
-      <td>Untested; use a representative property-bearing package</td>
+      <td>Colours</td>
+      <td>Not tested by this shape-only export</td>
+      <td>Test with a file that actually has colours</td>
     </tr>
     <tr>
-      <td>Printer profile / project state</td>
-      <td>Not tested by the internal derivative check</td>
-      <td>Review in the exact producing/receiving slicer</td>
+      <td>Slicer settings</td>
+      <td>Not tested</td>
+      <td>Check in the slicer you print from</td>
     </tr>
   </tbody>
 </table>
-<h2>One receiving verification procedure</h2>
+<h2>How to check a 3MF you are sending or receiving</h2>
 <p>
-  Use <a href="{{ GuideSlug.Route3mfViewer }}">3MF Viewer</a> for supported
-  local geometry and placement references, then inspect required appearance and
-  project properties in the actual receiving application.
+  Use the <a href="{{ GuideSlug.Route3mfViewer }}">3MF viewer</a> for the shape
+  and positions, then check colours and settings in the program that will print
+  it.
 </p>
 <ol>
   <li>
-    Keep the original project and name required properties and revision before
-    export.
+    Keep the original project, and list the properties you need and the file
+    version before exporting.
   </li>
   <li>
-    Record producing/receiving application versions and exact operations. Reopen
-    the export in the producer when the workflow requires it.
+    Note both programs and their versions, and the exact steps. Reopen the
+    export in the original program if your workflow needs it.
   </li>
   <li>
-    Import into the receiver and compare named geometry references, placement,
-    appearance and required assignments.
+    Import it into the receiving program and compare dimensions, positions,
+    colours and filament assignments.
   </li>
   <li>
-    For each property record preserved, changed, missing or untested with
-    evidence and import options. A missing entry remains unanswered.
+    For each property, write down kept, changed, missing or not tested. Leave
+    anything you did not check as not tested.
   </li>
   <li>
-    Resolve unmapped project settings in the receiving slicer and inspect final
-    layers for the intended printer/material. Repeat a representative
-    interoperability check after relevant application changes.
+    Set any settings that did not carry over in the receiving slicer, then check
+    the final layers for your printer and filament. Repeat the check after
+    updating either program.
   </li>
 </ol>
 <p>
-  Use
+  The
   <a href="{{ GuideSlug.RouteBestFileFormatFor3dPrinting }}"
-    >the shared receiving-file record</a
+    >receiving-file checklist</a
   >
-  instead of creating another property form. The consortium
+  has space for this. The 3MF Consortium's
   <a href="https://3mf.io/compatibility-matrix/">compatibility matrix</a>
-  supplies reported application-support context, not an observed test of your
-  file or versions.
+  shows which programs report support for which features; it does not test your
+  file.
 </p>
-<h2>Retain the original when distributing a derivative</h2>
+<h2>Keep the original when you send an STL</h2>
 <p>
-  A geometry export can bake resolved placement into STL vertex coordinates. STL
-  lacks separate build transforms, resource identity, declared units, standard
-  colours/materials and preparation settings. The receiver can then move or
-  rescale it; record that operation. A millimetre convention must accompany
-  InspectMesh's STL download.
+  An STL can keep part positions in its coordinates, but it has no separate
+  placements, part names, units, colours, materials or settings. The recipient
+  can move or rescale it, so note any such step. InspectMesh's STL downloads are
+  in millimetres; say so when you send them.
 </p>
 <p>
+  If only the shapes are needed,
   <a href="{{ GuideSlug.Route3mfToStlCombinedOrSeparateParts }}"
-    >Choose combined or individual placed geometry</a
-  >
-  when only those surfaces are required. Keep the original project for future
-  changes. A basic STL-to-3MF package cannot create missing colours, materials,
-  supports or profiles.
-  <a href="{{ GuideSlug.Route3mfVsStl }}">The format comparison</a> owns the
-  representation choice; this page owns verification of the required properties.
+    >export combined or separate parts</a
+  >, and keep the original project for future changes. Converting an STL back to
+  3MF cannot recreate lost colours, materials, supports or profiles. For
+  choosing between the formats, see
+  <a href="{{ GuideSlug.Route3mfVsStl }}">3MF vs STL</a>.
 </p>
 <p>
   Reviewed 27 October 2026 against the
@@ -295,6 +252,6 @@ faq:
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
     >3MF Core Specification 1.4.0</a
   >
-  and <a href="https://3mf.io/spec/">specification suite</a>. No external
-  appearance, project or physical test is claimed for the cube control.
+  and the <a href="https://3mf.io/spec/">specification suite</a>. No colour,
+  project or print test is claimed for the cube example.
 </p>

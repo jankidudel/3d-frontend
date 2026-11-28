@@ -1,24 +1,25 @@
 ---
-title: 'STL Volume Wrong or Unavailable: Units and Topology | InspectMesh'
-description: 'Check unit scaling, signed volume, winding, open meshes and overlapping shells before trusting an STL volume, with a known-size cube control.'
+title: 'Why Is My STL Volume Wrong or Blank? | InspectMesh'
+description: 'An STL volume that is huge, tiny, negative or blank usually means a unit mix-up, flipped faces, holes or overlapping parts. How to find which one and fix it.'
 slug: stl-volume-calculation-wrong
-eyebrow: File diagnosis with owned examples
+eyebrow: File diagnosis with example files
 heading: 'Why Is My STL Volume Wrong or Unavailable?'
 faq:
-  - question: 'Does unavailable volume mean zero volume?'
-    answer: 'No. It means the mesh did not pass the supported solid-volume screen, or solid interpretation is unresolved.'
+  - question: 'Does a blank volume mean zero?'
+    answer: 'No. It means the mesh is not a clean closed solid (for example it has holes), so a volume could not be calculated reliably.'
   - question: 'Why does an inch mistake change volume so much?'
-    answer: 'Volume scales with the cube of the linear scale factor. An inch-to-millimetre factor of 25.4 becomes 16387.064 for volume.'
+    answer: 'Volume grows with the cube of the size. A 25.4 times size error becomes a 16,387 times volume error.'
 ---
 
-<p>
-  First confirm units and whether the mesh supports a solid-volume calculation.
-  Open boundaries, inconsistent winding and ambiguous shells can make a number
-  meaningless. InspectMesh collection reports use an unavailable result for
-  failed volume screens rather than displaying zero as if a solid had been
-  measured.
+<p class="lead">
+  An STL volume is usually wrong for one of four reasons: the wrong unit (an
+  inch model read as millimetres is 16,387 times off in volume), holes in the
+  surface, faces pointing the wrong way, or several overlapping parts. Check the
+  unit first, then the mesh. InspectMesh leaves the volume blank when the mesh
+  is not a clean closed solid, rather than showing a misleading number. Blank
+  never means zero.
 </p>
-<h2>Interpretation and scaling give different reproducible numbers</h2>
+<h2>Unit and scale errors</h2>
 <figure>
   <img
     src="/examples/diagnosis/units-scale.svg"
@@ -28,113 +29,108 @@ faq:
     alt="Known cube with 20-coordinate spans and a 1.5 scaling calculation."
   />
   <figcaption>
-    Coordinate interpretation leaves the input bytes unchanged; coordinate
-    scaling writes a different mesh.
+    Changing the unit only changes how the numbers are read; scaling writes a
+    new, different mesh.
   </figcaption>
 </figure>
+<p>Our 20 mm example cube shows how much the volume moves:</p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Operation on the closed control</th>
-      <th scope="col">Linear span</th>
-      <th scope="col">Volume interpretation</th>
+      <th scope="col">What you do with the cube</th>
+      <th scope="col">Side length</th>
+      <th scope="col">Volume</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Original, mm assumption</td>
+      <td>Open it as millimetres</td>
       <td>20 mm</td>
       <td>8,000 mm³</td>
     </tr>
     <tr>
-      <td>Same original bytes, inch assumption</td>
+      <td>Open the same file as inches</td>
       <td>508 mm</td>
-      <td>131,096,512 mm³ = 8,000 × 25.4³</td>
+      <td>131,096,512 mm³ (8,000 x 25.4³)</td>
     </tr>
     <tr>
-      <td>Save a 150% scaled copy; reopen as mm</td>
+      <td>Save a 150% copy, open as mm</td>
       <td>30 mm</td>
-      <td>27,000 mm³ = 8,000 × 1.5³</td>
+      <td>27,000 mm³ (8,000 x 1.5³)</td>
     </tr>
     <tr>
-      <td>Face-removed copy, mm assumption</td>
-      <td>20 mm bounds</td>
-      <td>Unavailable, not zero</td>
+      <td>Remove one side, open as mm</td>
+      <td>20 mm</td>
+      <td>Blank, not zero</td>
     </tr>
   </tbody>
 </table>
 <p>
-  Actual scale export/re-import retains 12 triangles and gives 30-coordinate
-  spans. The 3.375 volume factor applies to a valid closed solid, not a reliable
-  volume for an open surface.
-  <a href="{{ GuideSlug.RouteExamples }}">Use the same known control</a> to
-  check the receiving application's unit before trusting a volume or using it
-  for material planning.
+  Volume grows with the cube of the size, so small unit mistakes become huge
+  volume mistakes. Check one known dimension first using the
+  <a href="{{ GuideSlug.RouteExamples }}">example cube</a> and the
+  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}">STL units guide</a>.
 </p>
-<h2>Signed volume and winding</h2>
+<h2>Negative volume and flipped faces</h2>
 <p>
-  A triangle mesh calculation accumulates signed tetrahedron contributions
-  relative to the origin, divided by six. Reversing every face of a consistent
-  closed shell reverses the algebraic sign. That negative sign indicates
-  orientation in this calculation, not negative physical material. Inconsistent
-  local winding can cancel contributions and should be investigated instead of
-  hidden by taking an absolute value immediately.
+  Volume is calculated by adding up a small signed piece for every triangle. If
+  every face of a closed part points inward, the total comes out negative. That
+  only means the faces are reversed, not that the part has negative material. If
+  only some faces are flipped, pieces can cancel out and give a number that is
+  simply wrong, so fix the faces rather than just dropping the minus sign. See
+  <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
+    >fixing flipped normals</a
+  >.
 </p>
 <p>
-  The collection checker first screens edge incidence, degenerate/duplicate
-  triangles, winding conflicts and connected shells. It reports the magnitude
-  for a supported, consistently wound single closed shell. It does not expose a
-  negative physical-volume result. Multiple shells deliberately fail its
-  conservative solid interpretation; self intersections are not checked, so
-  passing these screens still does not certify a valid solid.
+  InspectMesh's collection check first looks for holes, zero-area and duplicate
+  triangles, flipped faces and the number of separate parts. It only reports a
+  volume for a single closed part with consistent faces, and never shows a
+  negative volume. Several parts give a blank result on purpose. It does not
+  check for overlapping surfaces, so a volume still does not prove the solid is
+  correct.
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Observed result</th>
-      <th scope="col">Check next</th>
-      <th scope="col">Decision</th>
+      <th scope="col">What you see</th>
+      <th scope="col">Check</th>
+      <th scope="col">What to do</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Unavailable</td>
-      <td>Boundary edges, degenerates, duplicates, winding and shell count</td>
-      <td>Correct known faults; never substitute zero</td>
+      <td>Blank volume</td>
+      <td>Holes, zero-area or duplicate triangles, flipped faces, parts</td>
+      <td>Fix the problem found; never replace it with zero</td>
     </tr>
     <tr>
-      <td>Implausibly large/small</td>
-      <td>Known linear dimension and STL unit assumption</td>
-      <td>Correct scale only after confirming intended units</td>
+      <td>Far too big or small</td>
+      <td>One known dimension and the unit you chose</td>
+      <td>Fix the unit once you are sure which one is right</td>
     </tr>
     <tr>
-      <td>Negative in another application</td>
-      <td>Its signed-volume convention and global winding</td>
-      <td>
-        Inspect orientation; distinguish raw signed sum from physical volume
-      </td>
+      <td>Negative in another program</td>
+      <td>Whether the faces point inward</td>
+      <td>Fix the face direction</td>
     </tr>
     <tr>
-      <td>Zero or tiny on a nonempty model</td>
-      <td>
-        Open surfaces, cancellation, self intersections or negligible extent
-      </td>
-      <td>Return to CAD if solid interpretation is unclear</td>
+      <td>Zero or tiny for a real model</td>
+      <td>Open surfaces, flipped patches, overlaps</td>
+      <td>Go back to CAD if the solid is unclear</td>
     </tr>
     <tr>
-      <td>Several overlapping shells</td>
-      <td>Intended union, cavities and intersecting surfaces</td>
-      <td>Do not add their volumes blindly</td>
+      <td>Several overlapping parts</td>
+      <td>Whether they should be merged or keep a hollow</td>
+      <td>Don't add their volumes together blindly</td>
     </tr>
   </tbody>
 </table>
-<h2>Name the method and distinguish a passage from an unfinished surface</h2>
+<h2>A designed hole is not a missing face</h2>
 <p>
-  Record which tool produced the value. The local collection screen and server
-  processor use their own connectivity and validity policies. Agreement on
-  dimensions does not imply both methods will publish the same volume state.
-  Neither a positive signed sum nor a closed boundary proves the intended solid
-  interpretation.
+  Note which tool gave you the number: the browser collection check and the
+  server checker use slightly different rules, so they may not both show a
+  volume even when they agree on the size.
 </p>
 <figure>
   <img
@@ -145,110 +141,91 @@ faq:
     alt="A complete material boundary surrounds an empty square passage; a cube with a removed face has four boundary edges."
   />
   <figcaption>
-    Original explanatory diagram, not a measured section or screenshot.
+    Left: a hole through a block, fully surrounded by walls. Right: a cube with
+    a side missing.
   </figcaption>
 </figure>
 <table>
   <thead>
     <tr>
-      <th scope="col">Owned control, mm convention</th>
-      <th scope="col">Analytical expectation</th>
-      <th scope="col">Actual observations by method</th>
+      <th scope="col">Example (mm)</th>
+      <th scope="col">Expected</th>
+      <th scope="col">What both InspectMesh checks report</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Closed 20 mm cube, 12 triangles</td>
       <td>8,000 mm³</td>
-      <td>
-        Local collection: zero open edges, 8,000 mm³. Local server-processor
-        code path: zero open edges, approximately 8,000 mm³.
-      </td>
+      <td>No open edges; about 8,000 mm³</td>
     </tr>
     <tr>
-      <td>Missing-face cube, 10 triangles</td>
-      <td>Unfinished material boundary</td>
-      <td>
-        Both named local methods: four boundary edges; volume unavailable.
-      </td>
+      <td>Cube with one side missing, 10 triangles</td>
+      <td>Not a closed solid</td>
+      <td>4 open edges; volume blank</td>
     </tr>
     <tr>
-      <td>40 × 30 × 10 mm block, 8 mm square through-opening, 32 triangles</td>
-      <td>12,000 − 640 = 11,360 mm³ material</td>
-      <td>
-        Both named local methods: zero open edges; approximately 11,360 mm³
-        material volume.
-      </td>
+      <td>40 x 30 x 10 mm block with an 8 mm square hole through it</td>
+      <td>12,000 - 640 = 11,360 mm³</td>
+      <td>No open edges; about 11,360 mm³</td>
     </tr>
   </tbody>
 </table>
 <p>
   Download the
-  <a href="{{ ExampleAsset.Hole8Stl }}" download>through-opening block</a> and
-  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>missing-face cube</a>.
-  Captured 27 October 2026:
+  <a href="{{ ExampleAsset.Hole8Stl }}" download>block with a hole</a> and the
+  <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download
+    >cube with a missing side</a
+  >. Results from 27 October 2026:
   <a href="/examples/file-handoff/interior-local-observation.json" download
-    >local collection functions</a
+    >browser check</a
   >
   and
   <a href="/examples/file-handoff/processor-observation.json" download
-    >local .NET processor</a
-  >. The latter is the server's processor code path run locally, not a deployed
-  endpoint observation. A designed passage is empty space bounded by intact
-  material surfaces, unlike a missing mesh face. These controls establish no
-  physical flow, drainage or strength.
+    >server checker code run locally</a
+  >. A designed hole is empty space with walls all round it; a missing face is
+  an unfinished surface. These are software results, not print tests.
 </p>
 <p>
-  For a designed cavity, follow
+  For a hollow model, see
   <a href="{{ GuideSlug.RouteHowToHollowAnStlFileFor3dPrinting }}"
-    >the hollow-design decision</a
-  >, then
-  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
-    >inspect its interior with visual clipping</a
-  >. Do not subtract unsigned arbitrary shell volumes to infer a cavity.
-</p>
-<h2>Recheck after a correction</h2>
-<ol>
-  <li>
-    Keep the original; record bounds and the application/unit settings that
-    produced the number.
-  </li>
-  <li>
-    Run
-    <a href="{{ GuideSlug.RouteStlPrintPreflight }}"
-      >topology and dimension review</a
-    >; locate the actual fault.
-  </li>
-  <li>
-    Correct the source solid or a clearly understood mesh defect on a copy.
-  </li>
-  <li>
-    <a href="{{ GuideSlug.RouteStlCompare }}">Compare revised surfaces</a> and
-    verify known dimensions, not just total volume.
-  </li>
-  <li>
-    Inspect the resulting solid and sliced layers in the intended application.
-  </li>
-</ol>
-<h2>Solid volume is not slicer material use</h2>
-<p>
-  Geometric volume assumes a solid interpretation. Slicer material includes
-  walls, infill, supports and purge, according to settings; hollow interiors may
-  use less while supports add material. Use the actual sliced consumption for a
-  quote or spool decision.
-  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
-    >Read filament-use guidance</a
+    >how to hollow an STL</a
   >
-  and avoid using model volume as a complete job estimate.
+  and
+  <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
+    >look inside with a cross-section</a
+  >. Don't work out a hollow by subtracting volumes of separate shells.
+</p>
+<h2>After fixing it</h2>
+<ol>
+  <li>Keep the original and note its size and the unit you used.</li>
+  <li>
+    Run <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL preflight</a> to
+    find the actual problem.
+  </li>
+  <li>Fix it in CAD, or fix a clear mesh error on a copy.</li>
+  <li>
+    <a href="{{ GuideSlug.RouteStlCompare }}">Compare the two versions</a> and
+    check known dimensions, not just the volume.
+  </li>
+  <li>Check the solid and the sliced layers in your slicer.</li>
+</ol>
+<h2>Model volume is not filament use</h2>
+<p>
+  Volume treats the model as solid. A real print uses walls, infill, supports
+  and purge, so it can need much less (sparse infill) or more (supports). For
+  quotes or spool planning, use the total from your slicer. See
+  <a href="{{ GuideSlug.RouteHowMuchFilamentDoesA3dPrintUse }}"
+    >how much filament a print uses</a
+  >.
 </p>
 <p>
-  Method basis: the application tests verify owned closed/open cube controls and
-  inch scaling. The
+  The InspectMesh tests check closed and open example cubes and inch scaling.
+  For comparison with 3MF files, which declare their unit, see the
   <a
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
     >3MF Core Specification</a
   >
-  supplies unit/mesh context when comparing with declared-unit packages; STL
-  requires its own assumption. Source review: 7 October 2026. These are software
-  and arithmetic controls, without physical measurements.
+  (reviewed 7 October 2026). These are software and arithmetic results, not
+  physical measurements.
 </p>

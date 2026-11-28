@@ -1,10 +1,12 @@
 <main class="page tool-page wall-thickness-page">
-  <p class="eyebrow">Local 3MF build screen</p>
+  <p class="eyebrow">3MF wall check in your browser</p>
   <h1>3MF Wall Thickness Checker</h1>
   <p class="lead">
-    Estimate sampled wall thickness in the supported, resolved 3MF build. Check
-    the declared unit and placed geometry before interpreting the result; a ray
-    hit is not necessarily the wall of one isolated part.
+    Find thin walls in a 3MF before you print. The checker measures wall
+    thickness at up to 2,000 points across every placed object, in millimetres,
+    and highlights spots below your chosen limit. It runs in your browser.
+    Objects placed close together can affect a reading, so check flagged spots
+    against the model.
   </p>
   <section class="card viewer-tool" aria-labelledby="upload-title">
     <h2 id="upload-title">Choose a 3MF</h2>
@@ -21,8 +23,8 @@
       />
     </div>
     <p class="hint">
-      3MF files up to {{ fileLimitMiB }} MiB are supported. Your file is
-      resolved and sampled in this browser.
+      3MF files up to {{ fileLimitMiB }} MiB. Your file is measured in this
+      browser and never uploaded.
     </p>
     @if (loading()) {
       <p role="status">Resolving build geometry locally...</p>
@@ -41,7 +43,7 @@
   />
   <p>
     <a [href]="exampleAsset.TwoScaleSlabs3mf" download
-      >Download the two-scale 3MF control</a
+      >Download the two-size 3MF example</a
     >
   </p>
 
@@ -185,27 +187,26 @@
     </section>
   }
   <section class="content interpretation-guide">
-    <h2>Placed-build interpretation</h2>
+    <h2>How to read the result</h2>
     <p>
-      Supported resolved build geometry, declared units and transformations
-      define the sample basis. They do not reconstruct every slicer project
-      setting or future
+      The check uses the shapes, units and positions in the file. It does not
+      apply slicer settings, so it cannot show how the slicer will split walls
+      into
       <a [href]="guideRouteUrl.Route3dPrintWallsVsInfill"
-        >perimeter and infill region</a
+        >perimeters and infill</a
       >.
     </p>
     <p>
-      The checker resolves supported mesh build items, repeated resources and
-      nested component transforms into one millimetre scene. It samples at most
-      2,000 selected triangle centroids; unmeasured rays and unsampled triangles
-      remain outside the measured result. Open boundaries, neighbouring parts
-      and assembly gaps need review in the original application. Unsupported
-      required or recommended extensions, unsafe packages and unresolved mesh
-      geometry stop with an error rather than a guessed result.
+      All placed objects, copies and nested parts are combined into one scene in
+      millimetres. Thickness is measured at up to 2,000 points; points it could
+      not measure, and areas it did not sample, are not included, so "no thin
+      walls" is not a guarantee. Holes, neighbouring parts and gaps between
+      parts need checking in the original program. Files using features the
+      checker cannot read stop with an error rather than a guess.
     </p>
     <p>
-      <a [href]="routeUrl.Methods">Read the sampling method</a>. Keep the
-      original 3MF and compare critical geometry with its native slicer preview.
+      <a [href]="routeUrl.Methods">How the measurement works</a>. Keep the
+      original 3MF and check important areas in your slicer's preview.
     </p>
   </section>
 </main>
