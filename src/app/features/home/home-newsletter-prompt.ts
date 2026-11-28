@@ -17,7 +17,6 @@ export const NEWSLETTER_PROMPT_DISMISSAL_STORAGE_KEY =
   'newsletter_prompt_dismissed_until_v1';
 const DISMISSAL_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
 const DISPLAY_DELAY_MS = 10_000;
-const MOBILE_QUERY = '(max-width: 42rem)';
 
 @Component({
   selector: 'app-home-newsletter-prompt',
@@ -90,7 +89,9 @@ export class HomeNewsletterPromptComponent {
     }
     this.shown = true;
     this.visible.set(true);
-    this.expanded.set(!this.isMobile());
+    // Appear as a compact tab on every screen size. An auto-expanded panel
+    // covered page content (tables, comparison cells) until dismissed.
+    this.expanded.set(false);
     this.analytics.trackNewsletterPrompt(
       AnalyticsEvent.NewsletterPromptDisplayed,
     );
@@ -104,13 +105,6 @@ export class HomeNewsletterPromptComponent {
       this.load(NEWSLETTER_PROMPT_DISMISSAL_STORAGE_KEY),
     );
     return Number.isFinite(dismissedUntil) && dismissedUntil > Date.now();
-  }
-
-  private isMobile(): boolean {
-    const browserWindow = this.document.defaultView;
-    return typeof browserWindow?.matchMedia === 'function'
-      ? browserWindow.matchMedia(MOBILE_QUERY).matches
-      : false;
   }
 
   private load(key: string): string | null {

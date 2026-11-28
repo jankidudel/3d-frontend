@@ -38,7 +38,16 @@ td {
 thead {
   background: #fff2e6;
 }
+.scroll-hint {
+  display: none;
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
 @media (max-width: 40rem) {
+  .scroll-hint {
+    display: block;
+  }
   .choose-grid {
     grid-template-columns: 1fr;
   }

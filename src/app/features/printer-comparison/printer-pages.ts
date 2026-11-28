@@ -37,6 +37,16 @@ function nominalVolume(printer: PrinterRecord): number {
   return x * y * z;
 }
 
+/** True when `outer`'s bed is at least as large as `inner`'s on both axes, allowing a 90 degree turn. */
+function bedCovers(outer: PrinterRecord, inner: PrinterRecord): boolean {
+  const [outerX, outerY] = outer.buildVolumeMm;
+  const [innerX, innerY] = inner.buildVolumeMm;
+  return (
+    (outerX >= innerX && outerY >= innerY) ||
+    (outerX >= innerY && outerY >= innerX)
+  );
+}
+
 function formatOneDecimal(value: number): string {
   return (Math.round(value * 10) / 10).toFixed(1);
 }
@@ -189,7 +199,9 @@ export class PrinterHubPage {
       }
       @if (largerPrinters().length) {
         <p>
-          Need more room? Larger nominal volumes in this catalogue:
+          Need more room? Printers in this catalogue with a bed at least
+          {{ printer().buildVolumeMm[0] }} x {{ printer().buildVolumeMm[1] }} mm
+          and a larger nominal volume:
           @for (other of largerPrinters(); track other.id; let last = $last) {
             <a [routerLink]="[routeUrl.Printers, other.slug]">{{
               other.displayName
@@ -451,9 +463,18 @@ export class PrinterDetailPage {
       total: ranked.length,
     };
   });
+  /**
+   * Printers that are bigger in every useful sense: a bed at least as large on
+   * both axes (in either orientation) and a larger nominal volume. Volume alone
+   * would suggest a 220 x 220 mm bed for a 250 x 210 mm part.
+   */
   readonly largerPrinters = computed(() =>
     this.publishedPrinters
-      .filter((other) => nominalVolume(other) > nominalVolume(this.printer()))
+      .filter(
+        (other) =>
+          bedCovers(other, this.printer()) &&
+          nominalVolume(other) > nominalVolume(this.printer()),
+      )
       .sort((left, right) => nominalVolume(left) - nominalVolume(right))
       .slice(0, NEIGHBOUR_LIMIT),
   );

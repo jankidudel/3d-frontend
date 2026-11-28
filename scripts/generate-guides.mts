@@ -187,22 +187,27 @@ for (const fileName of contentFiles) {
       .replace(
         /<img src="\/examples\/slicer-detail\/[^"]+"[^>]*>/g,
         (image) =>
-          `<div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Retained slicer paths, scroll horizontally on small screens">${image}</div>`,
+          `<p class="guide-scroll-hint" aria-hidden="true">Swipe sideways to see the whole diagram.</p><div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Retained slicer paths, scroll horizontally on small screens">${image}</div>`,
       )
       .replace(
         /<img src="\/examples\/functional-fit\/[^"]+"[^>]*>/g,
         (image) =>
-          `<div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original functional-fit diagram, scroll horizontally on small screens">${image}</div>`,
+          `<p class="guide-scroll-hint" aria-hidden="true">Swipe sideways to see the whole diagram.</p><div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original functional-fit diagram, scroll horizontally on small screens">${image}</div>`,
       )
       .replace(
         /<img src="\/examples\/split-assembly\/[^"]+"[^>]*>/g,
         (image) =>
-          `<div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original split and assembly diagram, scroll horizontally on small screens">${image}</div>`,
+          `<p class="guide-scroll-hint" aria-hidden="true">Swipe sideways to see the whole diagram.</p><div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original split and assembly diagram, scroll horizontally on small screens">${image}</div>`,
+      )
+      .replace(
+        /<img src="\/examples\/slicer-diagnosis\/[^"]+"[^>]*>/g,
+        (image) =>
+          `<p class="guide-scroll-hint" aria-hidden="true">Swipe sideways to see the whole diagram.</p><div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Slicer path diagram, scroll horizontally on small screens">${image}</div>`,
       )
       .replace(
         /<img src="\/examples\/input-integrity\/[^"]+"[^>]*>/g,
         (image) =>
-          `<div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original input integrity diagram, scroll horizontally on small screens">${image}</div>`,
+          `<p class="guide-scroll-hint" aria-hidden="true">Swipe sideways to see the whole diagram.</p><div class="guide-diagram-scroll" tabindex="0" role="region" aria-label="Original input integrity diagram, scroll horizontally on small screens">${image}</div>`,
       ),
   };
   guideContent.set(fileName, {

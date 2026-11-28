@@ -12,10 +12,12 @@ faq:
 ---
 
 <p class="lead">
-  To fix a non-manifold STL, first find out which problem it is: a hole, an
-  extra face, separate parts, or parts that overlap. Each one needs a different
-  fix, and the wrong fix can damage the design. Run a mesh check, make one
-  change on a copy of the file, then check the copy and its sliced layers again.
+  A non-manifold STL has edges that do not join exactly two faces: usually a
+  hole (an edge with one face) or extra faces meeting at one edge. Find which
+  one you have with a mesh check, fix that one problem on a copy of the file,
+  then check the copy and its sliced layers again. Separate parts and
+  overlapping solids can trigger similar slicer warnings, but they are not
+  non-manifold faults and need a different decision.
 </p>
 <h2>Step 1: find out which problem you have</h2>
 <p>

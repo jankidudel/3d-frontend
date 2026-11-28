@@ -22,7 +22,7 @@ describe('HomeNewsletterPromptComponent', () => {
     vi.useRealTimers();
   });
 
-  it('shows the panel after ten seconds', async () => {
+  it('shows a compact tab after ten seconds and opens the panel on request', async () => {
     const fixture = TestBed.createComponent(HomeNewsletterPromptComponent);
     fixture.detectChanges();
     await Promise.resolve();
@@ -32,6 +32,12 @@ describe('HomeNewsletterPromptComponent', () => {
     expect(fixture.nativeElement.querySelector('aside')).toBeNull();
 
     vi.advanceTimersByTime(1);
+    fixture.detectChanges();
+    const tab = fixture.nativeElement.querySelector('.prompt-tab');
+    expect(tab).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.prompt-panel')).toBeNull();
+
+    tab.click();
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.prompt-panel')).not.toBeNull();
   });
