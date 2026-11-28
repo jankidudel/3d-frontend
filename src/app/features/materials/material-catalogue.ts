@@ -1203,6 +1203,17 @@ export function compatibilityFor(
       MaterialId.Asa,
     ],
     'bambu-lab-p1p': [MaterialId.Pla, MaterialId.Petg, MaterialId.Tpu],
+    'prusa-mk4s': [MaterialId.Pla, MaterialId.Petg, MaterialId.Tpu],
+    'prusa-core-one': [
+      MaterialId.Pla,
+      MaterialId.Petg,
+      MaterialId.Tpu,
+      MaterialId.Abs,
+      MaterialId.Asa,
+      MaterialId.Pc,
+      MaterialId.Pp,
+      MaterialId.Nylon,
+    ],
   };
   const named = documented[printer.id]?.includes(material.id) ?? false;
   if (named) {

@@ -2,9 +2,11 @@
   <p class="eyebrow">Closed-surface check</p>
   <h1>STL Watertight Checker</h1>
   <p class="lead">
-    Check an STL for exposed mesh boundaries before deciding whether a surface
-    needs attention. A completed zero-boundary result does not establish every
-    property of a valid solid or determine whether an opening is intentional.
+    Find out whether your STL is a closed surface or has holes. This checker
+    answers one question: are there any open edges, and how many? Use it when a
+    slicer reports holes or a non-solid model. For a full list of mesh problems,
+    use the STL Quality Checker instead. Zero open edges means no holes were
+    found; it does not decide whether an opening was meant to be there.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL</h2>

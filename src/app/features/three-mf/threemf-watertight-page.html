@@ -2,9 +2,11 @@
   <p class="eyebrow">3MF closed-surface check</p>
   <h1>3MF Watertight Checker</h1>
   <p class="lead">
-    Check supported placed 3MF geometry for exposed mesh boundaries. Use the
-    result to investigate closure; zero detected boundaries does not establish
-    complete solid validity or a successful print.
+    Find out whether the objects placed in your 3MF build are closed or have
+    holes. This checker counts open edges in each placed object, so you can see
+    which one needs attention before slicing. For an STL, use the STL watertight
+    checker; for every 3MF mesh problem at once, use the 3MF Quality Checker. No
+    open edges means no holes were found, not that the print is guaranteed.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your 3MF</h2>

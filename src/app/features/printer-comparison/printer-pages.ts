@@ -184,7 +184,7 @@ export class PrinterHubPage {
         <p>{{ printer().dimensionsNote }}</p>
       }
       @if (fitExample(); as example) {
-        <h3>Example: a 250 x 210 x 180 mm box</h3>
+        <h3>Will a 250 x 210 x 180 mm box fit?</h3>
         <p>{{ example }}</p>
       }
       @if (largerPrinters().length) {
@@ -224,26 +224,34 @@ export class PrinterHubPage {
             <th scope="row">Build volume</th>
             <td>{{ printer().buildVolumeMm.join(' x ') }} mm</td>
           </tr>
-          <tr>
-            <th scope="row">Physical machine dimensions</th>
-            <td>{{ formatDimensions(printer().machineDimensionsMm) }}</td>
-          </tr>
+          @if (printer().machineDimensionsMm) {
+            <tr>
+              <th scope="row">Physical machine dimensions</th>
+              <td>{{ formatDimensions(printer().machineDimensionsMm) }}</td>
+            </tr>
+          }
           <tr>
             <th scope="row">Enclosure</th>
             <td>{{ printer().enclosed ? 'Enclosed' : 'Open frame' }}</td>
           </tr>
-          <tr>
-            <th scope="row">Maximum nozzle temperature</th>
-            <td>{{ formatNumber(printer().maxNozzleTemperatureC, 'C') }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Maximum bed temperature</th>
-            <td>{{ formatNumber(printer().maxBedTemperatureC, 'C') }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Manufacturer-claimed maximum speed</th>
-            <td>{{ formatNumber(printer().maxClaimedSpeedMmS, 'mm/s') }}</td>
-          </tr>
+          @if (printer().maxNozzleTemperatureC) {
+            <tr>
+              <th scope="row">Maximum nozzle temperature</th>
+              <td>{{ formatNumber(printer().maxNozzleTemperatureC, '°C') }}</td>
+            </tr>
+          }
+          @if (printer().maxBedTemperatureC) {
+            <tr>
+              <th scope="row">Maximum bed temperature</th>
+              <td>{{ formatNumber(printer().maxBedTemperatureC, '°C') }}</td>
+            </tr>
+          }
+          @if (printer().maxClaimedSpeedMmS) {
+            <tr>
+              <th scope="row">Manufacturer-claimed maximum speed</th>
+              <td>{{ formatNumber(printer().maxClaimedSpeedMmS, 'mm/s') }}</td>
+            </tr>
+          }
           @if (printer().camera) {
             <tr>
               <th scope="row">Camera</th>
@@ -262,19 +270,22 @@ export class PrinterHubPage {
               <td>{{ printer().materials }}</td>
             </tr>
           }
-          <tr>
-            <th scope="row">Historical USD price snapshot</th>
-            <td>
-              {{
-                printer().indicativeUsdPrice
-                  ? '$' + printer().indicativeUsdPrice
-                  : 'Not confirmed'
-              }}
-              (checked {{ printer().lastVerified }}; not a current offer)
-            </td>
-          </tr>
+          @if (printer().indicativeUsdPrice) {
+            <tr>
+              <th scope="row">Historical USD price snapshot</th>
+              <td>
+                {{ '$' + printer().indicativeUsdPrice }}
+                (checked {{ printer().lastVerified }}; not a current offer)
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
+      <p>
+        Only values published in the manufacturer sources listed below are
+        shown. Anything the manufacturer does not state, such as a claimed
+        maximum speed, is left out rather than estimated.
+      </p>
     </section>
     <section>
       <h2>Which filament families it suits</h2>
@@ -379,17 +390,17 @@ export class PrinterDetailPage {
       'bambu-lab-p2s':
         'The 250 x 210 x 180 mm example fits the P2S nominal cube with 6 mm total clearance on the longest axis. Changing from a P1S does not increase this capacity; compare nozzle handling and monitoring needs instead.',
       'bambu-lab-x1-carbon':
-        'The example fits the X1 Carbon nominal cube, just as on the P-series 256 mm platforms. Sensors and accessories cannot make a larger footprint fit; assess those features separately from geometric capacity.',
+        "Yes. The box fits the X1 Carbon's 256 mm cube flat, with 6 mm spare on the longest side and 46 mm on the other. That is the same capacity as the A1, P1S and P2S; the X1 Carbon's extras do not add build space.",
       'prusa-core-one':
-        'Place the 210 mm side across the CORE One 220 mm depth and the 250 mm side along its 250 mm width. This leaves zero total width allowance. A 260 mm-tall narrow part illustrates the different tradeoff: it is below the 270 mm nominal height but above a 256 mm cube.',
+        "Yes, but only just. Laid flat with the 250 mm side along the 250 mm width, the 210 mm side fits within the 220 mm depth with 10 mm to spare, while the width has no room for a brim. Its 270 mm height is the CORE One's real advantage: a tall, narrow part up to 270 mm fits here but not on a 256 mm cube printer.",
       'creality-k1c':
-        'The example exceeds the K1C 220 mm horizontal axes in its original order. A right-angle turn placing the 250 mm side vertically reaches its 250 mm height exactly, with no height allowance. Confirm orientation and supports before treating this boundary as usable.',
+        "Not flat. The 250 mm side is longer than the K1C's 220 mm bed. Standing the box on end puts the 250 mm side vertical, which exactly equals the 250 mm build height and leaves no margin. Treat it as not fitting unless you split or scale the part.",
       'elegoo-neptune-4-plus':
         'The example fits the Neptune 4 Plus nominal 320 x 320 x 385 mm box with 70 mm width and 110 mm depth allowance. A 300 x 280 mm panel illustrates why the larger bed can matter, but its flatness and bed-motion workspace need separate review.',
       'sovol-sv06-ace':
-        'The 250 mm axis cannot lie across either 220 mm horizontal dimension. Turning it vertically reaches the 250 mm nominal height exactly. For a flat 230 x 200 mm panel, try the fit checker before assuming an axis-aligned layout will work.',
+        "Not flat. The 250 mm side is longer than the SV06 ACE's 220 mm bed. Standing it on end exactly equals the 250 mm build height, with no margin. For a flat part, anything up to about 220 x 220 mm fits with room for a brim if you keep a few millimetres clear.",
       'prusa-mk4s':
-        'The example matches a nominal 250 × 210 × 220 mm MK4S box on two horizontal axes, leaving zero nominal XY clearance. Treat that equality as a boundary case: the real footprint, bed exclusions and brim can make the job unsuitable.',
+        'Yes, but only just. Laid flat, the box is exactly 250 x 210 mm, the same as the MK4S bed, so there is no spare room for a brim, skirt or purge line. In practice, plan to shrink the part slightly, split it, or choose a larger bed.',
     };
     return examples[id] ?? null;
   });
@@ -480,7 +491,7 @@ export class PrinterDetailPage {
         return 'Usually need an enclosure, which this open-frame printer lacks';
       }
       case CompatibilityVerdict.Unknown: {
-        return `Not verified for the ${name} yet`;
+        return `Not named in the ${name} sources checked (check the filament and printer documentation)`;
       }
       default: {
         return verdict;

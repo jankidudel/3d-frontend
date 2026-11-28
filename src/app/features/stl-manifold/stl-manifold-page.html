@@ -2,9 +2,12 @@
   <p class="eyebrow">STL topology check</p>
   <h1>STL Manifold Checker: Open and Over-Shared Edges</h1>
   <p class="lead">
-    Check how STL triangles join: exposed edges, edges shared by too many faces
-    and vertex-connected pieces. The result helps locate a topology question; it
-    cannot infer the intended solid or detect every spatial intersection.
+    Check whether every edge of your STL joins exactly two triangles. This
+    checker counts open edges and edges shared by three or more faces, the usual
+    causes of non-manifold warnings in slicers, and how many separate pieces the
+    mesh is made of. Use it when you already know the model has a topology
+    warning and want to locate it. It does not detect surfaces that pass through
+    each other.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your STL topology</h2>

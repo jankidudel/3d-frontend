@@ -926,7 +926,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'how-to-make-an-stl-file-printable',
@@ -953,7 +953,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 30,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'stl-triangle-count-explained',

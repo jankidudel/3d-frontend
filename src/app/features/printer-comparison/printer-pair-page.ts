@@ -1,6 +1,7 @@
 import {
   formatPrinterDimensions,
   formatPrinterNumber,
+  formatPrinterText,
 } from './printer-spec-format';
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -95,6 +96,7 @@ export class PrinterPairPage {
 
   readonly formatDimensions = formatPrinterDimensions;
   readonly formatNumber = formatPrinterNumber;
+  readonly formatText = formatPrinterText;
 
   price(printer: PrinterRecord): string {
     return printer.indicativeUsdPrice === undefined

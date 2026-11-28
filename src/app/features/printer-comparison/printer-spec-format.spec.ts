@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   formatPrinterDimensions,
   formatPrinterNumber,
+  PRINTER_SPEC_NOT_STATED,
 } from './printer-spec-format';
 import { printers } from './printer-catalogue';
 import {
@@ -13,10 +14,12 @@ import {
 describe('printer facts and unknown fields', () => {
   it('renders unknown, zero and invalid numbers without implying measurements', () => {
     for (const value of [null, 0, NaN, -1]) {
-      expect(formatPrinterNumber(value, 'mm/s')).toBe('Not verified');
+      expect(formatPrinterNumber(value, 'mm/s')).toBe(PRINTER_SPEC_NOT_STATED);
     }
-    expect(formatPrinterDimensions(null)).toBe('Not verified');
-    expect(formatPrinterDimensions([0, 220, 250])).toBe('Not verified');
+    expect(formatPrinterDimensions(null)).toBe(PRINTER_SPEC_NOT_STATED);
+    expect(formatPrinterDimensions([0, 220, 250])).toBe(
+      PRINTER_SPEC_NOT_STATED,
+    );
     expect(formatPrinterDimensions([220, 220, 250])).toBe('220 x 220 x 250 mm');
   });
   it('never stores build volume as physical dimensions or zero as unknown speed', () => {

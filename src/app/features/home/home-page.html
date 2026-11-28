@@ -2,8 +2,9 @@
   <p class="eyebrow">InspectMesh</p>
   <h1>Practical tools and guides for 3D printing</h1>
   <p class="lead">
-    Inspect models, plan prints and understand your options with useful tools
-    and clear, practical guides.
+    Free browser tools to check an STL or 3MF before you print: see its real
+    size, find holes and mesh errors, check it fits your printer, and estimate
+    filament, time and cost.
   </p>
   <p class="hero-actions">
     <a class="button" [routerLink]="routeUrl.Viewer">Open an STL model</a>
@@ -39,15 +40,15 @@
       <article class="card">
         <h3>Diagnose a slicing problem</h3>
         <p>
-          Separate a missing boundary from ambiguous topology before changing
-          the surface.
+          Find out why a slicer rejects the file, such as holes or non-manifold
+          edges, before you try to repair it.
         </p>
         <a [href]="guideRouteUrl.RouteStlFileWontSlice">STL slicing triage</a> ·
         <a [routerLink]="routeUrl.ThreeMfPrintPreflight">Check a 3MF build</a>
       </article>
       <article class="card">
-        <h3>Prepare an export</h3>
-        <p>Resize or clean an export, then compare it with the original.</p>
+        <h3>Resize or fix a file</h3>
+        <p>Scale a model to the right size or clean up a broken mesh.</p>
         <a [routerLink]="routeUrl.StlScaleTool">Scale an STL</a> ·
         <a [routerLink]="routeUrl.StlRepair">Review supported repairs</a>
       </article>

@@ -2,10 +2,11 @@
   <p class="eyebrow">Supported edge-sharing checks</p>
   <h1>3MF Manifold Checker</h1>
   <p class="lead">
-    Inspect supported 3MF mesh relationships, including exposed and over-shared
-    edges. Read the method alongside the result: clean edge counts do not prove
-    every vertex is manifold, exclude spatial intersections or determine how
-    parts should be joined.
+    Check whether every edge in your 3MF build joins exactly two triangles. This
+    checker counts open edges and edges shared by too many faces for each placed
+    object, which is what slicers flag as non-manifold. Use it to locate a
+    topology warning in a multi-object 3MF. It does not detect surfaces that
+    pass through each other or decide how parts should be joined.
   </p>
   <section class="checker card" aria-labelledby="upload-title">
     <h2 id="upload-title">Check your 3MF</h2>

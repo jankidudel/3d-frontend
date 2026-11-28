@@ -11,13 +11,15 @@ faq:
     answer: Yes. Closure and component count answer different questions; inspect whether both solids are intended and whether they overlap.
 ---
 
-<p>
-  Check whether triangle edges have a neighbour. An exposed edge belongs to only
-  one face and marks an open boundary under this mesh check. A result of zero
-  open edges supports closure, but it does not prove correct design,
-  non-intersection or printability. Use the
+<p class="lead">
+  An STL is watertight when its surface is fully closed: every triangle edge
+  joins at least one other triangle, so there are no holes. To check, run the
+  file through the
   <a href="{{ GuideSlug.RouteStlWatertightChecker }}">STL Watertight Checker</a>
-  to inspect your exact file.
+  and look at the open-edge count. Zero open edges means the surface is closed.
+  Any open edges mark a hole or gap you should inspect before slicing.
+  Watertight is not the same as manifold or printable: a closed model can still
+  have overlapping parts or walls that are too thin.
 </p>
 <h2>Establish the meaning with two controls</h2>
 <p>

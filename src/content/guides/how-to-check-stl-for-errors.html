@@ -10,12 +10,13 @@ faq:
 ---
 
 <p class="lead">
-  Check an STL for errors by running a mesh check, then reading each finding
-  separately: open edges, duplicates and winding problems need different fixes.
-  A report describes a finding, not the correction your design needs. Start by
-  identifying which check ran, where the finding occurs and whether the affected
-  surface or part is intentional. Then choose one focused action and compare the
-  saved result with the original.
+  To check an STL for errors, run it through a mesh checker such as the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
+  look at each finding on its own. The common errors are holes (open edges),
+  edges shared by too many faces, duplicate triangles and flipped faces, and
+  each one needs a different fix. Before changing anything, decide whether the
+  flagged area is a real mistake or part of the design, then fix one thing at a
+  time and check the saved copy again.
 </p>
 <h2>Start with a completed result</h2>
 <p>

@@ -64,6 +64,12 @@ const a1Source: SourceReference = {
 
 const verifiedFieldUpdates: Readonly<Record<string, Partial<PrinterRecord>>> = {
   'prusa-core-one': {
+    maxNozzleTemperatureC: 290,
+    maxBedTemperatureC: 120,
+    multicolour:
+      'Prusa offers multi-material upgrades for the CORE One platform; confirm which one applies to your exact revision.',
+    materials:
+      'Prusa lists PLA, PETG, Flex (TPU), PVA, PC, PP, CPE and PVB, plus ABS, ASA, HIPS and PA as advanced materials for the enclosed chamber.',
     machineDimensionsMm: [415, 470, 555],
     dimensionsNote:
       'CORE One: closed door with display; depth is 444 mm without display and 690 mm with door fully open. Allow right-side spool access. Shipping dimensions are not recorded.',
@@ -81,9 +87,28 @@ const verifiedFieldUpdates: Readonly<Record<string, Partial<PrinterRecord>>> = {
         url: 'https://help.prusa3d.com/article/faq-frequently-asked-questions_1932',
         lastVerified: '2026-10-09',
       },
+      {
+        label:
+          'Prusa CORE One product page: temperatures and material list (page now describes CORE One+)',
+        url: 'https://www.prusa3d.com/product/prusa-core-one/',
+        lastVerified: '2026-11-28',
+      },
     ],
   },
   'prusa-mk4s': {
+    maxNozzleTemperatureC: 290,
+    maxBedTemperatureC: 120,
+    multicolour: 'Up to 5 colours or materials with the optional MMU3',
+    materials:
+      'Prusa names PLA, PETG, ASA, carbon-filled filaments and flexible TPU, and recommends its optional enclosure for ASA, ABS, PC and similar materials.',
+    strengths: [
+      '250 x 210 mm nominal bed with a 290 °C hotend and 120 °C bed',
+      'Optional MMU3 adds up to 5 colours or materials',
+    ],
+    limitations: [
+      '210 mm nominal depth is narrower than a 256 mm square bed',
+      'Open frame: Prusa recommends its enclosure for ASA, ABS and PC',
+    ],
     machineDimensionsMm: [500, 550, 400],
     dimensionsNote:
       'Prusa FAQ dimensions for MK4/S; leave additional motion, spool and MMU space. These are machine dimensions, not shipping size.',
@@ -93,6 +118,12 @@ const verifiedFieldUpdates: Readonly<Record<string, Partial<PrinterRecord>>> = {
         url: 'https://help.prusa3d.com/article/faq-frequently-asked-questions_1932',
         lastVerified: '2026-10-09',
       },
+      {
+        label:
+          'Original Prusa MK4S product page: temperatures, MMU3 and materials',
+        url: 'https://www.prusa3d.com/product/original-prusa-mk4s-3d-printer-kit/',
+        lastVerified: '2026-11-28',
+      },
     ],
   },
   'creality-k1c': {
@@ -100,9 +131,12 @@ const verifiedFieldUpdates: Readonly<Record<string, Partial<PrinterRecord>>> = {
     maxBedTemperatureC: 100,
     maxClaimedSpeedMmS: 600,
     maxClaimedAccelerationMmS2: 20000,
-    camera: 'Manufacturer lists a 1080p camera on the K1C.',
+    machineDimensionsMm: [355, 355, 482],
+    camera:
+      'AI monitoring camera with timelapse, remote monitoring and spaghetti detection',
+    multicolour: 'Auto filament relay is supported with Creality CFS',
     dimensionsNote:
-      'Creality sources disagree between 480 and 482 mm physical height. Physical size remains unverified pending exact revision/manual confirmation; 220 x 220 x 250 mm is build volume only.',
+      'Creality support page dimensions (355 x 355 x 482 mm, 12.4 kg). Some older Creality listings give 480 mm height; allow extra room above the lid and behind for the spool.',
     strengths: [
       'Enclosed 220 x 220 x 250 mm build suits smaller footprints',
       'Manufacturer identifies a steel-tipped nozzle integrated with the heatbreak',
@@ -117,6 +151,11 @@ const verifiedFieldUpdates: Readonly<Record<string, Partial<PrinterRecord>>> = {
           'Creality K1 series table: K1C thermal limits, motion claims and hardware',
         url: 'https://www.creality.com/compare/compare-k1-flagship-series',
         lastVerified: '2026-10-09',
+      },
+      {
+        label: 'Creality K1C support page: dimensions, camera and CFS',
+        url: 'https://www.creality.com/support/k1c-carbon-3d-printer',
+        lastVerified: '2026-11-28',
       },
     ],
   },
@@ -428,12 +467,9 @@ export const printers: readonly PrinterRecord[] = [
       maxBedTemperatureC: null,
       maxClaimedSpeedMmS: null,
       maxClaimedAccelerationMmS2: null,
-      camera:
-        'See the manufacturer documentation for the current configuration.',
-      multicolour:
-        'See the manufacturer documentation for compatible accessories.',
-      materials:
-        'Follow the printer and filament manufacturer guidance for the selected material and enclosure conditions.',
+      camera: '',
+      multicolour: '',
+      materials: '',
       indicativeUsdPrice: undefined,
       priceDescription:
         'Current regional price and bundle not verified. Use the manufacturer reference.',

@@ -74,8 +74,8 @@
         </tr>
         <tr>
           <th scope="row">Maximum bed temperature</th>
-          <td>{{ formatNumber(left().maxBedTemperatureC, 'C') }}</td>
-          <td>{{ formatNumber(right().maxBedTemperatureC, 'C') }}</td>
+          <td>{{ formatNumber(left().maxBedTemperatureC, '°C') }}</td>
+          <td>{{ formatNumber(right().maxBedTemperatureC, '°C') }}</td>
         </tr>
         <tr>
           <th scope="row">Multicolour</th>
@@ -111,8 +111,8 @@
         </tr>
         <tr>
           <th scope="row">Maximum nozzle temperature</th>
-          <td>{{ formatNumber(left().maxNozzleTemperatureC, 'C') }}</td>
-          <td>{{ formatNumber(right().maxNozzleTemperatureC, 'C') }}</td>
+          <td>{{ formatNumber(left().maxNozzleTemperatureC, '°C') }}</td>
+          <td>{{ formatNumber(right().maxNozzleTemperatureC, '°C') }}</td>
         </tr>
         <tr>
           <th scope="row">Maximum claimed speed</th>
@@ -121,13 +121,13 @@
         </tr>
         <tr>
           <th scope="row">Camera</th>
-          <td>{{ left().camera }}</td>
-          <td>{{ right().camera }}</td>
+          <td>{{ formatText(left().camera) }}</td>
+          <td>{{ formatText(right().camera) }}</td>
         </tr>
         <tr>
           <th scope="row">Material guidance</th>
-          <td>{{ left().materials }}</td>
-          <td>{{ right().materials }}</td>
+          <td>{{ formatText(left().materials) }}</td>
+          <td>{{ formatText(right().materials) }}</td>
         </tr>
       </tbody>
     </table>
