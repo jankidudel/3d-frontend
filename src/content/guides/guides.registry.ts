@@ -392,6 +392,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 239,
     enabled: true,
     publishDate: '2026-10-31',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
   {
@@ -645,7 +646,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 208,
     enabled: true,
     publishDate: '2026-10-15',
-    updatedDate: '2026-11-03',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: true,
   },
 
@@ -669,7 +670,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
   },
   {
     slug: 'self-intersecting-mesh-vs-non-manifold',
-    updatedDate: '2026-10-13',
+    updatedDate: '2026-11-28',
     group: GuideGroupId.Stl,
     order: 202,
     enabled: true,
@@ -943,7 +944,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 20,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -971,14 +972,14 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'how-to-scale-an-stl-file-for-3d-printing',
     group: GuideGroupId.Stl,
     order: 60,
     enabled: true,
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-28',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -988,7 +989,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 65,
     enabled: true,
     publishDate: '2026-09-06',
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1015,7 +1016,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 90,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1025,7 +1026,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-14',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'how-to-fix-flipped-normals-in-an-stl-file',
@@ -1034,7 +1035,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'how-to-remove-duplicate-triangles-from-an-stl-file',
@@ -1043,7 +1044,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-31',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'what-is-non-manifold-geometry',
@@ -1051,7 +1052,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 130,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-10-15',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1060,7 +1061,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 131,
     enabled: true,
     publishDate: '2026-10-15',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1069,7 +1070,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 132,
     enabled: true,
     publishDate: '2026-10-15',
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1214,7 +1215,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'how-to-tell-if-a-3mf-file-is-watertight',
@@ -1222,7 +1223,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 40,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1249,7 +1250,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 70,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-01',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {
@@ -1257,7 +1258,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     group: GuideGroupId.ThreeMf,
     order: 80,
     enabled: true,
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
   },
@@ -1286,7 +1287,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     enabled: true,
     publishDate: '2026-09-05',
     checkEditorialTargets: false,
-    updatedDate: '2026-10-25',
+    updatedDate: '2026-11-28',
   },
   {
     slug: 'how-to-check-3mf-triangle-count',
@@ -1303,7 +1304,7 @@ export const guideRegistry: readonly GuideRegistryEntry[] = [
     order: 130,
     enabled: true,
     publishDate: '2026-09-05',
-    updatedDate: '2026-11-22',
+    updatedDate: '2026-11-28',
     checkEditorialTargets: false,
   },
   {

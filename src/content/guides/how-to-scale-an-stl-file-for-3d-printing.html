@@ -1,185 +1,135 @@
 ---
 title: How to Scale an STL File for 3D Printing | InspectMesh
-description: 'Resize a separate STL copy with one uniform target, then reopen its exact bytes. Follow a measured control and print a record of the size decision.'
+description: 'Scale an STL in four steps: confirm its current size, pick one target dimension, scale a copy uniformly, then reopen it and check all three dimensions.'
 slug: how-to-scale-an-stl-file-for-3d-printing
 eyebrow: STL printing guide
 heading: How to Scale an STL File for 3D Printing
 ---
 
-<p>
-  Confirm the intended unit and current size, choose one target dimension, then
-  resize a separate STL copy. Reopen the downloaded file and check all three
-  dimensions before you slice it. Do not scale an entire functional part when a
-  fixed hole or mating feature must stay unchanged.
+<p class="lead">
+  To scale an STL, check its current size, choose the one dimension you want to
+  hit, and apply a uniform scale to a copy of the file. Then reopen the copy and
+  check all three dimensions before slicing. Watch out for holes and mounting
+  points: they change size too.
 </p>
-<h2>Establish the source size</h2>
+<h2>Before you start: is the size really wrong?</h2>
 <p>
-  Preserve the supplied file and revision. Use
-  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">the dimensions checker</a>
-  or <a href="{{ GuideSlug.RouteStlViewer }}">local viewer</a> to compare a
-  known source dimension under the intended unit assumption. If that evidence is
-  missing, resolve
-  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}">the unit ambiguity</a>
-  before changing coordinates.
+  If the model is about 25.4 or 10 times off, it is probably a
+  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}">unit mix-up</a>, not a
+  sizing choice. Fix the unit first. Open the file in the
+  <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">dimensions checker</a> or
+  <a href="{{ GuideSlug.RouteStlViewer }}">STL viewer</a> and compare one
+  dimension you know.
 </p>
+<h2>Scale with InspectMesh</h2>
+<ol>
+  <li>
+    Keep the original file. Download the
+    <a href="/examples/quality-evidence/size-block-original.stl" download
+      >40 x 20 x 10 mm example block</a
+    >
+    if you want to practise.
+  </li>
+  <li>
+    Open <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale</a>. Either enter
+    a percentage (150) or choose a target dimension (Width = 60 mm). Width,
+    depth and height are the X, Y and Z sizes.
+  </li>
+  <li>
+    Keep scaling uniform, check the factor and the new dimensions, then download
+    the copy under a new name.
+  </li>
+  <li>
+    Reopen the downloaded copy. The example should now measure 60 x 30 x 15 mm.
+  </li>
+</ol>
 <p>
-  If the source coordinates already match the known dimension, correct a wrong
-  receiving unit assumption first. If the intended physical size really changes,
-  resize a copy; scaling does not repair topology.
-</p>
-<h2>Choose a target and uniform mode</h2>
-<p>
-  For the owned asymmetric control, X/Y/Z are 40 × 20 × 10 mm under its designed
-  millimetre convention. Target X = 60 mm gives one factor of 1.5, or a final
-  150%. Expected Y and Z become 30 and 15 mm.
+  For the percentage maths, including ready-made values for unit fixes, see
   <a href="{{ GuideSlug.RouteStlScaleFactorExplained }}"
-    >The arithmetic reference</a
-  >
-  explains percentage changes separately.
+    >STL scale factor explained</a
+  >.
 </p>
-<h2>Does this part contain dimensions tied to existing hardware?</h2>
+<h2>Scale in PrusaSlicer</h2>
+<p>
+  PrusaSlicer's
+  <a href="https://help.prusa3d.com/article/object-manipulation-panel_1757"
+    >object manipulation panel</a
+  >
+  has Scale factor and Size fields: type a percentage, or type the target size
+  in millimetres. The orange reset arrow returns the scale to 100%. Its
+  <a href="https://help.prusa3d.com/article/measurement-tool_399451"
+    >measurement tool</a
+  >
+  (PrusaSlicer 2.6 and later) can also scale an object uniformly so that a
+  distance you measured matches the length you need. Prusa documentation checked
+  28 November 2026.
+</p>
+<h2>Watch out for holes and mounting points</h2>
+<p>Uniform scaling changes every length by the same factor. At 90%:</p>
 <table>
   <caption>
-    Analytical consequences of factor 0.90, not selected fastener
-    specifications.
+    Example arithmetic only, not fastener recommendations.
   </caption>
   <thead>
     <tr>
-      <th scope="col">Hypothetical source feature</th>
-      <th scope="col">After uniform 90% scale</th>
+      <th scope="col">Feature</th>
+      <th scope="col">Before</th>
+      <th scope="col">After 90%</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>32.0 mm mounting spacing</td>
+      <td>Mounting hole spacing</td>
+      <td>32.0 mm</td>
       <td>28.8 mm</td>
     </tr>
     <tr>
-      <td>4.50 mm screw passage</td>
+      <td>Screw hole</td>
+      <td>4.50 mm</td>
       <td>4.05 mm</td>
     </tr>
     <tr>
-      <td>7.20 mm head recess</td>
+      <td>Screw head recess</td>
+      <td>7.20 mm</td>
       <td>6.48 mm</td>
     </tr>
   </tbody>
 </table>
 <p>
-  Every length changes together. If mounting centres, a
-  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}">hardware passage</a> or
+  If a part must still fit existing screws or another part, scaling the whole
+  model will break that fit. Change the overall size in CAD and keep the
+  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}">screw holes</a> and
   <a href="{{ GuideSlug.RouteCounterboreVsCountersink3dPrinting }}"
-    >head seat</a
+    >head recesses</a
   >
-  must remain fixed, edit the relevant local features in source CAD. InspectMesh
-  performs uniform scale; it does not selectively enlarge bores or restore
-  hardware interfaces after scaling.
+  at their original size. InspectMesh only scales the whole model.
 </p>
-<h2>Resize a separate copy</h2>
-<ol>
+<h2>Check the result</h2>
+<ul>
   <li>
-    Download the
-    <a href="/examples/quality-evidence/size-block-original.stl" download
-      >original 40 × 20 × 10 control</a
+    Reopen the saved copy and compare all three dimensions with what you
+    expected. Our
+    <a href="/examples/quality-evidence/size-block-scaled.stl" download
+      >150% example output</a
     >
-    and retain it.
+    measured 60 x 30 x 15 mm with 12 triangles and 27,000 mm³ volume when
+    reopened (<a
+      href="/examples/quality-evidence/sizing-observation.json"
+      download
+      >recorded result</a
+    >). That is a software check, not a print test.
   </li>
   <li>
-    Open <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale</a>. Choose
-    Percentage = 150, or Target dimension = Width with a 60 mm target. The tool
-    labels X/Y/Z spans as width/depth/height.
+    Slice it with your real profile and check that it still fits the bed with
+    brim and supports. For round beds, see
+    <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}">round bed fit</a>.
   </li>
   <li>
-    Use uniform scaling. Inspect the factor and resulting dimensions, then
-    download a separately named STL.
+    For parts that must fit together, print a test and measure it. The
+    <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}"
+      >tolerance calculator</a
+    >
+    helps you record the readings.
   </li>
-  <li>
-    Do not overwrite the original. Record the unit convention expected by the
-    receiving application. STL still has no unit declaration.
-  </li>
-</ol>
-<h2>Reopen and compare</h2>
-<p>
-  Open the exact downloaded bytes. Compare 60 × 30 × 15 mm with the expected
-  spans and check important local features. The retained
-  <a href="/examples/quality-evidence/size-block-scaled.stl" download
-    >1.5× output</a
-  >
-  was actually serialized and reopened using the browser algorithms locally; its
-  12 triangles and enclosed volume of 27,000 mm³ are recorded in the
-  <a href="/examples/quality-evidence/sizing-observation.json" download
-    >dated observation</a
-  >. This is software evidence, not a slicer import or physical test.
-</p>
-<p>
-  The example uses a 0.00001 mm comparison tolerance for Float32 coordinate
-  storage. Display decimals do not establish manufacturing accuracy. Check
-  actual slicer layers, usable bed space, supports and brim under the intended
-  profile before accepting the change.
-</p>
-<p>
-  Scaling also changes holes, walls and clearances. An illustrative 5 mm hole
-  becomes 7.5 mm at 1.5×. If that interface must stay fixed, return to CAD; use
-  the
-  <a href="{{ GuideSlug.Route3dPrintToleranceCalculator }}">fit worksheet</a>
-  for physical readings rather than interpreting a mesh span as acceptance.
-</p>
-<p>
-  A circular-envelope scale value solves the stated XY-corner and independent Z
-  inequalities only. With physical per-side allowance a, scale s applies to the
-  body spans, giving <code>(sW+2a)^2+(sH+2a)^2 &lt;= (D-2e)^2</code>; it does
-  not scale the brim reservation. Review the
-  <a href="{{ GuideSlug.RouteRound3dPrinterBedFit }}">shape decision</a> before
-  shrinking an irregular outline merely because empty envelope corners failed.
-  The comparison leaves the source untouched; applying scale in the tool changes
-  every source dimension in the exported copy.
-</p>
-<h2>Record the decision</h2>
-<table>
-  <caption>
-    Blank scaling record - print and complete; no answer is preconfirmed.
-  </caption>
-  <thead>
-    <tr>
-      <th scope="col">Field</th>
-      <th scope="col">Record</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Original and new filename/revision</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Unit evidence</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Original X / Y / Z</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Target axis and target value</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Factor and final percentage</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Expected X / Y / Z</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Reopened X / Y / Z</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Fixed features or unresolved requirements</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Next action</td>
-      <td>&nbsp;</td>
-    </tr>
-  </tbody>
-</table>
+</ul>
+<p>Scaling does not repair the mesh and does not add a unit to the STL file.</p>

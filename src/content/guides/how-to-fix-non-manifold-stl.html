@@ -1,156 +1,151 @@
 ---
-title: 'Fix a Non-Manifold STL: Choose the Right Repair | InspectMesh'
-description: 'Use known mesh controls to distinguish open edges, extra faces, point contacts and crossing shells, then verify the exact STL you repaired.'
+title: 'How to Fix a Non-Manifold STL File | InspectMesh'
+description: 'Your slicer says the STL is non-manifold. Find out which of four problems it is (hole, extra face, separate parts, overlap) and apply the right fix to a copy.'
 slug: how-to-fix-non-manifold-stl
 eyebrow: STL repair guide
-heading: 'Fix a Non-Manifold STL: Choose the Right Repair'
+heading: 'How to Fix a Non-Manifold STL'
 faq:
-  - question: Can zero over-shared edges rule out crossing solids?
-    answer: No. The crossing-cube control has no over-shared edges, and this edge-count report does not run an intersection test.
-  - question: Should I accept a slicer repair instead of changing the STL?
-    answer: Only after checking the generated layers against the intended design. A slicer can reinterpret geometry without correcting the source file.
+  - question: If there are no non-manifold edges, can parts still overlap?
+    answer: Yes. Our crossing-cubes example has no non-manifold edges, and the edge check does not test for overlapping solids.
+  - question: Can I just let the slicer repair it?
+    answer: Sometimes. PrusaSlicer repairs many models automatically, but check the sliced layers against your design, because the slicer may have guessed and the original file is unchanged.
 ---
 
 <p class="lead">
-  Fix a non-manifold STL by identifying which kind of fault it has, because each
-  needs a different repair. First determine whether the finding is an open
-  boundary, an edge shared by too many triangles, a point-only contact or
-  crossing surfaces. Keep the original file. Make one edit that matches the
-  intended design, then recheck the saved copy and its sliced layers.
+  To fix a non-manifold STL, first find out which problem it is: a hole, an
+  extra face, separate parts, or parts that overlap. Each one needs a different
+  fix, and the wrong fix can damage the design. Run a mesh check, make one
+  change on a copy of the file, then check the copy and its sliced layers again.
 </p>
-<h2>Identify the finding before editing</h2>
+<h2>Step 1: find out which problem you have</h2>
 <p>
-  The server
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality report</a> compares
-  the exact stored vertex coordinates. It counts triangles around each edge and
-  connects report components through shared vertices. The local STL Repair part
-  selector uses complete shared edges instead. Neither method performs a spatial
-  intersection test. CGAL's
-  <a href="https://doc.cgal.org/latest/Polygon_mesh_processing/index.html"
-    >mesh-processing reference</a
-  >
-  likewise separates topological checks from self-intersection tests.
+  Run the file through the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
+  match the result:
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Control and finding</th>
-      <th scope="col">What it supports</th>
-      <th scope="col">Design question and narrow action</th>
-      <th scope="col">Stop when</th>
+      <th scope="col">What the check shows</th>
+      <th scope="col">What it means</th>
+      <th scope="col">Fix</th>
+      <th scope="col">Stop if</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Closed 20-unit cube: 12 faces, no open or over-shared edges</td>
-      <td>Edge baseline</td>
-      <td>Is the outside correct? Compare source and slice.</td>
-      <td>The shape differs from the design.</td>
-    </tr>
-    <tr>
-      <td>Open-face cube: 10 faces, four boundary edges</td>
-      <td>A missing square in this known control</td>
+      <td>Open edges</td>
+      <td>The surface has a hole</td>
       <td>
-        Was this face intended? Restore its known two triangles in a copy.
+        Fill or rebuild the missing faces. See
+        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}">fixing holes</a
+        >.
       </td>
-      <td>The missing surface cannot be reconstructed confidently.</td>
+      <td>The opening is meant to be there, or you cannot tell its shape.</td>
     </tr>
     <tr>
+      <td>Duplicate faces and non-manifold edges</td>
+      <td>A triangle is stored twice</td>
       <td>
-        Duplicate-face cube: 13 faces, one exact repeat and three over-shared
-        edges
+        Remove the copy with
+        <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a>.
       </td>
-      <td>Extra incidence from the repeated triangle</td>
-      <td>Is one copy redundant? Use reviewed standard cleanup.</td>
-      <td>The coincident face belongs to a different intended body.</td>
+      <td>The "duplicate" actually belongs to another part.</td>
     </tr>
     <tr>
-      <td>Separate cubes: 24 faces, two reported components, no edge defect</td>
-      <td>Two vertex-disconnected surfaces</td>
-      <td>Are these two intended parts? Keep or export them separately.</td>
-      <td>A union would erase clearance or assembly meaning.</td>
+      <td>Several pieces, no edge problems</td>
+      <td>Separate parts in one file</td>
+      <td>
+        Keep them, or export them separately. See
+        <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
+          >multiple shells</a
+        >.
+      </td>
+      <td>Merging would remove a needed gap.</td>
     </tr>
     <tr>
-      <td>Crossing cubes: 24 faces, two components, no edge defect</td>
-      <td>No shared-edge warning</td>
-      <td>Do the volumes really need a union? Inspect in CAD.</td>
-      <td>Only the designer can choose the resulting solid.</td>
+      <td>No edge problems, but parts visibly overlap</td>
+      <td>Solids pass through each other</td>
+      <td>
+        Merge them in CAD only if they should be one solid. See
+        <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
+          >overlapping surfaces</a
+        >.
+      </td>
+      <td>Only the designer knows the intended shape.</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A zero over-shared-edge count for crossing cubes does not disprove
-  intersection. Vertex-only contact also requires visual or source-CAD
-  inspection: the server's vertex-connected component count can join the
-  touching groups, while local edge-connected selection separates them.
+  The edge check compares exact corner positions; it does not test whether
+  surfaces cross. Parts touching at a single corner also need a visual check:
+  InspectMesh's server report may count them as one piece, while the repair
+  tool's part selector treats them as two. The
+  <a href="https://doc.cgal.org/latest/Polygon_mesh_processing/index.html"
+    >CGAL manual</a
+  >
+  likewise keeps edge checks and overlap checks separate.
 </p>
-<h2>Three worked corrections</h2>
+<h2>Step 2: practise on three example files</h2>
 <ol>
   <li>
-    Download the
+    <strong>Hole:</strong> download the
     <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face cube</a> and
-    <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>closed reference</a
-    >. The known removed square consists of two triangles. Restoring those exact
-    faces in a deliberate CAD or mesh copy gives 12 faces and zero boundary
-    edges. A generic fill on an unknown opening could instead seal a designed
-    passage.
+    the <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>closed cube</a>.
+    The open one is missing one square side (two triangles). Adding those two
+    triangles back gives 12 faces and no open edges. Filling an unknown opening
+    automatically could instead seal a hole that was meant to be there.
   </li>
   <li>
-    Download the
-    <a href="{{ ExampleAsset.DuplicateFaceCubeStl }}" download
-      >13-face duplicate cube</a
-    >. Standard <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a> removes
-    the one exact repeated triangle, then writes a 12-face copy with the same 20
-    × 20 × 20 bounds and no over-shared edges. That action also permits
-    degenerate-face removal and safe local winding corrections, so read the
-    complete repair report.
+    <strong>Duplicate face:</strong> download the
+    <a href="{{ ExampleAsset.DuplicateFaceCubeStl }}" download>13-face cube</a>.
+    Standard <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a> removes the
+    copied triangle and saves a 12-face cube of the same 20 x 20 x 20 size with
+    no non-manifold edges. The same action can also remove zero-area faces and
+    fix some flipped faces, so read its full report.
   </li>
   <li>
-    Download the
-    <a href="{{ ExampleAsset.OverlappingCubesStl }}" download
-      >crossing cube pair</a
-    >. Each closed cube has 12 triangles; together the report shows 24, zero
-    open and zero over-shared edges. No site intersection detector ran. A
-    Boolean operation or revised source design is needed only if the intended
-    object is a true union.
+    <strong>Overlap:</strong> download the
+    <a href="{{ ExampleAsset.OverlappingCubesStl }}" download>crossing cubes</a
+    >. The report shows 24 faces and no open or non-manifold edges, because the
+    overlap check is not part of it. Merge them in CAD only if they are meant to
+    be one object.
   </li>
 </ol>
-<h2>When a union is unsafe</h2>
+<h2>Step 3: try your slicer or a repair tool</h2>
 <p>
-  A point or edge touch is not automatically a usable physical joint. A
-  print-in-place gap and two intentionally separate parts must retain their
-  clearance. A nested surface might be a required cavity wall. A blanket union
-  can erase any of these design features while still yielding apparently clean
-  edge counts.
+  Prusa's article on
+  <a
+    href="https://help.prusa3d.com/article/corrupted-3d-models-for-printing_2205"
+    >corrupted 3D models</a
+  >
+  says PrusaSlicer repairs models automatically "to a certain degree". On
+  Windows 10, you can right-click the warning symbol next to the model name, or
+  the model itself, and choose "Fix by the Netfabb". Prusa also suggests
+  dedicated tools such as Meshmixer, whose "Make solid" option "almost always
+  works" but can lose detail, and Microsoft 3D Builder on Windows. Prusa
+  documentation checked 28 November 2026; repair services change, so check that
+  the option exists in your version.
 </p>
 <p>
-  Use the
-  <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
-    >separate-shell guide</a
-  >
-  to decide which pieces belong; use the
-  <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
-    >crossing-surface guide</a
-  >
-  when edges look clean but volumes overlap.
+  Whatever tool you use, compare the result with your design. Automatic repair
+  can close an opening you wanted or merge parts that should move separately.
 </p>
+<h2>When not to merge parts</h2>
 <p>
-  For a
+  Two parts touching at a point or an edge do not make a strong joint. A
+  print-in-place hinge or two separate parts need their gap. An inner wall may
+  be a hollow you want to keep. A blanket "merge all" can destroy any of these
+  while the edge counts look clean. For moving parts, see
   <a href="{{ GuideSlug.RoutePrintInPlaceClearance }}"
-    >mechanism printed in position</a
-  >, preserve the original and identify intentional bodies and gaps first.
-  Locate the reported defect, make only a justified correction, then reopen and
-  compare the exact downloaded revision at the moving interface. A support
-  obstruction, first-layer closure or binding only during movement needs
-  slicer/process or source-design investigation; do not infer a mesh fault from
-  the symptom alone.
+    >print-in-place clearance</a
+  >: a part that only binds when moving is usually a slicer or design issue, not
+  a mesh fault.
 </p>
-<h2>Verify the exact derivative</h2>
+<h2>Step 4: check the repaired copy</h2>
 <p>
-  Download the edited STL under a new name, reopen those bytes, and compare
-  triangle count, coordinate bounds, open and over-shared edges, winding
-  conflicts, intended openings and the first affected slicer layers. A clean
-  edge count cannot certify vertices, hidden crossings, cavity meaning or print
-  success. If correction requires guessing a load-bearing joint or missing
-  shape, stop and return to source CAD or a reviewed manual edit.
+  Save the repaired STL under a new name, reopen it and compare: triangle count,
+  overall size, open and non-manifold edges, flipped faces, intended holes, and
+  the first sliced layers around the repair. If fixing it means guessing the
+  shape of a missing or load-bearing area, go back to the CAD model instead.
 </p>

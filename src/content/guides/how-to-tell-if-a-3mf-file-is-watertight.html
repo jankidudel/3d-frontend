@@ -1,117 +1,95 @@
 ---
-title: Is Your 3MF Watertight? Check Each Part of a Build | InspectMesh
-description: 'Check closure part by part in a multi-object 3MF build: tell intended openings from defects and see why a closed surface does not prove clean topology.'
+title: 'Which Part of My 3MF Has Holes? | InspectMesh'
+description: 'A 3MF is watertight when every object in it is closed. Check each object of a build separately and tell real holes from openings.'
 slug: how-to-tell-if-a-3mf-file-is-watertight
 eyebrow: 3MF mesh guide
-heading: How to Tell if a 3MF File Is Watertight
+heading: How to Tell Which Part of a 3MF Has Holes
 ---
 
 <p class="lead">
-  Read the exposed-boundary result for the geometry the method actually checked.
-  Zero detected open edges supports a closure finding, but it does not establish
-  that a 3MF is free of duplicate faces, over-shared edges, intersections or
-  incorrect placement.
-</p>
-<h2>Use a closed-but-defective package as a counterexample</h2>
-<p>
-  A 3MF is watertight when each placed part has no open boundary edges. Check
-  every part of a multi-object build separately, decide whether any opening is
-  intended, and remember that a closed surface can still contain other faults.
-</p>
-<p>
-  The
-  <a href="/examples/cad-export/duplicate-face-cube.3mf" download
-    >owned repeated-face package</a
-  >
-  has no exposed boundary in the retained local .NET processor check (24 October
-  2026), but it has one duplicate triangle and three over-shared edges. Read the
-  <a href="/examples/quality-evidence/duplicate-report.json" download
-    >retained local report</a
-  >: zero open edges did not make this mesh free of findings. Establish the
-  intended cube surface before selecting duplicate cleanup. Repeating a whole
-  valid item in a build is a different case from repeating a triangle inside its
-  resource.
-</p>
-
-<p>
-  The retained report comes from the repository processor method, not a verified
-  production endpoint revision. Its fixture hash, reproduction command and
-  method are retained in
-  <a href="/examples/quality-evidence/provenance.json" download
-    >the evidence provenance</a
-  >. Run the
+  A 3MF is watertight when every object placed in it has a closed surface with
+  no open edges. Because a 3MF can hold many objects, check each one separately:
+  one bad part can make the whole build fail to slice. The
   <a href="{{ GuideSlug.Route3mfWatertightChecker }}">3MF Watertight Checker</a>
-  separately to obtain a current server result; it uploads only after an
-  explicit check action.
+  counts open edges per placed object.
 </p>
-<h2>Decide what the opening represents</h2>
+<h2>Check each object, not just the build</h2>
 <p>
-  An exposed mesh boundary and an opening in the shape are different things. A
-  thick-walled cup can have an open mouth while its inner and outer walls meet
-  around the rim as a closed material surface. An uncapped single sheet can have
-  exposed boundary edges. Inspect the intended surfaces before choosing to cap
-  anything.
-</p>
-<h2>Interpret separate parts independently from closure</h2>
-<p>
-  Several placed items can be valid separate parts. A zero-boundary result does
-  not say whether those parts should be joined or whether their placements
-  overlap. Preserve the required items and inspect their intended arrangement in
-  the source application.
+  InspectMesh checks every placed object on its own, after applying the file's
+  unit and each object's position and scale, then adds up the results. The total
+  tells you whether there are holes, but not which object they are in. To find
+  it, open the file in the
+  <a href="{{ GuideSlug.Route3mfViewer }}">3MF viewer</a> and look at the
+  objects one at a time, or export the parts separately and check each.
 </p>
 <p>
-  The server method checks each supported placed build item independently, using
-  exact endpoint coordinates after unit conversion and transforms, then
-  aggregates counts. Its aggregate report does not locate a defective resource
-  for you. Geometry sharing a point can belong to one vertex-connected component
-  without forming an acceptable solid connection. Local combined-build checks
-  can differ, so retain the method with the result.
+  Separate objects in a build are normal. A closed result does not say whether
+  parts should be joined, or whether two objects overlap. Parts touching at a
+  single point may be counted as connected without forming a real joint. The
+  browser and server checks can group pieces differently, so note which one you
+  used.
 </p>
-<h2>Choose a correction only after that decision</h2>
+<h2>Closed does not mean error-free</h2>
+<p>
+  Our
+  <a href="/examples/cad-export/duplicate-face-cube.3mf" download
+    >example 3MF with a repeated face</a
+  >
+  has no open edges, but it still has one duplicate triangle and three
+  non-manifold edges (see the
+  <a href="/examples/quality-evidence/duplicate-report.json" download
+    >saved report</a
+  >
+  from 24 October 2026 and its
+  <a href="/examples/quality-evidence/provenance.json" download>test details</a
+  >). Placing the same whole object twice in a build is fine; storing the same
+  triangle twice inside one object is not. For a current result, run the
+  watertight checker yourself; it uploads only when you press check.
+</p>
+<h2>Is it a hole or an opening?</h2>
+<p>
+  A thick-walled cup has an open top, but its inner and outer walls meet at the
+  rim, so the mesh is closed. A single paper-thin sheet has open edges all
+  round. Look at what the shape is meant to be before filling anything.
+</p>
+<h2>What to do next</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Decision</th>
+      <th scope="col">Situation</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>A required surface is missing and its shape is known</td>
+      <td>A surface is missing and you know its shape</td>
+      <td>Fix a copy in CAD or a mesh editor, then reopen and recheck it.</td>
+    </tr>
+    <tr>
+      <td>You cannot tell what the surface should be</td>
+      <td>Ask the designer or open the file in the program that made it.</td>
+    </tr>
+    <tr>
+      <td>The problem is an extra triangle, not a missing one</td>
       <td>
-        Repair a copy in source CAD or an appropriate editor, then reopen and
-        recheck it.
+        Try <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a>. Removing a
+        face does not create a missing one.
       </td>
     </tr>
     <tr>
-      <td>The intended surface cannot be established</td>
-      <td>Return to the author or producing application.</td>
-    </tr>
-    <tr>
-      <td>The finding is a redundant triangle rather than a missing surface</td>
+      <td>No holes, but other problems are reported</td>
       <td>
-        Review
-        <a href="{{ GuideSlug.Route3mfRepair }}">supported local 3MF cleanup</a
-        >; removing a face does not invent a missing one.
-      </td>
-    </tr>
-    <tr>
-      <td>No boundary was found but other findings remain</td>
-      <td>
-        Investigate those findings with the relevant topology or quality method.
+        Check them with the
+        <a href="{{ GuideSlug.RouteHowToTellIfA3mfFileIsManifold }}"
+          >3MF non-manifold guide</a
+        >.
       </td>
     </tr>
   </tbody>
 </table>
-
 <p>
-  Reopen the saved package, confirm required items and dimensions, repeat the
-  relevant checks and inspect the affected slicer layers. A completed closure
-  check does not settle wall strength, supports or process settings. Use
-  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">the repair guide</a> when
-  selecting a correction and
-  <a href="{{ GuideSlug.RouteHowToTellIfA3mfFileIsManifold }}"
-    >the topology guide</a
-  >
-  when edge sharing is the concern.
+  After fixing, reopen the saved file, confirm all objects and sizes are still
+  there, check again and look at the sliced layers. A closed surface does not
+  prove the part is strong enough or needs no supports. For choosing a fix, see
+  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">how to repair a 3MF</a>.
 </p>

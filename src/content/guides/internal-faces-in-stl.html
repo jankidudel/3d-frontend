@@ -1,24 +1,24 @@
 ---
-title: 'Internal Faces in an STL: Find Hidden Geometry | InspectMesh'
-description: 'Use known cube controls and a cross-section to distinguish an unwanted internal sheet from an intended cavity, then check the limits of the mesh report.'
+title: 'How to Find Internal Faces in an STL | InspectMesh'
+description: 'Internal faces are hidden triangles inside a model, often from a failed merge. Find them with a cross-section; keep the ones that form a hollow.'
 slug: internal-faces-in-stl
 eyebrow: Hidden mesh geometry
 heading: 'How to Find Internal Faces in an STL'
 faq:
-  - question: Can Keep largest part identify an unwanted hidden face?
-    answer: No. It ranks edge-connected pieces by area and leaves the design decision to you. A small cavity wall can be essential.
-  - question: Can a clean exterior silhouette prove there is no hidden sheet?
-    answer: No. The plain cube and the cube with a detached internal square have the same outside bounds; inspect a cross-section and the report.
+  - question: Can "Keep largest part" find an unwanted hidden face?
+    answer: No. It only ranks pieces by size and leaves the decision to you. A small inner wall can be an essential part of the design.
+  - question: If the outside looks perfect, can there still be hidden faces?
+    answer: Yes. Our plain cube and our cube with a hidden internal square look identical from outside. Use a cross-section and the mesh report.
 ---
 
 <p class="lead">
-  Find internal faces in an STL with a cross-section, because a shaded outside
-  view cannot show triangles inside the model. An internal sheet left by a
-  failed Boolean may be unwanted, while the inside wall of a hollow part can be
-  essential. Inspect a cross-section and compare the original design before
-  deleting anything; a zero open-edge count alone cannot tell those cases apart.
+  Internal faces are triangles hidden inside a model, often left behind when two
+  parts were merged badly. You cannot see them from outside, so slice through
+  the model with a cross-section view to find them. Before deleting anything,
+  check the original design: the inside walls of a hollow or channel are
+  internal faces too, and those must stay.
 </p>
-<h2>Outside view versus inside cross-section</h2>
+<h2>Look inside with a cross-section</h2>
 <figure>
   <img
     src="/examples/diagnosis/internal-sheet-channel.svg"
@@ -28,97 +28,89 @@ faq:
     alt="Cross-sections of a plain closed cube, the same cube with an isolated square sheet at mid-height, and a closed block whose inner walls bound an intentional through-channel."
   />
   <figcaption>
-    Original schematic based on the linked coordinates. The middle sheet is
-    isolated inside the cube; the channel walls bound an intended opening.
+    Left: a plain cube. Middle: the same cube with a loose square sheet inside.
+    Right: a block whose inner walls form an intended channel.
   </figcaption>
 </figure>
 <p>
   Download the
-  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>plain cube</a>,
+  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>plain cube</a>, the
   <a href="{{ ExampleAsset.DiagnosisInternalSheetCubeStl }}" download
-    >cube with an internal sheet</a
+    >cube with a hidden sheet</a
   >
-  and
+  and the
   <a href="{{ ExampleAsset.OpenThroughChannelStl }}" download
-    >closed through-channel</a
-  >. The first two have the same 20-unit outside silhouette. The divider
-  consists of two triangles with corners at X/Y 4 and 16, Z 10, wholly inside
-  the outer cube. The channel control is a separate 20 × 20 × 10 box with a 6 ×
-  6 passage, so compare the <em>internal role</em>, not identical outer height.
+    >block with a channel</a
+  >. The first two look the same from outside. The hidden sheet is two triangles
+  at mid-height, fully inside the cube. The channel block is a 20 x 20 x 10 box
+  with a 6 x 6 mm passage through it.
 </p>
 <p>
-  In the <a href="{{ GuideSlug.RouteStlViewer }}">local viewer</a>, choose
-  <strong>Inspect cross-section</strong>, select Z and move the cut gradually
-  through the middle; also inspect an X cut through the passage. The
+  Open a file in the <a href="{{ GuideSlug.RouteStlViewer }}">STL viewer</a>,
+  choose <strong>Inspect cross-section</strong>, pick Z and slowly move the cut
+  through the middle. Try an X cut through the channel too. The
   <a href="{{ GuideSlug.RouteHowToInspectStl3mfCrossSections }}"
-    >viewer guide</a
+    >cross-section guide</a
   >
-  explains the controls. Clipping hides geometry for inspection; it does not
-  edit faces or prove valid topology.
+  explains the controls. The cut only hides geometry while you look; it does not
+  change the file.
 </p>
-<h2>What the mesh report does and does not say</h2>
+<h2>What the mesh report tells you</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Known control</th>
-      <th scope="col">Actual processor report</th>
-      <th scope="col">Remaining question</th>
+      <th scope="col">Example</th>
+      <th scope="col">Report</th>
+      <th scope="col">What you still have to decide</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Plain cube</td>
       <td>
-        12 triangles; zero open and over-shared edges; one vertex-component; no
-        winding conflict; 8,000 cubic-unit closed-control volume
+        12 triangles; no holes or non-manifold edges; 1 piece; volume 8,000
       </td>
-      <td>Does its exterior match the design?</td>
+      <td>Does the outside match the design?</td>
     </tr>
     <tr>
-      <td>Cube plus isolated sheet</td>
+      <td>Cube with hidden sheet</td>
       <td>
-        14 triangles; four boundary edges on the sheet; zero over-shared; two
-        vertex-components; no winding conflict. Enclosed volume is unavailable
-        for this open internal sheet.
+        14 triangles; 4 open edges (the sheet's border); 2 pieces; volume cannot
+        be calculated
       </td>
-      <td>
-        Was this divider accidental? The report does not label it “unwanted”.
-      </td>
+      <td>Was the sheet a mistake? The report does not say "unwanted".</td>
     </tr>
     <tr>
-      <td>Through-channel</td>
+      <td>Block with channel</td>
       <td>
-        32 triangles; zero open and over-shared edges; one vertex-component; no
-        winding conflict; 3,640 cubic-unit closed-control volume
+        32 triangles; no holes or non-manifold edges; 1 piece; volume 3,640
       </td>
-      <td>Must this passage stay clear in the chosen slicer?</td>
+      <td>Does the channel stay open when sliced?</td>
     </tr>
   </tbody>
 </table>
 <p>
-  The server compares stored coordinates exactly and connects reported
-  components through shared vertices. An isolated inner sheet can be located by
-  visual cross-section and component selection; spatial intersection with
-  another surface is <em>not tested</em> by the edge counts. Cavity walls are a
-  material boundary and can be correct while invisible from outside.
+  A loose sheet inside a model usually shows up as an extra piece with open
+  edges. A surface that cuts through another one does not: the edge check does
+  not test for crossing surfaces. The walls of a hollow are a real boundary and
+  can be correct even though you cannot see them from outside.
 </p>
-<h2>Decide whether the surface belongs</h2>
+<h2>Keep it or remove it?</h2>
 <p>
-  Compare source CAD, the intended cavity or assembly, and sliced layers. For an
-  accidental divider after a failed union, correct the Boolean at the source or
-  make a reviewed manual edit. For an intended passage, keep the inner walls;
-  the
-  <a href="{{ GuideSlug.RouteSlicerFillsHoleInStl }}">filled-channel guide</a>
-  shows a separately tested slicer case. Deleting a sheet without checking the
-  remaining mesh can create a hole or the wrong solid. “Keep largest part” can
-  remove this isolated control's smaller piece, but size alone cannot decide
-  whether any real inner shell is expendable.
+  Compare with the CAD model and the sliced layers. If a failed merge left a
+  stray sheet, fix the merge in CAD or delete the sheet carefully in a mesh
+  editor. If the faces form a channel or hollow, keep them; if the slicer fills
+  the channel anyway, see
+  <a href="{{ GuideSlug.RouteSlicerFillsHoleInStl }}">slicer fills a hole</a>.
+  Deleting faces without checking can open a hole or change the solid. "Keep
+  largest part" can drop the small sheet in our example, but size alone cannot
+  tell you whether a real inner shell is junk.
 </p>
-<h2>Verify the revised STL</h2>
+<h2>Check the edited STL</h2>
 <p>
-  Keep source and edited files separately. Reopen the edited bytes, compare the
-  cross-section, component count, open and over-shared edges, and the first
-  affected slicer layers. Do not select faces solely because they have small
-  area. Stop when the original design cannot tell you whether an internal
-  surface is an error or a required cavity boundary.
+  Keep the original and the edited file. Reopen the edited copy and compare the
+  cross-section, number of pieces, holes, non-manifold edges and the first
+  sliced layers. Do not select faces just because they are small. If the design
+  cannot tell you whether an inner surface is a mistake or a needed hollow, stop
+  and ask the designer.
 </p>

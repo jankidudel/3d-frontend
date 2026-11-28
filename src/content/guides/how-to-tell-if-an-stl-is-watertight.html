@@ -1,14 +1,14 @@
 ---
 title: 'Watertight STL: Meaning, Manifold and How to Check | InspectMesh'
-description: What watertight means for an STL, how it differs from manifold, and how to read open-edge and separate-shell results on known cube controls.
+description: An STL is watertight when its surface has no holes. Learn how to check it, what zero open edges means, and how watertight differs from manifold.
 slug: how-to-tell-if-an-stl-is-watertight
 eyebrow: STL topology guide
-heading: What Watertight Means for an STL and How to Check It
+heading: Is My STL Watertight? What It Means and How to Check
 faq:
   - question: Is zero open edges a printability result?
-    answer: No. It is a closure finding under the check method; geometry, slicing and physical suitability need separate review.
-  - question: Can two separate closed shells have zero open edges?
-    answer: Yes. Closure and component count answer different questions; inspect whether both solids are intended and whether they overlap.
+    answer: No. It means the surface has no holes. Overlaps, thin walls, supports and the slice still need checking.
+  - question: Can two separate closed parts have zero open edges?
+    answer: Yes. Each part can be closed on its own. Check whether both parts belong in the print and whether they overlap.
 ---
 
 <p class="lead">
@@ -21,18 +21,16 @@ faq:
   Watertight is not the same as manifold or printable: a closed model can still
   have overlapping parts or walls that are too thin.
 </p>
-<h2>Establish the meaning with two controls</h2>
+<h2>See it on two example files</h2>
 <p>
   The
-  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
-    >closed 20-unit cube</a
-  >
-  has 12 triangles and zero boundary edges. The
+  <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>closed 20 mm cube</a>
+  has 12 triangles and no open edges. The
   <a href="{{ ExampleAsset.OpenFaceCubeStl }}" download>open-face copy</a>
-  deletes two triangles and has four boundary edges. Under a millimetre
-  assumption, local preflight screens the closed cube's volume at 8,000 mm³;
-  volume is unavailable for the open copy. STL itself contains no length unit.
-  Recheck both controls before interpreting a report on a more complex design.
+  is missing two triangles (one side) and has 4 open edges. Opened as
+  millimetres, the closed cube's volume is 8,000 mm³; the open copy has no
+  volume, because an open surface does not enclose anything. Try both before
+  reading the result for your own file.
 </p>
 <figure>
   <img
@@ -43,74 +41,67 @@ faq:
     alt="Closed cube beside a cube with two face triangles removed and four boundary edges exposed"
   />
   <figcaption>
-    Original generated geometry, not a physical print or a claim about all
-    slicers.
+    The cube with one side removed has a loop of four open edges.
   </figcaption>
 </figure>
-<h2>Interpret closure alongside other findings</h2>
+<h2>What your result means</h2>
 <table>
   <thead>
     <tr>
       <th scope="col">Result</th>
-      <th scope="col">What it establishes</th>
+      <th scope="col">What it means</th>
       <th scope="col">Next check</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>Open edges above zero</td>
+      <td>The surface has at least one hole or gap.</td>
       <td>
-        At least one boundary is exposed under the checker's coordinate and edge
-        rules.
-      </td>
-      <td>
-        Locate the loop and compare it with intended design;
+        Find the hole and compare it with the design;
         <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
-          >choose whether to patch</a
+          >decide whether to fill it</a
         >.
       </td>
     </tr>
     <tr>
-      <td>Zero open edges, one shell</td>
-      <td>No boundary was found by this method.</td>
+      <td>Zero open edges, one piece</td>
+      <td>The surface is closed.</td>
       <td>
-        Check orientation, non-manifold edges, intersections, dimensions and
+        Also check flipped faces, non-manifold edges, overlaps, size and the
         sliced layers.
       </td>
     </tr>
     <tr>
-      <td>Zero open edges, several shells</td>
-      <td>Each surface may be closed, but the file has separate components.</td>
+      <td>Zero open edges, several pieces</td>
+      <td>Each piece is closed, but the file holds several parts.</td>
       <td>
         <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
-          >Identify intended parts, nested shells and overlaps</a
-        >; do not delete them by count alone.
+          >Check which parts belong and whether any overlap</a
+        >; do not delete pieces just to lower the count.
       </td>
     </tr>
     <tr>
-      <td>Malformed parse or check unavailable</td>
-      <td>No valid zero finding exists.</td>
-      <td>Re-export the source and rerun the check.</td>
+      <td>File failed to load or check did not run</td>
+      <td>You have no result, not a clean one.</td>
+      <td>Export the file again and rerun the check.</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A thick-walled vessel's inner and outer walls can meet around an open mouth
-  and still form a closed material surface. A passage drilled through a solid
-  can likewise have closed material walls around the empty space; it is not the
-  missing face shown by the cube control. A single uncapped sheet has exposed
-  edges. A hidden internal shell or self-intersection can remain even with zero
-  open edges. The
-  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">broader preflight</a>
-  reports other supported checks and their unavailable or sampled states.
+  An opening in the shape is not always a hole in the mesh. A thick-walled cup
+  with an open top, or a block with a channel drilled through it, is still
+  closed, because its walls wrap around the empty space. A single sheet with no
+  thickness has open edges. Hidden inner surfaces or overlapping parts can
+  remain even with zero open edges; the
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL preflight</a> runs those
+  other checks.
 </p>
 <p>
-  For several findings, use
+  If you have several kinds of errors, start with
   <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
-    >the broad report-triage guide</a
-  >
-  before choosing a supported correction. Closure alone does not select a
-  repair.
+    >how to check an STL for errors</a
+  >.
 </p>
 <h2>Watertight versus manifold</h2>
 <p>
@@ -161,20 +152,20 @@ faq:
 <h2>Recheck the file you will slice</h2>
 <ol>
   <li>
-    Keep the original and record the location and count of the reported
-    boundary.
+    Keep the original and note where the holes are and how many open edges there
+    were.
   </li>
   <li>
-    Repair only a surface whose intended shape is known, preferably in source
-    CAD for functional geometry.
+    Fill only holes whose intended shape you know; rebuild functional surfaces
+    in CAD.
   </li>
   <li>
-    Open the saved derivative, rerun closure and topology checks, then inspect
-    the affected slicer layers and dimensions.
+    Open the saved copy, run the watertight and manifold checks again, then
+    check the size and the sliced layers around the repair.
   </li>
 </ol>
 <p>
-  Watertightness is one property of a surface. It does not measure wall
-  thickness, support, printer fit, material behaviour or the outcome of a
-  physical print.
+  Watertight is one property of a model. It does not tell you about wall
+  thickness, supports, whether it fits your printer, or how the print will turn
+  out.
 </p>

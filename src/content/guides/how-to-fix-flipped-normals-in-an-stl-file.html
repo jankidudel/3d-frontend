@@ -1,125 +1,134 @@
 ---
-title: 'Fix Flipped Normals in an STL: Check Winding First | InspectMesh'
-description: 'Use known cube controls to separate display shading, a reversed patch and an inward shell, then verify the repaired STL.'
+title: 'How to Fix Flipped Normals in an STL File | InspectMesh'
+description: 'Flipped normals are faces pointing inward instead of outward. Learn to tell real flipped faces from viewer shading, then fix one face or the whole part.'
 slug: how-to-fix-flipped-normals-in-an-stl-file
 eyebrow: STL orientation guide
-heading: 'Fix Flipped Normals in an STL: Check Winding Before Repair'
+heading: 'How to Fix Flipped Normals in an STL File'
 faq:
-  - question: Why does the inward cube report no winding conflicts?
-    answer: Every neighbouring pair still traverses its shared edge compatibly. That test checks consistency, not the intended global outside.
-  - question: Can standard cleanup fix a whole inward shell?
-    answer: The tested inward cube produced no winding conflict and no cleanup output. Establish the intended outside from the source before reversing that component.
+  - question: Why does a cube that is completely inside-out show no flipped faces?
+    answer: Because every face agrees with its neighbours. The check finds faces that disagree with the faces around them; it cannot tell which side the designer meant to be outside.
+  - question: Can standard cleanup fix a part that is completely inside-out?
+    answer: Not in our test. The inside-out cube showed no conflicts, so cleanup produced no file. Flip the whole part in CAD or a mesh editor once you know which side is outside.
 ---
 
 <p class="lead">
-  To fix flipped normals in an STL, first confirm the faces really are reversed:
-  a dark face in a viewer is not proof. Check a saved copy's winding against
-  neighbouring faces and a known outside surface. Reverse an entire closed
-  component only when its orientation is consistently inward; treat a local
-  reversed patch and an open or intersecting model as different cases.
+  Flipped normals are faces that point into the model instead of out of it.
+  Before fixing anything, confirm they are really flipped: a dark patch in a
+  viewer can just be lighting. If only a few faces disagree with their
+  neighbours, a cleanup tool can turn them back. If the whole part is
+  inside-out, flip the entire part.
 </p>
-<h2>Is it display shading or triangle winding?</h2>
+<h2>Real flipped faces or just shading?</h2>
 <p>
-  STL stores a facet-normal vector and three ordered vertex positions.
-  InspectMesh's orientation check uses the
-  <em>vertex order around shared edges</em>, not the stored normal vector or
-  viewer lighting. Two neighbouring triangles should traverse their common edge
-  in opposite directions. A model can pass that consistency test while its whole
-  closed shell faces inward. A two-sided viewer may also show a single open
-  sheet as a wall.
+  Each STL triangle stores its three corners in an order, and that order says
+  which side is outside. Neighbouring triangles should run along their shared
+  edge in opposite directions. InspectMesh checks that corner order, not the
+  separate "normal" value stored in the file and not how a viewer shades it.
 </p>
-<h2>Three known cubes</h2>
 <p>
-  Each control has identical 0–20 coordinate bounds and 12 triangles. The values
-  below are measured with the InspectMesh processor, not physical print results.
-  STL itself declares no unit.
+  Two things this check cannot catch: a part that is completely inside-out (all
+  faces agree with each other, just facing the wrong way), and a single sheet
+  shown as a solid wall by a viewer that draws both sides.
+</p>
+<h2>Three example cubes</h2>
+<p>
+  Each cube is 20 x 20 x 20 with 12 triangles. Results are from the InspectMesh
+  checker, not from printing.
 </p>
 <table>
   <thead>
     <tr>
       <th scope="col">Download</th>
-      <th scope="col">Observed check</th>
-      <th scope="col">Supported action</th>
+      <th scope="col">Result</th>
+      <th scope="col">Fix</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
-          >Outward reference</a
-        >
+        <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>Correct cube</a>
       </td>
-      <td>Zero open, over-shared and winding-conflict edges</td>
-      <td>Keep as orientation baseline.</td>
+      <td>No holes, non-manifold edges or flipped faces</td>
+      <td>Use for comparison.</td>
     </tr>
     <tr>
       <td>
         <a href="{{ ExampleAsset.DiagnosisReversedFaceCubeStl }}" download
-          >One reversed face</a
+          >One side flipped</a
         >
       </td>
-      <td>Four winding-conflict edges; no open edges</td>
+      <td>4 edges where faces disagree; no holes</td>
       <td>
-        Standard cleanup corrected the two patch triangles in the tested copy;
+        Standard cleanup turned the two flipped triangles back;
         <a
           href="{{ ExampleAsset.DiagnosisReversedFaceCleanedCubeStl }}"
           download
-          >download that result</a
+          >download the result</a
         >.
       </td>
     </tr>
     <tr>
       <td>
         <a href="{{ ExampleAsset.DiagnosisInwardCubeStl }}" download
-          >Whole inward shell</a
+          >Whole cube inside-out</a
         >
       </td>
-      <td>Zero winding conflicts, zero open edges</td>
+      <td>No conflicts, no holes</td>
       <td>
-        Compare against a known outside and deliberately reverse the full
-        component in source CAD or a mesh editor. Standard cleanup offered no
-        file.
+        Flip the whole part in CAD or a mesh editor. Cleanup produced no file.
       </td>
     </tr>
   </tbody>
 </table>
 <p>
-  The server repair report for the reversed-face control records two orientation
-  corrections, 12 output triangles, unchanged 20 × 20 × 20 bounds and no
-  remaining winding conflicts after reparse. The whole-inward control remains
-  consistent under the edge-direction test; the reported absolute volume cannot
-  reveal which side the designer intended. A separate
+  After cleanup, the one-side-flipped cube reopened with 12 triangles, the same
+  size and no remaining conflicts. A fourth
   <a href="{{ ExampleAsset.DiagnosisStoredNormalCubeStl }}" download
-    >stored-normal-only control</a
+    >example with only the stored normal changed</a
   >
-  changes one normal record but produces zero winding conflicts.
+  shows no conflicts at all, because the corner order is still correct.
 </p>
-<h2>Choose a local or whole-component correction</h2>
+<h2>Fix a few faces or the whole part</h2>
+<ul>
+  <li>
+    <strong>A small flipped patch on a closed part:</strong> run
+    <a href="{{ GuideSlug.RouteStlRepair }}">standard STL cleanup</a> (it
+    uploads the file). It fixes faces only in closed areas and reports what it
+    changed.
+  </li>
+  <li>
+    <strong>The whole part inside-out:</strong> check the original design, then
+    flip the entire part in your CAD or mesh editor.
+  </li>
+  <li>
+    <strong>The model also has holes, duplicate faces or overlaps:</strong> fix
+    those first, using
+    <a href="{{ GuideSlug.RouteHowToRepairAnStlFile }}">how to repair an STL</a
+    >. Face direction is unreliable until the mesh is closed.
+  </li>
+</ul>
 <p>
-  For a small reversed patch on a closed, otherwise coherent shell, inspect the
-  patch and use a targeted face-orientation correction. The
-  <a href="{{ GuideSlug.RouteStlRepair }}">standard STL cleanup</a> explicitly
-  uploads the chosen file and attempts consistent winding only in closed
-  supported regions. Its report tells you what it changed; it does not infer the
-  intended global outside. For an inward but consistently wound closed shell,
-  review the source design and reverse that entire component deliberately. If
-  the mesh is open, contains duplicate faces or has crossing surfaces, resolve
-  those structural questions before trusting any orientation operation.
+  Prusa's article on
+  <a
+    href="https://help.prusa3d.com/article/corrupted-3d-models-for-printing_2205"
+    >corrupted 3D models</a
+  >
+  notes that PrusaSlicer repairs many models automatically and lists Meshmixer
+  and Microsoft 3D Builder as free repair tools. Prusa documentation checked 28
+  November 2026.
 </p>
-<h2>Wrong assembly side or inward faces?</h2>
+<h2>Flipped faces or a mirrored part?</h2>
 <p>
-  Reversing winding does not move a key, thread or letter to the other side of a
-  part. If the geometry itself appears reflected,
-  <a href="{{ GuideSlug.RouteMirroredStlFile }}">check reflected handedness</a>
-  against the intended design. A mirrored outward mesh can pass the same basic
-  edge and volume checks as the reference.
+  Flipping faces does not move a key, thread or text to the other side. If the
+  whole part looks like a mirror image, see
+  <a href="{{ GuideSlug.RouteMirroredStlFile }}">mirrored STL file</a>. A
+  mirrored part can pass all these checks.
 </p>
-<h2>Recheck the saved output</h2>
+<h2>Check the fixed copy</h2>
 <p>
-  Save under a new filename, then run the
+  Save under a new name and run the
   <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality check</a> on the
-  downloaded bytes. Compare triangle count, bounds, boundary and over-shared
-  edges, winding conflicts and the first affected slicer layers. Recalculation
-  does not fill a hole, union shells or prove printability. Stop when the
-  intended outside cannot be established from the original design.
+  saved file. Compare triangle count, size, holes, non-manifold edges, flipped
+  faces and the first sliced layers. Flipping faces does not fill holes or merge
+  parts.
 </p>

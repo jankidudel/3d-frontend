@@ -1,209 +1,182 @@
 ---
-title: 'Check a 3MF File: Find the First Failing Stage | InspectMesh'
-description: 'Find the first failing 3MF stage: package opening, build resolution, mesh checks or sliced layers. Choose the matching investigation before repair.'
+title: 'How to Check a 3MF File for Errors Before Slicing | InspectMesh'
+description: 'Check a 3MF in four steps: does it open, are all objects there, are the meshes clean, and do the sliced layers look right? Find the first step that fails.'
 slug: how-to-check-a-3mf-file-for-errors
 eyebrow: 3MF pre-print workflow
 heading: How to Check a 3MF File Before Slicing
 ---
 
 <p class="lead">
-  Start with the first stage that fails: opening the package, resolving its
-  intended build, interpreting a mesh finding or generating the expected sliced
-  layers. Each stage needs different evidence. A supported geometry result does
-  not validate every 3MF extension or embedded slicer setting.
+  To check a 3MF for errors, work through four questions in order: does the file
+  open, are all the objects there in the right place, are their meshes clean,
+  and do the sliced layers look right? Stop at the first one that fails, because
+  each needs a different fix. A clean mesh check does not cover every 3MF
+  feature or slicer setting stored in the file.
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">First failing stage</th>
-      <th scope="col">What to establish</th>
-      <th scope="col">Next destination</th>
+      <th scope="col">First thing that fails</th>
+      <th scope="col">What to find out</th>
+      <th scope="col">Where to go</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Cannot read the package</td>
-      <td>Whether the original opens in its producing application</td>
-      <td>Source application; do not start triangle cleanup.</td>
+      <td>The file will not open</td>
+      <td>Does it open in the program that made it?</td>
+      <td>Go back to that program; mesh cleanup will not help.</td>
     </tr>
     <tr>
-      <td>Opens, but items are missing or misplaced</td>
-      <td>
-        Intended resources, build references, supported transforms and units
-      </td>
+      <td>It opens, but objects are missing or misplaced</td>
+      <td>Which objects, positions, scales and units does it contain?</td>
       <td>
         <a href="{{ GuideSlug.Route3mfMissingObjectsAfterImport }}"
-          >Missing-object investigation</a
+          >Missing objects after import</a
         >
-        or <a href="{{ GuideSlug.Route3mfViewer }}">local 3MF Viewer</a>.
+        or the <a href="{{ GuideSlug.Route3mfViewer }}">3MF viewer</a>.
       </td>
     </tr>
     <tr>
-      <td>Build resolves, mesh findings remain</td>
+      <td>Objects are there, but mesh errors are reported</td>
+      <td>Which check ran, and where is the problem?</td>
       <td>
-        Which supported finding ran and what region/design decision it describes
-      </td>
-      <td>
-        <a href="{{ GuideSlug.Route3mfWatertightChecker }}">Closure check</a> or
-        <a href="{{ GuideSlug.Route3mfManifoldChecker }}">topology check</a>.
+        <a href="{{ GuideSlug.Route3mfWatertightChecker }}">Watertight check</a>
+        or <a href="{{ GuideSlug.Route3mfManifoldChecker }}">manifold check</a>.
       </td>
     </tr>
     <tr>
-      <td>A bounded redundant-face change is appropriate</td>
-      <td>Exact selected removal and resource references affected</td>
-      <td><a href="{{ GuideSlug.Route3mfRepair }}">Local 3MF Repair</a>.</td>
+      <td>An extra triangle needs removing</td>
+      <td>Which triangle, and which objects use it?</td>
+      <td><a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a>.</td>
     </tr>
     <tr>
-      <td>Geometry screens complete, slicing remains unexpected</td>
-      <td>Required features in actual profile and affected layers</td>
+      <td>Meshes are clean, but the slice looks wrong</td>
+      <td>Which settings and layers are affected?</td>
       <td>
         Missing
-        <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}"
-          >strokes/counters</a
-        >, an absent
-        <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">roof</a>, or
-        changed
+        <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}">text detail</a>,
+        a missing
+        <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">top surface</a>,
+        or
         <a
           href="{{
             GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings
           }}#guide-project-state"
-          >project preparation state</a
-        >
-        need different checks.
+          >settings saved in the project</a
+        >.
       </td>
     </tr>
   </tbody>
 </table>
-
-<h2>Walk one identified package through four stages</h2>
+<h2>Example: one file through all four steps</h2>
 <p>
-  The
-  <a href="{{ ExampleAsset.SlicerProjectOpen }}" download>P-open control</a>
-  keeps file identity through these actual checks. Its
+  Our
+  <a href="{{ ExampleAsset.SlicerProjectOpen }}" download>example project</a>
+  shows why the order matters. How it was built is explained in
   <a
     href="{{
       GuideSlug.RouteDoes3mfKeepColoursMaterialsAndSettings
     }}#guide-project-state"
-    >project comparison</a
-  >
-  explains the controlled archive construction and the separate exported STL.
+    >does 3MF keep settings</a
+  >.
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Stage / method</th>
-      <th scope="col">Actual observation</th>
-      <th scope="col">Remaining decision</th>
+      <th scope="col">Step</th>
+      <th scope="col">Result</th>
+      <th scope="col">Still to decide</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Package: current local resolver and PrusaSlicer 2.9.6 CLI</td>
-      <td>The exact ZIP/XML package opens in both</td>
-      <td>Opening alone does not validate every property</td>
+      <td>Opens? (InspectMesh and PrusaSlicer 2.9.6)</td>
+      <td>Yes, in both</td>
+      <td>Opening does not check every setting</td>
     </tr>
     <tr>
-      <td>Build: current supported geometry resolver</td>
-      <td>
-        One placement, one mesh, 12 triangles; millimetres; X/Y=85..115 and
-        Z=0..10
-      </td>
-      <td>Confirm this is the intended inventory and placement</td>
+      <td>Objects?</td>
+      <td>One object, 12 triangles, millimetres; X/Y 85 to 115, Z 0 to 10</td>
+      <td>Is this the object and position you expected?</td>
     </tr>
     <tr>
-      <td>Mesh: current combined local topology method</td>
+      <td>Mesh?</td>
       <td>
-        One shell; zero open, over-shared, degenerate, duplicate or
-        winding-conflict findings; supported volume 9,000 mm³
+        One piece; no holes, non-manifold edges, zero-area or duplicate
+        triangles, or flipped faces; volume 9,000 mm³
       </td>
-      <td>
-        Intersections, application intent and physical suitability remain
-        separate
-      </td>
+      <td>Overlaps and physical suitability are separate questions</td>
     </tr>
     <tr>
-      <td>Native project reader: actual CLI reslice</td>
-      <td>Object top count 0 overrides global 4; no top-solid paths</td>
+      <td>Slice? (PrusaSlicer 2.9.6 command line)</td>
       <td>
-        Restore the required effective shell setting, rather than repair
-        unchanged geometry
+        A per-object setting of 0 top layers overrides the global 4, so no top
+        surface is printed
       </td>
+      <td>Fix the setting, not the mesh</td>
     </tr>
   </tbody>
 </table>
 <p>
-  The
+  Full details are in the
   <a href="{{ ExampleAsset.SlicerImplementationObservations }}" download
-    >exact implementation record</a
+    >test record</a
   >
-  is local software evidence, not a server endpoint or GUI display observation.
-  For this file, the remaining question is whether an open top was intended.
+  (software results, not a print). For this file the only question left is
+  whether an open top was intended.
 </p>
-<h2>Choose a method deliberately</h2>
+<h2>Which InspectMesh check to use</h2>
 <p>
-  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a>
-  resolves supported geometry locally and provides several preparation screens.
-  The <a href="{{ GuideSlug.Route3mfQualityChecker }}">server quality</a> and
-  specialist checks are separate explicit submissions. Compare method, settings
-  and supported scope when their outputs differ. An unsupported or failed check
-  is not zero findings.
-</p>
-<p>
-  Server topology is inspected per supported build item and aggregated; local
-  preflight inspects combined resolved geometry. Neither result certifies every
-  required extension, vendor project setting or intended physical connection.
-  Local 3MF preflight does not run the bounded intersection screen available in
-  STL preflight. Read
+  <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF Print Preflight</a> runs
+  in your browser and combines several checks. The
+  <a href="{{ GuideSlug.Route3mfQualityChecker }}">3MF Quality Checker</a> and
+  the specialist checkers upload the file when you press check. The server
+  checks each object separately; the browser check combines them, so results can
+  differ. A check that failed or did not run is not the same as zero problems.
+  Unlike STL preflight, 3MF preflight does not look for overlapping surfaces.
+  See
   <a href="{{ GuideSlug.RouteHowInspectmeshChecksFiles }}"
-    >the method explanation</a
-  >
-  when comparing reports.
+    >how InspectMesh checks files</a
+  >.
 </p>
-<h2>Confirm size, build and sampled-check limits</h2>
+<h2>Also check size, wall thickness and volume</h2>
+<ul>
+  <li>
+    <strong>Size:</strong> compare the
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF dimensions</a> with
+    one size you know. Placed copies can make the build larger than one object.
+    A fit on paper does not include brims or supports, and scaling a part also
+    changes its clearances.
+  </li>
+  <li>
+    <strong>Wall thickness:</strong> the
+    <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
+      >wall thickness check</a
+    >
+    samples the model, so "no thin areas" does not prove every area is thick
+    enough. Check important features in the slicer preview too.
+  </li>
+  <li>
+    <strong>Volume:</strong> it cannot be calculated for open, duplicated,
+    flipped or overlapping geometry, or sometimes for several parts together.
+    Not available does not mean zero. See
+    <a href="{{ GuideSlug.RouteHowToCalculate3mfVolume }}"
+      >3MF volume explained</a
+    >.
+  </li>
+</ul>
+<h2>Keep a short record and check the final slice</h2>
 <p>
-  Read the source unit and compare resolved bounds with a known physical
-  dimension. Repeated references, nested components and transforms can change
-  the placed build without changing the stored resource. Use
-  <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">3MF dimensions</a> for a
-  focused size check. A nominal rectangular fit does not include every brim,
-  support or slicer reservation; scaling a functional part also changes its
-  clearances.
-</p>
-<p>
-  Wall thickness uses bounded samples, so zero thin samples does not prove every
-  region suitable. Use
-  <a href="{{ GuideSlug.Route3mfWallThicknessChecker }}"
-    >sampled wall inspection</a
-  >
-  for important features and compare the target layer preview. Volume has its
-  own validity gates: it may be unavailable for several closed parts as well as
-  for open, duplicate, degenerate, over-shared or winding-conflicted geometry.
-  Unavailable is not zero. Follow
-  <a href="{{ GuideSlug.RouteHowToCalculate3mfVolume }}"
-    >the volume interpretation</a
-  >
-  before estimating material.
-</p>
-<h2>Retain a short investigation record</h2>
-<p>
-  Record the source revision, first failing stage, tool and method, unit/build
-  assumptions, finding and next action. Keep unresolved checks explicit. Use the
-  existing
+  Note the file version, the first step that failed, the tool you used and what
+  you decided. The
   <a href="{{ GuideSlug.Route3dPrintFilePreflightChecklist }}"
-    >printable preflight record</a
+    >printable preflight checklist</a
   >
-  rather than treating a complete mesh report as permission to skip slicer or
-  physical requirements.
-</p>
-<h2>Review the final sliced layers</h2>
-<p>
-  Reopen the saved copy, confirm required placements and inspect affected
-  perimeters, cavities, material assignments and profile settings in the
-  receiving application. Local triangle cleanup does not fill holes or correct
-  winding. When a missing surface or intended join is uncertain, use
-  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}"
-    >the repair decision guide</a
-  >
-  and return to the source model. A software check does not settle wall
-  strength, support removal or physical print success.
+  has space for this. Then reopen the saved file, confirm all objects are in
+  place and inspect walls, hollows, materials and settings in your slicer. 3MF
+  Repair removes extra triangles but does not fill holes or flip faces; for
+  those, see
+  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">how to repair a 3MF</a>.
+  Software checks do not prove strength or print success.
 </p>

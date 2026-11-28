@@ -1,35 +1,32 @@
 ---
 title: STL Imported Too Small or Too Big? Check the Units | InspectMesh
-description: An STL that imports far too small or too big usually has a unit mix-up. Test millimetre and inch hypotheses against a known dimension before resizing.
+description: If an STL imports 25.4 times too small or too big, it was made in inches and read as millimetres (or the reverse). Here is how to confirm it and fix the size.
 slug: why-stl-files-have-no-units
 eyebrow: STL scale guide
-heading: Why STL Files Have No Units, and Import at the Wrong Size
+heading: Why Is My STL the Wrong Size After Import?
 ---
 
-<p>
-  An STL that imports about 25.4 times too small or too large often points to an
-  inch and millimetre mix-up, and a factor of 10 to a centimetre one.
+<p class="lead">
+  If your STL imports about 25.4 times too small or too large, it was almost
+  certainly designed in inches and opened as millimetres, or the other way
+  round. A factor of 10 usually means centimetres. This happens because an STL
+  file stores only numbers, not units, so every program has to guess.
 </p>
+<h2>Why STL files have no units</h2>
 <p>
-  STL stores coordinate values without an authoritative unit declaration. A span
-  of 20 can describe 20 mm or 20 inches, depending on the intended source unit.
-  Establish that unit from a drawing, known feature or the author before
-  changing the file.
+  An STL is a list of triangle corner coordinates. A cube edge stored as
+  <strong>20</strong> could mean 20 mm, 20 cm or 20 inches; the file does not
+  say which. Most slicers assume millimetres. If the designer worked in inches,
+  a 20-inch part arrives as a 20 mm part.
 </p>
-<h2>What the coordinate span tells you</h2>
-<p>
-  A bounding span is maximum minus minimum on an axis. It describes the stored
-  mesh in its current orientation; a filename, viewer zoom level or apparent fit
-  on screen cannot supply its intended physical unit. Preserve the source bytes
-  while you investigate.
-</p>
-<h2>Test a unit hypothesis</h2>
+<h2>Match the size error to the cause</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Coordinate span</th>
-      <th scope="col">Assumed unit</th>
-      <th scope="col">Physical span</th>
+      <th scope="col">Stored number</th>
+      <th scope="col">If it was meant as</th>
+      <th scope="col">Real size</th>
+      <th scope="col">Imported as mm, it is</th>
     </tr>
   </thead>
   <tbody>
@@ -37,79 +34,90 @@ heading: Why STL Files Have No Units, and Import at the Wrong Size
       <td>20</td>
       <td>Millimetres</td>
       <td>20 mm</td>
+      <td>Correct</td>
     </tr>
     <tr>
       <td>20</td>
       <td>Centimetres</td>
       <td>200 mm</td>
+      <td>10 times too small</td>
     </tr>
     <tr>
       <td>20</td>
       <td>Inches</td>
       <td>508 mm</td>
+      <td>25.4 times too small</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A 25.4 ratio is evidence to investigate an inch/millimetre mismatch, not
-  permission to apply that factor automatically. Compare a second independent
-  dimension. A deliberately large model or a later scale operation can produce
-  the same apparent ratio.
+  A model that arrives 25.4 times too <em>large</em> is the reverse case: it was
+  modelled in millimetres and a program read it as inches.
 </p>
+<h2>Confirm before you resize</h2>
 <p>
-  The owned
-  <a href="{{ GuideSlug.RouteExamples }}">20-coordinate cube control</a> has
-  unchanged coordinates under each hypothesis. Its design convention is known;
-  that does not establish the convention of an unrelated customer file.
+  A 25.4 ratio is a strong clue, not proof. Someone may have scaled the model on
+  purpose. Check one dimension you know for certain before changing anything:
 </p>
-<h2>Find where the interpretation changed</h2>
 <ol>
   <li>
-    Record the authoring unit, one trusted dimension and the supplied revision.
-    Ask for missing information rather than guessing.
+    Find a trusted size: a drawing, a product listing, a screw hole of known
+    diameter, or ask the designer.
   </li>
   <li>
-    Compare the exporter's coordinate values with that reference. Record any
-    scale applied before export.
+    Open the file in the
+    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
+      >STL dimensions checker</a
+    >
+    and compare that feature under millimetres, centimetres and inches.
   </li>
   <li>
-    Open the same bytes in the
-    <a href="{{ GuideSlug.RouteStlDimensionsChecker }}">dimensions checker</a>
-    and compare all axes under the supported assumption.
-  </li>
-  <li>
-    Check the receiving application's import convention and later transforms. A
-    disagreement can start at export, import or a subsequent edit.
+    Check a second dimension too. If both match the same unit, you have found
+    the cause.
   </li>
 </ol>
-<h2>Decide whether to reinterpret or resize</h2>
 <p>
-  Changing a viewer's unit assumption changes how coordinates are interpreted.
-  Resizing an STL changes its coordinates. A receiving program can still make a
-  different assumption because the saved STL has no unit declaration. Use a
-  basic 3MF when you need to package a known coordinate unit, and verify the
-  receiving program.
+  You can practise on the
+  <a href="{{ GuideSlug.RouteExamples }}">20 mm example cube</a>: its stored
+  numbers stay the same under every unit choice, only the interpretation
+  changes.
 </p>
+<h2>Fix it: reinterpret or resize</h2>
+<p>There are two different fixes, and it matters which one you choose:</p>
+<ul>
+  <li>
+    <strong>The file is right, the program guessed wrong.</strong> Change the
+    unit or import setting in the program that opened it. Resizing the file
+    would just create a second error later.
+  </li>
+  <li>
+    <strong>The numbers really are in inches.</strong> Scale the model by 2540%
+    (inches to mm) or 3.937% (mm to inches), save a new copy and keep the
+    original.
+  </li>
+</ul>
 <p>
-  If a known 20 mm part already has a span of 20 and the receiver treats that as
-  inches, correct the receiving assumption first. Multiplying its coordinates by
-  25.4 would create another change. If the coordinates themselves need resizing,
-  record the intended factor and keep a separate output. Follow the
+  In PrusaSlicer, you can type the target size into the Size fields of the
+  <a href="https://help.prusa3d.com/article/object-manipulation-panel_1757"
+    >object manipulation panel</a
+  >, or measure a known feature with the
+  <a href="https://help.prusa3d.com/article/measurement-tool_399451"
+    >measurement tool</a
+  >
+  and scale the object so that distance matches (PrusaSlicer 2.6 and later;
+  Prusa documentation checked 28 November 2026). For the full step-by-step, see
   <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
-    >practical scaling workflow</a
-  >
-  once that decision is established.
-</p>
-<h2>Next action</h2>
-<p>
-  Use
+    >how to scale an STL</a
+  >; for the percentage maths, see
   <a href="{{ GuideSlug.RouteStlScaleFactorExplained }}"
-    >factor and percentage arithmetic</a
-  >
-  only after the physical interpretation is known. Follow
-  <a href="{{ GuideSlug.RouteHowToConvertStlTo3mf }}"
-    >the STL-to-3MF workflow</a
-  >
-  to package that convention; conversion does not discover intent or repair the
-  mesh.
+    >STL scale factor explained</a
+  >.
+</p>
+<h2>Stop it happening again</h2>
+<p>
+  STL can never carry its unit, but 3MF can. If you share models with other
+  people,
+  <a href="{{ GuideSlug.RouteHowToConvertStlTo3mf }}">convert to 3MF</a> once
+  the size is correct so the unit travels with the file. Converting does not fix
+  a wrong size by itself.
 </p>

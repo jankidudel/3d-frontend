@@ -1,134 +1,116 @@
 ---
-title: '3MF Non-Manifold Warning: Mesh or Placement? | InspectMesh'
-description: Trace a non-manifold or topology warning in a 3MF project to its mesh resource or build placement before editing geometry that other items share.
+title: '3MF Non-Manifold but Parts Look Fine? | InspectMesh'
+description: A 3MF non-manifold warning can come from a broken mesh or from how healthy objects are placed. Find out which before you edit.
 slug: how-to-tell-if-a-3mf-file-is-manifold
 eyebrow: 3MF topology guide
-heading: '3MF Non-Manifold Warning: Mesh Fault or Build Placement?'
+heading: 'My 3MF Says Non-Manifold but the Parts Look Fine: Why?'
 ---
 
 <p class="lead">
-  A topology finding can belong to a stored mesh, while a visible conflict can
-  arise from how healthy meshes are placed. Trace that difference before
-  editing. Repeated items are not duplicate triangle records, and an
-  edge-sharing screen cannot settle every vertex or intersection question.
+  A non-manifold warning in a 3MF has two possible sources: a broken mesh inside
+  one object (for example a duplicated triangle), or perfectly healthy objects
+  placed so they overlap or touch. Find out which it is before editing. Fixing
+  the wrong one can break other copies of the same object, or delete a part you
+  need.
 </p>
-<h2>Trace the finding to a resource or a placement</h2>
+<h2>Mesh problem or placement problem?</h2>
 <p>
-  Start with the
-  <a href="/examples/collection-review/two-placed-cubes.3mf" download
-    >owned repeated-item build</a
-  >. One cube resource is placed twice; its retained local .NET processor report
-  (24 October 2026) completes with two components and no listed mesh issues. Do
-  not remove the second placed cube merely to obtain one component. Now compare
-  the
-  <a href="/examples/cad-export/duplicate-face-cube.3mf" download
-    >repeated-face resource</a
-  >: the redundant triangle creates one duplicate finding and three over-shared
-  edges. This calls for a resource-level correction, not deletion of a
-  legitimate build item.
+  A 3MF can store one object once and place it several times. Compare two
+  example files:
 </p>
+<ul>
+  <li>
+    <a href="/examples/collection-review/two-placed-cubes.3mf" download
+      >Two placed cubes</a
+    >: one cube object placed twice. Our checker reports two pieces and no mesh
+    problems (<a href="/examples/quality-evidence/two-item-report.json" download
+      >saved report</a
+    >). Do not delete the second cube just to get one piece; it is meant to be
+    there.
+  </li>
+  <li>
+    <a href="/examples/cad-export/duplicate-face-cube.3mf" download
+      >Cube with a repeated face</a
+    >: one triangle is stored twice inside the object, giving one duplicate and
+    three non-manifold edges (<a
+      href="/examples/quality-evidence/duplicate-report.json"
+      download
+      >saved report</a
+    >). This needs a fix inside the object, not removal of a placement.
+  </li>
+</ul>
 <p>
-  Keep
-  <a href="/examples/quality-evidence/two-item-report.json" download
-    >the valid two-item report</a
-  >
-  and
-  <a href="/examples/quality-evidence/duplicate-report.json" download
-    >the defective-resource report</a
-  >
-  beside the source packages. The server-method processor checks build items
-  independently; local combined-build methods can interpret coincident
-  placements differently. Inspect the actual selected method rather than
-  treating either component count as a universal assembly judgement. Vertex-only
-  and crossing-surface cases need further review beyond an edge-incidence
-  result.
-</p>
-
-<p>
-  These retained observations run the repository processor, not an authenticated
-  production revision or physical print.
-  <a href="/examples/quality-evidence/provenance.json" download
-    >Evidence provenance</a
-  >
-  records fixture hashes and the reproduction command. The public
+  Both reports are from 24 October 2026; file hashes and how to reproduce them
+  are in the
+  <a href="/examples/quality-evidence/provenance.json" download>test details</a
+  >. The
   <a href="{{ GuideSlug.Route3mfManifoldChecker }}">3MF Manifold Checker</a>
-  returns aggregate counts; it does not provide a per-resource diagnosis. Review
-  the source application's references and visible arrangement to identify the
-  affected resource.
+  gives totals for the whole build, not a per-object diagnosis, so use the
+  program that made the file to see which object is affected.
 </p>
-<h2>Choose the narrow action for the observation</h2>
+<h2>What to do in each case</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Observation</th>
-      <th scope="col">Question to resolve</th>
-      <th scope="col">Narrow action</th>
+      <th scope="col">What you find</th>
+      <th scope="col">Question</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>One resource is defective and reused</td>
-      <td>Which placements reference this resource?</td>
-      <td>Review the effect of a resource edit on all references.</td>
+      <td>One broken object used several times</td>
+      <td>Which copies use it?</td>
+      <td>Fix the object once; check every copy afterwards.</td>
     </tr>
     <tr>
-      <td>Several sound resources overlap when placed</td>
+      <td>Healthy objects that overlap when placed</td>
+      <td>Is the overlap intended?</td>
       <td>
-        Is the overlap intentional, or is a placement/source-model correction
-        required?
-      </td>
-      <td>
-        Inspect in the source application; do not call an incidence result an
-        overlap detector.
+        Move or merge them in the source program. The edge check does not detect
+        overlaps.
       </td>
     </tr>
     <tr>
-      <td>Separate closed parts have no listed edge findings</td>
-      <td>Are quantity, clearance and arrangement intended?</td>
-      <td>Keep intentional parts and verify the plate.</td>
+      <td>Separate closed parts, no edge problems</td>
+      <td>Are the number and spacing right?</td>
+      <td>Keep them and check the plate layout.</td>
     </tr>
     <tr>
-      <td>Open or over-shared edges are reported</td>
-      <td>Which surface should exist at that region?</td>
+      <td>Open or non-manifold edges reported</td>
+      <td>Which surface should be there?</td>
       <td>
-        Locate the finding, then choose supported removal or source
-        reconstruction.
+        Find the area, then remove the extra face or rebuild the missing one.
       </td>
     </tr>
     <tr>
-      <td>Input or required feature is unsupported</td>
-      <td>Did this method complete the relevant test?</td>
-      <td>Preserve the package and use the producing application.</td>
+      <td>The file uses features InspectMesh does not read</td>
+      <td>Did the check actually run?</td>
+      <td>Keep the original and use the program that made it.</td>
     </tr>
   </tbody>
 </table>
-
-<h2>Do not infer a complete manifold proof from edge counts</h2>
+<h2>What the check does and does not cover</h2>
 <p>
-  The tool name describes the question visitors are investigating. Its actual
-  result is bounded by the implemented checks. State which edge, winding and
-  component tests ran; do not infer vertex-manifoldness, intersection clearance
-  or a correct physical connection from the absence of those findings.
+  The server check looks at each placed object on its own. It counts an edge
+  with one face as a hole and an edge with more than two faces as non-manifold,
+  and it flags neighbouring faces that point opposite ways. It skips zero-area
+  faces, but keeps duplicate faces in the count. Pieces that share a corner
+  count as connected, so two parts touching at one point may appear as one.
 </p>
 <p>
-  The server method compares exact-coordinate edge endpoints within each
-  resolved build item, excluding invalid-coordinate and degenerate faces from
-  edge incidence. One face contributes a boundary; more than two contributes an
-  over-shared edge. Directed pairs also screen winding conflicts. Components
-  connect through shared vertex coordinates, so a point-only touch may count as
-  one component. Duplicate faces remain in the server incidence count, unlike
-  the local removal-plan screen. No distance-tolerance welding or spatial
-  intersection test is performed here.
+  It does not merge nearby points, test whether surfaces cross, or prove that
+  every corner is manifold. The browser check combines all objects first, so it
+  can group overlapping placements differently. Note which check you used.
 </p>
+<h2>After fixing</h2>
 <p>
-  After correction, compare required items, transforms and dimensions, repeat
-  the relevant check and inspect affected slicer layers. Use
+  Compare objects, positions and sizes with the original, run the check again
+  and look at the sliced layers. For holes, see
   <a href="{{ GuideSlug.RouteHowToTellIfA3mfFileIsWatertight }}"
-    >boundary interpretation</a
-  >
-  for closure, <a href="{{ GuideSlug.Route3mfRepair }}">local repair</a> only
-  for supported removals, and
-  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">the repair guide</a> to
-  choose a route when a join or surface is uncertain. Keep intentional parts
-  separate rather than reducing a component count for its own sake.
+    >which part of a 3MF has holes</a
+  >. For removing extra faces, try
+  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a>. For other cases, see
+  <a href="{{ GuideSlug.RouteHowToRepairA3mfFile }}">how to repair a 3MF</a>.
+  Keep intended parts separate; fewer pieces is not a goal in itself.
 </p>

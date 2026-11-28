@@ -1,76 +1,69 @@
 ---
-title: 'Self-Intersecting Mesh vs Non-Manifold Edges | InspectMesh'
-description: 'Distinguish triangle crossings from edge-incidence faults, reproduce owned mesh controls and understand which intersections InspectMesh does not detect.'
+title: 'Self-Intersecting vs Non-Manifold Mesh | InspectMesh'
+description: 'Non-manifold is about how faces connect; self-intersecting is about surfaces passing through each other. Why one check misses the other.'
 slug: self-intersecting-mesh-vs-non-manifold
-eyebrow: File diagnosis with owned examples
-heading: 'Self Intersections and Non-Manifold Edges Are Different Checks'
+eyebrow: File diagnosis with example files
+heading: 'Self-Intersecting Mesh vs Non-Manifold: What Is the Difference?'
 faq:
-  - question: 'Does zero non-manifold edges rule out intersections?'
-    answer: 'No. Edge incidence measures connectivity; triangles can cross without sharing mesh edges. STL preflight runs a bounded local BVH triangle-pair screen, while collection review does not.'
-  - question: 'Should overlapping shells always be merged?'
-    answer: 'No. Determine the intended union, cavity or separate moving parts before changing the design. Return to source CAD when intent is unclear.'
+  - question: 'Does zero non-manifold edges mean no surfaces cross?'
+    answer: 'No. An edge check looks at how faces connect, and crossing surfaces need not share any edge. STL preflight runs a separate, limited overlap check in your browser; collection review does not.'
+  - question: 'Should overlapping parts always be merged?'
+    answer: 'No. First decide whether they should be one solid, a hollow, or separate moving parts. If unsure, go back to the CAD model.'
 ---
 
-<p>
-  A non-manifold edge concerns how faces are connected. A self intersection
-  concerns where surfaces cross in space. A mesh can pass an edge-incidence
-  check while its triangles still intersect. InspectMesh collection review does
-  not detect self intersections. Local STL preflight runs a bounded BVH screen;
-  zero non-manifold edges alone must not be presented as an intersection
-  clearance.
+<p class="lead">
+  Non-manifold means faces are connected wrongly: an edge has one face (a hole)
+  or three or more. Self-intersecting means surfaces pass through each other in
+  space. They are separate problems, and a mesh can pass a non-manifold check
+  while its surfaces still cross. That is why "no non-manifold edges" does not
+  mean the model is clean.
 </p>
-<h2>Two independent questions</h2>
+<h2>Four different problems</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Condition</th>
+      <th scope="col">Problem</th>
       <th scope="col">Simple example</th>
-      <th scope="col">What to inspect</th>
+      <th scope="col">What to look at</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Boundary edge</td>
-      <td>A face removed from a closed cube leaves four boundary edges</td>
-      <td>Missing surface and intended opening</td>
+      <td>Hole (open edge)</td>
+      <td>One side removed from a cube leaves 4 open edges</td>
+      <td>Missing surface, or an intended opening?</td>
     </tr>
     <tr>
-      <td>Over-shared edge</td>
-      <td>
-        A duplicate cube triangle makes its three edges belong to three faces
-      </td>
-      <td>Connectivity and exact duplicate faces</td>
+      <td>Non-manifold edge</td>
+      <td>A duplicated triangle makes 3 edges shared by 3 faces</td>
+      <td>Duplicate or extra faces</td>
     </tr>
     <tr>
-      <td>Intersecting surfaces</td>
-      <td>
-        Two closed cubes offset 10 mm on X overlap despite each being closed
-      </td>
-      <td>Spatial crossings, intended union and cavity semantics</td>
+      <td>Self-intersection</td>
+      <td>Two closed cubes overlapping by 10 mm, each fine on its own</td>
+      <td>Where surfaces cross; should they be merged or kept hollow?</td>
     </tr>
     <tr>
-      <td>Vertex-only contact</td>
-      <td>Two shells meet at a point</td>
-      <td>Whether a meaningful solid connection exists, beyond edge counts</td>
+      <td>Touching at one point</td>
+      <td>Two parts meeting at a single corner</td>
+      <td>Is there a real joint? Edge counts cannot tell.</td>
     </tr>
   </tbody>
 </table>
 <p>
-  Boundary edges have one incident triangle; an ordinary closed-surface edge has
-  two. The collection non-manifold edge count flags more than two. Broader
-  manifoldness also includes vertex neighbourhoods, so passing this edge-only
-  screen is narrower than proving a manifold solid.
+  An edge on a closed surface has exactly two faces; a hole edge has one; a
+  non-manifold edge has more than two. Full manifold checks also look at corners
+  (vertices), so passing an edge-only check is a narrower result.
 </p>
-<h2>Reproduce the crossing-shell counterexample</h2>
+<h2>Example: two overlapping cubes</h2>
 <p>
-  Download
+  Download the
   <a href="{{ ExampleAsset.OverlappingCubesStl }}" download
-    >two overlapping closed cubes</a
-  >. Each is 20 mm wide; the second is translated 10 mm on X. Expected combined
-  bounds are 30 × 20 × 20 mm, with two connected shells and zero boundary or
-  over-shared edges after exact-coordinate welding. The surfaces intersect even
-  though these counts are zero. The collection report withholds volume because
-  shell interpretation is unresolved.
+    >two overlapping cubes</a
+  >. Each is 20 mm wide; the second is shifted 10 mm along X, so together they
+  measure 30 x 20 x 20 mm. The checker finds 2 pieces and no open or
+  non-manifold edges, yet the surfaces clearly cross. The collection report
+  leaves volume blank because it cannot tell how the overlap should count.
 </p>
 <figure>
   <img
@@ -81,65 +74,60 @@ faq:
     loading="lazy"
   />
   <figcaption>
-    Top-view schematic of the owned overlapping-shell control. It demonstrates
-    the gap between connectivity checks and spatial intersection checks.
+    Top view of the two overlapping cubes: they overlap in space but share no
+    edges.
   </figcaption>
 </figure>
 <p>
-  Local STL preflight can report triangle pairs for supported files up to its
-  documented triangle limit. The reported location is an approximate pair
-  centre, not an exact intersection curve or a 3D highlight. Exact duplicate and
-  coplanar overlaps are labelled ambiguous. Larger, malformed or
-  resource-limited inputs are skipped or incomplete, never reported as a clean
-  check. The screen is diagnostic; it does not infer whether to union shells,
-  preserve a cavity or retain separate parts. Duplicate removal cannot resolve a
-  crossing between unrelated triangles merely because their faces occupy some of
-  the same space.
+  <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL preflight</a> can look
+  for crossing triangles in files up to its triangle limit. It reports an
+  approximate location for each crossing pair, not an exact curve. Exactly
+  overlapping or flat-on-flat faces are marked as unclear. Files that are too
+  large or damaged are reported as skipped, never as clean. Removing duplicate
+  faces does not fix surfaces that cross.
 </p>
-<h2>Practical inspection sequence</h2>
+<h2>How to check and fix overlaps</h2>
 <ol>
   <li>
-    Run <a href="{{ GuideSlug.RouteBatchStlChecker }}">collection review</a> and
-    retain topology counts and method limits.
+    Run <a href="{{ GuideSlug.RouteBatchStlChecker }}">collection review</a> or
+    STL preflight and note the results and their limits.
   </li>
   <li>
-    Inspect the crossing region in
-    <a href="{{ GuideSlug.RouteStlViewer }}">the viewer</a> or a mesh editor. A
-    cross-section can reveal interior surfaces but is a visual aid, not an
-    exhaustive test.
+    Look at the overlap in the
+    <a href="{{ GuideSlug.RouteStlViewer }}">STL viewer</a> with a
+    cross-section. It helps you see inside, but it is not a complete test.
   </li>
   <li>
-    Check the native CAD Boolean/assembly intention: union, separate movable
-    parts or an internal cavity?
+    Check the CAD model: should the parts be merged into one solid, kept as
+    separate moving parts, or does the overlap form a hollow?
   </li>
   <li>
-    Use a source-CAD solid or mesh editor with an explicit intersection check
-    when required; review that tool/version’s limitations.
+    If they should be one solid, merge them (a Boolean union) in CAD or a mesh
+    editor that has an intersection check.
   </li>
   <li>
-    Export a corrected copy,
-    <a href="{{ GuideSlug.RouteStlCompare }}">compare revisions</a> and inspect
-    the affected slicer layers.
+    Export a new copy,
+    <a href="{{ GuideSlug.RouteStlCompare }}">compare it with the original</a>
+    and check the sliced layers in that area.
   </li>
 </ol>
-<h2>Stop before guessing the intended solid</h2>
+<h2>When not to merge</h2>
 <p>
-  If union would close a deliberate cavity or merge separate moving pieces, ask
-  the designer. A successful slice is evidence of that slicer’s chosen
-  interpretation, not proof that it matches intent. Return to CAD when the
-  crossing involves functional surfaces or a missing Boolean result.
+  If merging would fill a hollow you need, or join parts that should move, ask
+  the designer. A slicer that slices the model without complaint has made its
+  own guess, which may not match the design.
 </p>
 <p>
+  For edge problems, see
   <a href="{{ GuideSlug.RouteWhatIsNonManifoldGeometry }}"
-    >The non-manifold explainer</a
-  >
-  classifies connectivity patterns;
-  <a href="{{ GuideSlug.RouteHowToRepairAnStlFile }}">the repair guide</a>
-  chooses a corrective workflow. This page separates the diagnostic tests. The
+    >what non-manifold geometry means</a
+  >; for choosing a fix, see
+  <a href="{{ GuideSlug.RouteHowToRepairAnStlFile }}">how to repair an STL</a>.
+  The
   <a
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
-    >3MF mesh requirements</a
+    >3MF specification's mesh rules</a
   >
-  provide a normative solid-mesh reference, reviewed 7 October 2026. Fixture
-  outcomes come from owned geometry tests, not physical prints.
+  are a formal reference for solid meshes (reviewed 7 October 2026). Results on
+  this page come from our example files, not from printing.
 </p>

@@ -1,127 +1,120 @@
 ---
-title: '3MF Units: Millimetres, Inches and Wrong Sizes | InspectMesh'
-description: Read the 3MF unit attribute with its transforms, follow a declared-inch control to physical size, and investigate why a 3MF imports at the wrong size.
+title: 'Does 3MF Store Units? Inches vs mm | InspectMesh'
+description: Yes. A 3MF file declares its unit, and millimetres are assumed when it does not. Learn why a 3MF can still import at the wrong size and how to track it down.
 slug: 3mf-units-explained
 eyebrow: 3MF format guide
-heading: '3MF Units Explained: Millimetres, Inches and Wrong-Size Imports'
+heading: 'Does a 3MF File Store Units?'
 ---
 
-<p>
-  A 3MF model declares the unit used for its coordinates; the
+<p class="lead">
+  Yes. Unlike STL, a 3MF file states which unit its coordinates use, and the
   <a
     href="https://github.com/3MFConsortium/spec_core/blob/master/3MF%20Core%20Specification.md"
-    >Core specification</a
+    >3MF Core specification</a
   >
-  uses millimetres when that attribute is omitted. Read that unit together with
-  the supported component and build-item transforms. A declared unit gives
-  context, but the receiving application's resolved physical size still needs
-  checking.
+  says millimetres are assumed when the file does not say. That is why a 3MF
+  usually opens at the right size. When it does not, the cause is normally a
+  scale or placement saved in the project, or the program you exported from.
 </p>
-<h2>Unit, coordinates and transforms are different inputs</h2>
+<h2>Why a 3MF can still look the wrong size</h2>
+<p>
+  A 3MF holds more than one set of numbers. The size you see depends on all of
+  them together:
+</p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Action</th>
-      <th scope="col">What changes</th>
+      <th scope="col">What is stored</th>
+      <th scope="col">What changing it does</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Change only the unit declaration</td>
-      <td>Physical interpretation of the same numbers</td>
+      <td>The unit (for example millimetre or inch)</td>
+      <td>Changes what the same coordinate numbers mean</td>
     </tr>
     <tr>
-      <td>Convert coordinates consistently with a unit change</td>
+      <td>The mesh coordinates</td>
       <td>
-        Numeric representation can change while physical size is preserved
+        Can be rewritten for a new unit while keeping the real size the same
       </td>
     </tr>
     <tr>
-      <td>Apply a scale transform</td>
-      <td>Resolved placed geometry changes size</td>
+      <td>A scale saved on a placed object</td>
+      <td>Makes that object bigger or smaller in the build</td>
     </tr>
     <tr>
-      <td>Change display units</td>
-      <td>
-        The displayed representation, if implemented as display conversion
-      </td>
+      <td>The program's display unit</td>
+      <td>Changes only how sizes are shown on screen</td>
     </tr>
   </tbody>
 </table>
 <p>
-  A resource definition is not a placed item. Components and build items can
-  transform reusable geometry. Measure the intended resolved scope rather than
-  treating one stored mesh as the whole build. InspectMesh supports a bounded
-  subset; the specification's permitted units and extensions are not a promise
-  that every package can be processed.
+  A 3MF can also reuse one object several times in different positions. The
+  whole build can then be much wider than any one object: two 20 mm cubes placed
+  apart can span 60 mm. Measure the object you care about, not just the overall
+  build.
 </p>
-<h2>Follow one control from package to physical size</h2>
+<h2>Example: an inch file converted to millimetres</h2>
 <figure>
   <img
     src="/examples/part-inspection/inch-round-trip.svg"
     width="720"
     height="600"
     loading="lazy"
-    alt="Declared inch to millimetre STL mathematical schematic"
+    alt="Diagram of a 3MF cube declared in inches converted to a millimetre STL"
   />
   <figcaption>
-    Unit and placement schematic; one inch becomes 25.4 mm once, including
-    translation.
+    One inch becomes 25.4 mm, applied once to both the size and the position.
   </figcaption>
 </figure>
 <p>
-  The
+  Our
   <a href="{{ ExampleAsset.DeclaredInchTransformed3mf }}" download
-    >declared-inch control</a
+    >inch example 3MF</a
   >
-  contains a one-coordinate-unit cube translated two source units on X. Unit
-  resolution gives 25.4 mm spans and X bounds 50.8 to 76.2 mm, with 12
-  triangles. The converted STL reopens with nearby Float32 coordinates in the
-  same millimetre convention. STL has no unit declaration; choose millimetres in
-  the receiver.
+  contains a cube 1 unit across, declared in inches and moved 2 units along X.
+  Read correctly, it is a 25.4 mm cube sitting between 50.8 and 76.2 mm on X.
+  Converted to STL, the numbers are written in millimetres, because STL cannot
+  store a unit. Open that STL as millimetres. See
+  <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
+    >how to convert 3MF to STL</a
+  >
+  for the full check.
 </p>
 <p>
-  The existing
-  <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
-    >reopened conversion evidence</a
-  >
-  checks the derivative rather than asserting a receiving-slicer result. The
-  source control and software observation are retained. Do not scale the
-  resource and its placement separately as two unit corrections.
+  A common mistake is to correct the unit twice: once on the object and again on
+  its placement. Apply the 25.4 conversion once.
 </p>
-<h2>Investigate a disagreement before correcting it</h2>
+<h2>Track down a wrong-size 3MF</h2>
 <ol>
   <li>
-    Keep the source and record its declared or default unit. Compare the same
-    package revision in both applications.
+    Keep the original file and note the unit it declares (or millimetres if
+    none).
   </li>
   <li>
-    Check intended items versus
-    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">full build bounds</a>.
-    Two unchanged 20 mm cubes can span 60 mm because of their placements.
+    Check the size of the object you care about, not only the
+    <a href="{{ GuideSlug.Route3mfDimensionsChecker }}">whole build</a>.
   </li>
   <li>
-    Compare supported component/build transforms, any later scaling, display
-    conversion and application versions.
+    Look for a saved scale on the object, a later resize, or a display-unit
+    setting in the program you are using.
   </li>
   <li>
-    Use
+    If the size changed after exporting to STL, follow
     <a href="{{ GuideSlug.Route3mfToStlWrongSizeOrPosition }}"
-      >derivative troubleshooting</a
-    >
-    when source/export/reopened/receiver measurements differ. Record translation
-    separately from span.
+      >STL exported from 3MF is the wrong size</a
+    >.
   </li>
   <li>
-    If the actual project needs resizing, follow
-    <a href="{{ GuideSlug.RouteHowToScaleA3mfFile }}"
-      >the external-application scaling procedure</a
-    >
-    and save a new project. Reopen it and inspect the intended slicing profile.
+    If the project itself needs a new size,
+    <a href="{{ GuideSlug.RouteHowToScaleA3mfFile }}">scale the 3MF</a>, save a
+    new copy and check it again.
   </li>
 </ol>
 <p>
-  Core specification version 1.4.0, unit and transform definitions reviewed 26
-  October 2026. A valid unit declaration does not establish design intent,
-  physical fit or support for application-specific settings.
+  InspectMesh reads the common parts of 3MF, not every extension the
+  specification allows. 3MF Core specification version 1.4.0, unit and transform
+  sections reviewed 26 October 2026. A correct unit does not prove the model was
+  designed at the size you need.
 </p>

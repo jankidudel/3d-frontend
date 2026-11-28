@@ -1,135 +1,139 @@
 ---
-title: 'Remove Duplicate STL Triangles: Verify Output | InspectMesh'
-description: 'Test exact duplicate cleanup on a 13-face cube and compare the actual 12-face output, bounds and remaining mesh findings.'
+title: 'How to Remove Duplicate Triangles from an STL | InspectMesh'
+description: 'Duplicate triangles are identical copies of the same face. See how to find them, when removing the copy is safe, and how to check the cleaned STL.'
 slug: how-to-remove-duplicate-triangles-from-an-stl-file
 eyebrow: STL repair guide
-heading: 'Remove Duplicate STL Triangles: Verify the Saved Surface'
+heading: 'How to Remove Duplicate Triangles from an STL'
 faq:
-  - question: Does one duplicate report prove the retained face is correct?
-    answer: No. Detection matches the same three positions regardless of order. Review which coincident surface belongs before cleanup.
-  - question: Will standard cleanup also remove degenerate faces?
-    answer: Yes, the same explicit server action may remove zero-area faces and correct supported winding. Compare every reported change before accepting the derivative.
+  - question: If a duplicate is found, is the face I keep always the right one?
+    answer: Not always. Two copies of a face can point in opposite directions. Check which one belongs before cleaning.
+  - question: Does cleanup also remove zero-area triangles?
+    answer: Yes. The same cleanup can remove zero-area triangles and fix some flipped faces, so read the full report before keeping the result.
 ---
 
 <p class="lead">
-  An exact duplicate repeats the same three vertex positions. Removing a
-  redundant copy can leave the visible surface unchanged, but a coincident face
-  may also be part of a larger overlap or an incorrectly oriented pair. Inspect
-  the reported faces and recheck the saved copy; deleting triangles is not a
-  Boolean union.
+  Duplicate triangles are two identical copies of the same face, sitting exactly
+  on top of each other. Removing the extra copy is usually safe and does not
+  change how the model looks. Run a quality check to find them, remove them with
+  a cleanup tool on a copy of the file, then check the copy again.
 </p>
-<h2>Identify an exact repeated face</h2>
+<h2>Why duplicates cause problems</h2>
 <p>
-  InspectMesh matches the three stored coordinate positions exactly after
-  sorting them, so triangle vertex order and the stored STL normal do not affect
-  duplicate detection. The processor excludes invalid or near-zero-area faces
-  from duplicate and edge checks; standard cleanup can also remove degenerate
-  faces and correct supported winding in the same explicitly submitted action.
-  It does not equate partly overlapping polygons, differently tessellated
-  coincident surfaces or spatially crossing shells.
-</p>
-<p>
-  A repeated valid face is different from a zero-area face. Use the
-  <a href="{{ GuideSlug.RouteDegenerateTrianglesStl }}"
-    >zero-area and narrow-triangle controls</a
+  A duplicate makes the edges around it belong to three triangles instead of
+  two, so slicers flag it as non-manifold. Our
+  <a href="{{ ExampleAsset.DuplicateFaceCubeStl }}" download
+    >13-triangle example cube</a
   >
-  to compare repeated positions, collinearity and workflow-specific numerical
-  tolerances.
+  has one copied face, which creates three non-manifold edges.
 </p>
-<h2>Run the 13-to-12 triangle control</h2>
+<h2>How InspectMesh finds them</h2>
+<p>
+  The <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>
+  counts a triangle as a duplicate when its three corners are at exactly the
+  same positions as another triangle's, in any order. The direction the face
+  points does not matter. It skips zero-area triangles here; those are covered
+  in
+  <a href="{{ GuideSlug.RouteDegenerateTrianglesStl }}">degenerate triangles</a
+  >. Faces that only partly overlap, or that cover the same area with different
+  triangles, are not counted as duplicates.
+</p>
+<h2>Try it on the example files</h2>
 <table>
   <thead>
     <tr>
       <th scope="col">File</th>
-      <th scope="col">Actual processor result</th>
-      <th scope="col">Next decision</th>
+      <th scope="col">Result</th>
+      <th scope="col">What to do</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download
-          >Clean reference cube</a
-        >
+        <a href="{{ ExampleAsset.Closed20mmCubeStl }}" download>Clean cube</a>
       </td>
-      <td>12 triangles; zero duplicates, boundaries and over-shared edges</td>
-      <td>Keep as comparison.</td>
+      <td>12 triangles; no duplicates, holes or non-manifold edges</td>
+      <td>Use it for comparison.</td>
     </tr>
     <tr>
       <td>
         <a href="{{ ExampleAsset.DuplicateFaceCubeStl }}" download
-          >One extra identical face</a
+          >Cube with one copied face</a
         >
       </td>
-      <td>13 triangles; one exact duplicate; three over-shared edges</td>
+      <td>13 triangles; 1 duplicate; 3 non-manifold edges</td>
       <td>
-        Run <a href="{{ GuideSlug.RouteStlRepair }}">standard cleanup</a> only
-        after confirming the original surface is intended.
+        Run
+        <a href="{{ GuideSlug.RouteStlRepair }}">standard cleanup</a> once you
+        are sure the shape is right.
       </td>
     </tr>
     <tr>
       <td>
         <a href="{{ ExampleAsset.DiagnosisDuplicateCleanedCubeStl }}" download
-          >Downloaded cleanup result</a
+          >Cleaned result</a
         >
       </td>
       <td>
-        One removed; 12 triangles; zero duplicates, open and over-shared edges;
-        20 × 20 × 20 bounds
+        1 removed; 12 triangles; no duplicates or edge problems; still 20 x 20 x
+        20
       </td>
-      <td>Reopen this derivative and inspect the surface and slicer layers.</td>
+      <td>Reopen it and check the slice.</td>
     </tr>
     <tr>
       <td>
         <a
           href="{{ ExampleAsset.DiagnosisOppositeWindingDuplicateCubeStl }}"
           download
-          >Opposite-winding repeat</a
+          >Copy facing the opposite way</a
         >
       </td>
+      <td>13 triangles; 1 duplicate; 3 non-manifold edges</td>
       <td>
-        13 triangles; one order-independent duplicate; three over-shared edges
-      </td>
-      <td>
-        The detector cannot determine which coincident face owns the intended
-        surface. Inspect first;
+        The checker cannot tell which copy is correct. In our test the
         <a
           href="{{ ExampleAsset.DiagnosisOppositeDuplicateCleanedCubeStl }}"
           download
-          >tested cleanup output</a
+          >cleaned output</a
         >
-        retained the original face.
+        kept the original face.
       </td>
     </tr>
   </tbody>
 </table>
 <p>
-  The measured standard action removed one face and no degenerate or orientation
-  faces from each duplicate control. Both saved outputs were reparsed as 12-face
-  cubes with their original bounds. This controlled result does not promise that
-  every exact repeated face in an arbitrary assembly is safe to delete.
+  In both tests, cleanup removed exactly one face and nothing else, and the
+  saved files reopened as 12-triangle cubes of the original size. That is a
+  result for these examples; in a complex assembly, check before deleting.
 </p>
-<h2>When overlap is a different problem</h2>
+<h2>Remove duplicates in other tools</h2>
 <p>
-  Coplanar faces with different tessellation, surfaces crossing in space, and
-  two intended bodies sharing a face need a design decision. A duplicate count
-  of zero does not test those cases. Use the
+  Prusa's article on
+  <a
+    href="https://help.prusa3d.com/article/corrupted-3d-models-for-printing_2205"
+    >corrupted 3D models</a
+  >
+  says PrusaSlicer repairs models automatically "to a certain degree", with "Fix
+  by the Netfabb" available on Windows 10 from the model's right-click menu.
+  Prusa documentation checked 28 November 2026.
+</p>
+<h2>When it is not really a duplicate</h2>
+<p>
+  Two separate parts sharing a face, surfaces that cross each other, or
+  overlapping faces built from different triangles are design questions, not
+  duplicates. A duplicate count of zero does not rule them out. See
   <a href="{{ GuideSlug.RouteSelfIntersectingMeshVsNonManifold }}"
-    >crossing-surface explanation</a
+    >overlapping surfaces</a
   >
   or
   <a href="{{ GuideSlug.RouteStlMultipleShellsDisconnectedParts }}"
-    >separate-part guide</a
-  >
-  at that branch; a Boolean union belongs in source CAD when the intended solid
-  is known.
+    >separate parts</a
+  >; merging solids belongs in your CAD program.
 </p>
-<h2>Verify the downloaded copy</h2>
+<h2>Check the cleaned copy</h2>
 <p>
-  Compare the input and saved output with the
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality checker</a>:
-  triangles, exact duplicate count, coordinate bounds, boundary edges,
-  over-shared edges and winding conflicts. Inspect a cross-section and sliced
-  layers where the face was removed. Stop if a cavity, clearance or functional
-  boundary changes.
+  Run the original and the cleaned file through the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality checker</a> and
+  compare triangle count, duplicates, size, holes, non-manifold edges and
+  flipped faces. Look at a cross-section and the sliced layers where the face
+  was removed. Stop if a hollow, gap or functional surface has changed.
 </p>

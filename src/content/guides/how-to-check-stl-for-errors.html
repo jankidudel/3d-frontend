@@ -1,12 +1,12 @@
 ---
 title: 'How to Check an STL File for Errors | InspectMesh'
-description: 'Interpret STL boundaries, over-shared edges, duplicate faces and winding findings. Choose a focused next step and verify any changed copy.'
+description: 'Check an STL for holes, non-manifold edges, duplicate triangles and flipped faces in three steps, with example files and the right fix for each error.'
 slug: how-to-check-stl-for-errors
 eyebrow: STL mesh guide
 heading: How to Check an STL File for Errors
 faq:
   - question: Can an STL look correct but still contain errors?
-    answer: Yes. A viewer can show an ordinary silhouette while edge sharing, duplicate faces or winding need closer inspection.
+    answer: Yes. A model can look perfect in a viewer while it has duplicate triangles, flipped faces or badly joined edges. Only a mesh check shows them.
 ---
 
 <p class="lead">
@@ -18,17 +18,17 @@ faq:
   flagged area is a real mistake or part of the design, then fix one thing at a
   time and check the saved copy again.
 </p>
-<h2>Start with a completed result</h2>
+<h2>Step 1: get a complete report</h2>
 <p>
-  A failed parse, cancelled job or missing report is not a clean mesh result.
-  For a broad browser-local screen, use
+  A file that failed to load, a cancelled check or a missing report does not
+  mean the mesh is clean. For a quick check in your browser, use
   <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a>. For
-  the supported server mesh analysis, use
-  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> and
-  review its upload disclosure. Keep the method, unit assumption and settings
-  with the result; the two workflows need not group components identically.
+  the full server check, use the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a>
+  (it uploads the file). Note which one you used and the unit you chose; the two
+  can count separate pieces differently.
 </p>
-<h2>Work through a known finding before editing your own model</h2>
+<h2>Step 2: learn the findings on example files</h2>
 <figure>
   <img
     src="/examples/diagnosis/open-boundary.svg"
@@ -38,85 +38,81 @@ faq:
     alt="Closed cube beside the face-removed cube with its four boundary edges marked."
   />
   <figcaption>
-    Original missing-face diagram, not a screenshot or a physical-print result.
+    A cube with one side removed: the four highlighted edges are open.
   </figcaption>
 </figure>
 <table>
   <thead>
     <tr>
-      <th scope="col">Local preflight observation</th>
-      <th scope="col">Meaning and confirmation</th>
-      <th scope="col">Focused next step</th>
+      <th scope="col">What the check shows</th>
+      <th scope="col">What it means</th>
+      <th scope="col">Next step</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Four open edges on the 10-triangle control</td>
-      <td>
-        One square face is absent; ask whether this surface was intended to be
-        closed
-      </td>
+      <td>4 open edges on the 10-triangle example cube</td>
+      <td>One side is missing; was it meant to be closed?</td>
       <td>
         <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
-          >Inspect the opening before filling</a
+          >Check the opening before filling it</a
         >
       </td>
     </tr>
     <tr>
-      <td>One duplicate; three over-shared edges</td>
+      <td>1 duplicate; 3 non-manifold edges</td>
       <td>
-        13 facets in total; one overlaps an existing facet. This is distinct
-        from winding
+        13 triangles; one is an exact copy of another. Not the same as a flipped
+        face
       </td>
+      <td>
+        <a
+          href="{{ GuideSlug.RouteHowToRemoveDuplicateTrianglesFromAnStlFile }}"
+          >Remove the duplicate</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <td>3 flipped-face conflicts, no open edges</td>
+      <td>The surface is complete, but one triangle faces the wrong way</td>
       <td>
         <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
-          >Compare independent duplicate and winding controls</a
+          >Flip it back on a copy</a
         >
       </td>
     </tr>
     <tr>
-      <td>Three winding edge conflicts, no open edges</td>
+      <td>2 pieces; no open or non-manifold edges</td>
       <td>
-        12 triangles still cover the surface, but one triangle is reversed
-      </td>
-      <td>
-        <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
-          >Correct orientation on a copy</a
-        >
-      </td>
-    </tr>
-    <tr>
-      <td>Two components; zero open/over-shared edges</td>
-      <td>
-        Separate or crossing closed shells; intersections were not checked
+        Two closed parts, separate or overlapping (overlap is not checked)
       </td>
       <td>
         <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
-          >Review component intent and crossing surfaces</a
+          >Decide whether both parts belong</a
         >
       </td>
     </tr>
     <tr>
-      <td>12 of 36 bar samples below 1.2 mm</td>
+      <td>12 of 36 wall samples below 1.2 mm</td>
       <td>
-        Measured rays screen thin directions, not every feature or physical
+        Some walls look thin; samples do not cover every spot or measure
         strength
       </td>
       <td>
         <a href="{{ GuideSlug.Route3dPrintWallThicknessGuide }}"
-          >Compare geometry with actual slicer paths</a
+          >Check those walls in the slicer</a
         >
       </td>
     </tr>
     <tr>
       <td>Unavailable volume or skipped fit</td>
       <td>
-        No supported value or selected printer; these are not zeros or passing
-        checks
+        Volume could not be calculated or no printer was chosen; neither means
+        zero or passed
       </td>
       <td>
         <a href="{{ GuideSlug.RouteStlVolumeCalculationWrong }}"
-          >Review volume conditions and unit assumptions</a
+          >Find out why volume is missing</a
         >
       </td>
     </tr>
@@ -125,81 +121,73 @@ faq:
 <ol>
   <li>
     Load the closed cube from
-    <a href="{{ GuideSlug.RouteExamples }}">the example library</a> and select
-    millimetres: 12 triangles, zero open edges and 8,000 mm³.
+    <a href="{{ GuideSlug.RouteExamples }}">the example library</a> and choose
+    millimetres: 12 triangles, no open edges and 8,000 mm³.
   </li>
   <li>
-    Explicitly replace it with the face-removed control: 10 triangles, four open
-    edges and unavailable volume.
+    Swap in the cube with one side removed: 10 triangles, 4 open edges and no
+    volume.
   </li>
   <li>
-    Keep the original and decide whether replacing that face matches the design.
-    Reopen a deliberately corrected copy and compare the affected region,
-    dimensions and sliced layers; an empty or failed report does not verify
-    correction.
+    Decide whether adding that side back matches the design. Fix a copy, reopen
+    it and compare the area, the size and the sliced layers. A failed or empty
+    report does not prove the fix worked.
   </li>
 </ol>
 <p>
-  A parse failure belongs to
-  <a href="{{ GuideSlug.RouteStlFileWontSlice }}">file/format diagnosis</a>, not
-  automatic repair. Keep the completed finding and its method with the chosen
-  next action.
+  If the file will not load at all, see
+  <a href="{{ GuideSlug.RouteStlFileWontSlice }}">STL file won't slice</a>
+  instead; repair tools cannot help until it opens.
 </p>
-<h2>Read related findings together</h2>
+<h2>One problem can show up twice</h2>
 <p>
-  Several counts can describe the same defect. An extra copy of one triangle can
-  create both a duplicate finding and edges shared by too many faces.
-  Conversely, separate closed pieces may be intentional assembly parts. Inspect
-  the affected region and the source design before deciding that a smaller count
-  represents an improvement.
+  One extra copy of a triangle shows up as both a duplicate and as non-manifold
+  edges. Separate closed pieces may be parts you meant to include. Look at the
+  area and the design before treating a lower count as an improvement.
 </p>
-<h2>Choose one next action</h2>
+<h2>Step 3: choose one fix</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Finding or state</th>
-      <th scope="col">First decision</th>
+      <th scope="col">Finding</th>
+      <th scope="col">Ask first</th>
       <th scope="col">Next action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Exposed boundary</td>
+      <td>Open edges (holes)</td>
       <td>Should this surface be closed in the design?</td>
       <td>
-        <a href="{{ GuideSlug.RouteStlWatertightChecker }}"
-          >Inspect open boundaries</a
-        >
+        <a href="{{ GuideSlug.RouteStlWatertightChecker }}">Check the holes</a>
       </td>
     </tr>
     <tr>
-      <td>Over-shared edge</td>
-      <td>Is there a redundant face or a more complex surface junction?</td>
+      <td>Non-manifold edge</td>
+      <td>Is there an extra face, or do several surfaces meet here?</td>
       <td>
-        <a href="{{ GuideSlug.RouteStlManifoldChecker }}"
-          >Inspect edge sharing</a
-        >
+        <a href="{{ GuideSlug.RouteStlManifoldChecker }}">Check the edges</a>
       </td>
     </tr>
     <tr>
-      <td>Duplicate or degenerate face</td>
-      <td>Is a supported cleanup appropriate for this file?</td>
+      <td>Duplicate or zero-area triangle</td>
+      <td>Is automatic cleanup safe for this file?</td>
       <td>
-        <a href="{{ GuideSlug.RouteStlRepair }}">Review conservative cleanup</a>
+        <a href="{{ GuideSlug.RouteStlRepair }}">Run cleanup</a>
       </td>
     </tr>
     <tr>
-      <td>Disconnected component</td>
-      <td>Is it an intended object or an unwanted fragment?</td>
+      <td>Separate piece</td>
+      <td>Is it a real part or a stray fragment?</td>
       <td>
         <a href="{{ GuideSlug.RouteStlRepair }}"
-          >Review pieces before removal</a
+          >Review pieces before removing any</a
         >
       </td>
     </tr>
     <tr>
-      <td>Unexpected physical size</td>
-      <td>Which unit and reference dimension were intended?</td>
+      <td>Wrong size</td>
+      <td>Which unit was the model designed in?</td>
       <td>
         <a href="{{ GuideSlug.RouteStlDimensionsChecker }}"
           >Check size and units</a
@@ -207,29 +195,28 @@ faq:
       </td>
     </tr>
     <tr>
-      <td>Parse failure, missing or unsupported result</td>
-      <td>Which input or method is missing?</td>
+      <td>File did not load, or no result</td>
+      <td>What stopped the check?</td>
       <td>
         <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
-          >Review the broader preparation decision</a
+          >Go through the print-readiness checks</a
         >
       </td>
     </tr>
   </tbody>
 </table>
-<h2>Verify the actual saved copy</h2>
+<h2>Step 4: check the fixed copy</h2>
 <p>
-  Reopen the downloaded or re-exported file, not the unchanged preview of the
-  original. Compare the affected surface, required parts and dimensions, then
-  repeat the relevant check. Finally inspect the sliced layers under the
-  intended profile. A successful export or lower issue count alone does not
-  establish that the required geometry survived.
+  Reopen the saved file itself, not the preview of the original. Compare the
+  repaired area, the parts and the size, then run the same check again. Finally,
+  look at the sliced layers with your real profile. A lower error count alone
+  does not prove the shape survived.
 </p>
 <h2>When to return to the source model</h2>
 <p>
-  Stop when the intended surface, connection or cavity cannot be established
-  from the mesh. Send the finding and affected region back to the model author
-  rather than guessing a repair. Use the
+  Stop if you cannot tell from the mesh what a surface, joint or hollow should
+  look like. Send the finding and its location to the designer instead of
+  guessing. Use the
   <a href="{{ GuideSlug.RouteHowToCheckIfA3dModelIsReadyToPrint }}"
     >print-readiness guide</a
   >

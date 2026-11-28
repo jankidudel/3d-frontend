@@ -1,32 +1,65 @@
 ---
-title: 'STL Scale Factor: Percentages, 25.4 and Targets | InspectMesh'
-description: Calculate a uniform scale factor and final percentage, including the 25.4 inch-to-millimetre factor, and see how scaling changes area, volume and features.
+title: 'STL Scale Factor: What Percentage to Enter | InspectMesh'
+description: Scale % = target size / current size x 100. Ready-made percentages for inch, centimetre and millimetre fixes, plus worked examples for re-scaling a scaled copy.
 slug: stl-scale-factor-explained
 eyebrow: STL printing guide
-heading: 'STL Scale Factor Explained: Percentages, 25.4 and Target Sizes'
+heading: 'STL Scale Factor: What Percentage Should I Enter?'
 ---
 
-<p>
-  A uniform scale factor is target size divided by current size. Multiply the
-  factor by 100 to obtain the final scale percentage. Enter 150% to make a model
-  one and a half times its current size; 50% makes it half-size.
+<p class="lead">
+  To find the scale percentage, divide the size you want by the size you have
+  and multiply by 100. To make a 40 mm part 60 mm, enter 60 / 40 x 100 =
+  <strong>150%</strong>. To halve it, enter <strong>50%</strong>.
 </p>
-<h2>Calculate the factor and final percentage</h2>
+<h2>Common unit fixes</h2>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Problem</th>
+      <th scope="col">Enter</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Designed in inches, imported as mm (25.4 times too small)</td>
+      <td>2540%</td>
+    </tr>
+    <tr>
+      <td>Designed in mm, read as inches (25.4 times too big)</td>
+      <td>3.937%</td>
+    </tr>
+    <tr>
+      <td>Designed in cm, imported as mm (10 times too small)</td>
+      <td>1000%</td>
+    </tr>
+    <tr>
+      <td>Designed in mm, read as cm (10 times too big)</td>
+      <td>10%</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Use these only after you have
+  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
+    >confirmed the unit mix-up</a
+  >
+  against one dimension you know. A model can also be large on purpose.
+</p>
+<h2>The formula</h2>
 <p>
   <strong
-    >Factor = target / current. Final percentage = factor × 100. Percentage
-    change = (factor - 1) × 100.</strong
+    >Factor = target / current. Percentage = factor x 100. Change = (factor - 1)
+    x 100.</strong
   >
-  Compare lengths in the same physical unit and use a finite current length
-  greater than zero. A 50% increase means a final 150%, not a final 50%.
+  Measure both sizes in the same unit. A "50% increase" means entering 150%, not
+  50%.
 </p>
-<h2>Worked conversions</h2>
 <table>
   <thead>
     <tr>
       <th scope="col">Current to target</th>
       <th scope="col">Factor</th>
-      <th scope="col">Final percentage</th>
+      <th scope="col">Enter</th>
       <th scope="col">Change</th>
     </tr>
   </thead>
@@ -46,68 +79,50 @@ heading: 'STL Scale Factor Explained: Percentages, 25.4 and Target Sizes'
     <tr>
       <td>508 to 20 mm</td>
       <td>1 / 25.4</td>
-      <td>About 3.937007874%</td>
-      <td>Only after confirming an inch/mm error</td>
+      <td>About 3.937%</td>
+      <td>Inch-to-mm correction</td>
     </tr>
   </tbody>
 </table>
+<p>Keep the exact ratio when you apply it; round only what you write down.</p>
+<h2>Scaling a copy that was already scaled</h2>
 <p>
-  Keep the exact ratio for the operation; round only its displayed explanation.
-  The last row is a correction hypothesis, not a rule for every oversized file.
-  <a href="{{ GuideSlug.RouteWhyStlFilesHaveNoUnits }}"
-    >Establish the intended STL unit</a
-  >
-  before applying it.
+  Always calculate from the file you are about to change. If a 40 mm model was
+  saved at 150%, that copy is now 60 mm. To reach 50 mm from it, use 50 / 60,
+  about 83.33%. Entering 125% would give 75 mm, because 125% was the right value
+  for the original 40 mm file, not the copy. Percentages multiply, so note which
+  file each one applies to.
 </p>
-<h2>Scaling an already scaled copy</h2>
+<h2>What scaling changes besides size</h2>
+<ul>
+  <li>
+    <strong>Area and volume grow faster than length.</strong> At 150%, area is
+    2.25 times larger and volume 3.375 times larger: an 8,000 mm³ part becomes
+    27,000 mm³. Filament use and print time do not follow exactly the same
+    ratio, because walls and supports behave differently.
+  </li>
+  <li>
+    <strong>Holes and clearances scale too.</strong> At 90%, a 4.50 mm screw
+    hole becomes 4.05 mm and may no longer fit. If a mounting feature must keep
+    its size, edit the design instead of scaling the whole model. See
+    <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}">screw hole sizing</a>.
+  </li>
+  <li>
+    <strong>Scaling does not fix the mesh.</strong> It keeps the same triangle
+    count and does not fill holes or remove overlaps.
+  </li>
+  <li>
+    <strong>Different factors per axis distort shapes.</strong> Circles become
+    ovals, so use uniform scaling unless you mean to stretch the part.
+  </li>
+</ul>
+<h2>Apply it</h2>
 <p>
-  Calculate from the dimensions of the file you are changing. If a 40 mm model
-  was saved at 150%, that copy is now 60 mm. To reach 50 mm from the saved copy,
-  use 50 / 60, or about 83.333333% of its current size. Applying 125% to that
-  copy would instead produce 75 mm; 125% is the percentage needed from the
-  original 40 mm file. Successive factors multiply, so record which input each
-  percentage refers to.
-</p>
-<h2>What uniform scaling changes</h2>
-<p>
-  Uniform scaling changes every length by the factor, every area by its square
-  and the volume of unchanged closed geometry by its cube. A factor of 1.5
-  changes 8,000 mm³ to an expected 27,000 mm³. It does not imply the same ratio
-  for sliced material, supports or print time.
-</p>
-<p>
-  Uniform scaling changes coordinates without reducing triangle count. It also
-  does not fill holes or remove overlapping faces. The geometric calculation
-  assumes the same closed shape; unavailable or ambiguous enclosed volume is not
-  a zero-volume result.
-</p>
-<p>
-  A factor calculated from overall width also changes holes, walls and mating
-  clearances. If one dimension must change while a mounting feature stays fixed,
-  edit the design rather than scaling the entire mesh. Separate axis factors can
-  distort circles and are a different design operation.
-</p>
-<p>
-  For a hypothetical hardware passage, factor 0.90 changes 4.50 mm to
-  <code>4.50 × 0.90 = 4.05 mm</code>. A desired 90% final size therefore also
-  changes that interface. Check
-  <a href="{{ GuideSlug.Route3dPrintScrewHoleSizing }}"
-    >the passage requirement</a
-  >
-  and the
+  Enter the percentage in
+  <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale</a> or your slicer, save
+  a new copy, then reopen it and check all three dimensions. The
   <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
-    >hardware-aware scaling workflow</a
+    >STL scaling guide</a
   >
-  before saving; successive percentages still multiply as above.
-</p>
-<h2>Apply the operation and verify the saved copy</h2>
-<p>
-  Use <a href="{{ GuideSlug.RouteStlScaleTool }}">STL Scale</a> for the
-  operation. The
-  <a href="{{ GuideSlug.RouteHowToScaleAnStlFileFor3dPrinting }}"
-    >saved-copy scaling guide</a
-  >
-  owns the complete workflow and printable record. Neither entering a percentage
-  nor choosing a coordinate conversion adds a unit declaration to STL. Reopen
-  the exported bytes using the intended receiving convention.
+  walks through the full process. Scaling does not add a unit to the STL file.
 </p>

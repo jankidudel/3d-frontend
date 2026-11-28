@@ -1,83 +1,71 @@
 ---
-title: 'Slicer Fills an STL Hole | InspectMesh'
-description: 'Use a closed through-channel, solid cap and overlapping-shell control to find why an intended opening becomes extrusion.'
+title: 'Slicer Fills a Hole or Channel in My STL: Why? | InspectMesh'
+description: 'If a hole or channel turns solid when sliced, look for a hidden cap, an overlapping part or a gap too narrow for your nozzle. Test files included.'
 slug: slicer-fills-hole-in-stl
 eyebrow: Opening and cavity diagnosis
-heading: 'Slicer Fills a Hole in an STL'
+heading: 'Why Does My Slicer Fill a Hole in My STL?'
 faq:
   - question: Can a watertight STL still have the wrong opening?
-    answer: Yes. A capped solid and a correctly closed channel can both have zero open edges while producing different toolpaths.
-  - question: Does one clear layer prove the whole passage remains open?
-    answer: No. Inspect successive layers through its full height in the target slicer and profile.
+    answer: Yes. A solid block and a block with a properly closed channel both have zero open edges, but they slice very differently.
+  - question: If one layer looks clear, is the whole channel open?
+    answer: No. Step through every layer the channel passes through in your slicer and profile.
 ---
 
-<p>
-  If an intended channel disappears in sliced layers, inspect the
-  <strong>source opening and the first filled layer separately</strong>. A
-  watertight result does not prove that the opening is present: a solid cap can
-  be watertight too. Overlapping solids can also produce filled toolpaths even
-  when the intended channel is visible in one shell. Only after checking the
-  mesh should you test whether the passage is too small for the selected
-  extrusion profile.
+<p class="lead">
+  When a slicer fills a hole or channel you designed, there are three usual
+  causes: the model has a hidden cap over the opening, another part overlaps the
+  opening, or the gap is too narrow for your nozzle and line width. Check the
+  model first, then the slicer settings. A watertight result does not prove the
+  hole is there: a solid block is watertight too.
 </p>
 <p>
-  An intended void becoming material is different from a roof not receiving top
-  paths. It is also a geometry/slicing investigation rather than a
-  <a href="{{ GuideSlug.Route3dPrintIroningVsTopSurfacePattern }}"
-    >surface-smoothing choice</a
-  >: changing cosmetic processing does not restore an intended void. For an
-  absent roof, start with
-  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}"
-    >preview and top-closure checks</a
-  >
-  before changing the mesh.
+  This is a different problem from a missing roof or top layer. If the top of
+  your part is not printing, see
+  <a href="{{ GuideSlug.RouteMissingTopLayersInSlicer }}">missing top layers</a
+  >. Changing surface options such as
+  <a href="{{ GuideSlug.Route3dPrintIroningVsTopSurfacePattern }}">ironing</a>
+  will not bring back a filled hole.
 </p>
-<h2>Three controlled models with the same outer envelope</h2>
+<h2>Three test files with the same outside shape</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Downloadable STL</th>
-      <th scope="col">Source geometry</th>
-      <th scope="col">Measured first layer</th>
+      <th scope="col">Download</th>
+      <th scope="col">The model</th>
+      <th scope="col">First sliced layer</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
         <a href="{{ ExampleAsset.OpenThroughChannelStl }}" download
-          >Open through-channel</a
+          >Block with open channel</a
         >
       </td>
       <td>
-        Closed 20 × 20 × 10 mm outer shell; 6 × 6 mm passage; 32 triangles, one
-        shell, zero open edges.
+        20 x 20 x 10 mm block with a 6 x 6 mm channel; 32 triangles, 1 piece, no
+        open edges
       </td>
-      <td>No model extrusion segment within 1 mm of the passage centre.</td>
+      <td>No plastic within 1 mm of the channel centre.</td>
     </tr>
     <tr>
       <td>
-        <a href="{{ ExampleAsset.CappedChannelStl }}" download
-          >Solid cap control</a
-        >
+        <a href="{{ ExampleAsset.CappedChannelStl }}" download>Solid block</a>
       </td>
-      <td>
-        Solid 20 × 20 × 10 mm box; 12 triangles, one shell, zero open edges.
-      </td>
-      <td>Six model extrusion segments cross the central 1 mm radius.</td>
+      <td>20 x 20 x 10 mm solid box; 12 triangles, 1 piece, no open edges</td>
+      <td>Six extrusion lines cross the centre.</td>
     </tr>
     <tr>
       <td>
         <a href="{{ ExampleAsset.OverlappingChannelStl }}" download
-          >Overlapping solid</a
+          >Channel plus overlapping cube</a
         >
       </td>
       <td>
-        The open channel plus an 8 × 8 × 10 mm intersecting cube; 44 triangles,
-        two shells, zero open edges.
+        The open channel with an 8 x 8 x 10 mm cube overlapping it; 44
+        triangles, 2 pieces, no open edges
       </td>
-      <td>
-        Six central extrusion segments, matching the solid box in this run.
-      </td>
+      <td>Six lines cross the centre, exactly like the solid block.</td>
     </tr>
   </tbody>
 </table>
@@ -89,8 +77,8 @@ faq:
     alt="Actual first-layer G-code paths: the through-channel has a clear centre; the solid cap and overlapping-shell controls contain extrusion through that centre"
   />
   <figcaption>
-    Original rendering of the retained PrusaSlicer 2.9.6 first-layer G-code.
-    Blue shows model extrusion; travel and skirt are hidden.
+    First-layer paths from our PrusaSlicer 2.9.6 runs. Blue is model extrusion;
+    travel moves and skirt are hidden.
   </figcaption>
 </figure>
 <p>
@@ -98,57 +86,49 @@ faq:
   <a href="{{ ExampleAsset.OpenThroughChannelGcode }}" download
     >open-channel G-code</a
   >
-  preserves the passage on its first and middle layers. The
-  <a href="{{ ExampleAsset.CappedChannelGcode }}" download>capped</a> and
+  keeps the channel clear on its first and middle layers. The
+  <a href="{{ ExampleAsset.CappedChannelGcode }}" download>solid</a> and
   <a href="{{ ExampleAsset.OverlappingChannelGcode }}" download>overlapping</a>
-  controls produced byte-identical G-code here, despite different source
-  topology. A slicer preview is therefore essential to judge this particular
-  outcome. A zero-open-edge count alone cannot distinguish these causes.
+  files produced identical G-code, even though the models are built differently.
+  Only the slicer preview shows the difference; an open-edge count cannot.
 </p>
-<h2>Reproduce the layer result, then choose a correction</h2>
+<h2>How to find and fix the cause</h2>
 <p>
-  These controls were sliced in PrusaSlicer 2.9.6, centred on its default 200 ×
-  200 mm bed, with a 0.4 mm nozzle, 0.45 mm extrusion width, 0.2 mm first and
-  subsequent layers, two perimeters and 100% rectilinear infill. The centre test
-  checks positive-extrusion segments within 1 mm of X/Y=100 mm. All coordinates
-  are interpreted as millimetres; no physical print was made.
+  Our test settings: PrusaSlicer 2.9.6, default 200 x 200 mm bed, 0.4 mm nozzle,
+  0.45 mm line width, 0.2 mm layers, 2 perimeters, 100% rectilinear infill.
+  Software results only; nothing was printed.
 </p>
 <ol>
   <li>
-    Inspect the original in the
-    <a href="{{ GuideSlug.RouteStlViewer }}">STL Viewer</a>. If a cap is present
-    in the source, change the CAD or mesh copy to restore the intended passage.
-    <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
-      >Fixing a missing surface</a
-    >
-    is a different task.
+    <strong>Look for a cap.</strong> Open the original in the
+    <a href="{{ GuideSlug.RouteStlViewer }}">STL viewer</a>. If the opening is
+    covered in the model itself, fix it in CAD. (A missing surface is the
+    opposite problem: see
+    <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}">fixing holes</a>.)
   </li>
   <li>
-    Use
-    <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL Print Preflight</a> to
-    review shells and open edges. Multiple or crossing solids require visual
-    inspection or a deliberate Boolean union/subtraction; this check does not
-    certify that a cavity is clear.
+    <strong>Look for overlapping parts.</strong> Run
+    <a href="{{ GuideSlug.RouteStlPrintPreflight }}">STL preflight</a> and check
+    the number of pieces. If another solid overlaps the channel, subtract or
+    re-merge them properly in CAD.
   </li>
   <li>
-    If the source passage is intact, inspect the first layer where its paths
-    vanish. Compare its actual width with your profile's nozzle and line width,
-    then test a revised design or reviewed slicer setting. Do not scale a
-    functional part blindly. For a letter counter or recessed groove, follow the
-    <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}">lettering checks</a>:
-    negative-space width is a different quantity from a material-wall ray.
+    <strong>Check the gap size.</strong> If the model is fine, find the layer
+    where the channel disappears and compare its width with your nozzle and line
+    width. Widen it in the design or try a reviewed slicer setting rather than
+    scaling the whole part. For letters and engraved grooves, see
+    <a href="{{ GuideSlug.RouteEmbossedTextNotPrinting }}"
+      >embossed text not printing</a
+    >.
   </li>
   <li>
-    Reopen the saved STL and slice it again. Check the complete channel through
-    successive layers, not one screenshot or an edge count.
+    <strong>Recheck.</strong> Slice the fixed file and step through every layer
+    of the channel, not just one.
   </li>
 </ol>
 <p>
-  The
+  Thin walls are covered in the
   <a href="{{ GuideSlug.RouteHowToCheckStlWallThicknessFor3dPrinting }}"
-    >wall-thickness guide</a
-  >
-  owns thin-feature measurement and a separate retained perimeter experiment.
-  This guide addresses an intended void becoming solid paths. Software paths do
-  not establish final dimensional accuracy or a successful print.
+    >wall thickness guide</a
+  >. Slicer paths do not prove the printed hole will be the exact size.
 </p>

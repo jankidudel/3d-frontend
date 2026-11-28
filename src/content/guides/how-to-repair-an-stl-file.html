@@ -1,130 +1,150 @@
 ---
-title: 'How to Repair an STL File: Match Fault to Fix | InspectMesh'
-description: Decide when conservative cleanup, component selection or source-model reconstruction fits an STL fault, then verify the saved derivative.
+title: 'How to Repair an STL File for 3D Printing | InspectMesh'
+description: 'Repair an STL by matching each error to its fix: duplicates, holes, flipped faces, loose parts and overlaps, and where to fix each one.'
 slug: how-to-repair-an-stl-file
 eyebrow: STL repair guide
 heading: How to Repair an STL File for 3D Printing
 faq:
-  - question: Does Keep largest part also run standard repair?
-    answer: No. It only changes the local retained-component selection. Standard cleanup is a separate explicit server action.
-  - question: Can standard cleanup fill a missing cube face?
-    answer: No. The missing face requires a deliberate reconstruction from the design. Safe cleanup does not create that missing surface.
+  - question: Does "Keep largest part" also clean the mesh?
+    answer: No. It only chooses which pieces to keep in your browser. Cleanup is a separate button that uploads the file.
+  - question: Can cleanup fill a missing side of a cube?
+    answer: No. A missing surface has to be rebuilt from the design. Cleanup only removes or reorients existing triangles.
 ---
 
+<p class="lead">
+  To repair an STL, first find out what is actually wrong with it, then apply
+  the fix for that error only. Duplicate faces, holes, flipped faces, loose
+  parts and overlapping solids each need a different repair. Keep the original,
+  save each repaired version as a new file, and check the copy you will slice.
+</p>
+<h2>Which fix for which error</h2>
 <p>
-  Diagnose the actual mesh fault before editing. A duplicate face needs a
-  different operation from a missing surface, and a detached piece may be an
-  intended part. Keep the original, save each derivative separately and compare
-  the exact file you will slice.
+  Find your errors with the
+  <a href="{{ GuideSlug.RouteStlQualityChecker }}">STL Quality Checker</a> (see
+  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
+    >how to check an STL for errors</a
+  >), then:
 </p>
 <table>
   <thead>
     <tr>
-      <th scope="col">Finding</th>
-      <th scope="col">Narrowest useful action</th>
-      <th scope="col">Stop when</th>
+      <th scope="col">Error</th>
+      <th scope="col">Fix</th>
+      <th scope="col">Stop if</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Exact duplicate or degenerate triangle</td>
+      <td>Duplicate or zero-area triangles</td>
       <td>
-        Run explicit standard cleanup on the
-        <a href="{{ GuideSlug.RouteStlRepair }}">repair page</a>; it uploads
-        this file for server processing.
+        Run standard cleanup on the
+        <a href="{{ GuideSlug.RouteStlRepair }}">STL Repair</a> page (uploads
+        the file). Details:
+        <a
+          href="{{ GuideSlug.RouteHowToRemoveDuplicateTrianglesFromAnStlFile }}"
+          >duplicate triangles</a
+        >,
+        <a href="{{ GuideSlug.RouteDegenerateTrianglesStl }}"
+          >zero-area triangles</a
+        >.
       </td>
-      <td>Geometry disappears or the report retains a serious finding.</td>
+      <td>Visible geometry disappears, or serious errors remain.</td>
     </tr>
     <tr>
-      <td>Orientation conflict on an otherwise closed region</td>
-      <td>Review a supported cleanup correction and recheck winding.</td>
-      <td>The shell is open or its intended inside is ambiguous.</td>
-    </tr>
-    <tr>
-      <td>Detached component</td>
+      <td>Flipped faces on a closed part</td>
       <td>
-        Use local piece review on
+        Let cleanup correct them, then recheck. See
+        <a href="{{ GuideSlug.RouteHowToFixFlippedNormalsInAnStlFile }}"
+          >flipped normals</a
+        >.
+      </td>
+      <td>The part is open, or it is unclear which side is outside.</td>
+    </tr>
+    <tr>
+      <td>Loose pieces</td>
+      <td>
+        Review them on
         <a href="{{ GuideSlug.RouteStlRepair }}#remove-floating-parts"
-          >the same repair page</a
-        >. All pieces start kept; Keep largest part proposes the greatest-area
-        piece, with a near-equal warning.
+          >STL Repair</a
+        >. All pieces start kept; "Keep largest part" suggests the biggest one.
       </td>
-      <td>You cannot identify whether another piece is intended.</td>
+      <td>You cannot tell whether a piece is meant to be there.</td>
     </tr>
     <tr>
-      <td>Missing surface or open boundary</td>
+      <td>Holes (open edges)</td>
       <td>
-        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}"
-          >Reconstruct the known surface</a
-        >
-        from CAD or in a mesh editor.
+        Rebuild the missing surface in CAD or a mesh editor. See
+        <a href="{{ GuideSlug.RouteHowToFixHolesInAnStlFile }}">fixing holes</a
+        >.
       </td>
-      <td>The cap shape or design intent is uncertain.</td>
+      <td>You do not know the shape of the missing surface.</td>
     </tr>
     <tr>
-      <td>Non-manifold join or intersecting shells</td>
-      <td>Repair the Boolean or assembly in the source model.</td>
-      <td>An automatic union would alter a cavity or mating face.</td>
+      <td>Non-manifold edges or overlapping parts</td>
+      <td>
+        Fix the join in the CAD model. See
+        <a href="{{ GuideSlug.RouteHowToFixNonManifoldStl }}"
+          >fixing non-manifold STLs</a
+        >.
+      </td>
+      <td>An automatic merge would fill a hollow or a mating face.</td>
     </tr>
   </tbody>
 </table>
 <p>
-  Start with
-  <a href="{{ GuideSlug.RouteHowToCheckStlForErrors }}"
-    >completed report triage</a
-  >. Removing an intentional shell is a design change; lossy reduction is a
-  separate
+  Making a file smaller by reducing detail is a different task: see
   <a href="{{ GuideSlug.RouteHowToReduceStlFileSize }}"
-    >surface-fidelity decision</a
-  >. Neither should be inferred from a successful cleanup.
+    >how to reduce STL file size</a
+  >.
+</p>
+<h2>The two InspectMesh repair actions</h2>
+<p>
+  <strong>Piece review</strong> runs in your browser. It saves only the pieces
+  you keep, unchanged. It does not fix duplicates or add missing faces. In our
+  example, 20 triangles make up a 12-triangle cube and two small 4-triangle
+  pyramids; "Keep largest part" suggests the cube, but being smaller does not
+  prove the other pieces are junk.
 </p>
 <p>
-  For a degenerate-face finding,
-  <a href="{{ GuideSlug.RouteDegenerateTrianglesStl }}"
-    >compare zero-area and narrow triangles</a
+  <strong>Standard cleanup</strong> runs only when you press "Clean STL safely",
+  and uploads the file. Its report lists removed duplicate or zero-area
+  triangles, flipped faces it corrected, and anything it could not fix. It does
+  not use your piece selection, and it cannot close a missing side.
+</p>
+<h2>Repair in PrusaSlicer or other tools</h2>
+<p>
+  Prusa's article on
+  <a
+    href="https://help.prusa3d.com/article/corrupted-3d-models-for-printing_2205"
+    >corrupted 3D models</a
   >
-  before deleting a designed feature. Check the complete cleanup report,
-  including duplicates, orientation corrections and skipped reasons, rather than
-  assuming only that one category changed.
+  says PrusaSlicer repairs models automatically "to a certain degree", and on
+  Windows 10 offers "Fix by the Netfabb" from the right-click menu of the model
+  or its warning symbol. It also lists Meshmixer and Microsoft 3D Builder as
+  free repair tools. Prusa documentation checked 28 November 2026.
 </p>
-<h2>Know which download you are making</h2>
-<p>
-  Piece review runs in your browser and exports only retained original triangle
-  coordinates and winding. It does not fix duplicate faces or add missing
-  geometry. The example's 20 triangles include a 12-triangle cube and two
-  four-triangle tetrahedra. Keeping largest proposes the cube, but surface area
-  is only a ranking rule, not evidence that the other pieces are waste.
-</p>
-<p>
-  Standard cleanup is separate. It starts only when you press Clean STL safely
-  and uploads the selected file. Its report names removed duplicate or
-  degenerate triangles, orientation corrections and unresolved reasons. It does
-  not automatically apply your local Keep selection. An open-face cube remains
-  open unless a deliberate source edit restores its missing two triangles.
-</p>
-<h2>Verify the derivative against its purpose</h2>
+<h2>Check the repaired file</h2>
 <ol>
   <li>
-    Reopen the saved STL and record its triangle count, bounds and supported
-    <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality findings</a>. An
-    unavailable volume is not zero.
+    Reopen the saved STL and note its triangle count, size and
+    <a href="{{ GuideSlug.RouteStlQualityChecker }}">quality results</a>. A
+    volume that cannot be calculated is not zero.
   </li>
   <li>
-    Check the region you meant to change. Compare the original and derivative in
-    <a href="{{ GuideSlug.RouteStlCompare }}">STL revision comparison</a> when
-    surface movement matters; finite samples do not certify all features.
+    Look at the area you changed. To see how far the surface moved, compare old
+    and new files in
+    <a href="{{ GuideSlug.RouteStlCompare }}">STL Compare</a>. It samples the
+    surface, so very small features can be missed.
   </li>
   <li>
-    Inspect affected slicer layers, dimensions, openings and intended separate
-    parts. Keep the source CAD or original STL for correction.
+    Slice it and check the affected layers, dimensions, openings and separate
+    parts.
   </li>
 </ol>
 <p>
-  The generated widened-cube comparison reveals a 4 mm surface change; a
-  retriangulated control has different bytes with zero displayed sampled
-  deviation. These controls show why bytes and triangle count alone cannot
-  establish an acceptable repair. If the intended surface is unknown, do not
-  infer it from a successful download or clean-looking preview. For a broader
-  failed-import diagnosis, use
-  <a href="{{ GuideSlug.RouteStlFileWontSlice }}">the slice-failure guide</a>.
+  File size and triangle count alone do not show whether a repair is good: in
+  our tests, a re-triangulated copy had different bytes and no measurable
+  change, while a widened cube moved its surface by 4 mm. If a file will not
+  import at all, start with
+  <a href="{{ GuideSlug.RouteStlFileWontSlice }}">STL file won't slice</a>.
 </p>

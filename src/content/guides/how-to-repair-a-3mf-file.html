@@ -1,141 +1,124 @@
 ---
-title: 'How to Repair a 3MF Without Losing Build Context | InspectMesh'
-description: 'Choose a supported 3MF triangle cleanup, preserve build context and compare the saved package with the original before checking the receiving application.'
+title: 'How to Repair a 3MF File Without Losing Its Layout | InspectMesh'
+description: 'Repair a 3MF by finding what failed first: the file, its objects, or a mesh. Remove extra triangles safely and keep every object, position and setting intact.'
 slug: how-to-repair-a-3mf-file
 eyebrow: 3MF repair guide
-heading: How to Repair a 3MF File Without Losing Build Context
+heading: How to Repair a 3MF File Without Losing Its Layout
 ---
 
 <p class="lead">
-  First decide what failed: opening the package, resolving its placed items, or
-  interpreting its mesh. InspectMesh's local 3MF Repair removes supported
-  defective triangle records; it does not reconstruct a missing surface or
-  correct winding. Keep the original and verify the saved package in the
-  application that will use it.
+  To repair a 3MF, first work out what is broken: the file itself, the objects
+  and their positions, or a mesh inside an object. InspectMesh's 3MF Repair
+  removes extra and zero-area triangles in your browser and keeps everything
+  else. It cannot fill holes or flip faces, so those need your CAD or slicer.
+  Keep the original and check the repaired file in the program you print from.
 </p>
-<h2>Identify the layer before selecting a repair</h2>
+<h2>Match the problem to the fix</h2>
 <table>
   <thead>
     <tr>
-      <th scope="col">Observed problem</th>
-      <th scope="col">Appropriate next action</th>
+      <th scope="col">Problem</th>
+      <th scope="col">What to do</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Archive, model relationship or required resource cannot be read</td>
+      <td>The file will not open or parts of it cannot be read</td>
       <td>
-        Re-export from the producing application. Do not rebuild unknown
-        references through triangle cleanup.
+        Export it again from the program that made it. Triangle cleanup cannot
+        rebuild a damaged file.
       </td>
     </tr>
     <tr>
-      <td>Required item is absent or unexpectedly placed</td>
+      <td>An object is missing or in the wrong place</td>
       <td>
-        Inspect build references, transforms and the original project before
-        removing geometry.
+        Check the objects, positions and scale against the original project
+        before removing anything.
       </td>
     </tr>
     <tr>
-      <td>Duplicate, degenerate or supported invalid-index triangle records</td>
+      <td>Duplicate, zero-area or broken triangles</td>
       <td>
-        Review the local removal plan and apply only an understood supported
-        change. Packages that fail resolution cannot reach this plan.
+        Use <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> and review
+        what it plans to remove. A file that cannot be read at all will not
+        reach this step.
       </td>
     </tr>
     <tr>
-      <td>Open surface, ambiguous join, winding problem or crossing solids</td>
+      <td>Holes, bad joins, flipped faces or overlapping parts</td>
       <td>
-        Inspect the source model or a suitable editor. Local triangle removal is
-        not a reconstruction operation.
+        Fix them in the original model or a mesh editor. Removing triangles
+        cannot rebuild a surface.
       </td>
     </tr>
     <tr>
-      <td>Geometry is plausible but the slicer loses a required feature</td>
-      <td>
-        Compare the affected layers, profile and project support in the
-        producing/receiving applications.
-      </td>
+      <td>The model looks fine but the slicer drops a feature</td>
+      <td>Compare the sliced layers and settings in your slicer.</td>
     </tr>
   </tbody>
 </table>
-
-<h2>Use local cleanup for a supported triangle change</h2>
+<h2>Using 3MF Repair</h2>
 <p>
-  Choose the original package in
-  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> and review its
-  proposed removals. The supported operation runs in your browser and creates a
-  separate package. It does not need the server quality-check action. An empty
-  removal plan means no selected supported operation is available; it does not
-  certify that the file is free of every mesh problem.
+  Choose the original file in
+  <a href="{{ GuideSlug.Route3mfRepair }}">3MF Repair</a> and review the
+  triangles it proposes to remove. It runs in your browser, saves a separate
+  file and does not upload anything. If it proposes nothing, there is nothing it
+  can fix; that does not mean the file has no other problems.
 </p>
 <p>
-  The removal plan identifies repeated vertex-index triples within a mesh,
-  ignoring their order, and near-zero-area triangles under its relative
-  tolerance. It does not weld coincident vertices. The package must first pass
-  the local geometry resolver; invalid indexes that prevent resolution require a
-  source export.
+  It finds triangles that repeat the same three corners within one object, in
+  any order, and triangles with almost no area. It does not merge nearby points.
+  The file must open correctly first; if it cannot, export it again from the
+  source program.
 </p>
-<h2>A shared resource can affect several placements</h2>
+<h2>One fix can change several copies</h2>
 <p>
-  A triangle edit belongs to a stored mesh resource. If several placed items
-  reference that resource, the edited mesh can appear in each placement.
-  Removing one redundant triangle from the resource is different from deleting a
-  build item. Confirm the required quantity and arrangement after saving.
+  A 3MF can store an object once and place it several times. Removing a triangle
+  from that object changes every copy placed in the build. That is different
+  from deleting one placed copy. After saving, check you still have the right
+  number of objects in the right places.
 </p>
 <p>
-  The <a href="https://3mf.io/spec/">3MF Core specification</a> distinguishes
-  resources from build items selected for manufacture. This defines the format,
-  not a guarantee that this tool or a receiving application supports every
-  extension. The repair keeps coordinates and surrounding XML text while
-  removing selected triangle elements; decompressed payloads of unrelated ZIP
-  parts are copied. A regenerated ZIP is not byte-identical to the source.
+  The <a href="https://3mf.io/spec/">3MF specification</a> separates stored
+  objects from the items placed for printing. That defines the format; it does
+  not mean every program supports every 3MF feature. The repair keeps
+  coordinates and the rest of the file and removes only the selected triangles.
+  The new file will not be byte-for-byte identical, because the ZIP is rebuilt.
 </p>
-<h2>Geometry and coordinate control, not a repair observation</h2>
+<h2>Test file for size and position</h2>
 <p>
-  To test unit and placement interpretation separately from repair, download the
-  generated
+  To check that a workflow keeps size and position right, use our
   <a href="{{ ExampleAsset.DeclaredInchTransformed3mf }}" download
-    >one-inch cube translated two inches on X</a
-  >. The conversion control resolves it to a 25.4 mm cube at X = 50.8 to 76.2
-  mm. Compare the before/after dimensions and placement when validating any
-  repair workflow; a successful mesh cleanup does not prove a receiving app
-  retained project settings. See the
+    >one-inch cube moved two inches along X</a
+  >. Read correctly, it is a 25.4 mm cube between 50.8 and 76.2 mm on X. Compare
+  those numbers before and after any repair. See
   <a href="{{ GuideSlug.RouteHowToConvert3mfToStl }}"
-    >measured 3MF-to-STL export workflow</a
+    >how to convert 3MF to STL</a
   >
-  for the actual reopened conversion outputs.
+  for our measured conversion results. A clean mesh does not prove the slicer
+  kept the project settings.
 </p>
-
-<h2>Compare the saved package with the original</h2>
+<h2>Check the repaired file</h2>
 <ul>
+  <li>Reopen the downloaded file and confirm it still opens.</li>
+  <li>Compare units, objects, positions and overall size with the original.</li>
   <li>
-    Reopen the exact downloaded bytes and confirm the package still resolves.
-  </li>
-  <li>
-    Compare source units, required resource references, placed items, transforms
-    and build bounds.
-  </li>
-  <li>
-    Review actual removal counts and remaining findings. Do not assume every
-    enabled operation was applied.
+    Check how many triangles were actually removed and what problems remain.
   </li>
   <li>
     Run
-    <a href="{{ GuideSlug.Route3mfPrintPreflight }}"
-      >local preflight on the saved copy</a
-    >; choose server analysis separately if appropriate for the model's privacy
-    requirements.
+    <a href="{{ GuideSlug.Route3mfPrintPreflight }}">3MF preflight</a> on the
+    saved copy (in your browser). Use the server checks too if you are happy to
+    upload the model.
   </li>
   <li>
-    Open the result in the target slicer and inspect affected layers, material
-    assignments and relevant project settings.
+    Open it in your slicer and check the affected layers, materials and
+    settings.
   </li>
 </ul>
-<h2>Return to the source when the intended geometry is unknown</h2>
+<h2>When to go back to the original model</h2>
 <p>
-  Stop if the correction requires inventing a functional surface, identifying an
-  unknown part, or guessing which overlapping regions should remain. Return to
-  the source design or producing application. Keeping a package entry does not
-  establish that another application will interpret it as intended.
+  Stop if fixing it means guessing a functional surface, identifying an unknown
+  part, or choosing which overlapping areas to keep. Go back to the design or
+  the program that made the file.
 </p>
