@@ -17,6 +17,8 @@ import { guideRoutePath } from '../src/app/core/seo/public-routes.ts';
 export const GUIDE_PREFIX_MOVE_DATE = '2026-10-28';
 /** The material section's previous name; its pages still exist under it. */
 export const LEGACY_MATERIALS_SEGMENT = '3d-printing-materials';
+/** Date the owner-approved 301 redirects went live in production. */
+export const LEGACY_REDIRECTS_LIVE_DATE = '2026-11-21';
 
 /**
  * Known obsolete paths. Since 2026-11-21 each clean path 301-redirects to its
@@ -48,6 +50,14 @@ export const retiredRoutes = [
         'Root-level copy left from before guides moved under /guides/; 301 to the /guides/ page.',
     })),
   {
+    path: '/why-wont-my-stl-file-slice',
+    currentPath: guideRoutePath('stl-file-wont-slice'),
+    expectedStatus: 301,
+    reason:
+      'Root-level copy of a guide later renamed to stl-file-wont-slice; it stayed live as a self-canonical duplicate. 301 to the renamed /guides/ page.',
+    redirectedOn: '2026-11-28',
+  },
+  {
     path: '/' + LEGACY_MATERIALS_SEGMENT,
     currentPath: PublicRouteUrl.Materials,
     expectedStatus: 301,
@@ -68,6 +78,8 @@ export interface Retirement {
   readonly currentPath: string;
   readonly expectedStatus: number;
   readonly reason: string;
+  /** When the redirect was added, if later than LEGACY_REDIRECTS_LIVE_DATE. */
+  readonly redirectedOn?: string;
 }
 export function retirementDocuments(
   policies: readonly Retirement[] = retiredRoutes,

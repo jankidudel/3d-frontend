@@ -3,7 +3,11 @@ import { canonicalPublicRoutePaths } from '../src/app/core/seo/public-routes.ts'
 import { guideRoutePaths } from '../src/app/features/guides/generated/guide-route-data.generated.ts';
 import { guideRegistry } from '../src/content/guides/guides.registry.ts';
 import { editorialDates } from './editorial-dates.mts';
-import { buildSitemap } from './sitemap.mts';
+import { buildLegacySitemap, buildSitemap } from './sitemap.mts';
+import {
+  LEGACY_REDIRECTS_LIVE_DATE,
+  retiredRoutes,
+} from './retired-routes.mts';
 
 const siteUrl = 'https://www.inspectmesh.com';
 
@@ -77,4 +81,35 @@ describe('sitemap editorial dates', () => {
       );
     },
   );
+});
+
+describe('legacy redirect sitemap', () => {
+  it('lists every redirected retired URL with its redirect date', () => {
+    const redirected = retiredRoutes.filter(
+      (route) => route.expectedStatus === 301,
+    );
+    const sitemap = buildLegacySitemap(
+      siteUrl,
+      redirected,
+      LEGACY_REDIRECTS_LIVE_DATE,
+    );
+    expect([...sitemap.matchAll(/<url>/g)]).toHaveLength(redirected.length);
+    expect(sitemap).toContain(
+      '<loc>https://www.inspectmesh.com/stl-dimensions-checker</loc><lastmod>2026-11-21</lastmod>',
+    );
+    expect(sitemap).toContain(
+      '<loc>https://www.inspectmesh.com/why-wont-my-stl-file-slice</loc><lastmod>2026-11-28</lastmod>',
+    );
+    expect(sitemap).not.toContain('/guides/');
+  });
+
+  it('rejects an invalid redirect date', () => {
+    expect(() =>
+      buildLegacySitemap(
+        siteUrl,
+        [{ path: '/x', redirectedOn: 'soon' }],
+        LEGACY_REDIRECTS_LIVE_DATE,
+      ),
+    ).toThrow();
+  });
 });

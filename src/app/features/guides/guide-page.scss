@@ -170,3 +170,22 @@
     min-width: 0;
   }
 }
+
+.guide-page .guide-related {
+  max-width: 54rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.guide-page .guide-related ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.guide-page .guide-related li {
+  margin: 0.4rem 0;
+}
+@media print {
+  .guide-page .guide-related {
+    display: none;
+  }
+}

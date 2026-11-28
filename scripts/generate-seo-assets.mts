@@ -1,6 +1,10 @@
 import { guideRegistry } from '../src/content/guides/guides.registry.ts';
 import { editorialDates } from './editorial-dates.mts';
-import { buildSitemap } from './sitemap.mts';
+import { buildLegacySitemap, buildSitemap } from './sitemap.mts';
+import {
+  LEGACY_REDIRECTS_LIVE_DATE,
+  retiredRoutes,
+} from './retired-routes.mts';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { routeSearchPolicy, RouteDisposition } from './route-search-policy.mts';
@@ -60,9 +64,19 @@ await writeFile(
 );
 
 const sitemapPath = resolve(publicDirectory, 'sitemap.xml');
+const legacySitemapPath = resolve(publicDirectory, 'sitemap-legacy.xml');
 if (!indexingEnabled) {
   await rm(sitemapPath, { force: true });
+  await rm(legacySitemapPath, { force: true });
 } else {
+  await writeFile(
+    legacySitemapPath,
+    buildLegacySitemap(
+      siteUrl!,
+      retiredRoutes.filter((route) => route.expectedStatus === 301),
+      LEGACY_REDIRECTS_LIVE_DATE,
+    ),
+  );
   await writeFile(
     sitemapPath,
     buildSitemap(

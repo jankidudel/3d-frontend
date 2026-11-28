@@ -24,4 +24,16 @@
       </section>
     }
   </article>
+  @if (guide().related?.length) {
+    <nav class="guide-related" aria-labelledby="guide-related-title">
+      <h2 id="guide-related-title">Related guides</h2>
+      <ul>
+        @for (related of guide().related; track related.slug) {
+          <li>
+            <a [routerLink]="guidePath(related.slug)">{{ related.heading }}</a>
+          </li>
+        }
+      </ul>
+    </nav>
+  }
 </main>

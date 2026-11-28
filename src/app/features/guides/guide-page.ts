@@ -11,12 +11,13 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SeoService } from '../../core/seo/seo.service';
 import type { Guide } from './generated/guides.generated';
 
 @Component({
   selector: 'app-guide-page',
+  imports: [RouterLink],
   templateUrl: './guide-page.html',
   styleUrl: './guide-page.scss',
   encapsulation: ViewEncapsulation.None,
@@ -30,6 +31,7 @@ export class GuidePage implements AfterViewInit {
     initialValue: this.route.snapshot.data,
   });
   protected readonly guide = computed(() => this.guideForRoute());
+  protected readonly guidePath = guideRoutePath;
 
   constructor() {
     afterEveryRender(() => this.applyLazyLoading());

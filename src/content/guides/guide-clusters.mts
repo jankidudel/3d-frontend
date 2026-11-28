@@ -308,6 +308,50 @@ export function createGuideClusterIndex(
   }));
 }
 
+/** Maximum related guides linked from the foot of each guide. */
+export const RELATED_GUIDE_LIMIT = 5;
+
+/**
+ * Related guides for one guide: its cluster's pillar first (unless the guide
+ * is the pillar), then the cluster's other guides nearest to it in the
+ * curated cluster order. Guides outside the given published set are skipped.
+ */
+export function relatedGuideSlugs(
+  slug: string,
+  publishedSlugs: ReadonlySet<string>,
+  limit = RELATED_GUIDE_LIMIT,
+): readonly string[] {
+  const cluster = guideClusters.find((candidate) =>
+    candidate.slugs.includes(slug),
+  );
+  if (!cluster) {
+    return [];
+  }
+  const position = cluster.slugs.indexOf(slug);
+  const neighbours = cluster.slugs
+    .map((candidate, index) => ({
+      candidate,
+      distance: Math.abs(index - position),
+      index,
+    }))
+    .filter(
+      ({ candidate }) =>
+        candidate !== slug &&
+        candidate !== cluster.pillar &&
+        publishedSlugs.has(candidate),
+    )
+    .sort(
+      (first, second) =>
+        first.distance - second.distance || first.index - second.index,
+    )
+    .map(({ candidate }) => candidate);
+  const pillar =
+    cluster.pillar !== slug && publishedSlugs.has(cluster.pillar)
+      ? [cluster.pillar]
+      : [];
+  return [...pillar, ...neighbours].slice(0, limit);
+}
+
 /** Featured decision relationships. Existing category sections retain every guide. */
 export const discoveryTasks = [
   {

@@ -41,3 +41,27 @@ export function buildSitemap(
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.join('\n')}\n</urlset>\n`;
 }
+
+/**
+ * Temporary sitemap of retired URLs that now 301 to their current pages. It
+ * is submitted manually in Search Console so Google recrawls the old URLs and
+ * transfers them to their redirect targets. It is deliberately not advertised
+ * in robots.txt, whose sitemaps must list only canonical 200 pages. lastmod is
+ * the date each redirect went live, not build time.
+ */
+export function buildLegacySitemap(
+  siteUrl: string,
+  routes: readonly { readonly path: string; readonly redirectedOn?: string }[],
+  defaultRedirectDate: string,
+): string {
+  const entries = routes.map((route) => {
+    const date = route.redirectedOn ?? defaultRedirectDate;
+    if (!isDateOnlyUtc(date)) {
+      throw new Error(
+        `Legacy sitemap route "${route.path}" requires a YYYY-MM-DD redirect date.`,
+      );
+    }
+    return `  <url><loc>${siteUrl}${route.path}</loc><lastmod>${date}</lastmod></url>`;
+  });
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.join('\n')}\n</urlset>\n`;
+}
